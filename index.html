@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
-<meta name="description" content="Friendly, horizontal layout • retirement-readiness scoring (safe withdrawal).">
+<meta name="description" content="Friendly money grade with realistic retirement-readiness scoring.">
 <style>
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
@@ -127,9 +127,10 @@
 
     <!-- MAIN CONTENT PAGES -->
     <main id="main">
-      <!-- Grade page (horizontal desktop) -->
+      <!-- Grade page -->
       <section id="page-grade" class="page active">
         <div class="grid" id="grade-grid">
+          <!-- Row 1 -->
           <div class="card" style="grid-column:span 4">
             <div class="section">Monthly Income (after-tax)</div>
             <label>What hits your bank each month</label>
@@ -141,12 +142,12 @@
             <input id="expenses" type="number" value="4000" min="0" />
           </div>
           <div class="card" style="grid-column:span 4">
-            <div class="section">Withdrawal rate (%)</div>
-            <label>Safe withdrawal (defaults to 6%)</label>
-            <input id="swr" type="number" value="6" step="0.1" min="2" max="8" />
-            <div class="hint" id="targetHint">FI target: —</div>
+            <div class="section">Your FI target (at 6%)</div>
+            <div class="hint" id="targetHint">—</div>
+            <div class="hint">Based on annual spending ÷ 0.06.</div>
           </div>
 
+          <!-- Row 2 -->
           <div class="card" style="grid-column:span 6">
             <div class="section">Assets 💰</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
@@ -175,6 +176,7 @@
             <div class="hint" id="liabHint">Total Liabilities: —</div>
           </div>
 
+          <!-- Row 3 -->
           <div class="card" style="grid-column:span 4;display:flex;align-items:end;justify-content:end">
             <div class="actions">
               <button id="resetBtn" class="btn">Reset</button>
@@ -251,13 +253,18 @@
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-  /* Theme */
+  /* constants */
+  const SWR = 0.06;                 // fixed 6% safe withdrawal
+  const EF_TARGET = 6;              // months
+  const EQUITY_FACTOR = 0.40;       // 40% of home equity is assumed tappable
+  const NW_WEIGHT = 15, FI_WEIGHT = 55, SAVE_W=7, EF_W=10, NONMORT_W=8, LTV_W=5, INVEST_W=10;
+
+  /* Theme + tabs */
   const modeBtn = $('#modeBtn');
   function setMode(light){ document.body.classList.toggle('light', light); modeBtn.textContent = light ? '🌞 Light' : '🌚 Dark'; }
   setMode(false);
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  /* Sidebar tabs */
   const pages=['grade','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
@@ -268,7 +275,7 @@
   });
 
   /* Inputs & totals */
-  const ids = ['income','expenses','swr','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr'];
+  const ids = ['income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr'];
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
 
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
@@ -276,46 +283,67 @@
   function values(){
     const v = Object.fromEntries(ids.map(id=>[id,val(id)]));
     v.assets = v.home + v.retire + v.brokerage + v.car + v.hsa + v.cash;
-    v.investable = v.retire + v.brokerage + v.hsa;   // portfolio for SWR
     v.liabs  = v.mortgage + v.student + v.auto + v.cc;
     v.net    = v.assets - v.liabs;
-    v.annualSpend = v.expenses * 12;
-    v.targetFI = v.swr>0 ? v.annualSpend / (v.swr/100) : Infinity;
+
+    v.annualSpend = Math.max(0, v.expenses * 12);
+    v.targetFI = v.annualSpend>0 ? v.annualSpend / SWR : 0;
+
+    v.investableCore = v.retire + v.brokerage + v.hsa;
+    v.cashSurplus = Math.max(0, v.cash - EF_TARGET * (v.expenses||0));   // cash above 6 months
+    v.homeEquity = Math.max(0, v.home - v.mortgage);
+    v.accessibleEquity = v.homeEquity * EQUITY_FACTOR;
+
+    v.investableTotal = v.investableCore + v.cashSurplus + v.accessibleEquity;
     return v;
   }
   function updateHints(){
     const v = values();
-    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable: ${money(v.investable)})`;
+    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable now: ${money(v.investableCore)}; +surplus cash: ${money(v.cashSurplus)}; +accessible equity: ${money(v.accessibleEquity)})`;
     $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
-    $('#targetHint').textContent = `FI target @ ${val('swr')}%: ${money(v.targetFI)}`;
+    const tgt = v.targetFI>0 ? money(v.targetFI) : '—';
+    $('#targetHint').textContent = `FI target at 6%: ${tgt}`;
   }
   ids.forEach(id => els[id].addEventListener('input', updateHints));
   updateHints();
 
-  /* Scoring (SWR-based) */
+  /* Scoring (realistic) */
   function scoreModel(v){
     const leftover = Math.max(0, v.income - v.expenses);
     const saveRate = v.income>0 ? leftover / v.income : 0;
     const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
 
-    const investShare = v.assets>0 ? v.investable / v.assets : 0;
+    const investShare = v.assets>0 ? v.investableCore / v.assets : 0;
 
-    const readiness = v.targetFI>0 ? v.investable / v.targetFI : 0; // 1.0 = at target
+    // FI readiness using investableTotal vs target
+    const readiness = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
     const sFI   = map01(readiness, 0, 1);
 
+    // Net worth sufficiency as backup (counts if house/cash dominate)
+    const nwMult = (v.targetFI>0) ? (v.net / v.targetFI) : (v.net>0 ? 1 : 0);
+    const sNW = map01(nwMult, 0, 1);
+
+    // Debt factors
     const nonMortDebt = v.student + v.auto + v.cc;
-    const nonMortRatio = v.assets>0 ? nonMortDebt / v.assets : 1;
+    const nonMortRatio = v.assets>0 ? nonMortDebt / v.assets : 0;
     const sNonMort = map01(1-nonMortRatio, 0, 1);
 
     const ltv = v.home>0 ? v.mortgage / v.home : 0;
     const sLTV = map01(1-ltv, 0, 0.5);
 
     const sSave = map01(saveRate, 0, 0.5);
-    const sEF   = map01(efMonths, 0, 6);
+    const sEF   = map01(efMonths, 0, EF_TARGET);
     const sInv  = map01(investShare, 0.20, 0.60);
 
-    const score = 50*sFI + 15*sSave + 10*sEF + 10*sNonMort + 5*sLTV + 10*sInv;
-    return { score:+score.toFixed(1), saveRate, efMonths, investShare, readiness, targetFI:v.targetFI, ltv, nonMortRatio };
+    const score = FI_WEIGHT*sFI + NW_WEIGHT*sNW + SAVE_W*sSave + EF_W*sEF + NONMORT_W*sNonMort + LTV_W*sLTV + INVEST_W*sInv;
+
+    return {
+      score:+score.toFixed(1),
+      saveRate, efMonths, investShare,
+      readiness, nwMult,
+      targetFI:v.targetFI, ltv, nonMortRatio,
+      cashSurplus:v.cashSurplus, accessibleEquity:v.accessibleEquity, investableTotal:v.investableTotal
+    };
   }
   function letter(score){
     if(score>=97) return "A+";
@@ -342,22 +370,17 @@
 
   /* Share link (state in URL hash) */
   function currentState(){
-    const s={}; ids.forEach(id=> s[id]=val(id));
+    const s={}; ids.forEach(id=> s[id]=val(id)); s.__swr = SWR; s.__ver='v2';
     return s;
   }
   function buildShareURL(){
     const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState()))));
     return location.origin+location.pathname+'#s='+b64;
   }
-  function showToast(){
-    const toast = $('#toast');
-    toast.classList.add('show');
-    setTimeout(()=>toast.classList.remove('show'), 5500);
-  }
-  $('#copyAgain').addEventListener('click', ()=>{
-    const url=buildShareURL();
-    navigator.clipboard.writeText(url);
-  });
+  const toast = $('#toast');
+  function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5500); }
+  $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
+
   // Hydrate from hash if present
   (function hydrateFromHash(){
     const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
@@ -372,29 +395,29 @@
   function renderWhy(v,s){
     $('#chips').innerHTML = [
       `<span class="chip">FI readiness: <b>${(s.readiness*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">NW vs target: <b>${(s.nwMult*100).toFixed(0)}%</b></span>`,
       `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
       `<span class="chip">Emergency fund: <b>${s.efMonths.toFixed(1)} mo</b></span>`,
       `<span class="chip">Invested share: <b>${(s.investShare*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Mortgage LTV: <b>${(s.ltv*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Non-mortgage debt: <b>${(s.nonMortRatio*100).toFixed(1)}%</b> of assets</span>`
+      `<span class="chip">Mortgage LTV: <b>${(s.ltv*100).toFixed(0)}%</b></span>`
     ].join('');
     const nonMortDebt = val('student')+val('auto')+val('cc');
     $('#whyList').innerHTML = [
-      `• FI target at <b>${val('swr')}%</b> is <b>${money(s.targetFI)}</b> (based on ${money(v.annualSpend)}/yr spending).`,
-      `• Investable portfolio is <b>${money(v.investable)}</b> → <b>${(s.readiness*100).toFixed(0)}%</b> of target.`,
-      `• Net worth: <b>${money(v.net)}</b> (assets ${money(v.assets)} – liabilities ${money(v.liabs)}).`,
-      `• Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b> (~${money(Math.max(0, v.income-v.expenses))}/mo kept).`,
-      `• Emergency fund: <b>${s.efMonths.toFixed(1)} months</b> of expenses.`,
+      `• FI target (6%): <b>${money(s.targetFI)}</b> based on ${money(values().annualSpend)}/yr spending.`,
+      `• We counted investable portfolio <b>${money(values().investableCore)}</b> + surplus cash <b>${money(s.cashSurplus)}</b> + accessible home equity (40%) <b>${money(s.accessibleEquity)}</b> = <b>${money(s.investableTotal)}</b>.`,
+      `• Net worth: <b>${money(values().net)}</b> (assets ${money(values().assets)} – liabilities ${money(values().liabs)}).`,
+      `• Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b> (~${money(Math.max(0, val('income')-val('expenses')))} /mo kept).`,
+      `• Emergency fund: <b>${s.efMonths.toFixed(1)} months</b>.`,
       `• Non-mortgage debt totals <b>${money(nonMortDebt)}</b>; mortgage LTV is <b>${(s.ltv*100).toFixed(0)}%</b>.`
     ].map(x=>`<div>${x}</div>`).join('');
   }
   function renderImprove(v,s){
     const ideas=[];
-    if(s.readiness < 1) ideas.push(`Close the gap to FI: need ~<b>${money(s.targetFI - v.investable)}</b> more in investable assets at ${val('swr')}% SWR.`);
+    if(s.readiness < 1 && s.nwMult < 1) ideas.push(`Close the gap to FI: need ~<b>${money(s.targetFI - v.investableTotal)}</b> more investable (or reduce spending).`);
+    if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to <b>${EF_TARGET} months</b> (${money(v.expenses*EF_TARGET)}).`);
     if(s.saveRate < 0.2) ideas.push(`Aim for <b>20%+ savings</b> by auto-moving ~${money(Math.ceil(v.income*0.05))}/mo.`);
-    if(s.efMonths < 3) ideas.push(`Build emergency fund to <b>3–6 months</b> (${money(v.expenses*3)}–${money(v.expenses*6)}).`);
-    if(s.investShare < 0.35) ideas.push(`Increase invested share to <b>35–60%+</b> (401k/IRA/brokerage/HSA).`);
-    if(s.ltv > 0.8) ideas.push(`High mortgage LTV (<b>${(s.ltv*100).toFixed(0)}%</b>): occasional principal prepayments help.`);
+    if(s.investShare < 0.35) ideas.push(`Increase invested share to <b>35–60%+</b> over time (401k/IRA/brokerage/HSA).`);
+    if(s.ltv > 0.8) ideas.push(`High mortgage LTV (<b>${(s.ltv*100).toFixed(0)}%</b>): occasional principal prepayments can help.`);
     if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt (<b>${(s.nonMortRatio*100).toFixed(0)}%</b> of assets) — target <20%.`);
     if(!ideas.length) ideas.push(`You’re cruising! Keep automating and review yearly. 🎉`);
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
@@ -403,30 +426,33 @@
   /* Grade + Reset */
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
 
-  $('#gradeBtn').addEventListener('click', ()=>{
-    showOverlay();
-    setTimeout(()=>{
-      const v = values();
-      const s = scoreModel(v);
-      const L = letter(s.score);
-      bigGrade.textContent = L;
-      bigGrade.style.color = ( {'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
-      bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
-      scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
-      nwLine.textContent = `Net worth: ${money(v.net)} • Assets: ${money(v.assets)} • Liabilities: ${money(v.liabs)}`;
-      progress.style.width = s.score + '%';
-      renderWhy(v,s); renderImprove(v,s);
-      hideOverlay();
+  function doGrade(){
+    const v = values();
+    const s = scoreModel(v);
+    const L = letter(s.score);
+    bigGrade.textContent = L;
+    bigGrade.style.color = ( {'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
+    bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
+    scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
+    nwLine.textContent = `Net worth: ${money(v.net)} • Assets: ${money(v.assets)} • Liabilities: ${money(v.liabs)}`;
+    progress.style.width = s.score + '%';
+    renderWhy(v,s); renderImprove(v,s);
+    // share link
+    const url = buildShareURL();
+    navigator.clipboard.writeText(url).catch(()=>{});
+    showToast();
+  }
 
-      // shareable link: copy + toast
-      const url=buildShareURL();
-      navigator.clipboard.writeText(url).catch(()=>{});
-      showToast();
-    }, 650);
+  $('#gradeBtn').addEventListener('click', ()=>{
+    // simple loader
+    let prog=0; const overlay=$('#overlay'); const bar=$('#barFill'); const pct=$('#pct');
+    overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
+    const t=setInterval(()=>{ prog=Math.min(97, prog+Math.random()*10+5); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },180);
+    setTimeout(()=>{ clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>{overlay.classList.remove('show'); doGrade();},220); },680);
   });
 
   $('#resetBtn').addEventListener('click', ()=>{
-    document.querySelectorAll('input[type="number"]').forEach(el => el.id==='swr' ? el.value=6 : el.value=0);
+    document.querySelectorAll('input[type="number"]').forEach(el => el.value=0);
     updateHints();
     bigGrade.textContent='—'; bigGrade.classList.remove('show');
     scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
