@@ -48,10 +48,9 @@
   }
   .hero-inner{display:flex; align-items:center; justify-content:space-between; gap:14px}
   .title-wrap{display:flex; align-items:center; gap:12px}
-  .logo{
-    width:44px; height:44px;
-    filter: drop-shadow(0 6px 12px rgba(14,165,233,.35));
-  }
+
+  /* NEW inline SVG logo */
+  .logo{width:48px; height:48px; flex:0 0 48px; filter: drop-shadow(0 6px 12px rgba(14,165,233,.35))}
   .title{
     line-height:1; margin:0;
     font-family:"Baloo 2", cursive; font-weight:700;
@@ -78,10 +77,6 @@
     animation: flow 8s linear infinite;
   }
   @keyframes flow{0%{background-position:0% 0}100%{background-position:300% 0}}
-  .floater{position:absolute; font-size:18px; opacity:.15; pointer-events:none}
-  .f-left{left:6px; top:-8px; animation: rise 16s linear infinite}
-  .f-right{right:10px; top:-10px; animation: rise 17s linear infinite 2s}
-  @keyframes rise{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-120px) rotate(360deg)}}
 
   /* App card */
   .wrap{
@@ -132,9 +127,6 @@
   @keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.05); text-shadow:0 0 12px color-mix(in oklab, var(--ok) 60%, transparent)}100%{transform:scale(1)}}
   #confettiCanvas{position:fixed; inset:0; pointer-events:none; z-index:9999; display:none}
 
-  .result-actions{display:flex; gap:8px; flex-wrap:wrap}
-  .profiles{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
-
   /* Suspense / Reveal overlay */
   .reveal{
     position:fixed; inset:0; z-index:9998; display:none;
@@ -170,12 +162,10 @@
 <body>
   <!-- Header with inline SVG logo -->
   <section class="hero">
-    <div class="floater f-left">🪙</div>
-    <div class="floater f-right">💸</div>
     <div class="hero-inner">
       <div class="title-wrap">
-        <!-- Finance logo (SVG) -->
-        <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+        <!-- Clean “G” logo with finance/report motifs -->
+        <svg class="logo" viewBox="0 0 64 64" aria-label="Grade My Finance logo" role="img">
           <defs>
             <linearGradient id="g1" x1="0" y1="1" x2="1" y2="0">
               <stop offset="0" stop-color="#22c55e"/>
@@ -183,7 +173,14 @@
             </linearGradient>
           </defs>
           <rect x="6" y="6" width="52" height="52" rx="12" fill="url(#g1)"/>
-          <path d="M18 42h28M22 34l6-6 6 7 8-10" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <!-- Letter G -->
+          <path d="M22 18h14a10 10 0 010 20H29" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M29 38h13" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+          <!-- coins -->
+          <circle cx="22" cy="46" r="3" fill="#fff" opacity=".9"/>
+          <circle cx="28" cy="46" r="3" fill="#fff" opacity=".7"/>
+          <!-- report tick -->
+          <path d="M42 24l4 4 6-8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <div>
           <h1 class="title">Grade My Finance</h1>
@@ -260,7 +257,7 @@
     </section>
 
     <!-- Profiles -->
-    <section class="profiles" style="margin-top:8px">
+    <section class="profiles" style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap">
       <select id="profileSelect">
         <option value="">Load saved profile…</option>
       </select>
@@ -287,7 +284,7 @@
 
       <div class="meters" id="meters"></div>
 
-      <div class="result-actions">
+      <div class="result-actions" style="display:flex;gap:8px;flex-wrap:wrap">
         <button id="shareBtn" class="secondary linkish">Share my grade</button>
         <button id="saveImgBtn" class="secondary linkish">Download result (PNG)</button>
       </div>
@@ -304,7 +301,7 @@
           <summary><strong>Scoring bands used</strong></summary>
           <p><strong>Savings rate</strong> (income − expenses) ÷ income. 20–40% earns most points. (25 pts)</p>
           <p><strong>Spending control</strong> 1 − (expenses ÷ income). ≥40% “leftover” is best. (10 pts)</p>
-          <p><strong>Debt-to-income</strong> total debt ÷ annual income. Lower is better. (15 pts)</p>
+          <p><strong>Debt-to-income</strong> total debt ÷ annual income. Lower is better. (15 pts) + extreme penalty caps.</p>
           <p><strong>Emergency fund</strong> 0, 1, 3, 6 months are the breakpoints. (15 pts)</p>
           <p><strong>Retirement readiness</strong> investable assets ÷ (age target × income). Uses age-target multiples. (35 pts)</p>
         </details>
@@ -351,7 +348,6 @@
   </div>
 
   <div id="toast" class="toast">Cleaned nickname for profanity</div>
-
   <canvas id="confettiCanvas"></canvas>
 
 <script>
@@ -480,20 +476,14 @@
   ];
   function cleanNickname(raw){
     if(!raw) return {clean:"", filtered:false, replacedAll:false};
-    const lo = raw.toLowerCase();
-    let filtered=false;
-    let tokens = raw.split(/\s+/).map(t=>{
-      const bad = BAD.find(w => lo.includes(w));
-      if(!bad) return t;
-      filtered=true;
-      return t.replace(new RegExp(bad,'ig'),'***');
+    const tokens = raw.split(/\s+/).map(t=>{
+      let out=t; BAD.forEach(w=>{ out = out.replace(new RegExp(w,'ig'),'***'); });
+      return out;
     });
-    let clean = tokens.join(' ');
-    // If every character became asterisks or nothing useful, replace with Friend
-    const stripped = clean.replace(/[*\s]/g,'');
-    const replacedAll = filtered && stripped.length===0;
-    if(replacedAll) clean = "Friend";
-    return {clean, filtered, replacedAll};
+    const clean = tokens.join(' ').trim();
+    const filtered = clean!==raw;
+    const allGone = clean.replace(/[*\s]/g,'').length===0;
+    return {clean: allGone ? 'Friend' : clean, filtered, replacedAll: allGone};
   }
 
   /* ---------- Grade (with suspense reveal) ---------- */
@@ -513,157 +503,28 @@
 
   gradeBtn.onclick = () => {
     // Suspense overlay
-    rGrade.textContent = ''; // clear
+    rGrade.textContent = '';
     overlay.classList.add('show');
 
     setTimeout(()=>{ // ~3 seconds suspense
       // Sanitize nickname
       let nick = $('name').value.trim();
       const {clean, filtered} = cleanNickname(nick);
-      if(filtered) toast('Cleaned nickname for profanity'); // show toast
+      if(filtered) toast('Cleaned nickname for profanity');
       $('name').value = clean;
 
-      // Now compute + render
+      // compute + render
       computeAndRender();
 
       // reveal animation
       const letter = $('letter').textContent.replace(/^.*:\s*/,'');
       rGrade.textContent = letter;
       requestAnimationFrame(()=> rGrade.classList.add('show'));
-      setTimeout(()=>{ overlay.classList.remove('show'); rGrade.classList.remove('show'); }, 900); // slide away soon after show
+      setTimeout(()=>{ overlay.classList.remove('show'); rGrade.classList.remove('show'); }, 900);
     }, 3000);
   };
 
-  function computeAndRender(){
-    const income = num('income'), expenses=num('expenses'), cash=num('cash');
-    const age = num('age') || 30; const name = $('name').value.trim();
-
-    const retire = num('asset_retire'), broker = num('asset_broker'), home = num('asset_home'), car = num('asset_car');
-    const assets = retire + broker + home + car + cash;
-    const liabilities = ['debt_mortgage','debt_student','debt_auto','debt_cards','debt_other'].reduce((a,id)=>a+num(id),0);
-
-    const annualIncome = income*12;
-    const netWorth = Math.max(0, assets - liabilities);
-    const savings = Math.max(0, income - expenses);
-    const savingsRate = income>0 ? savings/income : 0;
-    const expenseRatio = income>0 ? expenses/income : 1;
-    const dti = annualIncome>0 ? (liabilities/annualIncome) : 5;
-    const monthsEF = expenses>0 ? cash/expenses : 0;
-
-    // Retirement readiness
-    const investable = retire + broker + 0.25*cash;
-    const targetMultiple = targetRetMultipleByAge(age);
-    const targetAmount = (annualIncome>0 ? targetMultiple*annualIncome : Infinity);
-    const readiness = (annualIncome>0 && isFinite(targetAmount) && targetAmount>0) ? Math.min(1, investable/targetAmount) : 0;
-
-    // Scores
-    const scoreSavingsRate = piecewise(savingsRate, [[0.00,0],[0.10,12],[0.20,20],[0.30,23],[0.40,25]]);
-    const scoreExpense     = piecewise(1-expenseRatio, [[0.00,0],[0.10,3],[0.20,6],[0.30,8],[0.40,10]]);
-    const scoreDTI         = piecewiseRev(dti, [[3.00,0],[2.00,4],[1.50,8],[1.00,11],[0.50,13],[0.25,15]]);
-    const scoreEF          = piecewise(monthsEF, [[0,0],[1,5],[3,11],[6,15]]);
-    const scoreRet         = readiness*35;
-
-    const parts = [
-      {key:'Savings rate', score:scoreSavingsRate, max:25},
-      {key:'Spending control', score:scoreExpense, max:10},
-      {key:'Debt vs income', score:scoreDTI, max:15},
-      {key:'Emergency fund', score:scoreEF, max:15},
-      {key:'Retirement readiness', score:scoreRet, max:35}
-    ];
-    const total = Math.round(parts.reduce((a,p)=>a+p.score,0));
-    const g = toLetter(total);
-    const delta = gradeDelta(total);
-
-    // Render
-    results.style.display='grid';
-    const letterEl = $('letter');
-    letterEl.textContent = (name? `${name}, `:'') + `Your grade: ${g.letter}`;
-    $('score').textContent = total;
-    $('deltaLine').textContent = `▲ ${delta.toNext} pts to rank up to ${g.next} • ▼ ${delta.toDown} pts from dropping to ${g.prev}`;
-    $('whyLine').textContent = `Net worth: $${fmt(netWorth)} • Savings rate: ${(savingsRate*100).toFixed(0)}% • EF: ${monthsEF.toFixed(1)} mo • DTI: ${dti.toFixed(2)}× • Retirement target: ${targetMultiple.toFixed(1)}× income`;
-
-    const meters = $('meters'); meters.innerHTML='';
-    parts.forEach(p=>{
-      const pct = Math.max(0, Math.min(1, p.score/p.max));
-      const cls = pct>=0.66 ? 'pos' : pct>=0.33 ? 'mid' : 'neg';
-      const wrap = document.createElement('div'); wrap.className='meter';
-      wrap.innerHTML = `<h4>${p.key} <span class="muted tiny">(${Math.round(p.score)}/${p.max})</span></h4>
-                        <div class="bar ${cls}"><i style="width:${Math.max(4, Math.round(pct*100))}%;"></i></div>`;
-      meters.appendChild(wrap);
-    });
-
-    const tips = buildTips({savingsRate, expenseRatio, dti, monthsEF, investable, targetAmount, annualIncome});
-    $('tipsList').innerHTML = tips.slice(0,5).map(t=>`<li>${t}</li>`).join('');
-    const explain = buildExplain({income, expenses, cash, liabilities, annualIncome, netWorth, dti, savingsRate, monthsEF, investable, targetMultiple});
-    $('explainList').innerHTML = explain.map(t=>`<li>${t}</li>`).join('');
-
-    $('summary').textContent = `This score uses simple heuristics — directional, not prescriptive.`;
-    saveInputs();
-
-    $('shareBtn').onclick = () => {
-      const url = location.origin + location.pathname;
-      const text = `I got a ${g.letter} on Grade My Finance! (${total}/100)`;
-      const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
-      window.open(shareUrl, '_blank');
-    };
-    $('saveImgBtn').onclick = async () => {
-      const node = $('results');
-      const canvas = await html2canvas(node, {backgroundColor: null, scale: 2});
-      const link = document.createElement('a');
-      link.download = `grade-my-finance-${g.letter}-${total}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    };
-
-    // Confetti if improved
-    const order = ['F','D','C-','C','C+','B-','B','B+','A-','A','A+'];
-    const idx = order.indexOf(g.letter);
-    if(prevBandIndex===null){ prevBandIndex = idx; }
-    else if(idx > prevBandIndex){ letterEl.classList.remove('pulse'); void letterEl.offsetWidth; letterEl.classList.add('pulse'); runConfetti(1200); prevBandIndex = idx; } 
-    else { prevBandIndex = idx; }
-
-    if(window.gtag){
-      window.gtag('event','grade_calculated',{ grade_letter:g.letter, score: total });
-    }
-  }
-
-  /* ---------- What-If Lab ---------- */
-  const expSlider=$('w_expFactor'), expLabel=$('w_expFactor_val');
-  expSlider.addEventListener('input', ()=> expLabel.textContent = Number(expSlider.value).toFixed(2));
-  $('w_run').onclick = ()=>{
-    const expF = Number(expSlider.value||'1');
-    const extraSave = Number($('w_extraSave').value||0);
-    const extraDebt = Number($('w_extraDebt').value||0);
-
-    const income = num('income'), expenses=num('expenses')*expF, cash=num('cash') + extraSave*12;
-    const age = num('age') || 30;
-    const retire = num('asset_retire'), broker = num('asset_broker'), home = num('asset_home'), car = num('asset_car');
-    let liabilities = ['debt_mortgage','debt_student','debt_auto','debt_cards','debt_other'].reduce((a,id)=>a+num(id),0);
-    liabilities = Math.max(0, liabilities - extraDebt*12);
-
-    const annualIncome = income*12;
-    const savings = Math.max(0, income - expenses);
-    const savingsRate = income>0 ? savings/income : 0;
-    const expenseRatio = income>0 ? expenses/income : 1;
-    const dti = annualIncome>0 ? (liabilities/annualIncome) : 5;
-    const monthsEF = expenses>0 ? cash/expenses : 0;
-    const investable = retire + broker + 0.25*cash;
-    const targetMultiple = targetRetMultipleByAge(age);
-    const targetAmount = (annualIncome>0 ? targetMultiple*annualIncome : Infinity);
-    const readiness = (annualIncome>0 && isFinite(targetAmount) && targetAmount>0) ? Math.min(1, investable/targetAmount) : 0;
-
-    const scoreSavingsRate = piecewise(savingsRate, [[0.00,0],[0.10,12],[0.20,20],[0.30,23],[0.40,25]]);
-    const scoreExpense     = piecewise(1-expenseRatio, [[0.00,0],[0.10,3],[0.20,6],[0.30,8],[0.40,10]]);
-    const scoreDTI         = piecewiseRev(dti, [[3.00,0],[2.00,4],[1.50,8],[1.00,11],[0.50,13],[0.25,15]]);
-    const scoreEF          = piecewise(monthsEF, [[0,0],[1,5],[3,11],[6,15]]);
-    const scoreRet         = readiness*35;
-    const total = Math.round(scoreSavingsRate+scoreExpense+scoreDTI+scoreEF+scoreRet);
-    const letter = toLetter(total).letter;
-
-    $('w_result').textContent = `With those changes for 12 months: grade ≈ ${letter} (${total}/100).`;
-  };
-
-  /* ---------- Helpers ---------- */
+  /* ---------- Scoring helpers ---------- */
   function piecewise(x, pts){
     pts = pts.slice().sort((a,b)=>a[0]-b[0]);
     if(x<=pts[0][0]) return pts[0][1];
@@ -693,26 +554,203 @@
   }
   function toLetter(score){
     const bands = [
-      {min:97, label:'A+'},{min:93, label:'A'},{min:90, label:'A-'},
-      {min:87, label:'B+'},{min:83, label:'B'},{min:80, label:'B-'},
-      {min:77, label:'C+'},{min:73, label:'C'},{min:70, label:'C-'},
-      {min:60, label:'D'},{min:-999, label:'F'}
+      {min: 97, label:'A+'},
+      {min: 93, label:'A'},
+      {min: 90, label:'A-'},
+      {min: 87, label:'B+'},
+      {min: 83, label:'B'},
+      {min: 80, label:'B-'},
+      {min: 77, label:'C+'},
+      {min: 73, label:'C'},
+      {min: 70, label:'C-'},
+      {min: 67, label:'D+'},
+      {min: 60, label:'D'},
+      {min:-999,label:'F'}
     ];
     const cur = bands.find(b=>score>=b.min);
     const idx = bands.indexOf(cur);
     return {letter:cur.label, next: idx>0?bands[idx-1].label:cur.label, prev: idx<bands.length-1?bands[idx+1].label:cur.label};
   }
   function gradeDelta(score){
-    const thresholds = [97,93,90,87,83,80,77,73,70,60,0];
-    let above = thresholds.find(t => score < t); if(above===undefined) above=100;
-    const below = thresholds.slice().reverse().find(t => score >= t) || 0;
-    return {toNext: Math.max(0, Math.ceil(above - score)), toDown: Math.max(0, Math.ceil(score - below))};
+    const T = [97,93,90,87,83,80,77,73,70,67,60,0];
+    let up = T.find(t => score < t); if(up===undefined) up = 100;
+    const down = T.slice().reverse().find(t => score >= t) || 0;
+    return { toNext: Math.max(0, Math.ceil(up - score)),
+             toDown: Math.max(0, Math.ceil(score - down)) };
   }
+
+  /* ---------- Main compute ---------- */
+  const confettiCanvas = $('confettiCanvas'); const ctx = confettiCanvas.getContext('2d');
+  let prevLetterIdx = null;
+
+  function computeAndRender(){
+    const income = num('income'), expenses=num('expenses'), cash=num('cash');
+    const age = num('age') || 30; const name = $('name').value.trim();
+
+    const retire = num('asset_retire'), broker = num('asset_broker'), home = num('asset_home'), car = num('asset_car');
+    const assets = retire + broker + home + car + cash;
+    const liabilities = ['debt_mortgage','debt_student','debt_auto','debt_cards','debt_other'].reduce((a,id)=>a+num(id),0);
+
+    const annualIncome = income*12;
+    const netWorth = assets - liabilities;
+    const savings = Math.max(0, income - expenses);
+    const savingsRate = income>0 ? savings/income : 0;
+    const expenseRatio = income>0 ? expenses/income : 1;
+    const dti = annualIncome>0 ? (liabilities/annualIncome) : 99;
+    const monthsEF = expenses>0 ? cash/expenses : 0;
+
+    // Retirement readiness
+    const investable = retire + broker + 0.25*cash;
+    const targetMultiple = targetRetMultipleByAge(age);
+    const targetAmount = (annualIncome>0 ? targetMultiple*annualIncome : Infinity);
+    const readiness = (annualIncome>0 && isFinite(targetAmount) && targetAmount>0) ? Math.min(1, investable/targetAmount) : 0;
+
+    // Base scores
+    const scoreSavingsRate = piecewise(savingsRate, [[0.00,0],[0.10,12],[0.20,20],[0.30,23],[0.40,25]]);
+    const scoreExpense     = piecewise(1-expenseRatio, [[0.00,0],[0.10,3],[0.20,6],[0.30,8],[0.40,10]]);
+    const scoreDTI         = piecewiseRev(dti, [[3.00,0],[2.00,4],[1.50,8],[1.00,11],[0.50,13],[0.25,15]]);
+    const scoreEF          = piecewise(monthsEF, [[0,0],[1,5],[3,11],[6,15]]);
+    const scoreRet         = readiness*35;
+
+    let total = scoreSavingsRate + scoreExpense + scoreDTI + scoreEF + scoreRet;
+    let notes = [];
+
+    // Extra penalties
+    if(dti>3){
+      const pen = Math.min(30, (dti-3)*6); // grows fast
+      total -= pen;
+      notes.push(`DTI extreme penalty −${pen.toFixed(0)}`);
+    }
+    if(netWorth < 0){
+      const penNW = annualIncome>0 ? Math.min(25, (-netWorth/annualIncome)*25) : 15;
+      total -= penNW;
+      notes.push(`Negative net worth penalty −${penNW.toFixed(0)}`);
+    }
+
+    // Hard caps (clamped ceilings)
+    let cap=null;
+    if(dti>10){ total = Math.min(total, 45); cap='Debt-to-income too high (>10×) — score capped.'; }
+    else if(dti>6){ total = Math.min(total, 60); cap='Debt-to-income very high (>6×) — score capped.'; }
+    if(annualIncome>0 && netWorth < -annualIncome){
+      total = Math.min(total, 62);
+      cap = (cap? cap+' ':'') + 'Net worth below −1× annual income — score capped.';
+    }
+
+    total = Math.max(0, Math.min(100, Math.round(total)));
+    const g = toLetter(total);
+    const delta = gradeDelta(total);
+
+    // Render
+    results.style.display='grid';
+    const letterEl = $('letter');
+    letterEl.textContent = (name? `${name}, `:'') + `Your grade: ${g.letter}`;
+    $('score').textContent = total;
+    $('deltaLine').textContent = `▲ ${delta.toNext} pts to rank up to ${g.next} • ▼ ${delta.toDown} pts from dropping to ${g.prev}`;
+    $('whyLine').textContent = `Net worth: $${fmt(netWorth)} • Savings rate: ${(savingsRate*100).toFixed(0)}% • EF: ${monthsEF.toFixed(1)} mo • DTI: ${dti.toFixed(2)}× • Retirement target: ${targetMultiple.toFixed(1)}× income`;
+
+    const parts = [
+      {key:'Savings rate', score:scoreSavingsRate, max:25},
+      {key:'Spending control', score:scoreExpense, max:10},
+      {key:'Debt vs income', score:scoreDTI, max:15},
+      {key:'Emergency fund', score:scoreEF, max:15},
+      {key:'Retirement readiness', score:scoreRet, max:35}
+    ];
+    const meters = $('meters'); meters.innerHTML='';
+    parts.forEach(p=>{
+      const pct = Math.max(0, Math.min(1, p.score/p.max));
+      const cls = pct>=0.66 ? 'pos' : pct>=0.33 ? 'mid' : 'neg';
+      const wrap = document.createElement('div'); wrap.className='meter';
+      wrap.innerHTML = `<h4>${p.key} <span class="muted tiny">(${Math.round(p.score)}/${p.max})</span></h4>
+                        <div class="bar ${cls}"><i style="width:${Math.max(4, Math.round(pct*100))}%;"></i></div>`;
+      meters.appendChild(wrap);
+    });
+
+    // Tips & explanations
+    const tips = buildTips({savingsRate, expenseRatio, dti, monthsEF, investable, targetAmount, annualIncome});
+    $('tipsList').innerHTML = tips.slice(0,5).map(t=>`<li>${t}</li>`).join('');
+    const explain = buildExplain({income, expenses, cash, liabilities, annualIncome, netWorth, dti, savingsRate, monthsEF, investable, targetMultiple});
+    if(cap) explain.unshift(cap);
+    if(notes.length) explain.unshift(...notes);
+    $('explainList').innerHTML = explain.map(t=>`<li>${t}</li>`).join('');
+
+    $('summary').textContent = `This score uses simple heuristics — directional, not prescriptive.`;
+    saveInputs();
+
+    $('shareBtn').onclick = () => {
+      const url = location.origin + location.pathname;
+      const text = `I got a ${g.letter} on Grade My Finance! (${total}/100)`;
+      const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+      window.open(shareUrl, '_blank');
+    };
+    $('saveImgBtn').onclick = async () => {
+      const node = $('results');
+      const canvas = await html2canvas(node, {backgroundColor: null, scale: 2});
+      const link = document.createElement('a');
+      link.download = `grade-my-finance-${g.letter}-${total}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    };
+
+    // Confetti if improved
+    const order = ['F','D','D+','C-','C','C+','B-','B','B+','A-','A','A+'];
+    const idx = order.indexOf(g.letter);
+    if(prevLetterIdx===null){ prevLetterIdx = idx; }
+    else if(idx > prevLetterIdx){ letterEl.classList.remove('pulse'); void letterEl.offsetWidth; letterEl.classList.add('pulse'); runConfetti(1200); prevLetterIdx = idx; } 
+    else { prevLetterIdx = idx; }
+
+    if(window.gtag){ window.gtag('event','grade_calculated',{ grade_letter:g.letter, score: total }); }
+  }
+
+  /* ---------- What-If Lab ---------- */
+  const expSlider=$('w_expFactor'), expLabel=$('w_expFactor_val');
+  expSlider.addEventListener('input', ()=> expLabel.textContent = Number(expSlider.value).toFixed(2));
+  $('w_run').onclick = ()=>{
+    const expF = Number(expSlider.value||'1');
+    const extraSave = Number($('w_extraSave').value||0);
+    const extraDebt = Number($('w_extraDebt').value||0);
+
+    const income = num('income'), expenses=num('expenses')*expF, cash=num('cash') + extraSave*12;
+    const age = num('age') || 30;
+    const retire = num('asset_retire'), broker = num('asset_broker'), home = num('asset_home'), car = num('asset_car');
+    let liabilities = ['debt_mortgage','debt_student','debt_auto','debt_cards','debt_other'].reduce((a,id)=>a+num(id),0);
+    liabilities = Math.max(0, liabilities - extraDebt*12);
+
+    const annualIncome = income*12;
+    const savings = Math.max(0, income - expenses);
+    const savingsRate = income>0 ? savings/income : 0;
+    const expenseRatio = income>0 ? expenses/income : 1;
+    const dti = annualIncome>0 ? (liabilities/annualIncome) : 99;
+    const monthsEF = expenses>0 ? cash/expenses : 0;
+    const investable = retire + broker + 0.25*cash;
+    const targetMultiple = targetRetMultipleByAge(age);
+    const targetAmount = (annualIncome>0 ? targetMultiple*annualIncome : Infinity);
+    const readiness = (annualIncome>0 && isFinite(targetAmount) && targetAmount>0) ? Math.min(1, investable/targetAmount) : 0;
+
+    const scoreSavingsRate = piecewise(savingsRate, [[0.00,0],[0.10,12],[0.20,20],[0.30,23],[0.40,25]]);
+    const scoreExpense     = piecewise(1-expenseRatio, [[0.00,0],[0.10,3],[0.20,6],[0.30,8],[0.40,10]]);
+    const scoreDTI         = piecewiseRev(dti, [[3.00,0],[2.00,4],[1.50,8],[1.00,11],[0.50,13],[0.25,15]]);
+    const scoreEF          = piecewise(monthsEF, [[0,0],[1,5],[3,11],[6,15]]);
+    const scoreRet         = readiness*35;
+    let total = Math.round(scoreSavingsRate+scoreExpense+scoreDTI+scoreEF+scoreRet);
+
+    // Apply same penalties/caps for preview
+    if(dti>3){ total -= Math.min(30, (dti-3)*6); }
+    if((retire+broker+cash*0.25) - liabilities + home + car - (liabilities) < 0){
+      total -= 10;
+    }
+    if(dti>10) total = Math.min(total, 45);
+    else if(dti>6) total = Math.min(total, 60);
+
+    const letter = toLetter(Math.max(0, Math.min(100, total))).letter;
+    $('w_result').textContent = `With those changes for 12 months: grade ≈ ${letter} (${Math.max(0, Math.min(100, total))}/100).`;
+  };
+
+  /* ---------- Tips / Explain ---------- */
   function buildTips({savingsRate, expenseRatio, dti, monthsEF, investable, targetAmount, annualIncome}){
     const t=[];
     if(monthsEF<3) t.push(`Build your emergency fund to 3+ months (you’re at ${monthsEF.toFixed(1)}). Auto-save $${Math.round(Math.max(100, (annualIncome/12)*0.05))}/mo.`);
     if(savingsRate<0.2) t.push(`Boost savings rate to 20%+. Cutting $${Math.round((annualIncome/12)*0.05)} in monthly spend will push you up a grade quickly.`);
-    if(expenseRatio>0.7) t.push(`Expenses are ${(expenseRatio*100).toFixed(0)}% of income. Aim ≤65% to free up more for investing.`);
+    if(expenseRatio>0.7) t.push(`Expenses are ${(expenseRatio*100).toFixed(0)}% of income. Aim ≤65% to free more for investing.`);
     if(dti>2) t.push(`Debt ≈ ${dti.toFixed(1)}× your annual income. Consider accelerating highest-interest balances or refinancing.`);
     if(isFinite(targetAmount) && targetAmount>0 && investable/targetAmount<1){
       const gap = Math.max(0, targetAmount - investable);
@@ -729,7 +767,8 @@
       `Spending control = 1 − (expenses ÷ income) = ${pct(keepPct)} kept after bills.`,
       `Debt-to-income = total debt ÷ annual income = $${fmt(liabilities)} ÷ $${fmt(annualIncome)} = ${dti.toFixed(2)}×.`,
       `Emergency fund months = cash ÷ monthly expenses = $${fmt(cash)} ÷ $${fmt(expenses)} = ${monthsEF.toFixed(1)} months.`,
-      `Retirement readiness = investable assets ÷ (target multiple × income). Investable = retirement + brokerage + 25% of cash. Target multiple by age ≈ ${targetMultiple.toFixed(1)}×.`
+      `Retirement readiness = investable assets ÷ (target multiple × income). Investable = retirement + brokerage + 25% of cash. Target multiple by age ≈ ${targetMultiple.toFixed(1)}×.`,
+      `Net worth = assets − liabilities = $${fmt(investable + (home||0) + (car||0) + (cash||0))} − $${fmt(liabilities)} = $${fmt(netWorth)}.`
     ];
   }
 
@@ -741,7 +780,7 @@
   }
 
   /* ---------- Confetti ---------- */
-  const confettiCanvas = $('confettiCanvas'); const ctx = confettiCanvas.getContext('2d');
+  const ctx2 = confettiCanvas.getContext('2d');
   let confettiParticles = [], confettiAnim;
   function runConfetti(durationMs=1200){
     resizeCanvas(); createConfetti(); confettiCanvas.style.display='block';
@@ -766,13 +805,13 @@
     }));
   }
   function drawConfetti(){
-    ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+    const c=ctx2; c.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
     confettiParticles.forEach(p=>{
-      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot*Math.PI/180);
-      ctx.fillStyle = p.color;
-      if(p.shape==='rect'){ ctx.fillRect(-p.r, -p.r/2, p.r*2, p.r); }
-      else{ ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); }
-      ctx.restore();
+      c.save(); c.translate(p.x, p.y); c.rotate(p.rot*Math.PI/180);
+      c.fillStyle = p.color;
+      if(p.shape==='rect'){ c.fillRect(-p.r, -p.r/2, p.r*2, p.r); }
+      else{ c.beginPath(); c.arc(0,0,p.r,0,Math.PI*2); c.fill(); }
+      c.restore();
       p.x += p.vx; p.y += p.vy; p.rot += p.vr;
     });
   }
@@ -780,4 +819,3 @@
 </script>
 </body>
 </html>
-
