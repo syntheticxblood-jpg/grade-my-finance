@@ -4,8 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
-<meta name="description" content="Friendly money grade with realistic retirement-readiness scoring.">
-
+<meta name="description" content="Friendly money grade with age-aware, realistic retirement readiness scoring.">
 <style>
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
@@ -25,9 +24,6 @@
     color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial
   }
   a{color:var(--accent)}
-  .wrap{max-width:1200px;margin:0 auto;padding:16px}
-
-  /* Header */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
   .logo{width:54px;height:54px}
@@ -37,7 +33,6 @@
   .pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
   .light .pill{background:#0f172a}
 
-  /* Shell: sidebar + main */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:220px 1fr;gap:16px;padding:16px}
   aside{position:sticky;top:78px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
@@ -45,7 +40,6 @@
   .tab:active{transform:scale(.98)}
   .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#062c1b}
 
-  /* Grade page layout */
   .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
   .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
@@ -56,7 +50,8 @@
   .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:800;cursor:pointer}
   .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b;text-shadow:0 1px 0 #ffffff80}
 
-  /* Result */
+  .page{display:none} .page.active{display:block}
+
   .resultTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .resultLeft{display:flex;align-items:center;gap:12px}
   .bigGrade{font-size:72px;font-weight:900;opacity:0;transform:scale(.7) rotate(-6deg)}
@@ -69,7 +64,6 @@
   .progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
   .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
 
-  /* Loading overlay */
   .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.35);z-index:80}
   .overlay.show{display:grid}
   .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
@@ -77,19 +71,12 @@
   .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#22d3ee 0 14px,#a78bfa 14px 28px);animation:slide .7s linear infinite}
   @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 
-  /* Toast */
-  .toast{
-    position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(120%);
-    background:var(--card);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;box-shadow:var(--shadow);
-    display:flex;gap:10px;align-items:center;z-index:90;transition:transform .28s ease;
-  }
+  .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(120%);background:var(--card);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;z-index:90;transition:transform .28s ease;}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .toast button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
 
-  /* Confetti canvas */
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:85}
 
-  /* Responsive */
   @media (max-width: 980px){
     .shell{grid-template-columns:1fr}
     aside{position:static}
@@ -98,10 +85,9 @@
 </style>
 </head>
 <body class="dark">
-  <!-- HEADER -->
   <header>
     <div class="hdr">
-      <!-- G + report-card logo -->
+      <!-- Logo -->
       <svg class="logo" viewBox="0 0 160 160" aria-label="Grade My Finance logo" role="img">
         <defs>
           <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#d1fae5"/></linearGradient>
@@ -122,11 +108,9 @@
     </div>
   </header>
 
-  <!-- CONFETTI -->
   <canvas id="confetti"></canvas>
 
   <div class="shell">
-    <!-- SIDEBAR -->
     <aside>
       <nav class="nav" id="sidebar">
         <button class="tab active" data-page="grade">🏠 Grade</button>
@@ -137,12 +121,11 @@
       </nav>
     </aside>
 
-    <!-- MAIN -->
     <main id="main">
-      <!-- Grade -->
+      <!-- Grade page -->
       <section id="page-grade" class="page active">
         <div class="grid">
-          <!-- Top row -->
+          <!-- Row 1 -->
           <div class="card" style="grid-column:span 4">
             <div class="section">Monthly Income (after-tax)</div>
             <label>What hits your bank each month</label>
@@ -154,12 +137,12 @@
             <input id="expenses" type="number" value="4000" min="0" />
           </div>
           <div class="card" style="grid-column:span 4">
-            <div class="section">Your FI target (at 6%)</div>
-            <div class="hint" id="targetHint">—</div>
-            <div class="hint">Based on annual spending ÷ 0.06.</div>
+            <div class="section">Age</div>
+            <label>Used for age-aware scoring</label>
+            <input id="age" type="number" value="30" min="16" max="100" />
           </div>
 
-          <!-- Assets / Liabilities -->
+          <!-- Row 2 -->
           <div class="card" style="grid-column:span 6">
             <div class="section">Assets 💰</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
@@ -188,7 +171,7 @@
             <div class="hint" id="liabHint">Total Liabilities: —</div>
           </div>
 
-          <!-- Results: full width (no more blank column) -->
+          <!-- Results full width -->
           <div class="card" style="grid-column:span 12">
             <div class="resultTitle">
               <div class="resultLeft">
@@ -270,14 +253,15 @@
   const SWR = 0.06;            // fixed 6%
   const EF_TARGET = 6;         // months
   const EQUITY_FACTOR = 0.40;  // 40% accessible equity
-  const NW_W=15, FI_W=55, SAVE_W=7, EF_W=10, NONMORT_W=8, LTV_W=5, INVEST_W=10;
+  const NW_W=15, FI_W=55, AGE_W=10, SAVE_W=6, EF_W=7, NONMORT_W=4, LTV_W=3; // tuned weights
 
-  /* theme + tabs */
+  /* theme */
   const modeBtn = $('#modeBtn');
   function setMode(light){ document.body.classList.toggle('light', light); modeBtn.textContent = light ? '🌞 Light' : '🌚 Dark'; }
   setMode(false);
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
+  /* tabs */
   const pages=['grade','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
@@ -288,7 +272,7 @@
   });
 
   /* inputs & totals */
-  const ids = ['income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr'];
+  const ids = ['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr'];
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
 
@@ -309,26 +293,47 @@
   }
   function updateHints(){
     const v = values();
-    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable now: ${money(v.investableCore)}; +surplus cash: ${money(v.cashSurplus)}; +accessible equity: ${money(v.accessibleEquity)})`;
+    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable: ${money(v.investableCore)} • surplus cash: ${money(v.cashSurplus)} • accessible equity: ${money(v.accessibleEquity)})`;
     $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
-    $('#targetHint').textContent = `FI target at 6%: ${v.targetFI?money(v.targetFI):'—'}`;
   }
   ids.forEach(id => els[id].addEventListener('input', updateHints));
   updateHints();
+
+  /* expected readiness by age (piecewise linear) */
+  function expectedReadiness(age){
+    const pts = [
+      [25,0.10],[30,0.20],[35,0.35],[40,0.50],
+      [45,0.65],[50,0.80],[55,0.95],[60,1.00]
+    ];
+    if(age<=pts[0][0]) return pts[0][1];
+    if(age>=pts[pts.length-1][0]) return pts[pts.length-1][1];
+    for(let i=1;i<pts.length;i++){
+      const [a0,r0]=pts[i-1], [a1,r1]=pts[i];
+      if(age<=a1){ const t=(age-a0)/(a1-a0); return r0+(r1-r0)*t; }
+    }
+    return 1;
+  }
 
   /* scoring */
   function scoreModel(v){
     const leftover = Math.max(0, v.income - v.expenses);
     const saveRate = v.income>0 ? leftover / v.income : 0;
     const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
-    const investShare = v.assets>0 ? v.investableCore / v.assets : 0;
 
-    const readiness = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
-    const sFI   = map01(readiness, 0, 1);
+    // FI readiness using investableTotal vs target
+    const r = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
+    const expR = expectedReadiness(val('age')||30);
+    const sFI   = map01(r/Math.max(0.05,expR), 0, 1);     // 1.0 = meeting age-based readiness
 
-    const nwMult = (v.targetFI>0) ? (v.net / v.targetFI) : (v.net>0 ? 1 : 0);
-    const sNW = map01(nwMult, 0, 1);
+    // Net worth sufficiency as backup (counts if house/cash dominate)
+    const sNW = map01((v.targetFI>0 ? v.net / v.targetFI : (v.net>0?1:0)), 0, 1);
 
+    // Age momentum: higher if you’re beating your age curve, lower if behind and older
+    const age = val('age')||30;
+    const ageGap = clamp((r - expR), -1, 1);               // negative = behind curve
+    const sAGE = map01( ageGap, -0.5, 0.2 );               // gentle encouragement
+
+    // Debt & buffers
     const nonMortDebt = v.student + v.auto + v.cc;
     const nonMortRatio = v.assets>0 ? nonMortDebt / v.assets : 0;
     const sNonMort = map01(1-nonMortRatio, 0, 1);
@@ -336,13 +341,14 @@
     const sLTV = map01(1-ltv, 0, 0.5);
     const sSave = map01(saveRate, 0, 0.5);
     const sEF   = map01(efMonths, 0, 6);
-    const sInv  = map01(investShare, 0.20, 0.60);
 
-    const score = FI_W*sFI + NW_W*sNW + SAVE_W*sSave + EF_W*sEF + NONMORT_W*sNonMort + LTV_W*sLTV + INVEST_W*sInv;
+    const score = FI_W*sFI + NW_W*sNW + AGE_W*sAGE + SAVE_W*sSave + EF_W*sEF + NONMORT_W*sNonMort + LTV_W*sLTV;
 
     return {
-      score:+score.toFixed(1), saveRate, efMonths, investShare, readiness, nwMult,
-      targetFI:v.targetFI, ltv, nonMortRatio, cashSurplus:v.cashSurplus, accessibleEquity:v.accessibleEquity, investableTotal:v.investableTotal, net:v.net, assets:v.assets, liabs:v.liabs
+      score:+score.toFixed(1),
+      saveRate, efMonths, readiness:r, expR,
+      ltv, nonMortRatio, net: v.net, assets: v.assets, liabs: v.liabs,
+      investableTotal:v.investableTotal, cashSurplus:v.cashSurplus, accessibleEquity:v.accessibleEquity
     };
   }
   function letter(score){
@@ -367,18 +373,19 @@
   function showOverlay(){ prog=0; $('#overlay').classList.add('show'); $('#barFill').style.width='0%'; $('#pct').textContent='0%';
     timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); $('#barFill').style.width=prog+'%'; $('#pct').textContent=Math.round(prog)+'%'; },200); }
   function hideOverlay(){ clearInterval(timer); $('#barFill').style.width='100%'; $('#pct').textContent='100%'; setTimeout(()=>$('#overlay').classList.remove('show'),250); }
-  function showToast(){ const t=$('#toast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 5500); }
+  const toast=$('#toast');
+  function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5500); }
   $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
 
   /* share link */
-  function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); s.__ver='v3'; return s; }
+  function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); s.__ver='age1'; return s; }
   function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
   (function hydrateFromHash(){
     const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
     try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); ids.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
   })();
 
-  /* confetti (simple canvas) */
+  /* confetti */
   const canvas = $('#confetti'); const ctx = canvas.getContext('2d'); let bits=[];
   function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   window.addEventListener('resize', resize); resize();
@@ -394,35 +401,32 @@
     }; anim();
   }
 
-  /* why + improve */
+  /* render panels */
   function renderWhy(v,s){
     $('#chips').innerHTML = [
-      `<span class="chip">FI readiness: <b>${(s.readiness*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">NW vs target: <b>${(s.nwMult*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Age curve met: <b>${(s.readiness/Math.max(.05,expectedReadiness(val('age')))*100).toFixed(0)}%</b></span>`,
       `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Emergency fund: <b>${s.efMonths.toFixed(1)} mo</b></span>`,
-      `<span class="chip">Invested share: <b>${(s.investShare*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Emergency fund: <b>${s.efMonths?.toFixed?.(1)??'0'} mo</b></span>`,
       `<span class="chip">Mortgage LTV: <b>${(s.ltv*100).toFixed(0)}%</b></span>`
     ].join('');
     const nonMortDebt = val('student')+val('auto')+val('cc');
     $('#whyList').innerHTML = [
-      `• FI target (6%): <b>${money(s.targetFI)}</b> based on ${money(val('expenses')*12)}/yr spending.`,
+      `• Age ${val('age')}: expected readiness ≈ <b>${(expectedReadiness(val('age'))*100).toFixed(0)}%</b>.`,
       `• We counted investable <b>${money(v.investableCore)}</b> + surplus cash <b>${money(s.cashSurplus)}</b> + 40% home equity <b>${money(s.accessibleEquity)}</b> = <b>${money(s.investableTotal)}</b>.`,
       `• Net worth: <b>${money(v.net)}</b> (assets ${money(v.assets)} – liabilities ${money(v.liabs)}).`,
       `• Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b> (~${money(Math.max(0, val('income')-val('expenses')))} /mo kept).`,
-      `• Emergency fund: <b>${s.efMonths.toFixed(1)} months</b>.`,
       `• Non-mortgage debt totals <b>${money(nonMortDebt)}</b>; mortgage LTV is <b>${(s.ltv*100).toFixed(0)}%</b>.`
     ].map(x=>`<div>${x}</div>`).join('');
   }
   function renderImprove(v,s){
     const ideas=[];
-    if(s.readiness < 1 && s.nwMult < 1) ideas.push(`Close the gap to FI: need ~<b>${money(s.targetFI - v.investableTotal)}</b> more investable (or reduce spending).`);
+    const expR = expectedReadiness(val('age'));
+    if(s.readiness < expR) ideas.push(`Catch up to your age curve: add ~<b>${money(Math.max(0, v.targetFI*expR - v.investableTotal))}</b> investable (or reduce spending).`);
     if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to <b>${EF_TARGET} months</b> (${money(v.expenses*EF_TARGET)}).`);
     if(s.saveRate < 0.2) ideas.push(`Aim for <b>20%+ savings</b> by auto-moving ~${money(Math.ceil(v.income*0.05))}/mo.`);
-    if(s.investShare < 0.35) ideas.push(`Increase invested share to <b>35–60%+</b> (401k/IRA/brokerage/HSA).`);
     if(s.ltv > 0.8) ideas.push(`High mortgage LTV (<b>${(s.ltv*100).toFixed(0)}%</b>): occasional principal prepayments help.`);
-    if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt (<b>${(s.nonMortRatio*100).toFixed(0)}%</b> of assets) — target <20%.`);
-    if(!ideas.length) ideas.push(`You’re cruising! Keep automating and review yearly. 🏆`);
+    if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
+    if(!ideas.length) ideas.push(`You’re ahead for your age — great job! 🎉 Keep the systems humming.`);
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
@@ -437,21 +441,16 @@
     bigGrade.style.color = ( {'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
     bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
     scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
-    nwLine.textContent = `Net worth: ${money(v.net)} • Assets: ${money(v.assets)} • Liabilities: ${money(v.liabs)}`;
+    nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
     progress.style.width = s.score + '%';
     renderWhy(v,s); renderImprove(v,s);
 
-    // confetti for B+ and above
     if(['A+','A','A-','B+'].includes(L)) popConfetti();
 
-    // share link
-    const url = buildShareURL();
-    navigator.clipboard.writeText(url).catch(()=>{});
-    showToast();
+    const url = buildShareURL(); navigator.clipboard.writeText(url).catch(()=>{}); showToast();
   }
 
   $('#gradeBtn').addEventListener('click', ()=>{
-    // simple loader
     let prog=0; const overlay=$('#overlay'); const bar=$('#barFill'); const pct=$('#pct');
     overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
     const t=setInterval(()=>{ prog=Math.min(97, prog+Math.random()*10+5); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },180);
@@ -461,7 +460,7 @@
   });
 
   $('#resetBtn').addEventListener('click', ()=>{
-    document.querySelectorAll('input[type="number"]').forEach(el => el.value=0);
+    document.querySelectorAll('input[type="number"]').forEach(el => el.value = (el.id==='age'?30:0));
     updateHints();
     bigGrade.textContent='—'; bigGrade.classList.remove('show');
     scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
@@ -471,4 +470,5 @@
 </script>
 </body>
 </html>
+
 
