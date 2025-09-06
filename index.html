@@ -5,142 +5,124 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
 <style>
-  /* THEME TOKENS */
+  /* ================= THEME ================= */
   :root{
-    --bg: #0f172a;          /* dark slate */
-    --panel:#0b1226;
-    --card:#0b1226;
-    --text:#e2e8f0;
-    --muted:#94a3b8;
-    --line:rgba(148,163,184,.22);
-    --accent:#22d3ee;       /* cyan */
-    --accent2:#a78bfa;      /* violet */
-    --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+    --bg:#0f172a; --panel:#0b1226; --card:#0b1226;
+    --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
+    --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
     --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
   }
   .light{
-    --bg:#f6f7fb;
+    --bg:#f5faf6;                      /* minty white */
     --panel:#ffffff;
     --card:#ffffff;
     --text:#0f172a;
-    --muted:#657084;
+    --muted:#4b5563;
     --line:rgba(15,23,42,.12);
-    --shadow:0 8px 28px rgba(15,23,42,.08);
+    --accent:#16a34a;                  /* money green */
+    --accent2:#34d399;
+    --shadow:0 10px 30px rgba(15,23,42,.08);
   }
-
   *{box-sizing:border-box}
   html,body{height:100%}
-  body{
-    margin:0; background:var(--bg); color:var(--text);
-    font-family: ui-sans-serif,system-ui,Inter,Segoe UI,Arial;
-    line-height:1.3;
-  }
-
-  /* BANNER LOGO */
-  .banner{
-    position:sticky; top:0; z-index:10;
-    background: linear-gradient(90deg, rgba(34,211,238,.18), rgba(167,139,250,.18));
-    border-bottom:1px solid var(--line);
-    backdrop-filter: blur(6px);
-  }
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Arial}
   .wrap{max-width:1100px;margin:0 auto;padding:14px 16px}
+
+  /* ================= BANNER / LOGO ================= */
+  .banner{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
   .logoWide{
-    width:100%;
-    height:96px;
-    border-radius:14px;
+    width:100%;height:106px;border-radius:14px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;
     background:
-      radial-gradient(600px 120px at 10% 0%, rgba(255,255,255,.25), transparent 60%),
+      radial-gradient(800px 140px at 10% 0%, rgba(255,255,255,.22), transparent 60%),
       linear-gradient(90deg, var(--accent), var(--accent2));
-    display:flex; align-items:center; justify-content:space-between;
-    padding:0 18px; color:#0b1226; box-shadow:var(--shadow);
+    color:#062c1b;box-shadow:var(--shadow)
   }
-  .logoWide h1{margin:0;font-size:30px;letter-spacing:.4px}
-  .tag{font-size:13px;opacity:.85}
-  .modeBtn{
-    border:none; cursor:pointer; font-weight:800; letter-spacing:.2px;
-    padding:10px 14px; border-radius:999px; background:#0b1226; color:#e2e8f0;
-  }
-  .light .modeBtn{background:#0f172a; color:#e2e8f0}
+  .logoLeft{display:flex;align-items:center;gap:14px}
+  .logoLeft svg{width:72px;height:72px;border-radius:14px; background:#ffffff22; padding:10px}
+  .logoTitle{margin:0; font-size:30px; letter-spacing:.4px}
+  .logoTag{margin-top:4px;font-size:13px;opacity:.9}
+  .modeBtn{border:none;cursor:pointer;font-weight:800;letter-spacing:.2px;padding:10px 14px;border-radius:999px;background:#0b1226;color:#e2e8f0}
+  .light .modeBtn{background:#0f172a}
 
-  /* LAYOUT */
-  .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:14px}
-  .card{
-    background:var(--card); border:1px solid var(--line);
-    border-radius:var(--radius); padding:16px; box-shadow:var(--shadow);
+  /* ================= LAYOUT / INPUTS ================= */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+  .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
+  label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+  input, select{
+    width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text);outline:none
   }
-  .section{font-size:14px; margin:0 0 8px 0; color:var(--muted); font-weight:800}
-  label{font-size:12px; color:var(--muted); display:block; margin-bottom:6px}
-  input{
-    width:100%; border:1px solid var(--line); border-radius:12px;
-    padding:12px; background:var(--panel); color:var(--text); outline:none;
-  }
-  input:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(34,211,238,.18)}
+  input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 30%, transparent)}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
 
-  .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
-  .btn{
-    padding:12px 16px; border-radius:12px; border:1px solid var(--line);
-    background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-    color:var(--text); font-weight:800; cursor:pointer;
-  }
+  .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+  .btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));color:var(--text);font-weight:800;cursor:pointer}
   .btn.primary{
-    background:linear-gradient(90deg, var(--accent), var(--accent2));
-    border-color:transparent; color:#0b1226; text-shadow:0 1px 0 rgba(255,255,255,.35);
+    background:linear-gradient(90deg, var(--accent), var(--accent2));border-color:transparent;color:#062c1b;text-shadow:0 1px 0 #ffffff80
   }
 
-  /* RESULT */
+  /* ================= RESULT ================= */
   .resultTitle{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-  .bigGrade{
-    font-size:64px; font-weight:900; line-height:1; letter-spacing:.5px;
-    opacity:0; transform:scale(.7) rotate(-8deg);
-  }
+  .bigGrade{font-size:64px;font-weight:900;line-height:1;letter-spacing:.5px;opacity:0;transform:scale(.7) rotate(-8deg)}
   .bigGrade.show{animation:pop .65s cubic-bezier(.2,.9,.2,1) forwards}
-  @keyframes pop{
-    0%{opacity:0; transform:scale(.7) rotate(-8deg)}
-    60%{opacity:1; transform:scale(1.08) rotate(2deg)}
-    100%{opacity:1; transform:scale(1) rotate(0)}
-  }
-  .scoreline{font-size:14px; color:var(--muted)}
-  .progress{height:10px;background:var(--panel);border:1px solid var(--line);
-    border-radius:999px; overflow:hidden}
-  .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-
+  @keyframes pop{0%{opacity:0;transform:scale(.7) rotate(-8deg)}60%{opacity:1;transform:scale(1.08) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+  .scoreline{font-size:14px;color:var(--muted)}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
   .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px}
-
+  .progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
   .note{border:1px dashed var(--line);border-radius:14px;padding:12px;background:rgba(255,255,255,.02)}
   .note h4{margin:0 0 6px 0}
 
-  /* OVERLAY LOADER */
+  /* ================= OVERLAY ================= */
   .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.35);z-index:60}
   .overlay.show{display:grid}
   .box{width:420px;max-width:86vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
   .bar{height:12px;border-radius:999px;background:var(--card);border:1px solid var(--line);overflow:hidden}
   .bar>div{height:100%;width:6%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .25s}
 
-  /* SMALL */
-  @media (max-width:980px){
-    .grid2{grid-template-columns:1fr}
-  }
+  /* ================= SMALL ================= */
+  @media (max-width:980px){.grid2{grid-template-columns:1fr}}
 </style>
 </head>
 <body class="dark">
-  <!-- Banner Logo -->
+  <!-- ================= BANNER ================= -->
   <div class="banner">
     <div class="wrap">
-      <div class="logoWide" role="img" aria-label="Grade My Finance banner">
-        <div>
-          <h1>🎯 Grade My Finance</h1>
-          <div class="tag">A playful snapshot of your money health — learn, level-up, repeat.</div>
+      <div class="logoWide">
+        <div class="logoLeft">
+          <!-- G + money/report-card mark -->
+          <svg viewBox="0 0 128 128" aria-hidden="true">
+            <defs>
+              <linearGradient id="grad" x1="0" x2="1">
+                <stop offset="0" stop-color="#fff"/>
+                <stop offset="1" stop-color="#d1fae5"/>
+              </linearGradient>
+            </defs>
+            <rect x="8" y="8" rx="18" ry="18" width="112" height="112" fill="url(#grad)"/>
+            <path d="M64 26c-21 0-38 17-38 38s17 38 38 38c15 0 27-7 33-19H76v-14h40c1 3 2 6 2 9 0 25-24 44-54 44S10 103 10 64 36 10 64 10c16 0 30 6 40 17l-12 11C86 31 75 26 64 26z" fill="#065f46" opacity=".25"/>
+            <path d="M86 40h20v30c0 2-1 3-3 3H83" fill="none" stroke="#10b981" stroke-width="6" stroke-linecap="round"/>
+            <text x="30" y="82" font-size="56" font-weight="900" fill="#065f46">G</text>
+            <text x="90" y="66" font-size="22" font-weight="900" fill="#16a34a">A+</text>
+          </svg>
+          <div>
+            <h1 class="logoTitle">Grade My Finance</h1>
+            <div class="logoTag">A playful snapshot of your money health — learn, level-up, repeat.</div>
+          </div>
         </div>
-        <button id="modeBtn" class="modeBtn" aria-label="Toggle light/dark">🌚 Dark</button>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button id="shareBtn" class="modeBtn" title="Copy shareable link">🔗 Share</button>
+          <button id="modeBtn" class="modeBtn" aria-label="Toggle light/dark">🌚 Dark</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="wrap" style="margin-top:18px">
     <div class="grid">
-      <!-- Inputs -->
+      <!-- TOP ROW -->
       <div class="card" style="grid-column:span 4">
         <div class="section">Monthly Income (after-tax)</div>
         <label>What hits your bank each month</label>
@@ -153,10 +135,11 @@
       </div>
       <div class="card" style="grid-column:span 4">
         <div class="section">Cash Savings</div>
-        <label>Checking + savings + HSA</label>
+        <label>Checking + savings (HSA now in Assets)</label>
         <input id="cash" type="number" value="25000" min="0" />
       </div>
 
+      <!-- ASSETS -->
       <div class="card" style="grid-column:span 6">
         <div class="section">Assets 💰</div>
         <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
@@ -164,31 +147,47 @@
           <div style="grid-column:span 6"><label>Retirement (401k/IRA)</label><input id="retire" type="number" value="72000" min="0"></div>
           <div style="grid-column:span 6"><label>Brokerage/Stocks</label><input id="brokerage" type="number" value="29000" min="0"></div>
           <div style="grid-column:span 6"><label>Car Value</label><input id="car" type="number" value="17000" min="0"></div>
+          <div style="grid-column:span 6"><label>HSA (now counted here)</label><input id="hsa" type="number" value="1500" min="0"></div>
         </div>
-        <div class="scoreline" id="assetsHint">Total Assets: —</div>
+        <div class="hint" id="assetsHint">Total Assets: —</div>
       </div>
 
+      <!-- LIABILITIES + APR -->
       <div class="card" style="grid-column:span 6">
-        <div class="section">Liabilities 🧾</div>
+        <div class="section">Liabilities 🧾 (+ APR)</div>
         <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
           <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="326000" min="0"></div>
+          <div style="grid-column:span 6"><label>Mortgage APR %</label><input id="mortgageApr" type="number" value="5.25" step="0.01" min="0"></div>
+
           <div style="grid-column:span 6"><label>Student Loans</label><input id="student" type="number" value="26000" min="0"></div>
+          <div style="grid-column:span 6"><label>Student APR %</label><input id="studentApr" type="number" value="4.9" step="0.01" min="0"></div>
+
           <div style="grid-column:span 6"><label>Auto Loans</label><input id="auto" type="number" value="13000" min="0"></div>
-          <div style="grid-column:span 6"><label>Credit Cards (balance)</label><input id="cc" type="number" value="2200" min="0"></div>
+          <div style="grid-column:span 6"><label>Auto APR %</label><input id="autoApr" type="number" value="3.5" step="0.01" min="0"></div>
+
+          <div style="grid-column:span 6"><label>Credit Cards (balance)</label><input id="cc" type="number" value="23" min="0"></div>
+          <div style="grid-column:span 6"><label>Credit Card APR %</label><input id="ccApr" type="number" value="24.99" step="0.01" min="0"></div>
         </div>
-        <div class="scoreline" id="liabHint">Total Liabilities: —</div>
+        <div class="hint" id="liabHint">Total Liabilities: —</div>
       </div>
 
+      <!-- ABOUT + PROFILES -->
       <div class="card" style="grid-column:span 8">
         <div class="section">About You</div>
         <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
-          <div style="grid-column:span 3"><label>Age</label><input id="age" type="number" value="29" min="16" max="100"></div>
-          <div style="grid-column:span 9"><label>Nickname (optional)</label><input id="nick" placeholder="e.g., Money Maverick 😎"></div>
+          <div style="grid-column:span 2"><label>Age</label><input id="age" type="number" value="29" min="16" max="100"></div>
+          <div style="grid-column:span 4"><label>Nickname (filtered)</label><input id="nick" placeholder="e.g., Money Maverick 😎"></div>
+          <div style="grid-column:span 3"><label>Profile name</label><input id="profileName" placeholder="e.g., Me"></div>
+          <div style="grid-column:span 3"><label>Saved profiles</label>
+            <select id="profileSelect"><option value="">— none —</option></select>
+          </div>
         </div>
       </div>
 
       <div class="card" style="grid-column:span 4;display:flex;align-items:end;justify-content:end">
         <div class="actions">
+          <button id="saveBtn" class="btn">Save</button>
+          <button id="loadBtn" class="btn">Load</button>
           <button id="resetBtn" class="btn">Reset</button>
           <button id="gradeBtn" class="btn primary">Grade Me 🎉</button>
         </div>
@@ -204,9 +203,7 @@
             <div class="chips" id="chips"></div>
           </div>
         </div>
-
         <div style="margin:14px 0 8px 0" class="progress"><div id="progressFill"></div></div>
-
         <div class="grid2">
           <div class="note">
             <h4>What went into your grade 🧠</h4>
@@ -231,83 +228,89 @@
     </div>
   </div>
 
+  <!-- CONFETTI Canvas -->
+  <canvas id="confetti" style="position:fixed;inset:0;pointer-events:none;z-index:70"></canvas>
+
 <script>
-/* ---------- Tiny helpers ---------- */
+/* ================ Helpers ================ */
 const $ = s => document.querySelector(s);
-const money  = n => isFinite(n) ? `$${Math.round(n).toLocaleString()}` : '—';
+const money = n => isFinite(n) ? `$${Math.round(n).toLocaleString()}` : '—';
 const pctStr = n => (n*100).toFixed(0)+'%';
-const clamp  = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const map01  = (x,a,b)=>clamp((x-a)/(b-a));
+const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const map01 = (x,a,b)=>clamp((x-a)/(b-a));
+const badWords = /(\b(fuck|shit|bitch|asshole|cunt|slut|whore|dick|pussy|retard|nigg|chink|spic)\b)/i;
 
-/* ---------- Theme toggle ---------- */
+/* ================ Theme ================ */
 const modeBtn = $('#modeBtn');
-const setMode = (light)=>{ document.body.classList.toggle('light', light); modeBtn.textContent = light ? '🌞 Light' : '🌚 Dark'; }
+const setMode = (light)=>{ document.body.classList.toggle('light', light); modeBtn.textContent = light ? '🌞 Light' : '🌚 Dark'; };
 let light = false; setMode(light);
-modeBtn.onclick = ()=>{ light = !light; setMode(light); };
+modeBtn.onclick = ()=>{ light=!light; setMode(light); localStorage.setItem('gmf_mode', light?'light':'dark'); };
+setMode(localStorage.getItem('gmf_mode')==='light');
 
-/* ---------- Read inputs + live totals ---------- */
-const ids = ['income','expenses','cash','home','retire','brokerage','car','mortgage','student','auto','cc','age'];
+/* ================ Inputs & live totals ================ */
+const ids = ['income','expenses','cash','home','retire','brokerage','car','hsa','mortgage','student','auto','cc','age','mortgageApr','studentApr','autoApr','ccApr'];
 const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
 Object.values(els).forEach(el=> el.addEventListener('input', updateHints));
 updateHints();
 
+function values(){
+  const v = Object.fromEntries(ids.map(id=>[id, Number(els[id].value||0)]));
+  v.assets = v.cash + v.home + v.retire + v.brokerage + v.car + v.hsa; // HSA now in assets
+  v.liabs  = v.mortgage + v.student + v.auto + v.cc;
+  v.net    = v.assets - v.liabs;
+  return v;
+}
 function updateHints(){
   const v = values();
   $('#assetsHint').textContent = `Total Assets: ${money(v.assets)}`;
   $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
 }
-function values(){
-  const v = Object.fromEntries(ids.map(id=>[id, Number(els[id].value||0)]));
-  v.assets = v.cash + v.home + v.retire + v.brokerage + v.car;
-  v.liabs  = v.mortgage + v.student + v.auto + v.cc;
-  v.net    = v.assets - v.liabs;
-  return v;
-}
 
-/* ---------- Scoring (0..100) ----------
-   Goals: sensible, forgiving, and FUN.
-   We cap/scale so extreme wealth scores well, and being lopsided shows up
-   in the explanations + improvement tips.
-
-   Weights:
-   - Net-worth strength vs income (log-ish) ............. 30
-   - Savings rate (monthly) ............................. 25
-   - Emergency fund months .............................. 15
-   - Leverage (Liabilities / Assets) .................... 15
-   - Credit cards vs income ............................. 5
-   - Invested share of assets ........................... 10
-------------------------------------------------------- */
+/* ================ Scoring ================
+   Friendlier calibration: a strong net worth at a young age won't be punished.
+   Weights (sum 100):
+   - Net-worth multiple vs income (0..3× = great) .......... 30
+   - Savings rate (monthly) ................................. 25
+   - Emergency fund months (0..6 mo target) ................. 15
+   - Non-mortgage debt ratio (inv) .......................... 15
+   - Mortgage LTV vs home (inv) ............................. 5
+   - Invested share of assets ............................... 10
+   Debt APRs are used for tips; not directly in score.
+*/
 function scoreModel(v){
   const incY = v.income*12 || 1;
   const leftover = Math.max(0, v.income - v.expenses);
-  const saveRate = v.income>0 ? leftover / v.income : 0;          // 0..1+
-  const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;        // months
-  const leverage = v.assets>0 ? v.liabs / v.assets : 1;           // lower better
-  const ccLoad   = v.income>0 ? v.cc / v.income : 1;              // lower better
-  const investable = v.retire + v.brokerage;
+  const saveRate = v.income>0 ? leftover / v.income : 0;
+  const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
+
+  const investable = v.retire + v.brokerage + v.hsa;
   const investShare = v.assets>0 ? investable / v.assets : 0;
 
-  // Net-worth strength relative to income (cap at 25x income; log-ish curve)
-  const nwMultiple = v.net / incY;              // how many years of income
-  const sNW   = map01(Math.log10(1 + Math.max(0, nwMultiple))*1.4, 0, Math.log10(1+25)*1.4);
+  const nwMultiple = v.net / incY;                                 // x income
+  const sNW   = map01(nwMultiple, 0, 3);                           // full credit by ~3x
 
-  const sSave = map01(saveRate, 0, 0.6);        // 0 → 60%+
-  const sEF   = map01(efMonths, 0, 12);         // 0 → 12+ months
-  const sLev  = map01(1-leverage, 0, 1);        // 1.0 when no debt
-  const sCC   = map01(1-ccLoad, 0, 1);
-  const sInv  = map01(investShare, 0.15, 0.6);  // 15% → 60%+ of assets invested
+  const sSave = map01(saveRate, 0, 0.5);                           // 50%+
+  const sEF   = map01(efMonths, 0, 6);                             // 6+ months
+
+  const nonMortDebt = v.student + v.auto + v.cc;
+  const nonMortRatio = v.assets>0 ? nonMortDebt / v.assets : 1;
+  const sNonMort = map01(1-nonMortRatio, 0, 1);                    // lower better
+
+  const ltv = v.home>0 ? v.mortgage / v.home : 1;                  // 0..1
+  const sLTV = map01(1-ltv, 0, 0.5);                               // ~50% LTV or better is great
+
+  const sInv  = map01(investShare, 0.20, 0.60);                    // 20–60%+ invested
 
   const score =
-      30*sNW + 25*sSave + 15*sEF + 15*sLev + 5*sCC + 10*sInv;
+      30*sNW + 25*sSave + 15*sEF + 15*sNonMort + 5*sLTV + 10*sInv;
 
   return {
     score: Number(score.toFixed(1)),
-    saveRate, efMonths, leverage, ccLoad, investShare,
-    nwMultiple
+    saveRate, efMonths, investShare, nwMultiple, ltv, nonMortRatio
   };
 }
 
-/* ---------- Letter grade ---------- */
+/* ================ Letter grade ================ */
 function letter(score){
   if(score>=97) return "A+";
   if(score>=93) return "A";
@@ -324,70 +327,86 @@ function letter(score){
   return "F";
 }
 function gradeColor(L){
-  const map = {
-    'A+':'var(--good)','A':'var(--good)','A-':'var(--good)',
-    'B+':'#86efac','B':'#86efac','B-':'#86efac',
-    'C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)',
-    'D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'
-  }; return map[L]||'var(--text)';
+  const map = {'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'}; 
+  return map[L] || 'var(--text)';
 }
 
-/* ---------- Loader (never stuck) ---------- */
+/* ================ Loader (never stuck) ================ */
 let barTimer=null;
-function showOverlay(){
-  const o=$('#overlay'); const bar=$('#barFill'); const pct=$('#pct');
-  o.classList.add('show'); let p=6; bar.style.width=p+'%'; pct.textContent='6%';
-  barTimer=setInterval(()=>{ p=Math.min(96, p+Math.random()*7); bar.style.width=p+'%'; pct.textContent=Math.round(p)+'%'; },220);
-}
-function hideOverlay(){
-  clearInterval(barTimer);
-  $('#barFill').style.width='100%'; $('#pct').textContent='100%';
-  setTimeout(()=>$('#overlay').classList.remove('show'),240);
-}
+function showOverlay(){const o=$('#overlay'),b=$('#barFill'),pct=$('#pct');o.classList.add('show');let p=6;b.style.width=p+'%';pct.textContent='6%';barTimer=setInterval(()=>{p=Math.min(96,p+Math.random()*7);b.style.width=p+'%';pct.textContent=Math.round(p)+'%';},220);}
+function hideOverlay(){clearInterval(barTimer);$('#barFill').style.width='100%';$('#pct').textContent='100%';setTimeout(()=>$('#overlay').classList.remove('show'),240);}
 
-/* ---------- Explain + Improve ---------- */
+/* ================ Why & Improve ================ */
 function renderWhy(v,s){
-  const chips = [];
+  const chips=[];
   chips.push(`<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`);
   chips.push(`<span class="chip">Emergency fund: <b>${s.efMonths.toFixed(1)} mo</b></span>`);
-  chips.push(`<span class="chip">Leverage: <b>${(s.leverage*100).toFixed(0)}% of assets</b></span>`);
-  chips.push(`<span class="chip">CC vs income: <b>${(s.ccLoad*100).toFixed(0)}%</b></span>`);
   chips.push(`<span class="chip">Invested share: <b>${(s.investShare*100).toFixed(0)}%</b></span>`);
-  chips.push(`<span class="chip">NW ≈ <b>${s.nwMultiple.toFixed(1)}x</b> yearly income</span>`);
+  chips.push(`<span class="chip">NW ≈ <b>${s.nwMultiple.toFixed(1)}×</b> yearly income</span>`);
+  chips.push(`<span class="chip">Mortgage LTV: <b>${(s.ltv*100).toFixed(0)}%</b></span>`);
+  chips.push(`<span class="chip">Non-mortgage debt: <b>${(s.nonMortRatio*100).toFixed(1)}%</b> of assets</span>`);
   $('#chips').innerHTML = chips.join('');
 
-  const bullets = [];
+  const bullets=[];
   bullets.push(`• Your net worth is <b>${money(v.net)}</b> (assets ${money(v.assets)} minus liabilities ${money(v.liabs)}).`);
-  bullets.push(`• Savings rate is <b>${(s.saveRate*100).toFixed(0)}%</b> — that’s about ${money(Math.max(0, v.income-v.expenses))}/mo kept.`);
-  bullets.push(`• You’ve got <b>${s.efMonths.toFixed(1)} months</b> of emergency cash.`);
-  bullets.push(`• Overall leverage is <b>${(s.leverage*100).toFixed(0)}%</b> of assets.`);
-  bullets.push(`• Invested share of assets is <b>${(s.investShare*100).toFixed(0)}%</b> (retirement + brokerage).`);
+  bullets.push(`• Savings rate is <b>${(s.saveRate*100).toFixed(0)}%</b> — ~${money(Math.max(0, v.income-v.expenses))}/mo kept.`);
+  bullets.push(`• Emergency cash covers <b>${s.efMonths.toFixed(1)} months</b> of expenses.`);
+  bullets.push(`• Invested share of assets is <b>${(s.investShare*100).toFixed(0)}%</b> (retirement + brokerage + HSA).`);
+  bullets.push(`• Mortgage LTV is <b>${(s.ltv*100).toFixed(0)}%</b>.`);
+  const nonMortDebt = v.student+v.auto+v.cc;
+  bullets.push(`• Non-mortgage debt totals <b>${money(nonMortDebt)}</b> (<b>${(s.nonMortRatio*100).toFixed(1)}%</b> of assets).`);
   $('#whyList').innerHTML = bullets.map(b=>`<div>${b}</div>`).join('');
 }
-
 function renderImprove(v,s){
   const ideas=[];
-  if(s.saveRate < 0.2) ideas.push(`Bump savings to <b>20%+</b> by trimming ${money(Math.ceil(v.income*0.05))}/mo and sending it to savings/investing.`);
-  if(s.efMonths < 3) ideas.push(`Build an emergency fund to <b>3–6 months</b> (${money(v.expenses*3)}–${money(v.expenses*6)}).`);
-  if(s.leverage > 0.5) ideas.push(`Pay down high-interest debts to lower leverage (<b>${(s.leverage*100).toFixed(0)}%</b> → target <b><50%</b>).`);
-  if(s.ccLoad > 0.2) ideas.push(`Drop credit card balance below <b>20% of monthly income</b> (now ${(s.ccLoad*100).toFixed(0)}%).`);
-  if(s.investShare < 0.35) ideas.push(`Increase invested share of assets to <b>35–60%+</b> over time (more into 401(k)/IRA/brokerage).`);
-  if(s.nwMultiple < 3 && v.age >= 25) ideas.push(`Aim for net worth ≈ <b>3–5× income</b> next, you’re at <b>${s.nwMultiple.toFixed(1)}×</b>.`);
-  if(!ideas.length) ideas.push(`You’re cruising! Keep automating contributions and reviewing yearly. 🎉`);
+  const debtCost = (v.mortgage*v.mortgageApr + v.student*v.studentApr + v.auto*v.autoApr + v.cc*v.ccApr)/100/12; // approx monthly interest
+  if(s.saveRate < 0.2) ideas.push(`Nudge savings to <b>20%+</b> by trimming ~${money(Math.ceil(v.income*0.05))}/mo and auto-transferring it.`);
+  if(s.efMonths < 3) ideas.push(`Build your emergency fund to <b>3–6 months</b> (${money(v.expenses*3)}–${money(v.expenses*6)}).`);
+  if(s.investShare < 0.35) ideas.push(`Raise invested share to <b>35–60%+</b> over time (401k/IRA/brokerage/HSA).`);
+  if(s.ltv > 0.8) ideas.push(`High mortgage LTV (<b>${(s.ltv*100).toFixed(0)}%</b>): consider extra principal payments when cash allows.`);
+  if(s.nonMortRatio > 0.2) ideas.push(`Tackle non-mortgage debt (now <b>${(s.nonMortRatio*100).toFixed(0)}%</b> of assets) — snowball/high-APR first.`);
+  if(debtCost > v.income*0.1) ideas.push(`Monthly interest drag ≈ <b>${money(debtCost)}</b>; refinance or pay down highest APR first.`);
+  if(!ideas.length) ideas.push(`You’re cruising! Automate contributions and review yearly. 🎉`);
   $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
 }
 
-/* ---------- Grade flow ---------- */
-const bigGrade = $('#bigGrade');
-const scoreLine= $('#scoreLine');
-const nwLine   = $('#nwLine');
-const progress = $('#progressFill');
+/* ================ Confetti ================ */
+const c = $('#confetti'), ctx = c.getContext('2d'); let confetti = [];
+function resize(){ c.width = innerWidth; c.height = innerHeight; }
+addEventListener('resize', resize); resize();
+function burst(){ // simple light confetti
+  const n=180; confetti=[];
+  for(let i=0;i<n;i++){
+    confetti.push({x:c.width/2,y:80, vx:(Math.random()-0.5)*8, vy:Math.random()*-6-2, r:3+Math.random()*4, a:1, spin:Math.random()*6, hue: Math.random()*360});
+  }
+  animate();
+}
+function animate(){
+  ctx.clearRect(0,0,c.width,c.height);
+  let alive=false;
+  for(const p of confetti){
+    p.vy+=0.15; p.x+=p.vx; p.y+=p.vy; p.a-=0.006; p.spin+=0.2;
+    if(p.a>0 && p.y<c.height+20){ alive=true; ctx.globalAlpha=Math.max(0,p.a); ctx.fillStyle=`hsl(${p.hue},90%,60%)`;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.spin/10);
+      ctx.fillRect(-p.r,-p.r,p.r*2,p.r*2); ctx.restore(); }
+  }
+  if(alive) requestAnimationFrame(animate); else ctx.clearRect(0,0,c.width,c.height);
+}
+
+/* ================ Grade flow + Share/Profile ================ */
+const bigGrade = $('#bigGrade'), scoreLine = $('#scoreLine'), nwLine = $('#nwLine'), progress = $('#progressFill');
+let lastLetter = localStorage.getItem('gmf_lastLetter') || '';
 
 $('#gradeBtn').onclick = async ()=>{
+  // filter names
+  const nick = $('#nick').value;
+  const pname= $('#profileName').value;
+  if(badWords.test(nick) || badWords.test(pname)){ alert('Please choose a different nickname/profile name.'); return; }
+
   bigGrade.classList.remove('show');
   showOverlay();
   try{
-    await new Promise(r=>setTimeout(r,650)); // polish delay
+    await new Promise(r=>setTimeout(r,650));
     const v = values();
     const s = scoreModel(v);
 
@@ -400,21 +419,72 @@ $('#gradeBtn').onclick = async ()=>{
     nwLine.textContent = `Net worth: ${money(v.net)} • Assets: ${money(v.assets)} • Liabilities: ${money(v.liabs)}`;
     progress.style.width = s.score+'%';
 
-    renderWhy(v,s);
-    renderImprove(v,s);
-  } finally {
-    hideOverlay();
-  }
+    renderWhy(v,s); renderImprove(v,s);
+
+    // confetti on improvement
+    if(rank(L) > rank(lastLetter)) { burst(); }
+    lastLetter = L; localStorage.setItem('gmf_lastLetter', L);
+  } finally { hideOverlay(); }
 };
 
+function rank(L){ const order = ['F','D-','D','D+','C-','C','C+','B-','B','B+','A-','A','A+']; return order.indexOf(L); }
+
+/* ======== Save/Load Profiles (localStorage) ======== */
+const saveBtn=$('#saveBtn'), loadBtn=$('#loadBtn'), select=$('#profileSelect');
+function loadDropdown(){
+  select.innerHTML = '<option value="">— none —</option>';
+  Object.keys(localStorage).filter(k=>k.startsWith('gmf_profile_')).forEach(k=>{
+    const name = k.replace('gmf_profile_','');
+    const o = document.createElement('option'); o.value=name; o.textContent=name; select.appendChild(o);
+  });
+}
+loadDropdown();
+
+saveBtn.onclick = ()=>{
+  const name = ($('#profileName').value||'').trim();
+  if(!name){ alert('Enter a profile name to save.'); return; }
+  if(badWords.test(name)){ alert('Please choose a different profile name.'); return; }
+  localStorage.setItem('gmf_profile_'+name, JSON.stringify(readState()));
+  loadDropdown(); alert('Saved!');
+};
+loadBtn.onclick = ()=>{
+  const name = select.value || ($('#profileName').value||'').trim();
+  if(!name){ alert('Pick a saved profile.'); return; }
+  const raw = localStorage.getItem('gmf_profile_'+name);
+  if(!raw){ alert('Profile not found.'); return; }
+  applyState(JSON.parse(raw)); updateHints();
+};
+function readState(){ const s={}; ids.forEach(id=>s[id]=els[id].value); s.nick=$('#nick').value; return s; }
+function applyState(s){ ids.forEach(id=>{ if(id in s) els[id].value=s[id]; }); if('nick' in s) $('#nick').value=s.nick; }
+
+/* ======== Shareable Link (URL encodes inputs) ======== */
+$('#shareBtn').onclick = ()=>{
+  const data = readState();
+  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  const url = location.origin + location.pathname + '#s=' + b64;
+  navigator.clipboard.writeText(url).then(()=>alert('Shareable link copied!'));
+};
+(function hydrateFromHash(){
+  const m = location.hash.match(/#s=([^&]+)/);
+  if(!m) return;
+  try{
+    const obj = JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+    applyState(obj); updateHints();
+  }catch(e){ console.warn('Bad share payload'); }
+})();
+
+/* ======== Reset ======== */
 $('#resetBtn').onclick = ()=>{
   document.querySelectorAll('input[type="number"]').forEach(el=>el.value=0);
-  els.age.value = 30;
-  updateHints();
+  els.age.value = 30; $('#nick').value=''; $('#profileName').value=''; updateHints();
   bigGrade.textContent='—'; bigGrade.classList.remove('show');
   scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
   progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
 };
+
+/* ======== Populate from query if present (for first load demo) ======== */
+if(!location.hash) { /* keep your default seed values */ }
 </script>
 </body>
 </html>
+
