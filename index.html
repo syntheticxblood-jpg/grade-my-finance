@@ -8,6 +8,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-H6223HYVS6');
+</script>
+
 <style>
   :root{
     --ink:#0b1220; --muted:#5b6473; --card:#ffffff; --card-2:#f8fafc;
@@ -47,21 +56,12 @@
     box-shadow: 0 10px 28px rgba(0,0,0,.10);
   }
   .hero-inner{display:flex; align-items:center; justify-content:space-between; gap:14px}
-  .title-wrap{display:flex; align-items:center; gap:12px}
-
-  /* NEW inline SVG logo */
-  .logo{width:48px; height:48px; flex:0 0 48px; filter: drop-shadow(0 6px 12px rgba(14,165,233,.35))}
-  .title{
-    line-height:1; margin:0;
-    font-family:"Baloo 2", cursive; font-weight:700;
-    font-size: clamp(30px, 5vw, 54px);
-    letter-spacing:.5px;
-    background:linear-gradient(90deg,#0ea5e9,#22c55e,#84cc16,#06b6d4,#22c55e);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-    animation: titlePop .8s ease-out;
+  .brand-wrap{display:flex; flex-direction:column; gap:6px; min-width:0; flex:1 1 auto;}
+  .brand-logo{
+    display:block; width:min(540px, 68vw); height:auto; max-height:64px; object-fit:contain;
+    filter: drop-shadow(0 6px 14px rgba(14,165,233,.30));
   }
-  @keyframes titlePop{0%{transform:translateY(6px);opacity:.0}60%{transform:translateY(-2px);opacity:1}100%{transform:translateY(0)}}
-  .subtitle{margin:4px 0 0; color:var(--muted); font-size:15px}
+  .subtitle{margin:0; color:var(--muted); font-size:15px}
   .hero-actions{display:flex; align-items:center; gap:10px}
   .toggle{
     display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px;
@@ -140,7 +140,7 @@
     box-shadow:0 18px 40px rgba(0,0,0,.35); text-align:center;
   }
   .reveal-title{font-weight:800; font-size:18px; margin:0 0 10px}
-  .reveal-bar{height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden}
+  .reveal-bar{height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden; margin:8px 0 6px}
   .reveal-bar > i{display:block; height:100%; width:0; background:linear-gradient(90deg,#0ea5e9,#22c55e); animation: fill 3s linear forwards}
   @keyframes fill{to{width:100%}}
   .reveal-grade{
@@ -149,6 +149,7 @@
     transition: all .5s cubic-bezier(.2,.8,.2,1);
   }
   .reveal-grade.show{opacity:1; transform: translateX(0)}
+
   /* Toast */
   .toast{
     position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
@@ -160,32 +161,12 @@
 </head>
 
 <body>
-  <!-- Header with inline SVG logo -->
+  <!-- Header with wide logo -->
   <section class="hero">
     <div class="hero-inner">
-      <div class="title-wrap">
-        <!-- Clean “G” logo with finance/report motifs -->
-        <svg class="logo" viewBox="0 0 64 64" aria-label="Grade My Finance logo" role="img">
-          <defs>
-            <linearGradient id="g1" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0" stop-color="#22c55e"/>
-              <stop offset="1" stop-color="#0ea5e9"/>
-            </linearGradient>
-          </defs>
-          <rect x="6" y="6" width="52" height="52" rx="12" fill="url(#g1)"/>
-          <!-- Letter G -->
-          <path d="M22 18h14a10 10 0 010 20H29" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <path d="M29 38h13" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-          <!-- coins -->
-          <circle cx="22" cy="46" r="3" fill="#fff" opacity=".9"/>
-          <circle cx="28" cy="46" r="3" fill="#fff" opacity=".7"/>
-          <!-- report tick -->
-          <path d="M42 24l4 4 6-8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div>
-          <h1 class="title">Grade My Finance</h1>
-          <p class="subtitle">A playful, educational snapshot of your money health — with tips to rank up.</p>
-        </div>
+      <div class="brand-wrap">
+        <img class="brand-logo" src="./logo-wordmark.png" alt="Grade My Finance" />
+        <p class="subtitle">A playful, educational snapshot of your money health — with tiers to rank up.</p>
       </div>
       <div class="hero-actions">
         <span id="streakBadge" class="streak" title="Visit streak">🔥 1-day streak</span>
@@ -342,7 +323,7 @@
   <div id="revealOverlay" class="reveal" aria-hidden="true">
     <div class="reveal-card">
       <p class="reveal-title">Crunching numbers…</p>
-      <div class="reveal-bar"><i></i></div>
+      <div class="reveal-bar"><i id="revealFill"></i></div>
       <div id="revealGrade" class="reveal-grade">A</div>
     </div>
   </div>
@@ -444,7 +425,7 @@
   /* ---------- Sharable link ---------- */
   function buildSharePayload(){
     const data={}; inputIds.forEach(id => data[id] = ($(id).value || ''));
-    const q = btoa(encodeURIComponent(JSON.stringify(data)));
+    const q = btoa(encodeURIComponent(JSON.stringify(data));
     return `${location.origin}${location.pathname}?q=${q}`;
   }
   $('copyLinkBtn').onclick = () => {
@@ -486,42 +467,61 @@
     return {clean: allGone ? 'Friend' : clean, filtered, replacedAll: allGone};
   }
 
-  /* ---------- Grade (with suspense reveal) ---------- */
-  const gradeBtn=$('gradeBtn'), resetBtn=$('resetBtn'), results=$('results');
-  const overlay=$('revealOverlay'), rGrade=$('revealGrade');
+  /* ---------- Suspense flow (robust) ---------- */
+  const overlay=$('revealOverlay'), rGrade=$('revealGrade'), rFill=$('revealFill');
+  let revealing = false;
+
+  async function gradeFlow(){
+    if(revealing) return; revealing=true;
+
+    // reset overlay visuals
+    rGrade.textContent = '';
+    rGrade.classList.remove('show');
+    rFill.style.animation = 'none'; // restart CSS animation reliably
+    // force reflow
+    void rFill.offsetWidth;
+    rFill.style.animation = null;
+
+    overlay.classList.add('show');
+
+    // wait for fill animation end (3s) – prevents “stuck” states
+    await new Promise(resolve=>{
+      const onEnd = ()=>{ rFill.removeEventListener('animationend', onEnd); resolve(); };
+      rFill.addEventListener('animationend', onEnd);
+    });
+
+    // sanitize nickname
+    const nickRaw = $('name').value.trim();
+    const {clean, filtered} = cleanNickname(nickRaw);
+    if(filtered) toast('Cleaned nickname for profanity');
+    $('name').value = clean;
+
+    // compute + render
+    const letter = computeAndRender();  // returns string grade like "C+"
+
+    // reveal grade
+    rGrade.textContent = letter;
+    requestAnimationFrame(()=> rGrade.classList.add('show'));
+
+    // small pause to show the grade, then close
+    await new Promise(r => setTimeout(r, 900));
+    overlay.classList.remove('show');
+    rGrade.classList.remove('show');
+    revealing=false;
+    // scroll to results
+    document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+  }
 
   document.addEventListener('keydown', e=>{ if(e.key==='Enter') gradeBtn.click(); });
+
+  const gradeBtn=$('gradeBtn'), resetBtn=$('resetBtn'), results=$('results');
+  gradeBtn.onclick = gradeFlow;
 
   resetBtn.onclick = () => { inputIds.forEach(id=>$(id).value=''); updateTotals(); results.style.display='none'; };
 
   $('clearDataBtn').onclick = () => {
     localStorage.removeItem('gmf_inputs'); inputIds.forEach(id=>$(id).value='');
     updateTotals(); results.style.display='none';
-  };
-
-  let prevBandIndex=null;
-
-  gradeBtn.onclick = () => {
-    // Suspense overlay
-    rGrade.textContent = '';
-    overlay.classList.add('show');
-
-    setTimeout(()=>{ // ~3 seconds suspense
-      // Sanitize nickname
-      let nick = $('name').value.trim();
-      const {clean, filtered} = cleanNickname(nick);
-      if(filtered) toast('Cleaned nickname for profanity');
-      $('name').value = clean;
-
-      // compute + render
-      computeAndRender();
-
-      // reveal animation
-      const letter = $('letter').textContent.replace(/^.*:\s*/,'');
-      rGrade.textContent = letter;
-      requestAnimationFrame(()=> rGrade.classList.add('show'));
-      setTimeout(()=>{ overlay.classList.remove('show'); rGrade.classList.remove('show'); }, 900);
-    }, 3000);
   };
 
   /* ---------- Scoring helpers ---------- */
@@ -569,7 +569,7 @@
     ];
     const cur = bands.find(b=>score>=b.min);
     const idx = bands.indexOf(cur);
-    return {letter:cur.label, next: idx>0?bands[idx-1].label:cur.label, prev: idx<bands.length-1?bands[idx+1].label:cur.label};
+    return {letter:cur.label, index:idx};
   }
   function gradeDelta(score){
     const T = [97,93,90,87,83,80,77,73,70,67,60,0];
@@ -580,7 +580,7 @@
   }
 
   /* ---------- Main compute ---------- */
-  const confettiCanvas = $('confettiCanvas'); const ctx = confettiCanvas.getContext('2d');
+  const confettiCanvas = $('confettiCanvas'); const ctx2 = confettiCanvas.getContext('2d');
   let prevLetterIdx = null;
 
   function computeAndRender(){
@@ -641,11 +641,12 @@
     const delta = gradeDelta(total);
 
     // Render
+    const results=$('results');
     results.style.display='grid';
     const letterEl = $('letter');
     letterEl.textContent = (name? `${name}, `:'') + `Your grade: ${g.letter}`;
     $('score').textContent = total;
-    $('deltaLine').textContent = `▲ ${delta.toNext} pts to rank up to ${g.next} • ▼ ${delta.toDown} pts from dropping to ${g.prev}`;
+    $('deltaLine').textContent = `▲ ${delta.toNext} pts to rank up • ▼ ${delta.toDown} pts to drop`;
     $('whyLine').textContent = `Net worth: $${fmt(netWorth)} • Savings rate: ${(savingsRate*100).toFixed(0)}% • EF: ${monthsEF.toFixed(1)} mo • DTI: ${dti.toFixed(2)}× • Retirement target: ${targetMultiple.toFixed(1)}× income`;
 
     const parts = [
@@ -693,12 +694,14 @@
 
     // Confetti if improved
     const order = ['F','D','D+','C-','C','C+','B-','B','B+','A-','A','A+'];
-    const idx = order.indexOf(g.letter);
+    const idx = g.index;
     if(prevLetterIdx===null){ prevLetterIdx = idx; }
     else if(idx > prevLetterIdx){ letterEl.classList.remove('pulse'); void letterEl.offsetWidth; letterEl.classList.add('pulse'); runConfetti(1200); prevLetterIdx = idx; } 
     else { prevLetterIdx = idx; }
 
     if(window.gtag){ window.gtag('event','grade_calculated',{ grade_letter:g.letter, score: total }); }
+
+    return g.letter; // for reveal overlay
   }
 
   /* ---------- What-If Lab ---------- */
@@ -723,8 +726,7 @@
     const monthsEF = expenses>0 ? cash/expenses : 0;
     const investable = retire + broker + 0.25*cash;
     const targetMultiple = targetRetMultipleByAge(age);
-    const targetAmount = (annualIncome>0 ? targetMultiple*annualIncome : Infinity);
-    const readiness = (annualIncome>0 && isFinite(targetAmount) && targetAmount>0) ? Math.min(1, investable/targetAmount) : 0;
+    const readiness = (annualIncome>0 && isFinite(income) && targetMultiple>0) ? Math.min(1, investable/(targetMultiple*annualIncome)) : 0;
 
     const scoreSavingsRate = piecewise(savingsRate, [[0.00,0],[0.10,12],[0.20,20],[0.30,23],[0.40,25]]);
     const scoreExpense     = piecewise(1-expenseRatio, [[0.00,0],[0.10,3],[0.20,6],[0.30,8],[0.40,10]]);
@@ -733,11 +735,7 @@
     const scoreRet         = readiness*35;
     let total = Math.round(scoreSavingsRate+scoreExpense+scoreDTI+scoreEF+scoreRet);
 
-    // Apply same penalties/caps for preview
     if(dti>3){ total -= Math.min(30, (dti-3)*6); }
-    if((retire+broker+cash*0.25) - liabilities + home + car - (liabilities) < 0){
-      total -= 10;
-    }
     if(dti>10) total = Math.min(total, 45);
     else if(dti>6) total = Math.min(total, 60);
 
@@ -780,39 +778,32 @@
   }
 
   /* ---------- Confetti ---------- */
-  const ctx2 = confettiCanvas.getContext('2d');
-  let confettiParticles = [], confettiAnim;
   function runConfetti(durationMs=1200){
-    resizeCanvas(); createConfetti(); confettiCanvas.style.display='block';
-    const start = performance.now(); cancelAnimationFrame(confettiAnim);
-    (function frame(t){
-      const elapsed = t - start; drawConfetti();
-      if(elapsed < durationMs){ confettiAnim = requestAnimationFrame(frame); }
-      else { confettiCanvas.style.display='none'; confettiParticles = []; cancelAnimationFrame(confettiAnim); }
-    })(start);
-  }
-  function resizeCanvas(){ confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
-  window.addEventListener('resize', resizeCanvas);
-  function createConfetti(){
+    const c=confettiCanvas; const ctx=ctx2;
+    function resize(){ c.width=window.innerWidth; c.height=window.innerHeight; }
+    resize(); window.addEventListener('resize', resize);
     const colors = ['#22c55e','#0ea5e9','#84cc16','#06b6d4','#f59e0b','#ef4444'];
     const N = Math.min(220, Math.floor(window.innerWidth/6));
-    confettiParticles = Array.from({length:N}, ()=>({
-      x: Math.random()*confettiCanvas.width, y: -20 - Math.random()*80,
-      r: 4 + Math.random()*6, color: colors[Math.floor(Math.random()*colors.length)],
+    const parts = Array.from({length:N}, ()=>({
+      x: Math.random()*c.width, y: -20 - Math.random()*80, r: 4 + Math.random()*6,
+      color: colors[Math.floor(Math.random()*colors.length)],
       vy: 3 + Math.random()*3, vx: -2 + Math.random()*4,
       rot: Math.random()*360, vr: -6 + Math.random()*12,
       shape: Math.random()<0.5 ? 'rect' : 'circle'
     }));
-  }
-  function drawConfetti(){
-    const c=ctx2; c.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
-    confettiParticles.forEach(p=>{
-      c.save(); c.translate(p.x, p.y); c.rotate(p.rot*Math.PI/180);
-      c.fillStyle = p.color;
-      if(p.shape==='rect'){ c.fillRect(-p.r, -p.r/2, p.r*2, p.r); }
-      else{ c.beginPath(); c.arc(0,0,p.r,0,Math.PI*2); c.fill(); }
-      c.restore();
-      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+    c.style.display='block';
+    const start = performance.now();
+    requestAnimationFrame(function frame(t){
+      const elapsed = t - start; ctx.clearRect(0,0,c.width,c.height);
+      parts.forEach(p=>{
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+        ctx.fillStyle=p.color;
+        if(p.shape==='rect'){ ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r); }
+        else{ ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); }
+        ctx.restore(); p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+      });
+      if(elapsed<durationMs) requestAnimationFrame(frame);
+      else { c.style.display='none'; }
     });
   }
 })();
