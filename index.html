@@ -2,379 +2,312 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
 <style>
+  /* THEME TOKENS */
   :root{
-    --bg:#0f172a;        /* slate-900 */
-    --card:#0b1226;      /* slightly darker card */
-    --muted:#94a3b8;     /* slate-400 */
-    --text:#e2e8f0;      /* slate-200 */
-    --accent:#22d3ee;    /* cyan-400 */
-    --accent2:#a78bfa;   /* violet-400 */
-    --good:#22c55e;
-    --warn:#f59e0b;
-    --bad:#ef4444;
-    --shadow: 0 8px 30px rgba(0,0,0,.35);
-    --radius: 16px;
+    --bg: #0f172a;          /* dark slate */
+    --panel:#0b1226;
+    --card:#0b1226;
+    --text:#e2e8f0;
+    --muted:#94a3b8;
+    --line:rgba(148,163,184,.22);
+    --accent:#22d3ee;       /* cyan */
+    --accent2:#a78bfa;      /* violet */
+    --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+    --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  .light{
+    --bg:#f6f7fb;
+    --panel:#ffffff;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#657084;
+    --line:rgba(15,23,42,.12);
+    --shadow:0 8px 28px rgba(15,23,42,.08);
   }
 
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
-    margin:0;
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
-    background: radial-gradient(1200px 600px at 20% -10%, rgba(34,211,238,.15), transparent 60%),
-                radial-gradient(1000px 800px at 120% 10%, rgba(167,139,250,.12), transparent 60%),
-                var(--bg);
-    color:var(--text);
+    margin:0; background:var(--bg); color:var(--text);
+    font-family: ui-sans-serif,system-ui,Inter,Segoe UI,Arial;
+    line-height:1.3;
   }
 
-  /* Header / Logo */
-  .topbar{
+  /* BANNER LOGO */
+  .banner{
     position:sticky; top:0; z-index:10;
-    backdrop-filter: blur(8px);
-    background: rgba(11,18,38,.7);
-    border-bottom:1px solid rgba(148,163,184,.15);
+    background: linear-gradient(90deg, rgba(34,211,238,.18), rgba(167,139,250,.18));
+    border-bottom:1px solid var(--line);
+    backdrop-filter: blur(6px);
   }
-  .wrap{max-width:1100px; margin:0 auto; padding:16px;}
-  .brand{
-    display:flex; align-items:center; gap:14px;
+  .wrap{max-width:1100px;margin:0 auto;padding:14px 16px}
+  .logoWide{
+    width:100%;
+    height:96px;
+    border-radius:14px;
+    background:
+      radial-gradient(600px 120px at 10% 0%, rgba(255,255,255,.25), transparent 60%),
+      linear-gradient(90deg, var(--accent), var(--accent2));
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 18px; color:#0b1226; box-shadow:var(--shadow);
   }
-  .brand h1{margin:0; font-size:20px; font-weight:700; letter-spacing: .3px;}
-  .logo{
-    display:block; width:190px; height:auto;
+  .logoWide h1{margin:0;font-size:30px;letter-spacing:.4px}
+  .tag{font-size:13px;opacity:.85}
+  .modeBtn{
+    border:none; cursor:pointer; font-weight:800; letter-spacing:.2px;
+    padding:10px 14px; border-radius:999px; background:#0b1226; color:#e2e8f0;
   }
+  .light .modeBtn{background:#0f172a; color:#e2e8f0}
 
-  /* Layout */
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap:14px;
-  }
+  /* LAYOUT */
+  .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:14px}
   .card{
-    background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-    border:1px solid rgba(148,163,184,.12);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding:16px;
+    background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius); padding:16px; box-shadow:var(--shadow);
   }
-  .section-title{
-    margin:0 0 8px 0; font-size:14px; color:var(--muted); font-weight:700; letter-spacing:.3px;
-    display:flex; align-items:center; gap:6px;
-  }
+  .section{font-size:14px; margin:0 0 8px 0; color:var(--muted); font-weight:800}
   label{font-size:12px; color:var(--muted); display:block; margin-bottom:6px}
   input{
-    width:100%;
-    background:#0a1021;
-    color:var(--text);
-    border:1px solid rgba(148,163,184,.2);
-    border-radius:12px;
-    padding:12px 12px;
-    outline:none;
-    transition:border .15s ease, box-shadow .15s ease;
+    width:100%; border:1px solid var(--line); border-radius:12px;
+    padding:12px; background:var(--panel); color:var(--text); outline:none;
   }
   input:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(34,211,238,.18)}
 
-  .hint{font-size:11px; color:var(--muted); margin-top:6px}
-
-  /* Buttons */
-  .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+  .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
   .btn{
-    border:1px solid rgba(148,163,184,.2);
-    background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-    color:var(--text);
-    padding:12px 16px;
-    border-radius:12px;
-    cursor:pointer; font-weight:700; letter-spacing:.3px;
+    padding:12px 16px; border-radius:12px; border:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+    color:var(--text); font-weight:800; cursor:pointer;
   }
-  .btn:hover{border-color:rgba(148,163,184,.35)}
-  .btn.accent{
-    border-color:transparent;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    color:#0b1226;
-    text-shadow:0 1px 0 rgba(255,255,255,.3);
+  .btn.primary{
+    background:linear-gradient(90deg, var(--accent), var(--accent2));
+    border-color:transparent; color:#0b1226; text-shadow:0 1px 0 rgba(255,255,255,.35);
   }
-  .btn.ghost{background:transparent}
-  .right{justify-self:end}
 
-  /* Result area */
-  .result{
-    grid-column: span 12;
-    background: linear-gradient(180deg, rgba(34,197,94,.1), rgba(34,197,94,.05));
-  }
-  .grade-wrap{
-    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
-  }
-  .big-grade{
+  /* RESULT */
+  .resultTitle{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .bigGrade{
     font-size:64px; font-weight:900; line-height:1; letter-spacing:.5px;
-    display:inline-block;
-    transform-origin: 50% 50%;
-    opacity:0; transform: scale(.6) rotate(-8deg);
+    opacity:0; transform:scale(.7) rotate(-8deg);
   }
-  .big-grade.show{
-    animation: popIn .65s cubic-bezier(.2, .9, .2, 1) forwards;
+  .bigGrade.show{animation:pop .65s cubic-bezier(.2,.9,.2,1) forwards}
+  @keyframes pop{
+    0%{opacity:0; transform:scale(.7) rotate(-8deg)}
+    60%{opacity:1; transform:scale(1.08) rotate(2deg)}
+    100%{opacity:1; transform:scale(1) rotate(0)}
   }
-  @keyframes popIn{
-    0%   {opacity:0; transform: scale(.6) rotate(-8deg)}
-    60%  {opacity:1; transform: scale(1.08) rotate(2deg)}
-    100% {opacity:1; transform: scale(1) rotate(0)}
-  }
-  .scoreline{font-size:14px; color:var(--muted); margin-top:4px}
+  .scoreline{font-size:14px; color:var(--muted)}
+  .progress{height:10px;background:var(--panel);border:1px solid var(--line);
+    border-radius:999px; overflow:hidden}
+  .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
 
-  /* Tiers */
-  .tier{
-    font-size:13px; font-weight:800; padding:8px 12px; border-radius:999px;
-    background:linear-gradient(90deg, rgba(255,255,255,.1), rgba(255,255,255,.04));
-    border:1px solid rgba(148,163,184,.2);
-  }
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px}
 
-  .progress{
-    height:10px; background:#0b1226; border-radius:999px; overflow:hidden; border:1px solid rgba(148,163,184,.2)
-  }
-  .progress > div{
-    height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent2));
-  }
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+  .note{border:1px dashed var(--line);border-radius:14px;padding:12px;background:rgba(255,255,255,.02)}
+  .note h4{margin:0 0 6px 0}
 
-  .kpis{display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin-top:12px}
-  .kpi{padding:12px; border:1px solid rgba(148,163,184,.15); border-radius:14px; background:rgba(255,255,255,.02)}
-  .kpi b{font-size:18px}
-  .kpi small{color:var(--muted)}
-
-  /* Loading overlay */
-  .overlay{
-    position:fixed; inset:0; display:none; place-items:center;
-    background: rgba(0,0,0,.35);
-    z-index:50;
-  }
+  /* OVERLAY LOADER */
+  .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.35);z-index:60}
   .overlay.show{display:grid}
-  .loader{
-    width:420px; max-width:86vw; background:#0b1226; border:1px solid rgba(148,163,184,.25);
-    border-radius:18px; padding:20px; box-shadow:var(--shadow);
-  }
-  .bar{height:12px; border-radius:999px; background:#0a1021; overflow:hidden; border:1px solid rgba(148,163,184,.25)}
-  .bar > div{height:100%; width:6%; background:linear-gradient(90deg, var(--accent), var(--accent2)); transition:width .25s ease}
+  .box{width:420px;max-width:86vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+  .bar{height:12px;border-radius:999px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+  .bar>div{height:100%;width:6%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .25s}
 
-  /* Responsive */
-  @media (max-width: 980px){
-    .kpis{grid-template-columns: repeat(2,1fr)}
+  /* SMALL */
+  @media (max-width:980px){
+    .grid2{grid-template-columns:1fr}
   }
 </style>
 </head>
-<body>
-  <!-- Top Bar with built-in SVG logo -->
-  <div class="topbar">
-    <div class="wrap brand">
-      <!-- Inline SVG Logo (replace later if you have a file; this one renders everywhere) -->
-      <svg class="logo" viewBox="0 0 720 120" aria-label="Grade My Finance Logo" role="img">
-        <defs>
-          <linearGradient id="g" x1="0" x2="1">
-            <stop offset="0" stop-color="#22d3ee"/>
-            <stop offset="1" stop-color="#a78bfa"/>
-          </linearGradient>
-          <filter id="blur" x="-10%" y="-10%" width="120%" height="120%">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="0.6"/>
-          </filter>
-        </defs>
-        <rect x="0" y="0" width="720" height="120" rx="18" ry="18" fill="url(#g)" opacity=".12" />
-        <text x="24" y="78" font-size="52" font-weight="900" fill="url(#g)" filter="url(#blur)">Grade My Finance</text>
-        <text x="26" y="108" font-size="16" fill="#94a3b8">A playful snapshot of your money health — with tiers to rank up.</text>
-      </svg>
-      <h1></h1>
+<body class="dark">
+  <!-- Banner Logo -->
+  <div class="banner">
+    <div class="wrap">
+      <div class="logoWide" role="img" aria-label="Grade My Finance banner">
+        <div>
+          <h1>🎯 Grade My Finance</h1>
+          <div class="tag">A playful snapshot of your money health — learn, level-up, repeat.</div>
+        </div>
+        <button id="modeBtn" class="modeBtn" aria-label="Toggle light/dark">🌚 Dark</button>
+      </div>
     </div>
   </div>
 
   <div class="wrap" style="margin-top:18px">
     <div class="grid">
-      <!-- Income / Expenses / Savings -->
-      <div class="card" style="grid-column: span 4">
-        <h3 class="section-title">Monthly Income (after-tax)</h3>
-        <label for="income">What hits your bank each month</label>
-        <input id="income" type="number" inputmode="decimal" value="7500" min="0" />
+      <!-- Inputs -->
+      <div class="card" style="grid-column:span 4">
+        <div class="section">Monthly Income (after-tax)</div>
+        <label>What hits your bank each month</label>
+        <input id="income" type="number" value="7500" min="0" />
+      </div>
+      <div class="card" style="grid-column:span 4">
+        <div class="section">Monthly Expenses</div>
+        <label>All bills + spending</label>
+        <input id="expenses" type="number" value="4000" min="0" />
+      </div>
+      <div class="card" style="grid-column:span 4">
+        <div class="section">Cash Savings</div>
+        <label>Checking + savings + HSA</label>
+        <input id="cash" type="number" value="25000" min="0" />
       </div>
 
-      <div class="card" style="grid-column: span 4">
-        <h3 class="section-title">Monthly Expenses</h3>
-        <label for="expenses">All bills + spending</label>
-        <input id="expenses" type="number" inputmode="decimal" value="4000" min="0" />
-      </div>
-
-      <div class="card" style="grid-column: span 4">
-        <h3 class="section-title">Cash Savings</h3>
-        <label for="cash">Checking + savings + HSA (counted in assets)</label>
-        <input id="cash" type="number" inputmode="decimal" value="25000" min="0" />
-      </div>
-
-      <!-- Assets -->
-      <div class="card" style="grid-column: span 6">
-        <h3 class="section-title">Assets 💰</h3>
-        <div class="grid">
-          <div style="grid-column: span 6">
-            <label>Home Value</label><input id="home" type="number" value="450000" min="0"/>
-          </div>
-          <div style="grid-column: span 6">
-            <label>Retirement (401k/IRA)</label><input id="retire" type="number" value="72000" min="0"/>
-          </div>
-          <div style="grid-column: span 6">
-            <label>Brokerage/Stocks</label><input id="brokerage" type="number" value="29000" min="0"/>
-          </div>
-          <div style="grid-column: span 6">
-            <label>Car Value</label><input id="car" type="number" value="17000" min="0"/>
-          </div>
+      <div class="card" style="grid-column:span 6">
+        <div class="section">Assets 💰</div>
+        <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
+          <div style="grid-column:span 6"><label>Home Value</label><input id="home" type="number" value="450000" min="0"></div>
+          <div style="grid-column:span 6"><label>Retirement (401k/IRA)</label><input id="retire" type="number" value="72000" min="0"></div>
+          <div style="grid-column:span 6"><label>Brokerage/Stocks</label><input id="brokerage" type="number" value="29000" min="0"></div>
+          <div style="grid-column:span 6"><label>Car Value</label><input id="car" type="number" value="17000" min="0"></div>
         </div>
-        <div class="hint" id="assetsHint">Total Assets: $0</div>
+        <div class="scoreline" id="assetsHint">Total Assets: —</div>
       </div>
 
-      <!-- Liabilities -->
-      <div class="card" style="grid-column: span 6">
-        <h3 class="section-title">Liabilities 🧾</h3>
-        <div class="grid">
-          <div style="grid-column: span 6">
-            <label>Mortgage Balance</label><input id="mortgage" type="number" value="326000" min="0"/>
-          </div>
-          <div style="grid-column: span 6">
-            <label>Student Loans</label><input id="student" type="number" value="26000" min="0"/>
-          </div>
-          <div style="grid-column: span 6">
-            <label>Auto Loans</label><input id="auto" type="number" value="13000" min="0"/>
-          </div>
-          <div style="grid-column: span 6">
-            <label>Credit Cards (total balance)</label><input id="cc" type="number" value="2200" min="0"/>
-          </div>
+      <div class="card" style="grid-column:span 6">
+        <div class="section">Liabilities 🧾</div>
+        <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
+          <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="326000" min="0"></div>
+          <div style="grid-column:span 6"><label>Student Loans</label><input id="student" type="number" value="26000" min="0"></div>
+          <div style="grid-column:span 6"><label>Auto Loans</label><input id="auto" type="number" value="13000" min="0"></div>
+          <div style="grid-column:span 6"><label>Credit Cards (balance)</label><input id="cc" type="number" value="2200" min="0"></div>
         </div>
-        <div class="hint" id="liabHint">Total Liabilities: $0</div>
+        <div class="scoreline" id="liabHint">Total Liabilities: —</div>
       </div>
 
-      <!-- Age + nickname -->
-      <div class="card" style="grid-column: span 8">
-        <h3 class="section-title">About You</h3>
-        <div class="grid">
-          <div style="grid-column: span 3">
-            <label>Age</label><input id="age" type="number" value="29" min="16" max="100"/>
-          </div>
-          <div style="grid-column: span 9">
-            <label>Nickname (optional)</label><input id="nick" placeholder="e.g., Ace" />
-          </div>
+      <div class="card" style="grid-column:span 8">
+        <div class="section">About You</div>
+        <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
+          <div style="grid-column:span 3"><label>Age</label><input id="age" type="number" value="29" min="16" max="100"></div>
+          <div style="grid-column:span 9"><label>Nickname (optional)</label><input id="nick" placeholder="e.g., Money Maverick 😎"></div>
         </div>
       </div>
 
-      <!-- Actions -->
-      <div class="card" style="grid-column: span 4; display:flex; align-items:flex-end; justify-content:flex-end">
-        <div class="actions right">
-          <button id="resetBtn" class="btn ghost">Reset</button>
-          <button id="gradeBtn" class="btn accent">Grade Me</button>
+      <div class="card" style="grid-column:span 4;display:flex;align-items:end;justify-content:end">
+        <div class="actions">
+          <button id="resetBtn" class="btn">Reset</button>
+          <button id="gradeBtn" class="btn primary">Grade Me 🎉</button>
         </div>
       </div>
 
-      <!-- Result -->
-      <div class="card result" id="resultCard">
-        <div class="grade-wrap">
-          <div style="display:flex; align-items:center; gap:10px">
-            <span id="bigGrade" class="big-grade">—</span>
-            <span class="tier" id="tierChip">Tier —</span>
-          </div>
+      <!-- RESULT -->
+      <div class="card" style="grid-column:span 12">
+        <div class="resultTitle">
+          <div id="bigGrade" class="bigGrade">—</div>
           <div>
-            <div class="scoreline" id="scoreLine">Score: — / 100</div>
-            <div class="scoreline" id="nwLine">Net worth: —</div>
-            <div class="scoreline" id="nextTier">—</div>
+            <div id="scoreLine" class="scoreline">Score: — / 100.0</div>
+            <div id="nwLine" class="scoreline">Net worth: —</div>
+            <div class="chips" id="chips"></div>
           </div>
         </div>
 
-        <div class="kpis">
-          <div class="kpi"><small>Savings rate</small><div><b id="kpiSave">—</b></div></div>
-          <div class="kpi"><small>Emergency months</small><div><b id="kpiEF">—</b></div></div>
-          <div class="kpi"><small>Debt ratio</small><div><b id="kpiDTI">—</b></div></div>
-          <div class="kpi"><small>Age vs Net-worth</small><div><b id="kpiAgeNW">—</b></div></div>
-        </div>
+        <div style="margin:14px 0 8px 0" class="progress"><div id="progressFill"></div></div>
 
-        <div style="margin-top:14px">
-          <div class="progress"><div id="progressFill"></div></div>
+        <div class="grid2">
+          <div class="note">
+            <h4>What went into your grade 🧠</h4>
+            <div id="whyList">Enter numbers and hit “Grade Me.”</div>
+          </div>
+          <div class="note">
+            <h4>How to level up 📈</h4>
+            <div id="improveList">Personalized ideas will show up here.</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Loading overlay -->
-  <div class="overlay" id="overlay" aria-live="polite" aria-busy="true">
-    <div class="loader">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
-        <strong>Crunching numbers…</strong>
-        <span id="pct" style="color:var(--muted); font-size:12px">0%</span>
+  <!-- LOADER -->
+  <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
+    <div class="box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong>Crunching numbers…</strong><span id="pct" class="scoreline">0%</span>
       </div>
       <div class="bar"><div id="barFill"></div></div>
     </div>
   </div>
 
 <script>
-/* ---------- Utility ---------- */
-const $ = sel => document.querySelector(sel);
-const format = n => isFinite(n) ? n.toLocaleString(undefined, {maximumFractionDigits:0}) : '—';
-const money  = n => `$${format(n)}`;
+/* ---------- Tiny helpers ---------- */
+const $ = s => document.querySelector(s);
+const money  = n => isFinite(n) ? `$${Math.round(n).toLocaleString()}` : '—';
+const pctStr = n => (n*100).toFixed(0)+'%';
+const clamp  = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const map01  = (x,a,b)=>clamp((x-a)/(b-a));
 
-const inputs = [
-  'income','expenses','cash','home','retire','brokerage','car',
-  'mortgage','student','auto','cc','age'
-].map(id => $('#'+id));
+/* ---------- Theme toggle ---------- */
+const modeBtn = $('#modeBtn');
+const setMode = (light)=>{ document.body.classList.toggle('light', light); modeBtn.textContent = light ? '🌞 Light' : '🌚 Dark'; }
+let light = false; setMode(light);
+modeBtn.onclick = ()=>{ light = !light; setMode(light); };
 
-function calcTotals(){
-  const vals = Object.fromEntries(inputs.map(i => [i.id, Number(i.value||0)]));
-  const assets = vals.cash + vals.home + vals.retire + vals.brokerage + vals.car;
-  const liabs  = vals.mortgage + vals.student + vals.auto + vals.cc;
-  $('#assetsHint').textContent = `Total Assets: ${money(assets)}`;
-  $('#liabHint').textContent   = `Total Liabilities: ${money(liabs)}`;
-  return {...vals, assets, liabs, networth: assets - liabs};
+/* ---------- Read inputs + live totals ---------- */
+const ids = ['income','expenses','cash','home','retire','brokerage','car','mortgage','student','auto','cc','age'];
+const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
+Object.values(els).forEach(el=> el.addEventListener('input', updateHints));
+updateHints();
+
+function updateHints(){
+  const v = values();
+  $('#assetsHint').textContent = `Total Assets: ${money(v.assets)}`;
+  $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
 }
-inputs.forEach(i => i.addEventListener('input', calcTotals));
-calcTotals();
+function values(){
+  const v = Object.fromEntries(ids.map(id=>[id, Number(els[id].value||0)]));
+  v.assets = v.cash + v.home + v.retire + v.brokerage + v.car;
+  v.liabs  = v.mortgage + v.student + v.auto + v.cc;
+  v.net    = v.assets - v.liabs;
+  return v;
+}
 
-/* ---------- Scoring Model (100 pts) ----------
-   - Savings rate (of net income): 30
-   - Emergency fund months: 20
-   - Debt load (balances vs annual income proxy): 25
-   - Age vs Net-worth multiple: 15
-   - Credit card balance vs income: 10
-   Transparent, simple, educational — not advice.
-------------------------------------------------*/
-function scoreAll(v){
-  const incomeY = v.income * 12;
+/* ---------- Scoring (0..100) ----------
+   Goals: sensible, forgiving, and FUN.
+   We cap/scale so extreme wealth scores well, and being lopsided shows up
+   in the explanations + improvement tips.
+
+   Weights:
+   - Net-worth strength vs income (log-ish) ............. 30
+   - Savings rate (monthly) ............................. 25
+   - Emergency fund months .............................. 15
+   - Leverage (Liabilities / Assets) .................... 15
+   - Credit cards vs income ............................. 5
+   - Invested share of assets ........................... 10
+------------------------------------------------------- */
+function scoreModel(v){
+  const incY = v.income*12 || 1;
   const leftover = Math.max(0, v.income - v.expenses);
-  const saveRate = incomeY ? leftover / v.income : 0; // monthly %
-  const efMonths = v.expenses ? v.cash / v.expenses : 0;
+  const saveRate = v.income>0 ? leftover / v.income : 0;          // 0..1+
+  const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;        // months
+  const leverage = v.assets>0 ? v.liabs / v.assets : 1;           // lower better
+  const ccLoad   = v.income>0 ? v.cc / v.income : 1;              // lower better
+  const investable = v.retire + v.brokerage;
+  const investShare = v.assets>0 ? investable / v.assets : 0;
 
-  const debtLoad = incomeY ? v.liabs / incomeY : 1; // lower is better
-  const ccLoad   = v.income ? v.cc / v.income : 1;
+  // Net-worth strength relative to income (cap at 25x income; log-ish curve)
+  const nwMultiple = v.net / incY;              // how many years of income
+  const sNW   = map01(Math.log10(1 + Math.max(0, nwMultiple))*1.4, 0, Math.log10(1+25)*1.4);
 
-  // Age vs target NW (rule-of-thumb: 1x income @30, 2x @35, 3x @40…)
-  const targetNW = incomeY * Math.max(0.6, (v.age-25)*0.2/5 + 0.8); // soft curve
-  const ageNW    = targetNW ? v.networth / targetNW : 0; // 1.0 == on track
+  const sSave = map01(saveRate, 0, 0.6);        // 0 → 60%+
+  const sEF   = map01(efMonths, 0, 12);         // 0 → 12+ months
+  const sLev  = map01(1-leverage, 0, 1);        // 1.0 when no debt
+  const sCC   = map01(1-ccLoad, 0, 1);
+  const sInv  = map01(investShare, 0.15, 0.6);  // 15% → 60%+ of assets invested
 
-  // Subscores (clamped 0..1)
-  const sSave = clamp(map(saveRate, 0, .35));           // 0% → 35%+
-  const sEF   = clamp(map(efMonths, 0, 6));             // 0 → 6+ months
-  const sDebt = clamp(map(1-debtLoad, 0, 1));           // 1.0 good if no debt
-  const sCC   = clamp(map(1-ccLoad, 0, 1));             // lower cc relative to income = better
-  const sAge  = clamp(map(ageNW,   0.2, 1.2));          // under 0.2 is weak, 1.2 strong
-
-  const score = Math.round(
-      sSave*30 + sEF*20 + sDebt*25 + sAge*15 + sCC*10
-  );
+  const score =
+      30*sNW + 25*sSave + 15*sEF + 15*sLev + 5*sCC + 10*sInv;
 
   return {
-    score,
-    saveRate,
-    efMonths,
-    debtLoad,
-    ageNW,
-    ccLoad
+    score: Number(score.toFixed(1)),
+    saveRate, efMonths, leverage, ccLoad, investShare,
+    nwMultiple
   };
-
-  function map(x, a, b){ // linear 0..1
-    return (x - a) / (b - a);
-  }
-  function clamp(x){ return Math.max(0, Math.min(1, x)); }
 }
 
-/* ---------- Grade + Tiers ---------- */
+/* ---------- Letter grade ---------- */
 function letter(score){
   if(score>=97) return "A+";
   if(score>=93) return "A";
@@ -390,134 +323,98 @@ function letter(score){
   if(score>=60) return "D-";
   return "F";
 }
-
-const tiers = [
-  {name:"Bronze",   min:0},
-  {name:"Silver",   min:60},
-  {name:"Gold",     min:75},
-  {name:"Platinum", min:88},
-  {name:"Diamond",  min:96},
-];
-
-function tierFor(score){
-  let t = tiers[0];
-  for(const x of tiers){ if(score>=x.min) t=x; }
-  const idx = tiers.indexOf(t);
-  const next = tiers[idx+1];
-  const toNext = next ? Math.max(0, next.min - score) : 0;
-  return {current:t.name, next: next?.name ?? null, toNext};
-}
-
-/* ---------- Loading overlay control (never gets stuck) ---------- */
-let loadingTimer=null, barTimer=null;
-function showOverlay(){
-  const overlay = $('#overlay');
-  const bar = $('#barFill');
-  const pct = $('#pct');
-  overlay.classList.add('show');
-  let p = 6;
-  bar.style.width = p+'%'; pct.textContent = p+'%';
-  barTimer = setInterval(()=>{
-    p = Math.min(96, p + Math.random()*7);
-    bar.style.width = p+'%';
-    pct.textContent = Math.round(p)+'%';
-  }, 220);
-}
-function hideOverlay(){
-  const overlay = $('#overlay');
-  const bar = $('#barFill');
-  const pct = $('#pct');
-  clearInterval(barTimer);
-  bar.style.width = '100%'; pct.textContent = '100%';
-  // graceful fade
-  setTimeout(()=>overlay.classList.remove('show'), 250);
-}
-
-/* ---------- Grade flow ---------- */
-const gradeBtn = $('#gradeBtn');
-const resetBtn = $('#resetBtn');
-const bigGrade = $('#bigGrade');
-const tierChip = $('#tierChip');
-const scoreLine= $('#scoreLine');
-const nwLine   = $('#nwLine');
-const nextTier = $('#nextTier');
-const progress = $('#progressFill');
-
-let isRunning = false;
-
-gradeBtn.addEventListener('click', async () => {
-  if(isRunning) return; // prevent double clicks
-  isRunning = true;
-  bigGrade.classList.remove('show'); // reset animation
-  showOverlay();
-  try{
-    // "Crunching…" delay for UX polish — but guarantee completion
-    await wait(650);
-
-    const v = calcTotals();
-    const s = scoreAll(v);
-
-    // update UI
-    const L = letter(s.score);
-    bigGrade.textContent = L;
-    bigGrade.style.color = gradeColor(L);
-    // trigger animation AFTER text sets
-    requestAnimationFrame(()=>bigGrade.classList.add('show'));
-
-    const t = tierFor(s.score);
-    tierChip.textContent = `Tier: ${t.current}`;
-    nextTier.textContent = t.next ? `+${t.toNext} points to reach ${t.next}` : `Top tier achieved — keep compounding 🚀`;
-
-    scoreLine.textContent = `Score: ${s.score} / 100`;
-    nwLine.textContent = `Net worth: ${money(v.networth)}  •  Assets: ${money(v.assets)}  •  Liabilities: ${money(v.liabs)}`;
-
-    $('#kpiSave').textContent = (s.saveRate*100).toFixed(0) + '%';
-    $('#kpiEF').textContent   = s.efMonths.toFixed(1) + ' mo';
-    $('#kpiDTI').textContent  = (s.debtLoad*100).toFixed(0) + '% of annual income';
-    $('#kpiAgeNW').textContent= (s.ageNW*100).toFixed(0) + '% of target';
-
-    progress.style.width = s.score + '%';
-
-  } catch(err){
-    alert('Oops—something went wrong while calculating. Check your inputs and try again.');
-    console.error(err);
-  } finally {
-    hideOverlay();        // ALWAYS hide loader
-    isRunning = false;    // allow future clicks
-  }
-});
-
-resetBtn.addEventListener('click', ()=>{
-  document.querySelectorAll('input[type="number"]').forEach(el=>{
-    el.value = 0;
-  });
-  $('#age').value = 30;
-  calcTotals();
-  bigGrade.textContent = '—';
-  bigGrade.classList.remove('show');
-  tierChip.textContent = 'Tier —';
-  scoreLine.textContent = 'Score: — / 100';
-  nwLine.textContent = 'Net worth: —';
-  nextTier.textContent = '—';
-  progress.style.width = '0%';
-});
-
-function wait(ms){ return new Promise(r=>setTimeout(r, ms)); }
 function gradeColor(L){
   const map = {
     'A+':'var(--good)','A':'var(--good)','A-':'var(--good)',
     'B+':'#86efac','B':'#86efac','B-':'#86efac',
     'C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)',
-    'D+':'#f97316','D':'#f97316','D-':'#f97316',
-    'F':'var(--bad)'
-  };
-  return map[L] || 'var(--text)';
+    'D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'
+  }; return map[L]||'var(--text)';
 }
 
-/* Optional: If you later add an external logo image, you can replace the inline SVG by
-   placing your file at /assets/gmf-logo.svg and appending:
-   document.querySelector('.logo').outerHTML = '<img class="logo" src="assets/gmf-logo.svg" alt="Grade My Finance Logo"/>'
-*/
+/* ---------- Loader (never stuck) ---------- */
+let barTimer=null;
+function showOverlay(){
+  const o=$('#overlay'); const bar=$('#barFill'); const pct=$('#pct');
+  o.classList.add('show'); let p=6; bar.style.width=p+'%'; pct.textContent='6%';
+  barTimer=setInterval(()=>{ p=Math.min(96, p+Math.random()*7); bar.style.width=p+'%'; pct.textContent=Math.round(p)+'%'; },220);
+}
+function hideOverlay(){
+  clearInterval(barTimer);
+  $('#barFill').style.width='100%'; $('#pct').textContent='100%';
+  setTimeout(()=>$('#overlay').classList.remove('show'),240);
+}
+
+/* ---------- Explain + Improve ---------- */
+function renderWhy(v,s){
+  const chips = [];
+  chips.push(`<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`);
+  chips.push(`<span class="chip">Emergency fund: <b>${s.efMonths.toFixed(1)} mo</b></span>`);
+  chips.push(`<span class="chip">Leverage: <b>${(s.leverage*100).toFixed(0)}% of assets</b></span>`);
+  chips.push(`<span class="chip">CC vs income: <b>${(s.ccLoad*100).toFixed(0)}%</b></span>`);
+  chips.push(`<span class="chip">Invested share: <b>${(s.investShare*100).toFixed(0)}%</b></span>`);
+  chips.push(`<span class="chip">NW ≈ <b>${s.nwMultiple.toFixed(1)}x</b> yearly income</span>`);
+  $('#chips').innerHTML = chips.join('');
+
+  const bullets = [];
+  bullets.push(`• Your net worth is <b>${money(v.net)}</b> (assets ${money(v.assets)} minus liabilities ${money(v.liabs)}).`);
+  bullets.push(`• Savings rate is <b>${(s.saveRate*100).toFixed(0)}%</b> — that’s about ${money(Math.max(0, v.income-v.expenses))}/mo kept.`);
+  bullets.push(`• You’ve got <b>${s.efMonths.toFixed(1)} months</b> of emergency cash.`);
+  bullets.push(`• Overall leverage is <b>${(s.leverage*100).toFixed(0)}%</b> of assets.`);
+  bullets.push(`• Invested share of assets is <b>${(s.investShare*100).toFixed(0)}%</b> (retirement + brokerage).`);
+  $('#whyList').innerHTML = bullets.map(b=>`<div>${b}</div>`).join('');
+}
+
+function renderImprove(v,s){
+  const ideas=[];
+  if(s.saveRate < 0.2) ideas.push(`Bump savings to <b>20%+</b> by trimming ${money(Math.ceil(v.income*0.05))}/mo and sending it to savings/investing.`);
+  if(s.efMonths < 3) ideas.push(`Build an emergency fund to <b>3–6 months</b> (${money(v.expenses*3)}–${money(v.expenses*6)}).`);
+  if(s.leverage > 0.5) ideas.push(`Pay down high-interest debts to lower leverage (<b>${(s.leverage*100).toFixed(0)}%</b> → target <b><50%</b>).`);
+  if(s.ccLoad > 0.2) ideas.push(`Drop credit card balance below <b>20% of monthly income</b> (now ${(s.ccLoad*100).toFixed(0)}%).`);
+  if(s.investShare < 0.35) ideas.push(`Increase invested share of assets to <b>35–60%+</b> over time (more into 401(k)/IRA/brokerage).`);
+  if(s.nwMultiple < 3 && v.age >= 25) ideas.push(`Aim for net worth ≈ <b>3–5× income</b> next, you’re at <b>${s.nwMultiple.toFixed(1)}×</b>.`);
+  if(!ideas.length) ideas.push(`You’re cruising! Keep automating contributions and reviewing yearly. 🎉`);
+  $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
+}
+
+/* ---------- Grade flow ---------- */
+const bigGrade = $('#bigGrade');
+const scoreLine= $('#scoreLine');
+const nwLine   = $('#nwLine');
+const progress = $('#progressFill');
+
+$('#gradeBtn').onclick = async ()=>{
+  bigGrade.classList.remove('show');
+  showOverlay();
+  try{
+    await new Promise(r=>setTimeout(r,650)); // polish delay
+    const v = values();
+    const s = scoreModel(v);
+
+    const L = letter(s.score);
+    bigGrade.textContent = L;
+    bigGrade.style.color = gradeColor(L);
+    requestAnimationFrame(()=>bigGrade.classList.add('show'));
+
+    scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
+    nwLine.textContent = `Net worth: ${money(v.net)} • Assets: ${money(v.assets)} • Liabilities: ${money(v.liabs)}`;
+    progress.style.width = s.score+'%';
+
+    renderWhy(v,s);
+    renderImprove(v,s);
+  } finally {
+    hideOverlay();
+  }
+};
+
+$('#resetBtn').onclick = ()=>{
+  document.querySelectorAll('input[type="number"]').forEach(el=>el.value=0);
+  els.age.value = 30;
+  updateHints();
+  bigGrade.textContent='—'; bigGrade.classList.remove('show');
+  scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
+  progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
+};
 </script>
 </body>
 </html>
