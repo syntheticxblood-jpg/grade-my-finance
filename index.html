@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Grade My Finance</title>
+<meta name="description" content="Friendly money grade with age-aware, realistic retirement readiness scoring.">
+
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -10,10 +15,6 @@
   gtag('config', 'G-H6223HYVS6');
 </script>
 
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Grade My Finance</title>
-<meta name="description" content="Friendly money grade with age-aware, realistic retirement readiness scoring.">
 <style>
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
@@ -86,10 +87,18 @@
 
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:85}
 
+  /* Mobile layout fixes: force full-width stacking on phones */
   @media (max-width: 980px){
     .shell{grid-template-columns:1fr}
     aside{position:static}
     .grid{grid-template-columns:1fr}
+  }
+  @media (max-width: 768px){
+    .grid > [style*="grid-column:span 6"],
+    .grid > [style*="grid-column:span 4"],
+    .grid > [style*="grid-column:span 8"]{
+      grid-column: span 12 !important;
+    }
   }
 </style>
 </head>
@@ -113,7 +122,7 @@
         <p class="tag">Retirement-readiness grading — learn, level-up, repeat.</p>
       </div>
       <span class="spacer"></span>
-      <button id="modeBtn" class="pill" title="Toggle theme">🌚 Dark</button>
+      <button id="modeBtn" class="pill" title="Toggle theme">Dark</button>
     </div>
   </header>
 
@@ -122,11 +131,11 @@
   <div class="shell">
     <aside>
       <nav class="nav" id="sidebar">
-        <button class="tab active" data-page="grade">🏠 Grade</button>
-        <button class="tab" data-page="about">🙋 About Us</button>
-        <button class="tab" data-page="goal">🎯 Our Goal</button>
-        <button class="tab" data-page="faq">❓ FAQ</button>
-        <button class="tab" data-page="contact">✉️ Contact</button>
+        <button class="tab active" data-page="grade">Grade</button>
+        <button class="tab" data-page="about">About Us</button>
+        <button class="tab" data-page="goal">Our Goal</button>
+        <button class="tab" data-page="faq">FAQ</button>
+        <button class="tab" data-page="contact">Contact</button>
       </nav>
     </aside>
 
@@ -134,7 +143,6 @@
       <!-- Grade page -->
       <section id="page-grade" class="page active">
         <div class="grid">
-          <!-- Row 1 -->
           <div class="card" style="grid-column:span 4">
             <div class="section">Monthly Income (after-tax)</div>
             <label>What hits your bank each month</label>
@@ -151,9 +159,8 @@
             <input id="age" type="number" value="30" min="16" max="100" />
           </div>
 
-          <!-- Row 2 -->
           <div class="card" style="grid-column:span 6">
-            <div class="section">Assets 💰</div>
+            <div class="section">Assets</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
               <div style="grid-column:span 6"><label>Home Value</label><input id="home" type="number" value="450000" min="0"></div>
               <div style="grid-column:span 6"><label>Retirement (401k/IRA)</label><input id="retire" type="number" value="72000" min="0"></div>
@@ -166,7 +173,7 @@
           </div>
 
           <div class="card" style="grid-column:span 6">
-            <div class="section">Liabilities 🧾 (+ APR)</div>
+            <div class="section">Liabilities (+ APR)</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
               <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="326000" min="0"></div>
               <div style="grid-column:span 6"><label>Mortgage APR %</label><input id="mortgageApr" type="number" value="5.25" step="0.01" min="0"></div>
@@ -180,7 +187,7 @@
             <div class="hint" id="liabHint">Total Liabilities: —</div>
           </div>
 
-          <!-- Results full width -->
+          <!-- Results -->
           <div class="card" style="grid-column:span 12">
             <div class="resultTitle">
               <div class="resultLeft">
@@ -193,7 +200,7 @@
               </div>
               <div style="display:flex;gap:10px;flex-wrap:wrap">
                 <button id="resetBtn" class="btn">Reset</button>
-                <button id="gradeBtn" class="btn primary">Grade Me 🎉</button>
+                <button id="gradeBtn" class="btn primary">Grade Me</button>
               </div>
             </div>
 
@@ -201,11 +208,11 @@
 
             <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
               <div class="card" style="border-style:dashed">
-                <h4>What went into your grade 🧠</h4>
+                <h4>What went into your grade</h4>
                 <div id="whyList">Enter numbers and hit “Grade Me.”</div>
               </div>
               <div class="card" style="border-style:dashed">
-                <h4>How to level up 📈</h4>
+                <h4>How to level up</h4>
                 <div id="improveList">Personalized ideas will show up here.</div>
               </div>
             </div>
@@ -215,11 +222,11 @@
 
       <!-- About -->
       <section id="page-about" class="page">
-        <div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness — transparent, encouraging, and fun.</p></div>
+        <div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness — transparent, encouraging, and simple.</p></div>
       </section>
       <!-- Goal -->
       <section id="page-goal" class="page">
-        <div class="card"><h2>Our Goal</h2><p>Help 1,000,000 people build calm, confident money habits.</p></div>
+        <div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div>
       </section>
       <!-- FAQ -->
       <section id="page-faq" class="page">
@@ -228,7 +235,7 @@
       <!-- Contact -->
       <section id="page-contact" class="page">
         <div class="card"><h2>Contact</h2>
-          <p>Email us anytime: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
+          <p>Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
         </div>
       </section>
     </main>
@@ -246,7 +253,7 @@
 
   <!-- Share toast -->
   <div id="toast" class="toast" role="status" aria-live="polite">
-    <span>Shareable link copied! 🎉</span>
+    <span>Shareable link copied.</span>
     <button id="copyAgain">Copy again</button>
   </div>
 
@@ -258,19 +265,19 @@
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-  /* constants */
-  const SWR = 0.06;            // fixed 6%
-  const EF_TARGET = 6;         // months
-  const EQUITY_FACTOR = 0.40;  // 40% accessible equity
-  const NW_W=15, FI_W=55, AGE_W=10, SAVE_W=6, EF_W=7, NONMORT_W=4, LTV_W=3; // tuned weights
+  // constants
+  const SWR = 0.06;
+  const EF_TARGET = 6;
+  const EQUITY_FACTOR = 0.40;
+  const NW_W=15, FI_W=55, AGE_W=10, SAVE_W=6, EF_W=7, NONMORT_W=4, LTV_W=3;
 
-  /* theme */
+  // theme
   const modeBtn = $('#modeBtn');
-  function setMode(light){ document.body.classList.toggle('light', light); modeBtn.textContent = light ? '🌞 Light' : '🌚 Dark'; }
+  function setMode(light){ document.body.classList.toggle('light', light); modeBtn.textContent = light ? 'Light' : 'Dark'; }
   setMode(false);
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  /* tabs */
+  // tabs
   const pages=['grade','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
@@ -280,7 +287,7 @@
     window.scrollTo({top:0,behavior:'smooth'});
   });
 
-  /* inputs & totals */
+  // inputs
   const ids = ['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr'];
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
@@ -292,7 +299,6 @@
     v.net    = v.assets - v.liabs;
     v.annualSpend = Math.max(0, v.expenses * 12);
     v.targetFI = v.annualSpend>0 ? v.annualSpend / SWR : 0;
-
     v.investableCore = v.retire + v.brokerage + v.hsa;
     v.cashSurplus = Math.max(0, v.cash - EF_TARGET * (v.expenses||0));
     v.homeEquity = Math.max(0, v.home - v.mortgage);
@@ -308,12 +314,9 @@
   ids.forEach(id => els[id].addEventListener('input', updateHints));
   updateHints();
 
-  /* expected readiness by age (piecewise linear) */
+  // expected readiness by age
   function expectedReadiness(age){
-    const pts = [
-      [25,0.10],[30,0.20],[35,0.35],[40,0.50],
-      [45,0.65],[50,0.80],[55,0.95],[60,1.00]
-    ];
+    const pts = [[25,0.10],[30,0.20],[35,0.35],[40,0.50],[45,0.65],[50,0.80],[55,0.95],[60,1.00]];
     if(age<=pts[0][0]) return pts[0][1];
     if(age>=pts[pts.length-1][0]) return pts[pts.length-1][1];
     for(let i=1;i<pts.length;i++){
@@ -323,26 +326,18 @@
     return 1;
   }
 
-  /* scoring */
   function scoreModel(v){
     const leftover = Math.max(0, v.income - v.expenses);
     const saveRate = v.income>0 ? leftover / v.income : 0;
     const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
 
-    // FI readiness using investableTotal vs target
     const r = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
     const expR = expectedReadiness(val('age')||30);
-    const sFI   = map01(r/Math.max(0.05,expR), 0, 1);     // 1.0 = meeting age-based readiness
+    const sFI   = map01(r/Math.max(0.05,expR), 0, 1);
+    const sNW   = map01((v.targetFI>0 ? v.net / v.targetFI : (v.net>0?1:0)), 0, 1);
+    const ageGap = clamp((r - expR), -1, 1);
+    const sAGE = map01( ageGap, -0.5, 0.2 );
 
-    // Net worth sufficiency as backup (counts if house/cash dominate)
-    const sNW = map01((v.targetFI>0 ? v.net / v.targetFI : (v.net>0?1:0)), 0, 1);
-
-    // Age momentum: higher if you’re beating your age curve, lower if behind and older
-    const age = val('age')||30;
-    const ageGap = clamp((r - expR), -1, 1);               // negative = behind curve
-    const sAGE = map01( ageGap, -0.5, 0.2 );               // gentle encouragement
-
-    // Debt & buffers
     const nonMortDebt = v.student + v.auto + v.cc;
     const nonMortRatio = v.assets>0 ? nonMortDebt / v.assets : 0;
     const sNonMort = map01(1-nonMortRatio, 0, 1);
@@ -356,7 +351,8 @@
     return {
       score:+score.toFixed(1),
       saveRate, efMonths, readiness:r, expR,
-      ltv, nonMortRatio, net: v.net, assets: v.assets, liabs: v.liabs,
+      ltv, nonMortRatio,
+      net: v.net, assets: v.assets, liabs: v.liabs,
       investableTotal:v.investableTotal, cashSurplus:v.cashSurplus, accessibleEquity:v.accessibleEquity
     };
   }
@@ -375,9 +371,8 @@
     if(score>=60) return "D-";
     return "F";
   }
-  const gradeColors={'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'};
 
-  /* loader + toast */
+  // loader + toast
   let prog=0,timer=null;
   function showOverlay(){ prog=0; $('#overlay').classList.add('show'); $('#barFill').style.width='0%'; $('#pct').textContent='0%';
     timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); $('#barFill').style.width=prog+'%'; $('#pct').textContent=Math.round(prog)+'%'; },200); }
@@ -386,7 +381,7 @@
   function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5500); }
   $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
 
-  /* share link */
+  // share link
   function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); s.__ver='age1'; return s; }
   function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
   (function hydrateFromHash(){
@@ -394,8 +389,8 @@
     try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); ids.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
   })();
 
-  /* confetti */
-  const canvas = $('#confetti'); const ctx = canvas.getContext('2d'); let bits=[];
+  // confetti
+  const canvas = document.getElementById('confetti'); const ctx = canvas.getContext('2d'); let bits=[];
   function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   window.addEventListener('resize', resize); resize();
   function popConfetti(){
@@ -410,7 +405,7 @@
     }; anim();
   }
 
-  /* render panels */
+  // render
   function renderWhy(v,s){
     $('#chips').innerHTML = [
       `<span class="chip">Age curve met: <b>${(s.readiness/Math.max(.05,expectedReadiness(val('age')))*100).toFixed(0)}%</b></span>`,
@@ -420,26 +415,26 @@
     ].join('');
     const nonMortDebt = val('student')+val('auto')+val('cc');
     $('#whyList').innerHTML = [
-      `• Age ${val('age')}: expected readiness ≈ <b>${(expectedReadiness(val('age'))*100).toFixed(0)}%</b>.`,
-      `• We counted investable <b>${money(v.investableCore)}</b> + surplus cash <b>${money(s.cashSurplus)}</b> + 40% home equity <b>${money(s.accessibleEquity)}</b> = <b>${money(s.investableTotal)}</b>.`,
-      `• Net worth: <b>${money(v.net)}</b> (assets ${money(v.assets)} – liabilities ${money(v.liabs)}).`,
-      `• Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b> (~${money(Math.max(0, val('income')-val('expenses')))} /mo kept).`,
-      `• Non-mortgage debt totals <b>${money(nonMortDebt)}</b>; mortgage LTV is <b>${(s.ltv*100).toFixed(0)}%</b>.`
+      `Age ${val('age')}: expected readiness ≈ ${(expectedReadiness(val('age'))*100).toFixed(0)}%.`,
+      `Counted investable ${money(v.investableCore)} + surplus cash ${money(s.cashSurplus)} + 40% home equity ${money(s.accessibleEquity)} = ${money(s.investableTotal)}.`,
+      `Net worth: ${money(v.net)} (assets ${money(v.assets)} – liabilities ${money(v.liabs)}).`,
+      `Savings rate: ${(s.saveRate*100).toFixed(0)}% (~${money(Math.max(0, val('income')-val('expenses')))} per month kept).`,
+      `Non-mortgage debt totals ${money(nonMortDebt)}; mortgage LTV is ${(s.ltv*100).toFixed(0)}%.`
     ].map(x=>`<div>${x}</div>`).join('');
   }
   function renderImprove(v,s){
     const ideas=[];
     const expR = expectedReadiness(val('age'));
-    if(s.readiness < expR) ideas.push(`Catch up to your age curve: add ~<b>${money(Math.max(0, v.targetFI*expR - v.investableTotal))}</b> investable (or reduce spending).`);
-    if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to <b>${EF_TARGET} months</b> (${money(v.expenses*EF_TARGET)}).`);
-    if(s.saveRate < 0.2) ideas.push(`Aim for <b>20%+ savings</b> by auto-moving ~${money(Math.ceil(v.income*0.05))}/mo.`);
-    if(s.ltv > 0.8) ideas.push(`High mortgage LTV (<b>${(s.ltv*100).toFixed(0)}%</b>): occasional principal prepayments help.`);
+    if(s.readiness < expR) ideas.push(`Catch up to your age curve: add ~${money(Math.max(0, v.targetFI*expR - v.investableTotal))} investable (or reduce spending).`);
+    if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to ${EF_TARGET} months (${money(v.expenses*EF_TARGET)}).`);
+    if(s.saveRate < 0.2) ideas.push(`Aim for 20%+ savings by auto-moving ~${money(Math.ceil(v.income*0.05))}/mo.`);
+    if(s.ltv > 0.8) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): occasional principal prepayments help.`);
     if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
-    if(!ideas.length) ideas.push(`You’re ahead for your age — great job! 🎉 Keep the systems humming.`);
+    if(!ideas.length) ideas.push(`You’re ahead for your age — keep it up.`);
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
-  /* grade + reset */
+  // grade + reset
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
 
   function doGrade(){
@@ -447,15 +442,13 @@
     const s = scoreModel(v);
     const L = letter(s.score);
     bigGrade.textContent = L;
-    bigGrade.style.color = ( {'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
+    bigGrade.style.color = ({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
     bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
     scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
     nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
     progress.style.width = s.score + '%';
     renderWhy(v,s); renderImprove(v,s);
-
     if(['A+','A','A-','B+'].includes(L)) popConfetti();
-
     const url = buildShareURL(); navigator.clipboard.writeText(url).catch(()=>{}); showToast();
   }
 
