@@ -37,6 +37,7 @@
     transition: background .3s ease, color .2s ease;
   }
 
+  /* Header */
   .hero{
     position:relative; max-width:1100px; margin:0 auto 14px; padding:18px 18px 22px;
     border-radius: 12px;
@@ -47,9 +48,9 @@
   }
   .hero-inner{display:flex; align-items:center; justify-content:space-between; gap:14px}
   .title-wrap{display:flex; align-items:center; gap:12px}
-  .title-mark{
-    width:40px; height:40px; border-radius:10px; background:linear-gradient(135deg,#22c55e,#0ea5e9);
-    box-shadow:0 6px 16px rgba(14,165,233,.35);
+  .logo{
+    width:44px; height:44px;
+    filter: drop-shadow(0 6px 12px rgba(14,165,233,.35));
   }
   .title{
     line-height:1; margin:0;
@@ -82,6 +83,7 @@
   .f-right{right:10px; top:-10px; animation: rise 17s linear infinite 2s}
   @keyframes rise{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-120px) rotate(360deg)}}
 
+  /* App card */
   .wrap{
     position:relative; z-index:1;
     max-width:1100px; margin:0 auto; background:var(--card); padding:22px;
@@ -132,16 +134,57 @@
 
   .result-actions{display:flex; gap:8px; flex-wrap:wrap}
   .profiles{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+
+  /* Suspense / Reveal overlay */
+  .reveal{
+    position:fixed; inset:0; z-index:9998; display:none;
+    background:rgba(0,10,20,0.65); backdrop-filter: blur(2px);
+    align-items:center; justify-content:center;
+  }
+  .reveal.show{display:flex}
+  .reveal-card{
+    background:var(--card); color:var(--ink); border:1px solid var(--border);
+    border-radius:14px; padding:22px; width:min(560px,92vw);
+    box-shadow:0 18px 40px rgba(0,0,0,.35); text-align:center;
+  }
+  .reveal-title{font-weight:800; font-size:18px; margin:0 0 10px}
+  .reveal-bar{height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden}
+  .reveal-bar > i{display:block; height:100%; width:0; background:linear-gradient(90deg,#0ea5e9,#22c55e); animation: fill 3s linear forwards}
+  @keyframes fill{to{width:100%}}
+  .reveal-grade{
+    margin-top:14px; font-family:"Baloo 2", cursive; font-size: clamp(42px, 7vw, 72px);
+    font-weight:800; letter-spacing:.5px; opacity:0; transform: translateX(25px);
+    transition: all .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .reveal-grade.show{opacity:1; transform: translateX(0)}
+  /* Toast */
+  .toast{
+    position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
+    background:#111827; color:#f9fafb; border-radius:999px; padding:8px 14px; font-weight:700; font-size:13px;
+    box-shadow:0 8px 24px rgba(0,0,0,.35); z-index:9999; display:none
+  }
+  .toast.show{display:block}
 </style>
 </head>
 
 <body>
+  <!-- Header with inline SVG logo -->
   <section class="hero">
     <div class="floater f-left">🪙</div>
     <div class="floater f-right">💸</div>
     <div class="hero-inner">
       <div class="title-wrap">
-        <div class="title-mark" aria-hidden="true"></div>
+        <!-- Finance logo (SVG) -->
+        <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#22c55e"/>
+              <stop offset="1" stop-color="#0ea5e9"/>
+            </linearGradient>
+          </defs>
+          <rect x="6" y="6" width="52" height="52" rx="12" fill="url(#g1)"/>
+          <path d="M18 42h28M22 34l6-6 6 7 8-10" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
         <div>
           <h1 class="title">Grade My Finance</h1>
           <p class="subtitle">A playful, educational snapshot of your money health — with tips to rank up.</p>
@@ -231,6 +274,7 @@
       <button class="secondary" id="resetBtn">Reset</button>
       <button class="secondary linkish" id="clearDataBtn" title="Forget saved inputs">Clear my data</button>
       <button class="secondary linkish" id="copyLinkBtn" title="Copy sharable link">Copy sharable link</button>
+      <button class="secondary linkish" id="shortLinkBtn" title="Shorten & copy link">Shorten & copy link</button>
       <span class="linkish" style="padding:6px 10px; font-size:12px; border-radius:999px">Educational only — not financial advice</span>
     </div>
 
@@ -297,6 +341,17 @@
     </section>
   </main>
 
+  <!-- Suspense/Reveal Overlay -->
+  <div id="revealOverlay" class="reveal" aria-hidden="true">
+    <div class="reveal-card">
+      <p class="reveal-title">Crunching numbers…</p>
+      <div class="reveal-bar"><i></i></div>
+      <div id="revealGrade" class="reveal-grade">A</div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Cleaned nickname for profanity</div>
+
   <canvas id="confettiCanvas"></canvas>
 
 <script>
@@ -304,14 +359,12 @@
   const $ = id => document.getElementById(id);
   $('yr').textContent = new Date().getFullYear();
 
-  /* ---------- Visit streak (retention) ---------- */
+  /* ---------- Visit streak ---------- */
   const streakKey = 'gmf_streak';
   const now = new Date(); const today = new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
   let streak = JSON.parse(localStorage.getItem(streakKey)||'{"count":0,"last":0}');
   const diffDays = streak.last ? Math.floor((today - streak.last)/86400000) : null;
-  if(diffDays===0){ /* same day, keep */ }
-  else if(diffDays===1){ streak.count++; streak.last = today; }
-  else { streak = {count:1,last:today}; }
+  if(diffDays===0){} else if(diffDays===1){ streak.count++; streak.last=today; } else { streak={count:1,last:today}; }
   localStorage.setItem(streakKey, JSON.stringify(streak));
   $('streakBadge').textContent = `🔥 ${streak.count}-day streak`;
 
@@ -328,7 +381,7 @@
     themeLabel.textContent = cur==='dark' ? 'Light' : 'Dark';
   });
 
-  /* ---------- Inputs + totals ---------- */
+  /* ---------- Inputs / totals ---------- */
   const inputIds = ['income','expenses','cash','asset_home','asset_retire','asset_broker','asset_car','debt_mortgage','debt_student','debt_auto','debt_cards','debt_other','age','name'];
   const assetIds = ['asset_home','asset_retire','asset_broker','asset_car'];
   const debtIds  = ['debt_mortgage','debt_student','debt_auto','debt_cards','debt_other'];
@@ -343,7 +396,6 @@
     $('assets_total').textContent = assets.toLocaleString();
     $('liabs_total').textContent  = liabs.toLocaleString();
   }
-
   [...assetIds, ...debtIds, 'cash'].forEach(id => $(id).addEventListener('input', ()=>{ updateTotals(); saveInputs(); }));
   inputIds.forEach(id => $(id).addEventListener('input', saveInputs));
 
@@ -352,7 +404,6 @@
     localStorage.setItem('gmf_inputs', JSON.stringify(data));
   }
   function loadInputs(){
-    // Load from URL query if present
     const url = new URL(location.href);
     if(url.searchParams.get('q')){
       try{
@@ -381,11 +432,11 @@
     const name=$('profileName').value.trim() || 'Profile';
     const data={}; inputIds.forEach(id=>data[id]=($(id).value||''));
     const p=getProfiles(); p[name]=data; setProfiles(p);
-    $('profileName').value=''; alert('Profile saved.');
+    $('profileName').value=''; toast('Profile saved.');
   };
   $('deleteProfileBtn').onclick=()=>{
-    const name=$('profileSelect').value; if(!name) return alert('Select a saved profile first.');
-    const p=getProfiles(); delete p[name]; setProfiles(p); alert('Profile deleted.');
+    const name=$('profileSelect').value; if(!name) return toast('Select a saved profile first.');
+    const p=getProfiles(); delete p[name]; setProfiles(p); toast('Profile deleted.');
   };
   $('profileSelect').onchange=()=>{
     const name=$('profileSelect').value; if(!name) return;
@@ -394,29 +445,96 @@
     updateTotals(); saveInputs();
   };
 
-  /* ---------- Actions ---------- */
+  /* ---------- Sharable link ---------- */
+  function buildSharePayload(){
+    const data={}; inputIds.forEach(id => data[id] = ($(id).value || ''));
+    const q = btoa(encodeURIComponent(JSON.stringify(data)));
+    return `${location.origin}${location.pathname}?q=${q}`;
+  }
+  $('copyLinkBtn').onclick = () => {
+    const link = buildSharePayload();
+    navigator.clipboard.writeText(link).then(()=> toast('Link copied!'));
+  };
+  $('shortLinkBtn').onclick = async () => {
+    const longUrl = buildSharePayload();
+    try{
+      const res = await fetch(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(longUrl)}`);
+      const txt = await res.text();
+      if(/^https?:\/\//.test(txt.trim())){
+        await navigator.clipboard.writeText(txt.trim());
+        toast('Short link copied!');
+      }else{
+        await navigator.clipboard.writeText(longUrl);
+        toast('Couldn’t shorten, copied full link.');
+      }
+    }catch(e){
+      await navigator.clipboard.writeText(longUrl);
+      toast('Shortener blocked; copied full link.');
+    }
+  };
+
+  /* ---------- Profanity filter (nickname) ---------- */
+  const BAD = [
+    "ass","bastard","bitch","bollock","cock","cunt","dick","dyke","fuck","fucking",
+    "hoe","jackass","motherfucker","prick","pussy","shit","slut","twat"
+  ];
+  function cleanNickname(raw){
+    if(!raw) return {clean:"", filtered:false, replacedAll:false};
+    const lo = raw.toLowerCase();
+    let filtered=false;
+    let tokens = raw.split(/\s+/).map(t=>{
+      const bad = BAD.find(w => lo.includes(w));
+      if(!bad) return t;
+      filtered=true;
+      return t.replace(new RegExp(bad,'ig'),'***');
+    });
+    let clean = tokens.join(' ');
+    // If every character became asterisks or nothing useful, replace with Friend
+    const stripped = clean.replace(/[*\s]/g,'');
+    const replacedAll = filtered && stripped.length===0;
+    if(replacedAll) clean = "Friend";
+    return {clean, filtered, replacedAll};
+  }
+
+  /* ---------- Grade (with suspense reveal) ---------- */
   const gradeBtn=$('gradeBtn'), resetBtn=$('resetBtn'), results=$('results');
+  const overlay=$('revealOverlay'), rGrade=$('revealGrade');
+
   document.addEventListener('keydown', e=>{ if(e.key==='Enter') gradeBtn.click(); });
 
-  resetBtn.onclick = () => {
-    inputIds.forEach(id=>$(id).value='');
-    updateTotals(); results.style.display='none';
-  };
+  resetBtn.onclick = () => { inputIds.forEach(id=>$(id).value=''); updateTotals(); results.style.display='none'; };
+
   $('clearDataBtn').onclick = () => {
     localStorage.removeItem('gmf_inputs'); inputIds.forEach(id=>$(id).value='');
     updateTotals(); results.style.display='none';
   };
-  $('copyLinkBtn').onclick = () => {
-    const data = {}; inputIds.forEach(id => data[id] = ($(id).value || ''));
-    const q = btoa(encodeURIComponent(JSON.stringify(data)));
-    const link = `${location.origin}${location.pathname}?q=${q}`;
-    navigator.clipboard.writeText(link).then(()=> alert('Sharable link copied!'));
-  };
 
-  /* ---------- Grading ---------- */
   let prevBandIndex=null;
 
   gradeBtn.onclick = () => {
+    // Suspense overlay
+    rGrade.textContent = ''; // clear
+    overlay.classList.add('show');
+
+    setTimeout(()=>{ // ~3 seconds suspense
+      // Sanitize nickname
+      let nick = $('name').value.trim();
+      const {clean, filtered} = cleanNickname(nick);
+      if(filtered) toast('Cleaned nickname for profanity'); // show toast
+      $('name').value = clean;
+
+      // Now compute + render
+      computeAndRender();
+
+      // reveal animation
+      const letter = $('letter').textContent.replace(/^.*:\s*/,'');
+      rGrade.textContent = letter;
+      requestAnimationFrame(()=> rGrade.classList.add('show'));
+      setTimeout(()=>{ overlay.classList.remove('show'); rGrade.classList.remove('show'); }, 900); // slide away soon after show
+    }, 3000);
+  };
+
+  function computeAndRender(){
     const income = num('income'), expenses=num('expenses'), cash=num('cash');
     const age = num('age') || 30; const name = $('name').value.trim();
 
@@ -452,7 +570,6 @@
       {key:'Emergency fund', score:scoreEF, max:15},
       {key:'Retirement readiness', score:scoreRet, max:35}
     ];
-
     const total = Math.round(parts.reduce((a,p)=>a+p.score,0));
     const g = toLetter(total);
     const delta = gradeDelta(total);
@@ -477,7 +594,6 @@
 
     const tips = buildTips({savingsRate, expenseRatio, dti, monthsEF, investable, targetAmount, annualIncome});
     $('tipsList').innerHTML = tips.slice(0,5).map(t=>`<li>${t}</li>`).join('');
-
     const explain = buildExplain({income, expenses, cash, liabilities, annualIncome, netWorth, dti, savingsRate, monthsEF, investable, targetMultiple});
     $('explainList').innerHTML = explain.map(t=>`<li>${t}</li>`).join('');
 
@@ -506,17 +622,10 @@
     else if(idx > prevBandIndex){ letterEl.classList.remove('pulse'); void letterEl.offsetWidth; letterEl.classList.add('pulse'); runConfetti(1200); prevBandIndex = idx; } 
     else { prevBandIndex = idx; }
 
-    // GA4 event
     if(window.gtag){
-      window.gtag('event','grade_calculated',{
-        grade_letter: g.letter, score: total,
-        savings_rate_pct: +(savingsRate*100).toFixed(1),
-        ef_months: +monthsEF.toFixed(1),
-        dti_x: +dti.toFixed(2),
-        retire_target_multiple: +targetMultiple.toFixed(1),
-      });
+      window.gtag('event','grade_calculated',{ grade_letter:g.letter, score: total });
     }
-  };
+  }
 
   /* ---------- What-If Lab ---------- */
   const expSlider=$('w_expFactor'), expLabel=$('w_expFactor_val');
@@ -526,7 +635,6 @@
     const extraSave = Number($('w_extraSave').value||0);
     const extraDebt = Number($('w_extraDebt').value||0);
 
-    // Clone current values
     const income = num('income'), expenses=num('expenses')*expF, cash=num('cash') + extraSave*12;
     const age = num('age') || 30;
     const retire = num('asset_retire'), broker = num('asset_broker'), home = num('asset_home'), car = num('asset_car');
@@ -625,6 +733,13 @@
     ];
   }
 
+  /* ---------- Toast ---------- */
+  let toastTimer=null;
+  function toast(msg){
+    const t=$('toast'); t.textContent=msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer=setTimeout(()=> t.classList.remove('show'), 2200);
+  }
+
   /* ---------- Confetti ---------- */
   const confettiCanvas = $('confettiCanvas'); const ctx = confettiCanvas.getContext('2d');
   let confettiParticles = [], confettiAnim;
@@ -665,3 +780,4 @@
 </script>
 </body>
 </html>
+
