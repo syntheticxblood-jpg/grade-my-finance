@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
+<meta name="description" content="Fun, friendly money grade based on retirement readiness.">
 <style>
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
@@ -18,32 +19,22 @@
   html,body{height:100%}
   body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
 
-  /* Top header with logo */
-  header{
-    position:sticky; top:0; z-index:40; border-bottom:1px solid var(--line);
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
-  }
+  /* Header with logo */
+  header{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
   .brand{display:flex;align-items:center;gap:12px}
   .brand h1{margin:0;font-size:24px;color:#062c1b}
   .tag{margin:0;color:#062c1bcc;font-size:12px}
   .pill{margin-left:auto;border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
   .light .pill{background:#0f172a}
+  .logo{width:56px;height:56px}
 
   /* Layout with sidebar */
-  .app{
-    max-width:1200px; margin:0 auto; display:grid; grid-template-columns:240px 1fr; gap:16px; padding:16px;
-  }
-  aside{
-    position:sticky; top:74px; align-self:start; background:var(--card); border:1px solid var(--line);
-    border-radius:16px; padding:12px; box-shadow:var(--shadow);
-  }
-  .nav{display:flex; flex-direction:column; gap:8px}
-  .tab{
-    width:100%; text-align:left; border:1px solid var(--line); background:var(--panel); color:var(--text);
-    padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:800;
-  }
-  .tab.active{border-color:transparent; background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#062c1b}
+  .app{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:240px 1fr;gap:16px;padding:16px}
+  aside{position:sticky;top:78px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow)}
+  .nav{display:flex;flex-direction:column;gap:8px}
+  .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer;font-weight:800}
+  .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#062c1b}
 
   /* Cards & inputs */
   .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
@@ -51,9 +42,10 @@
   .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
   label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
   input,select{
-    width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text);
+    width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)
   }
   input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in oklab,var(--accent) 30%, transparent)}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
   .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
   .btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
        background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:800;cursor:pointer}
@@ -79,14 +71,8 @@
   .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
   .bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card);position:relative}
   .bar .fill{height:100%;width:0%;}
-  .bar .striped{
-    height:100%; background:repeating-linear-gradient(45deg, color-mix(in oklab,var(--accent) 70%, #fff 0%) 0 14px, color-mix(in oklab,var(--accent2) 70%, #fff 0%) 14px 28px);
-    animation: slide 0.7s linear infinite; opacity:.9;
-  }
-  @keyframes slide{ from{background-position:0 0} to{background-position:56px 0} }
-
-  /* Logo SVG size tweaks */
-  .logo{width:56px;height:56px}
+  .bar .striped{height:100%;background:repeating-linear-gradient(45deg, color-mix(in oklab,var(--accent) 70%, #fff 0%) 0 14px, color-mix(in oklab,var(--accent2) 70%, #fff 0%) 14px 28px);animation:slide .7s linear infinite;opacity:.9}
+  @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 </style>
 </head>
 <body class="dark">
@@ -107,7 +93,7 @@
         </svg>
         <div>
           <h1>Grade My Finance</h1>
-          <p class="tag">A playful snapshot of your money health — learn, level-up, repeat.</p>
+          <p class="tag">Grade based on retirement readiness — learn, level-up, repeat.</p>
         </div>
       </div>
       <button id="modeBtn" class="pill" title="Toggle theme">🌚 Dark</button>
@@ -142,11 +128,13 @@
             <input id="expenses" type="number" value="4000" min="0" />
           </div>
           <div class="card" style="grid-column:span 4">
-            <div class="section">Cash Savings</div>
-            <label>Checking + savings (HSA is in Assets)</label>
-            <input id="cash" type="number" value="25000" min="0" />
+            <div class="section">Withdrawal rate (%)</div>
+            <label>Safe withdrawal (defaults to 6%)</label>
+            <input id="swr" type="number" value="6" step="0.1" min="2" max="8" />
+            <div class="hint" id="targetHint">FI target: —</div>
           </div>
 
+          <!-- Assets -->
           <div class="card" style="grid-column:span 6">
             <div class="section">Assets 💰</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
@@ -155,40 +143,39 @@
               <div style="grid-column:span 6"><label>Brokerage/Stocks</label><input id="brokerage" type="number" value="29000" min="0"></div>
               <div style="grid-column:span 6"><label>Car Value</label><input id="car" type="number" value="17000" min="0"></div>
               <div style="grid-column:span 6"><label>HSA (counted here)</label><input id="hsa" type="number" value="1500" min="0"></div>
+              <div style="grid-column:span 6"><label>Cash Savings</label><input id="cash" type="number" value="25000" min="0"></div>
             </div>
-            <div class="scoreline" id="assetsHint">Total Assets: —</div>
+            <div class="hint" id="assetsHint">Total Assets: —</div>
           </div>
 
+          <!-- Liabilities + APR -->
           <div class="card" style="grid-column:span 6">
             <div class="section">Liabilities 🧾 (+ APR)</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
               <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="326000" min="0"></div>
               <div style="grid-column:span 6"><label>Mortgage APR %</label><input id="mortgageApr" type="number" value="5.25" step="0.01" min="0"></div>
+
               <div style="grid-column:span 6"><label>Student Loans</label><input id="student" type="number" value="26000" min="0"></div>
               <div style="grid-column:span 6"><label>Student APR %</label><input id="studentApr" type="number" value="4.9" step="0.01" min="0"></div>
+
               <div style="grid-column:span 6"><label>Auto Loans</label><input id="auto" type="number" value="13000" min="0"></div>
               <div style="grid-column:span 6"><label>Auto APR %</label><input id="autoApr" type="number" value="3.5" step="0.01" min="0"></div>
+
               <div style="grid-column:span 6"><label>Credit Cards (balance)</label><input id="cc" type="number" value="23" min="0"></div>
               <div style="grid-column:span 6"><label>Credit Card APR %</label><input id="ccApr" type="number" value="24.99" step="0.01" min="0"></div>
             </div>
-            <div class="scoreline" id="liabHint">Total Liabilities: —</div>
+            <div class="hint" id="liabHint">Total Liabilities: —</div>
           </div>
 
-          <div class="card" style="grid-column:span 8">
-            <div class="section">About You</div>
-            <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
-              <div style="grid-column:span 2"><label>Age</label><input id="age" type="number" value="29" min="16" max="100"></div>
-              <div style="grid-column:span 10"><label>Nickname</label><input id="nick" placeholder="e.g., Money Maverick 😎"></div>
-            </div>
-          </div>
-
-          <div class="card" style="grid-column:span 4;display:flex;align-items:end;justify-content:end">
+          <!-- Actions -->
+          <div class="card" style="grid-column:span 12;display:flex;justify-content:flex-end">
             <div class="actions">
               <button id="resetBtn" class="btn">Reset</button>
               <button id="gradeBtn" class="btn primary">Grade Me 🎉</button>
             </div>
           </div>
 
+          <!-- Result -->
           <div class="card" style="grid-column:span 12">
             <div class="resultTitle">
               <div id="bigGrade" class="bigGrade">—</div>
@@ -213,22 +200,16 @@
         </div>
       </section>
 
-      <!-- About Us -->
+      <!-- Other tabs (simple content) -->
       <section id="page-about" class="page">
-        <div class="card"><h2>About Us</h2><p>We make money check-ins quick, encouraging, and fun. No guilt, just a plan.</p></div>
+        <div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness — transparent, encouraging, and fun.</p></div>
       </section>
-
-      <!-- Our Goal -->
       <section id="page-goal" class="page">
-        <div class="card"><h2>Our Goal</h2><p>Help 1,000,000 people feel calmer and more confident about money.</p></div>
+        <div class="card"><h2>Our Goal</h2><p>Help 1,000,000 people build calm, confident money habits.</p></div>
       </section>
-
-      <!-- FAQ -->
       <section id="page-faq" class="page">
-        <div class="card"><h2>FAQ</h2><p>It’s educational, not financial advice. Your data stays on your device.</p></div>
+        <div class="card"><h2>FAQ</h2><p>Educational only, not financial advice. Your numbers stay on your device.</p></div>
       </section>
-
-      <!-- Contact -->
       <section id="page-contact" class="page">
         <div class="card"><h2>Contact</h2><p>Say hi: <a href="mailto:hello@grademyfinance.app">hello@grademyfinance.app</a></p></div>
       </section>
@@ -239,12 +220,9 @@
   <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
     <div class="loader">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <strong>Crunching numbers…</strong>
-        <span id="pct" class="scoreline">0%</span>
+        <strong>Crunching numbers…</strong><span id="pct" class="scoreline">0%</span>
       </div>
-      <div class="bar">
-        <div class="fill striped" id="barFill"></div>
-      </div>
+      <div class="bar"><div class="fill striped" id="barFill"></div></div>
     </div>
   </div>
 
@@ -255,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a));
 
-  /* Theme toggle */
+  /* Theme */
   const modeBtn = $('#modeBtn');
   function setMode(light){ document.body.classList.toggle('light', light); modeBtn.textContent = light ? '🌞 Light' : '🌚 Dark'; }
   setMode(false);
@@ -264,60 +242,75 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Sidebar tabs */
   const pages = ['grade','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
-    const t = e.target;
-    if(!t.classList.contains('tab')) return;
+    const t = e.target.closest('.tab'); if(!t) return;
     const pg = t.dataset.page;
-    document.querySelectorAll('.tab').forEach(btn=>btn.classList.toggle('active', btn===t));
+    document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b===t));
     pages.forEach(p=> document.getElementById('page-'+p).classList.toggle('active', p===pg));
     window.scrollTo({top:0,behavior:'smooth'});
   });
 
-  /* Inputs */
-  const ids = ['income','expenses','cash','home','retire','brokerage','car','hsa','mortgage','student','auto','cc','age','mortgageApr','studentApr','autoApr','ccApr'];
+  /* Inputs & totals */
+  const ids = ['income','expenses','swr','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','age','mortgageApr','studentApr','autoApr','ccApr'];
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
 
   function values(){
     const v = Object.fromEntries(ids.map(id=>[id, Number(els[id].value||0)]));
-    v.assets = v.cash + v.home + v.retire + v.brokerage + v.car + v.hsa; // HSA in assets
+    v.assets = v.home + v.retire + v.brokerage + v.car + v.hsa + v.cash;
+    v.investable = v.retire + v.brokerage + v.hsa;          // portfolio used for SWR
     v.liabs  = v.mortgage + v.student + v.auto + v.cc;
     v.net    = v.assets - v.liabs;
+    v.annualSpend = v.expenses * 12;
+    v.targetFI = v.swr>0 ? v.annualSpend / (v.swr/100) : Infinity; // e.g., 6% -> 16.7x spend
     return v;
   }
   function updateHints(){
     const v = values();
-    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)}`;
+    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable: ${money(v.investable)})`;
     $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
+    $('#targetHint').textContent = `FI target @ ${els.swr.value}%: ${money(v.targetFI)}`;
   }
   Object.values(els).forEach(el=> el.addEventListener('input', updateHints));
   updateHints();
 
-  /* Scoring (friendly) */
+  /* >>> NEW SCORING: Retirement Readiness model <<<
+
+     Weights (100 total):
+     - FI Readiness vs target (50)
+     - Savings rate (15) – monthly leftover / income, full at 50%
+     - Emergency fund months (10) – full at 6 months
+     - Non-mortgage debt vs assets (10) – lower better
+     - Mortgage LTV (5) – lower better; ≤50% is great
+     - Invested share of assets (10) – 20–60%+ is good
+  */
   function scoreModel(v){
-    const incY = v.income*12 || 1;
     const leftover = Math.max(0, v.income - v.expenses);
     const saveRate = v.income>0 ? leftover / v.income : 0;
     const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
 
-    const investable = v.retire + v.brokerage + v.hsa;
-    const investShare = v.assets>0 ? investable / v.assets : 0;
+    const investShare = v.assets>0 ? v.investable / v.assets : 0;
 
-    const nwMultiple = v.net / incY;
-    const sNW   = map01(nwMultiple, 0, 3);
-    const sSave = map01(saveRate, 0, 0.5);
-    const sEF   = map01(efMonths, 0, 6);
+    const readiness = v.targetFI>0 ? v.investable / v.targetFI : 0; // 1.0 = at target
+    const sFI   = map01(readiness, 0, 1);                            // cap at full credit when >=1
 
     const nonMortDebt = v.student + v.auto + v.cc;
     const nonMortRatio = v.assets>0 ? nonMortDebt / v.assets : 1;
     const sNonMort = map01(1-nonMortRatio, 0, 1);
 
-    const ltv = v.home>0 ? v.mortgage / v.home : 1;
+    const ltv = v.home>0 ? v.mortgage / v.home : 0;                  // lower better
     const sLTV = map01(1-ltv, 0, 0.5);
 
+    const sSave = map01(saveRate, 0, 0.5);
+    const sEF   = map01(efMonths, 0, 6);
     const sInv  = map01(investShare, 0.20, 0.60);
 
-    const score = 30*sNW + 25*sSave + 15*sEF + 15*sNonMort + 5*sLTV + 10*sInv;
-    return { score: Number(score.toFixed(1)), saveRate, efMonths, investShare, nwMultiple, ltv, nonMortRatio };
+    const score = 50*sFI + 15*sSave + 10*sEF + 10*sNonMort + 5*sLTV + 10*sInv;
+
+    return {
+      score: Number(score.toFixed(1)),
+      saveRate, efMonths, investShare, readiness, targetFI:v.targetFI, ltv, nonMortRatio
+    };
   }
+
   function letter(score){
     if(score>=97) return "A+";
     if(score>=93) return "A";
@@ -334,67 +327,57 @@ document.addEventListener('DOMContentLoaded', () => {
     return "F";
   }
   function gradeColor(L){
-    const map={'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'};
+    const map={'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'}; 
     return map[L] || 'var(--text)';
   }
 
-  /* Loading overlay + animated bar */
+  /* Loader with animated bar */
   let prog=0, timer=null;
   function showOverlay(){
-    prog=0;
-    $('#overlay').classList.add('show');
-    $('#barFill').style.width='0%';
-    $('#pct').textContent='0%';
-    timer=setInterval(()=>{
-      prog=Math.min(96, prog+Math.random()*8+4);
-      $('#barFill').style.width=prog+'%';
-      $('#pct').textContent=Math.round(prog)+'%';
-    }, 200);
+    prog=0; $('#overlay').classList.add('show'); $('#barFill').style.width='0%'; $('#pct').textContent='0%';
+    timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); $('#barFill').style.width=prog+'%'; $('#pct').textContent=Math.round(prog)+'%'; },200);
   }
-  function hideOverlay(){
-    clearInterval(timer);
-    $('#barFill').style.width='100%';
-    $('#pct').textContent='100%';
-    setTimeout(()=>$('#overlay').classList.remove('show'), 250);
-  }
+  function hideOverlay(){ clearInterval(timer); $('#barFill').style.width='100%'; $('#pct').textContent='100%'; setTimeout(()=>$('#overlay').classList.remove('show'),250); }
 
-  /* Explanations */
+  /* Why & Improve */
   function renderWhy(v,s){
     $('#chips').innerHTML = [
+      `<span class="chip">FI readiness: <b>${(s.readiness*100).toFixed(0)}%</b> of target</span>`,
       `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
       `<span class="chip">Emergency fund: <b>${s.efMonths.toFixed(1)} mo</b></span>`,
       `<span class="chip">Invested share: <b>${(s.investShare*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">NW ≈ <b>${s.nwMultiple.toFixed(1)}×</b> yearly income</span>`,
       `<span class="chip">Mortgage LTV: <b>${(s.ltv*100).toFixed(0)}%</b></span>`,
       `<span class="chip">Non-mortgage debt: <b>${(s.nonMortRatio*100).toFixed(1)}%</b> of assets</span>`
     ].join('');
-    const nonMortDebt=v.student+v.auto+v.cc;
+    const nonMortDebt = Number(els.student.value||0)+Number(els.auto.value||0)+Number(els.cc.value||0);
     $('#whyList').innerHTML = [
-      `• Your net worth is <b>${money(v.net)}</b> (assets ${money(v.assets)} minus liabilities ${money(v.liabs)}).`,
-      `• Savings rate is <b>${(s.saveRate*100).toFixed(0)}%</b> — about ${money(Math.max(0,v.income-v.expenses))}/mo kept.`,
-      `• Emergency cash covers <b>${s.efMonths.toFixed(1)} months</b> of expenses.`,
-      `• Invested share is <b>${(s.investShare*100).toFixed(0)}%</b> (retirement + brokerage + HSA).`,
-      `• Mortgage LTV is <b>${(s.ltv*100).toFixed(0)}%</b>.`,
-      `• Non-mortgage debt totals <b>${money(nonMortDebt)}</b> (<b>${(s.nonMortRatio*100).toFixed(1)}%</b> of assets).`
+      `• FI target at <b>${els.swr.value}%</b> is <b>${money(s.targetFI)}</b> (based on ${money(v.annualSpend)}/yr spending).`,
+      `• Investable portfolio is <b>${money(v.investable)}</b> → <b>${(s.readiness*100).toFixed(0)}%</b> of target.`,
+      `• Net worth: <b>${money(v.net)}</b> (assets ${money(v.assets)} – liabilities ${money(v.liabs)}).`,
+      `• Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b> (~${money(Math.max(0, v.income-v.expenses))}/mo kept).`,
+      `• Emergency fund: <b>${s.efMonths.toFixed(1)} months</b> of expenses.`,
+      `• Non-mortgage debt totals <b>${money(nonMortDebt)}</b>; mortgage LTV is <b>${(s.ltv*100).toFixed(0)}%</b>.`
     ].map(x=>`<div>${x}</div>`).join('');
   }
   function renderImprove(v,s){
     const ideas=[];
-    if(s.saveRate < 0.2) ideas.push(`Nudge savings to <b>20%+</b> by auto-moving ~${money(Math.ceil(v.income*0.05))}/mo.`);
+    if(s.readiness < 1) ideas.push(`Close the gap to FI: need ~<b>${money(s.targetFI - v.investable)}</b> more in investable assets at ${els.swr.value}% SWR.`);
+    if(s.saveRate < 0.2) ideas.push(`Aim for <b>20%+ savings</b> by auto-moving ~${money(Math.ceil(v.income*0.05))}/mo.`);
     if(s.efMonths < 3) ideas.push(`Build emergency fund to <b>3–6 months</b> (${money(v.expenses*3)}–${money(v.expenses*6)}).`);
-    if(s.investShare < 0.35) ideas.push(`Increase invested share to <b>35–60%+</b> (401k/IRA/brokerage/HSA).`);
-    if(s.ltv > 0.8) ideas.push(`High mortgage LTV (<b>${(s.ltv*100).toFixed(0)}%</b>): occasional principal prepayments help.`);
-    if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt (<b>${(s.nonMortRatio*100).toFixed(0)}%</b> of assets) — target <20%.`);
-    if(!ideas.length) ideas.push(`You’re cruising! Automate contributions and review yearly. 🎉`);
+    if(s.investShare < 0.35) ideas.push(`Increase invested share to <b>35–60%+</b> over time (401k/IRA/brokerage/HSA).`);
+    if(s.ltv > 0.8) ideas.push(`High mortgage LTV (<b>${(s.ltv*100).toFixed(0)}%</b>): occasional principal prepayments can help.`);
+    if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt (<b>${(s.nonMortRatio*100).toFixed(1)}%</b> of assets) — target <20%.`);
+    if(!ideas.length) ideas.push(`You’re cruising! Keep automating and review yearly. 🎉`);
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
   /* Grade flow */
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
+
   $('#gradeBtn').addEventListener('click', async ()=>{
     bigGrade.classList.remove('show');
     showOverlay();
-    await new Promise(r=>setTimeout(r, 700)); // UX pause
+    await new Promise(r=>setTimeout(r,700));
     const v = values();
     const s = scoreModel(v);
     const L = letter(s.score);
@@ -410,16 +393,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $('#resetBtn').addEventListener('click', ()=>{
     document.querySelectorAll('input[type="number"]').forEach(el=>el.value=0);
-    els.age.value=30; updateHints();
+    els.swr.value=6; els.age.value=30; updateHints();
     bigGrade.textContent='—'; bigGrade.classList.remove('show');
     scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
     progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
-
-  function gradeColor(L){
-    const map={'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'};
-    return map[L] || 'var(--text)';
-  }
 });
 </script>
 </body>
