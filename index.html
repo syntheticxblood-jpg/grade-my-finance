@@ -6,11 +6,9 @@
 <title>Grade My Finance</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-<!-- html2canvas for “Download result” -->
 <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <style>
-  /* ================== THEME ================== */
   :root{
     --ink:#0b1220; --muted:#5b6473; --card:#ffffff; --card-2:#f8fafc;
     --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
@@ -39,10 +37,9 @@
     transition: background .3s ease, color .2s ease;
   }
 
-  /* Header */
   .hero{
     position:relative; max-width:1100px; margin:0 auto 14px; padding:18px 18px 22px;
-    border-radius: var(--r-lg);
+    border-radius: 12px;
     background: color-mix(in oklab, var(--card) 70%, transparent);
     backdrop-filter: blur(6px);
     border: 1px solid color-mix(in oklab, var(--card) 70%, var(--border));
@@ -61,7 +58,9 @@
     letter-spacing:.5px;
     background:linear-gradient(90deg,#0ea5e9,#22c55e,#84cc16,#06b6d4,#22c55e);
     -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation: titlePop .8s ease-out;
   }
+  @keyframes titlePop{0%{transform:translateY(6px);opacity:.0}60%{transform:translateY(-2px);opacity:1}100%{transform:translateY(0)}}
   .subtitle{margin:4px 0 0; color:var(--muted); font-size:15px}
   .hero-actions{display:flex; align-items:center; gap:10px}
   .toggle{
@@ -69,8 +68,10 @@
     border:1px solid var(--border); background:var(--card-2); color:var(--ink); cursor:pointer;
     font-weight:600; font-size:13px;
   }
+  .streak{font-weight:800; font-size:12px; padding:6px 10px; border-radius:999px; background:#e6fce9; color:#065f46; border:1px solid #bbf7d0}
+  [data-theme="dark"] .streak{background:#0b2f1f; color:#bbf7d0; border-color:#164e3a}
   .hero-stripe{
-    position:absolute; inset:auto 0 0 0; height:6px; border-radius:0 0 var(--r-lg) var(--r-lg);
+    position:absolute; inset:auto 0 0 0; height:6px; border-radius:0 0 12px 12px;
     background: linear-gradient(90deg,#0ea5e9,#22c55e,#84cc16,#06b6d4,#0ea5e9);
     background-size: 300% 100%;
     animation: flow 8s linear infinite;
@@ -81,27 +82,26 @@
   .f-right{right:10px; top:-10px; animation: rise 17s linear infinite 2s}
   @keyframes rise{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-120px) rotate(360deg)}}
 
-  /* App card */
   .wrap{
     position:relative; z-index:1;
     max-width:1100px; margin:0 auto; background:var(--card); padding:22px;
-    border-radius: var(--r-lg); border:1px solid var(--border-soft);
+    border-radius: 12px; border:1px solid var(--border-soft);
     box-shadow: 0 12px 32px rgba(0,0,0,.12);
   }
   .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:14px}
-  .field{grid-column:span 12; background:var(--card-2); border:1px solid var(--border); border-radius:var(--r-md); padding:12px}
+  .field{grid-column:span 12; background:var(--card-2); border:1px solid var(--border); border-radius:8px; padding:12px}
   @media (min-width:760px){
-    .span-6{grid-column:span 6}.span-4{grid-column:span 4}.span-3{grid-column:span 3}.span-9{grid-column:span 9}.span-12{grid-column:span 12}
+    .span-6{grid-column:span 6}.span-4{grid-column:span 4}.span-3{grid-column:span 3}.span-9{grid-column:span 9}
   }
   label{display:block; font-weight:600; margin-bottom:6px}
-  input{
+  input, select{
     width:100%; font:inherit; padding:10px 12px; border-radius:6px;
     border:1px solid var(--border); background:var(--card); color:var(--ink);
     transition:border .15s, box-shadow .15s
   }
-  input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 4px var(--ring)}
+  input:focus, select:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 4px var(--ring)}
   .hint{font-size:12px; color:var(--muted); margin-top:6px}
-  .sec{margin-top:8px; background:var(--card); border:1px dashed color-mix(in oklab, var(--border) 60%, transparent); border-radius:var(--r-md); padding:12px}
+  .sec{margin-top:8px; background:var(--card); border:1px dashed color-mix(in oklab, var(--border) 60%, transparent); border-radius:8px; padding:12px}
   .sec h3{margin:0 0 8px; font-size:16px; display:flex; align-items:center; gap:8px}
 
   .actions{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px}
@@ -112,33 +112,30 @@
   button:active{transform:translateY(1px)}
   .secondary{background:#e5e7eb; color:#111827; box-shadow:none}
   [data-theme="dark"] .secondary{background:#1f2937; color:#e5e7eb}
-  .pill{background:#0ea5e9; color:white; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700}
+  .linkish{border:1px solid var(--border); background:var(--card-2); color:var(--ink); font-weight:700}
 
-  /* Results */
-  .scorecard{margin-top:16px; padding:16px; border-radius:var(--r-md); background:color-mix(in oklab, var(--card) 80%, transparent); border:1px solid var(--border);
+  .scorecard{margin-top:16px; padding:16px; border-radius:8px; background:color-mix(in oklab, var(--card) 80%, transparent); border:1px solid var(--border);
     display:grid; grid-template-columns:1fr; gap:12px}
   .grade{font-family:"Baloo 2", cursive; font-size: clamp(26px, 4vw, 42px); font-weight:800}
   .muted{color:var(--muted)} .tiny{font-size:12px}
   .meters{display:grid; gap:10px}
-  .meter{background:var(--card); padding:12px; border:1px solid var(--border); border-radius:var(--r-md)}
+  .meter{background:var(--card); padding:12px; border:1px solid var(--border); border-radius:8px}
   .meter h4{margin:0 0 6px; font-size:14px}
   .bar{height:10px; background:color-mix(in oklab, var(--border) 65%, transparent); border-radius:6px; overflow:hidden}
   .bar > i{display:block; height:100%; width:0%; border-radius:6px; transition: width .6s cubic-bezier(.2,.8,.2,1)}
   .pos i{background:var(--ok)} .mid i{background:var(--warn)} .neg i{background:var(--bad)}
-  .tips{background:var(--card); border:1px solid var(--border); border-radius:var(--r-md); padding:14px}
-  .explain{background:var(--card); border:1px solid var(--border); border-radius:var(--r-md); padding:14px}
+  .tips,.explain{background:var(--card); border:1px solid var(--border); border-radius:8px; padding:14px}
   .footer{margin-top:6px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
   .pulse{animation: pulse .8s ease-out}
   @keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.05); text-shadow:0 0 12px color-mix(in oklab, var(--ok) 60%, transparent)}100%{transform:scale(1)}}
   #confettiCanvas{position:fixed; inset:0; pointer-events:none; z-index:9999; display:none}
 
   .result-actions{display:flex; gap:8px; flex-wrap:wrap}
-  .linkish{border:1px solid var(--border); background:var(--card-2); color:var(--ink)}
+  .profiles{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 </style>
 </head>
 
 <body>
-  <!-- HEADER -->
   <section class="hero">
     <div class="floater f-left">🪙</div>
     <div class="floater f-right">💸</div>
@@ -151,13 +148,13 @@
         </div>
       </div>
       <div class="hero-actions">
+        <span id="streakBadge" class="streak" title="Visit streak">🔥 1-day streak</span>
         <button class="toggle" id="themeToggle" aria-label="Toggle dark mode">🌙 <span id="themeLabel">Dark</span></button>
       </div>
     </div>
     <div class="hero-stripe"></div>
   </section>
 
-  <!-- APP -->
   <main class="wrap">
     <!-- Quick fields -->
     <section class="grid">
@@ -200,7 +197,7 @@
           <div class="grid">
             <div class="field span-6"><label for="debt_mortgage">Mortgage Balance</label><input type="number" id="debt_mortgage" placeholder="e.g., 329000"></div>
             <div class="field span-6"><label for="debt_student">Student Loans</label><input type="number" id="debt_student" placeholder="e.g., 26000"></div>
-            <div class="field span-6"><=""/><label for="debt_auto">Auto Loans</label><input type="number" id="debt_auto" placeholder="e.g., 13500"></div>
+            <div class="field span-6"><label for="debt_auto">Auto Loans</label><input type="number" id="debt_auto" placeholder="e.g., 13500"></div>
             <div class="field span-6"><label for="debt_cards">Credit Cards</label><input type="number" id="debt_cards" placeholder="e.g., 3300"></div>
             <div class="field span-12"><label for="debt_other">Other Debt</label><input type="number" id="debt_other" placeholder="e.g., 0"></div>
           </div>
@@ -219,11 +216,22 @@
       </div>
     </section>
 
+    <!-- Profiles -->
+    <section class="profiles" style="margin-top:8px">
+      <select id="profileSelect">
+        <option value="">Load saved profile…</option>
+      </select>
+      <input id="profileName" placeholder="Profile name (e.g., Me)" style="max-width:220px">
+      <button class="secondary linkish" id="saveProfileBtn">Save profile</button>
+      <button class="secondary linkish" id="deleteProfileBtn">Delete profile</button>
+    </section>
+
     <div class="actions">
       <button id="gradeBtn">Grade Me!</button>
       <button class="secondary" id="resetBtn">Reset</button>
       <button class="secondary linkish" id="clearDataBtn" title="Forget saved inputs">Clear my data</button>
-      <span class="pill tiny">Educational only — not financial advice</span>
+      <button class="secondary linkish" id="copyLinkBtn" title="Copy sharable link">Copy sharable link</button>
+      <span class="linkish" style="padding:6px 10px; font-size:12px; border-radius:999px">Educational only — not financial advice</span>
     </div>
 
     <!-- Results -->
@@ -258,6 +266,30 @@
         </details>
       </div>
 
+      <!-- What-If Lab -->
+      <div class="tips">
+        <h3>What-If Lab (12-month preview)</h3>
+        <div class="grid">
+          <div class="field span-4">
+            <label>Change monthly expenses</label>
+            <input type="range" min="0.8" max="1.2" step="0.01" id="w_expFactor">
+            <div class="tiny muted">Current × <span id="w_expFactor_val">1.00</span></div>
+          </div>
+          <div class="field span-4">
+            <label>Extra monthly savings</label>
+            <input type="number" id="w_extraSave" min="0" step="25" value="0">
+            <div class="tiny muted">Adds to cash (and 25% counts as investable).</div>
+          </div>
+          <div class="field span-4">
+            <label>Extra monthly debt payoff</label>
+            <input type="number" id="w_extraDebt" min="0" step="25" value="0">
+            <div class="tiny muted">Reduces total liabilities over 12 months.</div>
+          </div>
+        </div>
+        <button class="secondary linkish" id="w_run">Preview</button>
+        <div id="w_result" class="tiny muted" style="margin-top:8px">Adjust sliders and preview your future grade.</div>
+      </div>
+
       <div class="footer muted tiny">
         <div id="summary"></div>
         <div>© <span id="yr"></span> Grade My Finance</div>
@@ -265,7 +297,6 @@
     </section>
   </main>
 
-  <!-- Confetti Canvas -->
   <canvas id="confettiCanvas"></canvas>
 
 <script>
@@ -273,7 +304,18 @@
   const $ = id => document.getElementById(id);
   $('yr').textContent = new Date().getFullYear();
 
-  // ---------------- Theme toggle ----------------
+  /* ---------- Visit streak (retention) ---------- */
+  const streakKey = 'gmf_streak';
+  const now = new Date(); const today = new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+  let streak = JSON.parse(localStorage.getItem(streakKey)||'{"count":0,"last":0}');
+  const diffDays = streak.last ? Math.floor((today - streak.last)/86400000) : null;
+  if(diffDays===0){ /* same day, keep */ }
+  else if(diffDays===1){ streak.count++; streak.last = today; }
+  else { streak = {count:1,last:today}; }
+  localStorage.setItem(streakKey, JSON.stringify(streak));
+  $('streakBadge').textContent = `🔥 ${streak.count}-day streak`;
+
+  /* ---------- Theme ---------- */
   const root = document.documentElement;
   const themeToggle = $('themeToggle');
   const themeLabel = $('themeLabel');
@@ -286,98 +328,122 @@
     themeLabel.textContent = cur==='dark' ? 'Light' : 'Dark';
   });
 
-  // ---------------- Persist inputs ----------------
+  /* ---------- Inputs + totals ---------- */
   const inputIds = ['income','expenses','cash','asset_home','asset_retire','asset_broker','asset_car','debt_mortgage','debt_student','debt_auto','debt_cards','debt_other','age','name'];
-  function saveInputs(){
-    const data = {};
-    inputIds.forEach(id => data[id] = ($(id).value || ''));
-    localStorage.setItem('gmf_inputs', JSON.stringify(data));
-  }
-  function loadInputs(){
-    const raw = localStorage.getItem('gmf_inputs');
-    if(!raw) return;
-    try{
-      const data = JSON.parse(raw);
-      inputIds.forEach(id => { if(data[id] !== undefined) $(id).value = data[id]; });
-    }catch(e){}
-  }
-  function clearInputs(){
-    localStorage.removeItem('gmf_inputs');
-    inputIds.forEach(id => { $(id).value = ''; });
-    updateTotals();
-    $('results').style.display='none';
-  }
-  $('clearDataBtn').addEventListener('click', clearInputs);
-  loadInputs();
-
-  // ---------------- Auto totals ----------------
   const assetIds = ['asset_home','asset_retire','asset_broker','asset_car'];
   const debtIds  = ['debt_mortgage','debt_student','debt_auto','debt_cards','debt_other'];
-  [...assetIds, ...debtIds, 'cash'].forEach(id => $(id).addEventListener('input', ()=>{ updateTotals(); saveInputs(); }));
-  inputIds.forEach(id => $(id).addEventListener('input', saveInputs));
 
   function toNum(el){ const n = Number((el.value||'').replace(/,/g,'')); return isNaN(n)?0:n; }
+  function num(id){ return toNum($(id)); }
+  function fmt(v){ return Number(Math.round(v)).toLocaleString(); }
+
   function updateTotals(){
-    const assets = assetIds.reduce((a,id)=>a+toNum($(id)),0) + toNum($('cash'));
-    const liabs  = debtIds.reduce((a,id)=>a+toNum($(id)),0);
+    const assets = assetIds.reduce((a,id)=>a+num(id),0) + num('cash');
+    const liabs  = debtIds.reduce((a,id)=>a+num(id),0);
     $('assets_total').textContent = assets.toLocaleString();
     $('liabs_total').textContent  = liabs.toLocaleString();
   }
-  updateTotals();
 
+  [...assetIds, ...debtIds, 'cash'].forEach(id => $(id).addEventListener('input', ()=>{ updateTotals(); saveInputs(); }));
+  inputIds.forEach(id => $(id).addEventListener('input', saveInputs));
+
+  function saveInputs(){
+    const data = {}; inputIds.forEach(id => data[id] = ($(id).value || ''));
+    localStorage.setItem('gmf_inputs', JSON.stringify(data));
+  }
+  function loadInputs(){
+    // Load from URL query if present
+    const url = new URL(location.href);
+    if(url.searchParams.get('q')){
+      try{
+        const data = JSON.parse(decodeURIComponent(atob(url.searchParams.get('q'))));
+        Object.keys(data).forEach(id => { if($(id)) $(id).value = data[id]; });
+      }catch(e){}
+    }else{
+      const raw = localStorage.getItem('gmf_inputs'); if(!raw) return;
+      try{ const data = JSON.parse(raw); Object.keys(data).forEach(id => { if($(id)) $(id).value = data[id]; }); }catch(e){}
+    }
+  }
+  loadInputs(); updateTotals();
+
+  /* ---------- Profiles ---------- */
+  const pKey = 'gmf_profiles';
+  function getProfiles(){ return JSON.parse(localStorage.getItem(pKey) || '{}'); }
+  function setProfiles(p){ localStorage.setItem(pKey, JSON.stringify(p)); refreshProfileList(); }
+  function refreshProfileList(){
+    const sel=$('profileSelect'); sel.innerHTML='<option value="">Load saved profile…</option>';
+    const p=getProfiles(); Object.keys(p).forEach(name=>{
+      const o=document.createElement('option'); o.value=name; o.textContent=name; sel.appendChild(o);
+    });
+  }
+  refreshProfileList();
+  $('saveProfileBtn').onclick=()=>{
+    const name=$('profileName').value.trim() || 'Profile';
+    const data={}; inputIds.forEach(id=>data[id]=($(id).value||''));
+    const p=getProfiles(); p[name]=data; setProfiles(p);
+    $('profileName').value=''; alert('Profile saved.');
+  };
+  $('deleteProfileBtn').onclick=()=>{
+    const name=$('profileSelect').value; if(!name) return alert('Select a saved profile first.');
+    const p=getProfiles(); delete p[name]; setProfiles(p); alert('Profile deleted.');
+  };
+  $('profileSelect').onchange=()=>{
+    const name=$('profileSelect').value; if(!name) return;
+    const p=getProfiles()[name]; if(!p) return;
+    Object.keys(p).forEach(id=>{ if($(id)) $(id).value=p[id]; });
+    updateTotals(); saveInputs();
+  };
+
+  /* ---------- Actions ---------- */
   const gradeBtn=$('gradeBtn'), resetBtn=$('resetBtn'), results=$('results');
   document.addEventListener('keydown', e=>{ if(e.key==='Enter') gradeBtn.click(); });
 
   resetBtn.onclick = () => {
-    inputIds.forEach(id=>{
-      const el=$(id);
-      el.value='';
-    });
-    updateTotals();
-    results.style.display='none';
+    inputIds.forEach(id=>$(id).value='');
+    updateTotals(); results.style.display='none';
+  };
+  $('clearDataBtn').onclick = () => {
+    localStorage.removeItem('gmf_inputs'); inputIds.forEach(id=>$(id).value='');
+    updateTotals(); results.style.display='none';
+  };
+  $('copyLinkBtn').onclick = () => {
+    const data = {}; inputIds.forEach(id => data[id] = ($(id).value || ''));
+    const q = btoa(encodeURIComponent(JSON.stringify(data)));
+    const link = `${location.origin}${location.pathname}?q=${q}`;
+    navigator.clipboard.writeText(link).then(()=> alert('Sharable link copied!'));
   };
 
-  // Track previous letter band for confetti trigger
-  let prevBandIndex = null;
+  /* ---------- Grading ---------- */
+  let prevBandIndex=null;
 
   gradeBtn.onclick = () => {
     const income = num('income'), expenses=num('expenses'), cash=num('cash');
     const age = num('age') || 30; const name = $('name').value.trim();
 
-    // Assets & debts
     const retire = num('asset_retire'), broker = num('asset_broker'), home = num('asset_home'), car = num('asset_car');
     const assets = retire + broker + home + car + cash;
-    const liabilities = debtIds.reduce((a,id)=>a+num(id),0);
+    const liabilities = ['debt_mortgage','debt_student','debt_auto','debt_cards','debt_other'].reduce((a,id)=>a+num(id),0);
 
     const annualIncome = income*12;
     const netWorth = Math.max(0, assets - liabilities);
     const savings = Math.max(0, income - expenses);
     const savingsRate = income>0 ? savings/income : 0;
     const expenseRatio = income>0 ? expenses/income : 1;
-    const dti = annualIncome>0 ? (liabilities/annualIncome) : 5; // total debt vs annual income
+    const dti = annualIncome>0 ? (liabilities/annualIncome) : 5;
     const monthsEF = expenses>0 ? cash/expenses : 0;
 
-    // ---------- NEW: Retirement Readiness ----------
-    // Investable assets (retirement + brokerage + 25% of cash; exclude home/car)
+    // Retirement readiness
     const investable = retire + broker + 0.25*cash;
-    const targetMultiple = targetRetMultipleByAge(age); // rule-of-thumb targets by age
+    const targetMultiple = targetRetMultipleByAge(age);
     const targetAmount = (annualIncome>0 ? targetMultiple*annualIncome : Infinity);
     const readiness = (annualIncome>0 && isFinite(targetAmount) && targetAmount>0) ? Math.min(1, investable/targetAmount) : 0;
 
-    // ---- Scoring (100 total) ----
-    const scoreSavingsRate = piecewise(savingsRate, [
-      [0.00,0],[0.10,12],[0.20,20],[0.30,23],[0.40,25]
-    ]); // 25
-    const scoreExpense = piecewise(1-expenseRatio, [
-      [0.00,0],[0.10,3],[0.20,6],[0.30,8],[0.40,10]
-    ]); // 10
-    const scoreDTI = piecewiseRev(dti, [
-      [3.00,0],[2.00,4],[1.50,8],[1.00,11],[0.50,13],[0.25,15]
-    ]); // 15
-    const scoreEF = piecewise(monthsEF, [
-      [0,0],[1,5],[3,11],[6,15]
-    ]); // 15
-    const scoreRet = readiness*35; // 0..35
+    // Scores
+    const scoreSavingsRate = piecewise(savingsRate, [[0.00,0],[0.10,12],[0.20,20],[0.30,23],[0.40,25]]);
+    const scoreExpense     = piecewise(1-expenseRatio, [[0.00,0],[0.10,3],[0.20,6],[0.30,8],[0.40,10]]);
+    const scoreDTI         = piecewiseRev(dti, [[3.00,0],[2.00,4],[1.50,8],[1.00,11],[0.50,13],[0.25,15]]);
+    const scoreEF          = piecewise(monthsEF, [[0,0],[1,5],[3,11],[6,15]]);
+    const scoreRet         = readiness*35;
 
     const parts = [
       {key:'Savings rate', score:scoreSavingsRate, max:25},
@@ -391,7 +457,7 @@
     const g = toLetter(total);
     const delta = gradeDelta(total);
 
-    // ---- Render ----
+    // Render
     results.style.display='grid';
     const letterEl = $('letter');
     letterEl.textContent = (name? `${name}, `:'') + `Your grade: ${g.letter}`;
@@ -399,33 +465,25 @@
     $('deltaLine').textContent = `▲ ${delta.toNext} pts to rank up to ${g.next} • ▼ ${delta.toDown} pts from dropping to ${g.prev}`;
     $('whyLine').textContent = `Net worth: $${fmt(netWorth)} • Savings rate: ${(savingsRate*100).toFixed(0)}% • EF: ${monthsEF.toFixed(1)} mo • DTI: ${dti.toFixed(2)}× • Retirement target: ${targetMultiple.toFixed(1)}× income`;
 
-    // meters
     const meters = $('meters'); meters.innerHTML='';
     parts.forEach(p=>{
       const pct = Math.max(0, Math.min(1, p.score/p.max));
       const cls = pct>=0.66 ? 'pos' : pct>=0.33 ? 'mid' : 'neg';
       const wrap = document.createElement('div'); wrap.className='meter';
-      wrap.innerHTML = `
-        <h4>${p.key} <span class="muted tiny">(${Math.round(p.score)}/${p.max})</span></h4>
-        <div class="bar ${cls}"><i style="width:${Math.max(4, Math.round(pct*100))}%;"></i></div>
-      `;
+      wrap.innerHTML = `<h4>${p.key} <span class="muted tiny">(${Math.round(p.score)}/${p.max})</span></h4>
+                        <div class="bar ${cls}"><i style="width:${Math.max(4, Math.round(pct*100))}%;"></i></div>`;
       meters.appendChild(wrap);
     });
 
-    // tips
     const tips = buildTips({savingsRate, expenseRatio, dti, monthsEF, investable, targetAmount, annualIncome});
-    const ul = $('tipsList'); ul.innerHTML='';
-    tips.slice(0,5).forEach(t=>{ const li=document.createElement('li'); li.textContent=t; ul.appendChild(li); });
+    $('tipsList').innerHTML = tips.slice(0,5).map(t=>`<li>${t}</li>`).join('');
 
-    // explainer
     const explain = buildExplain({income, expenses, cash, liabilities, annualIncome, netWorth, dti, savingsRate, monthsEF, investable, targetMultiple});
-    const exul = $('explainList'); exul.innerHTML='';
-    explain.forEach(line => { const li=document.createElement('li'); li.textContent=line; exul.appendChild(li); });
+    $('explainList').innerHTML = explain.map(t=>`<li>${t}</li>`).join('');
 
     $('summary').textContent = `This score uses simple heuristics — directional, not prescriptive.`;
     saveInputs();
 
-    // ---- Share + Download handlers ----
     $('shareBtn').onclick = () => {
       const url = location.origin + location.pathname;
       const text = `I got a ${g.letter} on Grade My Finance! (${total}/100)`;
@@ -441,19 +499,14 @@
       link.click();
     };
 
-    // ---- Confetti burst if letter band improved ----
-    const order = ['F','D','C-','C','C+','B-','B','B+','A-','A','A+']; // ascending
+    // Confetti if improved
+    const order = ['F','D','C-','C','C+','B-','B','B+','A-','A','A+'];
     const idx = order.indexOf(g.letter);
     if(prevBandIndex===null){ prevBandIndex = idx; }
-    else if(idx > prevBandIndex){ // improved
-      letterEl.classList.remove('pulse'); void letterEl.offsetWidth; letterEl.classList.add('pulse');
-      runConfetti(1200);
-      prevBandIndex = idx;
-    } else {
-      prevBandIndex = idx;
-    }
+    else if(idx > prevBandIndex){ letterEl.classList.remove('pulse'); void letterEl.offsetWidth; letterEl.classList.add('pulse'); runConfetti(1200); prevBandIndex = idx; } 
+    else { prevBandIndex = idx; }
 
-    // GA4 event hook (safe if GA not present)
+    // GA4 event
     if(window.gtag){
       window.gtag('event','grade_calculated',{
         grade_letter: g.letter, score: total,
@@ -465,10 +518,44 @@
     }
   };
 
-  // ---------- Helpers ----------
-  function num(id){ return Number(($(id).value||'').replace(/,/g,''))||0; }
-  const fmt = v => Number(Math.round(v)).toLocaleString();
+  /* ---------- What-If Lab ---------- */
+  const expSlider=$('w_expFactor'), expLabel=$('w_expFactor_val');
+  expSlider.addEventListener('input', ()=> expLabel.textContent = Number(expSlider.value).toFixed(2));
+  $('w_run').onclick = ()=>{
+    const expF = Number(expSlider.value||'1');
+    const extraSave = Number($('w_extraSave').value||0);
+    const extraDebt = Number($('w_extraDebt').value||0);
 
+    // Clone current values
+    const income = num('income'), expenses=num('expenses')*expF, cash=num('cash') + extraSave*12;
+    const age = num('age') || 30;
+    const retire = num('asset_retire'), broker = num('asset_broker'), home = num('asset_home'), car = num('asset_car');
+    let liabilities = ['debt_mortgage','debt_student','debt_auto','debt_cards','debt_other'].reduce((a,id)=>a+num(id),0);
+    liabilities = Math.max(0, liabilities - extraDebt*12);
+
+    const annualIncome = income*12;
+    const savings = Math.max(0, income - expenses);
+    const savingsRate = income>0 ? savings/income : 0;
+    const expenseRatio = income>0 ? expenses/income : 1;
+    const dti = annualIncome>0 ? (liabilities/annualIncome) : 5;
+    const monthsEF = expenses>0 ? cash/expenses : 0;
+    const investable = retire + broker + 0.25*cash;
+    const targetMultiple = targetRetMultipleByAge(age);
+    const targetAmount = (annualIncome>0 ? targetMultiple*annualIncome : Infinity);
+    const readiness = (annualIncome>0 && isFinite(targetAmount) && targetAmount>0) ? Math.min(1, investable/targetAmount) : 0;
+
+    const scoreSavingsRate = piecewise(savingsRate, [[0.00,0],[0.10,12],[0.20,20],[0.30,23],[0.40,25]]);
+    const scoreExpense     = piecewise(1-expenseRatio, [[0.00,0],[0.10,3],[0.20,6],[0.30,8],[0.40,10]]);
+    const scoreDTI         = piecewiseRev(dti, [[3.00,0],[2.00,4],[1.50,8],[1.00,11],[0.50,13],[0.25,15]]);
+    const scoreEF          = piecewise(monthsEF, [[0,0],[1,5],[3,11],[6,15]]);
+    const scoreRet         = readiness*35;
+    const total = Math.round(scoreSavingsRate+scoreExpense+scoreDTI+scoreEF+scoreRet);
+    const letter = toLetter(total).letter;
+
+    $('w_result').textContent = `With those changes for 12 months: grade ≈ ${letter} (${total}/100).`;
+  };
+
+  /* ---------- Helpers ---------- */
   function piecewise(x, pts){
     pts = pts.slice().sort((a,b)=>a[0]-b[0]);
     if(x<=pts[0][0]) return pts[0][1];
@@ -478,7 +565,6 @@
       if(x>=x1 && x<=x2){ const t=(x-x1)/(x2-x1); return y1 + t*(y2-y1); }
     } return 0;
   }
-  // reversed mapping: smaller x → higher score
   function piecewiseRev(x, pts){
     pts = pts.slice().sort((a,b)=>a[0]-b[0]);
     if(x<=pts[0][0]) return pts[0][1];
@@ -488,10 +574,7 @@
       if(x>=x1 && x<=x2){ const t=(x-x1)/(x2-x1); return y1 + t*(y2-y1); }
     } return 0;
   }
-
-  // Retirement target multiples by age (simple rule-of-thumb curve)
   function targetRetMultipleByAge(age){
-    // 25→0.5x, 30→1x, 35→2x, 40→3x, 45→4x, 50→6x, 55→7x, 60→8x, 65→10x
     const pts = [[25,0.5],[30,1],[35,2],[40,3],[45,4],[50,6],[55,7],[60,8],[65,10]];
     age = Math.max(18, Math.min(75, age||30));
     if(age<=pts[0][0]) return pts[0][1];
@@ -500,7 +583,6 @@
       if(age>=a1 && age<=a2){ const t=(age-a1)/(a2-a1); return m1 + t*(m2-m1); }
     } return pts[pts.length-1][1];
   }
-
   function toLetter(score){
     const bands = [
       {min:97, label:'A+'},{min:93, label:'A'},{min:90, label:'A-'},
@@ -512,14 +594,12 @@
     const idx = bands.indexOf(cur);
     return {letter:cur.label, next: idx>0?bands[idx-1].label:cur.label, prev: idx<bands.length-1?bands[idx+1].label:cur.label};
   }
-
   function gradeDelta(score){
     const thresholds = [97,93,90,87,83,80,77,73,70,60,0];
     let above = thresholds.find(t => score < t); if(above===undefined) above=100;
     const below = thresholds.slice().reverse().find(t => score >= t) || 0;
     return {toNext: Math.max(0, Math.ceil(above - score)), toDown: Math.max(0, Math.ceil(score - below))};
   }
-
   function buildTips({savingsRate, expenseRatio, dti, monthsEF, investable, targetAmount, annualIncome}){
     const t=[];
     if(monthsEF<3) t.push(`Build your emergency fund to 3+ months (you’re at ${monthsEF.toFixed(1)}). Auto-save $${Math.round(Math.max(100, (annualIncome/12)*0.05))}/mo.`);
@@ -533,7 +613,6 @@
     if(t.length===0) t.push('You’re crushing it — consider stretch goals: 6-month EF, +1% contribution bump, or a quarterly net-worth target.');
     return t;
   }
-
   function buildExplain({income, expenses, cash, liabilities, annualIncome, netWorth, dti, savingsRate, monthsEF, investable, targetMultiple}){
     const pct = x => (x*100).toFixed(1) + '%';
     const keepPct = income>0 ? 1 - (expenses/income) : 0;
@@ -546,28 +625,16 @@
     ];
   }
 
-  // ---------------- Confetti (vanilla) ----------------
-  const confettiCanvas = $('confettiCanvas');
-  const ctx = confettiCanvas.getContext('2d');
+  /* ---------- Confetti ---------- */
+  const confettiCanvas = $('confettiCanvas'); const ctx = confettiCanvas.getContext('2d');
   let confettiParticles = [], confettiAnim;
-
   function runConfetti(durationMs=1200){
-    resizeCanvas();
-    createConfetti();
-    confettiCanvas.style.display='block';
-    const start = performance.now();
-
-    cancelAnimationFrame(confettiAnim);
+    resizeCanvas(); createConfetti(); confettiCanvas.style.display='block';
+    const start = performance.now(); cancelAnimationFrame(confettiAnim);
     (function frame(t){
-      const elapsed = t - start;
-      drawConfetti();
-      if(elapsed < durationMs){
-        confettiAnim = requestAnimationFrame(frame);
-      } else {
-        confettiCanvas.style.display='none';
-        confettiParticles = [];
-        cancelAnimationFrame(confettiAnim);
-      }
+      const elapsed = t - start; drawConfetti();
+      if(elapsed < durationMs){ confettiAnim = requestAnimationFrame(frame); }
+      else { confettiCanvas.style.display='none'; confettiParticles = []; cancelAnimationFrame(confettiAnim); }
     })(start);
   }
   function resizeCanvas(){ confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
@@ -576,14 +643,10 @@
     const colors = ['#22c55e','#0ea5e9','#84cc16','#06b6d4','#f59e0b','#ef4444'];
     const N = Math.min(220, Math.floor(window.innerWidth/6));
     confettiParticles = Array.from({length:N}, ()=>({
-      x: Math.random()*confettiCanvas.width,
-      y: -20 - Math.random()*80,
-      r: 4 + Math.random()*6,
-      color: colors[Math.floor(Math.random()*colors.length)],
-      vy: 3 + Math.random()*3,
-      vx: -2 + Math.random()*4,
-      rot: Math.random()*360,
-      vr: -6 + Math.random()*12,
+      x: Math.random()*confettiCanvas.width, y: -20 - Math.random()*80,
+      r: 4 + Math.random()*6, color: colors[Math.floor(Math.random()*colors.length)],
+      vy: 3 + Math.random()*3, vx: -2 + Math.random()*4,
+      rot: Math.random()*360, vr: -6 + Math.random()*12,
       shape: Math.random()<0.5 ? 'rect' : 'circle'
     }));
   }
@@ -598,9 +661,6 @@
       p.x += p.vx; p.y += p.vy; p.rot += p.vr;
     });
   }
-
-  // utils
-  function num(id){ return Number(($(id).value||'').replace(/,/g,''))||0; }
 })();
 </script>
 </body>
