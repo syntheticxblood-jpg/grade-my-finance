@@ -22,7 +22,7 @@
     --ink:#0b1220; --muted:#5b6473; --card:#ffffff; --card-2:#f8fafc;
     --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
     --accent:#22c55e; --accent-2:#16a34a; --ring:#bbf7d0;
-    --r-lg:12px; --r-md:8px; --border:#e5e7eb; --border-soft:#ecfeff;
+    --r-lg:12px; --border:#e5e7eb; --border-soft:#ecfeff;
     --bg: radial-gradient(1200px 600px at 20% -10%, #a7f3d0, transparent 60%),
           radial-gradient(1200px 600px at 80% -20%, #bae6fd, transparent 60%),
           linear-gradient(135deg, #0ea5e9, #22d3ee 35%, #a7f3d0);
@@ -35,7 +35,6 @@
           radial-gradient(900px 500px at 90% -20%, #0c2a1566, transparent 60%),
           linear-gradient(135deg, #0b1021, #0b132b 35%, #0a1a24);
   }
-
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
@@ -424,8 +423,9 @@
 
   /* ---------- Sharable link ---------- */
   function buildSharePayload(){
-    const data={}; inputIds.forEach(id => data[id] = ($(id).value || ''));
-    const q = btoa(encodeURIComponent(JSON.stringify(data));
+    const data = {};
+    inputIds.forEach(id => data[id] = ($(id).value || ''));
+    const q = btoa(encodeURIComponent(JSON.stringify(data))); /* FIXED */
     return `${location.origin}${location.pathname}?q=${q}`;
   }
   $('copyLinkBtn').onclick = () => {
@@ -467,24 +467,20 @@
     return {clean: allGone ? 'Friend' : clean, filtered, replacedAll: allGone};
   }
 
-  /* ---------- Suspense flow (robust) ---------- */
+  /* ---------- Suspense flow ---------- */
   const overlay=$('revealOverlay'), rGrade=$('revealGrade'), rFill=$('revealFill');
   let revealing = false;
-
   async function gradeFlow(){
     if(revealing) return; revealing=true;
 
     // reset overlay visuals
     rGrade.textContent = '';
     rGrade.classList.remove('show');
-    rFill.style.animation = 'none'; // restart CSS animation reliably
-    // force reflow
-    void rFill.offsetWidth;
-    rFill.style.animation = null;
+    rFill.style.animation = 'none'; void rFill.offsetWidth; rFill.style.animation = null;
 
     overlay.classList.add('show');
 
-    // wait for fill animation end (3s) – prevents “stuck” states
+    // wait for the 3s progress bar to finish
     await new Promise(resolve=>{
       const onEnd = ()=>{ rFill.removeEventListener('animationend', onEnd); resolve(); };
       rFill.addEventListener('animationend', onEnd);
@@ -497,25 +493,25 @@
     $('name').value = clean;
 
     // compute + render
-    const letter = computeAndRender();  // returns string grade like "C+"
+    const letter = computeAndRender();
 
     // reveal grade
     rGrade.textContent = letter;
     requestAnimationFrame(()=> rGrade.classList.add('show'));
 
-    // small pause to show the grade, then close
     await new Promise(r => setTimeout(r, 900));
     overlay.classList.remove('show');
     rGrade.classList.remove('show');
     revealing=false;
-    // scroll to results
-    document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
-  }
 
-  document.addEventListener('keydown', e=>{ if(e.key==='Enter') gradeBtn.click(); });
+    // scroll to results
+    $('results').scrollIntoView({behavior:'smooth', block:'start'});
+  }
 
   const gradeBtn=$('gradeBtn'), resetBtn=$('resetBtn'), results=$('results');
   gradeBtn.onclick = gradeFlow;
+  // Enter key to grade
+  document.addEventListener('keydown', e=>{ if(e.key==='Enter') gradeBtn.click(); });
 
   resetBtn.onclick = () => { inputIds.forEach(id=>$(id).value=''); updateTotals(); results.style.display='none'; };
 
@@ -627,7 +623,7 @@
       notes.push(`Negative net worth penalty −${penNW.toFixed(0)}`);
     }
 
-    // Hard caps (clamped ceilings)
+    // Hard caps
     let cap=null;
     if(dti>10){ total = Math.min(total, 45); cap='Debt-to-income too high (>10×) — score capped.'; }
     else if(dti>6){ total = Math.min(total, 60); cap='Debt-to-income very high (>6×) — score capped.'; }
@@ -640,7 +636,6 @@
     const g = toLetter(total);
     const delta = gradeDelta(total);
 
-    // Render
     const results=$('results');
     results.style.display='grid';
     const letterEl = $('letter');
@@ -693,10 +688,9 @@
     };
 
     // Confetti if improved
-    const order = ['F','D','D+','C-','C','C+','B-','B','B+','A-','A','A+'];
     const idx = g.index;
     if(prevLetterIdx===null){ prevLetterIdx = idx; }
-    else if(idx > prevLetterIdx){ letterEl.classList.remove('pulse'); void letterEl.offsetWidth; letterEl.classList.add('pulse'); runConfetti(1200); prevLetterIdx = idx; } 
+    else if(idx > prevLetterIdx){ $('letter').classList.remove('pulse'); void $('letter').offsetWidth; $('letter').classList.add('pulse'); runConfetti(1200); prevLetterIdx = idx; } 
     else { prevLetterIdx = idx; }
 
     if(window.gtag){ window.gtag('event','grade_calculated',{ grade_letter:g.letter, score: total }); }
@@ -779,7 +773,7 @@
 
   /* ---------- Confetti ---------- */
   function runConfetti(durationMs=1200){
-    const c=confettiCanvas; const ctx=ctx2;
+    const c=$('confettiCanvas'); const ctx=c.getContext('2d');
     function resize(){ c.width=window.innerWidth; c.height=window.innerHeight; }
     resize(); window.addEventListener('resize', resize);
     const colors = ['#22c55e','#0ea5e9','#84cc16','#06b6d4','#f59e0b','#ef4444'];
