@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
-<meta name="description" content="Friendly money grade with age-aware, realistic retirement readiness scoring.">
+<meta name="description" content="Friendly, age-aware retirement readiness grade with instant tips, badges, and a shareable link.">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
@@ -19,7 +19,7 @@
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
     --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-    --radius:16px; --shadow:0 12px 34px rgba(0,0,0,.35);
+    --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
   }
   .light{
     --bg:#f5faf6; --panel:#ffffff; --card:#ffffff; --text:#0f172a; --muted:#4b5563; --line:rgba(15,23,42,.12);
@@ -31,49 +31,71 @@
       radial-gradient(1000px 500px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
       radial-gradient(900px 500px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
       var(--bg);
-    color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial
+    color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+    line-height:1.35;
   }
-  a{color:var(--accent)}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Header */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
-  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
-  .logo{width:54px;height:54px}
-  .title{margin:0;font-size:24px;color:#062c1b}
+  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 16px}
+  .logo{width:52px;height:52px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
+  .title{margin:0;font-size:26px;color:#062c1b;font-weight:900;letter-spacing:.2px}
   .tag{margin:0;color:#062c1bcc;font-size:12px}
   .spacer{flex:1}
-  .pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
+  .streak{font-weight:800;color:#062c1b;background:#ffffffaa;padding:8px 10px;border-radius:999px}
+  .pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0;transition:transform .06s ease, filter .12s ease}
+  .pill:active{transform:translateY(1px) scale(.98)}
   .light .pill{background:#0f172a}
+  .cta{margin-left:8px}
 
-  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:220px 1fr;gap:16px;padding:16px}
-  aside{position:sticky;top:78px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:var(--shadow)}
+  /* Shell */
+  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:240px 1fr;gap:18px;padding:18px}
+  aside{position:sticky;top:86px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
-  .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer;font-weight:800;transition:transform .08s ease}
-  .tab:active{transform:scale(.98)}
+  .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, box-shadow .12s ease, background .15s ease}
+  .tab:hover{box-shadow:0 6px 16px rgba(0,0,0,.25)}
+  .tab:active{transform:translateY(1px) scale(.99)}
   .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#062c1b}
 
-  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+  /* Cards + grid */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);transition:transform .15s ease}
+  .card:hover{transform:translateY(-1px)}
   .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
   label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-  input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
+  input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text);transition:box-shadow .15s ease,border-color .15s ease, transform .05s ease}
   input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
   .hint{font-size:12px;color:var(--muted);margin-top:6px}
-  .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:800;cursor:pointer}
+  .btn{padding:11px 15px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer;transition:transform .06s ease, box-shadow .12s ease}
+  .btn:hover{box-shadow:0 10px 20px rgba(0,0,0,.25)}
+  .btn:active{transform:translateY(1px) scale(.985)}
   .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b;text-shadow:0 1px 0 #ffffff80}
 
   .page{display:none} .page.active{display:block}
 
   .resultTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .resultLeft{display:flex;align-items:center;gap:12px}
-  .bigGrade{font-size:72px;font-weight:900;opacity:0;transform:scale(.7) rotate(-6deg)}
+  .resultLeft{display:flex;align-items:center;gap:14px}
+  .bigGrade{font-size:80px;font-weight:900;opacity:0;transform:scale(.7) rotate(-6deg)}
   .bigGrade.show{animation:pop .65s cubic-bezier(.2,.9,.2,1) forwards}
   @keyframes pop{0%{opacity:0;transform:scale(.7) rotate(-6deg)}60%{opacity:1;transform:scale(1.08) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
   .scoreline{font-size:14px;color:var(--muted)}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-  .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px}
-
+  .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.00))}
   .progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
-  .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
 
+  /* Badges */
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:var(--panel);font-size:12px;font-weight:800}
+  .badge .dot{width:8px;height:8px;border-radius:50%}
+  .b-good{background:linear-gradient(90deg,#22c55e,#84cc16);color:#062c1b;border-color:transparent}
+  .b-ready{background:linear-gradient(90deg,#22d3ee,#a78bfa);color:#062c1b;border-color:transparent}
+  .b-debt{background:linear-gradient(90deg,#f59e0b,#f97316);color:#062c1b;border-color:transparent}
+  .b-age{background:linear-gradient(90deg,#60a5fa,#34d399);color:#062c1b;border-color:transparent}
+
+  /* Loader overlay */
   .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.35);z-index:80}
   .overlay.show{display:grid}
   .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
@@ -81,6 +103,7 @@
   .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#22d3ee 0 14px,#a78bfa 14px 28px);animation:slide .7s linear infinite}
   @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 
+  /* Toast */
   .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(120%);background:var(--card);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;z-index:90;transition:transform .28s ease;}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .toast button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
@@ -103,9 +126,10 @@
 </style>
 </head>
 <body class="dark">
+  <!-- Header -->
   <header>
     <div class="hdr">
-      <!-- Logo -->
+      <!-- Mascot + Logo -->
       <svg class="logo" viewBox="0 0 160 160" aria-label="Grade My Finance logo" role="img">
         <defs>
           <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#d1fae5"/></linearGradient>
@@ -122,7 +146,9 @@
         <p class="tag">Retirement-readiness grading — learn, level-up, repeat.</p>
       </div>
       <span class="spacer"></span>
-      <button id="modeBtn" class="pill" title="Toggle theme">Dark</button>
+      <span id="streakPill" class="streak" style="display:none"></span>
+      <button id="modeBtn" class="pill">Dark</button>
+      <a href="#grade" id="ctaTop" class="pill cta">Get My Score</a>
     </div>
   </header>
 
@@ -142,7 +168,7 @@
     <main id="main">
       <!-- Grade page -->
       <section id="page-grade" class="page active">
-        <div class="grid">
+        <div class="grid" id="grade">
           <div class="card" style="grid-column:span 4">
             <div class="section">Monthly Income (after-tax)</div>
             <label>What hits your bank each month</label>
@@ -200,16 +226,18 @@
               </div>
               <div style="display:flex;gap:10px;flex-wrap:wrap">
                 <button id="resetBtn" class="btn">Reset</button>
-                <button id="gradeBtn" class="btn primary">Grade Me</button>
+                <button id="gradeBtn" class="btn primary">Get My Score</button>
               </div>
             </div>
 
             <div style="margin:12px 0 10px 0" class="progress"><div id="progressFill"></div></div>
 
-            <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+            <div id="badgeRow" class="badges"></div>
+
+            <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px">
               <div class="card" style="border-style:dashed">
                 <h4>What went into your grade</h4>
-                <div id="whyList">Enter numbers and hit “Grade Me.”</div>
+                <div id="whyList">Enter numbers and click Get My Score.</div>
               </div>
               <div class="card" style="border-style:dashed">
                 <h4>How to level up</h4>
@@ -220,23 +248,18 @@
         </div>
       </section>
 
-      <!-- About -->
+      <!-- Secondary pages -->
       <section id="page-about" class="page">
-        <div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness — transparent, encouraging, and simple.</p></div>
+        <div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math, friendly design, and zero sign-up. Everything runs in your browser.</p></div>
       </section>
-      <!-- Goal -->
       <section id="page-goal" class="page">
-        <div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div>
+        <div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits. Small steps, repeated.</p></div>
       </section>
-      <!-- FAQ -->
       <section id="page-faq" class="page">
-        <div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device.</p></div>
+        <div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div>
       </section>
-      <!-- Contact -->
       <section id="page-contact" class="page">
-        <div class="card"><h2>Contact</h2>
-          <p>Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
-        </div>
+        <div class="card"><h2>Contact</h2><p>grademyfinance@gmail.com</p></div>
       </section>
     </main>
   </div>
@@ -277,7 +300,22 @@
   setMode(false);
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // tabs
+  // daily streak
+  (function streak(){
+    const key='gmf_streak';
+    const today = new Date().toDateString();
+    const data = JSON.parse(localStorage.getItem(key) || '{"last":"","count":0}');
+    let count = data.count;
+    if(data.last !== today){
+      const yesterday = new Date(Date.now()-86400000).toDateString();
+      count = (data.last === yesterday) ? (data.count+1) : 1;
+      localStorage.setItem(key, JSON.stringify({last:today,count}));
+    }
+    const pill = $('#streakPill'); pill.style.display='inline-block'; pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
+  })();
+
+  // GA page views on tab clicks
+  function trackPage(path){ if(window.gtag){ gtag('event','page_view',{page_path:path}); } }
   const pages=['grade','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
@@ -285,7 +323,9 @@
     $$('.tab').forEach(b=>b.classList.toggle('active', b===t));
     pages.forEach(p=> $('#page-'+p).classList.toggle('active', p===pg));
     window.scrollTo({top:0,behavior:'smooth'});
+    trackPage('/'+pg);
   });
+  $('#ctaTop').addEventListener('click', ()=>{ $$('.tab').forEach(b=>b.classList.toggle('active', b.dataset.page==='grade')); pages.forEach(p=> $('#page-'+p).classList.toggle('active', p==='grade')); trackPage('/grade'); });
 
   // inputs
   const ids = ['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr'];
@@ -374,9 +414,11 @@
 
   // loader + toast
   let prog=0,timer=null;
-  function showOverlay(){ prog=0; $('#overlay').classList.add('show'); $('#barFill').style.width='0%'; $('#pct').textContent='0%';
-    timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); $('#barFill').style.width=prog+'%'; $('#pct').textContent=Math.round(prog)+'%'; },200); }
-  function hideOverlay(){ clearInterval(timer); $('#barFill').style.width='100%'; $('#pct').textContent='100%'; setTimeout(()=>$('#overlay').classList.remove('show'),250); }
+  const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
+  function showOverlay(){ prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
+    timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200); }
+  function hideOverlay(){ clearInterval(timer); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); }
+
   const toast=$('#toast');
   function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5500); }
   $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
@@ -394,15 +436,35 @@
   function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   window.addEventListener('resize', resize); resize();
   function popConfetti(){
-    const n=120; bits=[];
+    const n=140; bits=[];
     for(let i=0;i<n;i++){
       bits.push({x:Math.random()*canvas.width,y:-20-Math.random()*100,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:4+Math.random()*6,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.2,clr:`hsl(${Math.random()*360},90%,60%)`});
     }
     let t=0; const anim=()=>{
       t++; ctx.clearRect(0,0,canvas.width,canvas.height);
       bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.a); ctx.fillStyle=b.clr; ctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctx.restore(); });
-      if(t<220) requestAnimationFrame(anim); else ctx.clearRect(0,0,canvas.width,canvas.height);
+      if(t<240) requestAnimationFrame(anim); else ctx.clearRect(0,0,canvas.width,canvas.height);
     }; anim();
+  }
+
+  // badges
+  function awardBadges(v,s){
+    const row = $('#badgeRow'); row.innerHTML='';
+    const badges=[];
+    if(s.saveRate>=0.20) badges.push({cls:'b-good',txt:'Saver 20%+'});
+    if(s.efMonths>=6) badges.push({cls:'b-ready',txt:'Emergency Ready'});
+    const nonMort = v.student+v.auto+v.cc; if(nonMort===0) badges.push({cls:'b-debt',txt:'Debt Slayer'});
+    if(s.readiness >= expectedReadiness(val('age'))) badges.push({cls:'b-age',txt:'Ahead of Age'});
+    if(!badges.length){ row.innerHTML='<div class="hint">Earn badges by improving savings, building your emergency fund, lowering debt, and meeting your age curve.</div>'; return; }
+    badges.forEach(b=>{
+      const el=document.createElement('div'); el.className=`badge ${b.cls}`; el.innerHTML=`<span class="dot"></span>${b.txt}`; row.appendChild(el);
+    });
+    // first-time badge party
+    const key='gmf_badges'; const old = JSON.parse(localStorage.getItem(key)||'[]');
+    const newList = badges.map(b=>b.txt);
+    const unlocked = newList.filter(x=>!old.includes(x));
+    if(unlocked.length){ popConfetti(); }
+    localStorage.setItem(key, JSON.stringify(newList));
   }
 
   // render
@@ -430,7 +492,7 @@
     if(s.saveRate < 0.2) ideas.push(`Aim for 20%+ savings by auto-moving ~${money(Math.ceil(v.income*0.05))}/mo.`);
     if(s.ltv > 0.8) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): occasional principal prepayments help.`);
     if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
-    if(!ideas.length) ideas.push(`You’re ahead for your age — keep it up.`);
+    if(!ideas.length) ideas.push(`You’re ahead for your age. Keep the systems humming.`);
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
@@ -447,18 +509,16 @@
     scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
     nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
     progress.style.width = s.score + '%';
-    renderWhy(v,s); renderImprove(v,s);
+    renderWhy(v,s); renderImprove(v,s); awardBadges(v,s);
+
     if(['A+','A','A-','B+'].includes(L)) popConfetti();
+
     const url = buildShareURL(); navigator.clipboard.writeText(url).catch(()=>{}); showToast();
   }
 
   $('#gradeBtn').addEventListener('click', ()=>{
-    let prog=0; const overlay=$('#overlay'); const bar=$('#barFill'); const pct=$('#pct');
-    overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
-    const t=setInterval(()=>{ prog=Math.min(97, prog+Math.random()*10+5); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },180);
-    setTimeout(()=>{ clearInterval(t); bar.style.width='100%'; pct.textContent='100%';
-      setTimeout(()=>{overlay.classList.remove('show'); doGrade();},200);
-    },680);
+    showOverlay();
+    setTimeout(()=>{ hideOverlay(); doGrade(); }, 800);
   });
 
   $('#resetBtn').addEventListener('click', ()=>{
@@ -466,11 +526,10 @@
     updateHints();
     bigGrade.textContent='—'; bigGrade.classList.remove('show');
     scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
-    progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
+    progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent=''; $('#badgeRow').innerHTML='';
   });
 })();
 </script>
 </body>
 </html>
-
 
