@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Untitled</title>
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -16,6 +6,8 @@
 <title>Grade My Finance</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<!-- html2canvas for “Download result” -->
+<script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <style>
   /* ================== THEME ================== */
@@ -28,13 +20,10 @@
           radial-gradient(1200px 600px at 80% -20%, #bae6fd, transparent 60%),
           linear-gradient(135deg, #0ea5e9, #22d3ee 35%, #a7f3d0);
   }
-
-  /* Dark theme overrides */
   [data-theme="dark"]{
     --ink:#e5e7eb; --muted:#a6adbb; --card:#0f172a; --card-2:#111827;
-    --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-    --accent:#22c55e; --accent-2:#16a34a; --ring:rgba(34,197,94,.25);
-    --r-lg:12px; --r-md:8px; --border:#1f2937; --border-soft:#0b1220;
+    --ring:rgba(34,197,94,.25);
+    --border:#1f2937; --border-soft:#0b1220;
     --bg: radial-gradient(1000px 500px at 10% -10%, #0b3b4a66, transparent 60%),
           radial-gradient(900px 500px at 90% -20%, #0c2a1566, transparent 60%),
           linear-gradient(135deg, #0b1021, #0b132b 35%, #0a1a24);
@@ -50,7 +39,7 @@
     transition: background .3s ease, color .2s ease;
   }
 
-  /* ============== Header ============== */
+  /* Header */
   .hero{
     position:relative; max-width:1100px; margin:0 auto 14px; padding:18px 18px 22px;
     border-radius: var(--r-lg);
@@ -59,7 +48,7 @@
     border: 1px solid color-mix(in oklab, var(--card) 70%, var(--border));
     box-shadow: 0 10px 28px rgba(0,0,0,.10);
   }
-  .hero-inner{display:flex; align-items:center; justify-content:space-between; gap:14px; position:relative; z-index:2}
+  .hero-inner{display:flex; align-items:center; justify-content:space-between; gap:14px}
   .title-wrap{display:flex; align-items:center; gap:12px}
   .title-mark{
     width:40px; height:40px; border-radius:10px; background:linear-gradient(135deg,#22c55e,#0ea5e9);
@@ -74,15 +63,12 @@
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
   .subtitle{margin:4px 0 0; color:var(--muted); font-size:15px}
-
   .hero-actions{display:flex; align-items:center; gap:10px}
   .toggle{
     display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px;
     border:1px solid var(--border); background:var(--card-2); color:var(--ink); cursor:pointer;
     font-weight:600; font-size:13px;
   }
-
-  /* animated stripe */
   .hero-stripe{
     position:absolute; inset:auto 0 0 0; height:6px; border-radius:0 0 var(--r-lg) var(--r-lg);
     background: linear-gradient(90deg,#0ea5e9,#22c55e,#84cc16,#06b6d4,#0ea5e9);
@@ -90,33 +76,22 @@
     animation: flow 8s linear infinite;
   }
   @keyframes flow{0%{background-position:0% 0}100%{background-position:300% 0}}
-
-  /* tiny floating coins (kept, but subtle) */
   .floater{position:absolute; font-size:18px; opacity:.15; pointer-events:none}
   .f-left{left:6px; top:-8px; animation: rise 16s linear infinite}
   .f-right{right:10px; top:-10px; animation: rise 17s linear infinite 2s}
-  @keyframes rise{
-    0%{transform:translateY(0) rotate(0deg); opacity:.0}
-    10%{opacity:.15}
-    100%{transform:translateY(-120px) rotate(360deg); opacity:.0}
-  }
+  @keyframes rise{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-120px) rotate(360deg)}}
 
-  /* ============== App Card ============== */
+  /* App card */
   .wrap{
     position:relative; z-index:1;
     max-width:1100px; margin:0 auto; background:var(--card); padding:22px;
     border-radius: var(--r-lg); border:1px solid var(--border-soft);
     box-shadow: 0 12px 32px rgba(0,0,0,.12);
   }
-
   .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:14px}
   .field{grid-column:span 12; background:var(--card-2); border:1px solid var(--border); border-radius:var(--r-md); padding:12px}
   @media (min-width:760px){
-    .span-6{grid-column:span 6}
-    .span-4{grid-column:span 4}
-    .span-3{grid-column:span 3}
-    .span-9{grid-column:span 9}
-    .span-12{grid-column:span 12}
+    .span-6{grid-column:span 6}.span-4{grid-column:span 4}.span-3{grid-column:span 3}.span-9{grid-column:span 9}.span-12{grid-column:span 12}
   }
   label{display:block; font-weight:600; margin-bottom:6px}
   input{
@@ -126,61 +101,39 @@
   }
   input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 4px var(--ring)}
   .hint{font-size:12px; color:var(--muted); margin-top:6px}
-
   .sec{margin-top:8px; background:var(--card); border:1px dashed color-mix(in oklab, var(--border) 60%, transparent); border-radius:var(--r-md); padding:12px}
   .sec h3{margin:0 0 8px; font-size:16px; display:flex; align-items:center; gap:8px}
 
   .actions{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px}
-  button{
-    appearance:none; border:0; cursor:pointer; padding:11px 16px; border-radius:8px; font-weight:800;
+  button{appearance:none; border:0; cursor:pointer; padding:11px 16px; border-radius:8px; font-weight:800;
     background:linear-gradient(180deg,var(--accent),var(--accent-2)); color:#052e16;
-    box-shadow:0 8px 18px rgba(34,197,94,.28); transform:translateY(0); transition:transform .1s;
-  }
+    box-shadow:0 8px 18px rgba(34,197,94,.28); transform:translateY(0); transition:transform .1s}
   [data-theme="dark"] button{color:#052e16}
   button:active{transform:translateY(1px)}
   .secondary{background:#e5e7eb; color:#111827; box-shadow:none}
   [data-theme="dark"] .secondary{background:#1f2937; color:#e5e7eb}
-
   .pill{background:#0ea5e9; color:white; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700}
 
-  /* ============== Results ============== */
-  .scorecard{
-    margin-top:16px; padding:16px; border-radius:var(--r-md); background:color-mix(in oklab, var(--card) 80%, transparent); border:1px solid var(--border);
-    display:grid; grid-template-columns:1fr; gap:12px
-  }
+  /* Results */
+  .scorecard{margin-top:16px; padding:16px; border-radius:var(--r-md); background:color-mix(in oklab, var(--card) 80%, transparent); border:1px solid var(--border);
+    display:grid; grid-template-columns:1fr; gap:12px}
   .grade{font-family:"Baloo 2", cursive; font-size: clamp(26px, 4vw, 42px); font-weight:800}
   .muted{color:var(--muted)} .tiny{font-size:12px}
-
   .meters{display:grid; gap:10px}
   .meter{background:var(--card); padding:12px; border:1px solid var(--border); border-radius:var(--r-md)}
   .meter h4{margin:0 0 6px; font-size:14px}
   .bar{height:10px; background:color-mix(in oklab, var(--border) 65%, transparent); border-radius:6px; overflow:hidden}
-  .bar > i{display:block; height:100%; width:0%; border-radius:6px;
-           transition: width .6s cubic-bezier(.2,.8,.2,1)}
-  .pos i{background:var(--ok)}
-  .mid i{background:var(--warn)}
-  .neg i{background:var(--bad)}
-
+  .bar > i{display:block; height:100%; width:0%; border-radius:6px; transition: width .6s cubic-bezier(.2,.8,.2,1)}
+  .pos i{background:var(--ok)} .mid i{background:var(--warn)} .neg i{background:var(--bad)}
   .tips{background:var(--card); border:1px solid var(--border); border-radius:var(--r-md); padding:14px}
-  .tips h3{margin:0 0 8px}
-
   .explain{background:var(--card); border:1px solid var(--border); border-radius:var(--r-md); padding:14px}
-  .explain h3{margin:0 0 8px}
-
   .footer{margin-top:6px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
-
-  /* celebratory pulse on grade text */
   .pulse{animation: pulse .8s ease-out}
-  @keyframes pulse{
-    0%{transform:scale(1); text-shadow:none}
-    40%{transform:scale(1.05); text-shadow:0 0 12px color-mix(in oklab, var(--ok) 60%, transparent)}
-    100%{transform:scale(1); text-shadow:none}
-  }
+  @keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.05); text-shadow:0 0 12px color-mix(in oklab, var(--ok) 60%, transparent)}100%{transform:scale(1)}}
+  #confettiCanvas{position:fixed; inset:0; pointer-events:none; z-index:9999; display:none}
 
-  /* Confetti canvas */
-  #confettiCanvas{
-    position:fixed; inset:0; pointer-events:none; z-index:9999; display:none;
-  }
+  .result-actions{display:flex; gap:8px; flex-wrap:wrap}
+  .linkish{border:1px solid var(--border); background:var(--card-2); color:var(--ink)}
 </style>
 </head>
 
@@ -189,7 +142,6 @@
   <section class="hero">
     <div class="floater f-left">🪙</div>
     <div class="floater f-right">💸</div>
-
     <div class="hero-inner">
       <div class="title-wrap">
         <div class="title-mark" aria-hidden="true"></div>
@@ -211,17 +163,17 @@
     <section class="grid">
       <div class="field span-4">
         <label for="income">Monthly Income (after-tax)</label>
-        <input type="number" id="income" value="7500" min="0" step="100">
+        <input type="number" id="income" min="0" step="100">
         <div class="hint">What hits your bank each month.</div>
       </div>
       <div class="field span-4">
         <label for="expenses">Monthly Expenses</label>
-        <input type="number" id="expenses" value="4000" min="0" step="50">
+        <input type="number" id="expenses" min="0" step="50">
         <div class="hint">All bills + spending.</div>
       </div>
       <div class="field span-4">
         <label for="cash">Cash Savings</label>
-        <input type="number" id="cash" value="24000" min="0" step="100">
+        <input type="number" id="cash" min="0" step="100">
         <div class="hint">Checking + savings + HYSA (also counted in Assets).</div>
       </div>
     </section>
@@ -248,7 +200,7 @@
           <div class="grid">
             <div class="field span-6"><label for="debt_mortgage">Mortgage Balance</label><input type="number" id="debt_mortgage" placeholder="e.g., 329000"></div>
             <div class="field span-6"><label for="debt_student">Student Loans</label><input type="number" id="debt_student" placeholder="e.g., 26000"></div>
-            <div class="field span-6"><label for="debt_auto">Auto Loans</label><input type="number" id="debt_auto" placeholder="e.g., 13500"></div>
+            <div class="field span-6"><=""/><label for="debt_auto">Auto Loans</label><input type="number" id="debt_auto" placeholder="e.g., 13500"></div>
             <div class="field span-6"><label for="debt_cards">Credit Cards</label><input type="number" id="debt_cards" placeholder="e.g., 3300"></div>
             <div class="field span-12"><label for="debt_other">Other Debt</label><input type="number" id="debt_other" placeholder="e.g., 0"></div>
           </div>
@@ -258,8 +210,8 @@
 
       <div class="field span-3">
         <label for="age">Age</label>
-        <input type="number" id="age" value="29" min="14" max="90" step="1">
-        <div class="hint">Used to benchmark net-worth progress.</div>
+        <input type="number" id="age" min="14" max="90" step="1">
+        <div class="hint">Used for retirement readiness benchmarks.</div>
       </div>
       <div class="field span-9">
         <label for="name">Nickname (optional)</label>
@@ -270,6 +222,7 @@
     <div class="actions">
       <button id="gradeBtn">Grade Me!</button>
       <button class="secondary" id="resetBtn">Reset</button>
+      <button class="secondary linkish" id="clearDataBtn" title="Forget saved inputs">Clear my data</button>
       <span class="pill tiny">Educational only — not financial advice</span>
     </div>
 
@@ -282,6 +235,11 @@
 
       <div class="meters" id="meters"></div>
 
+      <div class="result-actions">
+        <button id="shareBtn" class="secondary linkish">Share my grade</button>
+        <button id="saveImgBtn" class="secondary linkish">Download result (PNG)</button>
+      </div>
+
       <div class="tips">
         <h3>Quick Tips to Rank Up</h3>
         <ul id="tipsList"></ul>
@@ -292,11 +250,11 @@
         <ul id="explainList" class="muted"></ul>
         <details class="tiny" style="margin-top:8px">
           <summary><strong>Scoring bands used</strong></summary>
-          <p><strong>Savings rate</strong> (income − expenses) ÷ income. 20–40% earns most points.</p>
-          <p><strong>Spending control</strong> 1 − (expenses ÷ income). ≥40% “leftover” is best.</p>
-          <p><strong>Debt-to-income</strong> total debt ÷ annual income. 0.25× ≈ 15/15, 0.5× ≈ 13/15, 1× ≈ 11/15, 1.5× ≈ 8/15, 2× ≈ 4/15, 3×+ ≈ 0.</p>
-          <p><strong>Net worth progress</strong> compares your net-worth multiple to an age benchmark.</p>
-          <p><strong>Emergency fund</strong> 0, 1, 3, 6 months are the breakpoints.</p>
+          <p><strong>Savings rate</strong> (income − expenses) ÷ income. 20–40% earns most points. (25 pts)</p>
+          <p><strong>Spending control</strong> 1 − (expenses ÷ income). ≥40% “leftover” is best. (10 pts)</p>
+          <p><strong>Debt-to-income</strong> total debt ÷ annual income. Lower is better. (15 pts)</p>
+          <p><strong>Emergency fund</strong> 0, 1, 3, 6 months are the breakpoints. (15 pts)</p>
+          <p><strong>Retirement readiness</strong> investable assets ÷ (age target × income). Uses age-target multiples. (35 pts)</p>
         </details>
       </div>
 
@@ -328,10 +286,36 @@
     themeLabel.textContent = cur==='dark' ? 'Light' : 'Dark';
   });
 
+  // ---------------- Persist inputs ----------------
+  const inputIds = ['income','expenses','cash','asset_home','asset_retire','asset_broker','asset_car','debt_mortgage','debt_student','debt_auto','debt_cards','debt_other','age','name'];
+  function saveInputs(){
+    const data = {};
+    inputIds.forEach(id => data[id] = ($(id).value || ''));
+    localStorage.setItem('gmf_inputs', JSON.stringify(data));
+  }
+  function loadInputs(){
+    const raw = localStorage.getItem('gmf_inputs');
+    if(!raw) return;
+    try{
+      const data = JSON.parse(raw);
+      inputIds.forEach(id => { if(data[id] !== undefined) $(id).value = data[id]; });
+    }catch(e){}
+  }
+  function clearInputs(){
+    localStorage.removeItem('gmf_inputs');
+    inputIds.forEach(id => { $(id).value = ''; });
+    updateTotals();
+    $('results').style.display='none';
+  }
+  $('clearDataBtn').addEventListener('click', clearInputs);
+  loadInputs();
+
   // ---------------- Auto totals ----------------
   const assetIds = ['asset_home','asset_retire','asset_broker','asset_car'];
   const debtIds  = ['debt_mortgage','debt_student','debt_auto','debt_cards','debt_other'];
-  [...assetIds, ...debtIds, 'cash'].forEach(id => $(id).addEventListener('input', updateTotals));
+  [...assetIds, ...debtIds, 'cash'].forEach(id => $(id).addEventListener('input', ()=>{ updateTotals(); saveInputs(); }));
+  inputIds.forEach(id => $(id).addEventListener('input', saveInputs));
+
   function toNum(el){ const n = Number((el.value||'').replace(/,/g,'')); return isNaN(n)?0:n; }
   function updateTotals(){
     const assets = assetIds.reduce((a,id)=>a+toNum($(id)),0) + toNum($('cash'));
@@ -342,14 +326,12 @@
   updateTotals();
 
   const gradeBtn=$('gradeBtn'), resetBtn=$('resetBtn'), results=$('results');
-  // Enter key triggers grade
   document.addEventListener('keydown', e=>{ if(e.key==='Enter') gradeBtn.click(); });
 
   resetBtn.onclick = () => {
-    ['income','expenses','cash','age','name', ...assetIds, ...debtIds].forEach(id=>{
+    inputIds.forEach(id=>{
       const el=$(id);
-      if(el.type==='number'){ el.value = el.defaultValue || ''; }
-      else el.value='';
+      el.value='';
     });
     updateTotals();
     results.style.display='none';
@@ -361,7 +343,10 @@
   gradeBtn.onclick = () => {
     const income = num('income'), expenses=num('expenses'), cash=num('cash');
     const age = num('age') || 30; const name = $('name').value.trim();
-    const assets = assetIds.reduce((a,id)=>a+num(id),0) + cash;
+
+    // Assets & debts
+    const retire = num('asset_retire'), broker = num('asset_broker'), home = num('asset_home'), car = num('asset_car');
+    const assets = retire + broker + home + car + cash;
     const liabilities = debtIds.reduce((a,id)=>a+num(id),0);
 
     const annualIncome = income*12;
@@ -371,32 +356,35 @@
     const expenseRatio = income>0 ? expenses/income : 1;
     const dti = annualIncome>0 ? (liabilities/annualIncome) : 5; // total debt vs annual income
     const monthsEF = expenses>0 ? cash/expenses : 0;
-    const nwMultiple = annualIncome>0 ? netWorth/annualIncome : 0;
 
-    const expectedNW = expectedMultipleByAge(age);
-    const nwProgress = expectedNW>0 ? Math.min(1, nwMultiple/expectedNW) : 0;
+    // ---------- NEW: Retirement Readiness ----------
+    // Investable assets (retirement + brokerage + 25% of cash; exclude home/car)
+    const investable = retire + broker + 0.25*cash;
+    const targetMultiple = targetRetMultipleByAge(age); // rule-of-thumb targets by age
+    const targetAmount = (annualIncome>0 ? targetMultiple*annualIncome : Infinity);
+    const readiness = (annualIncome>0 && isFinite(targetAmount) && targetAmount>0) ? Math.min(1, investable/targetAmount) : 0;
 
     // ---- Scoring (100 total) ----
     const scoreSavingsRate = piecewise(savingsRate, [
       [0.00,0],[0.10,12],[0.20,20],[0.30,23],[0.40,25]
-    ]);
+    ]); // 25
     const scoreExpense = piecewise(1-expenseRatio, [
       [0.00,0],[0.10,3],[0.20,6],[0.30,8],[0.40,10]
-    ]);
+    ]); // 10
     const scoreDTI = piecewiseRev(dti, [
       [3.00,0],[2.00,4],[1.50,8],[1.00,11],[0.50,13],[0.25,15]
-    ]);
-    const scoreNW = nwProgress*30;
+    ]); // 15
     const scoreEF = piecewise(monthsEF, [
-      [0,0],[1,6],[3,14],[6,20]
-    ]);
+      [0,0],[1,5],[3,11],[6,15]
+    ]); // 15
+    const scoreRet = readiness*35; // 0..35
 
     const parts = [
       {key:'Savings rate', score:scoreSavingsRate, max:25},
       {key:'Spending control', score:scoreExpense, max:10},
       {key:'Debt vs income', score:scoreDTI, max:15},
-      {key:'Net worth progress', score:scoreNW, max:30},
-      {key:'Emergency fund', score:scoreEF, max:20}
+      {key:'Emergency fund', score:scoreEF, max:15},
+      {key:'Retirement readiness', score:scoreRet, max:35}
     ];
 
     const total = Math.round(parts.reduce((a,p)=>a+p.score,0));
@@ -409,7 +397,7 @@
     letterEl.textContent = (name? `${name}, `:'') + `Your grade: ${g.letter}`;
     $('score').textContent = total;
     $('deltaLine').textContent = `▲ ${delta.toNext} pts to rank up to ${g.next} • ▼ ${delta.toDown} pts from dropping to ${g.prev}`;
-    $('whyLine').textContent = `Net worth: $${fmt(netWorth)} • Savings rate: ${(savingsRate*100).toFixed(0)}% • EF: ${monthsEF.toFixed(1)} mo • DTI: ${dti.toFixed(2)}×`;
+    $('whyLine').textContent = `Net worth: $${fmt(netWorth)} • Savings rate: ${(savingsRate*100).toFixed(0)}% • EF: ${monthsEF.toFixed(1)} mo • DTI: ${dti.toFixed(2)}× • Retirement target: ${targetMultiple.toFixed(1)}× income`;
 
     // meters
     const meters = $('meters'); meters.innerHTML='';
@@ -425,19 +413,33 @@
     });
 
     // tips
-    const tips = buildTips({savingsRate, expenseRatio, dti, monthsEF, nwMultiple, expectedNW, income, expenses});
+    const tips = buildTips({savingsRate, expenseRatio, dti, monthsEF, investable, targetAmount, annualIncome});
     const ul = $('tipsList'); ul.innerHTML='';
     tips.slice(0,5).forEach(t=>{ const li=document.createElement('li'); li.textContent=t; ul.appendChild(li); });
 
     // explainer
-    const explain = buildExplain({
-      income, expenses, cash, liabilities, annualIncome, netWorth, dti,
-      savingsRate, monthsEF, nwMultiple, expectedNW
-    });
+    const explain = buildExplain({income, expenses, cash, liabilities, annualIncome, netWorth, dti, savingsRate, monthsEF, investable, targetMultiple});
     const exul = $('explainList'); exul.innerHTML='';
     explain.forEach(line => { const li=document.createElement('li'); li.textContent=line; exul.appendChild(li); });
 
     $('summary').textContent = `This score uses simple heuristics — directional, not prescriptive.`;
+    saveInputs();
+
+    // ---- Share + Download handlers ----
+    $('shareBtn').onclick = () => {
+      const url = location.origin + location.pathname;
+      const text = `I got a ${g.letter} on Grade My Finance! (${total}/100)`;
+      const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+      window.open(shareUrl, '_blank');
+    };
+    $('saveImgBtn').onclick = async () => {
+      const node = $('results');
+      const canvas = await html2canvas(node, {backgroundColor: null, scale: 2});
+      const link = document.createElement('a');
+      link.download = `grade-my-finance-${g.letter}-${total}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    };
 
     // ---- Confetti burst if letter band improved ----
     const order = ['F','D','C-','C','C+','B-','B','B+','A-','A','A+']; // ascending
@@ -445,10 +447,21 @@
     if(prevBandIndex===null){ prevBandIndex = idx; }
     else if(idx > prevBandIndex){ // improved
       letterEl.classList.remove('pulse'); void letterEl.offsetWidth; letterEl.classList.add('pulse');
-      runConfetti(1200); // 1.2s burst
+      runConfetti(1200);
       prevBandIndex = idx;
     } else {
       prevBandIndex = idx;
+    }
+
+    // GA4 event hook (safe if GA not present)
+    if(window.gtag){
+      window.gtag('event','grade_calculated',{
+        grade_letter: g.letter, score: total,
+        savings_rate_pct: +(savingsRate*100).toFixed(1),
+        ef_months: +monthsEF.toFixed(1),
+        dti_x: +dti.toFixed(2),
+        retire_target_multiple: +targetMultiple.toFixed(1),
+      });
     }
   };
 
@@ -476,8 +489,10 @@
     } return 0;
   }
 
-  function expectedMultipleByAge(age){
-    const pts = [[20,0.1],[25,0.3],[30,0.8],[35,1.8],[40,3.0],[50,5.0],[60,7.0],[70,8.0]];
+  // Retirement target multiples by age (simple rule-of-thumb curve)
+  function targetRetMultipleByAge(age){
+    // 25→0.5x, 30→1x, 35→2x, 40→3x, 45→4x, 50→6x, 55→7x, 60→8x, 65→10x
+    const pts = [[25,0.5],[30,1],[35,2],[40,3],[45,4],[50,6],[55,7],[60,8],[65,10]];
     age = Math.max(18, Math.min(75, age||30));
     if(age<=pts[0][0]) return pts[0][1];
     for(let i=0;i<pts.length-1;i++){
@@ -505,18 +520,21 @@
     return {toNext: Math.max(0, Math.ceil(above - score)), toDown: Math.max(0, Math.ceil(score - below))};
   }
 
-  function buildTips({savingsRate, expenseRatio, dti, monthsEF, nwMultiple, expectedNW, income, expenses}){
+  function buildTips({savingsRate, expenseRatio, dti, monthsEF, investable, targetAmount, annualIncome}){
     const t=[];
-    if(monthsEF<3) t.push(`Build your emergency fund to 3+ months (you’re at ${monthsEF.toFixed(1)}). Auto-save $${Math.round(Math.max(100, income*0.05))}/mo.`);
-    if(savingsRate<0.2) t.push(`Boost savings rate to 20%+. Cutting $${Math.round(income*0.05)} in monthly spend will push you up a grade quickly.`);
+    if(monthsEF<3) t.push(`Build your emergency fund to 3+ months (you’re at ${monthsEF.toFixed(1)}). Auto-save $${Math.round(Math.max(100, (annualIncome/12)*0.05))}/mo.`);
+    if(savingsRate<0.2) t.push(`Boost savings rate to 20%+. Cutting $${Math.round((annualIncome/12)*0.05)} in monthly spend will push you up a grade quickly.`);
     if(expenseRatio>0.7) t.push(`Expenses are ${(expenseRatio*100).toFixed(0)}% of income. Aim ≤65% to free up more for investing.`);
     if(dti>2) t.push(`Debt ≈ ${dti.toFixed(1)}× your annual income. Consider accelerating highest-interest balances or refinancing.`);
-    if(nwMultiple < expectedNW) t.push(`Net worth is ${nwMultiple.toFixed(2)}× income; age benchmark ~${expectedNW.toFixed(1)}×. Stay consistent and avoid lifestyle creep.`);
+    if(isFinite(targetAmount) && targetAmount>0 && investable/targetAmount<1){
+      const gap = Math.max(0, targetAmount - investable);
+      t.push(`Retirement readiness gap: ~$${fmt(gap)} to hit your age target. Automate contributions and invest consistently.`);
+    }
     if(t.length===0) t.push('You’re crushing it — consider stretch goals: 6-month EF, +1% contribution bump, or a quarterly net-worth target.');
     return t;
   }
 
-  function buildExplain({income, expenses, cash, liabilities, annualIncome, netWorth, dti, savingsRate, monthsEF, nwMultiple, expectedNW}){
+  function buildExplain({income, expenses, cash, liabilities, annualIncome, netWorth, dti, savingsRate, monthsEF, investable, targetMultiple}){
     const pct = x => (x*100).toFixed(1) + '%';
     const keepPct = income>0 ? 1 - (expenses/income) : 0;
     return [
@@ -524,11 +542,11 @@
       `Spending control = 1 − (expenses ÷ income) = ${pct(keepPct)} kept after bills.`,
       `Debt-to-income = total debt ÷ annual income = $${fmt(liabilities)} ÷ $${fmt(annualIncome)} = ${dti.toFixed(2)}×.`,
       `Emergency fund months = cash ÷ monthly expenses = $${fmt(cash)} ÷ $${fmt(expenses)} = ${monthsEF.toFixed(1)} months.`,
-      `Net worth = assets − liabilities = $${fmt(netWorth)} • Net-worth multiple = net worth ÷ annual income = ${nwMultiple.toFixed(2)}× (age target ≈ ${expectedNW.toFixed(1)}×).`
+      `Retirement readiness = investable assets ÷ (target multiple × income). Investable = retirement + brokerage + 25% of cash. Target multiple by age ≈ ${targetMultiple.toFixed(1)}×.`
     ];
   }
 
-  // ---------------- Confetti (vanilla, lightweight) ----------------
+  // ---------------- Confetti (vanilla) ----------------
   const confettiCanvas = $('confettiCanvas');
   const ctx = confettiCanvas.getContext('2d');
   let confettiParticles = [], confettiAnim;
@@ -552,12 +570,8 @@
       }
     })(start);
   }
-  function resizeCanvas(){
-    confettiCanvas.width = window.innerWidth;
-    confettiCanvas.height = window.innerHeight;
-  }
+  function resizeCanvas(){ confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
   window.addEventListener('resize', resizeCanvas);
-
   function createConfetti(){
     const colors = ['#22c55e','#0ea5e9','#84cc16','#06b6d4','#f59e0b','#ef4444'];
     const N = Math.min(220, Math.floor(window.innerWidth/6));
@@ -576,25 +590,18 @@
   function drawConfetti(){
     ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
     confettiParticles.forEach(p=>{
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot*Math.PI/180);
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot*Math.PI/180);
       ctx.fillStyle = p.color;
-      if(p.shape==='rect'){
-        ctx.fillRect(-p.r, -p.r/2, p.r*2, p.r);
-      }else{
-        ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill();
-      }
+      if(p.shape==='rect'){ ctx.fillRect(-p.r, -p.r/2, p.r*2, p.r); }
+      else{ ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); }
       ctx.restore();
       p.x += p.vx; p.y += p.vy; p.rot += p.vr;
     });
   }
+
+  // utils
+  function num(id){ return Number(($(id).value||'').replace(/,/g,''))||0; }
 })();
 </script>
-</body>
-</html>
-<!-- partial -->
-  <script  src="./script.js"></script>
-
 </body>
 </html>
