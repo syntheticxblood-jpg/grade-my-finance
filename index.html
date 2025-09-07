@@ -11,7 +11,6 @@
 <meta property="og:url" content="https://grademyfinance.com/">
 <meta property="og:image" content="https://grademyfinance.com/og-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
-
 <style>
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
@@ -39,19 +38,16 @@
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:12px 16px}
   .brand{display:flex;align-items:center;gap:14px}
-  .logoBig{width:112px;height:112px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))} /* 200% size */
+  .logoBig{width:118px;height:118px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
   .title{margin:0;font-size:26px;color:#062c1b;font-weight:900;letter-spacing:.2px}
   .tag{margin:0;color:#062c1bcc;font-size:12px}
   .spacer{flex:1}
-  .pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
+  .pill{border:none;padding:10px 14px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
   .light .pill{background:#0f172a}
   .streak{font-weight:800;color:#062c1b;background:#ffffffaa;padding:7px 10px;border-radius:999px}
 
   /* ---------- HERO ---------- */
-  .hero{
-    display:grid;grid-template-columns:1.2fr .8fr;gap:24px;
-    align-items:start; padding:24px 0 4px;margin-bottom:4px; /* tightened; no big gap */
-  }
+  .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:start;padding:24px 0 4px;margin-bottom:4px}
   @media (max-width: 980px){ .hero{grid-template-columns:1fr;gap:10px} }
   .hero-copy{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
     border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:var(--shadow)}
@@ -66,15 +62,13 @@
 
   /* ---------- Mascot ---------- */
   .hero-mascot{position:relative;display:grid;place-items:center;align-self:start}
-  .buddy{max-height:230px;width:auto}       /* clamp so hero row doesn't stretch */
+  .buddy{max-height:230px;width:auto}
   @media (max-width:1100px){ .buddy{max-height:200px} }
-  @media (max-width:640px){ .hero{grid-template-columns:1fr}.hero-mascot{display:none} } /* hide on narrow phones */
-
+  @media (max-width:640px){ .hero{grid-template-columns:1fr}.hero-mascot{display:none} }
   .mascot-bubble{
     position:absolute;top:-6px;right:4px;background:rgba(0,0,0,.35);border:1px solid var(--line);
     padding:6px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
   }
-  /* Mascot animations */
   .b-float{animation:floatCard 3.2s ease-in-out infinite}
   .b-shadow{animation:floatShadow 3.2s ease-in-out infinite}
   .b-blink{animation:blink 6s ease-in-out infinite}
@@ -89,8 +83,8 @@
   @keyframes sweep{from{transform:translateX(-160px)}to{transform:translateX(160px)}}
 
   /* ---------- Shell ---------- */
-  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:260px 1fr;gap:18px;padding:12px 18px 18px}
-  aside{position:sticky;top:92px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
+  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:280px 1fr;gap:18px;padding:12px 18px 18px}
+  aside{position:sticky;top:92px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
   .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
   .tab:hover{transform:translateY(-1px)}
@@ -133,10 +127,24 @@
   footer{max-width:1200px;margin:12px auto 24px;padding:0 18px 24px;color:var(--muted)}
   footer a{color:var(--accent)}
 
+  /* Profiles panel proportional grid */
+  .profiles-grid{display:grid;grid-template-columns:1fr;gap:10px}
+  .profiles-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+  .profiles-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .profiles-io{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+  /* History UI */
+  .hist-ui{display:grid;gap:12px}
+  .hist-top{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+  .scrub{width:100%}
+  .tooltip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);padding:8px 10px;border-radius:10px;font-size:12px;box-shadow:var(--shadow)}
+  .cursor-line{position:absolute;top:0;bottom:0;width:1px;background:var(--accent);opacity:.6}
+
   @media (max-width: 980px){
     .shell{grid-template-columns:1fr}
     aside{position:static}
     .grid{grid-template-columns:1fr}
+    .profiles-row,.profiles-actions,.profiles-io{grid-template-columns:1fr 1fr}
   }
   @media (max-width: 768px){
     .grid > [style*="grid-column:span 6"],
@@ -151,20 +159,32 @@
   <header>
     <div class="hdr">
       <div class="brand">
-        <!-- ORIGINAL “G” logo: coin+leaf loop, embedded mini report card + check -->
-        <svg class="logoBig" viewBox="0 0 220 220" aria-hidden="true">
+        <!-- NEW Giant Green G + embedded Report Card (modern) -->
+        <svg class="logoBig" viewBox="0 0 260 260" aria-hidden="true">
           <defs>
-            <linearGradient id="lg1" x1="0" x2="1"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#34d399"/></linearGradient>
-            <linearGradient id="lg2" x1="0" x2="1"><stop offset="0" stop-color="#a7f3d0"/><stop offset="1" stop-color="#86efac"/></linearGradient>
+            <radialGradient id="gGlow" cx="50%" cy="45%" r="60%">
+              <stop offset="0" stop-color="#34d399"/><stop offset=".6" stop-color="#16a34a"/><stop offset="1" stop-color="#0c7a39"/>
+            </radialGradient>
+            <linearGradient id="paperGrad" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#F0FFF4"/><stop offset="1" stop-color="#D1FAE5"/>
+            </linearGradient>
           </defs>
-          <!-- coin / seed -->
-          <circle cx="110" cy="110" r="96" fill="url(#lg1)"/>
+          <!-- body / coin -->
+          <circle cx="130" cy="130" r="118" fill="url(#gGlow)"/>
+          <!-- 3D rim -->
+          <circle cx="130" cy="130" r="118" fill="none" stroke="#052e1b" stroke-opacity=".25" stroke-width="10"/>
           <!-- G path -->
-          <path d="M150 110h-44a30 30 0 1 1 0-60c20 0 36 10 44 26" fill="none" stroke="#064e3b" stroke-width="20" stroke-linecap="round"/>
-          <path d="M106 150a40 40 0 0 0 44-30" fill="none" stroke="#064e3b" stroke-width="20" stroke-linecap="round"/>
-          <!-- tiny report card tile -->
-          <rect x="148" y="46" width="40" height="52" rx="10" fill="url(#lg2)"/>
-          <path d="M154 70l9 9 18-18" fill="none" stroke="#065f46" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M180 126h-56a34 34 0 1 1 0-68c24 0 43 12 52 30" fill="none" stroke="#052e1b" stroke-width="22" stroke-linecap="round"/>
+          <path d="M122 182a48 48 0 0 0 56-34" fill="none" stroke="#052e1b" stroke-width="22" stroke-linecap="round"/>
+          <!-- embedded report card tile -->
+          <g transform="translate(162,48)">
+            <rect width="56" height="68" rx="12" fill="url(#paperGrad)" stroke="#bbf7d0" stroke-width="2"/>
+            <g stroke="#10b981" stroke-width="4" stroke-linecap="round">
+              <line x1="10" y1="28" x2="46" y2="28"/>
+              <line x1="10" y1="42" x2="46" y2="42"/>
+            </g>
+            <path d="M14 20l8 8 18-18" fill="none" stroke="#059669" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
         </svg>
         <div>
           <h1 class="title">Grade My Finance</h1>
@@ -191,47 +211,42 @@
       </div>
     </div>
 
-    <!-- Mascot (more detail + motion) -->
+    <!-- Kid-friendlier, 3D-ish mascot holding a star -->
     <div class="hero-mascot" aria-hidden="true">
-      <svg class="buddy b-float" viewBox="0 0 300 260" role="img" aria-label="Report Card Buddy">
+      <svg class="buddy b-float" viewBox="0 0 320 270" role="img" aria-label="Report Card Buddy">
         <defs>
-          <linearGradient id="paperGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#ECFDF5"/><stop offset="1" stop-color="#D1FAE5"/>
+          <linearGradient id="paper3D" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7FFEF"/>
           </linearGradient>
-          <linearGradient id="shine" x1="0" x2="1">
-            <stop offset="0" stop-color="#A7F3D0" stop-opacity=".0"/>
-            <stop offset=".5" stop-color="#A7F3D0" stop-opacity=".25"/>
-            <stop offset="1" stop-color="#A7F3D0" stop-opacity="0"/>
-          </linearGradient>
+          <radialGradient id="cheek" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#fecdd3"/><stop offset="1" stop-color="#fecdd3" stop-opacity="0"/>
+          </radialGradient>
         </defs>
-        <ellipse cx="150" cy="230" rx="70" ry="14" fill="rgba(0,0,0,.25)" class="b-shadow"/>
+        <ellipse cx="160" cy="245" rx="70" ry="14" fill="rgba(0,0,0,.25)" class="b-shadow"/>
         <g>
-          <rect x="70" y="30" width="160" height="200" rx="22" fill="url(#paperGrad)" stroke="#86EFAC" stroke-width="2"/>
-          <path d="M210 30 h20 v20 c-10-2-18-10-20-20z" fill="#E7F8EF"/>
-          <g stroke="#BBF7D0" stroke-width="2">
-            <line x1="85" x2="215" y1="92" y2="92"/>
-            <line x1="85" x2="215" y1="112" y2="112"/>
-            <line x1="85" x2="215" y1="132" y2="132"/>
-            <line x1="85" x2="215" y1="152" y2="152"/>
+          <rect x="80" y="34" width="160" height="208" rx="22" fill="url(#paper3D)" stroke="#86EFAC" stroke-width="2" />
+          <g stroke="#CCFBE1" stroke-width="2">
+            <line x1="95" x2="225" y1="98" y2="98"/>
+            <line x1="95" x2="225" y1="118" y2="118"/>
+            <line x1="95" x2="225" y1="138" y2="138"/>
+            <line x1="95" x2="225" y1="158" y2="158"/>
           </g>
-          <!-- limbs -->
-          <path d="M70 120 q-24 4 -30 -10" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
-          <path d="M230 160 q30 10 34 -12" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round" class="b-wave"/>
-          <path d="M120 230 q-10 14 -22 0" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
-          <path d="M180 230 q8 16 22 0" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <!-- arms -->
+          <path d="M80 130 q-26 4 -32 -12" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M240 165 q32 12 38 -14" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round" class="b-wave"/>
+          <!-- legs -->
+          <path d="M126 242 q-10 16 -24 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M194 242 q10 16 24 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
           <!-- face -->
-          <circle id="eyeL" cx="125" cy="70" r="7" fill="#0f172a"/>
-          <circle id="eyeR" cx="175" cy="70" r="7" fill="#0f172a"/>
-          <g class="b-blink"><rect x="118" y="64" width="14" height="6" fill="#ECFDF5"/><rect x="168" y="64" width="14" height="6" fill="#ECFDF5"/></g>
-          <path id="smile" d="M120 96 q16 10 32 0" fill="none" stroke="#065f46" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="112" cy="80" r="3" fill="#fda4af"/><circle cx="188" cy="80" r="3" fill="#fda4af"/>
-          <!-- badge -->
-          <g class="b-badge">
-            <circle cx="210" cy="120" r="22" fill="#34d399"/>
-            <circle cx="210" cy="120" r="20" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
-            <text x="210" y="126" text-anchor="middle" font-size="18" font-weight="900" fill="#a7f3d0">A+</text>
+          <circle id="eyeL" cx="132" cy="76" r="7" fill="#0f172a"/>
+          <circle id="eyeR" cx="188" cy="76" r="7" fill="#0f172a"/>
+          <g class="b-blink"><rect x="124" y="70" width="16" height="6" fill="#fff"/><rect x="180" y="70" width="16" height="6" fill="#fff"/></g>
+          <path id="smile" d="M128 104 q16 12 32 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="120" cy="88" r="10" fill="url(#cheek)"/><circle cx="200" cy="88" r="10" fill="url(#cheek)"/>
+          <!-- gold star in hand -->
+          <g transform="translate(260,150) rotate(-5)">
+            <path d="M0-14 L6-2 L20 0 L8 8 L10 22 L0 14 L-10 22 L-8 8 L-20 0 L-6-2 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
           </g>
-          <rect class="b-shine" x="70" y="30" width="160" height="200" rx="22" fill="url(#shine)"/>
         </g>
       </svg>
       <div class="mascot-bubble">“Let’s make money feel easy.”</div>
@@ -244,15 +259,17 @@
     <aside>
       <div class="card" style="margin-bottom:10px">
         <div class="section" style="margin-bottom:6px">Profiles</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <select id="profileSelectSide" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)"></select>
-          <button id="newProfileBtnSide" class="btn" style="padding:9px 12px">New</button>
-          <button id="renameProfileBtn" class="btn" style="padding:9px 12px">Rename</button>
-          <button id="deleteProfileBtn" class="btn" style="padding:9px 12px">Delete</button>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <button id="exportProfileBtn" class="btn" style="flex:1">Export</button>
-          <button id="importProfileBtn" class="btn" style="flex:1">Import</button>
+        <div class="profiles-grid">
+          <div class="profiles-row">
+            <select id="profileSelectSide"></select>
+            <button id="newProfileBtnSide" class="btn">New</button>
+            <button id="renameProfileBtn" class="btn">Rename</button>
+            <button id="deleteProfileBtn" class="btn">Delete</button>
+          </div>
+          <div class="profiles-io">
+            <button id="exportProfileBtn" class="btn">Export</button>
+            <button id="importProfileBtn" class="btn">Import</button>
+          </div>
         </div>
         <div class="hint" style="margin-top:10px" id="streakHint">Streak: 0 days</div>
       </div>
@@ -260,7 +277,6 @@
       <nav class="nav" id="sidebar">
         <button class="tab active" data-page="grade">Grade</button>
         <button class="tab" data-page="history">History</button>
-        <button class="tab" data-page="bench">Benchmarks</button>
         <button class="tab" data-page="about">About Us</button>
         <button class="tab" data-page="goal">Our Goal</button>
         <button class="tab" data-page="faq">FAQ</button>
@@ -380,24 +396,32 @@
 
       <!-- History -->
       <section id="page-history" class="page">
-        <div class="card" style="grid-column:span 12">
-          <h2>Your Progress</h2>
-          <canvas id="historyChart" height="180" style="width:100%;max-width:100%"></canvas>
-          <div class="hint" id="historyHint">Grade each month to build your history.</div>
-          <div id="trophyWall" class="badges" style="margin-top:12px"></div>
+        <div class="card hist-ui" style="grid-column:span 12; position:relative">
+          <div class="hist-top">
+            <h2 style="margin:0">Your Progress</h2>
+            <div id="histMeta" class="hint">Entries: 0</div>
+          </div>
+
+          <!-- Interactive chart -->
+          <div style="position:relative">
+            <canvas id="historyChart" height="220" style="width:100%;max-width:100%"></canvas>
+            <div id="cursorLine" class="cursor-line" style="display:none"></div>
+            <div id="tip" class="tooltip" style="display:none"></div>
+          </div>
+
+          <!-- Drag scale slider -->
+          <div class="card" style="border-style:dashed">
+            <div class="section">Drag the scale to compare entries</div>
+            <input id="histRange" class="scrub" type="range" min="0" max="0" step="1" value="0" />
+            <div id="histDetail" class="hint">Move the slider or hover the chart to see differences.</div>
+          </div>
+
+          <!-- Trophy wall -->
+          <div id="trophyWall" class="badges" style="margin-top:2px"></div>
         </div>
       </section>
 
-      <!-- Benchmarks -->
-      <section id="page-bench" class="page">
-        <div class="card">
-          <h2>Benchmarks</h2>
-          <p>Age curve targets used in scoring:</p>
-          <ul id="ageCurveList"></ul>
-          <p class="hint">Readiness = investable assets (retirement + brokerage + HSA) + surplus cash + 40% home equity + pension PV ÷ target FI (annual spend / 6% SWR).</p>
-        </div>
-      </section>
-
+      <!-- About/Goal/FAQ/Contact -->
       <section id="page-about" class="page">
         <div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math and friendly design. Everything runs in your browser.</p></div>
       </section>
@@ -409,6 +433,31 @@
       </section>
       <section id="page-contact" class="page">
         <div class="card"><h2>Contact</h2><p>grademyfinance@gmail.com</p></div>
+      </section>
+
+      <!-- In-page “Read more” articles (no 404s) -->
+      <section id="read-saved-by-30" class="page">
+        <div class="card">
+          <h2>Saved by 30</h2>
+          <p>Quick explainer on why early savings matter: compounding + career agility + optionality. Hitting a baseline (e.g., 1× your annual expenses) by 30 creates resilience and runway.</p>
+          <ul>
+            <li>Automate contributions (401(k)/HSA/Brokerage)</li>
+            <li>Keep a lean expense base (EF target 6 months)</li>
+            <li>Invest simply (broad funds) and consistently</li>
+          </ul>
+        </div>
+      </section>
+      <section id="read-savings-rate" class="page">
+        <div class="card">
+          <h2>Savings Rate Benchmarks</h2>
+          <p>Common targets: 15–20% for steady progress; 25–35% to accelerate milestones; >40% for aggressive FI. Your path depends on income stability and goals.</p>
+        </div>
+      </section>
+      <section id="read-what-is-fire" class="page">
+        <div class="card">
+          <h2>What is FIRE?</h2>
+          <p>Financial Independence, Retire Early: build assets so investment returns can sustainably cover living expenses (often modeled with a 3–4% withdrawal band and buffers).</p>
+        </div>
       </section>
     </main>
   </div>
@@ -430,7 +479,7 @@
   </div>
 
   <footer class="container">
-    <p>Read more: <a href="/blog/saved-by-30.html">Saved by 30</a> · <a href="/blog/savings-rate.html">Savings Rate Benchmarks</a> · <a href="/blog/what-is-fire.html">What is FIRE?</a></p>
+    <p>Read more: <a href="#read-saved-by-30">Saved by 30</a> · <a href="#read-savings-rate">Savings Rate Benchmarks</a> · <a href="#read-what-is-fire">What is FIRE?</a></p>
   </footer>
 
 <script>
@@ -440,6 +489,7 @@
   const money = n => isFinite(n) ? `$${Math.round(n).toLocaleString()}` : '—';
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
+  const fmtDate = iso => new Date(iso).toLocaleString();
 
   // assumptions / weights
   const SWR = 0.06, EF_TARGET = 6, EQUITY_FACTOR = 0.40, REAL_RET = 0.03;
@@ -456,15 +506,30 @@
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // tabs (no funky scroll)
-  const pages=['grade','history','bench','about','goal','faq','contact'];
+  // simple hash router for read pages
+  function routeFromHash(){
+    const h = location.hash.replace('#','');
+    const pages=['grade','history','about','goal','faq','contact','read-saved-by-30','read-savings-rate','read-what-is-fire'];
+    const found = pages.includes(h) ? h : null;
+    if(found){
+      $$('.page').forEach(p=>p.classList.remove('active'));
+      $('#page-'+found)?.classList.add('active'); // for normal pages
+      $('#'+found)?.classList.add('active');      // for read pages
+      $$('.tab').forEach(b=> b.classList.toggle('active', b.dataset.page===found));
+    }
+  }
+  window.addEventListener('hashchange', routeFromHash);
+  routeFromHash();
+
+  // tabs (no scroll jump)
+  const pages=['grade','history','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
     const pg=t.dataset.page;
     $$('.tab').forEach(b=>b.classList.toggle('active', b===t));
-    pages.forEach(p=> $('#page-'+p).classList.toggle('active', p===pg));
+    $$('.page').forEach(p=>p.classList.remove('active'));
+    $('#page-'+pg).classList.add('active');
     if(pg==='history') renderHistory();
-    // remove window.scrollTo jump; keep current position
   });
 
   // streak
@@ -491,7 +556,7 @@
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
 
-  // expected readiness curve
+  // expected readiness curve (kept internal; Benchmarks tab removed)
   const curvePts = [[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
   function expectedReadiness(age){
     const pts = curvePts;
@@ -540,15 +605,6 @@
   ids.forEach(id => els[id].addEventListener('input', updateHints));
   updateHints();
 
-  // Benchmarks list
-  (function renderCurveList(){
-    const ul = $('#ageCurveList'); ul.innerHTML='';
-    curvePts.forEach(([a,r])=>{
-      const li=document.createElement('li'); li.textContent = `${a} → ${(r*100).toFixed(0)}%`;
-      ul.appendChild(li);
-    });
-  })();
-
   function scoreModel(v){
     const leftover = Math.max(0, v.income - v.expenses);
     const saveRate = (v.income>0)
@@ -560,7 +616,7 @@
     // Readiness ratio: 1.0 = fully funded; allow extra credit up to 1.2
     const r = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
 
-    const sFI   = map01(r, 0, 1.2);                                   // <-- pension now moves needle strongly
+    const sFI   = map01(r, 0, 1.2);
     const sNW   = map01((v.targetFI>0 ? v.net / v.targetFI : (v.net>0?1:0)), 0, 1.2);
 
     const expR = expectedReadiness(val('age')||30);
@@ -572,7 +628,7 @@
     const sNonMort = map01(1-nonMortRatio, 0, 1);
 
     const ltv = v.home>0 ? v.mortgage / v.home : 0;
-    const sLTV = map01(1-ltv, 0.1, 0.55); // softer
+    const sLTV = map01(1-ltv, 0.1, 0.55);
 
     const sSave = map01(saveRate, 0, 0.5);
     const sEF   = map01(efMonths, 0, 6);
@@ -585,7 +641,7 @@
       ltv, nonMortRatio,
       net: v.net, assets: v.assets, liabs: v.liabs,
       investableTotal:v.investableTotal, cashSurplus:v.cashSurplus, accessibleEquity:v.accessibleEquity,
-      pensionPV:v.pensionPV
+      pensionPV:v.pensionPV, targetFI:v.targetFI
     };
   }
   function letter(score){
@@ -631,7 +687,7 @@
   const toast=$('#toast'); function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5000); }
 
   // confetti
-  const canvas = $('#confetti'); const ctx = canvas.getContext('2d'); let bits=[];
+  const canvas = $('#confetti'); const ctxC = canvas.getContext('2d'); let bits=[];
   function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   window.addEventListener('resize', resize); resize();
   function confetti(){
@@ -640,18 +696,19 @@
       bits.push({x:Math.random()*canvas.width,y:-20-Math.random()*100,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:4+Math.random()*6,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.2,clr:`hsl(${Math.random()*360},90%,60%)`});
     }
     let t=0; const anim=()=>{
-      t++; ctx.clearRect(0,0,canvas.width,canvas.height);
-      bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.a); ctx.fillStyle=b.clr; ctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctx.restore(); });
-      if(t<240) requestAnimationFrame(anim); else ctx.clearRect(0,0,canvas.width,canvas.height);
+      t++; ctxC.clearRect(0,0,canvas.width,canvas.height);
+      bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; ctxC.save(); ctxC.translate(b.x,b.y); ctxC.rotate(b.a); ctxC.fillStyle=b.clr; ctxC.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctxC.restore(); });
+      if(t<240) requestAnimationFrame(anim); else ctxC.clearRect(0,0,canvas.width,canvas.height);
     }; anim();
   }
 
   // share link
-  function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); s.__ver='age2_pension'; return s; }
+  const allInputIds = ids; // for share
+  function currentState(){ const s={}; allInputIds.forEach(id=> s[id]=val(id)); s.__ver='age2_pension'; return s; }
   function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
   (function hydrateFromHash(){
     const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
-    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); ids.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
+    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); allInputIds.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
   })();
 
   /* ---------- Profiles, History, Trophies ---------- */
@@ -706,7 +763,7 @@
   function maybeTrophies(profile, v, s, L){
     const list=[];
     if(profile.history.length===1) list.push(award(profile,'first_grade','First Grade'));
-    if(L==='A+'||L==='A'||L==='A-') list.push(award(profile,'a_club','A Club'));
+    if(L==='A+','A','A-') list.push(award(profile,'a_club','A Club')); // intentional inclusion of all A variants
     if(s.efMonths>=6) list.push(award(profile,'ef_ready','Emergency Ready'));
     if((v.student+v.auto+v.cc)===0) list.push(award(profile,'debt_slayer','Debt Slayer'));
     if(profile.history.length>=2){
@@ -721,71 +778,6 @@
     const entry={date:new Date().toISOString(), score:s.score, letter:L};
     profile.history.push(entry); saveProfile(profile);
     return entry;
-  }
-
-  // chart
-  function drawChart(points){
-    const c=$('#historyChart'); const ctx=c.getContext('2d');
-    ctx.clearRect(0,0,c.width,c.height);
-    const w=c.width=c.clientWidth; const h=c.height=c.height;
-    if(!points.length){ return; }
-    const xs=points.map((_,i)=>i/(points.length-1||1));
-    const ys=points.map(p=>1-(p.score/100));
-    ctx.lineWidth=2; ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent') || '#22d3ee';
-    ctx.beginPath();
-    for(let i=0;i<points.length;i++){
-      const x=16+xs[i]*(w-32), y=16+ys[i]*(h-32);
-      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-    ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2') || '#a78bfa';
-    points.forEach((p,i)=>{
-      const x=16+xs[i]*(w-32), y=16+ys[i]*(h-32);
-      ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
-    });
-  }
-  function renderHistory(){
-    const prof=getActive(); if(!prof) return;
-    const pts=prof.history.map(h=>({date:h.date, score:h.score}));
-    drawChart(pts);
-    $('#historyHint').textContent = prof.history.length ? `Entries: ${prof.history.length}` : 'Grade each month to build your history.';
-    const wall=$('#trophyWall'); wall.innerHTML='';
-    (prof.trophies||[]).forEach(code=>{
-      const span=document.createElement('span'); span.className='badge'; span.textContent=({
-        'first_grade':'First Grade','a_club':'A Club','ef_ready':'Emergency Ready','debt_slayer':'Debt Slayer','level_up':'Level Up','streak_3':'3-Month Streak'
-      })[code] || code;
-      wall.appendChild(span);
-    });
-  }
-
-  // explainers
-  function renderWhy(v,s){
-    $('#chips').innerHTML = [
-      `<span class="chip">Readiness: <b>${(s.readiness*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Age curve: <b>${(s.expR*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Emergency fund: <b>${s.efMonths?.toFixed?.(1)??'0'} mo</b></span>`,
-      `<span class="chip">Mortgage LTV: <b>${(s.ltv*100).toFixed(0)}%</b></span>`
-    ].join('');
-    const nonMortDebt = val('student')+val('auto')+val('cc');
-    $('#whyList').innerHTML = [
-      `Age ${val('age')}: expected readiness ≈ ${(expectedReadiness(val('age'))*100).toFixed(0)}%.`,
-      `Counted investable ${money(v.investableCore)} + surplus cash ${money(s.cashSurplus)} + 40% home equity ${money(s.accessibleEquity)} + pension PV ${money(s.pensionPV)} = ${money(s.investableTotal)}.`,
-      `Net worth: ${money(v.net)} (assets ${money(v.assets)} – liabilities ${money(v.liabs)}).`,
-      `Savings rate includes payroll & education: ${(s.saveRate*100).toFixed(0)}% (adds ${money(val('pretaxMonthly')+val('eduMonthly'))}/mo).`,
-      `Non-mortgage debt totals ${money(nonMortDebt)}; mortgage LTV is ${(s.ltv*100).toFixed(0)}%.`
-    ].map(x=>`<div>${x}</div>`).join('');
-  }
-  function renderImprove(v,s){
-    const ideas=[];
-    const expR = expectedReadiness(val('age'));
-    if(s.readiness < expR) ideas.push(`Close the age gap: add ~${money(Math.max(0, v.targetFI*expR - v.investableTotal))} investable or trim spend.`);
-    if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to ${EF_TARGET} months (${money(v.expenses*EF_TARGET)}).`);
-    if(s.saveRate < 0.2) ideas.push(`Boost savings rate to 20%+ by auto-moving ~${money(Math.ceil((val('income')+val('pretaxMonthly'))*0.05))}/mo.`);
-    if(s.ltv > 0.9) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): occasional principal prepayments help.`);
-    if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
-    if(!ideas.length) ideas.push(`You’re ahead for your age. Keep the systems humming.`);
-    $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
   // ---------- Mascot eye-follow ----------
@@ -805,7 +797,7 @@
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
 
-  // ---------- Grade flow (hardened for phones) ----------
+  // ---------- Grade flow ----------
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
 
   function doGrade(){
@@ -830,6 +822,7 @@
       logHistory(prof, s, L);
       const ts = maybeTrophies(prof, v, s, L);
       if(ts.length) confetti();
+      renderHistory(); // live update
     }
   }
 
@@ -848,11 +841,11 @@
 
   document.getElementById('gradeBtn').addEventListener('click', runGradeSafely);
   document.getElementById('gradeBtnTop').addEventListener('click', ()=>{
-    pages.forEach(p=> document.getElementById('page-'+p).classList.toggle('active', p==='grade'));
+    pages.forEach(p=> document.getElementById('page-'+p)?.classList.toggle('active', p==='grade'));
     runGradeSafely();
   });
 
-  // demo + copy buttons (use safeCopy)
+  // demo + copy buttons
   $('#demoBtnTop').addEventListener('click', ()=>{
     const demo={
       income:7500, expenses:4000, age:30,
@@ -863,7 +856,7 @@
     };
     Object.keys(demo).forEach(id=>{ if(els[id]) els[id].value=demo[id]; });
     updateHints();
-    pages.forEach(p=> $('#page-'+p).classList.toggle('active', p==='grade'));
+    pages.forEach(p=> $('#page-'+p)?.classList.toggle('active', p==='grade'));
   });
   $('#copyTop').addEventListener('click', ()=> { safeCopy(buildShareURL()); showToast(); });
   $('#copyAgain').addEventListener('click', ()=> safeCopy(buildShareURL()));
@@ -879,10 +872,164 @@
     progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
 
-  // render history once
-  renderHistory();
+  // explainers
+  function renderWhy(v,s){
+    $('#chips').innerHTML = [
+      `<span class="chip">Readiness: <b>${(s.readiness*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Age curve: <b>${(s.expR*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Emergency fund: <b>${s.efMonths?.toFixed?.(1)??'0'} mo</b></span>`,
+      `<span class="chip">Mortgage LTV: <b>${(s.ltv*100).toFixed(0)}%</b></span>`
+    ].join('');
+    const nonMortDebt = val('student')+val('auto')+val('cc');
+    $('#whyList').innerHTML = [
+      `Age ${val('age')}: expected readiness ≈ ${(expectedReadiness(val('age'))*100).toFixed(0)}%.`,
+      `Counted investable ${money(v.investableCore)} + surplus cash ${money(s.cashSurplus)} + 40% home equity ${money(s.accessibleEquity)} + pension PV ${money(s.pensionPV)} = ${money(s.investableTotal)}.`,
+      `Target FI: ${money(s.targetFI)} (annual spend ÷ ${Math.round(1/SWR)}%).`,
+      `Net worth: ${money(v.net)} (assets ${money(v.assets)} – liabilities ${money(v.liabs)}).`,
+      `Savings rate includes payroll & education: ${(s.saveRate*100).toFixed(0)}% (adds ${money(val('pretaxMonthly')+val('eduMonthly'))}/mo).`,
+      `Non-mortgage debt totals ${money(nonMortDebt)}; mortgage LTV is ${(s.ltv*100).toFixed(0)}%.`
+    ].map(x=>`<div>${x}</div>`).join('');
+  }
+  function renderImprove(v,s){
+    const ideas=[];
+    const expR = expectedReadiness(val('age'));
+    if(s.readiness < expR) ideas.push(`Close the age gap: add ~${money(Math.max(0, v.targetFI*expR - v.investableTotal))} investable or trim spend.`);
+    if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to ${EF_TARGET} months (${money(v.expenses*EF_TARGET)}).`);
+    if(s.saveRate < 0.2) ideas.push(`Boost savings rate to 20%+ by auto-moving ~${money(Math.ceil((val('income')+val('pretaxMonthly'))*0.05))}/mo.`);
+    if(s.ltv > 0.9) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): occasional principal prepayments help.`);
+    if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
+    if(!ideas.length) ideas.push(`You’re ahead for your age. Keep the systems humming.`);
+    $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
+  }
+
+  /* ===================== HISTORY: interactive chart + slider ===================== */
+  const chart = $('#historyChart');
+  const ctx = chart.getContext('2d');
+  const tip = $('#tip');
+  const cursor = $('#cursorLine');
+  const range = $('#histRange');
+  const detail = $('#histDetail');
+
+  function drawChart(points){
+    const dpr = window.devicePixelRatio||1;
+    const rect = chart.getBoundingClientRect();
+    chart.width = Math.floor(rect.width*dpr);
+    chart.height= Math.floor(220*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,rect.width,220);
+
+    if(!points.length) return;
+    const pad = 16;
+    const w = rect.width - pad*2;
+    const h = 220 - pad*2;
+
+    const xs=points.map((_,i)=> i/(Math.max(1,points.length-1)));
+    const ys=points.map(p=> 1 - (p.score/100));
+
+    // grid
+    ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--line') || 'rgba(148,163,184,.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for(let y=0;y<=5;y++){
+      const gy = pad + (h*y/5);
+      ctx.moveTo(pad, gy); ctx.lineTo(pad+w, gy);
+    }
+    ctx.stroke();
+
+    // line
+    ctx.lineWidth=2;
+    ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent') || '#22d3ee';
+    ctx.beginPath();
+    for(let i=0;i<points.length;i++){
+      const x=pad+xs[i]*w, y=pad+ys[i]*h;
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+
+    // points
+    ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2') || '#a78bfa';
+    points.forEach((p,i)=>{
+      const x=pad+xs[i]*w, y=pad+ys[i]*h;
+      ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+    });
+  }
+
+  function renderHistory(){
+    const prof=getActive(); if(!prof) return;
+    const pts=(prof.history||[]).map(h=>({date:h.date, score:h.score, letter:h.letter}));
+    drawChart(pts);
+
+    $('#histMeta').textContent = `Entries: ${pts.length}`;
+    range.max = Math.max(0, pts.length-1);
+    range.value = pts.length ? pts.length-1 : 0;
+
+    // trophy wall
+    const wall=$('#trophyWall'); wall.innerHTML='';
+    (prof.trophies||[]).forEach(code=>{
+      const span=document.createElement('span'); span.className='badge'; span.textContent=({
+        'first_grade':'First Grade','a_club':'A Club','ef_ready':'Emergency Ready','debt_slayer':'Debt Slayer','level_up':'Level Up','streak_3':'3-Month Streak'
+      })[code] || code;
+      wall.appendChild(span);
+    });
+
+    // detail panel update from slider
+    function updateFromIndex(i){
+      if(!pts.length){ detail.textContent='No history yet.'; return; }
+      i = clamp(i, 0, pts.length-1);
+      const cur = pts[i];
+      const prev = pts[i-1]||cur;
+      const delta = (cur.score - prev.score).toFixed(1);
+      const arrow = cur===prev ? '•' : (delta>=0? '▲' : '▼');
+      detail.innerHTML = `Selected: <b>${cur.letter}</b> (${cur.score.toFixed(1)}) on <b>${fmtDate(cur.date)}</b>
+        <br>Change vs prior: <b>${arrow} ${Math.abs(delta)}</b> points`;
+    }
+    updateFromIndex(+range.value);
+
+    range.oninput = e => updateFromIndex(+e.target.value);
+
+    // chart hover / drag
+    const rect = chart.getBoundingClientRect();
+    function pointPos(i){
+      const pad=16; const w=rect.width-pad*2; const h=220-pad*2;
+      const x=pad+(i/(Math.max(1,pts.length-1)))*w;
+      return x;
+    }
+    let isDown=false;
+    function nearestIndex(x){
+      const pad=16; const w=rect.width-pad*2;
+      const t = clamp((x-pad)/w,0,1);
+      return Math.round(t*(Math.max(1,pts.length-1)));
+    }
+    function showAt(x){
+      if(!pts.length) return;
+      const i = nearestIndex(x);
+      const cx = pointPos(i);
+      cursor.style.display='block';
+      cursor.style.left = (chart.offsetLeft + cx)+'px';
+      tip.style.display='block';
+      const cur=pts[i];
+      tip.innerHTML = `<b>${cur.letter}</b> ${cur.score.toFixed(1)}<br>${fmtDate(cur.date)}`;
+      const tipX = chart.offsetLeft + cx + 10;
+      const tipY = chart.offsetTop + 10;
+      tip.style.left = tipX+'px';
+      tip.style.top = tipY+'px';
+      range.value = i; range.dispatchEvent(new Event('input'));
+    }
+    function hideTip(){ tip.style.display='none'; cursor.style.display='none'; }
+
+    chart.addEventListener('mousedown', e=>{ isDown=true; showAt(e.offsetX); });
+    chart.addEventListener('mousemove', e=>{ if(isDown) showAt(e.offsetX); });
+    chart.addEventListener('mouseleave', hideTip);
+    window.addEventListener('mouseup', ()=>{ isDown=false; });
+
+    $('#historyHint')?.remove(); // old hint cleanup
+  }
+
+  // render history once on load if tab is open
+  if($('#page-history').classList.contains('active')) renderHistory();
+
 })();
 </script>
 </body>
 </html>
-
