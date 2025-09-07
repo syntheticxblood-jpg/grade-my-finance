@@ -4,7 +4,15 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
-<meta name="description" content="Friendly, age-aware retirement readiness grade with instant tips, badges, and a shareable link.">
+<meta name="description" content="Age-aware retirement readiness grade with profiles, progress history, achievements, and a shareable link.">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Grade My Finance">
+<meta property="og:description" content="Get a letter grade for your money, track progress, and earn achievements.">
+<meta property="og:url" content="https://grademyfinance.com/">
+<meta property="og:image" content="https://grademyfinance.com/og-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
@@ -31,48 +39,37 @@
       radial-gradient(1000px 500px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
       radial-gradient(900px 500px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
       var(--bg);
-    color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
-    line-height:1.35;
+    color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;line-height:1.35;
   }
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
 
-  /* Header */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 16px}
   .logo{width:52px;height:52px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
   .title{margin:0;font-size:26px;color:#062c1b;font-weight:900;letter-spacing:.2px}
   .tag{margin:0;color:#062c1bcc;font-size:12px}
   .spacer{flex:1}
-  .streak{font-weight:800;color:#062c1b;background:#ffffffaa;padding:8px 10px;border-radius:999px}
-  .pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0;transition:transform .06s ease, filter .12s ease}
+  .pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0;transition:transform .06s ease}
   .pill:active{transform:translateY(1px) scale(.98)}
   .light .pill{background:#0f172a}
-  .cta{margin-left:8px}
 
-  /* Shell */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:240px 1fr;gap:18px;padding:18px}
   aside{position:sticky;top:86px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
-  .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, box-shadow .12s ease, background .15s ease}
-  .tab:hover{box-shadow:0 6px 16px rgba(0,0,0,.25)}
-  .tab:active{transform:translateY(1px) scale(.99)}
+  .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
+  .tab:hover{transform:translateY(-1px)}
   .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#062c1b}
 
-  /* Cards + grid */
   .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);transition:transform .15s ease}
-  .card:hover{transform:translateY(-1px)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
   .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
   label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-  input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text);transition:box-shadow .15s ease,border-color .15s ease, transform .05s ease}
-  input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
+  input,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
+  input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
   .hint{font-size:12px;color:var(--muted);margin-top:6px}
-  .btn{padding:11px 15px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer;transition:transform .06s ease, box-shadow .12s ease}
-  .btn:hover{box-shadow:0 10px 20px rgba(0,0,0,.25)}
-  .btn:active{transform:translateY(1px) scale(.985)}
-  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b;text-shadow:0 1px 0 #ffffff80}
-
+  .btn{padding:11px 15px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b}
   .page{display:none} .page.active{display:block}
 
   .resultTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -82,20 +79,14 @@
   @keyframes pop{0%{opacity:0;transform:scale(.7) rotate(-6deg)}60%{opacity:1;transform:scale(1.08) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
   .scoreline{font-size:14px;color:var(--muted)}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-  .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.00))}
+  .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px}
+
   .progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
   .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
 
-  /* Badges */
   .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
   .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:var(--panel);font-size:12px;font-weight:800}
-  .badge .dot{width:8px;height:8px;border-radius:50%}
-  .b-good{background:linear-gradient(90deg,#22c55e,#84cc16);color:#062c1b;border-color:transparent}
-  .b-ready{background:linear-gradient(90deg,#22d3ee,#a78bfa);color:#062c1b;border-color:transparent}
-  .b-debt{background:linear-gradient(90deg,#f59e0b,#f97316);color:#062c1b;border-color:transparent}
-  .b-age{background:linear-gradient(90deg,#60a5fa,#34d399);color:#062c1b;border-color:transparent}
 
-  /* Loader overlay */
   .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.35);z-index:80}
   .overlay.show{display:grid}
   .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
@@ -103,14 +94,15 @@
   .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#22d3ee 0 14px,#a78bfa 14px 28px);animation:slide .7s linear infinite}
   @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 
-  /* Toast */
   .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(120%);background:var(--card);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;z-index:90;transition:transform .28s ease;}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .toast button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
 
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:85}
+  footer{max-width:1200px;margin:24px auto;padding:0 18px 24px;color:var(--muted)}
+  footer a{color:var(--accent)}
 
-  /* Mobile layout fixes: force full-width stacking on phones */
+  /* Mobile */
   @media (max-width: 980px){
     .shell{grid-template-columns:1fr}
     aside{position:static}
@@ -119,17 +111,14 @@
   @media (max-width: 768px){
     .grid > [style*="grid-column:span 6"],
     .grid > [style*="grid-column:span 4"],
-    .grid > [style*="grid-column:span 8"]{
-      grid-column: span 12 !important;
-    }
+    .grid > [style*="grid-column:span 8"]{grid-column: span 12 !important;}
   }
 </style>
 </head>
 <body class="dark">
-  <!-- Header -->
   <header>
     <div class="hdr">
-      <!-- Mascot + Logo -->
+      <!-- Simple logo -->
       <svg class="logo" viewBox="0 0 160 160" aria-label="Grade My Finance logo" role="img">
         <defs>
           <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#d1fae5"/></linearGradient>
@@ -143,12 +132,12 @@
       </svg>
       <div>
         <h1 class="title">Grade My Finance</h1>
-        <p class="tag">Retirement-readiness grading — learn, level-up, repeat.</p>
+        <p class="tag">Letter grade, progress tracking, and achievements.</p>
       </div>
       <span class="spacer"></span>
-      <span id="streakPill" class="streak" style="display:none"></span>
+      <select id="profileSelect" class="pill"></select>
+      <button id="newProfileBtn" class="pill">New Profile</button>
       <button id="modeBtn" class="pill">Dark</button>
-      <a href="#grade" id="ctaTop" class="pill cta">Get My Score</a>
     </div>
   </header>
 
@@ -158,6 +147,7 @@
     <aside>
       <nav class="nav" id="sidebar">
         <button class="tab active" data-page="grade">Grade</button>
+        <button class="tab" data-page="history">History</button>
         <button class="tab" data-page="about">About Us</button>
         <button class="tab" data-page="goal">Our Goal</button>
         <button class="tab" data-page="faq">FAQ</button>
@@ -168,7 +158,7 @@
     <main id="main">
       <!-- Grade page -->
       <section id="page-grade" class="page active">
-        <div class="grid" id="grade">
+        <div class="grid">
           <div class="card" style="grid-column:span 4">
             <div class="section">Monthly Income (after-tax)</div>
             <label>What hits your bank each month</label>
@@ -213,7 +203,6 @@
             <div class="hint" id="liabHint">Total Liabilities: —</div>
           </div>
 
-          <!-- Results -->
           <div class="card" style="grid-column:span 12">
             <div class="resultTitle">
               <div class="resultLeft">
@@ -231,7 +220,6 @@
             </div>
 
             <div style="margin:12px 0 10px 0" class="progress"><div id="progressFill"></div></div>
-
             <div id="badgeRow" class="badges"></div>
 
             <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px">
@@ -248,16 +236,29 @@
         </div>
       </section>
 
-      <!-- Secondary pages -->
+      <!-- History -->
+      <section id="page-history" class="page">
+        <div class="card" style="grid-column:span 12">
+          <h2>Your Progress</h2>
+          <canvas id="historyChart" height="180" style="width:100%;max-width:100%"></canvas>
+          <div class="hint" id="historyHint">Grade each month to build your history.</div>
+          <div id="trophyWall" class="badges" style="margin-top:12px"></div>
+        </div>
+      </section>
+
+      <!-- About -->
       <section id="page-about" class="page">
-        <div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math, friendly design, and zero sign-up. Everything runs in your browser.</p></div>
+        <div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math and friendly design. Everything runs in your browser.</p></div>
       </section>
+      <!-- Goal -->
       <section id="page-goal" class="page">
-        <div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits. Small steps, repeated.</p></div>
+        <div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div>
       </section>
+      <!-- FAQ -->
       <section id="page-faq" class="page">
         <div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div>
       </section>
+      <!-- Contact -->
       <section id="page-contact" class="page">
         <div class="card"><h2>Contact</h2><p>grademyfinance@gmail.com</p></div>
       </section>
@@ -280,6 +281,10 @@
     <button id="copyAgain">Copy again</button>
   </div>
 
+  <footer>
+    <p>Read more: <a href="/blog/saved-by-30.html">Saved by 30</a> · <a href="/blog/savings-rate.html">Savings Rate Benchmarks</a> · <a href="/blog/what-is-fire.html">What is FIRE?</a></p>
+  </footer>
+
 <script>
 (() => {
   const $ = s => document.querySelector(s);
@@ -289,43 +294,26 @@
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
 
   // constants
-  const SWR = 0.06;
-  const EF_TARGET = 6;
-  const EQUITY_FACTOR = 0.40;
+  const SWR = 0.06, EF_TARGET = 6, EQUITY_FACTOR = 0.40;
   const NW_W=15, FI_W=55, AGE_W=10, SAVE_W=6, EF_W=7, NONMORT_W=4, LTV_W=3;
 
   // theme
   const modeBtn = $('#modeBtn');
-  function setMode(light){ document.body.classList.toggle('light', light); modeBtn.textContent = light ? 'Light' : 'Dark'; }
-  setMode(false);
+  function setMode(light){ document.body.classList.toggle('light', light); modeBtn.textContent = light ? 'Light' : 'Dark'; localStorage.setItem('gmf_theme', light?'light':'dark'); }
+  setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // daily streak
-  (function streak(){
-    const key='gmf_streak';
-    const today = new Date().toDateString();
-    const data = JSON.parse(localStorage.getItem(key) || '{"last":"","count":0}');
-    let count = data.count;
-    if(data.last !== today){
-      const yesterday = new Date(Date.now()-86400000).toDateString();
-      count = (data.last === yesterday) ? (data.count+1) : 1;
-      localStorage.setItem(key, JSON.stringify({last:today,count}));
-    }
-    const pill = $('#streakPill'); pill.style.display='inline-block'; pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
-  })();
-
-  // GA page views on tab clicks
-  function trackPage(path){ if(window.gtag){ gtag('event','page_view',{page_path:path}); } }
-  const pages=['grade','about','goal','faq','contact'];
+  // tabs + GA page views
+  const pages=['grade','history','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
     const pg=t.dataset.page;
     $$('.tab').forEach(b=>b.classList.toggle('active', b===t));
     pages.forEach(p=> $('#page-'+p).classList.toggle('active', p===pg));
+    if(window.gtag){ gtag('event','page_view',{page_path:'/'+pg}); }
+    if(pg==='history') renderHistory();
     window.scrollTo({top:0,behavior:'smooth'});
-    trackPage('/'+pg);
   });
-  $('#ctaTop').addEventListener('click', ()=>{ $$('.tab').forEach(b=>b.classList.toggle('active', b.dataset.page==='grade')); pages.forEach(p=> $('#page-'+p).classList.toggle('active', p==='grade')); trackPage('/grade'); });
 
   // inputs
   const ids = ['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr'];
@@ -412,30 +400,21 @@
     return "F";
   }
 
-  // loader + toast
-  let prog=0,timer=null;
+  // overlay + toast
   const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
-  function showOverlay(){ prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
-    timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200); }
-  function hideOverlay(){ clearInterval(timer); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); }
-
+  function showOverlay(){ let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
+    const t=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200);
+    setTimeout(()=>{ clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); },800);
+  }
   const toast=$('#toast');
-  function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5500); }
+  function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5000); }
   $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
 
-  // share link
-  function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); s.__ver='age1'; return s; }
-  function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
-  (function hydrateFromHash(){
-    const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
-    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); ids.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
-  })();
-
   // confetti
-  const canvas = document.getElementById('confetti'); const ctx = canvas.getContext('2d'); let bits=[];
+  const canvas = $('#confetti'); const ctx = canvas.getContext('2d'); let bits=[];
   function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   window.addEventListener('resize', resize); resize();
-  function popConfetti(){
+  function confetti(){
     const n=140; bits=[];
     for(let i=0;i<n;i++){
       bits.push({x:Math.random()*canvas.width,y:-20-Math.random()*100,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:4+Math.random()*6,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.2,clr:`hsl(${Math.random()*360},90%,60%)`});
@@ -447,27 +426,112 @@
     }; anim();
   }
 
-  // badges
-  function awardBadges(v,s){
-    const row = $('#badgeRow'); row.innerHTML='';
-    const badges=[];
-    if(s.saveRate>=0.20) badges.push({cls:'b-good',txt:'Saver 20%+'});
-    if(s.efMonths>=6) badges.push({cls:'b-ready',txt:'Emergency Ready'});
-    const nonMort = v.student+v.auto+v.cc; if(nonMort===0) badges.push({cls:'b-debt',txt:'Debt Slayer'});
-    if(s.readiness >= expectedReadiness(val('age'))) badges.push({cls:'b-age',txt:'Ahead of Age'});
-    if(!badges.length){ row.innerHTML='<div class="hint">Earn badges by improving savings, building your emergency fund, lowering debt, and meeting your age curve.</div>'; return; }
-    badges.forEach(b=>{
-      const el=document.createElement('div'); el.className=`badge ${b.cls}`; el.innerHTML=`<span class="dot"></span>${b.txt}`; row.appendChild(el);
-    });
-    // first-time badge party
-    const key='gmf_badges'; const old = JSON.parse(localStorage.getItem(key)||'[]');
-    const newList = badges.map(b=>b.txt);
-    const unlocked = newList.filter(x=>!old.includes(x));
-    if(unlocked.length){ popConfetti(); }
-    localStorage.setItem(key, JSON.stringify(newList));
+  // share link
+  function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); s.__ver='age1'; return s; }
+  function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
+  (function hydrateFromHash(){
+    const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
+    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); ids.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
+  })();
+
+  /* -------- Profiles, History, Trophies (localStorage) -------- */
+  const PROFILE_KEY='gmf_profiles_v1';
+  function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
+  function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
+  function ensureDefaultProfile(){
+    let p=loadProfiles();
+    if(!p.length){ p=[{id:crypto.randomUUID(), name:'My Profile', history:[], trophies:[]}]; saveProfiles(p); }
+    return p;
+  }
+  function renderProfileSelect(){
+    const p=ensureDefaultProfile(); const sel=$('#profileSelect'); sel.innerHTML='';
+    p.forEach((x,i)=>{ const o=document.createElement('option'); o.value=x.id; o.textContent=x.name; sel.appendChild(o); });
+    const cur = localStorage.getItem('gmf_active_profile') || p[0].id; sel.value=cur; localStorage.setItem('gmf_active_profile', cur);
+  }
+  function getActive(){ const id=localStorage.getItem('gmf_active_profile'); return loadProfiles().find(x=>x.id===id); }
+  function setActive(id){ localStorage.setItem('gmf_active_profile', id); }
+
+  renderProfileSelect();
+  $('#profileSelect').addEventListener('change', e=>{ setActive(e.target.value); renderHistory(); });
+  $('#newProfileBtn').addEventListener('click', ()=>{
+    const name=prompt('Profile name?','My Profile '+(loadProfiles().length+1)); if(!name) return;
+    const p=loadProfiles(); const id=crypto.randomUUID(); p.push({id,name,history:[],trophies:[]}); saveProfiles(p); renderProfileSelect(); setActive(id); renderHistory();
+  });
+
+  function award(profile, code, label){
+    if(!profile.trophies.includes(code)){ profile.trophies.push(code); saveProfile(profile); confetti(); }
+    return {code,label};
+  }
+  function saveProfile(profile){
+    const ps=loadProfiles(); const idx=ps.findIndex(x=>x.id===profile.id); if(idx>=0){ ps[idx]=profile; saveProfiles(ps); }
   }
 
-  // render
+  function maybeTrophies(profile, v, s, L){
+    const list=[];
+    if(profile.history.length===1) list.push(award(profile,'first_grade','First Grade'));
+    if(L==='A+'||L==='A'||L==='A-') list.push(award(profile,'a_club','A Club'));
+    if(s.efMonths>=6) list.push(award(profile,'ef_ready','Emergency Ready'));
+    if((v.student+v.auto+v.cc)===0) list.push(award(profile,'debt_slayer','Debt Slayer'));
+    if(profile.history.length>=3){
+      const last=profile.history[profile.history.length-2]?.score||s.score;
+      if(s.score>last) list.push(award(profile,'level_up','Level Up'));
+    }
+    // Streak: graded in each of last 3 calendar months
+    const months=new Set(profile.history.slice(-3).map(h=>new Date(h.date).getMonth()+1));
+    if(months.size===3) list.push(award(profile,'streak_3','3-Month Streak'));
+    return list;
+  }
+
+  function logHistory(profile, s, L){
+    const entry={date:new Date().toISOString(), score:s.score, letter:L};
+    profile.history.push(entry); saveProfile(profile);
+    return entry;
+  }
+
+  // draw simple line chart
+  function drawChart(points){
+    const c=$('#historyChart'); const ctx=c.getContext('2d');
+    ctx.clearRect(0,0,c.width,c.height);
+    const w=c.width=c.clientWidth; const h=c.height=c.height; // keep height
+    if(!points.length){ return; }
+    const xs=points.map((_,i)=>i/(points.length-1||1));
+    const ys=points.map(p=>1-(p.score/100));
+    ctx.lineWidth=2; ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent') || '#22d3ee';
+    ctx.beginPath();
+    for(let i=0;i<points.length;i++){
+      const x=16+xs[i]*(w-32), y=16+ys[i]*(h-32);
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // points
+    ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2') || '#a78bfa';
+    points.forEach((p,i)=>{
+      const x=16+xs[i]*(w-32), y=16+ys[i]*(h-32);
+      ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+    });
+  }
+
+  function renderHistory(){
+    const prof=getActive(); if(!prof) return;
+    const pts=prof.history.map(h=>({date:h.date, score:h.score}));
+    drawChart(pts);
+    $('#historyHint').textContent = prof.history.length ? `Entries: ${prof.history.length}` : 'Grade each month to build your history.';
+    // trophies wall
+    const wall=$('#trophyWall'); wall.innerHTML='';
+    (prof.trophies||[]).forEach(code=>{
+      const span=document.createElement('span'); span.className='badge'; span.textContent=({
+        'first_grade':'First Grade',
+        'a_club':'A Club',
+        'ef_ready':'Emergency Ready',
+        'debt_slayer':'Debt Slayer',
+        'level_up':'Level Up',
+        'streak_3':'3-Month Streak'
+      })[code] || code;
+      wall.appendChild(span);
+    });
+  }
+
+  // render explanations
   function renderWhy(v,s){
     $('#chips').innerHTML = [
       `<span class="chip">Age curve met: <b>${(s.readiness/Math.max(.05,expectedReadiness(val('age')))*100).toFixed(0)}%</b></span>`,
@@ -489,47 +553,68 @@
     const expR = expectedReadiness(val('age'));
     if(s.readiness < expR) ideas.push(`Catch up to your age curve: add ~${money(Math.max(0, v.targetFI*expR - v.investableTotal))} investable (or reduce spending).`);
     if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to ${EF_TARGET} months (${money(v.expenses*EF_TARGET)}).`);
-    if(s.saveRate < 0.2) ideas.push(`Aim for 20%+ savings by auto-moving ~${money(Math.ceil(v.income*0.05))}/mo.`);
+    if(s.saveRate < 0.2) ideas.push(`Aim for 20%+ savings by auto-moving ~${money(Math.ceil(val('income')*0.05))}/mo.`);
     if(s.ltv > 0.8) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): occasional principal prepayments help.`);
     if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
     if(!ideas.length) ideas.push(`You’re ahead for your age. Keep the systems humming.`);
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
-  // grade + reset
+  // Grade & Reset
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
 
   function doGrade(){
     const v = values();
     const s = scoreModel(v);
-    const L = letter(s.score);
+    const L = (function(score){
+      if(score>=97) return "A+";
+      if(score>=93) return "A";
+      if(score>=90) return "A-";
+      if(score>=87) return "B+";
+      if(score>=83) return "B";
+      if(score>=80) return "B-";
+      if(score>=77) return "C+";
+      if(score>=73) return "C";
+      if(score>=70) return "C-";
+      if(score>=67) return "D+";
+      if(score>=63) return "D";
+      if(score>=60) return "D-";
+      return "F";
+    })(s.score);
+
     bigGrade.textContent = L;
     bigGrade.style.color = ({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
     bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
     scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
     nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
     progress.style.width = s.score + '%';
-    renderWhy(v,s); renderImprove(v,s); awardBadges(v,s);
+    renderWhy(v,s); renderImprove(v,s);
 
-    if(['A+','A','A-','B+'].includes(L)) popConfetti();
+    const shareURL = (function(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify({inputs:currentState(),score:s.score,letter:L})))); return location.origin+location.pathname+'#s='+b64; })();
+    navigator.clipboard.writeText(shareURL).catch(()=>{}); showToast();
 
-    const url = buildShareURL(); navigator.clipboard.writeText(url).catch(()=>{}); showToast();
+    if(['A+','A','A-','B+'].includes(L)) confetti();
+
+    // Log history + trophies for active profile
+    const prof=getActive(); if(prof){
+      logHistory(prof, s, L);
+      const newTs = maybeTrophies(prof, v, s, L);
+      if(newTs.length) confetti();
+    }
   }
 
-  $('#gradeBtn').addEventListener('click', ()=>{
-    showOverlay();
-    setTimeout(()=>{ hideOverlay(); doGrade(); }, 800);
-  });
-
+  $('#gradeBtn').addEventListener('click', ()=>{ showOverlay(); setTimeout(doGrade, 820); });
   $('#resetBtn').addEventListener('click', ()=>{
     document.querySelectorAll('input[type="number"]').forEach(el => el.value = (el.id==='age'?30:0));
     updateHints();
     bigGrade.textContent='—'; bigGrade.classList.remove('show');
     scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
-    progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent=''; $('#badgeRow').innerHTML='';
+    progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
+
+  // initial history render if user clicks tab later
+  renderHistory();
 })();
 </script>
 </body>
 </html>
-
