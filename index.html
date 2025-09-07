@@ -16,8 +16,7 @@
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
     --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-    --g1:#16a34a; --g2:#34d399;
-    --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
+    --g1:#16a34a; --g2:#34d399; --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
   }
   .light{
     --bg:#f5faf6; --panel:#ffffff; --card:#ffffff; --text:#0f172a; --muted:#4b5563; --line:rgba(15,23,42,.12);
@@ -35,7 +34,7 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Header ---------- */
+  /* Header */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);
     background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;padding:14px 16px;gap:16px}
@@ -45,7 +44,7 @@
   .hdr-rail{position:absolute;right:16px;display:flex;gap:10px;align-items:center}
   #streakPill{font-weight:800;color:#062c1b;background:#ffffffc2;padding:7px 10px;border-radius:999px}
 
-  /* ---------- HERO ---------- */
+  /* Hero */
   .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start;padding:18px 0 6px}
   @media (max-width: 980px){ .hero{grid-template-columns:1fr;gap:14px} }
   .hero-copy{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
@@ -58,7 +57,7 @@
   .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
   .btn.ghost{background:transparent}
 
-  /* ---------- Mascot ---------- */
+  /* Mascot */
   .hero-mascot{position:relative;display:grid;place-items:center;align-self:start;overflow:visible}
   .buddy{max-height:260px;width:auto}
   @media (max-width:1100px){ .buddy{max-height:220px} }
@@ -78,7 +77,7 @@
   @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-11deg)}}
   @keyframes badgePop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 
-  /* ---------- App shell ---------- */
+  /* App shell */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
   aside{position:sticky;top:100px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
@@ -119,7 +118,7 @@
   .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
   @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 
-  /* Mobile layout improvements */
+  /* Mobile layout */
   @media (max-width: 980px){
     .shell{grid-template-columns:1fr}
     aside{position:static}
@@ -179,7 +178,6 @@
               <line x1="14" y1="42" x2="50" y2="42"/>
               <line x1="14" y1="58" x2="42" y2="58"/>
             </g>
-            <!-- Centered A+ on the small card -->
             <text x="32" y="40" text-anchor="middle" dominant-baseline="central"
                   font-size="24" font-weight="900" font-family="Inter, ui-sans-serif, system-ui" fill="#F87171">A+</text>
           </g>
@@ -214,9 +212,9 @@
       </div>
     </div>
 
-    <!-- Mascot with A+ badge perfectly centered in the SVG (never clipped) -->
+    <!-- Mascot -->
     <div class="hero-mascot" aria-hidden="true">
-      <svg class="buddy b-float" viewBox="0 0 360 300" role="img" aria-label="Report Card Buddy">
+      <svg class="buddy b-float" viewBox="0 0 360 300" aria-label="Report Card Buddy">
         <defs>
           <linearGradient id="paper3D" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7FFEF"/>
@@ -248,7 +246,7 @@
           <path id="smile" d="M144 120 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
           <circle cx="136" cy="104" r="11" fill="url(#cheek)"/><circle cx="220" cy="104" r="11" fill="url(#cheek)"/>
 
-          <!-- A+ badge centered; no drift -->
+          <!-- Centered A+ badge -->
           <g class="b-pop badge"
              transform="translate(180,150)"
              style="transform-box: fill-box; transform-origin: center;">
@@ -429,7 +427,7 @@
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-  // theme
+  /* ---------- Theme ---------- */
   const modeBtn = $('#modeBtn');
   function setMode(light){
     document.body.classList.toggle('light', light);
@@ -440,7 +438,7 @@
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // nav tabs
+  /* ---------- Tabs ---------- */
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
     const pg=t.dataset.page;
@@ -450,7 +448,7 @@
     if(pg==='history') drawHistory();
   });
 
-  // streak
+  /* ---------- Streak ---------- */
   (function streak(){
     const key='gmf_streak';
     const today = new Date().toDateString();
@@ -465,8 +463,8 @@
     $('#streakHint').textContent = pill.textContent;
   })();
 
-  // profiles
-  const PROFILE_KEY='gmf_profiles_v3';
+  /* ---------- Profiles ---------- */
+  const PROFILE_KEY='gmf_profiles_v4';
   function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
   function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
   function ensureDefaultProfile(){
@@ -521,38 +519,78 @@
     }catch(e){ alert('Invalid JSON'); }
   });
 
-  // inputs
+  /* ---------- Inputs ---------- */
   const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr','pretaxMonthly','eduMonthly'];
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
+
+  /* ---------- Financial model helpers ---------- */
+  const EF_TARGET=6; // months
+  // Fidelity-style salary multiple curve (after-tax income used as salary proxy)
+  const targetPts = [
+    [25,0.5],[30,1],[35,2],[40,3],[45,5],[50,7],[55,9],[60,11]
+  ];
+  function targetMultipleAtAge(age){
+    if(age<=25) return 0.5; if(age>=60) return 11;
+    for(let i=1;i<targetPts.length;i++){
+      const [a0,m0]=targetPts[i-1], [a1,m1]=targetPts[i];
+      if(age<=a1){ const t=(age-a0)/(a1-a0); return m0+(m1-m0)*t; }
+    }
+    return 11;
+  }
 
   function values(){
     const v = Object.fromEntries(ids.map(id=>[id,val(id)]));
     v.assets = v.home + v.retire + v.brokerage + v.car + v.hsa + v.cash;
     v.liabs  = v.mortgage + v.student + v.auto + v.cc;
     v.net    = v.assets - v.liabs;
-    v.annualSpend = Math.max(0, v.expenses * 12);
-    v.targetFI = v.annualSpend>0 ? v.annualSpend / 0.06 : 0;
-    v.investableCore = v.retire + v.brokerage + v.hsa;
+
+    v.annualIncome = v.income*12;        // after-tax proxy for salary
+    v.annualSpend  = Math.max(0, v.expenses * 12);
+
+    // Investable = long-term + surplus cash over EF + accessible home equity (40%)
+    const cashSurplus = Math.max(0, v.cash - EF_TARGET*(v.expenses||0));
+    const homeEquity  = Math.max(0, v.home - v.mortgage);
+    const accessibleEquity = homeEquity * 0.40;
+    v.investableTotal = (v.retire + v.brokerage + v.hsa) + cashSurplus + accessibleEquity;
+
+    // Readiness target by age = salary multiple
+    v.targetMultiple = targetMultipleAtAge(v.age||30);
+    v.targetByAge    = v.annualIncome * v.targetMultiple;
+
+    // Savings rate (includes payroll + post-tax education)
+    const leftover = Math.max(0, v.income - v.expenses);
+    v.saveRate = (v.income>0)
+      ? clamp((leftover + v.pretaxMonthly + v.eduMonthly) / (v.income + v.pretaxMonthly), 0, 1)
+      : 0;
+
+    v.efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
+    v.nonMortDebt = v.student + v.auto + v.cc;
+    v.nwToIncome = v.annualIncome>0 ? v.net / v.annualIncome : 0;
+
     return v;
   }
-  function updateHints(){
-    const v = values();
-    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable: ${money(v.investableCore)})`;
-    $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
-  }
-  ids.forEach(id => els[id]?.addEventListener('input', updateHints));
-  updateHints();
 
-  // score
+  /* ---------- Scoring ---------- */
+  // Weights: readiness 40, net worth 20, savings 15, EF 10, debt health 15  (total 100)
   function scoreModel(v){
-    const leftover = Math.max(0, v.income - v.expenses);
-    const saveRate = (v.income>0) ? clamp((leftover + val('pretaxMonthly') + val('eduMonthly')) / (v.income + val('pretaxMonthly')), 0, 1) : 0;
-    const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
-    const r = (v.targetFI>0) ? (v.investableCore / v.targetFI) : (v.net>0 ? 1 : 0);
-    const score = 60*map01(r,0,1.2) + 20*map01(saveRate,0,0.5) + 20*map01(efMonths,0,6);
-    return {score:+score.toFixed(1), saveRate, efMonths, readiness:r, net:v.net, assets:v.assets, liabs:v.liabs, targetFI:v.targetFI};
+    // Readiness ratio vs target multiple
+    const readinessR = v.targetByAge>0 ? v.investableTotal / v.targetByAge : (v.net>0?1:0);
+    const sReadiness = map01(readinessR, 0, 1.2);             // full score at 1.2× target
+    const sNW        = map01(v.nwToIncome, -0.2, 1.0);        // ok if slightly negative; great at 1× income NW
+    const sSave      = map01(v.saveRate, 0, 0.25);            // full at ~25% saving rate
+    const sEF        = map01(v.efMonths, 0, EF_TARGET);       // full at 6 months EF
+    const debtRatio  = (v.annualIncome>0) ? (v.nonMortDebt / v.annualIncome) : 1; // lower is better
+    const sDebt      = map01(1 - debtRatio, 0, 1);            // full if zero non-mortgage debt
+
+    const score = 40*sReadiness + 20*sNW + 15*sSave + 10*sEF + 15*sDebt;
+    return {
+      score:+score.toFixed(1),
+      readinessR, sReadiness, sNW, sSave, sEF, sDebt,
+      ...v
+    };
   }
+
   function letter(score){
     if(score>=97) return "A+";
     if(score>=93) return "A";
@@ -571,29 +609,62 @@
 
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
 
+  function renderWhy(s){
+    $('#chips').innerHTML = [
+      `<span class="chip">Readiness vs age: <b>${(s.readinessR*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Target: <b>${s.targetMultiple.toFixed(1)}×</b> salary</span>`,
+      `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">EF: <b>${s.efMonths.toFixed(1)} mo</b></span>`,
+      `<span class="chip">Debt/Income: <b>${((s.nonMortDebt/(s.annualIncome||1))*100).toFixed(0)}%</b></span>`
+    ].join('');
+
+    $('#whyList').innerHTML = [
+      `Investable total (incl. surplus cash & 40% home equity): <b>${money(s.investableTotal)}</b>.`,
+      `Age ${s.age}: target is <b>${s.targetMultiple.toFixed(1)}×</b> salary ⇒ <b>${money(s.targetByAge)}</b>.`,
+      `Net worth: <b>${money(s.net)}</b> (${(s.nwToIncome).toFixed(2)}× income).`,
+      `Savings rate (payroll+post-tax included): <b>${(s.saveRate*100).toFixed(0)}%</b>.`,
+      `Non-mortgage debt: <b>${money(s.nonMortDebt)}</b>.`
+    ].map(x=>`<div>${x}</div>`).join('');
+  }
+
+  function renderImprove(s){
+    const ideas=[];
+    if(s.readinessR < 1){
+      const gap = Math.max(0, s.targetByAge - s.investableTotal);
+      ideas.push(`Close the age target gap: add ~${money(gap)} to investables (increase savings and/or reduce spend).`);
+    }
+    if(s.efMonths < EF_TARGET){
+      ideas.push(`Build emergency fund to ${EF_TARGET} months (${money((s.expenses||0)*EF_TARGET)}).`);
+    }
+    if(s.saveRate < 0.20){
+      const bump = Math.ceil((s.income + s.pretaxMonthly)*0.05);
+      ideas.push(`Boost savings rate: auto-move ~${money(bump)}/mo (aim for ≥20%).`);
+    }
+    if(s.nonMortDebt > 0){
+      ideas.push(`Aggressively pay down non-mortgage debt; keep debt/income < 20%.`);
+    }
+    if(!ideas.length) ideas.push(`You’re ahead for your age. Keep systems humming.`);
+    $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
+  }
+
   function doGrade(){
-    const v = values();
-    const s = scoreModel(v);
+    const s = scoreModel(values());
     const L = letter(s.score);
+
     bigGrade.textContent = L;
     bigGrade.style.color = ({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
     bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
     scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
     nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
     progress.style.width = s.score + '%';
-    $('#chips').innerHTML = [
-      `<span class="chip">Readiness: <b>${(s.readiness*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Emergency fund: <b>${s.efMonths.toFixed(1)} mo</b></span>`
-    ].join('');
-    $('#whyList').textContent = `Target FI: ${money(s.targetFI)} (annual spend ÷ 6%).`;
-    $('#improveList').textContent = s.efMonths<6 ? `Build emergency fund to ~${money((val('expenses')||0)*6)}.` : `Nice buffer. Stay the course.`;
+
+    renderWhy(s); renderImprove(s);
 
     // history
     const prof=getActive(); if(prof){ prof.history.push({date:new Date().toISOString(),score:s.score,letter:L}); putActive(prof); drawHistory(); }
   }
 
-  // overlay
+  /* ---------- Overlay ---------- */
   const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
   function showOverlay(){
     let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
@@ -610,13 +681,14 @@
     }, 420));
   }
 
-  // buttons
+  /* ---------- Buttons ---------- */
   $('#gradeBtn')    .addEventListener('click', runGradeSafely);
   $('#gradeBtnTop') .addEventListener('click', ()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); runGradeSafely(); });
 
   $('#demoBtnTop').addEventListener('click', ()=>{
     const demo={income:7500,expenses:4000,age:30,home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000,mortgage:329000,student:26000,auto:13500,cc:0,mortgageApr:5.25,studentApr:4.9,autoApr:3.5,ccApr:24.99,pretaxMonthly:900,eduMonthly:200};
-    Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; }); updateHints();
+    Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; });
+    updateHints();
   });
   $('#copyTop').addEventListener('click', ()=>{
     const state={}; ids.forEach(id=> state[id]=val(id));
@@ -630,7 +702,15 @@
     $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
 
-  // chart
+  function updateHints(){
+    const v = values();
+    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable core: ${money(v.retire+v.brokerage+v.hsa)})`;
+    $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
+  }
+  ids.forEach(id => els[id]?.addEventListener('input', updateHints));
+  updateHints();
+
+  /* ---------- History ---------- */
   function drawHistory(){
     const prof=getActive(); if(!prof) return;
     const pts=(prof.history||[]).map(h=>({date:h.date, score:h.score, letter:h.letter}));
@@ -657,7 +737,7 @@
     xs.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(x,ys[i],3,0,Math.PI*2); ctx.fill(); });
   }
 
-  // welcome
+  /* ---------- Welcome ---------- */
   (function welcome(){
     const key='gmf_welcome_seen_v4';
     const seen = localStorage.getItem(key)==='1';
@@ -666,7 +746,7 @@
     $('#welcomeGo').addEventListener('click', ()=>{ localStorage.setItem(key,'1'); el.classList.remove('show'); });
   })();
 
-  // eyes follow
+  /* ---------- Mascot eyes follow ---------- */
   (function eyes(){
     const l=$('#eyeL'), r=$('#eyeR'); if(!l||!r) return;
     const cxL=+l.getAttribute('cx'), cyL=+l.getAttribute('cy');
@@ -682,10 +762,11 @@
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
 
-  // if history tab already open
+  // draw history if tab open
   if($('#page-history').classList.contains('active')) drawHistory();
 })();
 </script>
 </body>
 </html>
+
 
