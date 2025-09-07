@@ -9,7 +9,6 @@
 <meta property="og:title" content="Grade My Finance">
 <meta property="og:description" content="Get a letter grade for your money, track progress, and earn achievements.">
 <meta property="og:url" content="https://grademyfinance.com/">
-<meta property="og:image" content="https://grademyfinance.com/og-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <style>
   :root{
@@ -36,7 +35,7 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Fixed Header (2 rows, mobile-safe) ---------- */
+  /* ---------- Fixed Header ---------- */
   header{
     position:fixed; left:0; right:0; top:0; z-index:80; height:var(--header-h);
     background:linear-gradient(90deg,var(--accent),var(--accent2));
@@ -85,7 +84,6 @@
   @keyframes eyeBlink{0%,92%,100%{transform:scaleY(1)}93%,99%{transform:scaleY(.05)}}
   @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
   @keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-  @keyframes sparkle{0%{opacity:0;transform:translateY(-6px) scale(.8)}30%{opacity:1}100%{opacity:0;transform:translateY(-22px) scale(1.1)}}
 
   /* ---------- App shell ---------- */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
@@ -120,17 +118,27 @@
   .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
   @keyframes slide{from{background-position:0 0}to{background-position:56px 0)}
 
-  /* ---------- Mobile tweaks ---------- */
+  /* ---------- Auth modal ---------- */
+  .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);z-index:130}
+  .modal.show{display:grid}
+  .modal-card{max-width:520px;width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+  .modal h3{margin:6px 0 8px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+
+  /* ---------- MOBILE STACK ---------- */
   @media (max-width: 980px){
     .shell{grid-template-columns:1fr}
     aside{position:static}
     .nav{flex-direction:row; gap:8px; overflow-x:auto; padding:6px 2px 8px}
     .nav::-webkit-scrollbar{display:none}
     .tab{flex:0 0 auto; white-space:nowrap; padding:10px 12px; width:auto}
-    .grid > [style*="grid-column:span 6"],
-    .grid > [style*="grid-column:span 4"],
-    .grid > [style*="grid-column:span 8"]{grid-column: span 12 !important;}
-    input, select {font-size:16px}
+    .grid > *{grid-column: span 12 !important;}
+  }
+  @media (max-width: 640px){
+    .grid{display:block}
+    .grid > *{margin-bottom:14px}
+    .hero-copy{padding:18px}
+    input,select{font-size:16px}
   }
 </style>
 </head>
@@ -139,7 +147,7 @@
   <header>
     <div class="hdr">
       <div class="hdr-logo">
-        <!-- LOGO: Green circle + centered G + mini report card -->
+        <!-- LOGO -->
         <svg class="logoBig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-label="Grade My Finance logo">
           <defs>
             <radialGradient id="lg-badge" cx="50%" cy="50%" r="70%">
@@ -172,6 +180,8 @@
         <select id="profileSelect" class="pill" aria-label="Select profile"></select>
         <button id="newProfileBtn" class="pill">New Profile</button>
         <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
+        <span class="spacer"></span>
+        <button id="authBtn" class="pill" title="Sign in / up">Sign in</button>
       </div>
     </div>
   </header>
@@ -220,16 +230,10 @@
           <circle id="eyeR" cx="208" cy="92" r="7.5" fill="#0f172a" style="transform-origin:208px 92px; animation:eyeBlink 6.2s infinite"/>
           <circle cx="136" cy="104" r="9" fill="#fecaca" opacity=".6"/><circle cx="220" cy="104" r="9" fill="#fecaca" opacity=".6"/>
           <path d="M144 120 q18 12 36 0" fill="none" stroke="#16a34a" stroke-width="5" stroke-linecap="round"/>
-          <!-- centered A+ token -->
           <g transform="translate(180,158)">
             <circle r="22" fill="#10b981" stroke="#065f46" stroke-width="3"/>
             <circle r="18" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
             <text text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="900" font-family="Inter" fill="#a7f3d0">A+</text>
-          </g>
-          <g fill="#a7f3d0" opacity=".9">
-            <circle cx="272" cy="74" r="2.3" style="animation:sparkle 1.8s linear infinite"/>
-            <circle cx="254" cy="60" r="2"   style="animation:sparkle 1.6s .4s linear infinite"/>
-            <circle cx="292" cy="92" r="2.5" style="animation:sparkle 2.0s .2s linear infinite"/>
           </g>
         </g>
       </svg>
@@ -376,7 +380,7 @@
     </main>
   </div>
 
-  <!-- Welcome (shows once) -->
+  <!-- Welcome -->
   <div id="welcome" class="overlay" aria-modal="true" role="dialog" style="z-index:95;background:rgba(0,0,0,.45)">
     <div class="loader" style="text-align:center">
       <h2 style="margin:6px 0 8px">Welcome to Grade My Finance</h2>
@@ -394,6 +398,30 @@
       <div class="bar"><div class="fill" id="barFill"></div></div>
     </div>
   </div>
+
+  <!-- Auth modal -->
+  <div id="authModal" class="modal" aria-modal="true" role="dialog">
+    <div class="modal-card">
+      <h3>Sign in to save your data</h3>
+      <p id="authState" class="hint">You can also continue without an account (local only).</p>
+      <div class="row" style="margin:8px 0">
+        <input id="authEmail" type="email" placeholder="Email" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel);color:var(--text)">
+        <input id="authPass" type="password" placeholder="Password" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel);color:var(--text)">
+      </div>
+      <div class="row">
+        <button id="authSignIn" class="btn primary">Sign in</button>
+        <button id="authSignUp" class="btn">Create account</button>
+        <span style="flex:1"></span>
+        <button id="authGuest" class="btn ghost">Continue without account</button>
+        <button id="authClose" class="btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+<!-- Firebase (optional) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
 
 <script>
 (() => {
@@ -439,22 +467,75 @@
     $('#streakHint').textContent = pill.textContent;
   })();
 
-  /* ---------- Profiles ---------- */
-  const PROFILE_KEY='gmf_profiles_v7';
-  function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
-  function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
-  function ensureDefaultProfile(){
-    let p=loadProfiles();
-    if(!p.length){ p=[{id:crypto.randomUUID(), name:'Profile 1', history:[]}]; saveProfiles(p); }
-    return p;
-  }
-  function getActiveId(){ return localStorage.getItem('gmf_active_profile') || ensureDefaultProfile()[0].id; }
-  function setActiveId(id){ localStorage.setItem('gmf_active_profile', id); }
-  function getActive(){ return ensureDefaultProfile().find(x=>x.id===getActiveId()); }
-  function putActive(prof){ const ps=ensureDefaultProfile(); const i=ps.findIndex(x=>x.id===prof.id); if(i>=0){ ps[i]=prof; saveProfiles(ps);} }
+  /* ---------- Profiles: storage abstraction (local or Firebase) ---------- */
+  const LOCAL_KEY='gmf_profiles_v9';
+  let auth=null, db=null, currentUser=null;
+  let storageMode='local'; // 'local' | 'cloud'
 
-  function renderProfileSelects(){
-    const ps=ensureDefaultProfile(); const cur=getActiveId();
+  // >>>>>>>>>>>>  Paste your Firebase web config here to enable accounts  <<<<<<<<<<<<
+  const FIREBASE_CONFIG = /* FIREBASE_CONFIG_HERE */ null;
+  // Example:
+  // const FIREBASE_CONFIG = {
+  //   apiKey: "…", authDomain: "…", projectId: "…", storageBucket: "…", messagingSenderId: "…", appId: "…"
+  // };
+
+  async function initFirebase(){
+    if(!FIREBASE_CONFIG) return;
+    try{
+      firebase.initializeApp(FIREBASE_CONFIG);
+      auth = firebase.auth();
+      db   = firebase.firestore();
+      storageMode='local';
+      auth.onAuthStateChanged((u)=>{
+        currentUser = u || null;
+        $('#authBtn').textContent = u ? `Sign out (${u.email||'user'})` : 'Sign in';
+        storageMode = u ? 'cloud' : 'local';
+        if($('#page-history').classList.contains('active')) drawHistory();
+        renderProfileSelects(); // refresh after mode switch
+      });
+    }catch(e){ console.warn('Firebase init failed, staying local.', e); }
+  }
+  initFirebase();
+
+  async function listProfiles(){
+    if(storageMode==='cloud' && currentUser && db){
+      const snap = await db.collection('users').doc(currentUser.uid).collection('profiles').orderBy('name').get();
+      return snap.docs.map(d=> ({id:d.id, ...(d.data())}));
+    }
+    // local
+    try { return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]'); } catch(e){ return []; }
+  }
+  async function saveProfiles(profiles){
+    if(storageMode==='cloud' && currentUser && db){
+      const batch=db.batch();
+      const col = db.collection('users').doc(currentUser.uid).collection('profiles');
+      // overwrite: first delete missing docs
+      const existing = await col.get();
+      const keep = new Set(profiles.map(p=>p.id));
+      existing.forEach(doc=>{ if(!keep.has(doc.id)) batch.delete(col.doc(doc.id)); });
+      profiles.forEach(p=> batch.set(col.doc(p.id), {name:p.name, history:p.history||[]}));
+      await batch.commit(); return;
+    }
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(profiles));
+  }
+
+  function ensureDefaultProfileSync(){
+    return listProfiles().then(p=>{
+      if(!p.length){
+        const id=crypto.randomUUID();
+        p=[{id,name:'Profile 1',history:[]}];
+        return saveProfiles(p).then(()=>p);
+      }
+      return p;
+    });
+  }
+  function getActiveId(){ return localStorage.getItem('gmf_active_profile'); }
+  function setActiveId(id){ localStorage.setItem('gmf_active_profile', id); }
+
+  async function renderProfileSelects(){
+    const ps = await ensureDefaultProfileSync();
+    const cur = getActiveId() || ps[0].id;
+    if(!getActiveId()) setActiveId(ps[0].id);
     ['#profileSelect','#profileSelectSide'].forEach(sel=>{
       const el=$(sel); if(!el) return; el.innerHTML='';
       ps.forEach(p=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; el.appendChild(o); });
@@ -462,36 +543,50 @@
     });
   }
   renderProfileSelects();
-  $('#profileSelect').addEventListener('change', e=>{ setActiveId(e.target.value); renderProfileSelects(); if($('#page-history').classList.contains('active')) drawHistory(); });
-  $('#profileSelectSide').addEventListener('change', e=>{ setActiveId(e.target.value); renderProfileSelects(); if($('#page-history').classList.contains('active')) drawHistory(); });
+
+  async function getActiveProfile(){
+    const ps = await ensureDefaultProfileSync();
+    const id = getActiveId() || ps[0].id;
+    return ps.find(x=>x.id===id) || ps[0];
+  }
+  async function putActiveProfile(profile){
+    const ps = await ensureDefaultProfileSync();
+    const idx = ps.findIndex(x=>x.id===profile.id);
+    if(idx>=0){ ps[idx]=profile; await saveProfiles(ps); }
+  }
+
+  $('#profileSelect').addEventListener('change', async e=>{ setActiveId(e.target.value); await renderProfileSelects(); if($('#page-history').classList.contains('active')) drawHistory(); });
+  $('#profileSelectSide').addEventListener('change', async e=>{ setActiveId(e.target.value); await renderProfileSelects(); if($('#page-history').classList.contains('active')) drawHistory(); });
 
   $('#newProfileBtn').addEventListener('click', newProfile);
   $('#newProfileBtnSide').addEventListener('click', newProfile);
-  function newProfile(){
-    const name=prompt('Profile name?','Profile '+(loadProfiles().length+1)); if(!name) return;
-    const ps=ensureDefaultProfile(); const id=crypto.randomUUID(); ps.push({id,name,history:[]});
-    saveProfiles(ps); setActiveId(id); renderProfileSelects(); drawHistory();
+  async function newProfile(){
+    const name=prompt('Profile name?','Profile '+(Date.now()%1000)); if(!name) return;
+    const ps=await ensureDefaultProfileSync(); const id=crypto.randomUUID();
+    ps.push({id,name,history:[]}); await saveProfiles(ps); setActiveId(id); await renderProfileSelects(); drawHistory();
   }
-  $('#renameProfileBtn')?.addEventListener('click', ()=>{
-    const prof=getActive(); if(!prof) return;
+  $('#renameProfileBtn')?.addEventListener('click', async ()=>{
+    const prof=await getActiveProfile(); if(!prof) return;
     const name=prompt('New name', prof.name); if(!name) return;
-    prof.name=name; putActive(prof); renderProfileSelects();
+    prof.name=name; await putActiveProfile(prof); await renderProfileSelects();
   });
-  $('#deleteProfileBtn')?.addEventListener('click', ()=>{
+  $('#deleteProfileBtn')?.addEventListener('click', async ()=>{
     if(!confirm('Delete this profile?')) return;
-    let ps=ensureDefaultProfile(); const cur=getActiveId();
-    ps=ps.filter(x=>x.id!==cur); saveProfiles(ps);
-    const newId=(ps[0]?.id)||null; if(newId){ setActiveId(newId); } else { saveProfiles([{id:crypto.randomUUID(),name:'Profile 1',history:[]}]); }
-    renderProfileSelects(); drawHistory();
+    let ps=await ensureDefaultProfileSync(); const cur=getActiveId();
+    ps=ps.filter(x=>x.id!==cur); await saveProfiles(ps);
+    const newId=(ps[0]?.id)||null; if(newId){ setActiveId(newId); } else {
+      const id=crypto.randomUUID(); ps=[{id,name:'Profile 1',history:[]}]; await saveProfiles(ps); setActiveId(id);
+    }
+    await renderProfileSelects(); drawHistory();
   });
-  $('#exportProfileBtn')?.addEventListener('click', ()=>{
-    const prof=getActive(); if(!prof) return;
+  $('#exportProfileBtn')?.addEventListener('click', async ()=>{
+    const prof=await getActiveProfile(); if(!prof) return;
     navigator.clipboard?.writeText(JSON.stringify(prof)); alert('Profile JSON copied.');
   });
-  $('#importProfileBtn')?.addEventListener('click', ()=>{
+  $('#importProfileBtn')?.addEventListener('click', async ()=>{
     const txt=prompt('Paste profile JSON'); if(!txt) return;
     try{ const obj=JSON.parse(txt); if(!obj.id) obj.id=crypto.randomUUID();
-      const ps=ensureDefaultProfile(); ps.push(obj); saveProfiles(ps); setActiveId(obj.id); renderProfileSelects(); drawHistory();
+      const ps=await ensureDefaultProfileSync(); ps.push(obj); await saveProfiles(ps); setActiveId(obj.id); await renderProfileSelects(); drawHistory();
     }catch(e){ alert('Invalid JSON'); }
   });
 
@@ -500,12 +595,11 @@
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
 
-  /* ---------- Financial Model (kinder, age-aware) ---------- */
+  /* ---------- Kinder Financial Model ---------- */
   const SWR = 0.035;       // 3.5% safe withdrawal
   const EF_TARGET = 6;     // months target EF
   const ACCESS_EQ = 0.40;  // fraction of home equity considered accessible
 
-  // expected FI readiness vs age (percent of FI reasonably achieved)
   const curvePts = [[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
   function expectedReadiness(age){
     if(age<=25) return 0.08; if(age>=60) return 1.0;
@@ -541,31 +635,36 @@
     v.nonMortDebt = v.student + v.auto + v.cc;
     v.nwToIncome = v.annualIncome>0 ? v.net / v.annualIncome : 0;
     v.paidOffHouse = (v.home>0 && v.mortgage<=0);
+    v.homeEquity = homeEquity;
     v.spendsMoreThanIncome = (v.expenses > v.income && v.income>0);
 
     return v;
   }
 
-  // Kinder weights: Age-FI 45, NW/Income 18, Savings 15, EF 10, Debt 8, Housing 2, Extra Cash 2
+  // Kinder weights to match your expectations (aim ~B/B+ for your example)
+  // Weights: Age-FI 50, NW/Income 20, Savings 15, EF 8, Debt 5, Housing 2, Equity bonus up to +6
   function scoreModel(v){
     const exp = expectedReadiness(val('age')||30);
-    const relFI = (exp>0) ? v.fiRatio/exp : (v.fiRatio>0?1:0); // 1.0 = on the age curve
+    const relFI = (exp>0) ? v.fiRatio/exp : (v.fiRatio>0?1:0);
 
-    const sAgeFI = map01(relFI, 0, 1.10);            // 45%
-    const sNW    = map01(v.nwToIncome, -0.15, 1.1);  // 18% (gentler)
-    const sSave  = map01(v.saveRate, 0, 0.20);       // 15% full by 20% SR
-    const sEF    = map01(v.efMonths, 0, EF_TARGET);  // 10%
+    // Boost mid-range: gamma < 1 raises scores for average progress
+    const sAgeFI = Math.pow(clamp(relFI,0,1.2), 0.6);     // 0..1, kinder curve
+    const sNW    = Math.pow(map01(v.nwToIncome, 0, 2.5), 0.85); // up to 2.5x income → full
+    const sSave  = map01(v.saveRate, 0, 0.25);            // full credit at 25% SR
+    const sEF    = map01(v.efMonths, 0, EF_TARGET);       // full at 6 mo
     const debtIncome = (v.annualIncome>0) ? (v.nonMortDebt / v.annualIncome) : 1;
-    let sDebt  = map01(1-debtIncome, 0, 1);          // 8% (zero is best)
-    const sHouse = v.paidOffHouse ? 1 : 0;           // 2%
-    const sCashX = map01(Math.max(0, v.efMonths - EF_TARGET), 0, 6); // 2%
+    const sDebt  = map01(1-debtIncome, 0.2, 1);           // gentle, rewards <80% (non-mort)
+    const sHouse = v.paidOffHouse ? 1 : 0;
 
-    let score = 45*sAgeFI + 18*sNW + 15*sSave + 10*sEF + 8*sDebt + 2*sHouse + 2*sCashX;
+    // Equity bonus (recognizes real balance-sheet strength)
+    const equityBonus = map01(v.homeEquity - 50000, 0, 150000) * 6; // up to +6 pts for strong equity
 
-    // Gentle penalties for risk flags
-    if(v.spendsMoreThanIncome) score -= 5;                   // spending > income
-    if(v.cc > 0 && v.ccApr >= 20) score -= 4;                // high APR
-    if(v.retire === 0 && v.brokerage === 0) score -= 6;      // no investing at all
+    let score = 50*sAgeFI + 20*sNW + 15*sSave + 8*sEF + 5*sDebt + 2*sHouse + equityBonus;
+
+    // Small flags
+    if(v.spendsMoreThanIncome) score -= 5;
+    if(v.cc > 0 && v.ccApr >= 20) score -= 4;
+    if(v.retire === 0 && v.brokerage === 0) score -= 6;
 
     score = Math.max(0, Math.min(100, +score.toFixed(1)));
 
@@ -600,7 +699,7 @@
       `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
       `<span class="chip">EF: <b>${s.efMonths.toFixed(1)} mo</b></span>`,
       `<span class="chip">Debt/Income: <b>${((s.nonMortDebt/(s.annualIncome||1))*100).toFixed(0)}%</b></span>`,
-      s.paidOffHouse?`<span class="chip">House: <b>Paid off</b></span>`:`<span class="chip">Equity: <b>${money(Math.max(0,s.home - s.mortgage))}</b></span>`
+      s.paidOffHouse?`<span class="chip">House: <b>Paid off</b></span>`:`<span class="chip">Equity: <b>${money(s.homeEquity)}</b></span>`
     ].join('');
 
     $('#whyList').innerHTML = [
@@ -639,12 +738,12 @@
       ideas.push(`Consider periodic principal prepayments to improve housing security.`);
     }
     if(s.spendsMoreThanIncome){
-      ideas.push(`Spending exceeds income—cut variable spend or raise income to stop the bleed.`);
+      ideas.push(`Spending exceeds income—trim variable spend or raise income to stop the bleed.`);
     }
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
-  function doGrade(){
+  async function doGrade(){
     const s = scoreModel(values());
     const L = letter(s.score, s);
 
@@ -657,12 +756,12 @@
 
     renderWhy(s); renderImprove(s);
 
-    const prof=getActive(); if(prof){
-      const snapshot={date:new Date().toISOString(),score:s.score,letter:L,inputs: Object.fromEntries(ids.map(id=>[id,Number(els[id]?.value||0)])), summary:{
-        assets:s.assets, liabs:s.liabs, net:s.net, investableTotal:s.investableTotal, targetFI:s.targetFI, efMonths:s.efMonths, saveRate:s.saveRate, fiRatio:s.fiRatio
-      }};
-      (prof.history=prof.history||[]).push(snapshot); putActive(prof); drawHistory();
-    }
+    // Save to history
+    const prof = await getActiveProfile();
+    const snapshot={date:new Date().toISOString(),score:s.score,letter:L,inputs: Object.fromEntries(ids.map(id=>[id,Number(els[id]?.value||0)])), summary:{
+      assets:s.assets, liabs:s.liabs, net:s.net, investableTotal:s.investableTotal, targetFI:s.targetFI, efMonths:s.efMonths, saveRate:s.saveRate, fiRatio:s.fiRatio, relFI:s.relFI
+    }};
+    (prof.history=prof.history||[]).push(snapshot); await putActiveProfile(prof); drawHistory();
   }
 
   /* ---------- Overlays ---------- */
@@ -672,7 +771,7 @@
     const timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200);
     return ()=>{ clearInterval(timer); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); };
   }
-  function runGradeSafely(){ const hide=showOverlay(); requestAnimationFrame(()=> setTimeout(()=>{ try{ doGrade(); }catch(e){ console.error(e); alert('Oops—could not calculate. Try again.'); } hide(); }, 420)); }
+  function runGradeSafely(){ const hide=showOverlay(); requestAnimationFrame(()=> setTimeout(()=>{ try{ doGrade(); }catch(e){ console.error(e); alert('Oops—could not calculate. Try again.'); } hide(); }, 480)); }
 
   /* ---------- Buttons ---------- */
   $('#gradeBtn')    .addEventListener('click', runGradeSafely);
@@ -708,8 +807,8 @@
   updateHints();
 
   /* ---------- History with clickable points ---------- */
-  function drawHistory(){
-    const prof=getActive(); if(!prof) return;
+  async function drawHistory(){
+    const prof=await getActiveProfile(); if(!prof) return;
     const hist=prof.history||[];
     $('#histMeta').textContent = `Entries: ${hist.length}`;
     const canvas = $('#historyChart'); const ctx = canvas.getContext('2d');
@@ -719,28 +818,22 @@
 
     if(!hist.length){ $('#histText').textContent='No history yet.'; return; }
 
-    // layout
     const pad=16, w=rect.width-pad*2, h=220-pad*2;
     const xs=hist.map((_,i)=> pad + (i/(Math.max(1,hist.length-1)))*w);
     const ys=hist.map(p=> pad + (1 - p.score/100)*h);
 
-    // grid
     ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line'); ctx.lineWidth=1; ctx.beginPath();
     for(let k=0;k<=5;k++){ const gy=pad+(h*k/5); ctx.moveTo(pad,gy); ctx.lineTo(pad+w,gy); } ctx.stroke();
 
-    // line
     ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--accent'); ctx.lineWidth=2; ctx.beginPath();
     xs.forEach((x,i)=>{ if(i===0) ctx.moveTo(x,ys[i]); else ctx.lineTo(x,ys[i]); }); ctx.stroke();
 
-    // points
     ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2');
     xs.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(x,ys[i],3,0,Math.PI*2); ctx.fill(); });
 
-    // store hit zones
     canvas._points = xs.map((x,i)=>({x,y:ys[i],i}));
     canvas._hist   = hist;
 
-    // attach handlers once
     if(!canvas._bound){
       canvas.addEventListener('mousemove', e=>{
         const p = nearest(canvas, e.offsetX, e.offsetY);
@@ -778,9 +871,9 @@
     $('#histText').innerHTML = lines.map(s=>`<div>${s}</div>`).join('');
   }
 
-  /* ---------- Welcome (once) ---------- */
+  /* ---------- Welcome ---------- */
   (function welcome(){
-    const key='gmf_welcome_seen_v7';
+    const key='gmf_welcome_seen_v9';
     const seen = localStorage.getItem(key)==='1';
     const el = $('#welcome');
     if(!seen){ el.classList.add('show'); }
@@ -803,13 +896,50 @@
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
 
-  /* ---------- Overlays & actions ---------- */
-  function getActive(){ return ensureDefaultProfile().find(x=>x.id===getActiveId()); }
+  /* ---------- Auth UI ---------- */
+  const authBtn   = $('#authBtn');
+  const authModal = $('#authModal');
+  const authEmail = $('#authEmail');
+  const authPass  = $('#authPass');
+  const authState = $('#authState');
+
+  authBtn.addEventListener('click', async ()=>{
+    if(auth && auth.currentUser){
+      await auth.signOut();
+      alert('Signed out.');
+    }else{
+      authModal.classList.add('show');
+      authState.textContent = FIREBASE_CONFIG ? 'Sign in to sync with cloud.' : 'No Firebase config found—local mode only.';
+    }
+  });
+  $('#authClose').addEventListener('click', ()=> authModal.classList.remove('show'));
+  $('#authGuest').addEventListener('click', ()=> authModal.classList.remove('show'));
+  $('#authSignIn').addEventListener('click', async ()=>{
+    if(!auth || !FIREBASE_CONFIG){ alert('Cloud is not configured. Staying local.'); return; }
+    try{ await auth.signInWithEmailAndPassword(authEmail.value, authPass.value); authModal.classList.remove('show'); }
+    catch(e){ alert(e.message||'Sign in failed'); }
+  });
+  $('#authSignUp').addEventListener('click', async ()=>{
+    if(!auth || !FIREBASE_CONFIG){ alert('Cloud is not configured. Staying local.'); return; }
+    try{ await auth.createUserWithEmailAndPassword(authEmail.value, authPass.value); authModal.classList.remove('show'); }
+    catch(e){ alert(e.message||'Sign up failed'); }
+  });
+
+  /* ---------- Hints ---------- */
+  function getActive(){ return getActiveProfile(); }
 
   // History initial draw if tab visible
-  if($('#page-history').classList.contains('active')) drawHistory();
+  (async ()=>{ if($('#page-history').classList.contains('active')) drawHistory(); })();
+
+  /* ---------- Share hash hydrate ---------- */
+  (function hydrateFromHash(){
+    const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
+    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); ids.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
+  })();
+
+  /* ---------- Assets/Liabs hints live ---------- */
+  ids.forEach(id => els[id]?.addEventListener('input', updateHints));
 })();
 </script>
 </body>
 </html>
-
