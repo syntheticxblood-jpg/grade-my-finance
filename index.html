@@ -54,7 +54,7 @@ select.pill{padding-right:28px}
 .hero{
   display:flex;
   flex-direction:column;
-  align-items:center;            /* hard center horizontally */
+  align-items:center;
   justify-content:center;
   gap:18px;
   padding:18px 0 6px;
@@ -215,7 +215,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   </div>
 </section>
 
-<!-- ===== APP (unchanged) ===== -->
+<!-- ===== APP ===== -->
 <div class="shell">
   <aside>
     <div class="section">Profiles</div>
@@ -232,7 +232,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
       <button id="importProfileBtn" class="btn small">Import</button>
     </div>
     <div class="section" id="acctLabel" style="margin-top:10px">Account: <b>Local</b></div>
-    <div id="streakHint" class="section" style="margin-top:2px">Streak: 2 days</div>
+    <div id="streakHint" class="section" style="margin-top:2px">Streak: 0</div>
 
     <nav class="nav" id="sidebar">
       <button class="tab active" data-page="grade">Grade</button>
@@ -363,12 +363,12 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 <script>
 (() => {
-/* helpers, logic, and app code — unchanged from before */
+/* ===== helpers ===== */
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 const money=n=>isFinite(n)?`$${Math.round(n).toLocaleString()}`:'—';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)); const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-/* confetti */
+/* ===== confetti ===== */
 const cf=$('#confetti'), cctx=cf.getContext('2d');
 function resizeC(){ cf.width=window.innerWidth; cf.height=window.innerHeight }
 window.addEventListener('resize',resizeC); resizeC();
@@ -380,13 +380,13 @@ function confettiBurst(n=160){
   })();
 }
 
-/* theme */
+/* ===== theme ===== */
 const modeBtn=$('#modeBtn');
 function setMode(light){ document.body.classList.toggle('light',light); modeBtn.textContent=light?'Light':'Dark'; localStorage.setItem('gmf_theme',light?'light':'dark'); }
 setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
 modeBtn.addEventListener('click',()=>setMode(!document.body.classList.contains('light')));
 
-/* tabs */
+/* ===== tabs ===== */
 $('#sidebar').addEventListener('click',e=>{
   const t=e.target.closest('.tab'); if(!t) return; const pg=t.dataset.page;
   $$('.tab').forEach(b=>b.classList.toggle('active',b===t));
@@ -394,7 +394,7 @@ $('#sidebar').addEventListener('click',e=>{
   if(pg==='history') drawHistory(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'});
 });
 
-/* streak */
+/* ===== streak ===== */
 (function(){
   const key='gmf_streak'; const today=new Date().toDateString();
   const data=JSON.parse(localStorage.getItem(key)||'{"last":"","count":0}');
@@ -403,7 +403,7 @@ $('#sidebar').addEventListener('click',e=>{
   $('#streakHint').textContent=pill.textContent;
 })();
 
-/* local auth demo */
+/* ===== local accounts (demo) ===== */
 const AUTH_KEY='gmf_local_accounts_v2', ACTIVE_ACCT='gmf_active_account_v2';
 let currentAccount=localStorage.getItem(ACTIVE_ACCT)||'local:guest';
 const acctLabel=$('#acctLabel'); function updateAuthUI(){ const label=currentAccount==='local:guest'?'Guest':'Local • '+currentAccount.split(':')[1]; acctLabel.innerHTML='Account: <b>'+label+'</b>'; $('#authBtn').textContent=currentAccount==='local:guest'?'Create Account / Sign in':'Account'; $('#authSignOut').style.display=currentAccount!=='local:guest'?'inline-block':'none'; }
@@ -417,7 +417,7 @@ $('#authCreate').addEventListener('click',()=>{ const e=($('#authEmail').value||
 $('#authSignIn').addEventListener('click',()=>{ const e=($('#authEmail').value||'').trim().toLowerCase(), p=($('#authPass').value||'').trim(); const db=loadAcc(); if(db[e]===hash(p)){ currentAccount='local:'+e; localStorage.setItem(ACTIVE_ACCT,currentAccount); authModal.classList.remove('show'); updateAuthUI(); renderProfiles(); } else alert('Invalid credentials.'); });
 $('#authSignOut').addEventListener('click',()=>{ currentAccount='local:guest'; localStorage.setItem(ACTIVE_ACCT,currentAccount); authModal.classList.remove('show'); updateAuthUI(); renderProfiles(); });
 
-/* profiles */
+/* ===== profiles ===== */
 const storeKey=()=> 'gmf_profiles_'+currentAccount;
 const activeKey=()=> 'gmf_active_profile_'+currentAccount;
 async function getProfiles(){try{return JSON.parse(localStorage.getItem(storeKey())||'[]')}catch(e){return[]}}
@@ -437,76 +437,137 @@ $('#deleteProfileBtn').addEventListener('click',async()=>{if(!confirm('Delete th
 $('#exportProfileBtn').addEventListener('click',async()=>{const p=await getActiveProfile(); navigator.clipboard?.writeText(JSON.stringify(p)); alert('Profile JSON copied.');});
 $('#importProfileBtn').addEventListener('click',async()=>{const txt=prompt('Paste profile JSON'); if(!txt) return; try{const obj=JSON.parse(txt); if(!obj.id) obj.id=crypto.randomUUID(); const ps=await ensureDefault(); ps.push(obj); await setProfiles(ps); setActive(obj.id); renderProfiles(); }catch(e){alert('Invalid JSON');}});
 
-/* model & scoring */
+/* ===== inputs & model ===== */
 const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr','pretaxMonthly','eduMonthly'];
 const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)])); const val=id=>{const n=Number(els[id]?.value||0); return isFinite(n)?n:0;}
-const SWR=0.035, EF_TARGET=6, ACCESS_EQ=0.40;
+
+/* ---- MODEL CONSTANTS ---- */
+const SWR=0.035;                 // 3.5% safe withdrawal rate
+const EF_TARGET=6;               // 6 months emergency fund
+const ACCESS_EQ=0.40;            // 40% of home equity counted as investable
+const AVG_MONTHLY_INCOME=5500;   // baseline after-tax monthly income used for the income factor
+
+/* Age → expected FI readiness curve (0..1 at age milestones) */
 const curve=[[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
 const expRead=age=>{if(age<=25) return 0.08; if(age>=60) return 1.0; for(let i=1;i<curve.length;i++){const[a0,r0]=curve[i-1],[a1,r1]=curve[i]; if(age<=a1){const t=(age-a0)/(a1-a0); return r0+(r1-r0)*t;}} return 1;}
+
 function values(){
   const v=Object.fromEntries(ids.map(id=>[id,val(id)]));
-  v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash; v.liabs=v.mortgage+v.student+v.auto+v.cc; v.net=v.assets-v.liabs;
+  v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
+  v.liabs=v.mortgage+v.student+v.auto+v.cc;
+  v.net=v.assets-v.liabs;
+
   v.annualIncome=v.income*12; v.annualSpend=Math.max(0,v.expenses*12);
-  const surplusCash=Math.max(0,v.cash-EF_TARGET*(v.expenses||0)); const homeEq=Math.max(0,v.home-v.mortgage);
-  v.homeEquity=homeEq; v.investableTotal=(v.retire+v.brokerage+v.hsa)+surplusCash+homeEq*ACCESS_EQ;
-  v.targetFI=v.annualSpend>0?v.annualSpend/SWR:0; v.fiRatio=v.targetFI>0?v.investableTotal/v.targetFI:(v.net>0?1:0);
-  v.efMonths=v.expenses>0?v.cash/v.expenses:0; const leftover=Math.max(0,v.income-v.expenses);
+  const surplusCash=Math.max(0,v.cash-EF_TARGET*(v.expenses||0));
+  const homeEq=Math.max(0,v.home-v.mortgage);
+  v.homeEquity=homeEq;
+
+  v.investableTotal=(v.retire+v.brokerage+v.hsa)+surplusCash+homeEq*ACCESS_EQ;
+  v.targetFI=v.annualSpend>0?v.annualSpend/SWR:0;
+  v.fiRatio=v.targetFI>0?v.investableTotal/v.targetFI:(v.net>0?1:0);
+
+  v.efMonths=v.expenses>0?v.cash/v.expenses:0;
+  const leftover=Math.max(0,v.income-v.expenses);
   v.saveRate=v.income>0?clamp((leftover+v.pretaxMonthly+v.eduMonthly)/(v.income+v.pretaxMonthly),0,1):0;
-  v.nonMortDebt=v.student+v.auto+v.cc; v.nwToIncome=v.annualIncome>0?v.net/v.annualIncome:0; v.paidOffHouse=(v.home>0 && v.mortgage<=0); v.spendsMoreThanIncome=(v.expenses>v.income && v.income>0);
+
+  v.nonMortDebt=v.student+v.auto+v.cc;
+  v.nwToIncome=v.annualIncome>0?v.net/v.annualIncome:0;
+  v.paidOffHouse=(v.home>0 && v.mortgage<=0);
+  v.spendsMoreThanIncome=(v.expenses>v.income && v.income>0);
+
+  /* NEW: income vs average */
+  v.incomeRel=v.income>0? v.income/AVG_MONTHLY_INCOME : 0;
+
   return v;
 }
+
 function scoreModel(v){
-  const exp=expRead(val('age')||30); const relFI=(exp>0)?v.fiRatio/exp:(v.fiRatio>0?1:0);
-  const sAgeFI=Math.pow(clamp(relFI,0,1.2),.6), sNW=Math.pow(map01(v.nwToIncome,0,2.5),.85), sSave=map01(v.saveRate,0,.25), sEF=map01(v.efMonths,0,EF_TARGET);
-  const debtIncome=v.annualIncome>0?v.nonMortDebt/v.annualIncome:1, sDebt=map01(1-debtIncome,.2,1), sHouse=v.paidOffHouse?1:0; const eqBonus=map01(v.homeEquity-50000,0,150000)*6;
-  let score=50*sAgeFI+20*sNW+15*sSave+8*sEF+5*sDebt+2*sHouse+eqBonus;
-  if(v.spendsMoreThanIncome) score-=5; if(v.cc>0 && v.ccApr>=20) score-=4; if(v.retire===0 && v.brokerage===0) score-=6;
-  score=Math.max(0,Math.min(100,+score.toFixed(1))); const clean=v.nonMortDebt<1000; const FI_Aplus=(v.fiRatio>=1.0 && clean);
-  return {score, FI_Aplus, relFI, expRead:exp, ...v};
+  const exp=expRead(val('age')||30);
+
+  /* Core sub-scores */
+  const relFI=(exp>0)?v.fiRatio/exp:(v.fiRatio>0?1:0);
+  const sAgeFI=Math.pow(clamp(relFI,0,1.2),.6);
+  const sNW=Math.pow(map01(v.nwToIncome,0,2.5),.85);
+  const sSave=map01(v.saveRate,0,.25);
+  const sEF=map01(v.efMonths,0,EF_TARGET);
+  const debtIncome=v.annualIncome>0?v.nonMortDebt/v.annualIncome:1;
+  const sDebt=map01(1-debtIncome,.2,1);
+  const sHouse=v.paidOffHouse?1:0;
+
+  /* NEW: Income factor (0 at 60% of avg, 1 at 2× avg; soft-capped 0..1) */
+  const sIncome=map01(v.incomeRel,0.60,2.0);
+
+  /* Small equity bonus for resilience */
+  const eqBonus=map01(v.homeEquity-50000,0,150000)*6;
+
+  /* Rebalanced weights so income helps while keeping total ≈100 */
+  let score=46*sAgeFI + 18*sNW + 14*sSave + 7*sEF + 5*sDebt + 2*sHouse + 8*sIncome + eqBonus;
+
+  if(v.spendsMoreThanIncome) score-=5;
+  if(v.cc>0 && v.ccApr>=20) score-=4;
+  if(v.retire===0 && v.brokerage===0) score-=6;
+
+  score=Math.max(0,Math.min(100,+score.toFixed(1)));
+  const clean=v.nonMortDebt<1000;
+  const FI_Aplus=(v.fiRatio>=1.0 && clean);
+  return {score, FI_Aplus, relFI, expRead:exp, ...v, sIncome};
 }
-function gradeLetter(s){ if(s.FI_Aplus) return 'A+'; const x=s.score;
+
+function gradeLetter(s){
+  if(s.FI_Aplus) return 'A+';
+  const x=s.score;
   return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F';
 }
 
-/* UI & render */
+/* ===== UI render ===== */
 const big=$('#bigGrade'), sline=$('#scoreLine'), nwln=$('#nwLine');
 function renderWhy(s){
   $('#chips').innerHTML=[
+    `<span class="chip">Income vs avg: <b>${Math.round(s.incomeRel*100)}%</b></span>`,
     `<span class="chip">FI vs age: <b>${(s.relFI*100).toFixed(0)}%</b></span>`,
     `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
     `<span class="chip">EF: <b>${s.efMonths.toFixed(1)} mo</b></span>`,
     `<span class="chip">Debt/income: <b>${((s.nonMortDebt/(s.annualIncome||1))*100).toFixed(0)}%</b></span>`,
     s.paidOffHouse?`<span class="chip">House: <b>Paid off</b></span>`:`<span class="chip">Equity: <b>${money(s.homeEquity)}</b></span>`
   ].join('');
+
   $('#whyList').innerHTML=[
+    `Average after-tax income baseline: <b>${money(AVG_MONTHLY_INCOME)}/mo</b>. Your income: <b>${money(s.income)}/mo</b> → Income factor: <b>${Math.round(s.sIncome*100)}%</b>.`,
     `Investables (401k + brokerage + HSA + surplus cash + 40% equity): <b>${money(s.investableTotal)}</b>.`,
     `Annual spend: <b>${money(s.annualSpend)}</b> → Target FI @ 3.5%: <b>${money(s.targetFI)}</b>.`,
-    `Age ${val('age')||30} expected readiness ~ <b>${(s.expRead*100).toFixed(0)}%</b>.`,
-    `FI vs age curve: <b>${(s.relFI*100).toFixed(0)}%</b> (1.0 = on track).`,
+    `Age ${val('age')||30} expected readiness ~ <b>${(s.expRead*100).toFixed(0)}%</b>. FI vs age curve: <b>${(s.relFI*100).toFixed(0)}%</b>.`,
     `Net worth: <b>${money(s.net)}</b> (${(s.nwToIncome).toFixed(2)}× income).`,
     `Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b>.`,
     `Non-mortgage debt: <b>${money(s.nonMortDebt)}</b>.`
   ].map(x=>`<div>${x}</div>`).join('');
 }
+
 function renderImprove(s){
-  const ideas=[]; if(s.relFI<1){const goal=s.targetFI*s.expRead;const gap=Math.max(0,goal-s.investableTotal); ideas.push(`Get on track for age: add ~${money(gap)} to investables.`);} else ideas.push(`You’re on track for your age—nice. Keep compounding.`);
-  if(s.efMonths<6) ideas.push(`Build EF to 6 months (${money((s.expenses||0)*6)}).`);
+  const ideas=[];
+  if(s.relFI<1){const goal=s.targetFI*s.expRead;const gap=Math.max(0,goal-s.investableTotal); ideas.push(`Get on track for age: add ~${money(gap)} to investables.`);} else ideas.push(`You’re on track for your age—nice. Keep compounding.`);
+  if(s.efMonths<EF_TARGET) ideas.push(`Build EF to ${EF_TARGET} months (${money((s.expenses||0)*EF_TARGET)}).`);
   if(s.saveRate<0.20){const bump=Math.ceil((s.income+s.pretaxMonthly)*0.05); ideas.push(`Boost savings rate by automating +${money(bump)}/mo.`);}
   if(s.nonMortDebt>0) ideas.push(`Aggressively pay down non-mortgage debt.`);
   if(!s.paidOffHouse && s.home>0) ideas.push(`Consider occasional principal prepayments for resilience.`);
   if(s.spendsMoreThanIncome) ideas.push(`Spending exceeds income—trim variable spend or raise income.`);
   $('#improveList').innerHTML=ideas.map(x=>`<div>• ${x}</div>`).join('');
 }
+
 async function doGrade(){
-  const s=scoreModel(values()); const L=gradeLetter(s);
-  big.textContent=L; big.style.color=({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'})[L]||'var(--text)';
-  sline.textContent=`Score: ${s.score.toFixed(1)} / 100.0`; nwln.textContent=`Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
-  $('#progressFill').style.width=s.score+'%'; renderWhy(s); renderImprove(s);
+  const s=scoreModel(values());
+  const L=gradeLetter(s);
+  big.textContent=L;
+  big.style.color=({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'})[L]||'var(--text)';
+  sline.textContent=`Score: ${s.score.toFixed(1)} / 100.0`;
+  nwln.textContent=`Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
+  $('#progressFill').style.width=s.score+'%';
+  renderWhy(s); renderImprove(s);
   if(['A+','A','A-','B+','B'].includes(L)) confettiBurst();
+
   const prof=await getActiveProfile(); (prof.history=prof.history||[]).push({date:new Date().toISOString(),score:s.score,letter:L,inputs:Object.fromEntries(ids.map(id=>[id,Number(els[id]?.value||0)]))}); await putActiveProfile(prof); drawHistory();
 }
 
-/* loader (3s) */
+/* ===== loader (3 seconds) ===== */
 const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
 function showOverlay3s(){
   let elapsed=0, dur=3000; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
@@ -514,18 +575,18 @@ function showOverlay3s(){
 }
 function runGrade(){ showOverlay3s(); }
 
-/* buttons */
+/* ===== buttons ===== */
 $('#gradeBtn').addEventListener('click',runGrade);
 $('#gradeBtnTop').addEventListener('click',()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); runGrade(); });
 $('#demoBtnTop').addEventListener('click',()=>{ const d={income:7500,expenses:4000,age:30, home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000, mortgage:329000,student:26000,auto:13500,cc:0, mortgageApr:5.25,studentApr:4.9,autoApr:3.5,ccApr:24.99, pretaxMonthly:900,eduMonthly:200}; Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id];}); updateHints(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
 $('#copyTop').addEventListener('click',()=>{ const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0)); const url=location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s)))); navigator.clipboard?.writeText(url); alert('Shareable link copied.'); });
 $('#resetBtn').addEventListener('click',()=>{ $$('#page-grade input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0)); updateHints(); $('#progressFill').style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent=''; big.textContent='—'; sline.textContent='Score: — / 100.0'; nwln.textContent='Net worth: —'; });
 
-/* hints */
+/* ===== hints ===== */
 function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)} • 40% equity count: ${money(Math.max(0,v.home-v.mortgage)*0.4)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)} • Home equity: ${money(Math.max(0,v.home-v.mortgage))}`; }
 ids.forEach(id=>els[id]?.addEventListener('input',updateHints)); updateHints();
 
-/* history */
+/* ===== history ===== */
 async function drawHistory(){
   const prof=await getActiveProfile(); const hist=prof.history||[]; $('#histMeta').textContent=`Entries: ${hist.length}`;
   const c=$('#historyChart'), ctx=c.getContext('2d'), dpr=Math.min(2,window.devicePixelRatio||1), rect=c.getBoundingClientRect();
@@ -547,10 +608,10 @@ function showDetail(e){ const i=e.inputs||{}, dt=new Date(e.date).toLocaleString
   `Contribs → Pre-tax ${money(i.pretaxMonthly||0)}/mo • Post-tax ${money(i.eduMonthly||0)}/mo`
 ].map(s=>`<div>${s}</div>`).join('');}
 
-/* welcome */
+/* ===== welcome ===== */
 (function(){ const key='gmf_welcome_v3'; const el=$('#welcome'); if(localStorage.getItem(key)!=='1'){el.classList.add('show');} $('#welcomeGo').addEventListener('click',()=>{localStorage.setItem(key,'1'); el.classList.remove('show');}); })();
 
-/* hash hydrate */
+/* ===== hash hydrate ===== */
 (function(){ const m=location.hash.match(/#s=([^&]+)/); if(!m) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=obj[id]; }); updateHints(); }catch(e){} })();
 
 })();
