@@ -12,7 +12,7 @@
   --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
   --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
   --g1:#16a34a; --g2:#34d399; --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
-  --header-h:84px;
+  --header-h:120px; /* taller to fit big logo */
 }
 .light{
   --bg:#f5faf6; --panel:#ffffff; --card:#ffffff; --text:#0f172a; --muted:#4b5563; --line:rgba(15,23,42,.12);
@@ -32,17 +32,24 @@ a{color:var(--accent); text-decoration:none}
 a:hover{text-decoration:underline}
 .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-/* ========= HEADER ========= */
+/* ========= HEADER (grid with centered brand) ========= */
 header{
-  position:fixed; left:0; right:0; top:0; z-index:80; height:var(--header-h);
+  position:fixed; inset:0 0 auto 0; z-index:80; height:var(--header-h);
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   border-bottom:1px solid var(--line);
 }
-.hdr{max-width:1200px;margin:0 auto;height:100%;display:flex;align-items:center;gap:12px;padding:10px 16px}
-.h-left{display:flex;align-items:center;gap:10px;min-width:0}
-.logo{height:48px;width:auto;display:block}
-.brand{font-weight:900;font-size:20px;white-space:nowrap;color:#062c1b}
-.h-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.hdr{
+  max-width:1200px; margin:0 auto; height:100%;
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10px;
+  padding:10px 16px;
+}
+.h-left{display:flex; align-items:center; gap:8px; min-width:0}
+.h-center{display:flex; align-items:center; gap:12px; justify-self:center; min-width:0}
+.h-right{display:flex; align-items:center; gap:8px; justify-self:end}
+
+.logo{height:96px; width:auto; display:block; filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
+.brand{font-weight:900; font-size:24px; white-space:nowrap; color:#062c1b}
+
 .pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
 .light .pill{background:#0f172a}
 select.pill{padding-right:28px}
@@ -50,7 +57,7 @@ select.pill{padding-right:28px}
 /* ========= HERO ========= */
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:center;margin:16px 0}
 .hero-card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
-.hero-title{margin:0 0 8px;font-size:28px}
+.hero-title{margin:0 0 8px;font-size:28px;text-align:left}
 .hero-tag{margin:0 0 12px;color:var(--muted)}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
 .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer}
@@ -81,8 +88,14 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 
 /* Inputs grid – responsive (4 / 2 / 1 columns) */
 .inputs{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:16px}
-@media (max-width:1060px){ .hero{grid-template-columns:1fr}.inputs{grid-template-columns:repeat(2,minmax(220px,1fr))}.shell{grid-template-columns:1fr}}
-@media (max-width:720px){ .inputs{grid-template-columns:1fr} .brand{font-size:16px} select.pill{max-width:160px} }
+@media (max-width:1060px){ .hero{grid-template-columns:1fr} .inputs{grid-template-columns:repeat(2,minmax(220px,1fr))} .shell{grid-template-columns:1fr} }
+@media (max-width:720px){
+  :root{ --header-h:102px; }
+  .logo{height:72px}
+  .brand{font-size:18px}
+  .inputs{grid-template-columns:1fr}
+  select.pill{max-width:160px}
+}
 
 /* Score area */
 .flex{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
@@ -106,34 +119,41 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .modal-card{max-width:520px;width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
 .row{display:flex;gap:8px;flex-wrap:wrap}
 
-/* History */
-canvas{display:block;width:100%}
+/* Confetti canvas */
+#confetti{position:fixed; inset:0; pointer-events:none; z-index:110;}
 </style>
 </head>
 
 <body>
+<!-- ===== Confetti Canvas ===== -->
+<canvas id="confetti"></canvas>
+
 <!-- ===== HEADER ===== -->
 <header>
   <div class="hdr">
     <div class="h-left">
-      <!-- Compact “G + report card” -->
-      <svg class="logo" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
+      <span id="streakPill" class="pill" style="display:none">Streak: 0</span>
+    </div>
+
+    <!-- centered brand + bigger logo -->
+    <div class="h-center">
+      <svg class="logo" viewBox="0 0 260 70" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
         <defs>
           <radialGradient id="lg1" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#66E3B0"/><stop offset=".55" stop-color="#34D399"/><stop offset="1" stop-color="#16A34A"/></radialGradient>
           <linearGradient id="lg2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7FFEF"/></linearGradient>
         </defs>
-        <circle cx="30" cy="30" r="26" fill="url(#lg1)"/>
-        <text x="30" y="38" text-anchor="middle" font-size="36" font-weight="900" fill="#1E40AF" stroke="#062C1B" stroke-width="2" paint-order="stroke">G</text>
-        <g transform="translate(60,10) rotate(-10)">
-          <rect width="36" height="44" rx="8" fill="url(#lg2)" stroke="#86EFAC" stroke-width="2"/>
-          <g stroke="#10B981" stroke-width="2"><line x1="8" y1="16" x2="28" y2="16"/><line x1="8" y1="24" x2="28" y2="24"/></g>
-          <text x="18" y="34" text-anchor="middle" font-size="14" font-weight="900" fill="#F87171">A+</text>
+        <circle cx="36" cy="35" r="30" fill="url(#lg1)"/>
+        <text x="36" y="45" text-anchor="middle" font-size="42" font-weight="900" fill="#1E40AF" stroke="#062C1B" stroke-width="2.5" paint-order="stroke">G</text>
+        <g transform="translate(78,12) rotate(-10)">
+          <rect width="42" height="52" rx="9" fill="url(#lg2)" stroke="#86EFAC" stroke-width="2"/>
+          <g stroke="#10B981" stroke-width="2"><line x1="9" y1="20" x2="33" y2="20"/><line x1="9" y1="30" x2="33" y2="30"/></g>
+          <text x="21" y="40" text-anchor="middle" font-size="16" font-weight="900" fill="#F87171">A+</text>
         </g>
       </svg>
       <div class="brand">Grade My Finance</div>
     </div>
+
     <div class="h-right">
-      <span id="streakPill" class="pill" style="display:none">Streak: 0</span>
       <select id="profileSelect" class="pill" aria-label="Select profile"></select>
       <button id="newProfileBtn" class="pill">New</button>
       <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
@@ -145,9 +165,9 @@ canvas{display:block;width:100%}
 <!-- ===== HERO ===== -->
 <section class="container hero">
   <div class="hero-card">
-    <h2 class="hero-title">Your money, graded like a report card ♥</h2>
-    <p class="hero-tag">Plug in your numbers, get a letter grade, and track progress with profiles, history, and achievements.</p>
-    <div class="hero-cta">
+    <h2 class="hero-title" style="text-align:center">Your money, graded like a report card ♥</h2>
+    <p class="hero-tag" style="text-align:center">Plug in your numbers, get a letter grade, and track progress with profiles, history, and achievements.</p>
+    <div class="hero-cta" style="justify-content:center">
       <button class="btn" id="demoBtnTop">Try Demo</button>
       <button class="btn primary" id="gradeBtnTop">Grade me now</button>
       <button class="btn" id="copyTop">Copy share link</button>
@@ -282,13 +302,20 @@ canvas{display:block;width:100%}
 <!-- ===== WELCOME ===== -->
 <div id="welcome" class="overlay">
   <div class="loader" style="text-align:center">
+    <svg viewBox="0 0 240 220" width="140" aria-hidden="true" style="display:block;margin:0 auto 10px">
+      <defs><linearGradient id="mcw" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient></defs>
+      <rect x="60" y="36" width="120" height="150" rx="22" fill="url(#mcw)" stroke="#86EFAC" stroke-width="2"/>
+      <circle cx="96" cy="78" r="6" fill="#0f172a"/><circle cx="144" cy="78" r="6" fill="#0f172a"/>
+      <path d="M98 98 q22 14 44 0" stroke="#16a34a" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <g transform="translate(120,120)"><circle r="18" fill="#10b981" stroke="#065f46" stroke-width="3"/><circle r="14" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/><text text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="900" fill="#a7f3d0">A+</text></g>
+    </svg>
     <h2 style="margin:6px 0 8px">Welcome to Grade My Finance</h2>
     <p>“Let’s make money feel easy.”</p>
     <button id="welcomeGo" class="btn primary">Let’s go</button>
   </div>
 </div>
 
-<!-- ===== LOADER ===== -->
+<!-- ===== LOADER (3s) ===== -->
 <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
   <div class="loader">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -324,6 +351,18 @@ const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll
 const money=n=>isFinite(n)?`$${Math.round(n).toLocaleString()}`:'—';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)); const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
 
+/* ===== confetti ===== */
+const cf=$('#confetti'), cctx=cf.getContext('2d');
+function resizeC(){ cf.width=window.innerWidth; cf.height=window.innerHeight }
+window.addEventListener('resize',resizeC); resizeC();
+function confettiBurst(n=160){
+  const bits=[]; for(let i=0;i<n;i++) bits.push({x:Math.random()*cf.width,y:-20-Math.random()*120,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:4+Math.random()*6,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.25,clr:`hsl(${Math.random()*360},90%,60%)`});
+  let t=0; (function anim(){ t++; cctx.clearRect(0,0,cf.width,cf.height);
+    bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; cctx.save(); cctx.translate(b.x,b.y); cctx.rotate(b.a); cctx.fillStyle=b.clr; cctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); cctx.restore(); });
+    if(t<240) requestAnimationFrame(anim); else cctx.clearRect(0,0,cf.width,cf.height);
+  })();
+}
+
 /* ===== theme ===== */
 const modeBtn=$('#modeBtn');
 function setMode(light){ document.body.classList.toggle('light',light); modeBtn.textContent=light?'Light':'Dark'; localStorage.setItem('gmf_theme',light?'light':'dark'); }
@@ -350,9 +389,9 @@ $('#sidebar').addEventListener('click',e=>{
 /* ===== local accounts (demo) ===== */
 const AUTH_KEY='gmf_local_accounts_v2', ACTIVE_ACCT='gmf_active_account_v2';
 let currentAccount=localStorage.getItem(ACTIVE_ACCT)||'local:guest';
-const acctLabel=$('#acctLabel'); function updateAuthUI(){ const label=currentAccount==='local:guest'?'Guest':'Local • '+currentAccount.split(':')[1]; acctLabel.innerHTML='Account: <b>'+label+'</b>'; $('#authBtn').textContent=currentAccount==='local:guest'?'Create Account / Sign in':'Account'; }
+const acctLabel=$('#acctLabel'); function updateAuthUI(){ const label=currentAccount==='local:guest'?'Guest':'Local • '+currentAccount.split(':')[1]; acctLabel.innerHTML='Account: <b>'+label+'</b>'; $('#authBtn').textContent=currentAccount==='local:guest'?'Create Account / Sign in':'Account'; $('#authSignOut').style.display=currentAccount!=='local:guest'?'inline-block':'none'; }
 updateAuthUI();
-const authModal=$('#authModal'); $('#authBtn').addEventListener('click',()=>{ authModal.classList.add('show'); $('#authSignOut').style.display=currentAccount!=='local:guest'?'inline-block':'none'; });
+const authModal=$('#authModal'); $('#authBtn').addEventListener('click',()=>authModal.classList.add('show'));
 $('#authClose').addEventListener('click',()=>authModal.classList.remove('show'));
 function loadAcc(){try{return JSON.parse(localStorage.getItem(AUTH_KEY)||'{}')}catch(e){return{}}}
 function saveAcc(obj){localStorage.setItem(AUTH_KEY,JSON.stringify(obj))}
@@ -361,7 +400,7 @@ $('#authCreate').addEventListener('click',()=>{ const e=($('#authEmail').value||
 $('#authSignIn').addEventListener('click',()=>{ const e=($('#authEmail').value||'').trim().toLowerCase(), p=($('#authPass').value||'').trim(); const db=loadAcc(); if(db[e]===hash(p)){ currentAccount='local:'+e; localStorage.setItem(ACTIVE_ACCT,currentAccount); authModal.classList.remove('show'); updateAuthUI(); renderProfiles(); } else alert('Invalid credentials.'); });
 $('#authSignOut').addEventListener('click',()=>{ currentAccount='local:guest'; localStorage.setItem(ACTIVE_ACCT,currentAccount); authModal.classList.remove('show'); updateAuthUI(); renderProfiles(); });
 
-/* ===== profiles (scoped per account) ===== */
+/* ===== profiles ===== */
 const storeKey=()=> 'gmf_profiles_'+currentAccount;
 const activeKey=()=> 'gmf_active_profile_'+currentAccount;
 async function getProfiles(){try{return JSON.parse(localStorage.getItem(storeKey())||'[]')}catch(e){return[]}}
@@ -446,13 +485,17 @@ async function doGrade(){
   big.textContent=L; big.style.color=({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'})[L]||'var(--text)';
   sline.textContent=`Score: ${s.score.toFixed(1)} / 100.0`; nwln.textContent=`Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
   $('#progressFill').style.width=s.score+'%'; renderWhy(s); renderImprove(s);
+  if(['A+','A','A-','B+','B'].includes(L)) confettiBurst(); // celebrate good grades
   const prof=await getActiveProfile(); (prof.history=prof.history||[]).push({date:new Date().toISOString(),score:s.score,letter:L,inputs:Object.fromEntries(ids.map(id=>[id,Number(els[id]?.value||0)]))}); await putActiveProfile(prof); drawHistory();
 }
 
-/* ===== overlay ===== */
+/* ===== loader (3 seconds) ===== */
 const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
-function showOverlay(){let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%'; const t=setInterval(()=>{prog=Math.min(96,prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%';},200); return ()=>{clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),240);};}
-function runGrade(){const hide=showOverlay(); requestAnimationFrame(()=>setTimeout(()=>{ try{doGrade();}catch(e){console.error(e); alert('Could not calculate.');} hide(); },480));}
+function showOverlay3s(){
+  let elapsed=0, dur=3000; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
+  const t=setInterval(()=>{ elapsed+=100; const p=Math.min(100,Math.round((elapsed/dur)*100)); bar.style.width=p+'%'; pct.textContent=p+'%'; if(elapsed>=dur){clearInterval(t); overlay.classList.remove('show'); doGrade();}},100);
+}
+function runGrade(){ showOverlay3s(); }
 
 /* ===== buttons ===== */
 $('#gradeBtn').addEventListener('click',runGrade);
@@ -488,7 +531,7 @@ function showDetail(e){ const i=e.inputs||{}, dt=new Date(e.date).toLocaleString
 ].map(s=>`<div>${s}</div>`).join('');}
 
 /* ===== welcome ===== */
-(function(){ const key='gmf_welcome_v2'; const el=$('#welcome'); if(localStorage.getItem(key)!=='1'){el.classList.add('show');} $('#welcomeGo').addEventListener('click',()=>{localStorage.setItem(key,'1'); el.classList.remove('show');}); })();
+(function(){ const key='gmf_welcome_v3'; const el=$('#welcome'); if(localStorage.getItem(key)!=='1'){el.classList.add('show');} $('#welcomeGo').addEventListener('click',()=>{localStorage.setItem(key,'1'); el.classList.remove('show');}); })();
 
 /* ===== hash hydrate ===== */
 (function(){ const m=location.hash.match(/#s=([^&]+)/); if(!m) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=obj[id]; }); updateHints(); }catch(e){} })();
@@ -497,4 +540,5 @@ function showDetail(e){ const i=e.inputs||{}, dt=new Date(e.date).toLocaleString
 </script>
 </body>
 </html>
+
 
