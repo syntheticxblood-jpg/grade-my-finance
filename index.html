@@ -105,10 +105,34 @@
   .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
   .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:var(--panel);font-size:12px;font-weight:800}
 
-  /* Welcome */
+  /* Welcome modal */
   .welcome{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:95}
   .welcome.show{display:grid}
   .welcome-card{max-width:680px;width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow);text-align:center}
+
+  /* Calculating overlay */
+  .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:120}
+  .overlay.show{display:grid}
+  .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);
+    border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+  .bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+  .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
+  @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
+
+  /* Mobile layout improvements */
+  @media (max-width: 980px){
+    .shell{grid-template-columns:1fr}
+    aside{position:static}
+    .nav{flex-direction:row; gap:8px; overflow-x:auto; padding:6px 2px 8px}
+    .nav::-webkit-scrollbar{display:none}
+    .tab{flex:0 0 auto; white-space:nowrap; padding:10px 12px}
+    .grid > [style*="grid-column:span 6"],
+    .grid > [style*="grid-column:span 4"],
+    .grid > [style*="grid-column:span 8"]{grid-column: span 12 !important;}
+    input, select {font-size:16px}
+  }
+  /* ensure pop scales around center */
+  svg .badge { transform-origin: center; transform-box: fill-box; }
 </style>
 </head>
 <body class="dark">
@@ -140,7 +164,7 @@
           </defs>
           <!-- Badge -->
           <circle cx="100" cy="100" r="90" fill="url(#gmf-badge)"/>
-          <!-- Big tilted G (centered, slightly lower) -->
+          <!-- Big tilted G (centered within badge) -->
           <g transform="translate(100,110) rotate(-8)">
             <text x="0" y="40" text-anchor="middle"
                   font-size="140" font-weight="900"
@@ -156,7 +180,7 @@
               <line x1="14" y1="58" x2="42" y2="58"/>
             </g>
             <!-- Centered A+ on the small card -->
-            <text x="32" y="40" text-anchor="middle" dominant-baseline="middle"
+            <text x="32" y="40" text-anchor="middle" dominant-baseline="central"
                   font-size="24" font-weight="900" font-family="Inter, ui-sans-serif, system-ui" fill="#F87171">A+</text>
           </g>
           <!-- Wordmark -->
@@ -224,11 +248,14 @@
           <path id="smile" d="M144 120 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
           <circle cx="136" cy="104" r="11" fill="url(#cheek)"/><circle cx="220" cy="104" r="11" fill="url(#cheek)"/>
 
-          <!-- A+ badge is centered in the SVG (safe, never clipped) -->
-          <g class="b-pop" transform="translate(180,150)">
+          <!-- A+ badge centered; no drift -->
+          <g class="b-pop badge"
+             transform="translate(180,150)"
+             style="transform-box: fill-box; transform-origin: center;">
             <circle r="22" fill="#10b981" stroke="#065f46" stroke-width="3"/>
             <circle r="18" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
-            <text y="6" text-anchor="middle" font-size="18" font-weight="900" fill="#a7f3d0">A+</text>
+            <text x="0" y="0" text-anchor="middle" dominant-baseline="central"
+                  font-size="18" font-weight="900" font-family="Inter, ui-sans-serif, system-ui" fill="#a7f3d0">A+</text>
           </g>
         </g>
       </svg>
@@ -355,7 +382,7 @@
         </div>
       </section>
 
-      <!-- History page with a simple canvas chart -->
+      <!-- History page -->
       <section id="page-history" class="page">
         <div class="card" style="grid-column:span 12; position:relative">
           <div style="display:flex;align-items:center;justify-content:space-between">
@@ -371,13 +398,7 @@
       <section id="page-about" class="page"><div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math and friendly design. Everything runs in your browser.</p></div></section>
       <section id="page-goal" class="page"><div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div></section>
       <section id="page-faq" class="page"><div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div></section>
-      <section id="page-contact" class="page"><div class="card"><h2>Contact</h
-      <section id="page-contact" class="page">
-        <div class="card">
-          <h2>Contact</h2>
-          <p>Email us: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
-        </div>
-      </section>
+      <section id="page-contact" class="page"><div class="card"><h2>Contact</h2><p>Email us: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div></section>
     </main>
   </div>
 
@@ -390,16 +411,25 @@
     </div>
   </div>
 
+  <!-- Calculating overlay -->
+  <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
+    <div class="loader">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <strong>Crunching numbers…</strong><span id="pct" class="scoreline">0%</span>
+      </div>
+      <div class="bar"><div class="fill" id="barFill"></div></div>
+    </div>
+  </div>
+
 <script>
 (() => {
-  // ---------- tiny helpers ----------
   const $  = s => document.querySelector(s);
   const $$ = s => Array.from(document.querySelectorAll(s));
   const money = n => isFinite(n) ? `$${Math.round(n).toLocaleString()}` : '—';
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-  // ---------- theme toggle ----------
+  // theme
   const modeBtn = $('#modeBtn');
   function setMode(light){
     document.body.classList.toggle('light', light);
@@ -410,7 +440,7 @@
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // ---------- sidebar tabs ----------
+  // nav tabs
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
     const pg=t.dataset.page;
@@ -420,7 +450,7 @@
     if(pg==='history') drawHistory();
   });
 
-  // ---------- streak pill (header & sidebar hint share same count) ----------
+  // streak
   (function streak(){
     const key='gmf_streak';
     const today = new Date().toDateString();
@@ -431,12 +461,11 @@
       count = (data.last === yesterday) ? (data.count+1) : 1;
       localStorage.setItem(key, JSON.stringify({last:today,count}));
     }
-    const pill = $('#streakPill'); pill.style.display='inline-block';
-    pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
+    const pill = $('#streakPill'); pill.style.display='inline-block'; pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
     $('#streakHint').textContent = pill.textContent;
   })();
 
-  // ---------- profiles ----------
+  // profiles
   const PROFILE_KEY='gmf_profiles_v3';
   function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
   function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
@@ -448,10 +477,7 @@
   function getActiveId(){ return localStorage.getItem('gmf_active_profile') || ensureDefaultProfile()[0].id; }
   function setActiveId(id){ localStorage.setItem('gmf_active_profile', id); }
   function getActive(){ return ensureDefaultProfile().find(x=>x.id===getActiveId()); }
-  function putActive(prof){
-    const ps=ensureDefaultProfile(); const i=ps.findIndex(x=>x.id===prof.id);
-    if(i>=0){ ps[i]=prof; saveProfiles(ps); }
-  }
+  function putActive(prof){ const ps=ensureDefaultProfile(); const i=ps.findIndex(x=>x.id===prof.id); if(i>=0){ ps[i]=prof; saveProfiles(ps);} }
 
   function renderProfileSelects(){
     const ps=ensureDefaultProfile(); const cur=getActiveId();
@@ -465,13 +491,12 @@
   $('#profileSelect').addEventListener('change', e=>{ setActiveId(e.target.value); renderProfileSelects(); if($('#page-history').classList.contains('active')) drawHistory(); });
   $('#profileSelectSide').addEventListener('change', e=>{ setActiveId(e.target.value); renderProfileSelects(); if($('#page-history').classList.contains('active')) drawHistory(); });
 
-  // header "New Profile"
   $('#newProfileBtn').addEventListener('click', newProfile);
   $('#newProfileBtnSide').addEventListener('click', newProfile);
   function newProfile(){
     const name=prompt('Profile name?','Profile '+(loadProfiles().length+1)); if(!name) return;
-    const ps=ensureDefaultProfile(); const id=crypto.randomUUID();
-    ps.push({id,name,history:[]}); saveProfiles(ps); setActiveId(id); renderProfileSelects(); drawHistory();
+    const ps=ensureDefaultProfile(); const id=crypto.randomUUID(); ps.push({id,name,history:[]});
+    saveProfiles(ps); setActiveId(id); renderProfileSelects(); drawHistory();
   }
   $('#renameProfileBtn')?.addEventListener('click', ()=>{
     const prof=getActive(); if(!prof) return;
@@ -482,14 +507,12 @@
     if(!confirm('Delete this profile?')) return;
     let ps=ensureDefaultProfile(); const cur=getActiveId();
     ps=ps.filter(x=>x.id!==cur); saveProfiles(ps);
-    const newId = (ps[0]?.id) || null;
-    if(newId){ setActiveId(newId); } else { saveProfiles([{id:crypto.randomUUID(),name:'Profile 1',history:[]}]); }
+    const newId=(ps[0]?.id)||null; if(newId){ setActiveId(newId); } else { saveProfiles([{id:crypto.randomUUID(),name:'Profile 1',history:[]}]); }
     renderProfileSelects(); drawHistory();
   });
   $('#exportProfileBtn')?.addEventListener('click', ()=>{
     const prof=getActive(); if(!prof) return;
-    navigator.clipboard?.writeText(JSON.stringify(prof));
-    alert('Profile JSON copied to clipboard.');
+    navigator.clipboard?.writeText(JSON.stringify(prof)); alert('Profile JSON copied.');
   });
   $('#importProfileBtn')?.addEventListener('click', ()=>{
     const txt=prompt('Paste profile JSON'); if(!txt) return;
@@ -498,8 +521,8 @@
     }catch(e){ alert('Invalid JSON'); }
   });
 
-  // ---------- inputs & hints ----------
-  const ids = ['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr','pretaxMonthly','eduMonthly'];
+  // inputs
+  const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr','pretaxMonthly','eduMonthly'];
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
 
@@ -509,7 +532,7 @@
     v.liabs  = v.mortgage + v.student + v.auto + v.cc;
     v.net    = v.assets - v.liabs;
     v.annualSpend = Math.max(0, v.expenses * 12);
-    v.targetFI = v.annualSpend>0 ? v.annualSpend / 0.06 : 0; // 6% quick target
+    v.targetFI = v.annualSpend>0 ? v.annualSpend / 0.06 : 0;
     v.investableCore = v.retire + v.brokerage + v.hsa;
     return v;
   }
@@ -521,7 +544,7 @@
   ids.forEach(id => els[id]?.addEventListener('input', updateHints));
   updateHints();
 
-  // ---------- scoring ----------
+  // score
   function scoreModel(v){
     const leftover = Math.max(0, v.income - v.expenses);
     const saveRate = (v.income>0) ? clamp((leftover + val('pretaxMonthly') + val('eduMonthly')) / (v.income + val('pretaxMonthly')), 0, 1) : 0;
@@ -570,21 +593,36 @@
     const prof=getActive(); if(prof){ prof.history.push({date:new Date().toISOString(),score:s.score,letter:L}); putActive(prof); drawHistory(); }
   }
 
-  // buttons (top + in card)
-  $('#gradeBtn')    .addEventListener('click', doGrade);
-  $('#gradeBtnTop') .addEventListener('click', ()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); doGrade(); });
+  // overlay
+  const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
+  function showOverlay(){
+    let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
+    const timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4);
+      bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; }, 200);
+    return ()=>{ clearInterval(timer); bar.style.width='100%'; pct.textContent='100%';
+      setTimeout(()=>overlay.classList.remove('show'), 250); };
+  }
+  function runGradeSafely(){
+    const hide=showOverlay();
+    requestAnimationFrame(()=> setTimeout(()=>{
+      try{ doGrade(); }catch(e){ console.error(e); alert('Oops—could not calculate. Try again.'); }
+      hide();
+    }, 420));
+  }
+
+  // buttons
+  $('#gradeBtn')    .addEventListener('click', runGradeSafely);
+  $('#gradeBtnTop') .addEventListener('click', ()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); runGradeSafely(); });
 
   $('#demoBtnTop').addEventListener('click', ()=>{
     const demo={income:7500,expenses:4000,age:30,home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000,mortgage:329000,student:26000,auto:13500,cc:0,mortgageApr:5.25,studentApr:4.9,autoApr:3.5,ccApr:24.99,pretaxMonthly:900,eduMonthly:200};
     Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; }); updateHints();
   });
-
   $('#copyTop').addEventListener('click', ()=>{
     const state={}; ids.forEach(id=> state[id]=val(id));
     const url = location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(state))));
     navigator.clipboard?.writeText(url); alert('Shareable link copied.');
   });
-
   $('#resetBtn').addEventListener('click', ()=>{
     $$('#page-grade input[type="number"]').forEach(el=>{ el.value=(el.id==='age'?30:0); });
     updateHints(); bigGrade.textContent='—'; bigGrade.classList.remove('show');
@@ -592,7 +630,7 @@
     $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
 
-  // ---------- history chart ----------
+  // chart
   function drawHistory(){
     const prof=getActive(); if(!prof) return;
     const pts=(prof.history||[]).map(h=>({date:h.date, score:h.score, letter:h.letter}));
@@ -609,20 +647,17 @@
     const xs=pts.map((_,i)=> pad + (i/(Math.max(1,pts.length-1)))*w);
     const ys=pts.map(p=> pad + (1 - p.score/100)*h);
 
-    // grid
     ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line'); ctx.lineWidth=1; ctx.beginPath();
     for(let k=0;k<=5;k++){ const gy=pad+(h*k/5); ctx.moveTo(pad,gy); ctx.lineTo(pad+w,gy); } ctx.stroke();
 
-    // line
     ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--accent'); ctx.lineWidth=2; ctx.beginPath();
     xs.forEach((x,i)=>{ if(i===0) ctx.moveTo(x,ys[i]); else ctx.lineTo(x,ys[i]); }); ctx.stroke();
 
-    // dots
     ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2');
     xs.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(x,ys[i],3,0,Math.PI*2); ctx.fill(); });
   }
 
-  // ---------- welcome modal ----------
+  // welcome
   (function welcome(){
     const key='gmf_welcome_seen_v4';
     const seen = localStorage.getItem(key)==='1';
@@ -631,7 +666,7 @@
     $('#welcomeGo').addEventListener('click', ()=>{ localStorage.setItem(key,'1'); el.classList.remove('show'); });
   })();
 
-  // ---------- mascot eyes follow ----------
+  // eyes follow
   (function eyes(){
     const l=$('#eyeL'), r=$('#eyeR'); if(!l||!r) return;
     const cxL=+l.getAttribute('cx'), cyL=+l.getAttribute('cy');
@@ -647,9 +682,10 @@
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
 
-  // initial draw if history tab open
+  // if history tab already open
   if($('#page-history').classList.contains('active')) drawHistory();
 })();
 </script>
 </body>
 </html>
+
