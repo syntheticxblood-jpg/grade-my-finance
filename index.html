@@ -43,7 +43,6 @@
 }
 </script>
 
-
 <style>
 :root{
   --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
@@ -114,6 +113,22 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 .bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
 .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
 @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
+
+/* Footer */
+footer{
+  background:#0b1226;
+  border-top:1px solid var(--line);
+  padding:24px;
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+}
+footer a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:700;
+}
+footer a:hover{ text-decoration:underline }
 </style>
 </head>
 
@@ -241,6 +256,12 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
   </div>
 </div>
 
+<!-- Footer / Contact -->
+<footer>
+  <p>📩 Contact us: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
+  <p>© 2025 Grade My Finance. All rights reserved.</p>
+</footer>
+
 <script>
 (() => {
 /* ---------- helpers ---------- */
@@ -329,7 +350,7 @@ function gradeLetter(s){
 }
 
 /* ---------- UI ---------- */
-const big=$('#bigGrade'), sline=$('#scoreLine'), nwln=$('#nwLine');
+const big=$('#bigGrade'), sline=$('#scoreLine'), nwln=$('#nwLine']);
 function chip(txt){ const span=document.createElement('span'); span.className='chip'; span.innerHTML=txt; return span; }
 function renderWhy(s){
   const chips=$('#chips'); chips.innerHTML='';
