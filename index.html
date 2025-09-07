@@ -54,23 +54,29 @@
   .pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0;transition:transform .06s ease}
   .pill:active{transform:translateY(1px) scale(.98)}
   .light .pill{background:#0f172a}
-  .streak{font-weight:800;color:#062c1b;background:#ffffffaa;padding:8px 10px;border-radius:999px}
 
   /* Shell */
-  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:240px 1fr;gap:18px;padding:18px}
+  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:280px 1fr;gap:18px;padding:18px}
   aside{position:sticky;top:86px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
-  .nav{display:flex;flex-direction:column;gap:10px}
+  .nav{display:flex;flex-direction:column;gap:10px;margin-top:12px}
   .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
   .tab:hover{transform:translateY(-1px)}
   .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#062c1b}
+
+  .asideCard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px}
+  .asideTitle{font-size:12px;color:var(--muted);font-weight:900;margin:0 0 8px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  select{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--card);color:var(--text);flex:1}
+  .mini{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:800;cursor:pointer}
+  .mini.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b}
 
   /* Cards + grid */
   .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
   .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
   label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-  input,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
-  input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
+  input,select.input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
+  input:focus,select.input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
   .hint{font-size:12px;color:var(--muted);margin-top:6px}
   .btn{padding:11px 15px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer}
   .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b}
@@ -143,9 +149,6 @@
         <p class="tag">Letter grade, profiles, progress, and achievements.</p>
       </div>
       <span class="spacer"></span>
-      <span id="streakPill" class="streak" style="display:none"></span>
-      <select id="profileSelect" class="pill"></select>
-      <button id="newProfileBtn" class="pill">New Profile</button>
       <button id="modeBtn" class="pill">Dark</button>
     </div>
   </header>
@@ -154,9 +157,30 @@
 
   <div class="shell">
     <aside>
+      <!-- Profiles block (moved to sidebar) -->
+      <div class="asideCard">
+        <p class="asideTitle">Profiles</p>
+        <div class="row">
+          <select id="profileSelect" class="input"></select>
+          <button id="newProfileBtn" class="mini">New</button>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <button id="renameProfileBtn" class="mini">Rename</button>
+          <button id="deleteProfileBtn" class="mini">Delete</button>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <button id="exportBtn" class="mini">Export</button>
+          <label class="mini" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+            <input id="importInput" type="file" accept="application/json" style="display:none">Import
+          </label>
+        </div>
+        <div id="streakPill" class="mini" style="margin-top:8px;display:none"></div>
+      </div>
+
       <nav class="nav" id="sidebar">
         <button class="tab active" data-page="grade">Grade</button>
         <button class="tab" data-page="history">History</button>
+        <button class="tab" data-page="benchmarks">Benchmarks</button>
         <button class="tab" data-page="about">About Us</button>
         <button class="tab" data-page="goal">Our Goal</button>
         <button class="tab" data-page="faq">FAQ</button>
@@ -224,7 +248,8 @@
                 </div>
               </div>
               <div style="display:flex;gap:10px;flex-wrap:wrap">
-                <button id="resetBtn" class="btn">Reset</button>
+                <button id="demoBtn" class="btn">Demo Data</button>
+                <button id="resetBtn" class="btn">Reset Inputs</button>
                 <button id="gradeBtn" class="btn primary">Get My Score</button>
               </div>
             </div>
@@ -253,6 +278,22 @@
           <canvas id="historyChart" height="180" style="width:100%;max-width:100%"></canvas>
           <div class="hint" id="historyHint">Grade each month to build your history.</div>
           <div id="trophyWall" class="badges" style="margin-top:12px"></div>
+          <div class="hint" style="margin-top:8px">Tip: Create profiles for you, your partner, or different scenarios.</div>
+        </div>
+      </section>
+
+      <!-- Benchmarks -->
+      <section id="page-benchmarks" class="page">
+        <div class="card">
+          <h2>Benchmarks</h2>
+          <p class="hint">General guideposts. Everyone’s situation is unique.</p>
+          <ul>
+            <li><b>Emergency fund:</b> 3–6 months of expenses (we target 6).</li>
+            <li><b>Age curve (investable vs. FI target):</b> ~20% by 30, 35% by 35, 50% by 40, 65% by 45, 80% by 50, 95% by 55, 100% by 60.</li>
+            <li><b>Savings rate:</b> Aim 20%+ of take-home; more if late start.</li>
+            <li><b>Mortgage LTV:</b> Under 80% is healthy; lower is better.</li>
+            <li><b>Non-mortgage debt:</b> Keep under 20% of assets.</li>
+          </ul>
         </div>
       </section>
 
@@ -266,7 +307,11 @@
       </section>
       <!-- FAQ -->
       <section id="page-faq" class="page">
-        <div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div>
+        <div class="card">
+          <h2>FAQ</h2>
+          <p>Educational only; not financial advice. Your numbers stay on your device.</p>
+          <p>Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
+        </div>
       </section>
       <!-- Contact -->
       <section id="page-contact" class="page">
@@ -303,18 +348,32 @@
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
 
+  // Polyfill randomUUID for older browsers
+  if(!window.crypto?.randomUUID){
+    crypto = window.crypto || {};
+    crypto.randomUUID = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c=>{
+      const r = Math.random()*16|0, v = c==='x'? r : (r&0x3|0x8);
+      return v.toString(16);
+    });
+  }
+
   // constants
   const SWR = 0.06, EF_TARGET = 6, EQUITY_FACTOR = 0.40;
   const NW_W=15, FI_W=55, AGE_W=10, SAVE_W=6, EF_W=7, NONMORT_W=4, LTV_W=3;
 
   // theme
   const modeBtn = $('#modeBtn');
-  function setMode(light){ document.body.classList.toggle('light', light); modeBtn.textContent = light ? 'Light' : 'Dark'; localStorage.setItem('gmf_theme', light?'light':'dark'); }
+  function setMode(light){
+    document.body.classList.toggle('light', light);
+    // Button shows the target mode (what clicking will switch to)
+    modeBtn.textContent = light ? 'Dark' : 'Light';
+    localStorage.setItem('gmf_theme', light?'light':'dark');
+  }
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
   // tabs + GA page views
-  const pages=['grade','history','about','goal','faq','contact'];
+  const pages=['grade','history','benchmarks','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
     const pg=t.dataset.page;
@@ -336,7 +395,7 @@
       count = (data.last === yesterday) ? (data.count+1) : 1;
       localStorage.setItem(key, JSON.stringify({last:today,count}));
     }
-    const pill = $('#streakPill'); pill.style.display='inline-block'; pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
+    const pill = $('#streakPill'); pill.style.display='inline-flex'; pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
   })();
 
   // inputs
@@ -426,10 +485,16 @@
 
   /* ---------- Overlay + toast ---------- */
   const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
-  function showOverlay(){ let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
-    const t=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200);
-    setTimeout(()=>{ clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); },800);
+  function showOverlay(){
+    overlay.classList.add('show');
+    let prog=0; bar.style.width='0%'; pct.textContent='0%';
+    const t=setInterval(()=>{
+      if(!overlay.classList.contains('show')) return clearInterval(t);
+      prog=Math.min(96, prog+Math.random()*8+4);
+      bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%';
+    },200);
   }
+  function hideOverlay(){ overlay.classList.remove('show'); }
   const toast=$('#toast');
   function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5000); }
   $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
@@ -455,7 +520,12 @@
   function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
   (function hydrateFromHash(){
     const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
-    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); ids.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
+    try{
+      const decoded = JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+      const payload = decoded && decoded.inputs ? decoded.inputs : decoded; // support both formats
+      ids.forEach(id=>{ if(payload && (id in payload)) els[id].value=payload[id]; });
+      updateHints();
+    }catch(e){}
   })();
 
   /* -------- Profiles, History, Trophies (localStorage) -------- */
@@ -464,21 +534,63 @@
   function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
   function ensureDefaultProfile(){
     let p=loadProfiles();
-    if(!p.length){ p=[{id:crypto.randomUUID(), name:'My Profile', history:[], trophies:[]}]; saveProfiles(p); }
+    if(!p.length){
+      p=[{id:crypto.randomUUID(), name:'My Profile', history:[], trophies:[]}];
+      saveProfiles(p);
+    }
+    // set active if missing
+    const cur = localStorage.getItem('gmf_active_profile');
+    if(!cur || !p.find(x=>x.id===cur)){
+      localStorage.setItem('gmf_active_profile', p[0].id);
+    }
     return p;
   }
   function renderProfileSelect(){
     const p=ensureDefaultProfile(); const sel=$('#profileSelect'); sel.innerHTML='';
     p.forEach((x)=>{ const o=document.createElement('option'); o.value=x.id; o.textContent=x.name; sel.appendChild(o); });
-    const cur = localStorage.getItem('gmf_active_profile') || p[0].id; sel.value=cur; localStorage.setItem('gmf_active_profile', cur);
+    const cur = localStorage.getItem('gmf_active_profile') || p[0].id; sel.value=cur;
   }
-  function getActive(){ const id=localStorage.getItem('gmf_active_profile'); return loadProfiles().find(x=>x.id===id); }
-  function setActive(id){ localStorage.setItem('gmf_active_profile', id); }
+  function getActive(){ const id=localStorage.getItem('gmf_active_profile'); return ensureDefaultProfile().find(x=>x.id===id); }
+  function setActive(id){ localStorage.setItem('gmf_active_profile', id); renderHistory(); }
   renderProfileSelect();
-  $('#profileSelect').addEventListener('change', e=>{ setActive(e.target.value); renderHistory(); });
+  $('#profileSelect').addEventListener('change', e=> setActive(e.target.value));
   $('#newProfileBtn').addEventListener('click', ()=>{
     const name=prompt('Profile name?','My Profile '+(loadProfiles().length+1)); if(!name) return;
-    const p=loadProfiles(); const id=crypto.randomUUID(); p.push({id,name,history:[],trophies:[]}); saveProfiles(p); renderProfileSelect(); setActive(id); renderHistory();
+    const p=loadProfiles(); const id=crypto.randomUUID(); p.push({id,name,history:[],trophies:[]}); saveProfiles(p);
+    renderProfileSelect(); setActive(id);
+  });
+  $('#renameProfileBtn').addEventListener('click', ()=>{
+    const prof=getActive(); if(!prof) return;
+    const name=prompt('New name:', prof.name); if(!name) return;
+    const p=loadProfiles(); const idx=p.findIndex(x=>x.id===prof.id); if(idx>=0){ p[idx].name=name; saveProfiles(p); renderProfileSelect(); }
+  });
+  $('#deleteProfileBtn').addEventListener('click', ()=>{
+    const prof=getActive(); if(!prof) return;
+    if(!confirm(`Delete profile "${prof.name}"? This removes its history and trophies.`)) return;
+    let p=loadProfiles().filter(x=>x.id!==prof.id);
+    if(!p.length){ p=[{id:crypto.randomUUID(), name:'My Profile', history:[], trophies:[]}]; }
+    saveProfiles(p);
+    localStorage.setItem('gmf_active_profile', p[0].id);
+    renderProfileSelect(); renderHistory();
+  });
+  $('#exportBtn').addEventListener('click', ()=>{
+    const data = {profiles: loadProfiles(), active: localStorage.getItem('gmf_active_profile')};
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='gmf-backup.json'; a.click();
+    URL.revokeObjectURL(url);
+  });
+  $('#importInput').addEventListener('change', async (e)=>{
+    const file = e.target.files[0]; if(!file) return;
+    const text = await file.text();
+    try{
+      const data = JSON.parse(text);
+      if(Array.isArray(data.profiles)){ saveProfiles(data.profiles); }
+      if(data.active){ localStorage.setItem('gmf_active_profile', data.active); }
+      renderProfileSelect(); renderHistory();
+      alert('Import complete');
+    }catch(err){ alert('Import failed: invalid file'); }
+    e.target.value='';
   });
 
   function saveProfile(profile){
@@ -487,11 +599,11 @@
   function award(profile, code, label){
     if(!profile.trophies.includes(code)){ profile.trophies.push(code); saveProfile(profile); confetti(); }
     return {code,label};
-  }
+    }
   function maybeTrophies(profile, v, s, L){
     const list=[];
     if(profile.history.length===1) list.push(award(profile,'first_grade','First Grade'));
-    if(L==='A+'||L==='A'||L==='A-') list.push(award(profile,'a_club','A Club'));
+    if(['A+','A','A-'].includes(L)) list.push(award(profile,'a_club','A Club'));
     if(s.efMonths>=6) list.push(award(profile,'ef_ready','Emergency Ready'));
     if((v.student+v.auto+v.cc)===0) list.push(award(profile,'debt_slayer','Debt Slayer'));
     if(profile.history.length>=2){
@@ -508,32 +620,31 @@
     return entry;
   }
 
-  // draw line chart
+  // draw line chart (crisp on HiDPI)
   function drawChart(points){
     const c=$('#historyChart'); const ctx=c.getContext('2d');
-    ctx.clearRect(0,0,c.width,c.height);
-    const w=c.width=c.clientWidth; const h=c.height=c.height;
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = c.clientWidth || 600; const cssH = 180;
+    c.width = Math.round(cssW * dpr); c.height = Math.round(cssH * dpr);
+    c.style.width = cssW+'px'; c.style.height = cssH+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,cssW,cssH);
     if(!points.length){ return; }
-    const xs=points.map((_,i)=>i/(points.length-1||1));
-    const ys=points.map(p=>1-(p.score/100));
+    const pad=16, w=cssW-pad*2, h=cssH-pad*2;
+    const xs=points.map((_,i)=> (points.length>1? i/(points.length-1) : 0));
+    const ys=points.map(p=> 1-(p.score/100));
     ctx.lineWidth=2; ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent') || '#22d3ee';
     ctx.beginPath();
-    for(let i=0;i<points.length;i++){
-      const x=16+xs[i]*(w-32), y=16+ys[i]*(h-32);
-      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
+    xs.forEach((t,i)=>{ const x=pad+t*w, y=pad+ys[i]*h; if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
     ctx.stroke();
     ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2') || '#a78bfa';
-    points.forEach((p,i)=>{
-      const x=16+xs[i]*(w-32), y=16+ys[i]*(h-32);
-      ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
-    });
+    xs.forEach((t,i)=>{ const x=pad+t*w, y=pad+ys[i]*h; ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill(); });
   }
   function renderHistory(){
     const prof=getActive(); if(!prof) return;
-    const pts=prof.history.map(h=>({date:h.date, score:h.score}));
+    const pts=(prof.history||[]).map(h=>({date:h.date, score:h.score}));
     drawChart(pts);
-    $('#historyHint').textContent = prof.history.length ? `Entries: ${prof.history.length}` : 'Grade each month to build your history.';
+    $('#historyHint').textContent = prof.history?.length ? `Entries: ${prof.history.length}` : 'Grade each month to build your history.';
     const wall=$('#trophyWall'); wall.innerHTML='';
     (prof.trophies||[]).forEach(code=>{
       const span=document.createElement('span'); span.className='badge'; span.textContent=({
@@ -577,7 +688,7 @@
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
-  // Grade & Reset
+  // Grade & Reset & Demo
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
 
   function doGrade(){
@@ -605,16 +716,27 @@
       logHistory(prof, s, L);
       const ts = maybeTrophies(prof, v, s, L);
       if(ts.length) confetti();
+      renderHistory();
     }
   }
 
-  $('#gradeBtn').addEventListener('click', ()=>{ showOverlay(); setTimeout(doGrade, 820); });
+  $('#gradeBtn').addEventListener('click', ()=>{
+    showOverlay();
+    setTimeout(()=>{ doGrade(); hideOverlay(); }, 650);
+  });
+
   $('#resetBtn').addEventListener('click', ()=>{
     document.querySelectorAll('input[type="number"]').forEach(el => el.value = (el.id==='age'?30:0));
     updateHints();
     bigGrade.textContent='—'; bigGrade.classList.remove('show');
     scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
     progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
+  });
+
+  $('#demoBtn').addEventListener('click', ()=>{
+    const demo = {income:7500, expenses:4000, age:30, home:475000, retire:72000, brokerage:29000, car:15000, hsa:1500, cash:24000, mortgage:329000, student:26000, auto:13500, cc:0, mortgageApr:5.25, studentApr:4.9, autoApr:3.5, ccApr:24.99};
+    ids.forEach(id=>{ if(demo[id]!=null) els[id].value=demo[id]; });
+    updateHints();
   });
 
   // render history once so tab is instant later
