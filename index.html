@@ -133,7 +133,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="container hero">
   <div class="hero-card">
     <h1 class="hero-title">Your money, graded like a report card ♥</h1>
-    <p class="hero-tag">Simple, transparent math. All inputs interact, including age.</p>
+    <p class="hero-tag">All inputs interact — age, income, expenses, assets, and debts.</p>
     <div class="hero-cta">
       <button class="btn" id="demoBtnTop">Try Demo</button>
       <button class="btn primary" id="gradeBtnTop">Grade me now</button>
@@ -226,22 +226,6 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
         </div>
       </div>
     </section>
-
-    <section id="page-history" class="page">
-      <div class="card">
-        <div class="flex"><h3 style="margin:0">Your Progress</h3><div id="histMeta" class="section">Entries: 0</div></div>
-        <canvas id="historyChart" height="220" style="margin-top:10px"></canvas>
-        <div class="card" style="border-style:dashed;margin-top:10px">
-          <div class="section">Entry details</div>
-          <div id="histText" class="section">Tap a dot to see numbers.</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="page-about" class="page"><div class="card"><h3>About Us</h3><p>Simple, age-aware money grading. Everything runs in your browser.</p></div></section>
-    <section id="page-goal" class="page"><div class="card"><h3>Our Goal</h3><p>Help one million people build calm, confident money habits.</p></div></section>
-    <section id="page-faq" class="page"><div class="card"><h3>FAQ</h3><p>Educational only; not financial advice. Your numbers stay on your device.</p></div></section>
-    <section id="page-contact" class="page"><div class="card"><h3>Contact</h3><p>Email: grademyfinance@gmail.com</p></div></section>
   </main>
 </div>
 
@@ -280,41 +264,11 @@ function setMode(light){ document.body.classList.toggle('light',light); modeBtn.
 setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
 modeBtn.addEventListener('click',()=>setMode(!document.body.classList.contains('light')));
 
-/* tabs */
-$('#sidebar').addEventListener('click',e=>{
-  const t=e.target.closest('.tab'); if(!t) return; const pg=t.dataset.page;
-  $$('.tab').forEach(b=>b.classList.toggle('active',b===t));
-  $$('.page').forEach(p=>p.classList.remove('active')); $('#page-'+pg).classList.add('active');
-  if(pg==='history') drawHistory(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'});
-});
-
-/* streak (local) */
-(function(){
-  const key='gmf_streak'; const today=new Date().toDateString();
-  const data=JSON.parse(localStorage.getItem(key)||'{"last":"","count":0}');
-  let c=data.count; if(data.last!==today){ const y=new Date(Date.now()-86400000).toDateString(); c=(data.last===y)?(data.count+1):1; localStorage.setItem(key,JSON.stringify({last:today,count:c})); }
-  const pill=$('#streakPill'); pill.style.display='inline-block'; pill.textContent=`Streak: ${c} day${c===1?'':'s'}`; $('#streakHint').textContent=pill.textContent;
-})();
-
-/* profiles (local demo) */
-const AUTH='gmf_profiles_local_v1', ACTIVE='gmf_profiles_active_v1';
-function getAll(){try{return JSON.parse(localStorage.getItem(AUTH)||'[]')}catch(e){return[]}}
-function putAll(x){localStorage.setItem(AUTH,JSON.stringify(x))}
-function getActive(){return localStorage.getItem(ACTIVE)}
-function setActive(id){localStorage.setItem(ACTIVE,id)}
-function ensureDefault(){let ps=getAll(); if(!ps.length){const id=crypto.randomUUID(); ps=[{id,name:'Profile 1',history:[]}]; putAll(ps); setActive(id);} return ps;}
-function renderProfiles(){const ps=ensureDefault(); const cur=getActive()||ps[0].id; const s1=$('#profileSelect'), s2=$('#profileSelectSide'); [s1,s2].forEach(s=>{ s.innerHTML=''; ps.forEach(x=>{const o=document.createElement('option'); o.value=x.id;o.textContent=x.name;s.appendChild(o)}); s.value=cur; });}
-renderProfiles();
-
-/* inputs & simple model with AGE TARGET */
+/* inputs & model */
 const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc'];
 const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)])); const val=id=>{const n=Number(els[id]?.value||0); return isFinite(n)?n:0;}
 
-const EF_TARGET_DEFAULT=6;   // months (we keep EF target fixed to keep it simple)
-const MAX_SAVINGS=0.25;      // 25% savings rate considered "excellent"
-const DTI_ZERO_AT=0.50;      // 50% of annual income in non-mort debt → score ~0
-
-// Age → Target net worth multiple curve (× annual income)
+/* Age → target NW multiple (× baseline) */
 const NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
 function targetNW(age){
   if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
@@ -326,37 +280,46 @@ function targetNW(age){
   return NW_CURVE[NW_CURVE.length-1][1];
 }
 
+const EF_TARGET=6;        // months
+const MAX_SAVINGS=0.25;   // 25% = excellent
+const DTI_ZERO_AT=0.50;   // non-mort debt at 50% of baseline ⇒ score ~0
+
 function values(){
   const v=Object.fromEntries(ids.map(id=>[id,val(id)]));
   v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
   v.liabs=v.mortgage+v.student+v.auto+v.cc;
   v.net=v.assets-v.liabs;
 
-  v.annualIncome=v.income*12; v.annualSpend=Math.max(0,v.expenses*12);
-  v.efMonths=v.expenses>0?v.cash/v.expenses:0;
+  v.annualIncome=v.income*12; v.annualSpend=v.expenses*12;
 
-  const leftover=Math.max(0,v.income-v.expenses);
-  v.saveRate=v.income>0? leftover/v.income : 0;
+  // Robust baseline to prevent tiny-income weirdness
+  v.baseline=Math.max(v.annualSpend, 0.6*v.annualIncome, 30000);
+
+  // Savings rate uses a sane denominator too
+  const denomSav=Math.max(v.income, v.expenses, 2000); // monthly
+  v.saveRate=denomSav>0 ? Math.max(0, v.income - v.expenses)/denomSav : 0;
+
+  v.efMonths=v.expenses>0 ? v.cash/v.expenses : 0;
 
   v.nonMortDebt=v.student+v.auto+v.cc;
-  v.dtiNonMort = v.annualIncome>0 ? v.nonMortDebt/v.annualIncome : 1;
-  v.nwMultiple = v.annualIncome>0 ? v.net/v.annualIncome : 0;
+  v.dtiNonMort = v.baseline>0 ? v.nonMortDebt/v.baseline : 1;
 
-  v.nwTarget = targetNW(v.age||30);
+  v.nwTargetMultiple = targetNW(v.age||30);
+  v.nwTargetAmount = v.nwTargetMultiple * v.baseline; // dollar target for age
+  v.nwProgress = v.nwTargetAmount>0 ? v.net/v.nwTargetAmount : 0;
+
   return v;
 }
 
 function scoreModel(v){
-  // Subscores 0..1
-  const sSave = map01(v.saveRate, 0, MAX_SAVINGS);            // 0–25%+
-  const sEF   = map01(v.efMonths, 0, EF_TARGET_DEFAULT);      // 0–6 mo
-  const sDebt = clamp(1 - v.dtiNonMort/DTI_ZERO_AT, 0, 1);    // 0 at ~50% income
-  // Age-adjusted NW: full credit at age target; soft cap at 120% to reward exceeding
-  const sAgeNW = Math.pow(clamp(v.nwMultiple/(v.nwTarget||0.0001), 0, 1.2), 0.75);
+  const sSave = map01(v.saveRate, 0, MAX_SAVINGS);          // 0–25%
+  const sEF   = map01(v.efMonths, 0, EF_TARGET);            // 0–6 mo
+  const sDebt = clamp(1 - v.dtiNonMort/DTI_ZERO_AT, 0, 1);  // 0 at ~50% baseline
+  const sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.2), 0.75); // full credit at age target
 
-  // Weights (all talk to each other): 35 + 20 + 20 + 25 = 100
+  // Weights: 30 + 20 + 15 + 35 = 100
   const score = Math.round(
-      (sSave*0.35 + sEF*0.20 + sDebt*0.20 + sAgeNW*0.25) * 1000
+      (sSave*0.30 + sEF*0.20 + sDebt*0.15 + sAgeNW*0.35) * 1000
   )/10;
 
   return {score,sSave,sEF,sDebt,sAgeNW,...v};
@@ -367,32 +330,36 @@ function gradeLetter(s){
   return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F';
 }
 
-/* UI render */
+/* UI */
 const big=$('#bigGrade'), sline=$('#scoreLine'), nwln=$('#nwLine');
 function renderWhy(s){
   $('#chips').innerHTML=[
     `<span class="chip">Savings rate: <b>${Math.round(s.saveRate*100)}%</b></span>`,
     `<span class="chip">EF: <b>${s.efMonths.toFixed(1)} mo</b></span>`,
-    `<span class="chip">Debt/income: <b>${Math.round(s.dtiNonMort*100)}%</b></span>`,
-    `<span class="chip">NW: <b>${s.nwMultiple.toFixed(2)}×</b> (target for age ${s.age}: <b>${s.nwTarget.toFixed(2)}×</b>)</span>`
+    `<span class="chip">Debt vs baseline: <b>${Math.round(s.dtiNonMort*100)}%</b></span>`,
+    `<span class="chip">NW progress: <b>${(s.nwProgress*100).toFixed(0)}%</b> (age ${s.age} target ${s.nwTargetMultiple.toFixed(2)}× baseline)</span>`
   ].join('');
 
   $('#whyList').innerHTML=[
+    `Baseline (max of spend, 0.6× income, $30k): <b>${money(s.baseline)}</b> / yr.`,
+    `Age ${s.age} target NW: <b>${money(s.nwTargetAmount)}</b> (${s.nwTargetMultiple.toFixed(2)}× baseline).`,
     `Savings rate (target 25%): <b>${Math.round(s.saveRate*100)}%</b>.`,
     `Emergency fund (target 6 mo): <b>${s.efMonths.toFixed(1)} months</b>.`,
-    `Non-mortgage debt vs income: <b>${Math.round(s.dtiNonMort*100)}%</b>.`,
-    `Net worth vs income: <b>${s.nwMultiple.toFixed(2)}×</b> — age ${s.age} target: <b>${s.nwTarget.toFixed(2)}×</b>.`
+    `Non-mortgage debt vs baseline: <b>${Math.round(s.dtiNonMort*100)}%</b>.`
   ].map(x=>`<div>${x}</div>`).join('');
 }
 
 function renderImprove(s){
   const ideas=[];
-  if(s.saveRate<0.25){ const need=Math.ceil((s.income*0.25)-(s.income-s.expenses)); if(need>0) ideas.push(`Raise savings by ~$${need.toLocaleString()} / mo (toward 25%).`); }
+  if(s.saveRate<0.25){
+    const needMo=Math.ceil(Math.max(0,(s.income*0.25)-(s.income-s.expenses)));
+    if(needMo>0) ideas.push(`Boost savings toward 25% (~$${needMo.toLocaleString()}/mo).`);
+  }
   if(s.efMonths<6){ ideas.push(`Build emergency fund to 6 months (≈ $${Math.round((s.expenses||0)*6).toLocaleString()}).`); }
-  if(s.dtiNonMort>0.25){ ideas.push(`Aggressively pay down non-mortgage debt (currently ~${Math.round(s.dtiNonMort*100)}% of annual income).`); }
-  if(s.nwMultiple < s.nwTarget){ const gap = Math.max(0, (s.nwTarget - s.nwMultiple) * (s.annualIncome||0)); ideas.push(`Close the age-based NW gap: add ~${money(gap)} to net worth.`); }
-  if(!ideas.length) ideas.push(`You’re on track—keep compounding and automating your savings.`);
-  $('#improveList').innerHTML=ideas.map(x=>`<div>• ${x}</div>`).join('');
+  if(s.dtiNonMort>0.25){ ideas.push(`Pay down non-mortgage debt (now ~${Math.round(s.dtiNonMort*100)}% of baseline).`); }
+  if(s.nwProgress<1){ const gap=Math.max(0,s.nwTargetAmount - s.net); ideas.push(`Close age-based NW gap: add ~${money(gap)} to net worth.`); }
+  if(!ideas.length) ideas.push(`Nice! Stay the course and let compounding work.`);
+  document.getElementById('improveList').innerHTML=ideas.map(x=>`<div>• ${x}</div>`).join('');
 }
 
 function show(s){
@@ -400,7 +367,7 @@ function show(s){
   big.textContent=L;
   big.style.color=({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'})[L]||'var(--text)';
   sline.textContent=`Score: ${s.score.toFixed(1)} / 100.0`;
-  $('#progressFill').style.width=s.score+'%';
+  document.getElementById('progressFill').style.width=s.score+'%';
   nwln.textContent=`Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
   renderWhy(s); renderImprove(s);
   if(['A+','A','A-','B+','B'].includes(L)) confettiBurst();
@@ -415,20 +382,18 @@ function showOverlay(cb){
 
 /* actions */
 function runGrade(){ showOverlay(()=>show(scoreModel(values()))); }
-$('#gradeBtn').addEventListener('click',runGrade);
-$('#gradeBtnTop').addEventListener('click',()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); runGrade(); });
-$('#demoBtnTop').addEventListener('click',()=>{ const d={income:7500,expenses:4000,age:30, home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000, mortgage:326000,student:26000,auto:13500,cc:2000}; Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id];}); updateHints(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
-$('#copyTop').addEventListener('click',()=>{ const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0)); const url=location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s)))); navigator.clipboard?.writeText(url); alert('Shareable link copied.'); });
-$('#resetBtn').addEventListener('click',()=>{ $$('#page-grade input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0)); updateHints(); $('#progressFill').style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent=''; $('#bigGrade').textContent='—'; $('#scoreLine').textContent='Score: — / 100.0'; $('#nwLine').textContent='Net worth: —'; });
+document.getElementById('gradeBtn').addEventListener('click',runGrade);
+document.getElementById('gradeBtnTop').addEventListener('click',()=>{ runGrade(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
+document.getElementById('demoBtnTop').addEventListener('click',()=>{ const d={income:7500,expenses:4000,age:30, home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000, mortgage:326000,student:26000,auto:13500,cc:2000}; Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id];}); updateHints(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
+document.getElementById('copyTop').addEventListener('click',()=>{ const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0)); const url=location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s)))); navigator.clipboard?.writeText(url); alert('Shareable link copied.'); });
+document.getElementById('resetBtn').addEventListener('click',()=>{ $$('#page-grade input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0)); updateHints(); document.getElementById('progressFill').style.width='0%'; document.getElementById('chips').innerHTML=''; document.getElementById('whyList').textContent=''; document.getElementById('improveList').textContent=''; document.getElementById('bigGrade').textContent='—'; document.getElementById('scoreLine').textContent='Score: — / 100.0'; document.getElementById('nwLine').textContent='Net worth: —'; });
 
 /* hints */
-function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}`; }
+function updateHints(){ const v=values(); document.getElementById('assetsHint').textContent=`Total Assets: ${money(v.assets)}`; document.getElementById('liabHint').textContent=`Total Liabilities: ${money(v.liabs)}`; }
 ids.forEach(id=>els[id]?.addEventListener('input',updateHints)); updateHints();
-
-/* (Optional) history draw — left as-is from earlier versions */
-function drawHistory(){ /* no-op placeholder to keep UI consistent */ }
 })();
 </script>
 </body>
 </html>
+
 
