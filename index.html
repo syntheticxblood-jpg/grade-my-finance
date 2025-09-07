@@ -35,11 +35,7 @@
   "description": "Free financial grade calculator that gives you a money score, tracks net worth, and provides improvement tips instantly.",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "All",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
 
@@ -123,11 +119,7 @@ footer{
   color:var(--muted);
   font-size:14px;
 }
-footer a{
-  color:var(--accent);
-  text-decoration:none;
-  font-weight:700;
-}
+footer a{ color:var(--accent); text-decoration:none; font-weight:700; }
 footer a:hover{ text-decoration:underline }
 </style>
 </head>
@@ -163,35 +155,23 @@ footer a:hover{ text-decoration:underline }
     <h1 class="hero-title">Your money, graded like a report card ♥</h1>
     <p class="hero-tag">No sign-up. Plug in numbers → get a score. Simple and effective.</p>
     <div class="hero-cta">
-      <button class="btn" id="demoBtn">Try Demo</button>
-      <button class="btn primary" id="gradeBtnTop">Grade me now</button>
-      <button class="btn" id="copyLink">Copy share link</button>
+      <button class="btn" id="demoBtn" type="button">Try Demo</button>
+      <button class="btn primary" id="gradeBtnTop" type="button">Grade me now</button>
+      <button class="btn" id="copyLink" type="button">Copy share link</button>
     </div>
   </div>
 
   <div class="mascot">
     <!-- Bigger, friendlier mascot -->
     <svg viewBox="0 0 260 240" width="220" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
-      <defs>
-        <linearGradient id="mc" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/>
-        </linearGradient>
-      </defs>
+      <defs><linearGradient id="mc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient></defs>
       <ellipse cx="130" cy="220" rx="56" ry="12" fill="rgba(0,0,0,.3)"/>
       <rect x="60" y="38" width="140" height="160" rx="26" fill="url(#mc)" stroke="#86EFAC" stroke-width="2.5"/>
-      <!-- Friendly face -->
       <circle cx="100" cy="88" r="7" fill="#0f172a"/><circle cx="160" cy="88" r="7" fill="#0f172a"/>
       <circle cx="92" cy="104" r="4" fill="#fca5a5"/><circle cx="168" cy="104" r="4" fill="#fca5a5"/>
       <path d="M105 110 q25 18 50 0" stroke="#16a34a" stroke-width="6" fill="none" stroke-linecap="round"/>
-      <!-- Lines -->
       <g stroke="#a7f3d0" stroke-width="2"><line x1="80" y1="130" x2="180" y2="130"/><line x1="80" y1="148" x2="180" y2="148"/><line x1="80" y1="166" x2="180" y2="166"/></g>
-      <!-- Badge -->
-      <g transform="translate(130,132)">
-        <circle r="20" fill="#10b981" stroke="#065f46" stroke-width="3"/>
-        <circle r="15" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
-        <text text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="900" fill="#a7f3d0">A+</text>
-      </g>
-      <!-- Arms -->
+      <g transform="translate(130,132)"><circle r="20" fill="#10b981" stroke="#065f46" stroke-width="3"/><circle r="15" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/><text text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="900" fill="#a7f3d0">A+</text></g>
       <path d="M60 130 q-22 10 -28 -8" stroke="#22c55e" stroke-linecap="round" stroke-width="8" fill="none"/>
       <path d="M200 158 q26 12 28 -10" stroke="#22c55e" stroke-linecap="round" stroke-width="8" fill="none"/>
     </svg>
@@ -231,8 +211,8 @@ footer a:hover{ text-decoration:underline }
               </div>
             </div>
             <div style="display:flex;gap:8px">
-              <button id="resetBtn" class="btn">Reset</button>
-              <button id="gradeBtn" class="btn primary">Get My Score</button>
+              <button id="resetBtn" class="btn" type="button">Reset</button>
+              <button id="gradeBtn" class="btn primary" type="button">Get My Score</button>
             </div>
           </div>
           <div class="progress" style="margin:10px 0"><div id="progressFill"></div></div>
@@ -264,16 +244,19 @@ footer a:hover{ text-decoration:underline }
 
 <script>
 (() => {
-/* ---------- helpers ---------- */
+/* --- error guard (so one error doesn't kill listeners) --- */
+window.addEventListener('error', e => console.error('[GMF]', e?.message || e));
+
+/* --- helpers --- */
 const $=s=>document.querySelector(s);
+const on=(el,ev,fn)=>el&&el.addEventListener(ev,fn,{passive:true});
 const money=n=>isFinite(n)?`$${Math.round(n).toLocaleString()}`:'—';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-/* ---------- confetti ---------- */
+/* --- confetti --- */
 const cf=$('#confetti'), cctx=cf.getContext('2d');
-function resizeC(){ cf.width=window.innerWidth; cf.height=window.innerHeight }
-window.addEventListener('resize',resizeC); resizeC();
+function resizeC(){ cf.width=innerWidth; cf.height=innerHeight } addEventListener('resize',resizeC); resizeC();
 function confettiBurst(n=200){
   const bits=[]; for(let i=0;i<n;i++) bits.push({x:Math.random()*cf.width,y:-20-Math.random()*140,vx:(Math.random()-.5)*3,vy:2+Math.random()*3.5,r:4+Math.random()*7,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.28,clr:`hsl(${Math.random()*360},90%,60%)`});
   let t=0; (function anim(){ t++; cctx.clearRect(0,0,cf.width,cf.height);
@@ -282,12 +265,12 @@ function confettiBurst(n=200){
   })();
 }
 
-/* ---------- inputs ---------- */
+/* --- inputs --- */
 const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc'];
 const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
 const val=id=>{const n=Number(els[id]?.value||0); return isFinite(n)?n:0;};
 
-/* ---------- curves & constants ---------- */
+/* --- curves & constants --- */
 const NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
 function targetNW(age){
   if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
@@ -301,7 +284,7 @@ function targetNW(age){
 const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25;
 const MEDIAN_INCOME=70000, TOP_INCOME=MEDIAN_INCOME*3;
 
-/* ---------- values ---------- */
+/* --- values --- */
 function values(){
   const v=Object.fromEntries(ids.map(id=>[id,val(id)]));
   v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
@@ -310,9 +293,7 @@ function values(){
 
   v.annualIncome=v.income*12; v.annualSpend=v.expenses*12;
 
-  // Spend-based baseline (income won't punish you)
-  v.baseline=Math.max(v.annualSpend, SPEND_FLOOR);
-
+  v.baseline=Math.max(v.annualSpend, SPEND_FLOOR); // spend-based baseline
   const denomSav=Math.max(v.income, v.expenses, 2000);
   v.saveRate=denomSav>0 ? Math.max(0, v.income - v.expenses)/denomSav : 0;
   v.efMonths=v.expenses>0 ? v.cash/v.expenses : 0;
@@ -332,16 +313,15 @@ function values(){
   return v;
 }
 
-/* ---------- scoring ---------- */
+/* --- scoring --- */
 function scoreModel(v){
   const sSave = map01(v.saveRate, 0, MAX_SAVINGS);
   const sEF   = map01(v.efMonths, 0, EF_TARGET);
   const sDebt = clamp(1 - v.dtiNonMort/DTI_ZERO_AT, 0, 1);
-  const sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85); // capped at 100%
+  const sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
 
   const raw = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + v.incomeStrength*0.05) * 100;
-
-  const score = v.fiProgress >= 1 ? Math.max(raw, 94) : raw; // FI override (A- floor)
+  const score = v.fiProgress >= 1 ? Math.max(raw, 94) : raw; // FI -> A- floor
   return {score:Math.round(score*10)/10,sSave,sEF,sDebt,sAgeNW,...v};
 }
 function gradeLetter(s){
@@ -349,20 +329,21 @@ function gradeLetter(s){
   return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F';
 }
 
-/* ---------- UI ---------- */
-const big=$('#bigGrade'), sline=$('#scoreLine'), nwln=$('#nwLine']);
+/* --- UI --- */
+const big=$('#bigGrade'), sline=$('#scoreLine'), nwln=$('#nwLine');
+const chipsBox=$('#chips'); const whyBox=$('#whyList'); const improveBox=$('#improveList'); const fill=$('#progressFill');
 function chip(txt){ const span=document.createElement('span'); span.className='chip'; span.innerHTML=txt; return span; }
 function renderWhy(s){
-  const chips=$('#chips'); chips.innerHTML='';
-  chips.append(chip(`Savings rate: <b>${Math.round(s.saveRate*100)}%</b>`));
-  chips.append(chip(`EF: <b>${s.efMonths.toFixed(1)} mo</b>`));
-  chips.append(chip(`Debt vs baseline: <b>${Math.round(s.dtiNonMort*100)}%</b>`));
-  chips.append(chip(`NW progress: <b>${(s.nwProgress*100).toFixed(0)}%</b> (age ${s.age} target ${s.nwTargetMultiple.toFixed(2)}× baseline)`));
-  chips.append(chip(`Income strength: <b>${Math.round(map01(s.annualIncome, MEDIAN_INCOME, TOP_INCOME)*100)}%</b>`));
+  chipsBox.innerHTML='';
+  chipsBox.append(chip(`Savings rate: <b>${Math.round(s.saveRate*100)}%</b>`));
+  chipsBox.append(chip(`EF: <b>${s.efMonths.toFixed(1)} mo</b>`));
+  chipsBox.append(chip(`Debt vs baseline: <b>${Math.round(s.dtiNonMort*100)}%</b>`));
+  chipsBox.append(chip(`NW progress: <b>${(s.nwProgress*100).toFixed(0)}%</b> (age ${s.age} target ${s.nwTargetMultiple.toFixed(2)}×)`));
+  chipsBox.append(chip(`Income strength: <b>${Math.round(map01(s.annualIncome, MEDIAN_INCOME, TOP_INCOME)*100)}%</b>`));
 
-  $('#whyList').innerHTML=[
+  whyBox.innerHTML=[
     `Baseline (spend-based, $${SPEND_FLOOR.toLocaleString()} floor): <b>${money(s.baseline)}</b>/yr.`,
-    `Age ${s.age} target NW: <b>${money(s.nwTargetAmount)}</b> (${s.nwTargetMultiple.toFixed(2)}× baseline).`,
+    `Age ${s.age} target NW: <b>${money(s.nwTargetAmount)}</b>.`,
     `FI progress vs 25× spend: <b>${Math.round(s.fiProgress*100)}%</b>.`
   ].map(x=>`<div>${x}</div>`).join('');
 }
@@ -373,62 +354,68 @@ function renderImprove(s){
   if(s.efMonths<6){ ideas.push(`Build emergency fund to 6 months (≈ $${Math.round((s.expenses||0)*6).toLocaleString()}).`); }
   if(s.dtiNonMort>0.25){ ideas.push(`Pay down non-mortgage debt (now ~${Math.round(s.dtiNonMort*100)}% of baseline).`); }
   if(!ideas.length) ideas.push(`You’re in great shape — keep compounding and stay the course.`);
-  $('#improveList').innerHTML=ideas.map(x=>`<div>• ${x}</div>`).join('');
+  improveBox.innerHTML=ideas.map(x=>`<div>• ${x}</div>`).join('');
 }
 function showResult(s){
   const L=gradeLetter(s);
   big.textContent=L;
   big.style.color=({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'})[L]||'var(--text)';
   sline.textContent=`Score: ${s.score.toFixed(1)} / 100.0`;
-  $('#progressFill').style.width=s.score+'%';
+  fill.style.width=s.score+'%';
   nwln.textContent=`Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
   renderWhy(s); renderImprove(s);
-
-  // Celebrate B- and above
   if(['A+','A','A-','B+','B','B-'].includes(L)) confettiBurst();
 }
 
-/* ---------- overlay workflow ---------- */
+/* --- overlay workflow --- */
 const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
 function withOverlay(runFn, doneFn){
-  let elapsed=0, dur=900; // little moment of delight
+  let elapsed=0, dur=900; // delightful pause
   overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
-  const t=setInterval(()=>{ elapsed+=100; const p=Math.min(100,Math.round((elapsed/dur)*100)); bar.style.width=p+'%'; pct.textContent=p+'%'; if(elapsed>=dur){clearInterval(t); overlay.classList.remove('show'); doneFn(runFn());}},100);
+  const t=setInterval(()=>{ elapsed+=100; const p=Math.min(100,Math.round((elapsed/dur)*100));
+    bar.style.width=p+'%'; pct.textContent=p+'%';
+    if(elapsed>=dur){ clearInterval(t); overlay.classList.remove('show'); doneFn(runFn()); }
+  },100);
 }
 
-/* ---------- actions ---------- */
-function grade(){
-  withOverlay(() => scoreModel(values()), (s)=>showResult(s));
-}
-$('#gradeBtn').addEventListener('click',grade);
-$('#gradeBtnTop').addEventListener('click',()=>{ grade(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
+/* --- actions --- */
+function grade(){ withOverlay(()=>scoreModel(values()), s=>showResult(s)); }
+on($('#gradeBtn'), 'click', grade);
+on($('#gradeBtnTop'), 'click', ()=>{ grade(); scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
 
-$('#demoBtn').addEventListener('click',()=>{ 
+on($('#demoBtn'),'click',()=>{
   const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000};
   Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id];});
   updateHints();
-  window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'});
+  scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'});
 });
 
-$('#resetBtn').addEventListener('click',()=>{ 
-  document.querySelectorAll('input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0)); 
+on($('#resetBtn'),'click',()=>{
+  document.querySelectorAll('input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0));
   updateHints();
-  $('#progressFill').style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
+  fill.style.width='0%'; chipsBox.innerHTML=''; whyBox.textContent=''; improveBox.textContent='';
   $('#bigGrade').textContent='—'; $('#scoreLine').textContent='Score: — / 100.0'; $('#nwLine').textContent='Net worth: —';
 });
 
-$('#copyLink').addEventListener('click',()=>{ 
+on($('#copyLink'),'click',()=>{
   const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0));
   const url=location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s))));
-  navigator.clipboard?.writeText(url); alert('Shareable link copied.');
+  navigator.clipboard?.writeText(url);
+  alert('Shareable link copied.');
 });
 
-/* ---------- hints & hash hydrate ---------- */
+/* --- hints & hydrate --- */
 function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}`; }
-ids.forEach(id=>els[id]?.addEventListener('input',updateHints)); updateHints();
+ids.forEach(id=>els[id]?.addEventListener('input',updateHints));
+updateHints();
 
-(function(){ const m=location.hash.match(/#s=([^&]+)/); if(!m) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=obj[id]; }); updateHints(); }catch(e){} })();
-
+(function hydrateFromHash(){
+  const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
+  try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+    Object.keys(obj).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=obj[id]; });
+    updateHints();
+  }catch(e){ console.warn('Bad hash payload'); }
+})();
 })();
 </script>
 </body>
