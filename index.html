@@ -104,7 +104,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   <div class="hdr">
     <div class="h-left"><span id="streakPill" class="pill" style="display:none">Streak: 0</span></div>
     <div class="h-center">
-      <!-- same cool logo -->
+      <!-- Logo -->
       <svg class="logo" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
         <defs>
           <radialGradient id="gSphere" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#b9f4d1"/><stop offset=".55" stop-color="#34d399"/><stop offset="1" stop-color="#128a3f"/></radialGradient>
@@ -263,7 +263,9 @@ function targetNW(age){
   return NW_CURVE[NW_CURVE.length-1][1];
 }
 
+/* constants */
 const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25;
+const MEDIAN_INCOME=70000, TOP_INCOME=MEDIAN_INCOME*3; // for the income bonus
 
 /* gather values */
 function values(){
@@ -271,18 +273,29 @@ function values(){
   v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
   v.liabs=v.mortgage+v.student+v.auto+v.cc;
   v.net=v.assets-v.liabs;
+
   v.annualIncome=v.income*12; v.annualSpend=v.expenses*12;
-  v.baseline=Math.max(v.annualSpend, 0.6*v.annualIncome, SPEND_FLOOR);
+
+  // **Spend-based baseline with floor** (income no longer inflates target)
+  v.baseline=Math.max(v.annualSpend, SPEND_FLOOR);
+
   const denomSav=Math.max(v.income, v.expenses, 2000);
   v.saveRate=denomSav>0 ? Math.max(0, v.income - v.expenses)/denomSav : 0;
   v.efMonths=v.expenses>0 ? v.cash/v.expenses : 0;
+
   v.nonMortDebt=v.student+v.auto+v.cc;
   v.dtiNonMort = v.baseline>0 ? v.nonMortDebt/v.baseline : 1;
+
   v.nwTargetMultiple = targetNW(v.age||30);
   v.nwTargetAmount = v.nwTargetMultiple * v.baseline;
   v.nwProgress = v.nwTargetAmount>0 ? v.net/v.nwTargetAmount : 0;
+
   const fiSpendBase = Math.max(v.annualSpend, SPEND_FLOOR);
   v.fiProgress = fiSpendBase>0 ? v.net / (FI_MULT * fiSpendBase) : 0;
+
+  // **Income strength bonus** (helps slightly, never hurts)
+  v.incomeStrength = map01(v.annualIncome, MEDIAN_INCOME, TOP_INCOME);
+
   return v;
 }
 
@@ -292,12 +305,13 @@ function scoreModel(v){
   const sEF   = map01(v.efMonths, 0, EF_TARGET);
   const sDebt = clamp(1 - v.dtiNonMort/DTI_ZERO_AT, 0, 1);
 
-  /* KEY FIX: cap age-NW at 1.0 (no >100% bonus) */
+  // **Cap age-NW at 1.0** (no >100% bonus)
   const sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
 
-  const raw = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.70) * 100;
+  // **Income bonus** is 5% of the score
+  const raw = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + v.incomeStrength*0.05) * 100;
 
-  /* FI override still in place */
+  // FI override: >=25× yearly spend floors at A-
   const score = v.fiProgress >= 1 ? Math.max(raw, 94) : raw;
 
   return {score:Math.round(score*10)/10,sSave,sEF,sDebt,sAgeNW,...v};
@@ -317,10 +331,12 @@ function renderWhy(s){
   chips.append(chip(`EF: <b>${s.efMonths.toFixed(1)} mo</b>`));
   chips.append(chip(`Debt vs baseline: <b>${Math.round(s.dtiNonMort*100)}%</b>`));
   chips.append(chip(`NW progress: <b>${(s.nwProgress*100).toFixed(0)}%</b> (age ${s.age} target ${s.nwTargetMultiple.toFixed(2)}× baseline)`));
-  chips.append(chip(`FI progress (25× spend): <b>${Math.round(s.fiProgress*100)}%</b>`));
+
+  // Show income bonus only when it's non-zero for clarity
+  chips.append(chip(`Income strength: <b>${Math.round(map01(s.annualIncome, ${MEDIAN_INCOME}, ${TOP_INCOME})*100)}%</b>`));
 
   document.getElementById('whyList').innerHTML=[
-    `Baseline (max of spend, 0.6× income, $${SPEND_FLOOR.toLocaleString()}): <b>${money(s.baseline)}</b> / yr.`,
+    `Baseline (max of spend, $${SPEND_FLOOR.toLocaleString()} floor): <b>${money(s.baseline)}</b> / yr.`,
     `Age ${s.age} target NW: <b>${money(s.nwTargetAmount)}</b> (${s.nwTargetMultiple.toFixed(2)}× baseline).`,
     `Savings rate (target 25%): <b>${Math.round(s.saveRate*100)}%</b>.`,
     `Emergency fund (target 6 mo): <b>${s.efMonths.toFixed(1)} months</b>.`,
@@ -358,8 +374,18 @@ function showOverlay(cb){
 function runGrade(){ showOverlay(()=>show(scoreModel(values()))); }
 document.getElementById('gradeBtn').addEventListener('click',runGrade);
 document.getElementById('gradeBtnTop').addEventListener('click',()=>{ runGrade(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
-document.getElementById('demoBtnTop').addEventListener('click',()=>{ const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000}; Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id];}); updateHints(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
-document.getElementById('resetBtn').addEventListener('click',()=>{ document.querySelectorAll('#page-grade input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0)); updateHints(); document.getElementById('progressFill').style.width='0%'; document.getElementById('chips').innerHTML=''; document.getElementById('whyList').textContent=''; document.getElementById('improveList').textContent=''; document.getElementById('bigGrade').textContent='—'; document.getElementById('scoreLine').textContent='Score: — / 100.0'; document.getElementById('nwLine').textContent='Net worth: —'; });
+document.getElementById('demoBtnTop').addEventListener('click',()=>{ 
+  const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000}; 
+  Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id];}); 
+  updateHints(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); 
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{ 
+  document.querySelectorAll('#page-grade input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0)); 
+  updateHints(); document.getElementById('progressFill').style.width='0%'; 
+  document.getElementById('chips').innerHTML=''; document.getElementById('whyList').textContent=''; 
+  document.getElementById('improveList').textContent=''; document.getElementById('bigGrade').textContent='—'; 
+  document.getElementById('scoreLine').textContent='Score: — / 100.0'; document.getElementById('nwLine').textContent='Net worth: —'; 
+});
 
 /* hints */
 function updateHints(){ const v=values(); document.getElementById('assetsHint').textContent=`Total Assets: ${money(v.assets)}`; document.getElementById('liabHint').textContent=`Total Liabilities: ${money(v.liabs)}`; }
@@ -368,5 +394,6 @@ ids.forEach(id=>els[id]?.addEventListener('input',updateHints)); updateHints();
 </script>
 </body>
 </html>
+
 
 
