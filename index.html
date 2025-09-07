@@ -4,812 +4,494 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
-<meta name="description" content="Age-aware financial wellness grade with profiles, history, and achievements.">
+<meta name="description" content="Financial wellness grade with profiles, history, and a friendly report-card mascot.">
+
 <style>
-  :root{
-    --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
-    --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-    --g1:#16a34a; --g2:#34d399; --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
-    --header-h:124px;
-  }
-  .light{
-    --bg:#f5faf6; --panel:#ffffff; --card:#ffffff; --text:#0f172a; --muted:#4b5563; --line:rgba(15,23,42,.12);
-    --accent:#16a34a; --accent2:#34d399; --shadow:0 12px 34px rgba(15,23,42,.08);
-  }
-  *{box-sizing:border-box}
-  html,body{width:100%}
-  body{
-    margin:0; overflow-x:hidden;
-    background:
-      radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
-      radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
-      var(--bg);
-    color:var(--text); font-family:Inter,system-ui,Segoe UI,Roboto,Arial; line-height:1.35;
-    padding-top:var(--header-h);
-  }
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .container{max-width:1200px;margin:0 auto;padding:0 16px}
+/* ========= THEME ========= */
+:root{
+  --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
+  --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+  --g1:#16a34a; --g2:#34d399; --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
+  --header-h:84px;
+}
+.light{
+  --bg:#f5faf6; --panel:#ffffff; --card:#ffffff; --text:#0f172a; --muted:#4b5563; --line:rgba(15,23,42,.12);
+  --accent:#16a34a; --accent2:#34d399; --shadow:0 12px 34px rgba(15,23,42,.08);
+}
+*{box-sizing:border-box}
+html,body{width:100%}
+body{
+  margin:0; padding-top:var(--header-h); overflow-x:hidden;
+  background:
+    radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
+    radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
+    var(--bg);
+  color:var(--text); font-family:Inter,system-ui,Segoe UI,Roboto,Arial; line-height:1.35;
+}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Fixed Header ---------- */
-  header{
-    position:fixed; left:0; right:0; top:0; z-index:80; height:var(--header-h);
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
-    border-bottom:1px solid var(--line);
-  }
-  .hdr{max-width:1200px;margin:0 auto;height:100%;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;gap:6px;padding:10px 16px}
-  .hdr-logo{grid-column:1 / span 1;grid-row:1 / span 2;display:flex;align-items:center}
-  .logoBig{height:64px;width:auto;display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
-  .hdr-rail{grid-column:2;grid-row:1;display:flex;gap:8px;align-items:center;justify-content:flex-end}
-  .pill{border:none;padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
-  .light .pill{background:#0f172a}
-  #profileSelect{max-width:180px}
-  .hdr-sub{grid-column:1 / -1;grid-row:2;display:flex;gap:8px;align-items:center;justify-content:space-between}
-  .streak{font-weight:800;background:#ffffffc8;color:#062c1b;padding:6px 10px;border-radius:999px}
+/* ========= HEADER ========= */
+header{
+  position:fixed; left:0; right:0; top:0; z-index:80; height:var(--header-h);
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-bottom:1px solid var(--line);
+}
+.hdr{max-width:1200px;margin:0 auto;height:100%;display:flex;align-items:center;gap:12px;padding:10px 16px}
+.h-left{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{height:48px;width:auto;display:block}
+.brand{font-weight:900;font-size:20px;white-space:nowrap;color:#062c1b}
+.h-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
+.light .pill{background:#0f172a}
+select.pill{padding-right:28px}
 
-  /* ---------- Hero ---------- */
-  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:start;padding:18px 0 6px}
-  @media (max-width: 980px){ .hero{grid-template-columns:1fr;gap:14px} }
-  .hero-copy{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-    border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:var(--shadow)}
-  .hero-title{margin:0 0 8px;font-size:34px;letter-spacing:.2px}
-  .hero-tag{margin:0 0 12px;color:var(--muted)}
-  .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
-  .btn{padding:11px 15px;border-radius:12px;border:1px solid var(--line);
-    background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer}
-  .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
-  .btn.ghost{background:transparent}
+/* ========= HERO ========= */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:center;margin:16px 0}
+.hero-card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.hero-title{margin:0 0 8px;font-size:28px}
+.hero-tag{margin:0 0 12px;color:var(--muted)}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
 
-  /* ---------- Mascot ---------- */
-  .hero-mascot{position:relative;display:grid;place-items:center;align-self:start}
-  .buddy{max-height:220px;width:auto}
-  @media (max-width:1100px){ .buddy{max-height:200px} }
-  @media (max-width:640px){ .buddy{max-height:170px} }
-  .mascot-bubble{
-    position:absolute;top:-6px;right:4px;background:rgba(0,0,0,.35);border:1px solid var(--line);
-    padding:6px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
-  }
-  @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
-  @keyframes eyeBlink{0%,92%,100%{transform:scaleY(1)}93%,99%{transform:scaleY(.05)}}
-  @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
-  @keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+/* Mascot */
+.mascot{display:grid;place-items:center}
+.m-bubble{margin-top:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);padding:6px 10px;border-radius:999px;font-size:12px;backdrop-filter:blur(6px)}
+@keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
 
-  /* ---------- App shell ---------- */
-  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
-  aside{align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
-  .nav{display:flex;flex-direction:column;gap:10px;margin-top:10px}
-  .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
-  .tab:hover{transform:translateY(-1px)}
-  .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--g1),var(--g2));color:#062c1b}
+/* ========= LAYOUT: SIDEBAR + MAIN ========= */
+.shell{max-width:1200px;margin:0 auto;padding:0 16px 18px;display:grid;grid-template-columns:280px 1fr;gap:18px}
+aside{align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+.section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
+input,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
+.btn.small{padding:8px 10px;border-radius:10px}
 
-  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
-  .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
-  label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-  input,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
-  input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
-  .page{display:none} .page.active{display:block}
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-  .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px}
-  .progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
-  .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
-  .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-  .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:var(--panel);font-size:12px;font-weight:800}
-  .bigGrade{font-size:80px;font-weight:900;opacity:0;transform:scale(.7) rotate(-6deg)}
-  .bigGrade.show{animation:pop .65s cubic-bezier(.2,.9,.2,1) forwards}
-  @keyframes pop{0%{opacity:0;transform:scale(.7) rotate(-6deg)}60%{opacity:1;transform:scale(1.08) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+/* Sidebar tabs */
+.nav{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
+.tab:hover{transform:translateY(-1px)}
+.tab.active{border-color:transparent;background:linear-gradient(90deg,var(--g1),var(--g2));color:#062c1b}
 
-  /* ---------- Overlays ---------- */
-  .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:120}
-  .overlay.show{display:grid}
-  .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);
-    border-radius:18px;padding:20px;box-shadow:var(--shadow)}
-  .bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
-  .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
-  @keyframes slide{from{background-position:0 0}to{background-position:56px 0)}
+/* Cards & grid */
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+.page{display:none} .page.active{display:block}
 
-  /* ---------- Auth modal ---------- */
-  .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);z-index:130}
-  .modal.show{display:grid}
-  .modal-card{max-width:520px;width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
-  .modal h3{margin:6px 0 8px}
-  .row{display:flex;gap:8px;flex-wrap:wrap}
+/* Inputs grid – responsive (4 / 2 / 1 columns) */
+.inputs{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:16px}
+@media (max-width:1060px){ .hero{grid-template-columns:1fr}.inputs{grid-template-columns:repeat(2,minmax(220px,1fr))}.shell{grid-template-columns:1fr}}
+@media (max-width:720px){ .inputs{grid-template-columns:1fr} .brand{font-size:16px} select.pill{max-width:160px} }
 
-  /* ---------- MOBILE STACK (no horizontal scroll) ---------- */
-  @media (max-width: 980px){
-    .shell{grid-template-columns:1fr}
-    aside{position:static}
-    .nav{flex-direction:column; gap:10px}   /* vertical tabs on mobile */
-    .grid{grid-template-columns:1fr !important}
-    .grid > *{grid-column: 1 / -1 !important}
-    input,select{font-size:16px}
-  }
+/* Score area */
+.flex{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.big{font-size:70px;font-weight:900}
+.progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.chip{padding:7px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px}
+
+/* Overlays */
+.overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:120}
+.overlay.show{display:grid}
+.loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+.bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
+@keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
+
+/* Auth modal */
+.modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);z-index:130}
+.modal.show{display:grid}
+.modal-card{max-width:520px;width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+
+/* History */
+canvas{display:block;width:100%}
 </style>
 </head>
-<body class="dark">
-  <!-- Header -->
-  <header>
-    <div class="hdr">
-      <div class="hdr-logo">
-        <!-- Simple “G + Report Card” logo -->
-        <svg class="logoBig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-label="Grade My Finance logo">
-          <defs>
-            <radialGradient id="lg-badge" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#66E3B0"/><stop offset=".55" stop-color="#34D399"/><stop offset="1" stop-color="#16A34A"/></radialGradient>
-            <linearGradient id="lg-brand" x1="0" x2="1"><stop offset="0" stop-color="#CFFFEF"/><stop offset=".5" stop-color="#7CF8E7"/><stop offset="1" stop-color="#22D3EE"/></linearGradient>
-            <linearGradient id="lg-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B82F6"/><stop offset="1" stop-color="#1E40AF"/></linearGradient>
-            <linearGradient id="lg-paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E9FFF3"/></linearGradient>
-          </defs>
-          <circle cx="100" cy="100" r="90" fill="url(#lg-badge)"/>
-          <g transform="translate(100,110) rotate(-8)">
-            <text x="0" y="40" text-anchor="middle" font-size="140" font-weight="900"
-                  font-family="Arial Black, Helvetica, sans-serif" fill="url(#lg-blue)" stroke="#062C1B" stroke-width="8" paint-order="stroke">G</text>
-          </g>
-          <g transform="translate(160,48) rotate(-10)">
-            <rect width="64" height="80" rx="12" fill="url(#lg-paper)" stroke="#BFF7DA" stroke-width="2"/>
-            <g stroke="#10B981" stroke-width="3" stroke-linecap="round">
-              <line x1="14" y1="26" x2="50" y2="26"/><line x1="14" y1="42" x2="50" y2="42"/><line x1="14" y1="58" x2="42" y2="58"/>
-            </g>
-            <text x="32" y="40" text-anchor="middle" dominant-baseline="central" font-size="24" font-weight="900" font-family="Inter" fill="#F87171">A+</text>
-          </g>
-          <g transform="translate(240,0)">
-            <text x="0" y="92" font-size="54" font-weight="900" font-family="Inter" fill="url(#lg-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Grade My</text>
-            <text x="0" y="150" font-size="54" font-weight="900" font-family="Inter" fill="url(#lg-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Finance</text>
-          </g>
-        </svg>
-      </div>
-      <div class="hdr-rail">
-        <select id="profileSelect" class="pill" aria-label="Select profile"></select>
-        <button id="newProfileBtn" class="pill">New Profile</button>
-        <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
-        <!-- Top-right account button -->
-        <button id="authBtn" class="pill">Create Account / Sign in</button>
-      </div>
-      <div class="hdr-sub">
-        <span id="streakPill" class="streak" style="display:none"></span>
-        <span></span>
-      </div>
-    </div>
-  </header>
 
-  <!-- HERO -->
-  <section class="hero container" aria-label="Intro">
-    <div class="hero-copy">
-      <h2 class="hero-title">Your money, graded like a report card <span class="heart">♥</span></h2>
-      <p class="hero-tag">Plug in your numbers, get a letter grade, and track progress with profiles, history, and achievements.</p>
-      <div class="hero-cta">
-        <button class="btn ghost" id="demoBtnTop">Try Demo</button>
-        <button class="btn primary" id="gradeBtnTop">Grade me now</button>
-        <button class="btn" id="copyTop">Copy share link</button>
-      </div>
-    </div>
-    <div class="hero-mascot" aria-hidden="true">
-      <svg class="buddy" viewBox="0 0 360 300" aria-label="Green Report Card Buddy">
+<body>
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="hdr">
+    <div class="h-left">
+      <!-- Compact “G + report card” -->
+      <svg class="logo" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
         <defs>
-          <linearGradient id="mCard" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient>
-          <radialGradient id="mSh" cx=".5" cy=".2" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#ffffff00"/></radialGradient>
+          <radialGradient id="lg1" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#66E3B0"/><stop offset=".55" stop-color="#34D399"/><stop offset="1" stop-color="#16A34A"/></radialGradient>
+          <linearGradient id="lg2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7FFEF"/></linearGradient>
         </defs>
-        <ellipse cx="180" cy="270" rx="84" ry="16" fill="rgba(0,0,0,.28)"/>
-        <g style="animation:floatCard 3.2s ease-in-out infinite">
-          <rect x="95" y="44" width="170" height="212" rx="26" fill="url(#mCard)" stroke="#86EFAC" stroke-width="2"/>
-          <ellipse cx="152" cy="66" rx="86" ry="24" fill="url(#mSh)" opacity=".35"/>
-          <rect x="118" y="36" width="38" height="16" rx="4" fill="#0ea5a5" opacity=".9"/>
-          <g stroke="#a7f3d0" stroke-width="2">
-            <line x1="114" x2="246" y1="110" y2="110"/>
-            <line x1="114" x2="246" y1="130" y2="130"/>
-            <line x1="114" x2="246" y1="150" y2="150"/>
-            <line x1="114" x2="246" y1="170" y2="170"/>
-          </g>
-          <g stroke="#22c55e" stroke-width="10" fill="none" stroke-linecap="round">
-            <path d="M95 142 q-28 8 -36 -14" style="transform-origin:95px 142px; animation:wave 2.6s ease-in-out infinite"/>
-            <path d="M265 170 q36 12 40 -18" style="transform-origin:265px 170px; animation:wave 2.8s ease-in-out infinite"/>
-          </g>
-          <path d="M144 254 q-12 18 -26 0" stroke="#22c55e" stroke-width="10" fill="none" stroke-linecap="round" style="animation:hop 2.8s ease-in-out infinite"/>
-          <path d="M216 254 q12 18 26 0" stroke="#22c55e" stroke-width="10" fill="none" stroke-linecap="round" style="animation:hop 2.5s ease-in-out infinite"/>
-          <circle id="eyeL" cx="148" cy="92" r="7.5" fill="#0f172a" style="transform-origin:148px 92px; animation:eyeBlink 7s infinite"/>
-          <circle id="eyeR" cx="208" cy="92" r="7.5" fill="#0f172a" style="transform-origin:208px 92px; animation:eyeBlink 6.2s infinite"/>
-          <circle cx="136" cy="104" r="9" fill="#fecaca" opacity=".6"/><circle cx="220" cy="104" r="9" fill="#fecaca" opacity=".6"/>
-          <path d="M144 120 q18 12 36 0" fill="none" stroke="#16a34a" stroke-width="5" stroke-linecap="round"/>
-          <!-- A+ badge in the center of the card (never clipped) -->
-          <g transform="translate(180,158)">
-            <circle r="22" fill="#10b981" stroke="#065f46" stroke-width="3"/>
-            <circle r="18" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
-            <text text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="900" font-family="Inter" fill="#a7f3d0">A+</text>
-          </g>
+        <circle cx="30" cy="30" r="26" fill="url(#lg1)"/>
+        <text x="30" y="38" text-anchor="middle" font-size="36" font-weight="900" fill="#1E40AF" stroke="#062C1B" stroke-width="2" paint-order="stroke">G</text>
+        <g transform="translate(60,10) rotate(-10)">
+          <rect width="36" height="44" rx="8" fill="url(#lg2)" stroke="#86EFAC" stroke-width="2"/>
+          <g stroke="#10B981" stroke-width="2"><line x1="8" y1="16" x2="28" y2="16"/><line x1="8" y1="24" x2="28" y2="24"/></g>
+          <text x="18" y="34" text-anchor="middle" font-size="14" font-weight="900" fill="#F87171">A+</text>
         </g>
       </svg>
-      <div class="mascot-bubble">“Let’s make money feel easy.”</div>
+      <div class="brand">Grade My Finance</div>
     </div>
-  </section>
+    <div class="h-right">
+      <span id="streakPill" class="pill" style="display:none">Streak: 0</span>
+      <select id="profileSelect" class="pill" aria-label="Select profile"></select>
+      <button id="newProfileBtn" class="pill">New</button>
+      <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
+      <button id="authBtn" class="pill">Create Account / Sign in</button>
+    </div>
+  </div>
+</header>
 
-  <div class="shell">
-    <aside>
-      <div class="card" style="margin-bottom:10px">
-        <div class="section" style="margin-bottom:6px">Profiles</div>
-        <div style="margin-bottom:8px"><select id="profileSelectSide" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)"></select></div>
-        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-          <button id="newProfileBtnSide" class="btn">New</button>
-          <button id="renameProfileBtn" class="btn">Rename</button>
-          <button id="deleteProfileBtn" class="btn">Delete</button>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button id="exportProfileBtn" class="btn">Export</button>
-          <button id="importProfileBtn" class="btn">Import</button>
-        </div>
-        <div class="section" id="acctLabel" style="margin-top:10px">Account: <b>Local</b></div>
-        <div class="hint" id="streakHint" style="margin-top:4px">Streak: 0 days</div>
-      </div>
+<!-- ===== HERO ===== -->
+<section class="container hero">
+  <div class="hero-card">
+    <h2 class="hero-title">Your money, graded like a report card ♥</h2>
+    <p class="hero-tag">Plug in your numbers, get a letter grade, and track progress with profiles, history, and achievements.</p>
+    <div class="hero-cta">
+      <button class="btn" id="demoBtnTop">Try Demo</button>
+      <button class="btn primary" id="gradeBtnTop">Grade me now</button>
+      <button class="btn" id="copyTop">Copy share link</button>
+    </div>
+  </div>
+  <div class="mascot">
+    <!-- Green report card buddy – centered A+ inside -->
+    <svg viewBox="0 0 240 220" width="180" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
+      <defs>
+        <linearGradient id="mc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient>
+      </defs>
+      <ellipse cx="120" cy="206" rx="50" ry="10" fill="rgba(0,0,0,.3)"/>
+      <rect x="60" y="36" width="120" height="150" rx="22" fill="url(#mc)" stroke="#86EFAC" stroke-width="2"/>
+      <circle cx="96" cy="78" r="6" fill="#0f172a"/><circle cx="144" cy="78" r="6" fill="#0f172a"/>
+      <path d="M98 98 q22 14 44 0" stroke="#16a34a" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <g stroke="#a7f3d0" stroke-width="2"><line x1="80" y1="116" x2="160" y2="116"/><line x1="80" y1="132" x2="160" y2="132"/><line x1="80" y1="148" x2="160" y2="148"/></g>
+      <g transform="translate(120,120)">
+        <circle r="18" fill="#10b981" stroke="#065f46" stroke-width="3"/>
+        <circle r="14" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
+        <text text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="900" fill="#a7f3d0">A+</text>
+      </g>
+      <path d="M60 116 q-18 8 -24 -8" stroke="#22c55e" stroke-linecap="round" stroke-width="8" fill="none"/>
+      <path d="M180 144 q24 10 26 -10" stroke="#22c55e" stroke-linecap="round" stroke-width="8" fill="none"/>
+    </svg>
+    <div class="m-bubble">“Let’s make money feel easy.”</div>
+  </div>
+</section>
 
-      <nav class="nav" id="sidebar">
-        <button class="tab active" data-page="grade">Grade</button>
-        <button class="tab" data-page="history">History</button>
-        <button class="tab" data-page="about">About Us</button>
-        <button class="tab" data-page="goal">Our Goal</button>
-        <button class="tab" data-page="faq">FAQ</button>
-        <button class="tab" data-page="contact">Contact</button>
-      </nav>
-    </aside>
+<!-- ===== SHELL ===== -->
+<div class="shell">
+  <!-- Sidebar -->
+  <aside>
+    <div class="section">Profiles</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <select id="profileSelectSide" style="flex:1" class="card"></select>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <button id="newProfileBtnSide" class="btn small">New</button>
+      <button id="renameProfileBtn" class="btn small">Rename</button>
+      <button id="deleteProfileBtn" class="btn small">Delete</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button id="exportProfileBtn" class="btn small">Export</button>
+      <button id="importProfileBtn" class="btn small">Import</button>
+    </div>
+    <div class="section" id="acctLabel" style="margin-top:10px">Account: <b>Local</b></div>
+    <div id="streakHint" class="section" style="margin-top:2px">Streak: 0</div>
 
-    <main id="main">
-      <!-- Grade page -->
-      <section id="page-grade" class="page active">
-        <div class="grid">
-          <div class="card"><div class="section">Monthly Income (after-tax)</div><label>What hits your bank each month</label><input id="income" type="number" value="0" min="0"/></div>
-          <div class="card"><div class="section">Monthly Expenses</div><label>All bills + spending (post-tax)</label><input id="expenses" type="number" value="0" min="0"/></div>
-          <div class="card"><div class="section">Age</div><label>Used for age-aware scoring</label><input id="age" type="number" value="30" min="16" max="100"/></div>
+    <nav class="nav" id="sidebar">
+      <button class="tab active" data-page="grade">Grade</button>
+      <button class="tab" data-page="history">History</button>
+      <button class="tab" data-page="about">About Us</button>
+      <button class="tab" data-page="goal">Our Goal</button>
+      <button class="tab" data-page="faq">FAQ</button>
+      <button class="tab" data-page="contact">Contact</button>
+    </nav>
+  </aside>
 
-          <div class="card">
-            <div class="section">Assets</div>
-            <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
-              <div style="grid-column:span 6"><label>Home Value</label><input id="home" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>Retirement (401k/IRA)</label><input id="retire" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>Brokerage/Stocks</label><input id="brokerage" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>Car Value</label><input id="car" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>HSA</label><input id="hsa" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>Cash Savings</label><input id="cash" type="number" value="0" min="0"></div>
-            </div>
-            <div class="hint" id="assetsHint">Total Assets: —</div>
-          </div>
+  <!-- Main -->
+  <main>
+    <!-- Grade page -->
+    <section id="page-grade" class="page active">
+      <div class="inputs">
+        <div class="card"><div class="section">Monthly Income (after-tax)</div><input id="income" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Monthly Expenses</div><input id="expenses" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Age</div><input id="age" type="number" value="30" min="16" max="100"></div>
+        <div class="card"><div class="section">Home Value</div><input id="home" type="number" value="0" min="0"><div class="section" id="assetsHint">Total Assets: —</div></div>
 
-          <div class="card">
-            <div class="section">Liabilities (+ APR)</div>
-            <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
-              <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>Mortgage APR %</label><input id="mortgageApr" type="number" value="0" step="0.01" min="0"></div>
-              <div style="grid-column:span 6"><label>Student Loans</label><input id="student" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>Student APR %</label><input id="studentApr" type="number" value="0" step="0.01" min="0"></div>
-              <div style="grid-column:span 6"><label>Auto Loans</label><input id="auto" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>Auto APR %</label><input id="autoApr" type="number" value="0" step="0.01" min="0"></div>
-              <div style="grid-column:span 6"><label>Credit Cards (balance)</label><input id="cc" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>Credit Card APR %</label><input id="ccApr" type="number" value="0" step="0.01" min="0"></div>
-            </div>
-            <div class="hint" id="liabHint">Total Liabilities: —</div>
-          </div>
+        <div class="card"><div class="section">Retirement (401k/IRA)</div><input id="retire" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Brokerage / Stocks</div><input id="brokerage" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">HSA</div><input id="hsa" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Cash Savings</div><input id="cash" type="number" value="0" min="0"></div>
 
-          <div class="card"><div class="section">Monthly Contributions (pre-tax)</div><label>Retirement + HSA payroll contributions</label><input id="pretaxMonthly" type="number" value="0" min="0"/></div>
-          <div class="card"><div class="section">Monthly Contributions (post-tax)</div><label>Education savings (529/ESA etc.)</label><input id="eduMonthly" type="number" value="0" min="0"/></div>
+        <div class="card"><div class="section">Car Value</div><input id="car" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Mortgage Balance</div><input id="mortgage" type="number" value="0" min="0"><div class="section" id="liabHint">Total Liabilities: —</div></div>
+        <div class="card"><div class="section">Student Loans</div><input id="student" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Auto Loans</div><input id="auto" type="number" value="0" min="0"></div>
 
-          <div class="card">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-              <div style="display:flex;align-items:center;gap:14px">
-                <div id="bigGrade" class="bigGrade">—</div>
-                <div>
-                  <div id="scoreLine" class="scoreline">Score: — / 100.0</div>
-                  <div id="nwLine" class="scoreline">Net worth: —</div>
-                  <div class="chips" id="chips"></div>
-                </div>
+        <div class="card"><div class="section">Credit Cards (balance)</div><input id="cc" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Mortgage APR %</div><input id="mortgageApr" step="0.01" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Student APR %</div><input id="studentApr" step="0.01" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Auto APR %</div><input id="autoApr" step="0.01" type="number" value="0" min="0"></div>
+
+        <div class="card"><div class="section">Credit Card APR %</div><input id="ccApr" step="0.01" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Monthly Contributions (pre-tax)</div><input id="pretaxMonthly" type="number" value="0" min="0"></div>
+        <div class="card"><div class="section">Monthly Contributions (post-tax)</div><input id="eduMonthly" type="number" value="0" min="0"></div>
+
+        <div class="card" style="grid-column:1/-1">
+          <div class="flex">
+            <div style="display:flex;align-items:center;gap:14px">
+              <div id="bigGrade" class="big">—</div>
+              <div>
+                <div id="scoreLine">Score: — / 100.0</div>
+                <div id="nwLine">Net worth: —</div>
+                <div class="chips" id="chips"></div>
               </div>
-              <div style="display:flex;gap:10px;flex-wrap:wrap">
-                <button id="resetBtn" class="btn">Reset</button>
-                <button id="gradeBtn" class="btn primary">Get My Score</button>
-              </div>
             </div>
-            <div style="margin:12px 0 10px 0" class="progress"><div id="progressFill"></div></div>
-            <div id="badgeRow" class="badges"></div>
-            <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px">
-              <div class="card" style="border-style:dashed"><h4>What went into your grade</h4><div id="whyList">Enter numbers and click Get My Score.</div></div>
-              <div class="card" style="border-style:dashed"><h4>How to level up</h4><div id="improveList">Personalized ideas will show up here.</div></div>
+            <div style="display:flex;gap:8px">
+              <button id="resetBtn" class="btn">Reset</button>
+              <button id="gradeBtn" class="btn primary">Get My Score</button>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- History -->
-      <section id="page-history" class="page">
-        <div class="card">
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <h2 style="margin:0">Your Progress</h2>
-            <div id="histMeta" class="hint">Entries: 0</div>
-          </div>
-          <canvas id="historyChart" height="220" style="width:100%;max-width:100%;margin-top:10px"></canvas>
-          <div id="histDetail" class="card" style="margin-top:10px;border-style:dashed">
-            <div class="section">Entry details</div>
-            <div id="histText" class="hint">Tap a dot to see numbers.</div>
+          <div class="progress" style="margin:10px 0"><div id="progressFill"></div></div>
+          <div class="inputs" style="grid-template-columns:repeat(2,minmax(220px,1fr));margin-top:6px">
+            <div class="card" style="border-style:dashed"><b>What went into your grade</b><div id="whyList" style="margin-top:8px;color:var(--muted)">Enter numbers and click Get My Score.</div></div>
+            <div class="card" style="border-style:dashed"><b>How to level up</b><div id="improveList" style="margin-top:8px;color:var(--muted)">Personalized ideas will show up here.</div></div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="page-about" class="page"><div class="card"><h2>About Us</h2><p>FI & age-aware money grading. Everything runs in your browser.</p></div></section>
-      <section id="page-goal" class="page"><div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div></section>
-      <section id="page-faq" class="page"><div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div></section>
-      <section id="page-contact" class="page"><div class="card"><h2>Contact</h2><p>Email us: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div></section>
-    </main>
+    <!-- History -->
+    <section id="page-history" class="page">
+      <div class="card">
+        <div class="flex"><h3 style="margin:0">Your Progress</h3><div id="histMeta" class="section">Entries: 0</div></div>
+        <canvas id="historyChart" height="220" style="margin-top:10px"></canvas>
+        <div class="card" style="border-style:dashed;margin-top:10px">
+          <div class="section">Entry details</div>
+          <div id="histText" class="section">Tap a dot to see numbers.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Simple pages -->
+    <section id="page-about" class="page"><div class="card"><h3>About Us</h3><p>FI & age-aware money grading. Everything runs in your browser.</p></div></section>
+    <section id="page-goal" class="page"><div class="card"><h3>Our Goal</h3><p>Help one million people build calm, confident money habits.</p></div></section>
+    <section id="page-faq" class="page"><div class="card"><h3>FAQ</h3><p>Educational only; not financial advice. Your numbers stay on your device.</p></div></section>
+    <section id="page-contact" class="page"><div class="card"><h3>Contact</h3><p>Email: grademyfinance@gmail.com</p></div></section>
+  </main>
+</div>
+
+<!-- ===== WELCOME ===== -->
+<div id="welcome" class="overlay">
+  <div class="loader" style="text-align:center">
+    <h2 style="margin:6px 0 8px">Welcome to Grade My Finance</h2>
+    <p>“Let’s make money feel easy.”</p>
+    <button id="welcomeGo" class="btn primary">Let’s go</button>
   </div>
+</div>
 
-  <!-- Welcome -->
-  <div id="welcome" class="overlay" aria-modal="true" role="dialog" style="z-index:95;background:rgba(0,0,0,.45)">
-    <div class="loader" style="text-align:center">
-      <h2 style="margin:6px 0 8px">Welcome to Grade My Finance</h2>
-      <p>“Let’s make money feel easy.”</p>
-      <button id="welcomeGo" class="btn primary">Let’s go</button>
+<!-- ===== LOADER ===== -->
+<div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
+  <div class="loader">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <strong>Crunching numbers…</strong><span id="pct">0%</span>
+    </div>
+    <div class="bar"><div class="fill" id="barFill"></div></div>
+  </div>
+</div>
+
+<!-- ===== AUTH MODAL (local demo) ===== -->
+<div id="authModal" class="modal">
+  <div class="modal-card">
+    <h3 id="authTitle">Create Account / Sign in</h3>
+    <p id="authState" class="section">Accounts are saved on this device (you can switch to a cloud backend later).</p>
+    <div class="row" style="margin:8px 0">
+      <input id="authEmail" type="email" placeholder="Email" style="flex:1">
+      <input id="authPass" type="password" placeholder="Password" style="flex:1">
+    </div>
+    <div class="row">
+      <button id="authCreate" class="btn primary">Create account</button>
+      <button id="authSignIn" class="btn">Sign in</button>
+      <button id="authSignOut" class="btn" style="display:none">Sign out</button>
+      <span style="flex:1"></span>
+      <button id="authClose" class="btn">Close</button>
     </div>
   </div>
-
-  <!-- Calculating overlay -->
-  <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
-    <div class="loader">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <strong>Crunching numbers…</strong><span id="pct" class="scoreline">0%</span>
-      </div>
-      <div class="bar"><div class="fill" id="barFill"></div></div>
-    </div>
-  </div>
-
-  <!-- Local account modal -->
-  <div id="authModal" class="modal" aria-modal="true" role="dialog">
-    <div class="modal-card">
-      <h3 id="authTitle">Create Account / Sign in</h3>
-      <p id="authState" class="hint">Accounts here are local (saved on this device). You can switch to a cloud backend later.</p>
-      <div class="row" style="margin:8px 0">
-        <input id="authEmail" type="email" placeholder="Email" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel);color:var(--text)">
-        <input id="authPass" type="password" placeholder="Password" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel);color:var(--text)">
-      </div>
-      <div class="row">
-        <button id="authCreate" class="btn primary">Create account</button>
-        <button id="authSignIn" class="btn">Sign in</button>
-        <button id="authSignOut" class="btn" style="display:none">Sign out</button>
-        <span style="flex:1"></span>
-        <button id="authClose" class="btn">Close</button>
-      </div>
-    </div>
-  </div>
+</div>
 
 <script>
 (() => {
-  const $  = s => document.querySelector(s);
-  const $$ = s => Array.from(document.querySelectorAll(s));
-  const money = n => isFinite(n) ? `$${Math.round(n).toLocaleString()}` : '—';
-  const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-  const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
+/* ===== helpers ===== */
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const money=n=>isFinite(n)?`$${Math.round(n).toLocaleString()}`:'—';
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)); const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-  /* ---------- Theme ---------- */
-  const modeBtn = $('#modeBtn');
-  function setMode(light){
-    document.body.classList.toggle('light', light);
-    modeBtn.textContent = light ? 'Light' : 'Dark';
-    modeBtn.setAttribute('aria-pressed', light ? 'true' : 'false');
-    localStorage.setItem('gmf_theme', light?'light':'dark');
-  }
-  setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
-  modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
+/* ===== theme ===== */
+const modeBtn=$('#modeBtn');
+function setMode(light){ document.body.classList.toggle('light',light); modeBtn.textContent=light?'Light':'Dark'; localStorage.setItem('gmf_theme',light?'light':'dark'); }
+setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
+modeBtn.addEventListener('click',()=>setMode(!document.body.classList.contains('light')));
 
-  /* ---------- Tabs ---------- */
-  $('#sidebar').addEventListener('click', (e)=>{
-    const t=e.target.closest('.tab'); if(!t) return;
-    const pg=t.dataset.page;
-    $$('.tab').forEach(b=>b.classList.toggle('active', b===t));
-    $$('.page').forEach(p=>p.classList.remove('active'));
-    $('#page-'+pg).classList.add('active');
-    if(pg==='history') drawHistory();
-    window.scrollTo({top:document.querySelector('main').offsetTop - 8, behavior:'smooth'});
-  });
+/* ===== tabs ===== */
+$('#sidebar').addEventListener('click',e=>{
+  const t=e.target.closest('.tab'); if(!t) return; const pg=t.dataset.page;
+  $$('.tab').forEach(b=>b.classList.toggle('active',b===t));
+  $$('.page').forEach(p=>p.classList.remove('active')); $('#page-'+pg).classList.add('active');
+  if(pg==='history') drawHistory(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'});
+});
 
-  /* ---------- Streak ---------- */
-  (function streak(){
-    const key='gmf_streak';
-    const today = new Date().toDateString();
-    const data = JSON.parse(localStorage.getItem(key) || '{"last":"","count":0}');
-    let count = data.count;
-    if(data.last !== today){
-      const yesterday = new Date(Date.now()-86400000).toDateString();
-      count = (data.last === yesterday) ? (data.count+1) : 1;
-      localStorage.setItem(key, JSON.stringify({last:today,count}));
-    }
-    const pill = $('#streakPill'); pill.style.display='inline-block'; pill.textContent = `Streak: ${count} day${count===1?'':''}s`;
-    $('#streakHint').textContent = pill.textContent;
-  })();
+/* ===== streak ===== */
+(function(){
+  const key='gmf_streak'; const today=new Date().toDateString();
+  const data=JSON.parse(localStorage.getItem(key)||'{"last":"","count":0}');
+  let c=data.count; if(data.last!==today){ const y=new Date(Date.now()-86400000).toDateString(); c=(data.last===y)?(data.count+1):1; localStorage.setItem(key,JSON.stringify({last:today,count:c})); }
+  const pill=$('#streakPill'); pill.style.display='inline-block'; pill.textContent=`Streak: ${c} day${c===1?'':'s'}`;
+  $('#streakHint').textContent=pill.textContent;
+})();
 
-  /* ---------- Local Accounts (demo) ---------- */
-  const AUTH_KEY='gmf_local_accounts_v2';
-  const ACTIVE_ACCT='gmf_active_account_v2';
-  let currentAccount = localStorage.getItem(ACTIVE_ACCT) || 'local:guest';
+/* ===== local accounts (demo) ===== */
+const AUTH_KEY='gmf_local_accounts_v2', ACTIVE_ACCT='gmf_active_account_v2';
+let currentAccount=localStorage.getItem(ACTIVE_ACCT)||'local:guest';
+const acctLabel=$('#acctLabel'); function updateAuthUI(){ const label=currentAccount==='local:guest'?'Guest':'Local • '+currentAccount.split(':')[1]; acctLabel.innerHTML='Account: <b>'+label+'</b>'; $('#authBtn').textContent=currentAccount==='local:guest'?'Create Account / Sign in':'Account'; }
+updateAuthUI();
+const authModal=$('#authModal'); $('#authBtn').addEventListener('click',()=>{ authModal.classList.add('show'); $('#authSignOut').style.display=currentAccount!=='local:guest'?'inline-block':'none'; });
+$('#authClose').addEventListener('click',()=>authModal.classList.remove('show'));
+function loadAcc(){try{return JSON.parse(localStorage.getItem(AUTH_KEY)||'{}')}catch(e){return{}}}
+function saveAcc(obj){localStorage.setItem(AUTH_KEY,JSON.stringify(obj))}
+const hash=s=>btoa(unescape(encodeURIComponent(s))).slice(0,40);
+$('#authCreate').addEventListener('click',()=>{ const e=($('#authEmail').value||'').trim().toLowerCase(), p=($('#authPass').value||'').trim(); if(!e||!p) return alert('Enter email & password.'); const db=loadAcc(); if(db[e]) return alert('Account exists.'); db[e]=hash(p); saveAcc(db); currentAccount='local:'+e; localStorage.setItem(ACTIVE_ACCT,currentAccount); authModal.classList.remove('show'); updateAuthUI(); renderProfiles(); });
+$('#authSignIn').addEventListener('click',()=>{ const e=($('#authEmail').value||'').trim().toLowerCase(), p=($('#authPass').value||'').trim(); const db=loadAcc(); if(db[e]===hash(p)){ currentAccount='local:'+e; localStorage.setItem(ACTIVE_ACCT,currentAccount); authModal.classList.remove('show'); updateAuthUI(); renderProfiles(); } else alert('Invalid credentials.'); });
+$('#authSignOut').addEventListener('click',()=>{ currentAccount='local:guest'; localStorage.setItem(ACTIVE_ACCT,currentAccount); authModal.classList.remove('show'); updateAuthUI(); renderProfiles(); });
 
-  const authBtn   = $('#authBtn');
-  const authModal = $('#authModal');
-  const authEmail = $('#authEmail');
-  const authPass  = $('#authPass');
-  const authState = $('#authState');
-  const authTitle = $('#authTitle');
-  const btnCreate = $('#authCreate');
-  const btnSignIn = $('#authSignIn');
-  const btnSignOut= $('#authSignOut');
-  const acctLabel = $('#acctLabel');
+/* ===== profiles (scoped per account) ===== */
+const storeKey=()=> 'gmf_profiles_'+currentAccount;
+const activeKey=()=> 'gmf_active_profile_'+currentAccount;
+async function getProfiles(){try{return JSON.parse(localStorage.getItem(storeKey())||'[]')}catch(e){return[]}}
+async function setProfiles(p){localStorage.setItem(storeKey(),JSON.stringify(p))}
+function setActive(id){localStorage.setItem(activeKey(),id)} function getActive(){return localStorage.getItem(activeKey())}
+async function ensureDefault(){let p=await getProfiles(); if(!p.length){const id=crypto.randomUUID(); p=[{id,name:'Profile 1',history:[]}]; await setProfiles(p); setActive(id);} return p;}
+async function renderProfiles(){const ps=await ensureDefault(); const cur=getActive()||ps[0].id; const s1=$('#profileSelect'), s2=$('#profileSelectSide'); [s1,s2].forEach(s=>{ if(!s) return; s.innerHTML=''; ps.forEach(x=>{const o=document.createElement('option'); o.value=x.id;o.textContent=x.name;s.appendChild(o)}); s.value=cur; });}
+renderProfiles();
+async function getActiveProfile(){const ps=await ensureDefault(); const id=getActive()||ps[0].id; return ps.find(x=>x.id===id)||ps[0];}
+async function putActiveProfile(p){const ps=await ensureDefault(); const i=ps.findIndex(x=>x.id===p.id); if(i>=0){ps[i]=p; await setProfiles(ps)}}
+$('#profileSelect').addEventListener('change',e=>{setActive(e.target.value); renderProfiles()});
+$('#profileSelectSide').addEventListener('change',e=>{setActive(e.target.value); renderProfiles()});
+const newProfile=async()=>{const name=prompt('Profile name?','Profile '+(Date.now()%1000)); if(!name) return; const ps=await ensureDefault(); const id=crypto.randomUUID(); ps.push({id,name,history:[]}); await setProfiles(ps); setActive(id); renderProfiles();};
+$('#newProfileBtn').addEventListener('click',newProfile); $('#newProfileBtnSide').addEventListener('click',newProfile);
+$('#renameProfileBtn').addEventListener('click',async()=>{const p=await getActiveProfile(); if(!p) return; const name=prompt('New name',p.name); if(!name) return; p.name=name; await putActiveProfile(p); renderProfiles();});
+$('#deleteProfileBtn').addEventListener('click',async()=>{if(!confirm('Delete this profile?')) return; let ps=await ensureDefault(); const cur=getActive(); ps=ps.filter(x=>x.id!==cur); await setProfiles(ps); if(ps[0]) setActive(ps[0].id); renderProfiles();});
+$('#exportProfileBtn').addEventListener('click',async()=>{const p=await getActiveProfile(); navigator.clipboard?.writeText(JSON.stringify(p)); alert('Profile JSON copied.');});
+$('#importProfileBtn').addEventListener('click',async()=>{const txt=prompt('Paste profile JSON'); if(!txt) return; try{const obj=JSON.parse(txt); if(!obj.id) obj.id=crypto.randomUUID(); const ps=await ensureDefault(); ps.push(obj); await setProfiles(ps); setActive(obj.id); renderProfiles(); }catch(e){alert('Invalid JSON');}});
 
-  function loadAccounts(){ try{return JSON.parse(localStorage.getItem(AUTH_KEY)||'{}');}catch(e){return {}} }
-  function saveAccounts(obj){ localStorage.setItem(AUTH_KEY, JSON.stringify(obj)); }
-  function hash(p){ return btoa(unescape(encodeURIComponent(p))).slice(0,40); } // simple, not secure (demo)
+/* ===== inputs & model ===== */
+const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr','pretaxMonthly','eduMonthly'];
+const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)])); const val=id=>{const n=Number(els[id]?.value||0); return isFinite(n)?n:0;}
+const SWR=0.035, EF_TARGET=6, ACCESS_EQ=0.40;
+const curve=[[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
+const expRead=age=>{if(age<=25) return 0.08; if(age>=60) return 1.0; for(let i=1;i<curve.length;i++){const[a0,r0]=curve[i-1],[a1,r1]=curve[i]; if(age<=a1){const t=(age-a0)/(a1-a0); return r0+(r1-r0)*t;}} return 1;}
+function values(){
+  const v=Object.fromEntries(ids.map(id=>[id,val(id)]));
+  v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash; v.liabs=v.mortgage+v.student+v.auto+v.cc; v.net=v.assets-v.liabs;
+  v.annualIncome=v.income*12; v.annualSpend=Math.max(0,v.expenses*12);
+  const surplusCash=Math.max(0,v.cash-EF_TARGET*(v.expenses||0)); const homeEq=Math.max(0,v.home-v.mortgage);
+  v.homeEquity=homeEq; v.investableTotal=(v.retire+v.brokerage+v.hsa)+surplusCash+homeEq*ACCESS_EQ;
+  v.targetFI=v.annualSpend>0?v.annualSpend/SWR:0; v.fiRatio=v.targetFI>0?v.investableTotal/v.targetFI:(v.net>0?1:0);
+  v.efMonths=v.expenses>0?v.cash/v.expenses:0; const leftover=Math.max(0,v.income-v.expenses);
+  v.saveRate=v.income>0?clamp((leftover+v.pretaxMonthly+v.eduMonthly)/(v.income+v.pretaxMonthly),0,1):0;
+  v.nonMortDebt=v.student+v.auto+v.cc; v.nwToIncome=v.annualIncome>0?v.net/v.annualIncome:0; v.paidOffHouse=(v.home>0 && v.mortgage<=0); v.spendsMoreThanIncome=(v.expenses>v.income && v.income>0);
+  return v;
+}
+function scoreModel(v){
+  const exp=expRead(val('age')||30); const relFI=(exp>0)?v.fiRatio/exp:(v.fiRatio>0?1:0);
+  const sAgeFI=Math.pow(clamp(relFI,0,1.2),.6), sNW=Math.pow(map01(v.nwToIncome,0,2.5),.85), sSave=map01(v.saveRate,0,.25), sEF=map01(v.efMonths,0,EF_TARGET);
+  const debtIncome=v.annualIncome>0?v.nonMortDebt/v.annualIncome:1, sDebt=map01(1-debtIncome,.2,1), sHouse=v.paidOffHouse?1:0; const eqBonus=map01(v.homeEquity-50000,0,150000)*6;
+  let score=50*sAgeFI+20*sNW+15*sSave+8*sEF+5*sDebt+2*sHouse+eqBonus;
+  if(v.spendsMoreThanIncome) score-=5; if(v.cc>0 && v.ccApr>=20) score-=4; if(v.retire===0 && v.brokerage===0) score-=6;
+  score=Math.max(0,Math.min(100,+score.toFixed(1))); const clean=v.nonMortDebt<1000; const FI_Aplus=(v.fiRatio>=1.0 && clean);
+  return {score, FI_Aplus, relFI, expRead:exp, ...v};
+}
+function gradeLetter(s){ if(s.FI_Aplus) return 'A+'; const x=s.score;
+  return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F';
+}
 
-  function updateAuthUI(){
-    const label = currentAccount.startsWith('local:')
-      ? (currentAccount==='local:guest'?'Guest':'Local • '+currentAccount.split(':')[1])
-      : currentAccount;
-    acctLabel.innerHTML = 'Account: <b>'+label+'</b>';
-    $('#authBtn').textContent = currentAccount==='local:guest' ? 'Create Account / Sign in' : 'Account';
-  }
-  updateAuthUI();
+/* ===== UI render ===== */
+const big=$('#bigGrade'), sline=$('#scoreLine'), nwln=$('#nwLine');
+function renderWhy(s){
+  $('#chips').innerHTML=[
+    `<span class="chip">FI vs age: <b>${(s.relFI*100).toFixed(0)}%</b></span>`,
+    `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
+    `<span class="chip">EF: <b>${s.efMonths.toFixed(1)} mo</b></span>`,
+    `<span class="chip">Debt/income: <b>${((s.nonMortDebt/(s.annualIncome||1))*100).toFixed(0)}%</b></span>`,
+    s.paidOffHouse?`<span class="chip">House: <b>Paid off</b></span>`:`<span class="chip">Equity: <b>${money(s.homeEquity)}</b></span>`
+  ].join('');
+  $('#whyList').innerHTML=[
+    `Investables (401k + brokerage + HSA + surplus cash + 40% equity): <b>${money(s.investableTotal)}</b>.`,
+    `Annual spend: <b>${money(s.annualSpend)}</b> → Target FI @ 3.5%: <b>${money(s.targetFI)}</b>.`,
+    `Age ${val('age')||30} expected readiness ~ <b>${(s.expRead*100).toFixed(0)}%</b>.`,
+    `FI vs age curve: <b>${(s.relFI*100).toFixed(0)}%</b> (1.0 = on track).`,
+    `Net worth: <b>${money(s.net)}</b> (${(s.nwToIncome).toFixed(2)}× income).`,
+    `Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b>.`,
+    `Non-mortgage debt: <b>${money(s.nonMortDebt)}</b>.`
+  ].map(x=>`<div>${x}</div>`).join('');
+}
+function renderImprove(s){
+  const ideas=[]; if(s.relFI<1){const goal=s.targetFI*s.expRead;const gap=Math.max(0,goal-s.investableTotal); ideas.push(`Get on track for age: add ~${money(gap)} to investables.`);} else ideas.push(`You’re on track for your age—nice. Keep compounding.`);
+  if(s.efMonths<EF_TARGET) ideas.push(`Build EF to ${EF_TARGET} months (${money((s.expenses||0)*EF_TARGET)}).`);
+  if(s.saveRate<0.20){const bump=Math.ceil((s.income+s.pretaxMonthly)*0.05); ideas.push(`Boost savings rate by automating +${money(bump)}/mo.`);}
+  if(s.nonMortDebt>0) ideas.push(`Aggressively pay down non-mortgage debt.`);
+  if(!s.paidOffHouse && s.home>0) ideas.push(`Consider occasional principal prepayments for resilience.`);
+  if(s.spendsMoreThanIncome) ideas.push(`Spending exceeds income—trim variable spend or raise income.`);
+  $('#improveList').innerHTML=ideas.map(x=>`<div>• ${x}</div>`).join('');
+}
+async function doGrade(){
+  const s=scoreModel(values()); const L=gradeLetter(s);
+  big.textContent=L; big.style.color=({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'})[L]||'var(--text)';
+  sline.textContent=`Score: ${s.score.toFixed(1)} / 100.0`; nwln.textContent=`Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
+  $('#progressFill').style.width=s.score+'%'; renderWhy(s); renderImprove(s);
+  const prof=await getActiveProfile(); (prof.history=prof.history||[]).push({date:new Date().toISOString(),score:s.score,letter:L,inputs:Object.fromEntries(ids.map(id=>[id,Number(els[id]?.value||0)]))}); await putActiveProfile(prof); drawHistory();
+}
 
-  authBtn.addEventListener('click', ()=>{
-    authModal.classList.add('show');
-    const loggedIn = currentAccount!=='local:guest';
-    authTitle.textContent = loggedIn ? 'Your Account' : 'Create Account / Sign in';
-    authState.textContent = 'Accounts are stored on this device.';
-    btnSignOut.style.display = loggedIn ? 'inline-block' : 'none';
-  });
-  $('#authClose').addEventListener('click', ()=> authModal.classList.remove('show'));
+/* ===== overlay ===== */
+const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
+function showOverlay(){let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%'; const t=setInterval(()=>{prog=Math.min(96,prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%';},200); return ()=>{clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),240);};}
+function runGrade(){const hide=showOverlay(); requestAnimationFrame(()=>setTimeout(()=>{ try{doGrade();}catch(e){console.error(e); alert('Could not calculate.');} hide(); },480));}
 
-  btnCreate.addEventListener('click', ()=>{
-    const email=(authEmail.value||'').trim().toLowerCase();
-    const pass=(authPass.value||'').trim();
-    if(!email || !pass) return alert('Enter email and password.');
-    const db=loadAccounts();
-    if(db[email]) return alert('Account already exists. Try signing in.');
-    db[email]=hash(pass);
-    saveAccounts(db);
-    currentAccount='local:'+email; localStorage.setItem(ACTIVE_ACCT,currentAccount);
-    alert('Account created.');
-    authModal.classList.remove('show'); updateAuthUI(); renderProfileSelects();
-  });
-  btnSignIn.addEventListener('click', ()=>{
-    const email=(authEmail.value||'').trim().toLowerCase();
-    const pass=(authPass.value||'').trim();
-    if(!email || !pass) return alert('Enter email and password.');
-    const db=loadAccounts();
-    if(db[email] && db[email]===hash(pass)){
-      currentAccount='local:'+email; localStorage.setItem(ACTIVE_ACCT,currentAccount);
-      alert('Signed in.');
-      authModal.classList.remove('show'); updateAuthUI(); renderProfileSelects();
-    }else{
-      alert('Invalid credentials.');
-    }
-  });
-  btnSignOut.addEventListener('click', ()=>{
-    currentAccount='local:guest'; localStorage.setItem(ACTIVE_ACCT,currentAccount);
-    alert('Signed out.');
-    authModal.classList.remove('show'); updateAuthUI(); renderProfileSelects();
-  });
+/* ===== buttons ===== */
+$('#gradeBtn').addEventListener('click',runGrade);
+$('#gradeBtnTop').addEventListener('click',()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); runGrade(); });
+$('#demoBtnTop').addEventListener('click',()=>{ const d={income:7500,expenses:4000,age:30, home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000, mortgage:329000,student:26000,auto:13500,cc:0, mortgageApr:5.25,studentApr:4.9,autoApr:3.5,ccApr:24.99, pretaxMonthly:900,eduMonthly:200}; Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id];}); updateHints(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
+$('#copyTop').addEventListener('click',()=>{ const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0)); const url=location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s)))); navigator.clipboard?.writeText(url); alert('Shareable link copied.'); });
+$('#resetBtn').addEventListener('click',()=>{ $$('#page-grade input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0)); updateHints(); $('#progressFill').style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent=''; big.textContent='—'; sline.textContent='Score: — / 100.0'; nwln.textContent='Net worth: —'; });
 
-  /* ---------- Profiles (scoped by account) ---------- */
-  function storeKey(){ return 'gmf_profiles_'+(currentAccount||'local:guest'); }
-  async function listProfiles(){ try{return JSON.parse(localStorage.getItem(storeKey())||'[]');}catch(e){return []} }
-  async function saveProfiles(p){ localStorage.setItem(storeKey(), JSON.stringify(p)); }
-  function setActiveId(id){ localStorage.setItem('gmf_active_profile_'+(currentAccount||'local:guest'), id); }
-  function getActiveId(){ return localStorage.getItem('gmf_active_profile_'+(currentAccount||'local:guest')); }
+/* ===== hints ===== */
+function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)} • 40% equity count: ${money(Math.max(0,v.home-v.mortgage)*0.4)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)} • Home equity: ${money(Math.max(0,v.home-v.mortgage))}`; }
+ids.forEach(id=>els[id]?.addEventListener('input',updateHints)); updateHints();
 
-  async function ensureDefaultProfile(){
-    let p=await listProfiles();
-    if(!p.length){ const id=crypto.randomUUID(); p=[{id,name:'Profile 1',history:[]}]; await saveProfiles(p); setActiveId(p[0].id); }
-    return p;
-  }
-  async function renderProfileSelects(){
-    const ps=await ensureDefaultProfile(); const cur=getActiveId()||ps[0].id;
-    if(!getActiveId()) setActiveId(cur);
-    ['#profileSelect','#profileSelectSide'].forEach(sel=>{
-      const el=$(sel); if(!el) return; el.innerHTML='';
-      ps.forEach(x=>{ const o=document.createElement('option'); o.value=x.id; o.textContent=x.name; el.appendChild(o); });
-      el.value=cur;
-    });
-  }
-  renderProfileSelects();
+/* ===== history ===== */
+async function drawHistory(){
+  const prof=await getActiveProfile(); const hist=prof.history||[]; $('#histMeta').textContent=`Entries: ${hist.length}`;
+  const c=$('#historyChart'), ctx=c.getContext('2d'), dpr=Math.min(2,window.devicePixelRatio||1), rect=c.getBoundingClientRect();
+  c.width=Math.floor(rect.width*dpr); c.height=Math.floor(220*dpr); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,rect.width,220);
+  if(!hist.length){ $('#histText').textContent='No history yet.'; return; }
+  const pad=16,w=rect.width-pad*2,h=220-pad*2; const xs=hist.map((_,i)=>pad+(i/(Math.max(1,hist.length-1)))*w); const ys=hist.map(p=>pad+(1-p.score/100)*h);
+  ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line'); ctx.beginPath(); for(let k=0;k<=5;k++){const y=pad+(h*k/5); ctx.moveTo(pad,y); ctx.lineTo(pad+w,y);} ctx.stroke();
+  ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--accent'); ctx.lineWidth=2; ctx.beginPath(); xs.forEach((x,i)=>{ if(i===0) ctx.moveTo(x,ys[i]); else ctx.lineTo(x,ys[i]); }); ctx.stroke();
+  ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2'); xs.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(x,ys[i],3,0,Math.PI*2); ctx.fill();});
+  c._pts=xs.map((x,i)=>({x,y:ys[i],i})); c._hist=hist; if(!c._bound){ c.addEventListener('click',e=>{const p=nearest(c,e.offsetX,e.offsetY); if(p) showDetail(c._hist[p.i]);}); c._bound=true; }
+}
+function nearest(c,x,y){ let best=null,d2min=1e9; (c._pts||[]).forEach(p=>{const d2=(x-p.x)**2+(y-p.y)**2; if(d2<d2min && d2<16**2){d2min=d2; best=p;}}); return best;}
+function showDetail(e){ const i=e.inputs||{}, dt=new Date(e.date).toLocaleString(); $('#histText').innerHTML=[
+  `Score: <b>${e.score.toFixed(1)}</b> • Letter: <b>${e.letter}</b>`,
+  `When: <b>${dt}</b>`,
+  `Income ${money(i.income||0)}/mo • Expenses ${money(i.expenses||0)}/mo • Age ${i.age||'—'}`,
+  `Assets → Home ${money(i.home||0)}, 401k ${money(i.retire||0)}, Brokerage ${money(i.brokerage||0)}, HSA ${money(i.hsa||0)}, Cash ${money(i.cash||0)}, Car ${money(i.car||0)}`,
+  `Debts → Mortgage ${money(i.mortgage||0)}, Student ${money(i.student||0)}, Auto ${money(i.auto||0)}, Cards ${money(i.cc||0)}`,
+  `Contribs → Pre-tax ${money(i.pretaxMonthly||0)}/mo • Post-tax ${money(i.eduMonthly||0)}/mo`
+].map(s=>`<div>${s}</div>`).join('');}
 
-  async function getActiveProfile(){
-    const ps=await ensureDefaultProfile();
-    const id=getActiveId()||ps[0].id;
-    return ps.find(x=>x.id===id)||ps[0];
-  }
-  async function putActiveProfile(profile){
-    const ps=await ensureDefaultProfile();
-    const idx=ps.findIndex(x=>x.id===profile.id);
-    if(idx>=0){ ps[idx]=profile; await saveProfiles(ps); }
-  }
+/* ===== welcome ===== */
+(function(){ const key='gmf_welcome_v2'; const el=$('#welcome'); if(localStorage.getItem(key)!=='1'){el.classList.add('show');} $('#welcomeGo').addEventListener('click',()=>{localStorage.setItem(key,'1'); el.classList.remove('show');}); })();
 
-  $('#profileSelect').addEventListener('change', async e=>{ setActiveId(e.target.value); await renderProfileSelects(); });
-  $('#profileSelectSide').addEventListener('change', async e=>{ setActiveId(e.target.value); await renderProfileSelects(); });
-  async function newProfile(){
-    const name=prompt('Profile name?','Profile '+(Date.now()%1000)); if(!name) return;
-    const ps=await ensureDefaultProfile(); const id=crypto.randomUUID();
-    ps.push({id,name,history:[]}); await saveProfiles(ps); setActiveId(id); await renderProfileSelects();
-  }
-  $('#newProfileBtn').addEventListener('click', newProfile);
-  $('#newProfileBtnSide').addEventListener('click', newProfile);
-  $('#renameProfileBtn')?.addEventListener('click', async ()=>{
-    const prof=await getActiveProfile(); if(!prof) return;
-    const name=prompt('New name', prof.name); if(!name) return;
-    prof.name=name; await putActiveProfile(prof); await renderProfileSelects();
-  });
-  $('#deleteProfileBtn')?.addEventListener('click', async ()=>{
-    if(!confirm('Delete this profile?')) return;
-    let ps=await ensureDefaultProfile(); const cur=getActiveId();
-    ps=ps.filter(x=>x.id!==cur); await saveProfiles(ps);
-    const newId=(ps[0]?.id)||null; if(newId){ setActiveId(newId); }
-    await renderProfileSelects();
-  });
-  $('#exportProfileBtn')?.addEventListener('click', async ()=>{
-    const prof=await getActiveProfile(); if(!prof) return;
-    navigator.clipboard?.writeText(JSON.stringify(prof)); alert('Profile JSON copied.');
-  });
-  $('#importProfileBtn')?.addEventListener('click', async ()=>{
-    const txt=prompt('Paste profile JSON'); if(!txt) return;
-    try{ const obj=JSON.parse(txt); if(!obj.id) obj.id=crypto.randomUUID();
-      const ps=await ensureDefaultProfile(); ps.push(obj); await saveProfiles(ps); setActiveId(obj.id); await renderProfileSelects();
-    }catch(e){ alert('Invalid JSON'); }
-  });
-
-  /* ---------- Inputs ---------- */
-  const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr','pretaxMonthly','eduMonthly'];
-  const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
-  const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
-
-  /* ---------- Model ---------- */
-  const SWR = 0.035, EF_TARGET = 6, ACCESS_EQ = 0.40;
-  const curvePts = [[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
-  function expectedReadiness(age){
-    if(age<=25) return 0.08; if(age>=60) return 1.0;
-    for(let i=1;i<curvePts.length;i++){
-      const [a0,r0]=curvePts[i-1], [a1,r1]=curvePts[i];
-      if(age<=a1){ const t=(age-a0)/(a1-a0); return r0+(r1-r0)*t; }
-    } return 1;
-  }
-  function values(){
-    const v = Object.fromEntries(ids.map(id=>[id,val(id)]));
-    v.assets = v.home + v.retire + v.brokerage + v.car + v.hsa + v.cash;
-    v.liabs  = v.mortgage + v.student + v.auto + v.cc;
-    v.net    = v.assets - v.liabs;
-    v.annualIncome = v.income*12;
-    v.annualSpend  = Math.max(0, v.expenses * 12);
-    const surplusCash = Math.max(0, v.cash - EF_TARGET*(v.expenses||0));
-    const homeEquity  = Math.max(0, v.home - v.mortgage);
-    v.homeEquity = homeEquity;
-    const accessibleEquity = homeEquity * ACCESS_EQ;
-    v.investableTotal = (v.retire + v.brokerage + v.hsa) + surplusCash + accessibleEquity;
-    v.targetFI = v.annualSpend>0 ? v.annualSpend / SWR : 0;
-    v.fiRatio = v.targetFI>0 ? v.investableTotal / v.targetFI : (v.net>0?1:0);
-    v.efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
-    const leftover = Math.max(0, v.income - v.expenses);
-    v.saveRate = (v.income>0) ? clamp((leftover + v.pretaxMonthly + v.eduMonthly) / (v.income + v.pretaxMonthly), 0, 1) : 0;
-    v.nonMortDebt = v.student + v.auto + v.cc;
-    v.nwToIncome = v.annualIncome>0 ? v.net / v.annualIncome : 0;
-    v.paidOffHouse = (v.home>0 && v.mortgage<=0);
-    v.spendsMoreThanIncome = (v.expenses > v.income && v.income>0);
-    return v;
-  }
-  function scoreModel(v){
-    const exp = expectedReadiness(val('age')||30);
-    const relFI = (exp>0) ? v.fiRatio/exp : (v.fiRatio>0?1:0);
-    const sAgeFI = Math.pow(clamp(relFI,0,1.2), 0.6);
-    const sNW    = Math.pow(map01(v.nwToIncome, 0, 2.5), 0.85);
-    const sSave  = map01(v.saveRate, 0, 0.25);
-    const sEF    = map01(v.efMonths, 0, EF_TARGET);
-    const debtIncome = (v.annualIncome>0) ? (v.nonMortDebt / v.annualIncome) : 1;
-    const sDebt  = map01(1-debtIncome, 0.2, 1);
-    const sHouse = v.paidOffHouse ? 1 : 0;
-    const equityBonus = map01(v.homeEquity - 50000, 0, 150000) * 6;
-
-    let score = 50*sAgeFI + 20*sNW + 15*sSave + 8*sEF + 5*sDebt + 2*sHouse + equityBonus;
-    if(v.spendsMoreThanIncome) score -= 5;
-    if(v.cc > 0 && v.ccApr >= 20) score -= 4;
-    if(v.retire === 0 && v.brokerage === 0) score -= 6;
-
-    score = Math.max(0, Math.min(100, +score.toFixed(1)));
-    const cleanDebt = v.nonMortDebt < 1000;
-    const FI_Aplus  = (v.fiRatio >= 1.0 && cleanDebt);
-    return {score, FI_Aplus, relFI, expRead:exp, ...v};
-  }
-  function letter(score, flags){
-    if(flags?.FI_Aplus) return "A+";
-    if(score>=97) return "A+";
-    if(score>=93) return "A";
-    if(score>=90) return "A-";
-    if(score>=87) return "B+";
-    if(score>=83) return "B";
-    if(score>=80) return "B-";
-    if(score>=77) return "C+";
-    if(score>=73) return "C";
-    if(score>=70) return "C-";
-    if(score>=67) return "D+";
-    if(score>=63) return "D";
-    if(score>=60) return "D-";
-    return "F";
-  }
-
-  const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine');
-  function renderWhy(s){
-    $('#chips').innerHTML = [
-      `<span class="chip">FI vs age: <b>${(s.relFI*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">EF: <b>${s.efMonths.toFixed(1)} mo</b></span>`,
-      `<span class="chip">Debt/Income: <b>${((s.nonMortDebt/(s.annualIncome||1))*100).toFixed(0)}%</b></span>`,
-      s.paidOffHouse?`<span class="chip">House: <b>Paid off</b></span>`:`<span class="chip">Equity: <b>${money(s.homeEquity)}</b></span>`
-    ].join('');
-    $('#whyList').innerHTML = [
-      `Investables (401k + brokerage + HSA + surplus cash + 40% equity): <b>${money(s.investableTotal)}</b>.`,
-      `Annual spend: <b>${money(s.annualSpend)}</b> → Target FI @ ${(SWR*100).toFixed(1)}%: <b>${money(s.targetFI)}</b>.`,
-      `Age ${val('age')||30} expected readiness ~ <b>${(s.expRead*100).toFixed(0)}%</b>.`,
-      `FI vs age curve: <b>${(s.relFI*100).toFixed(0)}%</b> (1.0 = on track).`,
-      `Net worth: <b>${money(s.net)}</b> (${(s.nwToIncome).toFixed(2)}× income).`,
-      `Savings rate (incl. payroll & post-tax): <b>${(s.saveRate*100).toFixed(0)}%</b>.`,
-      `Non-mortgage debt: <b>${money(s.nonMortDebt)}</b>.`
-    ].map(x=>`<div>${x}</div>`).join('');
-  }
-  function renderImprove(s){
-    const ideas=[];
-    if(s.relFI < 1){ const goal = s.targetFI*s.expRead; const gap = Math.max(0, goal - s.investableTotal); ideas.push(`Get on track for age: add ~${money(gap)} to investables.`); }
-    else ideas.push(`You’re on track for your age—nice. Keep compounding.`);
-    if(s.efMonths < EF_TARGET) ideas.push(`Build EF to ${EF_TARGET} months (${money((s.expenses||0)*EF_TARGET)}).`);
-    if(s.saveRate < 0.20){ const bump = Math.ceil((s.income + s.pretaxMonthly)*0.05); ideas.push(`Boost savings rate by automating +${money(bump)}/mo.`); }
-    if(s.nonMortDebt > 0) ideas.push(`Aggressively pay down non-mortgage debt.`); 
-    if(!s.paidOffHouse && s.home>0) ideas.push(`Periodic principal prepayments can improve security.`);
-    if(s.spendsMoreThanIncome) ideas.push(`Spending exceeds income—trim variable spend or raise income.`);
-    $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
-  }
-  async function doGrade(){
-    const s = scoreModel(values());
-    const L = letter(s.score, s);
-    bigGrade.textContent = L;
-    bigGrade.style.color = ({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
-    bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
-    scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
-    nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
-    $('#progressFill').style.width = s.score + '%';
-    renderWhy(s); renderImprove(s);
-
-    const prof = await getActiveProfile();
-    (prof.history=prof.history||[]).push({
-      date:new Date().toISOString(),score:s.score,letter:L,
-      inputs:Object.fromEntries(ids.map(id=>[id,Number(els[id]?.value||0)])),
-      summary:{assets:s.assets, liabs:s.liabs, net:s.net, investableTotal:s.investableTotal, targetFI:s.targetFI, efMonths:s.efMonths, saveRate:s.saveRate, fiRatio:s.fiRatio, relFI:s.relFI}
-    });
-    await putActiveProfile(prof); drawHistory();
-  }
-
-  /* ---------- Overlays ---------- */
-  const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
-  function showOverlay(){ let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
-    const t=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200);
-    return ()=>{ clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); };
-  }
-  function runGradeSafely(){ const hide=showOverlay(); requestAnimationFrame(()=> setTimeout(()=>{ try{ doGrade(); }catch(e){ console.error(e); alert('Oops—could not calculate.'); } hide(); }, 480)); }
-
-  /* ---------- Buttons ---------- */
-  $('#gradeBtn').addEventListener('click', runGradeSafely);
-  $('#gradeBtnTop').addEventListener('click', ()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); runGradeSafely(); });
-  $('#demoBtnTop').addEventListener('click', ()=>{
-    const demo={income:7500,expenses:4000,age:30, home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000,
-      mortgage:329000,student:26000,auto:13500,cc:0, mortgageApr:5.25,studentApr:4.9,autoApr:3.5,ccApr:24.99, pretaxMonthly:900,eduMonthly:200};
-    Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; }); updateHints();
-    window.scrollTo({top:document.querySelector('main').offsetTop - 8, behavior:'smooth'});
-  });
-  $('#copyTop').addEventListener('click', ()=>{
-    const state={}; ids.forEach(id=> state[id]=Number(els[id]?.value||0));
-    const url = location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(state))));
-    navigator.clipboard?.writeText(url); alert('Shareable link copied.');
-  });
-  $('#resetBtn').addEventListener('click', ()=>{
-    $$('#page-grade input[type="number"]').forEach(el=>{ el.value=(el.id==='age'?30:0); });
-    updateHints(); bigGrade.textContent='—'; bigGrade.classList.remove('show');
-    scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —'; $('#progressFill').style.width='0%';
-    $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
-  });
-
-  function updateHints(){
-    const v = values();
-    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable core: ${money(v.retire+v.brokerage+v.hsa)} • 40% equity: ${money(Math.max(0,v.home - v.mortgage)*0.40)})`;
-    $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)} • Home equity: ${money(Math.max(0,v.home - v.mortgage))}`;
-  }
-  ids.forEach(id => els[id]?.addEventListener('input', updateHints));
-  updateHints();
-
-  /* ---------- History ---------- */
-  async function drawHistory(){
-    const prof=await getActiveProfile(); if(!prof) return;
-    const hist=prof.history||[];
-    $('#histMeta').textContent = `Entries: ${hist.length}`;
-    const canvas = $('#historyChart'); const ctx = canvas.getContext('2d');
-    const dpr = Math.min(2, window.devicePixelRatio||1);
-    const rect = canvas.getBoundingClientRect(); canvas.width = Math.floor(rect.width*dpr); canvas.height= Math.floor(220*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.clearRect(0,0,rect.width,220);
-
-    if(!hist.length){ $('#histText').textContent='No history yet.'; return; }
-
-    const pad=16, w=rect.width-pad*2, h=220-pad*2;
-    const xs=hist.map((_,i)=> pad + (i/(Math.max(1,hist.length-1)))*w);
-    const ys=hist.map(p=> pad + (1 - p.score/100)*h);
-
-    ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line'); ctx.lineWidth=1; ctx.beginPath();
-    for(let k=0;k<=5;k++){ const gy=pad+(h*k/5); ctx.moveTo(pad,gy); ctx.lineTo(pad+w,gy); } ctx.stroke();
-
-    ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--accent'); ctx.lineWidth=2; ctx.beginPath();
-    xs.forEach((x,i)=>{ if(i===0) ctx.moveTo(x,ys[i]); else ctx.lineTo(x,ys[i]); }); ctx.stroke();
-
-    ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2');
-    xs.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(x,ys[i],3,0,Math.PI*2); ctx.fill(); });
-
-    canvas._points = xs.map((x,i)=>({x,y:ys[i],i}));
-    canvas._hist   = hist;
-
-    if(!canvas._bound){
-      canvas.addEventListener('mousemove', e=>{
-        const p = nearest(canvas, e.offsetX, e.offsetY);
-        canvas.style.cursor = p ? 'pointer' : 'default';
-      });
-      canvas.addEventListener('click', e=>{
-        const p = nearest(canvas, e.offsetX, e.offsetY);
-        if(p) showDetail(canvas._hist[p.i]);
-      });
-      canvas._bound=true;
-    }
-  }
-  function nearest(canvas, x, y){
-    const pts = canvas._points||[]; if(!pts.length) return null;
-    let best=null, d2min=1000;
-    pts.forEach(p=>{
-      const dx = x - p.x, dy = y - p.y, d2 = dx*dx+dy*dy;
-      if(d2<d2min && d2<16*16){ d2min=d2; best=p; }
-    });
-    return best;
-  }
-  function showDetail(entry){
-    const dt = new Date(entry.date).toLocaleString();
-    const i = entry.inputs||{};
-    const lines = [
-      `Score: <b>${entry.score.toFixed(1)}</b> • Letter: <b>${entry.letter}</b>`,
-      `When: <b>${dt}</b>`,
-      `Income: ${money((i.income||0))}/mo • Expenses: ${money((i.expenses||0))}/mo • Age: ${i.age||'—'}`,
-      `Assets → Home ${money(i.home||0)}, 401k ${money(i.retire||0)}, Brokerage ${money(i.brokerage||0)}, HSA ${money(i.hsa||0)}, Cash ${money(i.cash||0)}, Car ${money(i.car||0)}`,
-      `Debts → Mortgage ${money(i.mortgage||0)}, Student ${money(i.student||0)}, Auto ${money(i.auto||0)}, Cards ${money(i.cc||0)}`,
-      `Contribs → Pre-tax ${money(i.pretaxMonthly||0)}/mo • Post-tax ${money(i.eduMonthly||0)}/mo`
-    ];
-    $('#histText').innerHTML = lines.map(s=>`<div>${s}</div>`).join('');
-  }
-
-  /* ---------- Welcome ---------- */
-  (function welcome(){
-    const key='gmf_welcome_seen_v10';
-    const el = $('#welcome');
-    if(localStorage.getItem(key)!=='1'){ el.classList.add('show'); }
-    $('#welcomeGo').addEventListener('click', ()=>{ localStorage.setItem(key,'1'); el.classList.remove('show'); });
-  })();
-
-  /* ---------- Mascot eyes ---------- */
-  (function eyes(){
-    const l=document.getElementById('eyeL'), r=document.getElementById('eyeR'); if(!l||!r) return;
-    const cxL=+l.getAttribute('cx'), cyL=+l.getAttribute('cy');
-    const cxR=+r.getAttribute('cx'), cyR=+r.getAttribute('cy');
-    function move(e){
-      const rect = document.body.getBoundingClientRect();
-      const x = e.clientX/rect.width*2-1, y = e.clientY/rect.height*2-1;
-      const dx = Math.max(-1,Math.min(1,x))*2.6, dy = Math.max(-1,Math.min(1,y))*2.6;
-      l.setAttribute('cx', cxL+dx); l.setAttribute('cy', cyL+dy);
-      r.setAttribute('cx', cxR+dx); r.setAttribute('cy', cyR+dy);
-    }
-    window.addEventListener('mousemove', move, {passive:true});
-    window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
-  })();
-
-  /* ---------- Input hints init ---------- */
-  function hydrateFromHash(){
-    const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
-    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=obj[id]; }); updateHints(); }catch(e){}
-  }
-  hydrateFromHash();
+/* ===== hash hydrate ===== */
+(function(){ const m=location.hash.match(/#s=([^&]+)/); if(!m) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=obj[id]; }); updateHints(); }catch(e){} })();
 
 })();
 </script>
