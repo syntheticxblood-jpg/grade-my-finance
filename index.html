@@ -35,12 +35,11 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Sticky header with modern G logo ---------- */
+  /* ---------- Header + 3D G logo ---------- */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
   .brand{display:flex;align-items:center;gap:14px}
-  /* 15% larger */
-  .logoBig{width:136px;height:136px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
+  .logoBig{width:120px;height:120px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
   .title{margin:0;font-size:28px;color:#062c1b;font-weight:900;letter-spacing:.2px}
   .tag{margin:0;color:#062c1bcc;font-size:12px}
   .spacer{flex:1}
@@ -62,11 +61,11 @@
   .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
   .btn.ghost{background:transparent}
 
-  /* ---------- Mascot (always visible on mobile) ---------- */
+  /* ---------- Mascot (A+ now bottom-right & safe) ---------- */
   .hero-mascot{position:relative;display:grid;place-items:center;align-self:start;overflow:visible}
   .buddy{max-height:260px;width:auto}
   @media (max-width:1100px){ .buddy{max-height:220px} }
-  @media (max-width:640px){ .buddy{max-height:180px} } /* keep visible on phones */
+  @media (max-width:640px){ .buddy{max-height:180px} } /* always visible on phones */
   .mascot-bubble{
     position:absolute;top:-6px;right:4px;background:rgba(0,0,0,.35);border:1px solid var(--line);
     padding:6px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
@@ -167,7 +166,7 @@
   <header>
     <div class="hdr">
       <div class="brand">
-        <!-- NEW 3D “G + report card” logo (larger + clearer A+) -->
+        <!-- NEW 3D “G + report card” logo (clear G: thinner inner stroke + bigger gap) -->
         <svg class="logoBig" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Grade My Finance logo">
           <defs>
             <radialGradient id="gmf-g" cx="45%" cy="38%" r="70%">
@@ -193,13 +192,13 @@
 
           <!-- 3D outer disc -->
           <circle cx="150" cy="150" r="138" fill="url(#gmf-g)"/>
-          <!-- Inner ring with a GAP to read clearly as a “G” -->
-          <circle cx="150" cy="150" r="96" fill="none" stroke="url(#gmf-stroke)" stroke-width="26"
-                  stroke-linecap="round" stroke-dasharray="520 140" stroke-dashoffset="68" filter="url(#innerShadow)"/>
-          <!-- The “G” bar -->
-          <line x1="150" y1="150" x2="238" y2="150" stroke="url(#gmf-stroke)" stroke-width="26" stroke-linecap="round"/>
+          <!-- Inner ring with a BIGGER GAP to read clearly as “G” -->
+          <circle cx="150" cy="150" r="96" fill="none" stroke="url(#gmf-stroke)" stroke-width="18"
+                  stroke-linecap="round" stroke-dasharray="480 180" stroke-dashoffset="62" filter="url(#innerShadow)"/>
+          <!-- The “G” bar (thinner) -->
+          <line x1="150" y1="150" x2="238" y2="150" stroke="url(#gmf-stroke)" stroke-width="18" stroke-linecap="round"/>
 
-          <!-- Tilted report card with bigger, outlined A+ for readability -->
+          <!-- Tilted report card with bigger, outlined A+ -->
           <g transform="translate(206,66) rotate(-8)">
             <rect width="72" height="90" rx="14" fill="url(#gmf-paper)" stroke="#BFF7DA" stroke-width="2"/>
             <g stroke="#10B981" stroke-width="4" stroke-linecap="round">
@@ -235,7 +234,7 @@
       </div>
     </div>
 
-    <!-- Mascot with A+ badge positioned safely inside view (closer) -->
+    <!-- Mascot with A+ badge moved INSIDE bottom-right corner (never clips) -->
     <div class="hero-mascot" aria-hidden="true">
       <svg class="buddy b-float" viewBox="0 0 360 300" role="img" aria-label="Report Card Buddy 3D">
         <defs>
@@ -269,8 +268,8 @@
           <path id="smile" d="M144 120 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
           <circle cx="136" cy="104" r="11" fill="url(#cheek)"/><circle cx="220" cy="104" r="11" fill="url(#cheek)"/>
 
-          <!-- A+ badge moved inward/closer so it never clips -->
-          <g class="b-pop" transform="translate(262,132) rotate(-10)">
+          <!-- A+ badge anchored inside bottom-right area -->
+          <g class="b-pop" transform="translate(300,230) rotate(-10)">
             <circle r="26" fill="#10b981" stroke="#065f46" stroke-width="3"/>
             <circle r="22" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
             <text y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#a7f3d0">A+</text>
@@ -295,7 +294,7 @@
       <div class="card profiles-card" style="margin-bottom:10px">
         <div class="section" style="margin-bottom:6px">Profiles</div>
         <div class="row" style="margin-bottom:8px">
-          <select id="profileSelectSide"></select>
+          <select id="profileSelectSide" aria-label="Active profile"></select>
         </div>
         <div class="row" style="margin-bottom:8px">
           <button id="newProfileBtnSide" class="btn">New</button>
@@ -550,13 +549,14 @@
       $('#page-'+found)?.classList.add('active');
       $('#'+found)?.classList.add('active');
       $$('.tab').forEach(b=> b.dataset.page && b.classList.toggle('active', b.dataset.page===found));
+      if(found==='history') renderHistory();
     }
   }
   window.addEventListener('hashchange', routeFromHash);
   routeFromHash();
 
   // tabs
-  const pages=['grade','history','about','goal','faq','contact'];
+  const pagesBase=['grade','history','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
     const pg=t.dataset.page;
@@ -866,7 +866,7 @@
 
   document.getElementById('gradeBtn').addEventListener('click', runGradeSafely);
   document.getElementById('gradeBtnTop').addEventListener('click', ()=>{
-    pages.forEach(p=> document.getElementById('page-'+p)?.classList.toggle('active', p==='grade'));
+    pagesBase.forEach(p=> document.getElementById('page-'+p)?.classList.toggle('active', p==='grade'));
     runGradeSafely();
   });
 
@@ -881,7 +881,7 @@
     };
     Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; });
     updateHints();
-    pages.forEach(p=> $('#page-'+p)?.classList.toggle('active', p==='grade'));
+    pagesBase.forEach(p=> $('#page-'+p)?.classList.toggle('active', p==='grade'));
   });
   $('#copyTop').addEventListener('click', ()=> { safeCopy(buildShareURL()); showToast(); });
   $('#copyAgain').addEventListener('click', ()=> safeCopy(buildShareURL()));
@@ -920,7 +920,7 @@
     const expR = expectedReadiness(val('age'));
     if(s.readiness < expR) ideas.push(`Close the age gap: add ~${money(Math.max(0, v.targetFI*expR - v.investableTotal))} investable or trim spend.`);
     if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to ${EF_TARGET} months (${money(v.expenses*EF_TARGET)}).`);
-    if(s.saveRate < 0.2) ideas.push(`Boost savings rate to 20%+ by auto-moving ~${money(Math.ceil((val('income')+val('pretaxMonthly'))*0.05))}/mo`).;
+    if(s.saveRate < 0.2) ideas.push(`Boost savings rate to 20%+ by auto-moving ~${money(Math.ceil((val('income')+val('pretaxMonthly'))*0.05))}/mo.`);
     if(s.ltv > 0.9) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): occasional principal prepayments help.`);
     if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
     if(!ideas.length) ideas.push(`You’re ahead for your age. Keep the systems humming.`);
@@ -1051,6 +1051,11 @@
       el.classList.remove('show');
     });
   })();
+
+})();
+</script>
+</body>
+</html>
 
 })();
 </script>
