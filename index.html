@@ -16,7 +16,7 @@
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
     --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-    --g1:#16a34a; --g2:#34d399; --gdeep:#064e3b;
+    --g1:#16a34a; --g2:#34d399;
     --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
   }
   .light{
@@ -35,7 +35,7 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Header (centered) ---------- */
+  /* ---------- Header ---------- */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);
     background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;padding:14px 16px;gap:16px}
@@ -43,6 +43,7 @@
   .pill{border:none;padding:10px 14px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
   .light .pill{background:#0f172a}
   .hdr-rail{position:absolute;right:16px;display:flex;gap:10px;align-items:center}
+  #streakPill{font-weight:800;color:#062c1b;background:#ffffffc2;padding:7px 10px;border-radius:999px}
 
   /* ---------- HERO ---------- */
   .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start;padding:18px 0 6px}
@@ -115,7 +116,7 @@
   <header>
     <div class="hdr">
       <a href="/" aria-label="Home">
-        <!-- === Grade My Finance Logo (blue tilted G, bright wordmark) === -->
+        <!-- === Grade My Finance Logo === -->
         <svg class="logoBig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-label="Grade My Finance logo">
           <defs>
             <radialGradient id="gmf-badge" cx="50%" cy="50%" r="70%">
@@ -169,6 +170,8 @@
       </a>
 
       <div class="hdr-rail">
+        <span id="streakPill" style="display:none"></span>
+        <select id="profileSelect" class="pill" aria-label="Select profile"></select>
         <button id="newProfileBtn" class="pill">New Profile</button>
         <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
       </div>
@@ -179,7 +182,7 @@
   <section class="hero container" aria-label="Intro">
     <div class="hero-copy">
       <h2 class="hero-title">Your money, graded like a report card <span class="heart">♥</span></h2>
-      <p class="hero-tag">Plug in your numbers, get a letter grade, and track progress with profiles and history.</p>
+      <p class="hero-tag">Plug in your numbers, get a letter grade, and track progress with profiles, history, and achievements.</p>
       <div class="hero-cta">
         <button class="btn ghost" id="demoBtnTop">Try Demo</button>
         <button class="btn primary" id="gradeBtnTop">Grade me now</button>
@@ -187,7 +190,7 @@
       </div>
     </div>
 
-    <!-- Mascot with A+ badge placed in hand (never clipped) -->
+    <!-- Mascot with A+ badge perfectly centered in the SVG (never clipped) -->
     <div class="hero-mascot" aria-hidden="true">
       <svg class="buddy b-float" viewBox="0 0 360 300" role="img" aria-label="Report Card Buddy">
         <defs>
@@ -211,24 +214,21 @@
             <line x1="110" x2="250" y1="150" y2="150"/>
             <line x1="110" x2="250" y1="170" y2="170"/>
           </g>
-          <!-- arms -->
           <path d="M95 142 q-28 6 -36 -14" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
           <path d="M265 170 q36 12 40 -18" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round" class="b-wave"/>
-          <!-- feet -->
           <path d="M144 254 q-12 18 -26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
           <path d="M216 254 q12 18 26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <!-- face -->
           <circle id="eyeL" cx="148" cy="92" r="8" fill="#0f172a"/>
           <circle id="eyeR" cx="208" cy="92" r="8" fill="#0f172a"/>
           <g class="b-blink"><rect x="140" y="86" width="16" height="6" fill="#fff"/><rect x="200" y="86" width="16" height="6" fill="#fff"/></g>
           <path id="smile" d="M144 120 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
           <circle cx="136" cy="104" r="11" fill="url(#cheek)"/><circle cx="220" cy="104" r="11" fill="url(#cheek)"/>
 
-          <!-- A+ badge moved to the RIGHT HAND (bottom-right quadrant) -->
-          <g class="b-pop" transform="translate(292,156) rotate(-8)">
-            <circle r="20" fill="#10b981" stroke="#065f46" stroke-width="3"/>
-            <circle r="16" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
-            <text y="6" text-anchor="middle" font-size="16" font-weight="900" fill="#a7f3d0">A+</text>
+          <!-- A+ badge is centered in the SVG (safe, never clipped) -->
+          <g class="b-pop" transform="translate(180,150)">
+            <circle r="22" fill="#10b981" stroke="#065f46" stroke-width="3"/>
+            <circle r="18" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
+            <text y="6" text-anchor="middle" font-size="18" font-weight="900" fill="#a7f3d0">A+</text>
           </g>
         </g>
       </svg>
@@ -238,10 +238,19 @@
 
   <div class="shell">
     <aside>
-      <div class="card" style="margin-bottom:10px">
+      <div class="card profiles-card" style="margin-bottom:10px">
         <div class="section" style="margin-bottom:6px">Profiles</div>
         <div class="row" style="margin-bottom:8px">
-          <select id="profileSelect" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)"></select>
+          <select id="profileSelectSide" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)"></select>
+        </div>
+        <div class="row" style="margin-bottom:8px">
+          <button id="newProfileBtnSide" class="btn">New</button>
+          <button id="renameProfileBtn" class="btn">Rename</button>
+          <button id="deleteProfileBtn" class="btn">Delete</button>
+        </div>
+        <div class="row">
+          <button id="exportProfileBtn" class="btn">Export</button>
+          <button id="importProfileBtn" class="btn">Import</button>
         </div>
         <div class="hint" id="streakHint">Streak: 0 days</div>
       </div>
@@ -249,6 +258,10 @@
       <nav class="nav" id="sidebar">
         <button class="tab active" data-page="grade">Grade</button>
         <button class="tab" data-page="history">History</button>
+        <button class="tab" data-page="about">About Us</button>
+        <button class="tab" data-page="goal">Our Goal</button>
+        <button class="tab" data-page="faq">FAQ</button>
+        <button class="tab" data-page="contact">Contact</button>
       </nav>
     </aside>
 
@@ -342,12 +355,27 @@
         </div>
       </section>
 
-      <!-- History (minimal) -->
+      <!-- History page with a simple canvas chart -->
       <section id="page-history" class="page">
-        <div class="card" style="grid-column:span 12">
-          <h2 style="margin:0 0 8px">Your Progress</h2>
-          <div id="histMeta" class="hint">Entries: 0</div>
-          <ul id="histList" class="hint" style="margin:8px 0 0 18px"></ul>
+        <div class="card" style="grid-column:span 12; position:relative">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <h2 style="margin:0">Your Progress</h2>
+            <div id="histMeta" class="hint">Entries: 0</div>
+          </div>
+          <canvas id="historyChart" height="220" style="width:100%;max-width:100%;margin-top:10px"></canvas>
+          <ul id="histList" class="hint" style="margin:10px 0 0 18px"></ul>
+        </div>
+      </section>
+
+      <!-- Simple pages -->
+      <section id="page-about" class="page"><div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math and friendly design. Everything runs in your browser.</p></div></section>
+      <section id="page-goal" class="page"><div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div></section>
+      <section id="page-faq" class="page"><div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div></section>
+      <section id="page-contact" class="page"><div class="card"><h2>Contact</h
+      <section id="page-contact" class="page">
+        <div class="card">
+          <h2>Contact</h2>
+          <p>Email us: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
         </div>
       </section>
     </main>
@@ -364,13 +392,14 @@
 
 <script>
 (() => {
-  const $ = s => document.querySelector(s);
+  // ---------- tiny helpers ----------
+  const $  = s => document.querySelector(s);
   const $$ = s => Array.from(document.querySelectorAll(s));
   const money = n => isFinite(n) ? `$${Math.round(n).toLocaleString()}` : '—';
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-  // theme
+  // ---------- theme toggle ----------
   const modeBtn = $('#modeBtn');
   function setMode(light){
     document.body.classList.toggle('light', light);
@@ -381,16 +410,17 @@
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // simple router
+  // ---------- sidebar tabs ----------
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
     const pg=t.dataset.page;
     $$('.tab').forEach(b=>b.classList.toggle('active', b===t));
     $$('.page').forEach(p=>p.classList.remove('active'));
     $('#page-'+pg).classList.add('active');
+    if(pg==='history') drawHistory();
   });
 
-  // streak counter (day-based)
+  // ---------- streak pill (header & sidebar hint share same count) ----------
   (function streak(){
     const key='gmf_streak';
     const today = new Date().toDateString();
@@ -401,11 +431,13 @@
       count = (data.last === yesterday) ? (data.count+1) : 1;
       localStorage.setItem(key, JSON.stringify({last:today,count}));
     }
-    $('#streakHint').textContent = `Streak: ${count} day${count===1?'':'s'}`;
+    const pill = $('#streakPill'); pill.style.display='inline-block';
+    pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
+    $('#streakHint').textContent = pill.textContent;
   })();
 
-  // profiles (minimal)
-  const PROFILE_KEY='gmf_profiles_v2';
+  // ---------- profiles ----------
+  const PROFILE_KEY='gmf_profiles_v3';
   function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
   function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
   function ensureDefaultProfile(){
@@ -413,22 +445,60 @@
     if(!p.length){ p=[{id:crypto.randomUUID(), name:'Profile 1', history:[]}]; saveProfiles(p); }
     return p;
   }
-  function renderProfileSelect(){
-    const p=ensureDefaultProfile(); const sel=$('#profileSelect'); sel.innerHTML='';
-    p.forEach((x)=>{ const o=document.createElement('option'); o.value=x.id; o.textContent=x.name; sel.appendChild(o); });
-    const cur = localStorage.getItem('gmf_active_profile') || p[0].id; sel.value=cur; localStorage.setItem('gmf_active_profile', cur);
+  function getActiveId(){ return localStorage.getItem('gmf_active_profile') || ensureDefaultProfile()[0].id; }
+  function setActiveId(id){ localStorage.setItem('gmf_active_profile', id); }
+  function getActive(){ return ensureDefaultProfile().find(x=>x.id===getActiveId()); }
+  function putActive(prof){
+    const ps=ensureDefaultProfile(); const i=ps.findIndex(x=>x.id===prof.id);
+    if(i>=0){ ps[i]=prof; saveProfiles(ps); }
   }
-  function getActive(){ const id=localStorage.getItem('gmf_active_profile'); return loadProfiles().find(x=>x.id===id); }
-  function saveActive(prof){ const ps=loadProfiles(); const i=ps.findIndex(x=>x.id===prof.id); if(i>=0){ ps[i]=prof; saveProfiles(ps);} }
-  renderProfileSelect();
 
-  $('#newProfileBtn').addEventListener('click', ()=>{
+  function renderProfileSelects(){
+    const ps=ensureDefaultProfile(); const cur=getActiveId();
+    ['#profileSelect','#profileSelectSide'].forEach(sel=>{
+      const el=$(sel); if(!el) return; el.innerHTML='';
+      ps.forEach(p=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; el.appendChild(o); });
+      el.value=cur;
+    });
+  }
+  renderProfileSelects();
+  $('#profileSelect').addEventListener('change', e=>{ setActiveId(e.target.value); renderProfileSelects(); if($('#page-history').classList.contains('active')) drawHistory(); });
+  $('#profileSelectSide').addEventListener('change', e=>{ setActiveId(e.target.value); renderProfileSelects(); if($('#page-history').classList.contains('active')) drawHistory(); });
+
+  // header "New Profile"
+  $('#newProfileBtn').addEventListener('click', newProfile);
+  $('#newProfileBtnSide').addEventListener('click', newProfile);
+  function newProfile(){
     const name=prompt('Profile name?','Profile '+(loadProfiles().length+1)); if(!name) return;
-    const p=loadProfiles(); const id=crypto.randomUUID(); p.push({id,name,history:[]}); saveProfiles(p); renderProfileSelect();
+    const ps=ensureDefaultProfile(); const id=crypto.randomUUID();
+    ps.push({id,name,history:[]}); saveProfiles(ps); setActiveId(id); renderProfileSelects(); drawHistory();
+  }
+  $('#renameProfileBtn')?.addEventListener('click', ()=>{
+    const prof=getActive(); if(!prof) return;
+    const name=prompt('New name', prof.name); if(!name) return;
+    prof.name=name; putActive(prof); renderProfileSelects();
   });
-  $('#profileSelect').addEventListener('change', e=> localStorage.setItem('gmf_active_profile', e.target.value));
+  $('#deleteProfileBtn')?.addEventListener('click', ()=>{
+    if(!confirm('Delete this profile?')) return;
+    let ps=ensureDefaultProfile(); const cur=getActiveId();
+    ps=ps.filter(x=>x.id!==cur); saveProfiles(ps);
+    const newId = (ps[0]?.id) || null;
+    if(newId){ setActiveId(newId); } else { saveProfiles([{id:crypto.randomUUID(),name:'Profile 1',history:[]}]); }
+    renderProfileSelects(); drawHistory();
+  });
+  $('#exportProfileBtn')?.addEventListener('click', ()=>{
+    const prof=getActive(); if(!prof) return;
+    navigator.clipboard?.writeText(JSON.stringify(prof));
+    alert('Profile JSON copied to clipboard.');
+  });
+  $('#importProfileBtn')?.addEventListener('click', ()=>{
+    const txt=prompt('Paste profile JSON'); if(!txt) return;
+    try{ const obj=JSON.parse(txt); if(!obj.id) obj.id=crypto.randomUUID();
+      const ps=ensureDefaultProfile(); ps.push(obj); saveProfiles(ps); setActiveId(obj.id); renderProfileSelects(); drawHistory();
+    }catch(e){ alert('Invalid JSON'); }
+  });
 
-  // inputs
+  // ---------- inputs & hints ----------
   const ids = ['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr','pretaxMonthly','eduMonthly'];
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
@@ -439,7 +509,7 @@
     v.liabs  = v.mortgage + v.student + v.auto + v.cc;
     v.net    = v.assets - v.liabs;
     v.annualSpend = Math.max(0, v.expenses * 12);
-    v.targetFI = v.annualSpend>0 ? v.annualSpend / 0.06 : 0; // 6% SWR display
+    v.targetFI = v.annualSpend>0 ? v.annualSpend / 0.06 : 0; // 6% quick target
     v.investableCore = v.retire + v.brokerage + v.hsa;
     return v;
   }
@@ -448,10 +518,10 @@
     $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable: ${money(v.investableCore)})`;
     $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
   }
-  ids.forEach(id => els[id].addEventListener('input', updateHints));
+  ids.forEach(id => els[id]?.addEventListener('input', updateHints));
   updateHints();
 
-  // simple scoring
+  // ---------- scoring ----------
   function scoreModel(v){
     const leftover = Math.max(0, v.income - v.expenses);
     const saveRate = (v.income>0) ? clamp((leftover + val('pretaxMonthly') + val('eduMonthly')) / (v.income + val('pretaxMonthly')), 0, 1) : 0;
@@ -477,6 +547,7 @@
   }
 
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
+
   function doGrade(){
     const v = values();
     const s = scoreModel(v);
@@ -496,27 +567,24 @@
     $('#improveList').textContent = s.efMonths<6 ? `Build emergency fund to ~${money((val('expenses')||0)*6)}.` : `Nice buffer. Stay the course.`;
 
     // history
-    const prof=getActive(); if(prof){ prof.history.push({date:new Date().toISOString(),score:s.score,letter:L}); saveActive(prof); renderHistory(); }
+    const prof=getActive(); if(prof){ prof.history.push({date:new Date().toISOString(),score:s.score,letter:L}); putActive(prof); drawHistory(); }
   }
 
-  $('#gradeBtn').addEventListener('click', doGrade);
-  $('#gradeBtnTop').addEventListener('click', ()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); doGrade(); });
+  // buttons (top + in card)
+  $('#gradeBtn')    .addEventListener('click', doGrade);
+  $('#gradeBtnTop') .addEventListener('click', ()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); doGrade(); });
 
-  // demo
   $('#demoBtnTop').addEventListener('click', ()=>{
     const demo={income:7500,expenses:4000,age:30,home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000,mortgage:329000,student:26000,auto:13500,cc:0,mortgageApr:5.25,studentApr:4.9,autoApr:3.5,ccApr:24.99,pretaxMonthly:900,eduMonthly:200};
     Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; }); updateHints();
   });
 
-  // copy link (inputs only)
-  function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); return s; }
   $('#copyTop').addEventListener('click', ()=>{
-    const url = location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(currentState()))));
-    navigator.clipboard?.writeText(url);
-    alert('Shareable link copied!');
+    const state={}; ids.forEach(id=> state[id]=val(id));
+    const url = location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    navigator.clipboard?.writeText(url); alert('Shareable link copied.');
   });
 
-  // reset
   $('#resetBtn').addEventListener('click', ()=>{
     $$('#page-grade input[type="number"]').forEach(el=>{ el.value=(el.id==='age'?30:0); });
     updateHints(); bigGrade.textContent='—'; bigGrade.classList.remove('show');
@@ -524,27 +592,46 @@
     $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
 
-  // history minimal render
-  function renderHistory(){
+  // ---------- history chart ----------
+  function drawHistory(){
     const prof=getActive(); if(!prof) return;
-    $('#histMeta').textContent = `Entries: ${prof.history.length}`;
-    const ul = $('#histList'); ul.innerHTML='';
-    prof.history.slice().reverse().forEach(h=>{
-      const li=document.createElement('li'); li.textContent = `${new Date(h.date).toLocaleString()} — ${h.letter} (${h.score})`; ul.appendChild(li);
-    });
-  }
-  renderHistory();
+    const pts=(prof.history||[]).map(h=>({date:h.date, score:h.score, letter:h.letter}));
+    $('#histMeta').textContent = `Entries: ${pts.length}`;
+    const ul=$('#histList'); ul.innerHTML='';
+    pts.slice().reverse().forEach(h=>{ const li=document.createElement('li'); li.textContent=`${new Date(h.date).toLocaleString()} — ${h.letter} (${h.score})`; ul.appendChild(li); });
 
-  // Welcome modal (new key so it shows)
+    const canvas = $('#historyChart'); const ctx = canvas.getContext('2d'); if(!pts.length){ ctx.clearRect(0,0,canvas.width,canvas.height); return; }
+    const dpr = Math.min(2, window.devicePixelRatio||1);
+    const rect = canvas.getBoundingClientRect(); canvas.width = Math.floor(rect.width*dpr); canvas.height= Math.floor(220*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,rect.width,220);
+
+    const pad=16, w=rect.width-pad*2, h=220-pad*2;
+    const xs=pts.map((_,i)=> pad + (i/(Math.max(1,pts.length-1)))*w);
+    const ys=pts.map(p=> pad + (1 - p.score/100)*h);
+
+    // grid
+    ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line'); ctx.lineWidth=1; ctx.beginPath();
+    for(let k=0;k<=5;k++){ const gy=pad+(h*k/5); ctx.moveTo(pad,gy); ctx.lineTo(pad+w,gy); } ctx.stroke();
+
+    // line
+    ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--accent'); ctx.lineWidth=2; ctx.beginPath();
+    xs.forEach((x,i)=>{ if(i===0) ctx.moveTo(x,ys[i]); else ctx.lineTo(x,ys[i]); }); ctx.stroke();
+
+    // dots
+    ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2');
+    xs.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(x,ys[i],3,0,Math.PI*2); ctx.fill(); });
+  }
+
+  // ---------- welcome modal ----------
   (function welcome(){
-    const key='gmf_welcome_seen_v3';
+    const key='gmf_welcome_seen_v4';
     const seen = localStorage.getItem(key)==='1';
     const el = $('#welcome');
     if(!seen){ el.classList.add('show'); }
     $('#welcomeGo').addEventListener('click', ()=>{ localStorage.setItem(key,'1'); el.classList.remove('show'); });
   })();
 
-  // mascot eyes
+  // ---------- mascot eyes follow ----------
   (function eyes(){
     const l=$('#eyeL'), r=$('#eyeR'); if(!l||!r) return;
     const cxL=+l.getAttribute('cx'), cyL=+l.getAttribute('cy');
@@ -552,13 +639,16 @@
     function move(e){
       const rect = document.body.getBoundingClientRect();
       const x = e.clientX/rect.width*2-1, y = e.clientY/rect.height*2-1;
-      const dx = clamp(x, -1, 1)*2.8, dy = clamp(y, -1, 1)*2.8;
+      const dx = clamp(x,-1,1)*2.8, dy = clamp(y,-1,1)*2.8;
       l.setAttribute('cx', cxL+dx); l.setAttribute('cy', cyL+dy);
       r.setAttribute('cx', cxR+dx); r.setAttribute('cy', cyR+dy);
     }
-    window.addEventListener('mousemove', move);
+    window.addEventListener('mousemove', move, {passive:true});
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
+
+  // initial draw if history tab open
+  if($('#page-history').classList.contains('active')) drawHistory();
 })();
 </script>
 </body>
