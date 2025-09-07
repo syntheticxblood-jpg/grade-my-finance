@@ -11,15 +11,7 @@
 <meta property="og:url" content="https://grademyfinance.com/">
 <meta property="og:image" content="https://grademyfinance.com/og-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='12' width='64' height='64' fill='%23E7F8EF'/%3E%3Ctext x='14' y='45' font-size='36' font-weight='900' fill='%2303652F'%3EG%3C/text%3E%3C/svg%3E">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-H6223HYVS6');
-</script>
+
 <style>
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
@@ -43,22 +35,22 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Sticky header with big logo ---------- */
+  /* ---------- Sticky header with BIG logo ---------- */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
-  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .logoBig{width:56px;height:56px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
-  .title{margin:0;font-size:24px;color:#062c1b;font-weight:900;letter-spacing:.2px}
+  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:12px 16px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logoBig{width:112px;height:112px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))} /* 200% size */
+  .title{margin:0;font-size:26px;color:#062c1b;font-weight:900;letter-spacing:.2px}
   .tag{margin:0;color:#062c1bcc;font-size:12px}
   .spacer{flex:1}
-  .pill{border:none;padding:7px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
+  .pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
   .light .pill{background:#0f172a}
   .streak{font-weight:800;color:#062c1b;background:#ffffffaa;padding:7px 10px;border-radius:999px}
 
   /* ---------- HERO ---------- */
   .hero{
-    position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;
-    align-items:start; padding:28px 0 8px; /* tightened */
+    display:grid;grid-template-columns:1.2fr .8fr;gap:24px;
+    align-items:start; padding:24px 0 4px;margin-bottom:4px; /* tightened; no big gap */
   }
   @media (max-width: 980px){ .hero{grid-template-columns:1fr;gap:10px} }
   .hero-copy{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
@@ -74,29 +66,30 @@
 
   /* ---------- Mascot ---------- */
   .hero-mascot{position:relative;display:grid;place-items:center;align-self:start}
-  .mascot-bubble{
-    position:absolute;top:8px;right:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);
-    padding:8px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
-  }
-  .buddy{max-height:220px;width:auto}       /* clamp height to remove big gap */
+  .buddy{max-height:230px;width:auto}       /* clamp so hero row doesn't stretch */
   @media (max-width:1100px){ .buddy{max-height:200px} }
   @media (max-width:640px){ .hero{grid-template-columns:1fr}.hero-mascot{display:none} } /* hide on narrow phones */
 
-  .buddy .card{transform-origin:50% 10%;animation:floatCard 3s ease-in-out infinite}
-  .buddy .shadow{animation:floatShadow 3s ease-in-out infinite}
-  .buddy .blink{animation:blink 6s ease-in-out infinite}
-  .buddy .wave{transform-origin:210px 120px;animation:wave 2.3s ease-in-out infinite}
-  .buddy .smile{animation:smile 3.2s ease-in-out infinite}
-  .buddy .shine{animation:sweep 2.2s linear infinite;mix-blend-mode:overlay}
+  .mascot-bubble{
+    position:absolute;top:-6px;right:4px;background:rgba(0,0,0,.35);border:1px solid var(--line);
+    padding:6px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
+  }
+  /* Mascot animations */
+  .b-float{animation:floatCard 3.2s ease-in-out infinite}
+  .b-shadow{animation:floatShadow 3.2s ease-in-out infinite}
+  .b-blink{animation:blink 6s ease-in-out infinite}
+  .b-wave{transform-origin:215px 120px;animation:wave 2.3s ease-in-out infinite}
+  .b-badge{transform-origin:215px 120px;animation:badgePop 2.6s ease-in-out infinite}
+  .b-shine{animation:sweep 2.2s linear infinite;mix-blend-mode:overlay}
   @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-6px) rotate(1.2deg)}}
   @keyframes floatShadow{0%,100%{transform:scale(1);opacity:.35}50%{transform:scale(0.94);opacity:.2}}
-  @keyframes blink{0%,95%,100%{opacity:0} 96%,98%{opacity:1}}
+  @keyframes blink{0%,95%,100%{opacity:0}96%,98%{opacity:1}}
   @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg)}}
-  @keyframes smile{0%,100%{d:path('M120 96 q16 10 32 0')}50%{d:path('M120 98 q16 16 32 0')}}
+  @keyframes badgePop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
   @keyframes sweep{from{transform:translateX(-160px)}to{transform:translateX(160px)}}
 
   /* ---------- Shell ---------- */
-  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:260px 1fr;gap:18px;padding:18px}
+  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:260px 1fr;gap:18px;padding:12px 18px 18px}
   aside{position:sticky;top:92px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
   .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
@@ -137,16 +130,7 @@
   .toast.show{transform:translateX(-50%) translateY(0)}
   .toast button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
 
-  /* Intro modal */
-  .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:95}
-  .modal.show{display:grid}
-  .modal-card{width:640px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:20px}
-  .modal-actions{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
-  .modal small{color:var(--muted)}
-  .modal label{display:flex;align-items:center;gap:8px}
-  .modal .btn.primary{min-width:140px}
-
-  footer{max-width:1200px;margin:24px auto;padding:0 18px 24px;color:var(--muted)}
+  footer{max-width:1200px;margin:12px auto 24px;padding:0 18px 24px;color:var(--muted)}
   footer a{color:var(--accent)}
 
   @media (max-width: 980px){
@@ -159,22 +143,28 @@
     .grid > [style*="grid-column:span 4"],
     .grid > [style*="grid-column:span 8"]{grid-column: span 12 !important;}
   }
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:85}
 </style>
 </head>
 <body class="dark">
-  <!-- Header -->
+  <!-- Header with 2× custom logo -->
   <header>
     <div class="hdr">
       <div class="brand">
-        <svg class="logoBig" viewBox="0 0 160 160" aria-hidden="true">
+        <!-- ORIGINAL “G” logo: coin+leaf loop, embedded mini report card + check -->
+        <svg class="logoBig" viewBox="0 0 220 220" aria-hidden="true">
           <defs>
-            <linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#34d399"/></linearGradient>
-            <linearGradient id="gg2" x1="0" x2="1"><stop offset="0" stop-color="#a7f3d0"/><stop offset="1" stop-color="#86efac"/></linearGradient>
+            <linearGradient id="lg1" x1="0" x2="1"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#34d399"/></linearGradient>
+            <linearGradient id="lg2" x1="0" x2="1"><stop offset="0" stop-color="#a7f3d0"/><stop offset="1" stop-color="#86efac"/></linearGradient>
           </defs>
-          <rect x="8" y="8" width="144" height="144" rx="28" fill="url(#gg)"/>
-          <rect x="96" y="34" width="42" height="56" rx="10" fill="url(#gg2)" />
-          <path d="M101 60l9 9 19-19" fill="none" stroke="#065f46" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-          <text x="26" y="115" font-size="84" font-weight="900" fill="#064e3b">G</text>
+          <!-- coin / seed -->
+          <circle cx="110" cy="110" r="96" fill="url(#lg1)"/>
+          <!-- G path -->
+          <path d="M150 110h-44a30 30 0 1 1 0-60c20 0 36 10 44 26" fill="none" stroke="#064e3b" stroke-width="20" stroke-linecap="round"/>
+          <path d="M106 150a40 40 0 0 0 44-30" fill="none" stroke="#064e3b" stroke-width="20" stroke-linecap="round"/>
+          <!-- tiny report card tile -->
+          <rect x="148" y="46" width="40" height="52" rx="10" fill="url(#lg2)"/>
+          <path d="M154 70l9 9 18-18" fill="none" stroke="#065f46" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <div>
           <h1 class="title">Grade My Finance</h1>
@@ -201,9 +191,9 @@
       </div>
     </div>
 
-    <!-- Mascot -->
+    <!-- Mascot (more detail + motion) -->
     <div class="hero-mascot" aria-hidden="true">
-      <svg class="buddy" viewBox="0 0 300 260" role="img" aria-label="Report Card Buddy">
+      <svg class="buddy b-float" viewBox="0 0 300 260" role="img" aria-label="Report Card Buddy">
         <defs>
           <linearGradient id="paperGrad" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0" stop-color="#ECFDF5"/><stop offset="1" stop-color="#D1FAE5"/>
@@ -214,30 +204,34 @@
             <stop offset="1" stop-color="#A7F3D0" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <ellipse cx="150" cy="230" rx="70" ry="14" fill="rgba(0,0,0,.25)" class="shadow"/>
-        <g class="card">
-          <rect x="70" y="30" width="160" height="200" rx="20" fill="url(#paperGrad)" stroke="#86EFAC" stroke-width="2"/>
+        <ellipse cx="150" cy="230" rx="70" ry="14" fill="rgba(0,0,0,.25)" class="b-shadow"/>
+        <g>
+          <rect x="70" y="30" width="160" height="200" rx="22" fill="url(#paperGrad)" stroke="#86EFAC" stroke-width="2"/>
           <path d="M210 30 h20 v20 c-10-2-18-10-20-20z" fill="#E7F8EF"/>
           <g stroke="#BBF7D0" stroke-width="2">
-            <line x1="85" x2="215" y1="90" y2="90"/>
-            <line x1="85" x2="215" y1="110" y2="110"/>
-            <line x1="85" x2="215" y1="130" y2="130"/>
-            <line x1="85" x2="215" y1="150" y2="150"/>
+            <line x1="85" x2="215" y1="92" y2="92"/>
+            <line x1="85" x2="215" y1="112" y2="112"/>
+            <line x1="85" x2="215" y1="132" y2="132"/>
+            <line x1="85" x2="215" y1="152" y2="152"/>
           </g>
-          <circle cx="125" cy="70" r="7" fill="#0f172a"/>
-          <circle cx="175" cy="70" r="7" fill="#0f172a"/>
-          <g class="blink"><rect x="118" y="64" width="14" height="6" fill="#ECFDF5"/><rect x="168" y="64" width="14" height="6" fill="#ECFDF5"/></g>
-          <path class="smile" d="M120 96 q16 10 32 0" fill="none" stroke="#065f46" stroke-width="4" stroke-linecap="round"/>
-          <g class="wave">
+          <!-- limbs -->
+          <path d="M70 120 q-24 4 -30 -10" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M230 160 q30 10 34 -12" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round" class="b-wave"/>
+          <path d="M120 230 q-10 14 -22 0" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M180 230 q8 16 22 0" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <!-- face -->
+          <circle id="eyeL" cx="125" cy="70" r="7" fill="#0f172a"/>
+          <circle id="eyeR" cx="175" cy="70" r="7" fill="#0f172a"/>
+          <g class="b-blink"><rect x="118" y="64" width="14" height="6" fill="#ECFDF5"/><rect x="168" y="64" width="14" height="6" fill="#ECFDF5"/></g>
+          <path id="smile" d="M120 96 q16 10 32 0" fill="none" stroke="#065f46" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="112" cy="80" r="3" fill="#fda4af"/><circle cx="188" cy="80" r="3" fill="#fda4af"/>
+          <!-- badge -->
+          <g class="b-badge">
             <circle cx="210" cy="120" r="22" fill="#34d399"/>
             <circle cx="210" cy="120" r="20" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
             <text x="210" y="126" text-anchor="middle" font-size="18" font-weight="900" fill="#a7f3d0">A+</text>
           </g>
-          <path d="M70 120 q-24 4 -30 -10" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
-          <path d="M230 160 q30 10 34 -12" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
-          <path d="M120 230 q-10 14 -22 0" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
-          <path d="M180 230 q8 16 22 0" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
-          <rect class="shine" x="70" y="30" width="160" height="200" rx="20" fill="url(#shine)"/>
+          <rect class="b-shine" x="70" y="30" width="160" height="200" rx="22" fill="url(#shine)"/>
         </g>
       </svg>
       <div class="mascot-bubble">“Let’s make money feel easy.”</div>
@@ -281,12 +275,12 @@
           <div class="card" style="grid-column:span 4">
             <div class="section">Monthly Income (after-tax)</div>
             <label>What hits your bank each month</label>
-            <input id="income" type="number" value="7500" min="0" />
+            <input id="income" type="number" value="0" min="0" />
           </div>
           <div class="card" style="grid-column:span 4">
             <div class="section">Monthly Expenses</div>
             <label>All bills + spending (post-tax)</label>
-            <input id="expenses" type="number" value="4000" min="0" />
+            <input id="expenses" type="number" value="0" min="0" />
           </div>
           <div class="card" style="grid-column:span 4">
             <div class="section">Age</div>
@@ -297,12 +291,12 @@
           <div class="card" style="grid-column:span 6">
             <div class="section">Assets</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
-              <div style="grid-column:span 6"><label>Home Value</label><input id="home" type="number" value="475000" min="0"></div>
-              <div style="grid-column:span 6"><label>Retirement (401k/IRA)</label><input id="retire" type="number" value="72000" min="0"></div>
-              <div style="grid-column:span 6"><label>Brokerage/Stocks</label><input id="brokerage" type="number" value="29000" min="0"></div>
-              <div style="grid-column:span 6"><label>Car Value</label><input id="car" type="number" value="15000" min="0"></div>
-              <div style="grid-column:span 6"><label>HSA (counted here)</label><input id="hsa" type="number" value="1500" min="0"></div>
-              <div style="grid-column:span 6"><label>Cash Savings</label><input id="cash" type="number" value="24000" min="0"></div>
+              <div style="grid-column:span 6"><label>Home Value</label><input id="home" type="number" value="0" min="0"></div>
+              <div style="grid-column:span 6"><label>Retirement (401k/IRA)</label><input id="retire" type="number" value="0" min="0"></div>
+              <div style="grid-column:span 6"><label>Brokerage/Stocks</label><input id="brokerage" type="number" value="0" min="0"></div>
+              <div style="grid-column:span 6"><label>Car Value</label><input id="car" type="number" value="0" min="0"></div>
+              <div style="grid-column:span 6"><label>HSA (counted here)</label><input id="hsa" type="number" value="0" min="0"></div>
+              <div style="grid-column:span 6"><label>Cash Savings</label><input id="cash" type="number" value="0" min="0"></div>
             </div>
             <div class="hint" id="assetsHint">Total Assets: —</div>
           </div>
@@ -310,14 +304,14 @@
           <div class="card" style="grid-column:span 6">
             <div class="section">Liabilities (+ APR)</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
-              <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="329000" min="0"></div>
-              <div style="grid-column:span 6"><label>Mortgage APR %</label><input id="mortgageApr" type="number" value="5.25" step="0.01" min="0"></div>
-              <div style="grid-column:span 6"><label>Student Loans</label><input id="student" type="number" value="26000" min="0"></div>
-              <div style="grid-column:span 6"><label>Student APR %</label><input id="studentApr" type="number" value="4.9" step="0.01" min="0"></div>
-              <div style="grid-column:span 6"><label>Auto Loans</label><input id="auto" type="number" value="13500" min="0"></div>
-              <div style="grid-column:span 6"><label>Auto APR %</label><input id="autoApr" type="number" value="3.5" step="0.01" min="0"></div>
+              <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="0" min="0"></div>
+              <div style="grid-column:span 6"><label>Mortgage APR %</label><input id="mortgageApr" type="number" value="0" step="0.01" min="0"></div>
+              <div style="grid-column:span 6"><label>Student Loans</label><input id="student" type="number" value="0" min="0"></div>
+              <div style="grid-column:span 6"><label>Student APR %</label><input id="studentApr" type="number" value="0" step="0.01" min="0"></div>
+              <div style="grid-column:span 6"><label>Auto Loans</label><input id="auto" type="number" value="0" min="0"></div>
+              <div style="grid-column:span 6"><label>Auto APR %</label><input id="autoApr" type="number" value="0" step="0.01" min="0"></div>
               <div style="grid-column:span 6"><label>Credit Cards (balance)</label><input id="cc" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>Credit Card APR %</label><input id="ccApr" type="number" value="24.99" step="0.01" min="0"></div>
+              <div style="grid-column:span 6"><label>Credit Card APR %</label><input id="ccApr" type="number" value="0" step="0.01" min="0"></div>
             </div>
             <div class="hint" id="liabHint">Total Liabilities: —</div>
           </div>
@@ -400,8 +394,7 @@
           <h2>Benchmarks</h2>
           <p>Age curve targets used in scoring:</p>
           <ul id="ageCurveList"></ul>
-          <p class="hint">Readiness = investable assets (retirement + brokerage + HSA) + surplus cash + 40% home equity + pension PV (discounted) ÷ target FI (annual spend / 6% SWR).</p>
-          <p class="hint">Assumptions: 6% withdrawal rate, 3% real discount for pension PV, 6-month emergency fund target.</p>
+          <p class="hint">Readiness = investable assets (retirement + brokerage + HSA) + surplus cash + 40% home equity + pension PV ÷ target FI (annual spend / 6% SWR).</p>
         </div>
       </section>
 
@@ -436,30 +429,6 @@
     <button id="copyAgain">Copy again</button>
   </div>
 
-  <!-- Intro Modal -->
-  <div id="introModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="introTitle">
-    <div class="modal-card">
-      <div style="display:flex;gap:12px;align-items:center">
-        <svg width="44" height="44" viewBox="0 0 160 160" aria-hidden="true">
-          <defs><linearGradient id="ig" x1="0" x2="1"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#34d399"/></linearGradient></defs>
-          <rect x="8" y="8" width="144" height="144" rx="28" fill="url(#ig)"/>
-          <text x="26" y="115" font-size="84" font-weight="900" fill="#064e3b">G</text>
-        </svg>
-        <h3 id="introTitle" style="margin:0">Welcome to Grade My Finance</h3>
-      </div>
-      <p style="margin:10px 0 0 0">Enter a few numbers, get a letter grade, and see how to level up. We use an age-aware target so you’re compared to fair milestones—not to retirees. Nothing leaves your device.</p>
-      <ul style="margin:10px 0 0 18px">
-        <li>Include payroll savings (pre-tax) so your savings rate is accurate.</li>
-        <li>Add pension details—we convert it to a present value.</li>
-        <li>Save profiles to track progress and earn trophies.</li>
-      </ul>
-      <div class="modal-actions">
-        <label><input type="checkbox" id="dontShow"> <small>Don’t show this again</small></label>
-        <button id="introOkay" class="btn primary">Got it</button>
-      </div>
-    </div>
-  </div>
-
   <footer class="container">
     <p>Read more: <a href="/blog/saved-by-30.html">Saved by 30</a> · <a href="/blog/savings-rate.html">Savings Rate Benchmarks</a> · <a href="/blog/what-is-fire.html">What is FIRE?</a></p>
   </footer>
@@ -474,7 +443,7 @@
 
   // assumptions / weights
   const SWR = 0.06, EF_TARGET = 6, EQUITY_FACTOR = 0.40, REAL_RET = 0.03;
-  const NW_W=12, FI_W=58, AGE_W=12, SAVE_W=8, EF_W=6, NONMORT_W=2, LTV_W=2;
+  const NW_W=14, FI_W=56, AGE_W=12, SAVE_W=8, EF_W=6, NONMORT_W=2, LTV_W=2;
 
   // theme
   const modeBtn = $('#modeBtn');
@@ -487,16 +456,15 @@
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // tabs + GA page views
+  // tabs (no funky scroll)
   const pages=['grade','history','bench','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
     const pg=t.dataset.page;
     $$('.tab').forEach(b=>b.classList.toggle('active', b===t));
     pages.forEach(p=> $('#page-'+p).classList.toggle('active', p===pg));
-    if(window.gtag){ gtag('event','page_view',{page_path:'/'+pg}); }
     if(pg==='history') renderHistory();
-    window.scrollTo({top:0,behavior:'smooth'});
+    // remove window.scrollTo jump; keep current position
   });
 
   // streak
@@ -523,7 +491,7 @@
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
 
-  // expected readiness curve (gentler early)
+  // expected readiness curve
   const curvePts = [[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
   function expectedReadiness(age){
     const pts = curvePts;
@@ -539,7 +507,7 @@
   // pension present value
   function pensionPV(monthly, startAge, nowAge){
     if(monthly<=0) return 0;
-    if(startAge<=nowAge) return (monthly*12)/SWR; // already eligible
+    if(startAge<=nowAge) return (monthly*12)/SWR; // eligible now
     const years = Math.max(0, startAge - nowAge);
     const principalAtStart = (monthly*12)/SWR;
     return principalAtStart / Math.pow(1+REAL_RET, years);
@@ -588,11 +556,14 @@
       : 0;
 
     const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
-    const r = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
-    const expR = expectedReadiness(val('age')||30);
 
-    const sFI   = map01(r/Math.max(0.05,expR), 0, 1);
-    const sNW   = map01((v.targetFI>0 ? v.net / v.targetFI : (v.net>0?1:0)), 0, 1);
+    // Readiness ratio: 1.0 = fully funded; allow extra credit up to 1.2
+    const r = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
+
+    const sFI   = map01(r, 0, 1.2);                                   // <-- pension now moves needle strongly
+    const sNW   = map01((v.targetFI>0 ? v.net / v.targetFI : (v.net>0?1:0)), 0, 1.2);
+
+    const expR = expectedReadiness(val('age')||30);
     const ageGap = clamp((r - expR), -1, 1);
     const sAGE = map01( ageGap, -0.4, 0.25 );
 
@@ -790,7 +761,8 @@
   // explainers
   function renderWhy(v,s){
     $('#chips').innerHTML = [
-      `<span class="chip">Age curve met: <b>${(s.readiness/Math.max(.05,expectedReadiness(val('age')))*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Readiness: <b>${(s.readiness*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Age curve: <b>${(s.expR*100).toFixed(0)}%</b></span>`,
       `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
       `<span class="chip">Emergency fund: <b>${s.efMonths?.toFixed?.(1)??'0'} mo</b></span>`,
       `<span class="chip">Mortgage LTV: <b>${(s.ltv*100).toFixed(0)}%</b></span>`
@@ -815,6 +787,23 @@
     if(!ideas.length) ideas.push(`You’re ahead for your age. Keep the systems humming.`);
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
+
+  // ---------- Mascot eye-follow ----------
+  (function eyes(){
+    const l=$('#eyeL'), r=$('#eyeR');
+    if(!l||!r) return;
+    const cxL=+l.getAttribute('cx'), cyL=+l.getAttribute('cy');
+    const cxR=+r.getAttribute('cx'), cyR=+r.getAttribute('cy');
+    function move(e){
+      const rect = document.body.getBoundingClientRect();
+      const x = e.clientX/rect.width*2-1, y = e.clientY/rect.height*2-1;
+      const dx = clamp(x, -1, 1)*2.5, dy = clamp(y, -1, 1)*2.5;
+      l.setAttribute('cx', cxL+dx); l.setAttribute('cy', cyL+dy);
+      r.setAttribute('cx', cxR+dx); r.setAttribute('cy', cyR+dy);
+    }
+    window.addEventListener('mousemove', move);
+    window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
+  })();
 
   // ---------- Grade flow (hardened for phones) ----------
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
@@ -860,49 +849,40 @@
   document.getElementById('gradeBtn').addEventListener('click', runGradeSafely);
   document.getElementById('gradeBtnTop').addEventListener('click', ()=>{
     pages.forEach(p=> document.getElementById('page-'+p).classList.toggle('active', p==='grade'));
-    window.scrollTo({top:document.querySelector('#page-grade').offsetTop-20,behavior:'smooth'});
     runGradeSafely();
   });
 
   // demo + copy buttons (use safeCopy)
   $('#demoBtnTop').addEventListener('click', ()=>{
-    const demo={income:7500, expenses:4000, age:30, home:475000, retire:72000, brokerage:29000, car:15000, hsa:1500, cash:24000, mortgage:329000, student:26000, auto:13500, cc:0, mortgageApr:5.25, studentApr:4.9, autoApr:3.5, ccApr:24.99, pretaxMonthly:900, eduMonthly:200, pensionMonthly:0, pensionAge:67};
+    const demo={
+      income:7500, expenses:4000, age:30,
+      home:475000, retire:72000, brokerage:29000, car:15000, hsa:1500, cash:24000,
+      mortgage:329000, student:26000, auto:13500, cc:0,
+      mortgageApr:5.25, studentApr:4.9, autoApr:3.5, ccApr:24.99,
+      pretaxMonthly:900, eduMonthly:200, pensionMonthly:0, pensionAge:67
+    };
     Object.keys(demo).forEach(id=>{ if(els[id]) els[id].value=demo[id]; });
     updateHints();
     pages.forEach(p=> $('#page-'+p).classList.toggle('active', p==='grade'));
-    window.scrollTo({top:document.querySelector('#page-grade').offsetTop-20,behavior:'smooth'});
   });
   $('#copyTop').addEventListener('click', ()=> { safeCopy(buildShareURL()); showToast(); });
   $('#copyAgain').addEventListener('click', ()=> safeCopy(buildShareURL()));
 
-  // reset
+  // reset (monetary fields to 0; keep age 30)
   $('#resetBtn').addEventListener('click', ()=>{
-    document.querySelectorAll('input[type="number"]').forEach(el => el.value = (el.id==='age'?30:0));
+    $$('#page-grade input[type="number"]').forEach(el=>{
+      el.value = (el.id==='age'?30:0);
+    });
     updateHints();
     bigGrade.textContent='—'; bigGrade.classList.remove('show');
     scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
     progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
 
-  // history first render
+  // render history once
   renderHistory();
-
-  /* ---------- Intro Modal (skip on tiny phones) ---------- */
-  const INTRO_KEY='gmf_intro_seen';
-  const introModal = $('#introModal');
-  const introOkay = $('#introOkay');
-  const dontShow = $('#dontShow');
-  function maybeShowIntro(){
-    const seen = localStorage.getItem(INTRO_KEY)==='1';
-    if(!seen && window.innerWidth>480){ introModal.classList.add('show'); }
-  }
-  introOkay.addEventListener('click', ()=>{
-    if(dontShow.checked) localStorage.setItem(INTRO_KEY,'1');
-    introModal.classList.remove('show');
-  });
-  introModal.addEventListener('click', (e)=>{ if(e.target===introModal){ if(dontShow.checked) localStorage.setItem(INTRO_KEY,'1'); introModal.classList.remove('show'); }});
-  setTimeout(maybeShowIntro, 50);
 })();
 </script>
 </body>
 </html>
+
