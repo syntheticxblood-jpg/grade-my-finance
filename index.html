@@ -12,12 +12,6 @@
   .page{display:none} .page.active{display:block}
 
   /* Results */
-  .resultTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .resultLeft{display:flex;align-items:center;gap:14px}
-  .bigGrade{font-size:80px;font-weight:900;opacity:0;transform:scale(.7) rotate(-6deg)}
-  .bigGrade.show{animation:pop .65s cubic-bezier(.2,.9,.2,1) forwards}
-  @keyframes pop{0%{opacity:0;transform:scale(.7) rotate(-6deg)}60%{opacity:1;transform:scale(1.08) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
-  .scoreline{font-size:14px;color:var(--muted)}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
   .chip{padding:8px 12px;border-r
   $('#gradeBtn').addEventListener('click', ()=>{
