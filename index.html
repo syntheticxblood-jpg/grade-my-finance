@@ -4,15 +4,15 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
-<meta name="description" content="Your money, graded like a report card. Simple, transparent scoring you can actually use.">
+<meta name="description" content="Simple, one-time-use financial grade. No accounts, no history — just a clear score.">
+
 <style>
 :root{
   --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
   --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
   --g1:#16a34a; --g2:#34d399; --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
-  --header-h:136px;
+  --header-h:122px;
 }
-.light{ --bg:#f5faf6; --panel:#ffffff; --card:#ffffff; --text:#0f172a; --muted:#4b5563; --line:rgba(15,23,42,.12); --accent:#16a34a; --accent2:#34d399; --shadow:0 12px 34px rgba(15,23,42,.08); }
 *{box-sizing:border-box}
 html,body{width:100%}
 body{
@@ -23,133 +23,90 @@ body{
     var(--bg);
   color:var(--text); font-family:Inter,system-ui,Segoe UI,Roboto,Arial; line-height:1.35;
 }
-a{color:var(--accent); text-decoration:none}
-.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.container{max-width:1100px;margin:0 auto;padding:0 16px}
+header{ position:fixed; inset:0 0 auto 0; z-index:10; height:var(--header-h);
+  background:linear-gradient(90deg,var(--accent),var(--accent2)); border-bottom:1px solid var(--line);
+}
+.hdr{ height:100%; display:flex; align-items:center; justify-content:center; gap:14px }
+.logo{height:86px; width:auto; display:block; filter:drop-shadow(0 10px 24px rgba(0,0,0,.35))}
+.brand{font-weight:900; font-size:22px; color:#062c1b}
 
-/* header */
-header{ position:fixed; inset:0 0 auto 0; z-index:80; height:var(--header-h); background:linear-gradient(90deg,var(--accent),var(--accent2)); border-bottom:1px solid var(--line); }
-.hdr{ max-width:1200px; margin:0 auto; height:100%; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10px; padding:14px 16px; }
-.h-left{display:flex; align-items:center; gap:8px}
-.h-center{display:flex; justify-content:center; align-items:center}
-.h-right{display:flex; align-items:center; gap:8px; justify-self:end}
-.pill{border:none;padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
-.light .pill{background:#0f172a}
-select.pill{padding-right:28px}
-.logo{height:90px; width:auto; display:block; filter:drop-shadow(0 10px 24px rgba(0,0,0,.35))}
-
-/* hero */
-.hero{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:18px 0 6px; text-align:center; }
-.hero-card{ width:min(680px,92vw); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02)); border:1px solid var(--line); border-radius:22px; padding:24px; box-shadow:var(--shadow); }
-.hero-title{margin:0 0 10px;font-size:34px;font-weight:900}
-.hero-tag{margin:0 0 14px;color:var(--muted);font-size:16px}
+.hero{ display:flex; flex-direction:column; align-items:center; gap:14px; padding:16px 0 8px; text-align:center; }
+.hero-card{ width:min(720px,92vw); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--line); border-radius:22px; padding:22px; box-shadow:var(--shadow); }
+.hero-title{margin:0 0 8px;font-size:30px;font-weight:900}
+.hero-tag{margin:0 0 10px;color:var(--muted)}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer}
+.btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  color:var(--text);font-weight:900;cursor:pointer}
 .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
 
-/* mascot */
-.mascot{display:grid;place-items:center}
-.m-bubble{margin-top:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);padding:6px 10px;border-radius:999px;font-size:12px;backdrop-filter:blur(6px)}
-@keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
-
-/* layout */
-.shell{max-width:1200px;margin:0 auto;padding:0 16px 18px;display:grid;grid-template-columns:280px 1fr;gap:18px}
-aside{align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
-.section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
-input,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
-.btn.small{padding:8px 10px;border-radius:10px}
-
-/* sidebar tabs */
-.nav{display:flex;flex-direction:column;gap:10px;margin-top:10px}
-.tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
-.tab:hover{transform:translateY(-1px)}
-.tab.active{border-color:transparent;background:linear-gradient(90deg,var(--g1),var(--g2));color:#062c1b}
-
-/* cards & grid */
+.shell{max-width:1100px;margin:0 auto;padding:0 16px 24px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
-.page{display:none} .page.active{display:block}
+.section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
 
-/* inputs grid */
 .inputs{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:16px}
-@media (max-width:1060px){ .inputs{grid-template-columns:repeat(2,minmax(220px,1fr))} .shell{grid-template-columns:1fr} }
-@media (max-width:720px){
-  :root{ --header-h:118px; }
-  .logo{height:84px}
-  .inputs{grid-template-columns:1fr}
-  select.pill{max-width:160px}
-}
+@media (max-width:1060px){ .inputs{grid-template-columns:repeat(2,minmax(220px,1fr))} }
+@media (max-width:720px){ .inputs{grid-template-columns:1fr} .logo{height:78px} }
 
-/* score area */
+input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:var(--text)}
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
+
 .flex{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .big{font-size:70px;font-weight:900}
-.progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.progress{height:10px;background:#0b1226;border:1px solid var(--line);border-radius:999px;overflow:hidden}
 .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .chip{padding:7px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px}
 
-/* overlay loader */
-.overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:120}
-.overlay.show{display:grid}
-.loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
-.bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
-.bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
-@keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
+.mascot{display:grid;place-items:center}
+@keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-6px) rotate(1.2deg)}}
+.m-bubble{margin-top:6px;background:rgba(0,0,0,.35);border:1px solid var(--line);padding:6px 10px;border-radius:999px;font-size:12px;backdrop-filter:blur(6px)}
 </style>
 </head>
 
 <body>
-<canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:110;"></canvas>
-
 <header>
   <div class="hdr">
-    <div class="h-left"><span id="streakPill" class="pill" style="display:none">Streak: 0</span></div>
-    <div class="h-center">
-      <!-- Logo -->
-      <svg class="logo" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
-        <defs>
-          <radialGradient id="gSphere" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#b9f4d1"/><stop offset=".55" stop-color="#34d399"/><stop offset="1" stop-color="#128a3f"/></radialGradient>
-          <linearGradient id="paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e8ffe9"/></linearGradient>
-        </defs>
-        <g transform="translate(16,10)">
-          <circle cx="40" cy="45" r="38" fill="url(#gSphere)"/>
-          <circle cx="40" cy="45" r="38" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
-          <text x="40" y="58" text-anchor="middle" font-size="44" font-weight="1000" fill="#072b19" stroke="#eafff3" stroke-width="1.6" paint-order="stroke">G</text>
-        </g>
-        <g transform="translate(104,8) rotate(-9)">
-          <rect width="66" height="86" rx="12" fill="url(#paper)" stroke="#86EFAC" stroke-width="2"/>
-          <g stroke="#10B981" stroke-width="2"><line x1="12" y1="26" x2="54" y2="26"/><line x1="12" y1="38" x2="54" y2="38"/><line x1="12" y1="50" x2="54" y2="50"/></g>
-          <text x="33" y="68" text-anchor="middle" font-size="22" font-weight="900" fill="#ef4444">A+</text>
-        </g>
-      </svg>
-    </div>
-    <div class="h-right">
-      <select id="profileSelect" class="pill" aria-label="Select profile"></select>
-      <button id="newProfileBtn" class="pill">New</button>
-      <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
-      <button id="authBtn" class="pill">Account</button>
-    </div>
+    <svg class="logo" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
+      <defs>
+        <radialGradient id="gSphere" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#b9f4d1"/><stop offset=".55" stop-color="#34d399"/><stop offset="1" stop-color="#128a3f"/></radialGradient>
+        <linearGradient id="paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e8ffe9"/></linearGradient>
+      </defs>
+      <g transform="translate(16,10)">
+        <circle cx="40" cy="45" r="38" fill="url(#gSphere)"/>
+        <circle cx="40" cy="45" r="38" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+        <text x="40" y="58" text-anchor="middle" font-size="44" font-weight="1000" fill="#072b19" stroke="#eafff3" stroke-width="1.6" paint-order="stroke">G</text>
+      </g>
+      <g transform="translate(104,8) rotate(-9)">
+        <rect width="66" height="86" rx="12" fill="url(#paper)" stroke="#86EFAC" stroke-width="2"/>
+        <g stroke="#10B981" stroke-width="2"><line x1="12" y1="26" x2="54" y2="26"/><line x1="12" y1="38" x2="54" y2="38"/><line x1="12" y1="50" x2="54" y2="50"/></g>
+        <text x="33" y="68" text-anchor="middle" font-size="22" font-weight="900" fill="#ef4444">A+</text>
+      </g>
+    </svg>
+    <div class="brand">Grade My Finance</div>
   </div>
 </header>
 
 <section class="container hero">
   <div class="hero-card">
     <h1 class="hero-title">Your money, graded like a report card ♥</h1>
-    <p class="hero-tag">All inputs interact — age, income, expenses, assets, and debts.</p>
+    <p class="hero-tag">No sign-up. Plug in numbers → get a score. Simple and effective.</p>
     <div class="hero-cta">
-      <button class="btn" id="demoBtnTop">Try Demo</button>
+      <button class="btn" id="demoBtn">Try Demo</button>
       <button class="btn primary" id="gradeBtnTop">Grade me now</button>
-      <button class="btn" id="copyTop">Copy share link</button>
+      <button class="btn" id="copyLink">Copy share link</button>
     </div>
   </div>
 
   <div class="mascot">
-    <svg viewBox="0 0 240 220" width="190" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
+    <svg viewBox="0 0 240 220" width="170" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
       <defs><linearGradient id="mc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient></defs>
       <ellipse cx="120" cy="206" rx="50" ry="10" fill="rgba(0,0,0,.3)"/>
       <rect x="60" y="36" width="120" height="150" rx="22" fill="url(#mc)" stroke="#86EFAC" stroke-width="2"/>
       <circle cx="96" cy="78" r="6" fill="#0f172a"/><circle cx="144" cy="78" r="6" fill="#0f172a"/>
       <path d="M98 98 q22 14 44 0" stroke="#16a34a" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <g stroke="#a7f3d0" stroke-width="2"><line x1="80" y1="116" x2="160" y2="116"/><line x1="80" y1="132" x2="160" y2="132"/><line x1="80" y1="148" x2="160" y2="148"/></g>
       <g transform="translate(120,120)"><circle r="20" fill="#10b981" stroke="#065f46" stroke-width="3"/><circle r="15" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/><text text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="900" fill="#a7f3d0">A+</text></g>
     </svg>
     <div class="m-bubble">“Let’s make money feel easy.”</div>
@@ -157,35 +114,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </section>
 
 <div class="shell">
-  <aside>
-    <div class="section">Profiles</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-      <select id="profileSelectSide" style="flex:1" class="card"></select>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-      <button id="newProfileBtnSide" class="btn small">New</button>
-      <button id="renameProfileBtn" class="btn small">Rename</button>
-      <button id="deleteProfileBtn" class="btn small">Delete</button>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button id="exportProfileBtn" class="btn small">Export</button>
-      <button id="importProfileBtn" class="btn small">Import</button>
-    </div>
-    <div class="section" id="acctLabel" style="margin-top:10px">Account: <b>Guest</b></div>
-    <div id="streakHint" class="section" style="margin-top:2px">Streak: 0</div>
-
-    <nav class="nav" id="sidebar">
-      <button class="tab active" data-page="grade">Grade</button>
-      <button class="tab" data-page="history">History</button>
-      <button class="tab" data-page="about">About Us</button>
-      <button class="tab" data-page="goal">Our Goal</button>
-      <button class="tab" data-page="faq">FAQ</button>
-      <button class="tab" data-page="contact">Contact</button>
-    </nav>
-  </aside>
-
   <main>
-    <section id="page-grade" class="page active">
+    <section id="grade" class="page active">
       <div class="inputs">
         <div class="card"><div class="section">Monthly Income (after-tax)</div><input id="income" type="number" value="0" min="0"></div>
         <div class="card"><div class="section">Monthly Expenses</div><input id="expenses" type="number" value="0" min="0"></div>
@@ -230,18 +160,9 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   </main>
 </div>
 
-<div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
-  <div class="loader">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <strong>Crunching numbers…</strong><span id="pct">0%</span>
-    </div>
-    <div class="bar"><div class="fill" id="barFill"></div></div>
-  </div>
-</div>
-
 <script>
 (() => {
-/* helpers */
+/* === helpers === */
 const $=s=>document.querySelector(s);
 const money=n=>isFinite(n)?`$${Math.round(n).toLocaleString()}`:'—';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
@@ -249,9 +170,10 @@ const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
 
 /* inputs */
 const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc'];
-const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)])); const val=id=>{const n=Number(els[id]?.value||0); return isFinite(n)?n:0;};
+const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
+const val=id=>{const n=Number(els[id]?.value||0); return isFinite(n)?n:0;};
 
-/* Age → target NW multiple (× baseline) */
+/* curves & constants */
 const NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
 function targetNW(age){
   if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
@@ -262,12 +184,10 @@ function targetNW(age){
   }
   return NW_CURVE[NW_CURVE.length-1][1];
 }
-
-/* constants */
 const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25;
-const MEDIAN_INCOME=70000, TOP_INCOME=MEDIAN_INCOME*3; // for the income bonus
+const MEDIAN_INCOME=70000, TOP_INCOME=MEDIAN_INCOME*3;
 
-/* gather values */
+/* values */
 function values(){
   const v=Object.fromEntries(ids.map(id=>[id,val(id)]));
   v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
@@ -276,7 +196,7 @@ function values(){
 
   v.annualIncome=v.income*12; v.annualSpend=v.expenses*12;
 
-  // **Spend-based baseline with floor** (income no longer inflates target)
+  // Spend-based baseline (income won't punish you)
   v.baseline=Math.max(v.annualSpend, SPEND_FLOOR);
 
   const denomSav=Math.max(v.income, v.expenses, 2000);
@@ -293,7 +213,6 @@ function values(){
   const fiSpendBase = Math.max(v.annualSpend, SPEND_FLOOR);
   v.fiProgress = fiSpendBase>0 ? v.net / (FI_MULT * fiSpendBase) : 0;
 
-  // **Income strength bonus** (helps slightly, never hurts)
   v.incomeStrength = map01(v.annualIncome, MEDIAN_INCOME, TOP_INCOME);
 
   return v;
@@ -304,19 +223,13 @@ function scoreModel(v){
   const sSave = map01(v.saveRate, 0, MAX_SAVINGS);
   const sEF   = map01(v.efMonths, 0, EF_TARGET);
   const sDebt = clamp(1 - v.dtiNonMort/DTI_ZERO_AT, 0, 1);
+  const sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85); // capped at 100%
 
-  // **Cap age-NW at 1.0** (no >100% bonus)
-  const sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
-
-  // **Income bonus** is 5% of the score
   const raw = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + v.incomeStrength*0.05) * 100;
 
-  // FI override: >=25× yearly spend floors at A-
-  const score = v.fiProgress >= 1 ? Math.max(raw, 94) : raw;
-
+  const score = v.fiProgress >= 1 ? Math.max(raw, 94) : raw; // FI override (A- floor)
   return {score:Math.round(score*10)/10,sSave,sEF,sDebt,sAgeNW,...v};
 }
-
 function gradeLetter(s){
   const x=s.score;
   return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F';
@@ -326,21 +239,16 @@ function gradeLetter(s){
 const big=$('#bigGrade'), sline=$('#scoreLine'), nwln=$('#nwLine');
 function chip(txt){ const span=document.createElement('span'); span.className='chip'; span.innerHTML=txt; return span; }
 function renderWhy(s){
-  const chips=document.getElementById('chips'); chips.innerHTML='';
+  const chips=$('#chips'); chips.innerHTML='';
   chips.append(chip(`Savings rate: <b>${Math.round(s.saveRate*100)}%</b>`));
   chips.append(chip(`EF: <b>${s.efMonths.toFixed(1)} mo</b>`));
   chips.append(chip(`Debt vs baseline: <b>${Math.round(s.dtiNonMort*100)}%</b>`));
   chips.append(chip(`NW progress: <b>${(s.nwProgress*100).toFixed(0)}%</b> (age ${s.age} target ${s.nwTargetMultiple.toFixed(2)}× baseline)`));
+  chips.append(chip(`Income strength: <b>${Math.round(map01(s.annualIncome, MEDIAN_INCOME, TOP_INCOME)*100)}%</b>`));
 
-  // Show income bonus only when it's non-zero for clarity
-  chips.append(chip(`Income strength: <b>${Math.round(map01(s.annualIncome, ${MEDIAN_INCOME}, ${TOP_INCOME})*100)}%</b>`));
-
-  document.getElementById('whyList').innerHTML=[
-    `Baseline (max of spend, $${SPEND_FLOOR.toLocaleString()} floor): <b>${money(s.baseline)}</b> / yr.`,
+  $('#whyList').innerHTML=[
+    `Baseline (spend-based, $${SPEND_FLOOR.toLocaleString()} floor): <b>${money(s.baseline)}</b>/yr.`,
     `Age ${s.age} target NW: <b>${money(s.nwTargetAmount)}</b> (${s.nwTargetMultiple.toFixed(2)}× baseline).`,
-    `Savings rate (target 25%): <b>${Math.round(s.saveRate*100)}%</b>.`,
-    `Emergency fund (target 6 mo): <b>${s.efMonths.toFixed(1)} months</b>.`,
-    `Non-mortgage debt vs baseline: <b>${Math.round(s.dtiNonMort*100)}%</b>.`,
     `FI progress vs 25× spend: <b>${Math.round(s.fiProgress*100)}%</b>.`
   ].map(x=>`<div>${x}</div>`).join('');
 }
@@ -351,49 +259,55 @@ function renderImprove(s){
   if(s.efMonths<6){ ideas.push(`Build emergency fund to 6 months (≈ $${Math.round((s.expenses||0)*6).toLocaleString()}).`); }
   if(s.dtiNonMort>0.25){ ideas.push(`Pay down non-mortgage debt (now ~${Math.round(s.dtiNonMort*100)}% of baseline).`); }
   if(!ideas.length) ideas.push(`You’re in great shape — keep compounding and stay the course.`);
-  document.getElementById('improveList').innerHTML=ideas.map(x=>`<div>• ${x}</div>`).join('');
+  $('#improveList').innerHTML=ideas.map(x=>`<div>• ${x}</div>`).join('');
 }
 function show(s){
   const L=gradeLetter(s);
   big.textContent=L;
   big.style.color=({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'})[L]||'var(--text)';
   sline.textContent=`Score: ${s.score.toFixed(1)} / 100.0`;
-  document.getElementById('progressFill').style.width=s.score+'%';
+  $('#progressFill').style.width=s.score+'%';
   nwln.textContent=`Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
   renderWhy(s); renderImprove(s);
 }
 
-/* overlay */
-const overlay=document.getElementById('overlay'), bar=document.getElementById('barFill'), pct=document.getElementById('pct');
-function showOverlay(cb){
-  let elapsed=0, dur=700; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
-  const t=setInterval(()=>{ elapsed+=100; const p=Math.min(100,Math.round((elapsed/dur)*100)); bar.style.width=p+'%'; pct.textContent=p+'%'; if(elapsed>=dur){clearInterval(t); overlay.classList.remove('show'); cb();}},100);
-}
-
 /* actions */
-function runGrade(){ showOverlay(()=>show(scoreModel(values()))); }
-document.getElementById('gradeBtn').addEventListener('click',runGrade);
-document.getElementById('gradeBtnTop').addEventListener('click',()=>{ runGrade(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
-document.getElementById('demoBtnTop').addEventListener('click',()=>{ 
-  const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000}; 
-  Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id];}); 
-  updateHints(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); 
+function grade(){ show(scoreModel(values())); }
+$('#gradeBtn').addEventListener('click',grade);
+$('#gradeBtnTop').addEventListener('click',()=>{ grade(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
+
+$('#demoBtn').addEventListener('click',()=>{ 
+  const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000};
+  Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id];});
+  updateHints();
+  window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'});
 });
-document.getElementById('resetBtn').addEventListener('click',()=>{ 
-  document.querySelectorAll('#page-grade input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0)); 
-  updateHints(); document.getElementById('progressFill').style.width='0%'; 
-  document.getElementById('chips').innerHTML=''; document.getElementById('whyList').textContent=''; 
-  document.getElementById('improveList').textContent=''; document.getElementById('bigGrade').textContent='—'; 
-  document.getElementById('scoreLine').textContent='Score: — / 100.0'; document.getElementById('nwLine').textContent='Net worth: —'; 
+
+$('#resetBtn').addEventListener('click',()=>{ 
+  document.querySelectorAll('input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0)); 
+  updateHints();
+  $('#progressFill').style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
+  $('#bigGrade').textContent='—'; $('#scoreLine').textContent='Score: — / 100.0'; $('#nwLine').textContent='Net worth: —';
+});
+
+$('#copyLink').addEventListener('click',()=>{ 
+  const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0));
+  const url=location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s))));
+  navigator.clipboard?.writeText(url); alert('Shareable link copied.');
 });
 
 /* hints */
-function updateHints(){ const v=values(); document.getElementById('assetsHint').textContent=`Total Assets: ${money(v.assets)}`; document.getElementById('liabHint').textContent=`Total Liabilities: ${money(v.liabs)}`; }
+function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}`; }
 ids.forEach(id=>els[id]?.addEventListener('input',updateHints)); updateHints();
+
+/* hash hydrate (optional) */
+(function(){ const m=location.hash.match(/#s=([^&]+)/); if(!m) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=obj[id]; }); updateHints(); }catch(e){} })();
+
 })();
 </script>
 </body>
 </html>
+
 
 
 
