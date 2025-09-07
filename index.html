@@ -11,6 +11,7 @@
 <meta property="og:url" content="https://grademyfinance.com/">
 <meta property="og:image" content="https://grademyfinance.com/og-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
+
 <style>
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
@@ -34,7 +35,7 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Sticky header with CLEAR "G" logo (reduced size) ---------- */
+  /* ---------- Sticky header with modern G logo ---------- */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
   .brand{display:flex;align-items:center;gap:14px}
@@ -60,11 +61,11 @@
   .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
   .btn.ghost{background:transparent}
 
-  /* ---------- 3D Mascot (ALWAYS visible on mobile) ---------- */
-  .hero-mascot{position:relative;display:grid;place-items:center;align-self:start}
+  /* ---------- Mascot (always visible on mobile) ---------- */
+  .hero-mascot{position:relative;display:grid;place-items:center;align-self:start;overflow:visible}
   .buddy{max-height:260px;width:auto}
   @media (max-width:1100px){ .buddy{max-height:220px} }
-  @media (max-width:640px){ .buddy{max-height:180px} }  /* no display:none; keep it visible */
+  @media (max-width:640px){ .buddy{max-height:180px} } /* keep visible on phones */
   .mascot-bubble{
     position:absolute;top:-6px;right:4px;background:rgba(0,0,0,.35);border:1px solid var(--line);
     padding:6px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
@@ -82,7 +83,7 @@
   @keyframes badgePop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
   @keyframes sparkle{0%{opacity:0;transform:translateY(-6px) scale(.8)}30%{opacity:1}100%{opacity:0;transform:translateY(-22px) scale(1.1)}}
 
-  /* ---------- Shell ---------- */
+  /* ---------- App shell ---------- */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
   aside{position:sticky;top:92px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
@@ -127,17 +128,13 @@
   footer{max-width:1200px;margin:12px auto 24px;padding:0 18px 24px;color:var(--muted)}
   footer a{color:var(--accent)}
 
-  /* ---------- Profiles panel (fixed layout) ---------- */
-  .profiles-card .row{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
-    gap:10px
-  }
+  /* Profiles card tidy grid */
+  .profiles-card .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
   .profiles-card select{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)}
   .profiles-card .btn{width:100%}
   .profiles-card .streakline{margin-top:8px}
 
-  /* ---------- History UI ---------- */
+  /* History UI */
   .hist-ui{display:grid;gap:12px}
   .hist-top{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
   .scrub{width:100%}
@@ -158,35 +155,38 @@
 </style>
 </head>
 <body class="dark">
-  <!-- Header with CLEAR “G” logo -->
+  <!-- Header -->
   <header>
     <div class="hdr">
       <div class="brand">
-        <!-- Unmistakable G: circular form + horizontal bar; embedded report card tile -->
-        <svg class="logoBig" viewBox="0 0 300 300" aria-hidden="true">
+        <!-- NEW Modern “G + report card” logo -->
+        <svg class="logoBig" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Grade My Finance logo">
           <defs>
-            <radialGradient id="gGlow" cx="50%" cy="40%" r="65%">
-              <stop offset="0" stop-color="#6ee7b7"/><stop offset=".5" stop-color="#34d399"/><stop offset="1" stop-color="#16a34a"/>
+            <radialGradient id="gmf-g" cx="45%" cy="38%" r="70%">
+              <stop offset="0"  stop-color="#66E3B0"/>
+              <stop offset=".55" stop-color="#34D399"/>
+              <stop offset="1"  stop-color="#16A34A"/>
             </radialGradient>
-            <linearGradient id="paperGradL" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="#F0FFF4"/><stop offset="1" stop-color="#D1FAE5"/>
+            <linearGradient id="gmf-paper" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#FFFFFF"/>
+              <stop offset="1" stop-color="#E9FFF3"/>
+            </linearGradient>
+            <linearGradient id="gmf-stroke" x1="0" x2="1">
+              <stop offset="0" stop-color="#052E1B"/>
+              <stop offset="1" stop-color="#094329"/>
             </linearGradient>
           </defs>
-          <circle cx="150" cy="150" r="135" fill="url(#gGlow)"/>
-          <!-- G ring -->
-          <circle cx="150" cy="150" r="95" fill="none" stroke="#052e1b" stroke-width="26"/>
-          <!-- inner notch to make G opening -->
-          <rect x="205" y="90" width="60" height="60" fill="url(#gGlow)"/>
-          <!-- horizontal bar for G -->
-          <line x1="150" y1="150" x2="240" y2="150" stroke="#052e1b" stroke-width="26" stroke-linecap="round"/>
-          <!-- embedded report card -->
-          <g transform="translate(208,60)">
-            <rect width="64" height="76" rx="13" fill="url(#paperGradL)" stroke="#bbf7d0" stroke-width="2"/>
-            <g stroke="#10b981" stroke-width="5" stroke-linecap="round">
-              <line x1="12" y1="30" x2="52" y2="30"/>
-              <line x1="12" y1="45" x2="52" y2="45"/>
+          <circle cx="150" cy="150" r="138" fill="url(#gmf-g)"/>
+          <circle cx="150" cy="150" r="96" fill="none" stroke="url(#gmf-stroke)" stroke-width="26"/>
+          <rect x="206" y="92" width="60" height="58" fill="url(#gmf-g)"/>
+          <line x1="150" y1="150" x2="240" y2="150" stroke="url(#gmf-stroke)" stroke-width="26" stroke-linecap="round"/>
+          <g transform="translate(208,66) rotate(-8)">
+            <rect width="66" height="82" rx="14" fill="url(#gmf-paper)" stroke="#BFF7DA" stroke-width="2"/>
+            <g stroke="#10B981" stroke-width="4" stroke-linecap="round">
+              <line x1="12" y1="26" x2="52" y2="26"/>
+              <line x1="12" y1="42" x2="52" y2="42"/>
             </g>
-            <path d="M14 20l10 10 22-22" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="14" y="66" font-family="Inter,ui-sans-serif,system-ui" font-weight="900" font-size="22" fill="#EF4444">A+</text>
           </g>
         </svg>
         <div>
@@ -214,7 +214,7 @@
       </div>
     </div>
 
-    <!-- 3D-style mascot: holds an A+ badge; more animations; mobile-visible -->
+    <!-- Mascot with A+ badge positioned safely inside view -->
     <div class="hero-mascot" aria-hidden="true">
       <svg class="buddy b-float" viewBox="0 0 360 300" role="img" aria-label="Report Card Buddy 3D">
         <defs>
@@ -230,7 +230,6 @@
         </defs>
         <ellipse cx="180" cy="270" rx="80" ry="16" fill="rgba(0,0,0,.25)" class="b-shadow"/>
         <g>
-          <!-- card body with 3D gloss -->
           <rect x="95" y="44" width="170" height="212" rx="26" fill="url(#paper3D)" stroke="#86EFAC" stroke-width="2"/>
           <ellipse cx="150" cy="66" rx="86" ry="26" fill="url(#vol)" opacity=".35"/>
           <g stroke="#CCFBE1" stroke-width="2">
@@ -239,21 +238,18 @@
             <line x1="110" x2="250" y1="150" y2="150"/>
             <line x1="110" x2="250" y1="170" y2="170"/>
           </g>
-          <!-- arms (right arm holds badge) -->
           <path d="M95 142 q-28 6 -36 -14" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
           <path d="M265 170 q36 12 40 -18" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round" class="b-wave"/>
-          <!-- legs -->
           <path d="M144 254 q-12 18 -26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
           <path d="M216 254 q12 18 26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <!-- face -->
           <circle id="eyeL" cx="148" cy="92" r="8" fill="#0f172a"/>
           <circle id="eyeR" cx="208" cy="92" r="8" fill="#0f172a"/>
           <g class="b-blink"><rect x="140" y="86" width="16" height="6" fill="#fff"/><rect x="200" y="86" width="16" height="6" fill="#fff"/></g>
           <path id="smile" d="M144 120 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
           <circle cx="136" cy="104" r="11" fill="url(#cheek)"/><circle cx="220" cy="104" r="11" fill="url(#cheek)"/>
 
-          <!-- A+ badge in hand -->
-          <g class="b-pop" transform="translate(308,142) rotate(-10)">
+          <!-- A+ badge moved inward so it never clips -->
+          <g class="b-pop" transform="translate(285,145) rotate(-10)">
             <circle r="26" fill="#10b981" stroke="#065f46" stroke-width="3"/>
             <circle r="22" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
             <text y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#a7f3d0">A+</text>
@@ -261,9 +257,9 @@
 
           <!-- sparkles -->
           <g fill="#a7f3d0" opacity=".8">
-            <circle class="spark" cx="280" cy="70" r="2"/>
-            <circle class="spark" cx="300" cy="86" r="2.5"/>
-            <circle class="spark" cx="262" cy="62" r="1.8"/>
+            <circle class="spark" cx="272" cy="75" r="2"/>
+            <circle class="spark" cx="292" cy="92" r="2.5"/>
+            <circle class="spark" cx="254" cy="70" r="1.8"/>
           </g>
         </g>
       </svg>
@@ -436,39 +432,16 @@
         </div>
       </section>
 
-      <!-- About/Goal/FAQ/Contact -->
-      <section id="page-about" class="page">
-        <div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math and friendly design. Everything runs in your browser.</p></div>
-      </section>
-      <section id="page-goal" class="page">
-        <div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div>
-      </section>
-      <section id="page-faq" class="page">
-        <div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div>
-      </section>
-      <section id="page-contact" class="page">
-        <div class="card"><h2>Contact</h2><p>grademyfinance@gmail.com</p></div>
-      </section>
+      <!-- Simple pages -->
+      <section id="page-about" class="page"><div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math and friendly design. Everything runs in your browser.</p></div></section>
+      <section id="page-goal" class="page"><div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div></section>
+      <section id="page-faq" class="page"><div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div></section>
+      <section id="page-contact" class="page"><div class="card"><h2>Contact</h2><p>grademyfinance@gmail.com</p></div></section>
 
       <!-- In-page “Read more” articles -->
-      <section id="read-saved-by-30" class="page">
-        <div class="card">
-          <h2>Saved by 30</h2>
-          <p>Why early savings matter: compounding + agility + optionality. Hitting a baseline (e.g., 1× annual expenses) by 30 builds resilience.</p>
-        </div>
-      </section>
-      <section id="read-savings-rate" class="page">
-        <div class="card">
-          <h2>Savings Rate Benchmarks</h2>
-          <p>Common targets: 15–20% steady • 25–35% faster • 40%+ aggressive FI. Choose what fits your stability and goals.</p>
-        </div>
-      </section>
-      <section id="read-what-is-fire" class="page">
-        <div class="card">
-          <h2>What is FIRE?</h2>
-          <p>Financial Independence, Retire Early: build assets so returns can sustainably cover expenses (often 3–4% withdrawal with buffers).</p>
-        </div>
-      </section>
+      <section id="read-saved-by-30" class="page"><div class="card"><h2>Saved by 30</h2><p>Why early savings matter: compounding + agility + optionality. Hitting a baseline (e.g., 1× annual expenses) by 30 builds resilience.</p></div></section>
+      <section id="read-savings-rate" class="page"><div class="card"><h2>Savings Rate Benchmarks</h2><p>Common targets: 15–20% steady • 25–35% faster • 40%+ aggressive FI. Choose what fits your stability and goals.</p></div></section>
+      <section id="read-what-is-fire" class="page"><div class="card"><h2>What is FIRE?</h2><p>Financial Independence, Retire Early: build assets so returns can sustainably cover expenses (often 3–4% withdrawal with buffers).</p></div></section>
     </main>
   </div>
 
@@ -501,11 +474,9 @@
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
   const fmtDate = iso => new Date(iso).toLocaleString();
 
-  // assumptions / weights
   const SWR = 0.06, EF_TARGET = 6, EQUITY_FACTOR = 0.40, REAL_RET = 0.03;
   const NW_W=14, FI_W=56, AGE_W=12, SAVE_W=8, EF_W=6, NONMORT_W=2, LTV_W=2;
 
-  // theme
   const modeBtn = $('#modeBtn');
   function setMode(light){
     document.body.classList.toggle('light', light);
@@ -516,7 +487,7 @@
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // simple hash router for read pages
+  // router for read pages
   function routeFromHash(){
     const h = location.hash.replace('#','');
     const pages=['grade','history','about','goal','faq','contact','read-saved-by-30','read-savings-rate','read-what-is-fire'];
@@ -568,17 +539,14 @@
 
   const curvePts = [[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
   function expectedReadiness(age){
-    const pts = curvePts;
-    if(age<=pts[0][0]) return pts[0][1];
-    if(age>=pts[pts.length-1][0]) return pts[pts.length-1][1];
-    for(let i=1;i<pts.length;i++){
-      const [a0,r0]=pts[i-1], [a1,r1]=pts[i];
+    if(age<=25) return 0.08; if(age>=60) return 1.0;
+    for(let i=1;i<curvePts.length;i++){
+      const [a0,r0]=curvePts[i-1], [a1,r1]=curvePts[i];
       if(age<=a1){ const t=(age-a0)/(a1-a0); return r0+(r1-r0)*t; }
     }
     return 1;
   }
 
-  // pension PV
   function pensionPV(monthly, startAge, nowAge){
     if(monthly<=0) return 0;
     if(startAge<=nowAge) return (monthly*12)/SWR;
@@ -668,7 +636,6 @@
     return "F";
   }
 
-  /* ---------- Clipboard helper ---------- */
   function safeCopy(text){
     try{
       if(navigator.clipboard && navigator.clipboard.writeText){
@@ -685,7 +652,6 @@
     }catch(e){}
   }
 
-  /* ---------- Overlay + toast ---------- */
   const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
   function showOverlay(){
     let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
@@ -699,18 +665,17 @@
   function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   window.addEventListener('resize', resize); resize();
   function confetti(){
-    const n=140; bits=[];
+    const n=120; bits=[];
     for(let i=0;i<n;i++){
       bits.push({x:Math.random()*canvas.width,y:-20-Math.random()*100,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:4+Math.random()*6,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.2,clr:`hsl(${Math.random()*360},90%,60%)`});
     }
     let t=0; const anim=()=>{
       t++; ctxC.clearRect(0,0,canvas.width,canvas.height);
       bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; ctxC.save(); ctxC.translate(b.x,b.y); ctxC.rotate(b.a); ctxC.fillStyle=b.clr; ctxC.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctxC.restore(); });
-      if(t<240) requestAnimationFrame(anim); else ctxC.clearRect(0,0,canvas.width,canvas.height);
+      if(t<220) requestAnimationFrame(anim); else ctxC.clearRect(0,0,canvas.width,canvas.height);
     }; anim();
   }
 
-  // share link
   const allInputIds = ids;
   function currentState(){ const s={}; allInputIds.forEach(id=> s[id]=val(id)); s.__ver='age2_pension'; return s; }
   function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
@@ -719,7 +684,6 @@
     try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); allInputIds.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
   })();
 
-  /* ---------- Profiles, History, Trophies ---------- */
   const PROFILE_KEY='gmf_profiles_v1';
   function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
   function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
@@ -788,7 +752,7 @@
     return entry;
   }
 
-  /* ---------- Mascot eye-follow ---------- */
+  // mascot eyes
   (function eyes(){
     const l=$('#eyeL'), r=$('#eyeR');
     if(!l||!r) return;
@@ -805,7 +769,7 @@
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
 
-  /* ---------- Grade flow ---------- */
+  // Grade flow
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
 
   function doGrade(){
@@ -839,7 +803,7 @@
       showOverlay();
       requestAnimationFrame(()=> setTimeout(()=>{
         try{ doGrade(); }catch(err){ console.error(err); alert('Oops—could not calculate. Try again.'); }
-        const ov = document.getElementById('overlay'); if(ov) ov.classList.remove('show');
+        document.getElementById('overlay')?.classList.remove('show');
       }, 420));
     }catch(err){
       console.error(err);
@@ -853,7 +817,7 @@
     runGradeSafely();
   });
 
-  // demo + copy buttons
+  // demo + copy
   $('#demoBtnTop').addEventListener('click', ()=>{
     const demo={
       income:7500, expenses:4000, age:30,
@@ -880,7 +844,6 @@
     progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
 
-  // explainers
   function renderWhy(v,s){
     $('#chips').innerHTML = [
       `<span class="chip">Readiness: <b>${(s.readiness*100).toFixed(0)}%</b></span>`,
@@ -911,7 +874,7 @@
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
-  /* ===================== HISTORY: interactive chart + slider ===================== */
+  // ======= History (interactive) =======
   const chart = $('#historyChart');
   const ctx = chart.getContext('2d');
   const tip = $('#tip');
@@ -920,7 +883,7 @@
   const detail = $('#histDetail');
 
   function drawChart(points){
-    const dpr = window.devicePixelRatio||1;
+    const dpr = Math.min(1.5, window.devicePixelRatio || 1);
     const rect = chart.getBoundingClientRect();
     chart.width = Math.floor(rect.width*dpr);
     chart.height= Math.floor(220*dpr);
@@ -935,7 +898,6 @@
     const xs=points.map((_,i)=> i/(Math.max(1,points.length-1)));
     const ys=points.map(p=> 1 - (p.score/100));
 
-    // grid
     ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--line') || 'rgba(148,163,184,.2)';
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -945,7 +907,6 @@
     }
     ctx.stroke();
 
-    // line
     ctx.lineWidth=2;
     ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent') || '#22d3ee';
     ctx.beginPath();
@@ -955,7 +916,6 @@
     }
     ctx.stroke();
 
-    // points
     ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2') || '#a78bfa';
     points.forEach((p,i)=>{
       const x=pad+xs[i]*w, y=pad+ys[i]*h;
@@ -972,7 +932,6 @@
     range.max = Math.max(0, pts.length-1);
     range.value = pts.length ? pts.length-1 : 0;
 
-    // trophy wall
     const wall=$('#trophyWall'); wall.innerHTML='';
     (prof.trophies||[]).forEach(code=>{
       const span=document.createElement('span'); span.className='badge'; span.textContent=({
@@ -996,10 +955,9 @@
 
     // chart hover/drag
     const rect = chart.getBoundingClientRect();
-    function pointPos(i){
+    function pointX(i){
       const pad=16; const w=rect.width-pad*2;
-      const x=pad+(i/(Math.max(1,pts.length-1)))*w;
-      return x;
+      return pad+(i/(Math.max(1,pts.length-1)))*w;
     }
     let isDown=false;
     function nearestIndex(x){
@@ -1010,16 +968,14 @@
     function showAt(x){
       if(!pts.length) return;
       const i = nearestIndex(x);
-      const cx = pointPos(i);
+      const cx = pointX(i);
       cursor.style.display='block';
       cursor.style.left = (chart.offsetLeft + cx)+'px';
       tip.style.display='block';
       const cur=pts[i];
       tip.innerHTML = `<b>${cur.letter}</b> ${cur.score.toFixed(1)}<br>${fmtDate(cur.date)}`;
-      const tipX = chart.offsetLeft + cx + 10;
-      const tipY = chart.offsetTop + 10;
-      tip.style.left = tipX+'px';
-      tip.style.top = tipY+'px';
+      tip.style.left = (chart.offsetLeft + cx + 10)+'px';
+      tip.style.top = (chart.offsetTop + 10)+'px';
       range.value = i; range.dispatchEvent(new Event('input'));
     }
     function hideTip(){ tip.style.display='none'; cursor.style.display='none'; }
@@ -1028,8 +984,6 @@
     chart.addEventListener('mousemove', e=>{ if(isDown) showAt(e.offsetX); });
     chart.addEventListener('mouseleave', hideTip);
     window.addEventListener('mouseup', ()=>{ isDown=false; });
-
-    $('#historyHint')?.remove();
   }
   if($('#page-history').classList.contains('active')) renderHistory();
 
