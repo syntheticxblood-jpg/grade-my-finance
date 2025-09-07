@@ -14,6 +14,8 @@
 <meta property="og:image" content="https://grademyfinance.com/og-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='12' width='64' height='64' fill='%23E7F8EF'/%3E%3Ctext x='14' y='45' font-size='36' font-weight='900' fill='%2303652F'%3EG%3C/text%3E%3C/svg%3E">
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
 <script>
@@ -27,6 +29,7 @@
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
     --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+    --g1:#0ea74c; --g2:#34d399; --gdeep:#03652f;
     --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
   }
   .light{
@@ -44,8 +47,21 @@
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
 
-  /* ---------- HERO (new header) ---------- */
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
+
+  /* ---------- Sticky header w/ big logo ---------- */
+  header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logoBig{width:56px;height:56px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
+  .title{margin:0;font-size:24px;color:#062c1b;font-weight:900;letter-spacing:.2px}
+  .tag{margin:0;color:#062c1bcc;font-size:12px}
+  .spacer{flex:1}
+  .pill{border:none;padding:7px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
+  .light .pill{background:#0f172a}
+  .streak{font-weight:800;color:#062c1b;background:#ffffffaa;padding:7px 10px;border-radius:999px}
+
+  /* ---------- HERO ---------- */
   .hero{
     position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;
     align-items:center; padding:28px 0 18px;
@@ -59,50 +75,36 @@
   .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
   .btn{padding:11px 15px;border-radius:12px;border:1px solid var(--line);
     background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer}
-  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b}
+  .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
   .btn.ghost{background:transparent}
 
+  /* ---------- Mascot ---------- */
   .hero-mascot{position:relative;display:grid;place-items:center}
   .mascot-bubble{
     position:absolute;top:8px;right:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);
     padding:8px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
   }
-
-  /* Report Card mascot animation */
-  .report-card{width:340px;max-width:100%}
-  .report-card .shadow{animation:floatShadow 3s ease-in-out infinite}
-  .report-card .card{transform-origin:50% 10%;animation:floatCard 3s ease-in-out infinite}
-  .report-card .eyelids{animation:blink 5.5s ease-in-out infinite}
-  .report-card .badge{transform-origin:178px 150px;animation:badgePop 2.6s ease-in-out infinite}
-  .report-card .sweep{animation:sweep 2.2s linear infinite;mix-blend-mode:overlay}
+  .buddy{width:360px;max-width:100%}
+  .buddy .card{transform-origin:50% 10%;animation:floatCard 3s ease-in-out infinite}
+  .buddy .shadow{animation:floatShadow 3s ease-in-out infinite}
+  .buddy .blink{animation:blink 6s ease-in-out infinite}
+  .buddy .wave{transform-origin:210px 120px;animation:wave 2.3s ease-in-out infinite}
+  .buddy .smile{animation:smile 3.2s ease-in-out infinite}
+  .buddy .shine{animation:sweep 2.2s linear infinite;mix-blend-mode:overlay}
   @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-6px) rotate(1.2deg)}}
   @keyframes floatShadow{0%,100%{transform:scale(1);opacity:.35}50%{transform:scale(0.94);opacity:.2}}
-  @keyframes blink{
-    0%,93%,100%{opacity:0}
-    94%,96%{opacity:1}
-    97%{opacity:0}
-  }
-  @keyframes badgePop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-  @keyframes sweep{from{transform:translateX(-140px)}to{transform:translateX(140px)}}
+  @keyframes blink{0%,95%,100%{opacity:0} 96%,98%{opacity:1}}
+  @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg)}}
+  @keyframes smile{0%,100%{d:path('M120 96 q16 10 32 0')}50%{d:path('M120 98 q16 16 32 0')}}
+  @keyframes sweep{from{transform:translateX(-160px)}to{transform:translateX(160px)}}
 
-  /* Sticky mini-header bar (theme + profile quick) */
-  header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
-  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
-  .logo{width:44px;height:44px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
-  .title{margin:0;font-size:22px;color:#062c1b;font-weight:900;letter-spacing:.2px}
-  .tag{margin:0;color:#062c1bcc;font-size:12px}
-  .spacer{flex:1}
-  .pill{border:none;padding:7px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
-  .light .pill{background:#0f172a}
-  .streak{font-weight:800;color:#062c1b;background:#ffffffaa;padding:7px 10px;border-radius:999px}
-
-  /* Shell */
+  /* ---------- Shell ---------- */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:260px 1fr;gap:18px;padding:18px}
   aside{position:sticky;top:92px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
   .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
   .tab:hover{transform:translateY(-1px)}
-  .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#062c1b}
+  .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--g1),var(--g2));color:#062c1b}
 
   /* Cards + grid */
   .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
@@ -123,9 +125,8 @@
   .scoreline{font-size:14px;color:var(--muted)}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
   .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px}
-
   .progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
-  .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
+  .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
 
   /* Badges */
   .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
@@ -136,7 +137,7 @@
   .overlay.show{display:grid}
   .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
   .bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
-  .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#22d3ee 0 14px,#a78bfa 14px 28px);animation:slide .7s linear infinite}
+  .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
   @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 
   /* Toast */
@@ -144,7 +145,15 @@
   .toast.show{transform:translateX(-50%) translateY(0)}
   .toast button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
 
-  #confetti{position:fixed;inset:0;pointer-events:none;z-index:85}
+  /* Intro modal */
+  .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:95}
+  .modal.show{display:grid}
+  .modal-card{width:640px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:20px}
+  .modal-actions{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+  .modal small{color:var(--muted)}
+  .modal label{display:flex;align-items:center;gap:8px}
+  .modal .btn.primary{min-width:140px}
+
   footer{max-width:1200px;margin:24px auto;padding:0 18px 24px;color:var(--muted)}
   footer a{color:var(--accent)}
 
@@ -162,30 +171,31 @@
 </style>
 </head>
 <body class="dark">
-  <!-- Sticky mini header -->
+  <!-- Sticky mini header with BIG green G + card -->
   <header>
     <div class="hdr">
-      <!-- Tiny glyph -->
-      <svg class="logo" viewBox="0 0 160 160" aria-hidden="true">
-        <defs>
-          <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#d1fae5"/></linearGradient>
-          <linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
-        </defs>
-        <rect x="8" y="8" width="144" height="144" rx="24" fill="url(#g1)"/>
-        <rect x="95" y="40" width="40" height="54" rx="10" fill="url(#g2)"/>
-        <path d="M100 65l8 8 18-18" fill="none" stroke="#064e3b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M80,28a52,52 0 1 0 52,52h-27" fill="none" stroke="#065f46" stroke-opacity=".4" stroke-width="10"/>
-        <text x="30" y="110" font-size="70" font-weight="900" fill="#065f46">G</text>
-      </svg>
-      <div>
-        <h1 class="title">Grade My Finance</h1>
-        <p class="tag">Friendly grades, profiles, progress & trophies.</p>
+      <div class="brand">
+        <!-- New brand logo -->
+        <svg class="logoBig" viewBox="0 0 160 160" aria-hidden="true">
+          <defs>
+            <linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#34d399"/></linearGradient>
+            <linearGradient id="gg2" x1="0" x2="1"><stop offset="0" stop-color="#a7f3d0"/><stop offset="1" stop-color="#86efac"/></linearGradient>
+          </defs>
+          <rect x="8" y="8" width="144" height="144" rx="28" fill="url(#gg)"/>
+          <rect x="96" y="34" width="42" height="56" rx="10" fill="url(#gg2)" />
+          <path d="M101 60l9 9 19-19" fill="none" stroke="#065f46" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="26" y="115" font-size="84" font-weight="900" fill="#064e3b">G</text>
+        </svg>
+        <div>
+          <h1 class="title">Grade My Finance</h1>
+          <p class="tag">Friendly grades, profiles, progress & trophies.</p>
+        </div>
       </div>
       <span class="spacer"></span>
       <span id="streakPill" class="streak" style="display:none"></span>
-      <select id="profileSelect" class="pill"></select>
+      <select id="profileSelect" class="pill" aria-label="Select profile"></select>
       <button id="newProfileBtn" class="pill">New Profile</button>
-      <button id="modeBtn" class="pill">Dark</button>
+      <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
     </div>
   </header>
 
@@ -201,13 +211,13 @@
       </div>
     </div>
 
-    <!-- Mascot -->
+    <!-- New greener mascot with personality -->
     <div class="hero-mascot" aria-hidden="true">
-      <svg class="report-card" viewBox="0 0 260 260" role="img" aria-label="Report card mascot">
+      <svg class="buddy" viewBox="0 0 300 260" role="img" aria-label="Report Card Buddy">
         <defs>
           <linearGradient id="paperGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#ffffff"/>
-            <stop offset="1" stop-color="#eef7ff"/>
+            <stop offset="0" stop-color="#ECFDF5"/>
+            <stop offset="1" stop-color="#D1FAE5"/>
           </linearGradient>
           <linearGradient id="shine" x1="0" x2="1">
             <stop offset="0" stop-color="#A7F3D0" stop-opacity=".0"/>
@@ -216,36 +226,43 @@
           </linearGradient>
         </defs>
 
-        <ellipse cx="130" cy="220" rx="60" ry="12" fill="rgba(0,0,0,.25)" class="shadow"/>
+        <ellipse cx="150" cy="230" rx="70" ry="14" fill="rgba(0,0,0,.25)" class="shadow"/>
         <g class="card">
-          <rect x="55" y="30" width="150" height="190" rx="18" fill="url(#paperGrad)" stroke="#c7e1ff" stroke-width="2"/>
-          <path d="M185 30 h20 v20 c-10-2-18-10-20-20z" fill="#e7f1ff"/>
-          <g stroke="#e1ecff" stroke-width="2">
-            <line x1="70" x2="190" y1="80" y2="80"/>
-            <line x1="70" x2="190" y1="100" y2="100"/>
-            <line x1="70" x2="190" y1="120" y2="120"/>
-            <line x1="70" x2="190" y1="140" y2="140"/>
+          <!-- body -->
+          <rect x="70" y="30" width="160" height="200" rx="20" fill="url(#paperGrad)" stroke="#86EFAC" stroke-width="2"/>
+          <!-- folded corner -->
+          <path d="M210 30 h20 v20 c-10-2-18-10-20-20z" fill="#E7F8EF"/>
+          <!-- green stripes -->
+          <g stroke="#BBF7D0" stroke-width="2">
+            <line x1="85" x2="215" y1="90" y2="90"/>
+            <line x1="85" x2="215" y1="110" y2="110"/>
+            <line x1="85" x2="215" y1="130" y2="130"/>
+            <line x1="85" x2="215" y1="150" y2="150"/>
           </g>
           <!-- face -->
-          <g class="face">
-            <circle cx="112" cy="60" r="6" fill="#0f172a"/>
-            <circle cx="152" cy="60" r="6" fill="#0f172a"/>
-            <path d="M112 76 q20 14 40 0" fill="none" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
-            <g class="eyelids">
-              <rect x="104" y="54" width="16" height="6" fill="#ffffff"/>
-              <rect x="144" y="54" width="16" height="6" fill="#ffffff"/>
-            </g>
-          </g>
+          <circle cx="125" cy="70" r="7" fill="#0f172a"/>
+          <circle cx="175" cy="70" r="7" fill="#0f172a"/>
+          <g class="blink"><rect x="118" y="64" width="14" height="6" fill="#ECFDF5"/><rect x="168" y="64" width="14" height="6" fill="#ECFDF5"/></g>
+          <path class="smile" d="M120 96 q16 10 32 0" fill="none" stroke="#065f46" stroke-width="4" stroke-linecap="round"/>
+
           <!-- A+ badge -->
-          <g class="badge">
-            <circle cx="178" cy="150" r="22" fill="#22d3ee"/>
-            <circle cx="178" cy="150" r="20" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
-            <text x="178" y="156" text-anchor="middle" font-size="18" font-weight="900" fill="#a7f3d0">A+</text>
+          <g class="wave">
+            <circle cx="210" cy="120" r="22" fill="#34d399"/>
+            <circle cx="210" cy="120" r="20" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
+            <text x="210" y="126" text-anchor="middle" font-size="18" font-weight="900" fill="#a7f3d0">A+</text>
           </g>
-          <rect class="sweep" x="55" y="30" width="150" height="190" rx="18" fill="url(#shine)"/>
+
+          <!-- arms & legs -->
+          <path d="M70 120 q-24 4 -30 -10" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M230 160 q30 10 34 -12" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M120 230 q-10 14 -22 0" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M180 230 q8 16 22 0" stroke="#86efac" stroke-width="8" fill="none" stroke-linecap="round"/>
+
+          <!-- shine -->
+          <rect class="shine" x="70" y="30" width="160" height="200" rx="20" fill="url(#shine)"/>
         </g>
       </svg>
-      <div class="mascot-bubble">“Blink and you’ll miss it 😄”</div>
+      <div class="mascot-bubble">“Let’s make money feel easy.”</div>
     </div>
   </section>
 
@@ -290,7 +307,7 @@
           </div>
           <div class="card" style="grid-column:span 4">
             <div class="section">Monthly Expenses</div>
-            <label>All bills + spending</label>
+            <label>All bills + spending (post-tax)</label>
             <input id="expenses" type="number" value="4000" min="0" />
           </div>
           <div class="card" style="grid-column:span 4">
@@ -302,12 +319,12 @@
           <div class="card" style="grid-column:span 6">
             <div class="section">Assets</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
-              <div style="grid-column:span 6"><label>Home Value</label><input id="home" type="number" value="450000" min="0"></div>
+              <div style="grid-column:span 6"><label>Home Value</label><input id="home" type="number" value="475000" min="0"></div>
               <div style="grid-column:span 6"><label>Retirement (401k/IRA)</label><input id="retire" type="number" value="72000" min="0"></div>
               <div style="grid-column:span 6"><label>Brokerage/Stocks</label><input id="brokerage" type="number" value="29000" min="0"></div>
-              <div style="grid-column:span 6"><label>Car Value</label><input id="car" type="number" value="17000" min="0"></div>
+              <div style="grid-column:span 6"><label>Car Value</label><input id="car" type="number" value="15000" min="0"></div>
               <div style="grid-column:span 6"><label>HSA (counted here)</label><input id="hsa" type="number" value="1500" min="0"></div>
-              <div style="grid-column:span 6"><label>Cash Savings</label><input id="cash" type="number" value="25000" min="0"></div>
+              <div style="grid-column:span 6"><label>Cash Savings</label><input id="cash" type="number" value="24000" min="0"></div>
             </div>
             <div class="hint" id="assetsHint">Total Assets: —</div>
           </div>
@@ -315,16 +332,46 @@
           <div class="card" style="grid-column:span 6">
             <div class="section">Liabilities (+ APR)</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
-              <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="326000" min="0"></div>
+              <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="329000" min="0"></div>
               <div style="grid-column:span 6"><label>Mortgage APR %</label><input id="mortgageApr" type="number" value="5.25" step="0.01" min="0"></div>
               <div style="grid-column:span 6"><label>Student Loans</label><input id="student" type="number" value="26000" min="0"></div>
               <div style="grid-column:span 6"><label>Student APR %</label><input id="studentApr" type="number" value="4.9" step="0.01" min="0"></div>
-              <div style="grid-column:span 6"><label>Auto Loans</label><input id="auto" type="number" value="13000" min="0"></div>
+              <div style="grid-column:span 6"><label>Auto Loans</label><input id="auto" type="number" value="13500" min="0"></div>
               <div style="grid-column:span 6"><label>Auto APR %</label><input id="autoApr" type="number" value="3.5" step="0.01" min="0"></div>
-              <div style="grid-column:span 6"><label>Credit Cards (balance)</label><input id="cc" type="number" value="23" min="0"></div>
+              <div style="grid-column:span 6"><label>Credit Cards (balance)</label><input id="cc" type="number" value="0" min="0"></div>
               <div style="grid-column:span 6"><label>Credit Card APR %</label><input id="ccApr" type="number" value="24.99" step="0.01" min="0"></div>
             </div>
             <div class="hint" id="liabHint">Total Liabilities: —</div>
+          </div>
+
+          <!-- NEW: Ongoing contributions & pension -->
+          <div class="card" style="grid-column:span 6">
+            <div class="section">Monthly Contributions (pre-tax)</div>
+            <label>Retirement + HSA payroll contributions (pre-tax)</label>
+            <input id="pretaxMonthly" type="number" value="0" min="0" />
+            <div class="hint">Counted in your savings rate even if not in take-home.</div>
+          </div>
+
+          <div class="card" style="grid-column:span 6">
+            <div class="section">Monthly Contributions (post-tax)</div>
+            <label>Education savings (529/ESA etc.)</label>
+            <input id="eduMonthly" type="number" value="0" min="0" />
+            <div class="hint">Improves savings rate; excluded from investable total since earmarked.</div>
+          </div>
+
+          <div class="card" style="grid-column:span 12">
+            <div class="section">Pension</div>
+            <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
+              <div style="grid-column:span 6">
+                <label>Estimated Monthly Pension (today’s $)</label>
+                <input id="pensionMonthly" type="number" value="0" min="0" />
+              </div>
+              <div style="grid-column:span 6">
+                <label>Pension Start Age</label>
+                <input id="pensionAge" type="number" value="67" min="40" max="80" />
+              </div>
+            </div>
+            <div class="hint" id="pensionHint">PV added to readiness when applicable.</div>
           </div>
 
           <!-- Results -->
@@ -375,12 +422,10 @@
       <section id="page-bench" class="page">
         <div class="card">
           <h2>Benchmarks</h2>
-          <p>Age curve targets used in scoring:</p>
-          <ul>
-            <li>25 → 10% ready</li><li>30 → 20%</li><li>35 → 35%</li><li>40 → 50%</li>
-            <li>45 → 65%</li><li>50 → 80%</li><li>55 → 95%</li><li>60 → 100%</li>
-          </ul>
-          <p class="hint">We count investable assets (retirement/brokerage/HSA) + surplus cash + 40% of home equity.</p>
+          <p>Age curve targets used in scoring (so you’re not judged like a 60-year-old at age 25):</p>
+          <ul id="ageCurveList"></ul>
+          <p class="hint">Readiness = investable assets (retirement + brokerage + HSA) + surplus cash + 40% of home equity + pension PV (discounted) ÷ target FI (annual spend / 6% SWR).</p>
+          <p class="hint">Assumptions: 6% withdrawal rate, 3% real discount for pension PV, 6-month emergency fund target.</p>
         </div>
       </section>
 
@@ -419,6 +464,31 @@
     <button id="copyAgain">Copy again</button>
   </div>
 
+  <!-- Intro Modal -->
+  <div id="introModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+    <div class="modal-card">
+      <div style="display:flex;gap:12px;align-items:center">
+        <!-- mini logo -->
+        <svg width="44" height="44" viewBox="0 0 160 160" aria-hidden="true">
+          <defs><linearGradient id="ig" x1="0" x2="1"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#34d399"/></linearGradient></defs>
+          <rect x="8" y="8" width="144" height="144" rx="28" fill="url(#ig)"/>
+          <text x="26" y="115" font-size="84" font-weight="900" fill="#064e3b">G</text>
+        </svg>
+        <h3 id="introTitle" style="margin:0">Welcome to Grade My Finance</h3>
+      </div>
+      <p style="margin:10px 0 0 0">Enter a few numbers, get a letter grade, and see how to level up. We use an age-aware target so you’re compared to fair milestones—not to retirees. Nothing leaves your device.</p>
+      <ul style="margin:10px 0 0 18px">
+        <li>Include payroll savings (pre-tax) so your savings rate is accurate.</li>
+        <li>Add pension details—we convert it to a present-value for readiness.</li>
+        <li>Save profiles to track progress and earn trophies.</li>
+      </ul>
+      <div class="modal-actions">
+        <label><input type="checkbox" id="dontShow"> <small>Don’t show this again</small></label>
+        <button id="introOkay" class="btn primary">Got it</button>
+      </div>
+    </div>
+  </div>
+
   <footer class="container">
     <p>Read more: <a href="/blog/saved-by-30.html">Saved by 30</a> · <a href="/blog/savings-rate.html">Savings Rate Benchmarks</a> · <a href="/blog/what-is-fire.html">What is FIRE?</a></p>
   </footer>
@@ -431,13 +501,19 @@
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-  // constants
-  const SWR = 0.06, EF_TARGET = 6, EQUITY_FACTOR = 0.40;
-  const NW_W=15, FI_W=55, AGE_W=10, SAVE_W=6, EF_W=7, NONMORT_W=4, LTV_W=3;
+  // assumptions / weights
+  const SWR = 0.06, EF_TARGET = 6, EQUITY_FACTOR = 0.40, REAL_RET = 0.03; // pension PV discount (real)
+  // Weights trimmed so LTV is less punitive for young homeowners; FI readiness emphasized
+  const NW_W=12, FI_W=58, AGE_W=12, SAVE_W=8, EF_W=6, NONMORT_W=2, LTV_W=2;
 
   // theme
   const modeBtn = $('#modeBtn');
-  function setMode(light){ document.body.classList.toggle('light', light); modeBtn.textContent = light ? 'Light' : 'Dark'; localStorage.setItem('gmf_theme', light?'light':'dark'); }
+  function setMode(light){
+    document.body.classList.toggle('light', light);
+    modeBtn.textContent = light ? 'Light' : 'Dark';
+    modeBtn.setAttribute('aria-pressed', light ? 'true' : 'false');
+    localStorage.setItem('gmf_theme', light?'light':'dark');
+  }
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
@@ -469,35 +545,18 @@
   })();
 
   // inputs
-  const ids = ['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr'];
+  const ids = [
+    'age','income','expenses','home','retire','brokerage','car','hsa','cash',
+    'mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr',
+    'pretaxMonthly','eduMonthly','pensionMonthly','pensionAge'
+  ];
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
 
-  function values(){
-    const v = Object.fromEntries(ids.map(id=>[id,val(id)]));
-    v.assets = v.home + v.retire + v.brokerage + v.car + v.hsa + v.cash;
-    v.liabs  = v.mortgage + v.student + v.auto + v.cc;
-    v.net    = v.assets - v.liabs;
-    v.annualSpend = Math.max(0, v.expenses * 12);
-    v.targetFI = v.annualSpend>0 ? v.annualSpend / SWR : 0;
-    v.investableCore = v.retire + v.brokerage + v.hsa;
-    v.cashSurplus = Math.max(0, v.cash - EF_TARGET * (v.expenses||0));
-    v.homeEquity = Math.max(0, v.home - v.mortgage);
-    v.accessibleEquity = v.homeEquity * EQUITY_FACTOR;
-    v.investableTotal = v.investableCore + v.cashSurplus + v.accessibleEquity;
-    return v;
-  }
-  function updateHints(){
-    const v = values();
-    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable: ${money(v.investableCore)} • surplus cash: ${money(v.cashSurplus)} • accessible equity: ${money(v.accessibleEquity)})`;
-    $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
-  }
-  ids.forEach(id => els[id].addEventListener('input', updateHints));
-  updateHints();
-
-  // expected readiness by age
+  // expected readiness curve (slightly gentler early)
+  const curvePts = [[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
   function expectedReadiness(age){
-    const pts = [[25,0.10],[30,0.20],[35,0.35],[40,0.50],[45,0.65],[50,0.80],[55,0.95],[60,1.00]];
+    const pts = curvePts;
     if(age<=pts[0][0]) return pts[0][1];
     if(age>=pts[pts.length-1][0]) return pts[pts.length-1][1];
     for(let i=1;i<pts.length;i++){
@@ -507,23 +566,74 @@
     return 1;
   }
 
+  function pensionPV(monthly, startAge, nowAge){
+    if(monthly<=0 || startAge<=nowAge) return (monthly*12)/SWR; // already eligible → full annuity principal
+    const years = Math.max(0, startAge - nowAge);
+    const principalAtStart = (monthly*12)/SWR;
+    return principalAtStart / Math.pow(1+REAL_RET, years); // discount back to today (real)
+  }
+
+  function values(){
+    const v = Object.fromEntries(ids.map(id=>[id,val(id)]));
+    v.assets = v.home + v.retire + v.brokerage + v.car + v.hsa + v.cash;
+    v.liabs  = v.mortgage + v.student + v.auto + v.cc;
+    v.net    = v.assets - v.liabs;
+
+    v.annualSpend = Math.max(0, v.expenses * 12);
+    v.targetFI = v.annualSpend>0 ? v.annualSpend / SWR : 0;
+
+    v.investableCore = v.retire + v.brokerage + v.hsa;
+    v.cashSurplus = Math.max(0, v.cash - EF_TARGET * (v.expenses||0));
+    v.homeEquity = Math.max(0, v.home - v.mortgage);
+    v.accessibleEquity = v.homeEquity * EQUITY_FACTOR;
+
+    v.pensionPV = pensionPV(v.pensionMonthly, v.pensionAge, v.age||30);
+
+    v.investableTotal = v.investableCore + v.cashSurplus + v.accessibleEquity + v.pensionPV;
+    return v;
+  }
+  function updateHints(){
+    const v = values();
+    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable: ${money(v.investableCore)} • surplus cash: ${money(v.cashSurplus)} • accessible equity: ${money(v.accessibleEquity)} • pension PV: ${money(v.pensionPV)})`;
+    $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
+    $('#pensionHint').textContent= v.pensionMonthly>0 ? `Pension PV counted: ${money(v.pensionPV)} (start age ${val('pensionAge')})` : 'PV added to readiness when applicable.';
+  }
+  ids.forEach(id => els[id].addEventListener('input', updateHints));
+  updateHints();
+
+  // Benchmarks list render
+  (function renderCurveList(){
+    const ul = $('#ageCurveList'); ul.innerHTML='';
+    curvePts.forEach(([a,r])=>{
+      const li=document.createElement('li'); li.textContent = `${a} → ${(r*100).toFixed(0)}%`;
+      ul.appendChild(li);
+    });
+  })();
+
   function scoreModel(v){
     const leftover = Math.max(0, v.income - v.expenses);
-    const saveRate = v.income>0 ? leftover / v.income : 0;
-    const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
+    const saveRate = (v.income>0)
+      ? clamp((leftover + val('pretaxMonthly') + val('eduMonthly')) / (v.income + val('pretaxMonthly')), 0, 1)
+      : 0;
 
+    const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
     const r = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
     const expR = expectedReadiness(val('age')||30);
+
+    // component scores
     const sFI   = map01(r/Math.max(0.05,expR), 0, 1);
     const sNW   = map01((v.targetFI>0 ? v.net / v.targetFI : (v.net>0?1:0)), 0, 1);
     const ageGap = clamp((r - expR), -1, 1);
-    const sAGE = map01( ageGap, -0.5, 0.2 );
+    const sAGE = map01( ageGap, -0.4, 0.25 );
 
     const nonMortDebt = v.student + v.auto + v.cc;
     const nonMortRatio = v.assets>0 ? nonMortDebt / v.assets : 0;
     const sNonMort = map01(1-nonMortRatio, 0, 1);
+
     const ltv = v.home>0 ? v.mortgage / v.home : 0;
-    const sLTV = map01(1-ltv, 0, 0.5);
+    // soften LTV: only penalize >90% strongly, cap effect
+    const sLTV = map01(1-ltv, 0.1, 0.55);
+
     const sSave = map01(saveRate, 0, 0.5);
     const sEF   = map01(efMonths, 0, 6);
 
@@ -534,7 +644,8 @@
       saveRate, efMonths, readiness:r, expR,
       ltv, nonMortRatio,
       net: v.net, assets: v.assets, liabs: v.liabs,
-      investableTotal:v.investableTotal, cashSurplus:v.cashSurplus, accessibleEquity:v.accessibleEquity
+      investableTotal:v.investableTotal, cashSurplus:v.cashSurplus, accessibleEquity:v.accessibleEquity,
+      pensionPV:v.pensionPV
     };
   }
   function letter(score){
@@ -557,8 +668,9 @@
   const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
   function showOverlay(){ let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
     const t=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200);
-    setTimeout(()=>{ clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); },800);
+    setTimeout(()=>{ clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); },820);
   }
+
   const toast=$('#toast');
   function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5000); }
   $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
@@ -580,7 +692,7 @@
   }
 
   // share link
-  function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); s.__ver='age1'; return s; }
+  function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); s.__ver='age2_pension'; return s; }
   function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
   (function hydrateFromHash(){
     const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
@@ -707,19 +819,19 @@
     const nonMortDebt = val('student')+val('auto')+val('cc');
     $('#whyList').innerHTML = [
       `Age ${val('age')}: expected readiness ≈ ${(expectedReadiness(val('age'))*100).toFixed(0)}%.`,
-      `Counted investable ${money(v.investableCore)} + surplus cash ${money(s.cashSurplus)} + 40% home equity ${money(s.accessibleEquity)} = ${money(s.investableTotal)}.`,
+      `Counted investable ${money(v.investableCore)} + surplus cash ${money(s.cashSurplus)} + 40% home equity ${money(s.accessibleEquity)} + pension PV ${money(s.pensionPV)} = ${money(s.investableTotal)}.`,
       `Net worth: ${money(v.net)} (assets ${money(v.assets)} – liabilities ${money(v.liabs)}).`,
-      `Savings rate: ${(s.saveRate*100).toFixed(0)}% (~${money(Math.max(0, val('income')-val('expenses')))} per month kept).`,
+      `Savings rate includes payroll & education: ${(s.saveRate*100).toFixed(0)}% (adds ${money(val('pretaxMonthly')+val('eduMonthly'))}/mo).`,
       `Non-mortgage debt totals ${money(nonMortDebt)}; mortgage LTV is ${(s.ltv*100).toFixed(0)}%.`
     ].map(x=>`<div>${x}</div>`).join('');
   }
   function renderImprove(v,s){
     const ideas=[];
     const expR = expectedReadiness(val('age'));
-    if(s.readiness < expR) ideas.push(`Catch up to your age curve: add ~${money(Math.max(0, v.targetFI*expR - v.investableTotal))} investable (or reduce spending).`);
+    if(s.readiness < expR) ideas.push(`Close the age gap: add ~${money(Math.max(0, v.targetFI*expR - v.investableTotal))} investable or trim spend.`);
     if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to ${EF_TARGET} months (${money(v.expenses*EF_TARGET)}).`);
-    if(s.saveRate < 0.2) ideas.push(`Aim for 20%+ savings by auto-moving ~${money(Math.ceil(val('income')*0.05))}/mo.`);
-    if(s.ltv > 0.8) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): occasional principal prepayments help.`);
+    if(s.saveRate < 0.2) ideas.push(`Boost savings rate to 20%+ by auto-moving ~${money(Math.ceil((val('income')+val('pretaxMonthly'))*0.05))}/mo).`);
+    if(s.ltv > 0.9) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): an occasional principal prepayment helps.`);
     if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
     if(!ideas.length) ideas.push(`You’re ahead for your age. Keep the systems humming.`);
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
@@ -760,8 +872,8 @@
   // top hero buttons
   $('#gradeBtnTop').addEventListener('click', ()=>{ pages.forEach(p=> $('#page-'+p).classList.toggle('active', p==='grade')); showOverlay(); setTimeout(doGrade, 820); window.scrollTo({top:document.querySelector('#page-grade').offsetTop-20,behavior:'smooth'}); });
   $('#demoBtnTop').addEventListener('click', ()=>{
-    const demo={income:7500, expenses:4000, age:30, home:475000, retire:72000, brokerage:29000, car:15000, hsa:1500, cash:24000, mortgage:329000, student:26000, auto:13500, cc:0, mortgageApr:5.25, studentApr:4.9, autoApr:3.5, ccApr:24.99};
-    ids.forEach(id=>{ if(demo[id]!=null) els[id].value=demo[id]; });
+    const demo={income:7500, expenses:4000, age:30, home:475000, retire:72000, brokerage:29000, car:15000, hsa:1500, cash:24000, mortgage:329000, student:26000, auto:13500, cc:0, mortgageApr:5.25, studentApr:4.9, autoApr:3.5, ccApr:24.99, pretaxMonthly:900, eduMonthly:200, pensionMonthly:0, pensionAge:67};
+    Object.keys(demo).forEach(id=>{ if(els[id]) els[id].value=demo[id]; });
     updateHints();
     pages.forEach(p=> $('#page-'+p).classList.toggle('active', p==='grade'));
     window.scrollTo({top:document.querySelector('#page-grade').offsetTop-20,behavior:'smooth'});
@@ -776,14 +888,31 @@
     progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
 
-  $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
-
   // render history once so tab is instant later
   renderHistory();
+
+  /* ---------- Intro Modal ---------- */
+  const INTRO_KEY='gmf_intro_seen';
+  const introModal = $('#introModal');
+  const introOkay = $('#introOkay');
+  const dontShow = $('#dontShow');
+  function maybeShowIntro(){
+    const seen = localStorage.getItem(INTRO_KEY)==='1';
+    if(!seen){ introModal.classList.add('show'); }
+  }
+  introOkay.addEventListener('click', ()=>{
+    if(dontShow.checked) localStorage.setItem(INTRO_KEY,'1');
+    introModal.classList.remove('show');
+  });
+  // close on backdrop click
+  introModal.addEventListener('click', (e)=>{ if(e.target===introModal){ if(dontShow.checked) localStorage.setItem(INTRO_KEY,'1'); introModal.classList.remove('show'); }});
+  // show after first render tick
+  setTimeout(maybeShowIntro, 50);
 })();
 </script>
 </body>
 </html>
+
 
 </script>
 </body>
