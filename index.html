@@ -4,14 +4,13 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
-<meta name="description" content="Age-aware retirement readiness grade with profiles, progress history, achievements, and a shareable link.">
+<meta name="description" content="Age & FI-aware retirement readiness grade with profiles, progress history, achievements, and a shareable link.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Grade My Finance">
 <meta property="og:description" content="Get a letter grade for your money, track progress, and earn achievements.">
 <meta property="og:url" content="https://grademyfinance.com/">
 <meta property="og:image" content="https://grademyfinance.com/og-card.jpg">
 <meta name="twitter:card" content="summary_large_image">
-
 <style>
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
@@ -25,8 +24,8 @@
   *{box-sizing:border-box}
   body{
     margin:0;background:
-      radial-gradient(1000px 500px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
-      radial-gradient(900px 500px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
+      radial-gradient(900px 480px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
+      radial-gradient(900px 480px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
       var(--bg);
     color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;line-height:1.35;
   }
@@ -34,17 +33,21 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* Header */
+  /* ---------- Header (mobile-safe) ---------- */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);
     background:linear-gradient(90deg,var(--accent),var(--accent2))}
-  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;padding:14px 16px;gap:16px}
+  .hdr{
+    max-width:1200px;margin:0 auto;padding:14px 16px;
+    display:grid;grid-template-columns:1fr;grid-template-rows:auto auto;gap:10px;justify-items:center
+  }
   .logoBig{height:86px;width:auto;display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
+  .hdr-rail{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;width:100%}
   .pill{border:none;padding:10px 14px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
   .light .pill{background:#0f172a}
-  .hdr-rail{position:absolute;right:16px;display:flex;gap:10px;align-items:center}
   #streakPill{font-weight:800;color:#062c1b;background:#ffffffc2;padding:7px 10px;border-radius:999px}
+  #profileSelect{max-width:210px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
 
-  /* Hero */
+  /* ---------- Hero ---------- */
   .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start;padding:18px 0 6px}
   @media (max-width: 980px){ .hero{grid-template-columns:1fr;gap:14px} }
   .hero-copy{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
@@ -57,7 +60,7 @@
   .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
   .btn.ghost{background:transparent}
 
-  /* Mascot */
+  /* ---------- New Mascot (Green Report Card) ---------- */
   .hero-mascot{position:relative;display:grid;place-items:center;align-self:start;overflow:visible}
   .buddy{max-height:260px;width:auto}
   @media (max-width:1100px){ .buddy{max-height:220px} }
@@ -66,20 +69,15 @@
     position:absolute;top:-6px;right:4px;background:rgba(0,0,0,.35);border:1px solid var(--line);
     padding:6px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
   }
-  .b-float{animation:floatCard 3.2s ease-in-out infinite}
-  .b-shadow{animation:floatShadow 3.2s ease-in-out infinite}
-  .b-blink{animation:blink 6s ease-in-out infinite}
-  .b-wave{transform-origin:235px 120px;animation:wave 2.4s ease-in-out infinite}
-  .b-pop{animation:badgePop 2.2s ease-in-out infinite}
   @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
-  @keyframes floatShadow{0%,100%{transform:scale(1);opacity:.35}50%{transform:scale(0.94);opacity:.2}}
-  @keyframes blink{0%,95%,100%{opacity:0}96%,98%{opacity:1}}
-  @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-11deg)}}
-  @keyframes badgePop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+  @keyframes eyeBlink{0%,92%,100%{transform:scaleY(1)}93%,99%{transform:scaleY(.05)}}
+  @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
+  @keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  @keyframes sparkle{0%{opacity:0;transform:translateY(-6px) scale(.8)}30%{opacity:1}100%{opacity:0;transform:translateY(-22px) scale(1.1)}}
 
-  /* App shell */
+  /* ---------- App shell ---------- */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
-  aside{position:sticky;top:100px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+  aside{position:sticky;top:110px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
   .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
   .tab:hover{transform:translateY(-1px)}
@@ -91,25 +89,17 @@
   input,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
   input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
   .page{display:none} .page.active{display:block}
-
-  .resultTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .bigGrade{font-size:80px;font-weight:900;opacity:0;transform:scale(.7) rotate(-6deg)}
-  .bigGrade.show{animation:pop .65s cubic-bezier(.2,.9,.2,1) forwards}
-  @keyframes pop{0%{opacity:0;transform:scale(.7) rotate(-6deg)}60%{opacity:1;transform:scale(1.08) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
-  .scoreline{font-size:14px;color:var(--muted)}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
   .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px}
   .progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
   .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
   .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
   .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:var(--panel);font-size:12px;font-weight:800}
+  .bigGrade{font-size:80px;font-weight:900;opacity:0;transform:scale(.7) rotate(-6deg)}
+  .bigGrade.show{animation:pop .65s cubic-bezier(.2,.9,.2,1) forwards}
+  @keyframes pop{0%{opacity:0;transform:scale(.7) rotate(-6deg)}60%{opacity:1;transform:scale(1.08) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
 
-  /* Welcome modal */
-  .welcome{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:95}
-  .welcome.show{display:grid}
-  .welcome-card{max-width:680px;width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow);text-align:center}
-
-  /* Calculating overlay */
+  /* ---------- Overlay ---------- */
   .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:120}
   .overlay.show{display:grid}
   .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);
@@ -118,7 +108,7 @@
   .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
   @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 
-  /* Mobile layout */
+  /* ---------- Mobile tweaks ---------- */
   @media (max-width: 980px){
     .shell{grid-template-columns:1fr}
     aside{position:static}
@@ -129,68 +119,43 @@
     .grid > [style*="grid-column:span 4"],
     .grid > [style*="grid-column:span 8"]{grid-column: span 12 !important;}
     input, select {font-size:16px}
+    .logoBig{height:64px}
   }
-  /* ensure pop scales around center */
-  svg .badge { transform-origin: center; transform-box: fill-box; }
 </style>
 </head>
 <body class="dark">
-  <!-- Header with NEW logo -->
+  <!-- Header with logo -->
   <header>
     <div class="hdr">
       <a href="/" aria-label="Home">
-        <!-- === Grade My Finance Logo === -->
+        <!-- Wordmark badge (kept small so it never clashes on mobile) -->
         <svg class="logoBig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-label="Grade My Finance logo">
           <defs>
-            <radialGradient id="gmf-badge" cx="50%" cy="50%" r="70%">
-              <stop offset="0" stop-color="#66E3B0"/>
-              <stop offset=".55" stop-color="#34D399"/>
-              <stop offset="1" stop-color="#16A34A"/>
+            <radialGradient id="lg-badge" cx="50%" cy="50%" r="70%">
+              <stop offset="0" stop-color="#66E3B0"/><stop offset=".55" stop-color="#34D399"/><stop offset="1" stop-color="#16A34A"/>
             </radialGradient>
-            <linearGradient id="gmf-brand" x1="0" x2="1">
-              <stop offset="0"  stop-color="#CFFFEF"/>
-              <stop offset=".5" stop-color="#7CF8E7"/>
-              <stop offset="1"  stop-color="#22D3EE"/>
-            </linearGradient>
-            <linearGradient id="gmf-paper" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="#FFFFFF"/>
-              <stop offset="1" stop-color="#E9FFF3"/>
-            </linearGradient>
-            <linearGradient id="gmf-blue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#3B82F6"/>
-              <stop offset="1" stop-color="#1E40AF"/>
-            </linearGradient>
+            <linearGradient id="lg-brand" x1="0" x2="1"><stop offset="0" stop-color="#CFFFEF"/><stop offset=".5" stop-color="#7CF8E7"/><stop offset="1" stop-color="#22D3EE"/></linearGradient>
+            <linearGradient id="lg-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B82F6"/><stop offset="1" stop-color="#1E40AF"/></linearGradient>
+            <linearGradient id="lg-paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E9FFF3"/></linearGradient>
           </defs>
-          <!-- Badge -->
-          <circle cx="100" cy="100" r="90" fill="url(#gmf-badge)"/>
-          <!-- Big tilted G (centered within badge) -->
+          <circle cx="100" cy="100" r="90" fill="url(#lg-badge)"/>
           <g transform="translate(100,110) rotate(-8)">
-            <text x="0" y="40" text-anchor="middle"
-                  font-size="140" font-weight="900"
-                  font-family="Arial Black, Helvetica, sans-serif"
-                  fill="url(#gmf-blue)" stroke="#062C1B" stroke-width="8" paint-order="stroke">G</text>
+            <text x="0" y="40" text-anchor="middle" font-size="140" font-weight="900"
+                  font-family="Arial Black, Helvetica, sans-serif" fill="url(#lg-blue)" stroke="#062C1B" stroke-width="8" paint-order="stroke">G</text>
           </g>
-          <!-- Report card beside badge -->
           <g transform="translate(160,48) rotate(-10)">
-            <rect width="64" height="80" rx="12" fill="url(#gmf-paper)" stroke="#BFF7DA" stroke-width="2"/>
+            <rect width="64" height="80" rx="12" fill="url(#lg-paper)" stroke="#BFF7DA" stroke-width="2"/>
             <g stroke="#10B981" stroke-width="3" stroke-linecap="round">
-              <line x1="14" y1="26" x2="50" y2="26"/>
-              <line x1="14" y1="42" x2="50" y2="42"/>
-              <line x1="14" y1="58" x2="42" y2="58"/>
+              <line x1="14" y1="26" x2="50" y2="26"/><line x1="14" y1="42" x2="50" y2="42"/><line x1="14" y1="58" x2="42" y2="58"/>
             </g>
-            <text x="32" y="40" text-anchor="middle" dominant-baseline="central"
-                  font-size="24" font-weight="900" font-family="Inter, ui-sans-serif, system-ui" fill="#F87171">A+</text>
+            <text x="32" y="40" text-anchor="middle" dominant-baseline="central" font-size="24" font-weight="900" font-family="Inter" fill="#F87171">A+</text>
           </g>
-          <!-- Wordmark -->
           <g transform="translate(240,0)">
-            <text x="0" y="92" font-size="54" font-weight="900" font-family="Inter, ui-sans-serif, system-ui"
-                  fill="url(#gmf-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Grade My</text>
-            <text x="0" y="150" font-size="54" font-weight="900" font-family="Inter, ui-sans-serif, system-ui"
-                  fill="url(#gmf-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Finance</text>
+            <text x="0" y="92" font-size="54" font-weight="900" font-family="Inter" fill="url(#lg-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Grade My</text>
+            <text x="0" y="150" font-size="54" font-weight="900" font-family="Inter" fill="url(#lg-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Finance</text>
           </g>
         </svg>
       </a>
-
       <div class="hdr-rail">
         <span id="streakPill" style="display:none"></span>
         <select id="profileSelect" class="pill" aria-label="Select profile"></select>
@@ -212,48 +177,56 @@
       </div>
     </div>
 
-    <!-- Mascot -->
+    <!-- NEW Green Report Card Mascot -->
     <div class="hero-mascot" aria-hidden="true">
-      <svg class="buddy b-float" viewBox="0 0 360 300" aria-label="Report Card Buddy">
+      <svg class="buddy" viewBox="0 0 360 300" aria-label="Green Report Card Buddy">
         <defs>
-          <linearGradient id="paper3D" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7FFEF"/>
+          <linearGradient id="mCard" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/>
           </linearGradient>
-          <radialGradient id="vol" cx=".4" cy=".15" r=".9">
-            <stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff00"/>
-          </radialGradient>
-          <radialGradient id="cheek" cx=".5" cy=".5" r=".5">
-            <stop offset="0" stop-color="#fecdd3"/><stop offset="1" stop-color="#fecdd3" stop-opacity="0"/>
+          <radialGradient id="mSh" cx=".5" cy=".2" r=".9">
+            <stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#ffffff00"/>
           </radialGradient>
         </defs>
-        <ellipse cx="180" cy="270" rx="80" ry="16" fill="rgba(0,0,0,.25)" class="b-shadow"/>
-        <g>
-          <rect x="95" y="44" width="170" height="212" rx="26" fill="url(#paper3D)" stroke="#86EFAC" stroke-width="2"/>
-          <ellipse cx="150" cy="66" rx="86" ry="26" fill="url(#vol)" opacity=".35"/>
-          <g stroke="#CCFBE1" stroke-width="2">
-            <line x1="110" x2="250" y1="110" y2="110"/>
-            <line x1="110" x2="250" y1="130" y2="130"/>
-            <line x1="110" x2="250" y1="150" y2="150"/>
-            <line x1="110" x2="250" y1="170" y2="170"/>
+        <!-- subtle floor shadow -->
+        <ellipse cx="180" cy="270" rx="84" ry="16" fill="rgba(0,0,0,.28)"/>
+        <!-- paper body -->
+        <g style="animation:floatCard 3.2s ease-in-out infinite">
+          <rect x="95" y="44" width="170" height="212" rx="26" fill="url(#mCard)" stroke="#86EFAC" stroke-width="2"/>
+          <ellipse cx="152" cy="66" rx="86" ry="24" fill="url(#mSh)" opacity=".35"/>
+          <!-- binder clip -->
+          <rect x="118" y="36" width="38" height="16" rx="4" fill="#0ea5a5" opacity=".9"/>
+          <!-- green lines -->
+          <g stroke="#a7f3d0" stroke-width="2">
+            <line x1="114" x2="246" y1="110" y2="110"/>
+            <line x1="114" x2="246" y1="130" y2="130"/>
+            <line x1="114" x2="246" y1="150" y2="150"/>
+            <line x1="114" x2="246" y1="170" y2="170"/>
           </g>
-          <path d="M95 142 q-28 6 -36 -14" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <path d="M265 170 q36 12 40 -18" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round" class="b-wave"/>
-          <path d="M144 254 q-12 18 -26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <path d="M216 254 q12 18 26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <circle id="eyeL" cx="148" cy="92" r="8" fill="#0f172a"/>
-          <circle id="eyeR" cx="208" cy="92" r="8" fill="#0f172a"/>
-          <g class="b-blink"><rect x="140" y="86" width="16" height="6" fill="#fff"/><rect x="200" y="86" width="16" height="6" fill="#fff"/></g>
-          <path id="smile" d="M144 120 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="136" cy="104" r="11" fill="url(#cheek)"/><circle cx="220" cy="104" r="11" fill="url(#cheek)"/>
-
-          <!-- Centered A+ badge -->
-          <g class="b-pop badge"
-             transform="translate(180,150)"
-             style="transform-box: fill-box; transform-origin: center;">
+          <!-- arms -->
+          <g stroke="#22c55e" stroke-width="10" fill="none" stroke-linecap="round">
+            <path d="M95 142 q-28 8 -36 -14" style="transform-origin:95px 142px; animation:wave 2.6s ease-in-out infinite"/>
+            <path d="M265 170 q36 12 40 -18" style="transform-origin:265px 170px; animation:wave 2.8s ease-in-out infinite"/>
+          </g>
+          <!-- legs -->
+          <path d="M144 254 q-12 18 -26 0" stroke="#22c55e" stroke-width="10" fill="none" stroke-linecap="round" style="animation:hop 2.8s ease-in-out infinite"/>
+          <path d="M216 254 q12 18 26 0" stroke="#22c55e" stroke-width="10" fill="none" stroke-linecap="round" style="animation:hop 2.5s ease-in-out infinite"/>
+          <!-- eyes + cheeks + smile -->
+          <circle id="eyeL" cx="148" cy="92" r="7.5" fill="#0f172a" style="transform-origin:148px 92px; animation:eyeBlink 7s infinite"/>
+          <circle id="eyeR" cx="208" cy="92" r="7.5" fill="#0f172a" style="transform-origin:208px 92px; animation:eyeBlink 6.2s infinite"/>
+          <circle cx="136" cy="104" r="9" fill="#fecaca" opacity=".6"/><circle cx="220" cy="104" r="9" fill="#fecaca" opacity=".6"/>
+          <path d="M144 120 q18 12 36 0" fill="none" stroke="#16a34a" stroke-width="5" stroke-linecap="round"/>
+          <!-- centered A+ token on belly -->
+          <g transform="translate(180,158)">
             <circle r="22" fill="#10b981" stroke="#065f46" stroke-width="3"/>
             <circle r="18" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
-            <text x="0" y="0" text-anchor="middle" dominant-baseline="central"
-                  font-size="18" font-weight="900" font-family="Inter, ui-sans-serif, system-ui" fill="#a7f3d0">A+</text>
+            <text text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="900" font-family="Inter" fill="#a7f3d0">A+</text>
+          </g>
+          <!-- sparkles -->
+          <g fill="#a7f3d0" opacity=".9">
+            <circle cx="272" cy="74" r="2.3" style="animation:sparkle 1.8s linear infinite"/>
+            <circle cx="254" cy="60" r="2"   style="animation:sparkle 1.6s .4s linear infinite"/>
+            <circle cx="292" cy="92" r="2.5" style="animation:sparkle 2.0s .2s linear infinite"/>
           </g>
         </g>
       </svg>
@@ -263,21 +236,19 @@
 
   <div class="shell">
     <aside>
-      <div class="card profiles-card" style="margin-bottom:10px">
+      <div class="card" style="margin-bottom:10px">
         <div class="section" style="margin-bottom:6px">Profiles</div>
-        <div class="row" style="margin-bottom:8px">
-          <select id="profileSelectSide" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)"></select>
-        </div>
-        <div class="row" style="margin-bottom:8px">
+        <div style="margin-bottom:8px"><select id="profileSelectSide" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)"></select></div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
           <button id="newProfileBtnSide" class="btn">New</button>
           <button id="renameProfileBtn" class="btn">Rename</button>
           <button id="deleteProfileBtn" class="btn">Delete</button>
         </div>
-        <div class="row">
+        <div style="display:flex;gap:8px">
           <button id="exportProfileBtn" class="btn">Export</button>
           <button id="importProfileBtn" class="btn">Import</button>
         </div>
-        <div class="hint" id="streakHint">Streak: 0 days</div>
+        <div class="hint" id="streakHint" style="margin-top:8px">Streak: 0 days</div>
       </div>
 
       <nav class="nav" id="sidebar">
@@ -350,8 +321,8 @@
           </div>
 
           <div class="card" style="grid-column:span 12">
-            <div class="resultTitle">
-              <div class="resultLeft">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+              <div style="display:flex;align-items:center;gap:14px">
                 <div id="bigGrade" class="bigGrade">—</div>
                 <div>
                   <div id="scoreLine" class="scoreline">Score: — / 100.0</div>
@@ -380,30 +351,28 @@
         </div>
       </section>
 
-      <!-- History page -->
+      <!-- History -->
       <section id="page-history" class="page">
-        <div class="card" style="grid-column:span 12; position:relative">
+        <div class="card" style="grid-column:span 12">
           <div style="display:flex;align-items:center;justify-content:space-between">
             <h2 style="margin:0">Your Progress</h2>
             <div id="histMeta" class="hint">Entries: 0</div>
           </div>
           <canvas id="historyChart" height="220" style="width:100%;max-width:100%;margin-top:10px"></canvas>
-          <ul id="histList" class="hint" style="margin:10px 0 0 18px"></ul>
         </div>
       </section>
 
-      <!-- Simple pages -->
-      <section id="page-about" class="page"><div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math and friendly design. Everything runs in your browser.</p></div></section>
+      <section id="page-about" class="page"><div class="card"><h2>About Us</h2><p>We grade your money with clear, FI-aware math and friendly design. Everything runs in your browser.</p></div></section>
       <section id="page-goal" class="page"><div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div></section>
       <section id="page-faq" class="page"><div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div></section>
       <section id="page-contact" class="page"><div class="card"><h2>Contact</h2><p>Email us: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div></section>
     </main>
   </div>
 
-  <!-- Welcome Modal -->
-  <div id="welcome" class="welcome" aria-modal="true" role="dialog">
-    <div class="welcome-card">
-      <h2>Welcome to Grade My Finance</h2>
+  <!-- Welcome -->
+  <div id="welcome" class="overlay" aria-modal="true" role="dialog" style="z-index:95;background:rgba(0,0,0,.45)">
+    <div class="loader" style="text-align:center">
+      <h2 style="margin:6px 0 8px">Welcome to Grade My Finance</h2>
       <p>“Let’s make money feel easy.”</p>
       <button id="welcomeGo" class="btn primary">Let’s go</button>
     </div>
@@ -464,7 +433,7 @@
   })();
 
   /* ---------- Profiles ---------- */
-  const PROFILE_KEY='gmf_profiles_v4';
+  const PROFILE_KEY='gmf_profiles_v5';
   function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
   function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
   function ensureDefaultProfile(){
@@ -524,20 +493,10 @@
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
 
-  /* ---------- Financial model helpers ---------- */
-  const EF_TARGET=6; // months
-  // Fidelity-style salary multiple curve (after-tax income used as salary proxy)
-  const targetPts = [
-    [25,0.5],[30,1],[35,2],[40,3],[45,5],[50,7],[55,9],[60,11]
-  ];
-  function targetMultipleAtAge(age){
-    if(age<=25) return 0.5; if(age>=60) return 11;
-    for(let i=1;i<targetPts.length;i++){
-      const [a0,m0]=targetPts[i-1], [a1,m1]=targetPts[i];
-      if(age<=a1){ const t=(age-a0)/(a1-a0); return m0+(m1-m0)*t; }
-    }
-    return 11;
-  }
+  /* ---------- Financial Model ---------- */
+  const SWR = 0.035;       // 3.5% withdrawal rate for FI target
+  const EF_TARGET = 6;     // months
+  const ACCESS_EQ = 0.40;  // portion of home equity considered accessible
 
   function values(){
     const v = Object.fromEntries(ids.map(id=>[id,val(id)]));
@@ -548,15 +507,17 @@
     v.annualIncome = v.income*12;        // after-tax proxy for salary
     v.annualSpend  = Math.max(0, v.expenses * 12);
 
-    // Investable = long-term + surplus cash over EF + accessible home equity (40%)
-    const cashSurplus = Math.max(0, v.cash - EF_TARGET*(v.expenses||0));
+    // Investable = long-term + surplus cash over EF + accessible home equity (portion)
+    const surplusCash = Math.max(0, v.cash - EF_TARGET*(v.expenses||0));
     const homeEquity  = Math.max(0, v.home - v.mortgage);
-    const accessibleEquity = homeEquity * 0.40;
-    v.investableTotal = (v.retire + v.brokerage + v.hsa) + cashSurplus + accessibleEquity;
+    const accessibleEquity = homeEquity * ACCESS_EQ;
+    v.investableTotal = (v.retire + v.brokerage + v.hsa) + surplusCash + accessibleEquity;
 
-    // Readiness target by age = salary multiple
-    v.targetMultiple = targetMultipleAtAge(v.age||30);
-    v.targetByAge    = v.annualIncome * v.targetMultiple;
+    // Target FI based on spend & SWR
+    v.targetFI = v.annualSpend>0 ? v.annualSpend / SWR : 0;
+
+    // Readiness ratio (FI progress)
+    v.fiRatio = v.targetFI>0 ? v.investableTotal / v.targetFI : (v.net>0?1:0);
 
     // Savings rate (includes payroll + post-tax education)
     const leftover = Math.max(0, v.income - v.expenses);
@@ -568,30 +529,33 @@
     v.nonMortDebt = v.student + v.auto + v.cc;
     v.nwToIncome = v.annualIncome>0 ? v.net / v.annualIncome : 0;
 
+    v.paidOffHouse = (v.home>0 && v.mortgage<=0);
+
     return v;
   }
 
-  /* ---------- Scoring ---------- */
-  // Weights: readiness 40, net worth 20, savings 15, EF 10, debt health 15  (total 100)
+  // Weights sum to 100
   function scoreModel(v){
-    // Readiness ratio vs target multiple
-    const readinessR = v.targetByAge>0 ? v.investableTotal / v.targetByAge : (v.net>0?1:0);
-    const sReadiness = map01(readinessR, 0, 1.2);             // full score at 1.2× target
-    const sNW        = map01(v.nwToIncome, -0.2, 1.0);        // ok if slightly negative; great at 1× income NW
-    const sSave      = map01(v.saveRate, 0, 0.25);            // full at ~25% saving rate
-    const sEF        = map01(v.efMonths, 0, EF_TARGET);       // full at 6 months EF
-    const debtRatio  = (v.annualIncome>0) ? (v.nonMortDebt / v.annualIncome) : 1; // lower is better
-    const sDebt      = map01(1 - debtRatio, 0, 1);            // full if zero non-mortgage debt
+    const sFI   = map01(v.fiRatio, 0, 1.2);          // 55%
+    const sNW   = map01(v.nwToIncome, -0.2, 1.0);    // 15%
+    const sSave = map01(v.saveRate, 0, 0.25);        // 10% full @25% SR
+    const sEF   = map01(v.efMonths, 0, EF_TARGET);   // 8%
+    const debtRatio = (v.annualIncome>0) ? (v.nonMortDebt / v.annualIncome) : 1;
+    const sDebt = map01(1-debtRatio, 0, 1);          // 7% (zero is best)
+    const sHouse = v.paidOffHouse ? 1 : 0;           // 3% bonus
+    const sCashX = map01(Math.max(0, v.efMonths - EF_TARGET), 0, 6); // up to +2% for 6 extra months
 
-    const score = 40*sReadiness + 20*sNW + 15*sSave + 10*sEF + 15*sDebt;
-    return {
-      score:+score.toFixed(1),
-      readinessR, sReadiness, sNW, sSave, sEF, sDebt,
-      ...v
-    };
+    let score = 55*sFI + 15*sNW + 10*sSave + 8*sEF + 7*sDebt + 3*sHouse + 2*sCashX;
+    score = Math.max(0, Math.min(100, +score.toFixed(1)));
+
+    // Hard rule: Complete FI with clean debts earns A+
+    const cleanDebt = v.nonMortDebt < 1000; // effectively no non-mortgage debt
+    const FI_Aplus  = (v.fiRatio >= 1.0 && cleanDebt);
+    return {score, FI_Aplus, ...v};
   }
 
-  function letter(score){
+  function letter(score, flags){
+    if(flags?.FI_Aplus) return "A+";
     if(score>=97) return "A+";
     if(score>=93) return "A";
     if(score>=90) return "A-";
@@ -611,52 +575,61 @@
 
   function renderWhy(s){
     $('#chips').innerHTML = [
-      `<span class="chip">Readiness vs age: <b>${(s.readinessR*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Target: <b>${s.targetMultiple.toFixed(1)}×</b> salary</span>`,
+      `<span class="chip">FI progress: <b>${(s.fiRatio*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Target FI: <b>${money(s.targetFI)}</b></span>`,
       `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
       `<span class="chip">EF: <b>${s.efMonths.toFixed(1)} mo</b></span>`,
-      `<span class="chip">Debt/Income: <b>${((s.nonMortDebt/(s.annualIncome||1))*100).toFixed(0)}%</b></span>`
+      `<span class="chip">Debt/Income: <b>${((s.nonMortDebt/(s.annualIncome||1))*100).toFixed(0)}%</b></span>`,
+      s.paidOffHouse?`<span class="chip">House: <b>Paid off</b></span>`:`<span class="chip">House: <b>With mortgage</b></span>`
     ].join('');
 
     $('#whyList').innerHTML = [
-      `Investable total (incl. surplus cash & 40% home equity): <b>${money(s.investableTotal)}</b>.`,
-      `Age ${s.age}: target is <b>${s.targetMultiple.toFixed(1)}×</b> salary ⇒ <b>${money(s.targetByAge)}</b>.`,
+      `Investable total (core + surplus cash + 40% equity): <b>${money(s.investableTotal)}</b>.`,
+      `Annual spend: <b>${money(s.annualSpend)}</b> → Target FI (at ${Math.round(SWR*1000)/10}% SWR): <b>${money(s.targetFI)}</b>.`,
+      `FI ratio: <b>${(s.fiRatio*100).toFixed(0)}%</b>.`,
       `Net worth: <b>${money(s.net)}</b> (${(s.nwToIncome).toFixed(2)}× income).`,
-      `Savings rate (payroll+post-tax included): <b>${(s.saveRate*100).toFixed(0)}%</b>.`,
-      `Non-mortgage debt: <b>${money(s.nonMortDebt)}</b>.`
+      `Savings rate (incl. payroll & post-tax): <b>${(s.saveRate*100).toFixed(0)}%</b>.`,
+      `Non-mortgage debt: <b>${money(s.nonMortDebt)}</b>.`,
+      s.paidOffHouse ? `Mortgage status: <b>Paid off</b> (housing security bonus).` : `Mortgage balance counted; equity included at 40% accessibility.`
     ].map(x=>`<div>${x}</div>`).join('');
   }
 
   function renderImprove(s){
     const ideas=[];
-    if(s.readinessR < 1){
-      const gap = Math.max(0, s.targetByAge - s.investableTotal);
-      ideas.push(`Close the age target gap: add ~${money(gap)} to investables (increase savings and/or reduce spend).`);
+    if(s.fiRatio < 1){
+      const gap = Math.max(0, s.targetFI - s.investableTotal);
+      ideas.push(`Close the FI gap: add ~${money(gap)} to investables (raise savings and/or trim spend).`);
+    }else{
+      ideas.push(`You’ve reached FI! Maintain a 6–12 month cash buffer and keep expenses flexible.`);
     }
     if(s.efMonths < EF_TARGET){
       ideas.push(`Build emergency fund to ${EF_TARGET} months (${money((s.expenses||0)*EF_TARGET)}).`);
+    }else if(s.efMonths < EF_TARGET+6){
+      ideas.push(`Add a buffer: target ${EF_TARGET+6} months of cash for resilience.`);
     }
     if(s.saveRate < 0.20){
       const bump = Math.ceil((s.income + s.pretaxMonthly)*0.05);
-      ideas.push(`Boost savings rate: auto-move ~${money(bump)}/mo (aim for ≥20%).`);
+      ideas.push(`Boost savings rate: automate +${money(bump)}/mo (aim ≥ 20%).`);
     }
     if(s.nonMortDebt > 0){
       ideas.push(`Aggressively pay down non-mortgage debt; keep debt/income < 20%.`);
     }
-    if(!ideas.length) ideas.push(`You’re ahead for your age. Keep systems humming.`);
+    if(!s.paidOffHouse && s.home>0){
+      ideas.push(`Consider periodic principal prepayments to improve housing security.`);
+    }
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
   function doGrade(){
     const s = scoreModel(values());
-    const L = letter(s.score);
+    const L = letter(s.score, s);
 
     bigGrade.textContent = L;
     bigGrade.style.color = ({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
     bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
     scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
     nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
-    progress.style.width = s.score + '%';
+    $('#progressFill').style.width = s.score + '%';
 
     renderWhy(s); renderImprove(s);
 
@@ -668,18 +641,10 @@
   const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
   function showOverlay(){
     let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
-    const timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4);
-      bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; }, 200);
-    return ()=>{ clearInterval(timer); bar.style.width='100%'; pct.textContent='100%';
-      setTimeout(()=>overlay.classList.remove('show'), 250); };
+    const timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200);
+    return ()=>{ clearInterval(timer); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); };
   }
-  function runGradeSafely(){
-    const hide=showOverlay();
-    requestAnimationFrame(()=> setTimeout(()=>{
-      try{ doGrade(); }catch(e){ console.error(e); alert('Oops—could not calculate. Try again.'); }
-      hide();
-    }, 420));
-  }
+  function runGradeSafely(){ const hide=showOverlay(); requestAnimationFrame(()=> setTimeout(()=>{ try{ doGrade(); }catch(e){ console.error(e); alert('Oops—could not calculate. Try again.'); } hide(); }, 420)); }
 
   /* ---------- Buttons ---------- */
   $('#gradeBtn')    .addEventListener('click', runGradeSafely);
@@ -698,26 +663,23 @@
   $('#resetBtn').addEventListener('click', ()=>{
     $$('#page-grade input[type="number"]').forEach(el=>{ el.value=(el.id==='age'?30:0); });
     updateHints(); bigGrade.textContent='—'; bigGrade.classList.remove('show');
-    scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —'; progress.style.width='0%';
+    scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —'; $('#progressFill').style.width='0%';
     $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
 
   function updateHints(){
     const v = values();
     $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable core: ${money(v.retire+v.brokerage+v.hsa)})`;
-    $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
+    $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)} • Home equity: ${money(Math.max(0,v.home - v.mortgage))}`;
   }
   ids.forEach(id => els[id]?.addEventListener('input', updateHints));
   updateHints();
 
-  /* ---------- History ---------- */
+  /* ---------- History (mini chart) ---------- */
   function drawHistory(){
     const prof=getActive(); if(!prof) return;
     const pts=(prof.history||[]).map(h=>({date:h.date, score:h.score, letter:h.letter}));
     $('#histMeta').textContent = `Entries: ${pts.length}`;
-    const ul=$('#histList'); ul.innerHTML='';
-    pts.slice().reverse().forEach(h=>{ const li=document.createElement('li'); li.textContent=`${new Date(h.date).toLocaleString()} — ${h.letter} (${h.score})`; ul.appendChild(li); });
-
     const canvas = $('#historyChart'); const ctx = canvas.getContext('2d'); if(!pts.length){ ctx.clearRect(0,0,canvas.width,canvas.height); return; }
     const dpr = Math.min(2, window.devicePixelRatio||1);
     const rect = canvas.getBoundingClientRect(); canvas.width = Math.floor(rect.width*dpr); canvas.height= Math.floor(220*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -732,14 +694,13 @@
 
     ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--accent'); ctx.lineWidth=2; ctx.beginPath();
     xs.forEach((x,i)=>{ if(i===0) ctx.moveTo(x,ys[i]); else ctx.lineTo(x,ys[i]); }); ctx.stroke();
-
     ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2');
     xs.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(x,ys[i],3,0,Math.PI*2); ctx.fill(); });
   }
 
   /* ---------- Welcome ---------- */
   (function welcome(){
-    const key='gmf_welcome_seen_v4';
+    const key='gmf_welcome_seen_v5';
     const seen = localStorage.getItem(key)==='1';
     const el = $('#welcome');
     if(!seen){ el.classList.add('show'); }
@@ -754,7 +715,7 @@
     function move(e){
       const rect = document.body.getBoundingClientRect();
       const x = e.clientX/rect.width*2-1, y = e.clientY/rect.height*2-1;
-      const dx = clamp(x,-1,1)*2.8, dy = clamp(y,-1,1)*2.8;
+      const dx = Math.max(-1,Math.min(1,x))*2.6, dy = Math.max(-1,Math.min(1,y))*2.6;
       l.setAttribute('cx', cxL+dx); l.setAttribute('cy', cyL+dy);
       r.setAttribute('cx', cxR+dx); r.setAttribute('cy', cyR+dy);
     }
@@ -762,8 +723,8 @@
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
 
-  // draw history if tab open
-  if($('#page-history').classList.contains('active')) drawHistory();
+  /* ---------- Helpers ---------- */
+  function getActive(){ return ensureDefaultProfile().find(x=>x.id===getActiveId()); }
 })();
 </script>
 </body>
