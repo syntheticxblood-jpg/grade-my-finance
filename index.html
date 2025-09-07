@@ -35,17 +35,14 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Header + 3D G logo ---------- */
-  header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
-  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
-  .brand{display:flex;align-items:center;gap:14px}
-  .logoBig{width:120px;height:120px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
-  .title{margin:0;font-size:28px;color:#062c1b;font-weight:900;letter-spacing:.2px}
-  .tag{margin:0;color:#062c1bcc;font-size:12px}
-  .spacer{flex:1}
+  /* ---------- Header (centered) ---------- */
+  header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);
+    background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;padding:14px 16px;gap:16px}
+  .logoBig{height:86px;width:auto;display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
   .pill{border:none;padding:10px 14px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
   .light .pill{background:#0f172a}
-  .streak{font-weight:800;color:#062c1b;background:#ffffffc2;padding:7px 10px;border-radius:999px}
+  .hdr-rail{position:absolute;right:16px;display:flex;gap:10px;align-items:center}
 
   /* ---------- HERO ---------- */
   .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start;padding:18px 0 6px}
@@ -53,7 +50,6 @@
   .hero-copy{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
     border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:var(--shadow)}
   .hero-title{margin:0 0 8px;font-size:34px;letter-spacing:.2px}
-  .hero-title .heart{color:#ffd3e1}
   .hero-tag{margin:0 0 12px;color:var(--muted)}
   .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
   .btn{padding:11px 15px;border-radius:12px;border:1px solid var(--line);
@@ -61,11 +57,11 @@
   .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
   .btn.ghost{background:transparent}
 
-  /* ---------- Mascot (A+ now bottom-right & safe) ---------- */
+  /* ---------- Mascot ---------- */
   .hero-mascot{position:relative;display:grid;place-items:center;align-self:start;overflow:visible}
   .buddy{max-height:260px;width:auto}
   @media (max-width:1100px){ .buddy{max-height:220px} }
-  @media (max-width:640px){ .buddy{max-height:180px} } /* always visible on phones */
+  @media (max-width:640px){ .buddy{max-height:180px} }
   .mascot-bubble{
     position:absolute;top:-6px;right:4px;background:rgba(0,0,0,.35);border:1px solid var(--line);
     padding:6px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
@@ -75,33 +71,28 @@
   .b-blink{animation:blink 6s ease-in-out infinite}
   .b-wave{transform-origin:235px 120px;animation:wave 2.4s ease-in-out infinite}
   .b-pop{animation:badgePop 2.2s ease-in-out infinite}
-  .spark{animation:sparkle 1.8s linear infinite}
   @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
   @keyframes floatShadow{0%,100%{transform:scale(1);opacity:.35}50%{transform:scale(0.94);opacity:.2}}
   @keyframes blink{0%,95%,100%{opacity:0}96%,98%{opacity:1}}
   @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-11deg)}}
   @keyframes badgePop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-  @keyframes sparkle{0%{opacity:0;transform:translateY(-6px) scale(.8)}30%{opacity:1}100%{opacity:0;transform:translateY(-22px) scale(1.1)}}
 
   /* ---------- App shell ---------- */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
-  aside{position:sticky;top:92px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+  aside{position:sticky;top:100px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
   .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
   .tab:hover{transform:translateY(-1px)}
   .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--g1),var(--g2));color:#062c1b}
-
   .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
   .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
   label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
   input,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
   input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
-  .hint{font-size:12px;color:var(--muted);margin-top:6px}
   .page{display:none} .page.active{display:block}
 
   .resultTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .resultLeft{display:flex;align-items:center;gap:14px}
   .bigGrade{font-size:80px;font-weight:900;opacity:0;transform:scale(.7) rotate(-6deg)}
   .bigGrade.show{animation:pop .65s cubic-bezier(.2,.9,.2,1) forwards}
   @keyframes pop{0%{opacity:0;transform:scale(.7) rotate(-6deg)}60%{opacity:1;transform:scale(1.08) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
@@ -110,178 +101,77 @@
   .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px}
   .progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
   .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
-
   .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
   .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:var(--panel);font-size:12px;font-weight:800}
 
-  .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.35);z-index:80}
-  .overlay.show{display:grid}
-  .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
-  .bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
-  .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
-  @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
-
-  .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(120%);background:var(--card);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;z-index:90;transition:transform .28s ease;}
-  .toast.show{transform:translateX(-50%) translateY(0)}
-  .toast button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
-
-  footer{max-width:1200px;margin:12px auto 24px;padding:0 18px 24px;color:var(--muted)}
-  footer a{color:var(--accent)}
-
-  /* Profiles card tidy grid */
-  .profiles-card .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
-  .profiles-card select{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)}
-  .profiles-card .btn{width:100%}
-  .profiles-card .streakline{margin-top:8px}
-
-  /* History UI */
-  .hist-ui{display:grid;gap:12px}
-  .hist-top{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
-  .scrub{width:100%}
-  .tooltip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);padding:8px 10px;border-radius:10px;font-size:12px;box-shadow:var(--shadow)}
-  .cursor-line{position:absolute;top:0;bottom:0;width:1px;background:var(--accent);opacity:.6}
-
-  @media (max-width: 980px){
-    .shell{grid-template-columns:1fr}
-    aside{position:static}
-    .grid{grid-template-columns:1fr}
-  }
-  @media (max-width: 768px){
-    .grid > [style*="grid-column:span 6"],
-    .grid > [style*="grid-column:span 4"],
-    .grid > [style*="grid-column:span 8"]{grid-column: span 12 !important;}
-  }
-  #confetti{position:fixed;inset:0;pointer-events:none;z-index:85}
-
-  /* ---------- Welcome modal ---------- */
+  /* Welcome */
   .welcome{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:95}
   .welcome.show{display:grid}
   .welcome-card{max-width:680px;width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow);text-align:center}
-  .welcome-card h2{margin:8px 0 6px}
-  .welcome-card p{margin:0 0 14px;color:var(--muted)}
 </style>
 </head>
 <body class="dark">
- <header class="hdr">
-  <div class="brand">
-    <a href="/">
-      <!-- === Grade My Finance Logo === -->
-      <svg class="logoBig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-label="Grade My Finance logo">
-        <defs>
-          <!-- Badge background -->
-          <radialGradient id="gmf-badge" cx="50%" cy="50%" r="70%">
-            <stop offset="0" stop-color="#66E3B0"/>
-            <stop offset=".55" stop-color="#34D399"/>
-            <stop offset="1" stop-color="#16A34A"/>
-          </radialGradient>
-
-          <!-- Brand text gradient -->
-          <linearGradient id="gmf-brand" x1="0" x2="1">
-            <stop offset="0"  stop-color="#CFFFEF"/>
-            <stop offset=".5" stop-color="#7CF8E7"/>
-            <stop offset="1"  stop-color="#22D3EE"/>
-          </linearGradient>
-
-          <!-- Paper gradient -->
-          <linearGradient id="gmf-paper" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#FFFFFF"/>
-            <stop offset="1" stop-color="#E9FFF3"/>
-          </linearGradient>
-
-          <!-- Blue gradient for the G -->
-          <linearGradient id="gmf-blue" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#3B82F6"/>
-            <stop offset="1" stop-color="#1E40AF"/>
-          </linearGradient>
-        </defs>
-
-        <!-- === Left Badge === -->
-        <circle cx="100" cy="100" r="90" fill="url(#gmf-badge)"/>
-
-        <!-- BIG tilted G with blue gradient, lowered slightly -->
-        <g transform="translate(100,110) rotate(-8)">
-          <text x="0" y="40" text-anchor="middle"
-                font-size="140" font-weight="900"
-                font-family="Arial Black, Helvetica, sans-serif"
-                fill="url(#gmf-blue)" stroke="#062C1B" stroke-width="8" paint-order="stroke">
-            G
-          </text>
-        </g>
-
-        <!-- Report card popping out -->
-        <g transform="translate(160,48) rotate(-10)">
-          <rect width="64" height="80" rx="12" fill="url(#gmf-paper)" stroke="#BFF7DA" stroke-width="2"/>
-          <g stroke="#10B981" stroke-width="3" stroke-linecap="round">
-            <line x1="14" y1="26" x2="50" y2="26"/>
-            <line x1="14" y1="42" x2="50" y2="42"/>
-            <line x1="14" y1="58" x2="42" y2="58"/>
-          </g>
-          <text x="16" y="68" font-size="22" font-weight="900"
-                font-family="Inter, ui-sans-serif, system-ui"
-                fill="#F87171">A+</text>
-        </g>
-
-        <!-- === Brand Text === -->
-        <g transform="translate(240,0)">
-          <text x="0" y="92" font-size="54" font-weight="900"
-                font-family="Inter, ui-sans-serif, system-ui"
-                fill="url(#gmf-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">
-            Grade My
-          </text>
-          <text x="0" y="150" font-size="54" font-weight="900"
-                font-family="Inter, ui-sans-serif, system-ui"
-                fill="url(#gmf-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">
-            Finance
-          </text>
-        </g>
-      </svg>
-    </a>
-  </div>
-</header>
-
-              <stop offset="1" stop-color="#0a5a37"/>
+  <!-- Header with NEW logo -->
+  <header>
+    <div class="hdr">
+      <a href="/" aria-label="Home">
+        <!-- === Grade My Finance Logo (blue tilted G, bright wordmark) === -->
+        <svg class="logoBig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-label="Grade My Finance logo">
+          <defs>
+            <radialGradient id="gmf-badge" cx="50%" cy="50%" r="70%">
+              <stop offset="0" stop-color="#66E3B0"/>
+              <stop offset=".55" stop-color="#34D399"/>
+              <stop offset="1" stop-color="#16A34A"/>
+            </radialGradient>
+            <linearGradient id="gmf-brand" x1="0" x2="1">
+              <stop offset="0"  stop-color="#CFFFEF"/>
+              <stop offset=".5" stop-color="#7CF8E7"/>
+              <stop offset="1"  stop-color="#22D3EE"/>
             </linearGradient>
             <linearGradient id="gmf-paper" x1="0" x2="0" y1="0" y2="1">
               <stop offset="0" stop-color="#FFFFFF"/>
               <stop offset="1" stop-color="#E9FFF3"/>
             </linearGradient>
-            <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
-              <feOffset dx="0" dy="3"/><feGaussianBlur stdDeviation="5" result="b"/>
-              <feComposite in="SourceAlpha" in2="b" operator="arithmetic" k2="-1" k3="1" result="s"/>
-              <feColorMatrix in="s" type="matrix" values="0 0 0 0 0  0 0 0 0 0.15  0 0 0 0 0.08  0 0 0 .7 0"/>
-              <feComposite in2="SourceGraphic" operator="over"/>
-            </filter>
+            <linearGradient id="gmf-blue" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#3B82F6"/>
+              <stop offset="1" stop-color="#1E40AF"/>
+            </linearGradient>
           </defs>
-
-          <!-- 3D outer disc -->
-          <circle cx="150" cy="150" r="138" fill="url(#gmf-g)"/>
-          <!-- Inner ring with a BIGGER GAP to read clearly as “G” -->
-          <circle cx="150" cy="150" r="96" fill="none" stroke="url(#gmf-stroke)" stroke-width="18"
-                  stroke-linecap="round" stroke-dasharray="480 180" stroke-dashoffset="62" filter="url(#innerShadow)"/>
-          <!-- The “G” bar (thinner) -->
-          <line x1="150" y1="150" x2="238" y2="150" stroke="url(#gmf-stroke)" stroke-width="18" stroke-linecap="round"/>
-
-          <!-- Tilted report card with bigger, outlined A+ -->
-          <g transform="translate(206,66) rotate(-8)">
-            <rect width="72" height="90" rx="14" fill="url(#gmf-paper)" stroke="#BFF7DA" stroke-width="2"/>
-            <g stroke="#10B981" stroke-width="4" stroke-linecap="round">
-              <line x1="14" y1="30" x2="58" y2="30"/>
-              <line x1="14" y1="47" x2="58" y2="47"/>
+          <!-- Badge -->
+          <circle cx="100" cy="100" r="90" fill="url(#gmf-badge)"/>
+          <!-- Big tilted G (centered, slightly lower) -->
+          <g transform="translate(100,110) rotate(-8)">
+            <text x="0" y="40" text-anchor="middle"
+                  font-size="140" font-weight="900"
+                  font-family="Arial Black, Helvetica, sans-serif"
+                  fill="url(#gmf-blue)" stroke="#062C1B" stroke-width="8" paint-order="stroke">G</text>
+          </g>
+          <!-- Report card beside badge -->
+          <g transform="translate(160,48) rotate(-10)">
+            <rect width="64" height="80" rx="12" fill="url(#gmf-paper)" stroke="#BFF7DA" stroke-width="2"/>
+            <g stroke="#10B981" stroke-width="3" stroke-linecap="round">
+              <line x1="14" y1="26" x2="50" y2="26"/>
+              <line x1="14" y1="42" x2="50" y2="42"/>
+              <line x1="14" y1="58" x2="42" y2="58"/>
             </g>
-            <text x="16" y="72" font-family="Inter,ui-sans-serif,system-ui" font-weight="900" font-size="26"
-                  fill="#F87171" stroke="#064e3b" stroke-width="1.5">A+</text>
+            <!-- Centered A+ on the small card -->
+            <text x="32" y="40" text-anchor="middle" dominant-baseline="middle"
+                  font-size="24" font-weight="900" font-family="Inter, ui-sans-serif, system-ui" fill="#F87171">A+</text>
+          </g>
+          <!-- Wordmark -->
+          <g transform="translate(240,0)">
+            <text x="0" y="92" font-size="54" font-weight="900" font-family="Inter, ui-sans-serif, system-ui"
+                  fill="url(#gmf-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Grade My</text>
+            <text x="0" y="150" font-size="54" font-weight="900" font-family="Inter, ui-sans-serif, system-ui"
+                  fill="url(#gmf-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Finance</text>
           </g>
         </svg>
-        <div>
-          <h1 class="title">Grade My Finance</h1>
-          <p class="tag">Friendly grades, profiles, progress & trophies.</p>
-        </div>
+      </a>
+
+      <div class="hdr-rail">
+        <button id="newProfileBtn" class="pill">New Profile</button>
+        <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
       </div>
-      <span class="spacer"></span>
-      <span id="streakPill" class="streak" style="display:none"></span>
-      <select id="profileSelect" class="pill" aria-label="Select profile"></select>
-      <button id="newProfileBtn" class="pill">New Profile</button>
-      <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
     </div>
   </header>
 
@@ -289,7 +179,7 @@
   <section class="hero container" aria-label="Intro">
     <div class="hero-copy">
       <h2 class="hero-title">Your money, graded like a report card <span class="heart">♥</span></h2>
-      <p class="hero-tag">Plug in your numbers, get a letter grade, and track progress with profiles, history, and achievements.</p>
+      <p class="hero-tag">Plug in your numbers, get a letter grade, and track progress with profiles and history.</p>
       <div class="hero-cta">
         <button class="btn ghost" id="demoBtnTop">Try Demo</button>
         <button class="btn primary" id="gradeBtnTop">Grade me now</button>
@@ -297,9 +187,9 @@
       </div>
     </div>
 
-    <!-- Mascot with A+ badge moved INSIDE bottom-right corner (never clips) -->
+    <!-- Mascot with A+ badge placed in hand (never clipped) -->
     <div class="hero-mascot" aria-hidden="true">
-      <svg class="buddy b-float" viewBox="0 0 360 300" role="img" aria-label="Report Card Buddy 3D">
+      <svg class="buddy b-float" viewBox="0 0 360 300" role="img" aria-label="Report Card Buddy">
         <defs>
           <linearGradient id="paper3D" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7FFEF"/>
@@ -321,28 +211,24 @@
             <line x1="110" x2="250" y1="150" y2="150"/>
             <line x1="110" x2="250" y1="170" y2="170"/>
           </g>
+          <!-- arms -->
           <path d="M95 142 q-28 6 -36 -14" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
           <path d="M265 170 q36 12 40 -18" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round" class="b-wave"/>
+          <!-- feet -->
           <path d="M144 254 q-12 18 -26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
           <path d="M216 254 q12 18 26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <!-- face -->
           <circle id="eyeL" cx="148" cy="92" r="8" fill="#0f172a"/>
           <circle id="eyeR" cx="208" cy="92" r="8" fill="#0f172a"/>
           <g class="b-blink"><rect x="140" y="86" width="16" height="6" fill="#fff"/><rect x="200" y="86" width="16" height="6" fill="#fff"/></g>
           <path id="smile" d="M144 120 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
           <circle cx="136" cy="104" r="11" fill="url(#cheek)"/><circle cx="220" cy="104" r="11" fill="url(#cheek)"/>
 
-          <!-- A+ badge anchored inside bottom-right area -->
-          <g class="b-pop" transform="translate(300,230) rotate(-10)">
-            <circle r="26" fill="#10b981" stroke="#065f46" stroke-width="3"/>
-            <circle r="22" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
-            <text y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#a7f3d0">A+</text>
-          </g>
-
-          <!-- sparkles -->
-          <g fill="#a7f3d0" opacity=".8">
-            <circle class="spark" cx="272" cy="75" r="2"/>
-            <circle class="spark" cx="292" cy="92" r="2.5"/>
-            <circle class="spark" cx="254" cy="70" r="1.8"/>
+          <!-- A+ badge moved to the RIGHT HAND (bottom-right quadrant) -->
+          <g class="b-pop" transform="translate(292,156) rotate(-8)">
+            <circle r="20" fill="#10b981" stroke="#065f46" stroke-width="3"/>
+            <circle r="16" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
+            <text y="6" text-anchor="middle" font-size="16" font-weight="900" fill="#a7f3d0">A+</text>
           </g>
         </g>
       </svg>
@@ -350,34 +236,19 @@
     </div>
   </section>
 
-  <canvas id="confetti"></canvas>
-
   <div class="shell">
     <aside>
-      <div class="card profiles-card" style="margin-bottom:10px">
+      <div class="card" style="margin-bottom:10px">
         <div class="section" style="margin-bottom:6px">Profiles</div>
         <div class="row" style="margin-bottom:8px">
-          <select id="profileSelectSide" aria-label="Active profile"></select>
+          <select id="profileSelect" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)"></select>
         </div>
-        <div class="row" style="margin-bottom:8px">
-          <button id="newProfileBtnSide" class="btn">New</button>
-          <button id="renameProfileBtn" class="btn">Rename</button>
-          <button id="deleteProfileBtn" class="btn">Delete</button>
-        </div>
-        <div class="row">
-          <button id="exportProfileBtn" class="btn">Export</button>
-          <button id="importProfileBtn" class="btn">Import</button>
-        </div>
-        <div class="hint streakline" id="streakHint">Streak: 0 days</div>
+        <div class="hint" id="streakHint">Streak: 0 days</div>
       </div>
 
       <nav class="nav" id="sidebar">
         <button class="tab active" data-page="grade">Grade</button>
         <button class="tab" data-page="history">History</button>
-        <button class="tab" data-page="about">About Us</button>
-        <button class="tab" data-page="goal">Our Goal</button>
-        <button class="tab" data-page="faq">FAQ</button>
-        <button class="tab" data-page="contact">Contact</button>
       </nav>
     </aside>
 
@@ -408,7 +279,7 @@
               <div style="grid-column:span 6"><label>Retirement (401k/IRA)</label><input id="retire" type="number" value="0" min="0"></div>
               <div style="grid-column:span 6"><label>Brokerage/Stocks</label><input id="brokerage" type="number" value="0" min="0"></div>
               <div style="grid-column:span 6"><label>Car Value</label><input id="car" type="number" value="0" min="0"></div>
-              <div style="grid-column:span 6"><label>HSA (counted here)</label><input id="hsa" type="number" value="0" min="0"></div>
+              <div style="grid-column:span 6"><label>HSA</label><input id="hsa" type="number" value="0" min="0"></div>
               <div style="grid-column:span 6"><label>Cash Savings</label><input id="cash" type="number" value="0" min="0"></div>
             </div>
             <div class="hint" id="assetsHint">Total Assets: —</div>
@@ -429,35 +300,17 @@
             <div class="hint" id="liabHint">Total Liabilities: —</div>
           </div>
 
-          <!-- Ongoing contributions & pension -->
           <div class="card" style="grid-column:span 6">
             <div class="section">Monthly Contributions (pre-tax)</div>
-            <label>Retirement + HSA payroll contributions (pre-tax)</label>
+            <label>Retirement + HSA payroll contributions</label>
             <input id="pretaxMonthly" type="number" value="0" min="0" />
-            <div class="hint">Counted in your savings rate even if not in take-home.</div>
           </div>
           <div class="card" style="grid-column:span 6">
             <div class="section">Monthly Contributions (post-tax)</div>
             <label>Education savings (529/ESA etc.)</label>
             <input id="eduMonthly" type="number" value="0" min="0" />
-            <div class="hint">Improves savings rate; excluded from investable total since earmarked.</div>
-          </div>
-          <div class="card" style="grid-column:span 12">
-            <div class="section">Pension</div>
-            <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
-              <div style="grid-column:span 6">
-                <label>Estimated Monthly Pension (today’s $)</label>
-                <input id="pensionMonthly" type="number" value="0" min="0" />
-              </div>
-              <div style="grid-column:span 6">
-                <label>Pension Start Age</label>
-                <input id="pensionAge" type="number" value="67" min="40" max="80" />
-              </div>
-            </div>
-            <div class="hint" id="pensionHint">PV added to readiness when applicable.</div>
           </div>
 
-          <!-- Results -->
           <div class="card" style="grid-column:span 12">
             <div class="resultTitle">
               <div class="resultLeft">
@@ -473,10 +326,8 @@
                 <button id="gradeBtn" class="btn primary">Get My Score</button>
               </div>
             </div>
-
             <div style="margin:12px 0 10px 0" class="progress"><div id="progressFill"></div></div>
             <div id="badgeRow" class="badges"></div>
-
             <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px">
               <div class="card" style="border-style:dashed">
                 <h4>What went into your grade</h4>
@@ -491,94 +342,25 @@
         </div>
       </section>
 
-      <!-- History -->
+      <!-- History (minimal) -->
       <section id="page-history" class="page">
-        <div class="card hist-ui" style="grid-column:span 12; position:relative">
-          <div class="hist-top">
-            <h2 style="margin:0">Your Progress</h2>
-            <div id="histMeta" class="hint">Entries: 0</div>
-          </div>
-
-          <div style="position:relative">
-            <canvas id="historyChart" height="220" style="width:100%;max-width:100%"></canvas>
-            <div id="cursorLine" class="cursor-line" style="display:none"></div>
-            <div id="tip" class="tooltip" style="display:none"></div>
-          </div>
-
-          <div class="card" style="border-style:dashed">
-            <div class="section">Drag the scale to compare entries</div>
-            <input id="histRange" class="scrub" type="range" min="0" max="0" step="1" value="0" />
-            <div id="histDetail" class="hint">Move the slider or hover the chart to see differences.</div>
-          </div>
-
-          <div id="trophyWall" class="badges" style="margin-top:2px"></div>
+        <div class="card" style="grid-column:span 12">
+          <h2 style="margin:0 0 8px">Your Progress</h2>
+          <div id="histMeta" class="hint">Entries: 0</div>
+          <ul id="histList" class="hint" style="margin:8px 0 0 18px"></ul>
         </div>
       </section>
-
-      <!-- Simple pages -->
-      <section id="page-about" class="page"><div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math and friendly design. Everything runs in your browser.</p></div></section>
-      <section id="page-goal" class="page"><div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div></section>
-      <section id="page-faq" class="page"><div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div></section>
-      <section id="page-contact" class="page"><div class="card"><h2>Contact</h2><p>grademyfinance@gmail.com</p></div></section>
-
-      <!-- In-page “Read more” articles -->
-      <section id="read-saved-by-30" class="page"><div class="card"><h2>Saved by 30</h2><p>Why early savings matter: compounding + agility + optionality. Hitting a baseline (e.g., 1× annual expenses) by 30 builds resilience.</p></div></section>
-      <section id="read-savings-rate" class="page"><div class="card"><h2>Savings Rate Benchmarks</h2><p>Common targets: 15–20% steady • 25–35% faster • 40%+ aggressive FI. Choose what fits your stability and goals.</p></div></section>
-      <section id="read-what-is-fire" class="page"><div class="card"><h2>What is FIRE?</h2><p>Financial Independence, Retire Early: build assets so returns can sustainably cover expenses (often 3–4% withdrawal with buffers).</p></div></section>
     </main>
-  </div>
-
-  <!-- Loader -->
-  <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
-    <div class="loader">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <strong>Crunching numbers…</strong><span id="pct" class="scoreline">0%</span>
-      </div>
-      <div class="bar"><div class="fill" id="barFill"></div></div>
-    </div>
-  </div>
-
-  <!-- Share toast -->
-  <div id="toast" class="toast" role="status" aria-live="polite">
-    <span>Shareable link copied.</span>
-    <button id="copyAgain">Copy again</button>
   </div>
 
   <!-- Welcome Modal -->
   <div id="welcome" class="welcome" aria-modal="true" role="dialog">
     <div class="welcome-card">
-      <svg viewBox="0 0 360 220" width="260" aria-hidden="true" style="display:block;margin:0 auto 8px">
-        <defs>
-          <linearGradient id="wPaper" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7FFEF"/>
-          </linearGradient>
-        </defs>
-        <g>
-          <rect x="95" y="14" width="170" height="162" rx="26" fill="url(#wPaper)" stroke="#86EFAC" stroke-width="2"/>
-          <g stroke="#CCFBE1" stroke-width="2">
-            <line x1="110" x2="250" y1="60" y2="60"/>
-            <line x1="110" x2="250" y1="80" y2="80"/>
-            <line x1="110" x2="250" y1="100" y2="100"/>
-          </g>
-          <circle cx="148" cy="52" r="6" fill="#0f172a"/>
-          <circle cx="208" cy="52" r="6" fill="#0f172a"/>
-          <path d="M144 70 q18 10 36 0" fill="none" stroke="#065f46" stroke-width="4" stroke-linecap="round"/>
-          <g transform="translate(262,72) rotate(-10)">
-            <circle r="22" fill="#10b981" stroke="#065f46" stroke-width="3"/>
-            <circle r="18" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
-            <text y="6" text-anchor="middle" font-size="18" font-weight="900" fill="#a7f3d0">A+</text>
-          </g>
-        </g>
-      </svg>
       <h2>Welcome to Grade My Finance</h2>
       <p>“Let’s make money feel easy.”</p>
       <button id="welcomeGo" class="btn primary">Let’s go</button>
     </div>
   </div>
-
-  <footer class="container">
-    <p>Read more: <a href="#read-saved-by-30">Saved by 30</a> · <a href="#read-savings-rate">Savings Rate Benchmarks</a> · <a href="#read-what-is-fire">What is FIRE?</a></p>
-  </footer>
 
 <script>
 (() => {
@@ -587,11 +369,8 @@
   const money = n => isFinite(n) ? `$${Math.round(n).toLocaleString()}` : '—';
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
-  const fmtDate = iso => new Date(iso).toLocaleString();
 
-  const SWR = 0.06, EF_TARGET = 6, EQUITY_FACTOR = 0.40, REAL_RET = 0.03;
-  const NW_W=14, FI_W=56, AGE_W=12, SAVE_W=8, EF_W=6, NONMORT_W=2, LTV_W=2;
-
+  // theme
   const modeBtn = $('#modeBtn');
   function setMode(light){
     document.body.classList.toggle('light', light);
@@ -602,34 +381,16 @@
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // router for read pages
-  function routeFromHash(){
-    const h = location.hash.replace('#','');
-    const pages=['grade','history','about','goal','faq','contact','read-saved-by-30','read-savings-rate','read-what-is-fire'];
-    const found = pages.includes(h) ? h : null;
-    if(found){
-      $$('.page').forEach(p=>p.classList.remove('active'));
-      $('#page-'+found)?.classList.add('active');
-      $('#'+found)?.classList.add('active');
-      $$('.tab').forEach(b=> b.dataset.page && b.classList.toggle('active', b.dataset.page===found));
-      if(found==='history') renderHistory();
-    }
-  }
-  window.addEventListener('hashchange', routeFromHash);
-  routeFromHash();
-
-  // tabs
-  const pagesBase=['grade','history','about','goal','faq','contact'];
+  // simple router
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
     const pg=t.dataset.page;
     $$('.tab').forEach(b=>b.classList.toggle('active', b===t));
     $$('.page').forEach(p=>p.classList.remove('active'));
     $('#page-'+pg).classList.add('active');
-    if(pg==='history') renderHistory();
   });
 
-  // streak
+  // streak counter (day-based)
   (function streak(){
     const key='gmf_streak';
     const today = new Date().toDateString();
@@ -640,101 +401,64 @@
       count = (data.last === yesterday) ? (data.count+1) : 1;
       localStorage.setItem(key, JSON.stringify({last:today,count}));
     }
-    const pill = $('#streakPill'); pill.style.display='inline-block'; pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
     $('#streakHint').textContent = `Streak: ${count} day${count===1?'':'s'}`;
   })();
 
+  // profiles (minimal)
+  const PROFILE_KEY='gmf_profiles_v2';
+  function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
+  function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
+  function ensureDefaultProfile(){
+    let p=loadProfiles();
+    if(!p.length){ p=[{id:crypto.randomUUID(), name:'Profile 1', history:[]}]; saveProfiles(p); }
+    return p;
+  }
+  function renderProfileSelect(){
+    const p=ensureDefaultProfile(); const sel=$('#profileSelect'); sel.innerHTML='';
+    p.forEach((x)=>{ const o=document.createElement('option'); o.value=x.id; o.textContent=x.name; sel.appendChild(o); });
+    const cur = localStorage.getItem('gmf_active_profile') || p[0].id; sel.value=cur; localStorage.setItem('gmf_active_profile', cur);
+  }
+  function getActive(){ const id=localStorage.getItem('gmf_active_profile'); return loadProfiles().find(x=>x.id===id); }
+  function saveActive(prof){ const ps=loadProfiles(); const i=ps.findIndex(x=>x.id===prof.id); if(i>=0){ ps[i]=prof; saveProfiles(ps);} }
+  renderProfileSelect();
+
+  $('#newProfileBtn').addEventListener('click', ()=>{
+    const name=prompt('Profile name?','Profile '+(loadProfiles().length+1)); if(!name) return;
+    const p=loadProfiles(); const id=crypto.randomUUID(); p.push({id,name,history:[]}); saveProfiles(p); renderProfileSelect();
+  });
+  $('#profileSelect').addEventListener('change', e=> localStorage.setItem('gmf_active_profile', e.target.value));
+
   // inputs
-  const ids = [
-    'age','income','expenses','home','retire','brokerage','car','hsa','cash',
-    'mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr',
-    'pretaxMonthly','eduMonthly','pensionMonthly','pensionAge'
-  ];
+  const ids = ['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr','pretaxMonthly','eduMonthly'];
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
-
-  const curvePts = [[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
-  function expectedReadiness(age){
-    if(age<=25) return 0.08; if(age>=60) return 1.0;
-    for(let i=1;i<curvePts.length;i++){
-      const [a0,r0]=curvePts[i-1], [a1,r1]=curvePts[i];
-      if(age<=a1){ const t=(age-a0)/(a1-a0); return r0+(r1-r0)*t; }
-    }
-    return 1;
-  }
-
-  function pensionPV(monthly, startAge, nowAge){
-    if(monthly<=0) return 0;
-    if(startAge<=nowAge) return (monthly*12)/SWR;
-    const years = Math.max(0, startAge - nowAge);
-    const atStart = (monthly*12)/SWR;
-    return atStart / Math.pow(1+REAL_RET, years);
-  }
 
   function values(){
     const v = Object.fromEntries(ids.map(id=>[id,val(id)]));
     v.assets = v.home + v.retire + v.brokerage + v.car + v.hsa + v.cash;
     v.liabs  = v.mortgage + v.student + v.auto + v.cc;
     v.net    = v.assets - v.liabs;
-
     v.annualSpend = Math.max(0, v.expenses * 12);
-    v.targetFI = v.annualSpend>0 ? v.annualSpend / SWR : 0;
-
+    v.targetFI = v.annualSpend>0 ? v.annualSpend / 0.06 : 0; // 6% SWR display
     v.investableCore = v.retire + v.brokerage + v.hsa;
-    v.cashSurplus = Math.max(0, v.cash - EF_TARGET * (v.expenses||0));
-    v.homeEquity = Math.max(0, v.home - v.mortgage);
-    v.accessibleEquity = v.homeEquity * EQUITY_FACTOR;
-    v.pensionPV = pensionPV(v.pensionMonthly, v.pensionAge, v.age||30);
-
-    v.investableTotal = v.investableCore + v.cashSurplus + v.accessibleEquity + v.pensionPV;
     return v;
   }
   function updateHints(){
     const v = values();
-    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable: ${money(v.investableCore)} • surplus cash: ${money(v.cashSurplus)} • accessible equity: ${money(v.accessibleEquity)} • pension PV: ${money(v.pensionPV)})`;
+    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable: ${money(v.investableCore)})`;
     $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
-    $('#pensionHint').textContent= v.pensionMonthly>0 ? `Pension PV counted: ${money(v.pensionPV)} (start age ${val('pensionAge')})` : 'PV added to readiness when applicable.';
   }
   ids.forEach(id => els[id].addEventListener('input', updateHints));
   updateHints();
 
+  // simple scoring
   function scoreModel(v){
     const leftover = Math.max(0, v.income - v.expenses);
-    const saveRate = (v.income>0)
-      ? clamp((leftover + val('pretaxMonthly') + val('eduMonthly')) / (v.income + val('pretaxMonthly')), 0, 1)
-      : 0;
-
+    const saveRate = (v.income>0) ? clamp((leftover + val('pretaxMonthly') + val('eduMonthly')) / (v.income + val('pretaxMonthly')), 0, 1) : 0;
     const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
-
-    const r = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
-
-    const sFI   = map01(r, 0, 1.2);
-    const sNW   = map01((v.targetFI>0 ? v.net / v.targetFI : (v.net>0?1:0)), 0, 1.2);
-
-    const expR = expectedReadiness(val('age')||30);
-    const ageGap = clamp((r - expR), -1, 1);
-    const sAGE = map01( ageGap, -0.4, 0.25 );
-
-    const nonMortDebt = v.student + v.auto + v.cc;
-    const nonMortRatio = v.assets>0 ? nonMortDebt / v.assets : 0;
-    const sNonMort = map01(1-nonMortRatio, 0, 1);
-
-    const ltv = v.home>0 ? v.mortgage / v.home : 0;
-    const sLTV = map01(1-ltv, 0.1, 0.55);
-
-    const sSave = map01(saveRate, 0, 0.5);
-    const sEF   = map01(efMonths, 0, 6);
-
-    const score = FI_W*sFI + NW_W*sNW + AGE_W*sAGE + SAVE_W*sSave + EF_W*sEF + NONMORT_W*sNonMort + LTV_W*sLTV;
-
-    return {
-      score:+score.toFixed(1),
-      saveRate, efMonths, readiness:r, expR,
-      ltv, nonMortRatio,
-      net: v.net, assets: v.assets, liabs: v.liabs,
-      investableTotal:v.investableTotal, cashSurplus:v.cashSurplus, accessibleEquity:v.accessibleEquity,
-      pensionPV:v.pensionPV, targetFI:v.targetFI
-    };
+    const r = (v.targetFI>0) ? (v.investableCore / v.targetFI) : (v.net>0 ? 1 : 0);
+    const score = 60*map01(r,0,1.2) + 20*map01(saveRate,0,0.5) + 20*map01(efMonths,0,6);
+    return {score:+score.toFixed(1), saveRate, efMonths, readiness:r, net:v.net, assets:v.assets, liabs:v.liabs, targetFI:v.targetFI};
   }
   function letter(score){
     if(score>=97) return "A+";
@@ -752,126 +476,77 @@
     return "F";
   }
 
-  function safeCopy(text){
-    try{
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(text).catch(()=>{});
-        return;
-      }
-    }catch(e){}
-    try{
-      const ta=document.createElement('textarea');
-      ta.value=text; ta.setAttribute('readonly','');
-      ta.style.position='fixed'; ta.style.opacity='0'; ta.style.left='-9999px';
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
-      document.body.removeChild(ta);
-    }catch(e){}
+  const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
+  function doGrade(){
+    const v = values();
+    const s = scoreModel(v);
+    const L = letter(s.score);
+    bigGrade.textContent = L;
+    bigGrade.style.color = ({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
+    bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
+    scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
+    nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
+    progress.style.width = s.score + '%';
+    $('#chips').innerHTML = [
+      `<span class="chip">Readiness: <b>${(s.readiness*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Emergency fund: <b>${s.efMonths.toFixed(1)} mo</b></span>`
+    ].join('');
+    $('#whyList').textContent = `Target FI: ${money(s.targetFI)} (annual spend ÷ 6%).`;
+    $('#improveList').textContent = s.efMonths<6 ? `Build emergency fund to ~${money((val('expenses')||0)*6)}.` : `Nice buffer. Stay the course.`;
+
+    // history
+    const prof=getActive(); if(prof){ prof.history.push({date:new Date().toISOString(),score:s.score,letter:L}); saveActive(prof); renderHistory(); }
   }
 
-  const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
-  function showOverlay(){
-    let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
-    const t=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200);
-    setTimeout(()=>{ clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); },820);
-  }
-  const toast=$('#toast'); function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5000); }
+  $('#gradeBtn').addEventListener('click', doGrade);
+  $('#gradeBtnTop').addEventListener('click', ()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); doGrade(); });
 
-  // confetti
-  const canvas = $('#confetti'); const ctxC = canvas.getContext('2d'); let bits=[];
-  function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
-  window.addEventListener('resize', resize); resize();
-  function confetti(){
-    const n=120; bits=[];
-    for(let i=0;i<n;i++){
-      bits.push({x:Math.random()*canvas.width,y:-20-Math.random()*100,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:4+Math.random()*6,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.2,clr:`hsl(${Math.random()*360},90%,60%)`});
-    }
-    let t=0; const anim=()=>{
-      t++; ctxC.clearRect(0,0,canvas.width,canvas.height);
-      bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; ctxC.save(); ctxC.translate(b.x,b.y); ctxC.rotate(b.a); ctxC.fillStyle=b.clr; ctxC.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctxC.restore(); });
-      if(t<220) requestAnimationFrame(anim); else ctxC.clearRect(0,0,canvas.width,canvas.height);
-    }; anim();
-  }
+  // demo
+  $('#demoBtnTop').addEventListener('click', ()=>{
+    const demo={income:7500,expenses:4000,age:30,home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000,mortgage:329000,student:26000,auto:13500,cc:0,mortgageApr:5.25,studentApr:4.9,autoApr:3.5,ccApr:24.99,pretaxMonthly:900,eduMonthly:200};
+    Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; }); updateHints();
+  });
 
-  const allInputIds = ids;
-  function currentState(){ const s={}; allInputIds.forEach(id=> s[id]=val(id)); s.__ver='age2_pension'; return s; }
-  function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
-  (function hydrateFromHash(){
-    const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
-    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); allInputIds.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
+  // copy link (inputs only)
+  function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); return s; }
+  $('#copyTop').addEventListener('click', ()=>{
+    const url = location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(currentState()))));
+    navigator.clipboard?.writeText(url);
+    alert('Shareable link copied!');
+  });
+
+  // reset
+  $('#resetBtn').addEventListener('click', ()=>{
+    $$('#page-grade input[type="number"]').forEach(el=>{ el.value=(el.id==='age'?30:0); });
+    updateHints(); bigGrade.textContent='—'; bigGrade.classList.remove('show');
+    scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —'; progress.style.width='0%';
+    $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
+  });
+
+  // history minimal render
+  function renderHistory(){
+    const prof=getActive(); if(!prof) return;
+    $('#histMeta').textContent = `Entries: ${prof.history.length}`;
+    const ul = $('#histList'); ul.innerHTML='';
+    prof.history.slice().reverse().forEach(h=>{
+      const li=document.createElement('li'); li.textContent = `${new Date(h.date).toLocaleString()} — ${h.letter} (${h.score})`; ul.appendChild(li);
+    });
+  }
+  renderHistory();
+
+  // Welcome modal (new key so it shows)
+  (function welcome(){
+    const key='gmf_welcome_seen_v3';
+    const seen = localStorage.getItem(key)==='1';
+    const el = $('#welcome');
+    if(!seen){ el.classList.add('show'); }
+    $('#welcomeGo').addEventListener('click', ()=>{ localStorage.setItem(key,'1'); el.classList.remove('show'); });
   })();
-
-  const PROFILE_KEY='gmf_profiles_v1';
-  function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
-  function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
-  function ensureDefaultProfile(){
-    let p=loadProfiles();
-    if(!p.length){ p=[{id:crypto.randomUUID(), name:'Profile 1', history:[], trophies:[]}]; saveProfiles(p); }
-    return p;
-  }
-  function renderProfileSelect(){
-    const p=ensureDefaultProfile(); const sel=$('#profileSelect'); const sel2=$('#profileSelectSide'); sel.innerHTML=''; sel2.innerHTML='';
-    p.forEach((x)=>{ const o=document.createElement('option'); o.value=x.id; o.textContent=x.name; sel.appendChild(o.cloneNode(true)); sel2.appendChild(o); });
-    const cur = localStorage.getItem('gmf_active_profile') || p[0].id; sel.value=cur; sel2.value=cur; localStorage.setItem('gmf_active_profile', cur);
-  }
-  function getActive(){ const id=localStorage.getItem('gmf_active_profile'); return loadProfiles().find(x=>x.id===id); }
-  function setActive(id){ localStorage.setItem('gmf_active_profile', id); }
-  renderProfileSelect();
-  $('#profileSelect').addEventListener('change', e=>{ setActive(e.target.value); $('#profileSelectSide').value=e.target.value; renderHistory(); });
-  $('#profileSelectSide').addEventListener('change', e=>{ setActive(e.target.value); $('#profileSelect').value=e.target.value; renderHistory(); });
-
-  function newProfile(){
-    const name=prompt('Profile name?','Profile '+(loadProfiles().length+1)); if(!name) return;
-    const p=loadProfiles(); const id=crypto.randomUUID(); p.push({id,name,history:[],trophies:[]}); saveProfiles(p); renderProfileSelect(); setActive(id); renderHistory();
-  }
-  $('#newProfileBtn').addEventListener('click', newProfile);
-  $('#newProfileBtnSide').addEventListener('click', newProfile);
-  $('#renameProfileBtn').addEventListener('click', ()=>{
-    const prof=getActive(); if(!prof) return; const name=prompt('New name', prof.name); if(!name) return;
-    const ps=loadProfiles(); const idx=ps.findIndex(x=>x.id===prof.id); ps[idx].name=name; saveProfiles(ps); renderProfileSelect();
-  });
-  $('#deleteProfileBtn').addEventListener('click', ()=>{
-    if(!confirm('Delete this profile?')) return;
-    let ps=loadProfiles(); const cur=getActive(); ps=ps.filter(x=>x.id!==cur.id); saveProfiles(ps); renderProfileSelect(); renderHistory();
-  });
-  $('#exportProfileBtn').addEventListener('click', ()=>{
-    const prof=getActive(); if(!prof) return; safeCopy(JSON.stringify(prof)); alert('Profile JSON copied to clipboard.');
-  });
-  $('#importProfileBtn').addEventListener('click', ()=>{
-    const txt=prompt('Paste profile JSON'); if(!txt) return;
-    try{ const obj=JSON.parse(txt); if(!obj.id) obj.id=crypto.randomUUID(); const ps=loadProfiles(); ps.push(obj); saveProfiles(ps); renderProfileSelect(); }catch(e){ alert('Invalid JSON'); }
-  });
-
-  function saveProfile(profile){
-    const ps=loadProfiles(); const idx=ps.findIndex(x=>x.id===profile.id); if(idx>=0){ ps[idx]=profile; saveProfiles(ps); }
-  }
-  function award(profile, code, label){
-    if(!profile.trophies.includes(code)){ profile.trophies.push(code); saveProfile(profile); confetti(); }
-    return {code,label};
-  }
-  function maybeTrophies(profile, v, s, L){
-    const list=[];
-    if(profile.history.length===1) list.push(award(profile,'first_grade','First Grade'));
-    if(['A+','A','A-'].includes(L)) list.push(award(profile,'a_club','A Club'));
-    if(s.efMonths>=6) list.push(award(profile,'ef_ready','Emergency Ready'));
-    if((v.student+v.auto+v.cc)===0) list.push(award(profile,'debt_slayer','Debt Slayer'));
-    if(profile.history.length>=2){
-      const last=profile.history[profile.history.length-2]?.score||s.score;
-      if(s.score>last) list.push(award(profile,'level_up','Level Up'));
-    }
-    const months=new Set(profile.history.slice(-3).map(h=>new Date(h.date).getMonth()+1));
-    if(months.size===3) list.push(award(profile,'streak_3','3-Month Streak'));
-    return list;
-  }
-  function logHistory(profile, s, L){
-    const entry={date:new Date().toISOString(), score:s.score, letter:L};
-    profile.history.push(entry); saveProfile(profile);
-    return entry;
-  }
 
   // mascot eyes
   (function eyes(){
-    const l=$('#eyeL'), r=$('#eyeR');
-    if(!l||!r) return;
+    const l=$('#eyeL'), r=$('#eyeR'); if(!l||!r) return;
     const cxL=+l.getAttribute('cx'), cyL=+l.getAttribute('cy');
     const cxR=+r.getAttribute('cx'), cyR=+r.getAttribute('cy');
     function move(e){
@@ -884,242 +559,6 @@
     window.addEventListener('mousemove', move);
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
-
-  // Grade flow
-  const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
-
-  function doGrade(){
-    const v = values();
-    const s = scoreModel(v);
-    const L = letter(s.score);
-
-    bigGrade.textContent = L;
-    bigGrade.style.color = ({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
-    bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
-    scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
-    nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
-    progress.style.width = s.score + '%';
-    renderWhy(v,s); renderImprove(v,s);
-
-    const url = location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify({inputs:currentState(),score:s.score,letter:L}))));
-    safeCopy(url); showToast();
-
-    if(['A+','A','A-','B+'].includes(L)) confetti();
-
-    const prof=getActive(); if(prof){
-      logHistory(prof, s, L);
-      const ts = maybeTrophies(prof, v, s, L);
-      if(ts.length) confetti();
-      renderHistory();
-    }
-  }
-
-  function runGradeSafely(){
-    try{
-      showOverlay();
-      requestAnimationFrame(()=> setTimeout(()=>{
-        try{ doGrade(); }catch(err){ console.error(err); alert('Oops—could not calculate. Try again.'); }
-        document.getElementById('overlay')?.classList.remove('show');
-      }, 420));
-    }catch(err){
-      console.error(err);
-      alert('Something went wrong. Refresh and try again.');
-    }
-  }
-
-  document.getElementById('gradeBtn').addEventListener('click', runGradeSafely);
-  document.getElementById('gradeBtnTop').addEventListener('click', ()=>{
-    pagesBase.forEach(p=> document.getElementById('page-'+p)?.classList.toggle('active', p==='grade'));
-    runGradeSafely();
-  });
-
-  // demo + copy
-  $('#demoBtnTop').addEventListener('click', ()=>{
-    const demo={
-      income:7500, expenses:4000, age:30,
-      home:475000, retire:72000, brokerage:29000, car:15000, hsa:1500, cash:24000,
-      mortgage:329000, student:26000, auto:13500, cc:0,
-      mortgageApr:5.25, studentApr:4.9, autoApr:3.5, ccApr:24.99,
-      pretaxMonthly:900, eduMonthly:200, pensionMonthly:0, pensionAge:67
-    };
-    Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; });
-    updateHints();
-    pagesBase.forEach(p=> $('#page-'+p)?.classList.toggle('active', p==='grade'));
-  });
-  $('#copyTop').addEventListener('click', ()=> { safeCopy(buildShareURL()); showToast(); });
-  $('#copyAgain').addEventListener('click', ()=> safeCopy(buildShareURL()));
-
-  // reset (all numbers default to 0; age to 30)
-  $('#resetBtn').addEventListener('click', ()=>{
-    $$('#page-grade input[type="number"]').forEach(el=>{
-      el.value = (el.id==='age'?30:0);
-    });
-    updateHints();
-    bigGrade.textContent='—'; bigGrade.classList.remove('show');
-    scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
-    progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
-  });
-
-  function renderWhy(v,s){
-    $('#chips').innerHTML = [
-      `<span class="chip">Readiness: <b>${(s.readiness*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Age curve: <b>${(s.expR*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
-      `<span class="chip">Emergency fund: <b>${s.efMonths?.toFixed?.(1)??'0'} mo</b></span>`,
-      `<span class="chip">Mortgage LTV: <b>${(s.ltv*100).toFixed(0)}%</b></span>`
-    ].join('');
-    const nonMortDebt = val('student')+val('auto')+val('cc');
-    $('#whyList').innerHTML = [
-      `Age ${val('age')}: expected readiness ≈ ${(expectedReadiness(val('age'))*100).toFixed(0)}%.`,
-      `Counted investable ${money(v.investableCore)} + surplus cash ${money(s.cashSurplus)} + 40% home equity ${money(s.accessibleEquity)} + pension PV ${money(s.pensionPV)} = ${money(s.investableTotal)}.`,
-      `Target FI: ${money(s.targetFI)} (annual spend ÷ ${Math.round(1/SWR)}%).`,
-      `Net worth: ${money(v.net)} (assets ${money(v.assets)} – liabilities ${money(v.liabs)}).`,
-      `Savings rate includes payroll & education: ${(s.saveRate*100).toFixed(0)}% (adds ${money(val('pretaxMonthly')+val('eduMonthly'))}/mo).`,
-      `Non-mortgage debt totals ${money(nonMortDebt)}; mortgage LTV is ${(s.ltv*100).toFixed(0)}%.`
-    ].map(x=>`<div>${x}</div>`).join('');
-  }
-  function renderImprove(v,s){
-    const ideas=[];
-    const expR = expectedReadiness(val('age'));
-    if(s.readiness < expR) ideas.push(`Close the age gap: add ~${money(Math.max(0, v.targetFI*expR - v.investableTotal))} investable or trim spend.`);
-    if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to ${EF_TARGET} months (${money(v.expenses*EF_TARGET)}).`);
-    if(s.saveRate < 0.2) ideas.push(`Boost savings rate to 20%+ by auto-moving ~${money(Math.ceil((val('income')+val('pretaxMonthly'))*0.05))}/mo.`);
-    if(s.ltv > 0.9) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): occasional principal prepayments help.`);
-    if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
-    if(!ideas.length) ideas.push(`You’re ahead for your age. Keep the systems humming.`);
-    $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
-  }
-
-  // ======= History (interactive) =======
-  const chart = $('#historyChart');
-  const ctx = chart.getContext('2d');
-  const tip = $('#tip');
-  const cursor = $('#cursorLine');
-  const range = $('#histRange');
-  const detail = $('#histDetail');
-
-  function drawChart(points){
-    const dpr = Math.min(1.5, window.devicePixelRatio || 1);
-    const rect = chart.getBoundingClientRect();
-    chart.width = Math.floor(rect.width*dpr);
-    chart.height= Math.floor(220*dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.clearRect(0,0,rect.width,220);
-
-    if(!points.length) return;
-    const pad = 16;
-    const w = rect.width - pad*2;
-    const h = 220 - pad*2;
-
-    const xs=points.map((_,i)=> i/(Math.max(1,points.length-1)));
-    const ys=points.map(p=> 1 - (p.score/100));
-
-    ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--line') || 'rgba(148,163,184,.2)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    for(let y=0;y<=5;y++){
-      const gy = pad + (h*y/5);
-      ctx.moveTo(pad, gy); ctx.lineTo(pad+w, gy);
-    }
-    ctx.stroke();
-
-    ctx.lineWidth=2;
-    ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent') || '#22d3ee';
-    ctx.beginPath();
-    for(let i=0;i<points.length;i++){
-      const x=pad+xs[i]*w, y=pad+ys[i]*h;
-      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-
-    ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2') || '#a78bfa';
-    points.forEach((p,i)=>{
-      const x=pad+xs[i]*w, y=pad+ys[i]*h;
-      ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
-    });
-  }
-
-  function renderHistory(){
-    const prof=getActive(); if(!prof) return;
-    const pts=(prof.history||[]).map(h=>({date:h.date, score:h.score, letter:h.letter}));
-    drawChart(pts);
-
-    $('#histMeta').textContent = `Entries: ${pts.length}`;
-    range.max = Math.max(0, pts.length-1);
-    range.value = pts.length ? pts.length-1 : 0;
-
-    const wall=$('#trophyWall'); wall.innerHTML='';
-    (prof.trophies||[]).forEach(code=>{
-      const span=document.createElement('span'); span.className='badge'; span.textContent=({
-        'first_grade':'First Grade','a_club':'A Club','ef_ready':'Emergency Ready','debt_slayer':'Debt Slayer','level_up':'Level Up','streak_3':'3-Month Streak'
-      })[code] || code;
-      wall.appendChild(span);
-    });
-
-    function updateFromIndex(i){
-      if(!pts.length){ detail.textContent='No history yet.'; return; }
-      i = clamp(i, 0, pts.length-1);
-      const cur = pts[i];
-      const prev = pts[i-1]||cur;
-      const delta = (cur.score - prev.score).toFixed(1);
-      const arrow = cur===prev ? '•' : (delta>=0? '▲' : '▼');
-      detail.innerHTML = `Selected: <b>${cur.letter}</b> (${cur.score.toFixed(1)}) on <b>${fmtDate(cur.date)}</b>
-        <br>Change vs prior: <b>${arrow} ${Math.abs(delta)}</b> points`;
-    }
-    updateFromIndex(+range.value);
-    range.oninput = e => updateFromIndex(+e.target.value);
-
-    // chart hover/drag
-    const rect = chart.getBoundingClientRect();
-    function pointX(i){
-      const pad=16; const w=rect.width-pad*2;
-      return pad+(i/(Math.max(1,pts.length-1)))*w;
-    }
-    let isDown=false;
-    function nearestIndex(x){
-      const pad=16; const w=rect.width-pad*2;
-      const t = clamp((x-pad)/w,0,1);
-      return Math.round(t*(Math.max(1,pts.length-1)));
-    }
-    function showAt(x){
-      if(!pts.length) return;
-      const i = nearestIndex(x);
-      const cx = pointX(i);
-      cursor.style.display='block';
-      cursor.style.left = (chart.offsetLeft + cx)+'px';
-      tip.style.display='block';
-      const cur=pts[i];
-      tip.innerHTML = `<b>${cur.letter}</b> ${cur.score.toFixed(1)}<br>${fmtDate(cur.date)}`;
-      tip.style.left = (chart.offsetLeft + cx + 10)+'px';
-      tip.style.top = (chart.offsetTop + 10)+'px';
-      range.value = i; range.dispatchEvent(new Event('input'));
-    }
-    function hideTip(){ tip.style.display='none'; cursor.style.display='none'; }
-
-    chart.addEventListener('mousedown', e=>{ isDown=true; showAt(e.offsetX); });
-    chart.addEventListener('mousemove', e=>{ if(isDown) showAt(e.offsetX); });
-    chart.addEventListener('mouseleave', hideTip);
-    window.addEventListener('mouseup', ()=>{ isDown=false; });
-  }
-  if($('#page-history').classList.contains('active')) renderHistory();
-
-  // ===== Welcome modal logic =====
-  (function welcome(){
-    const key='gmf_welcome_seen';
-    const seen = localStorage.getItem(key)==='1';
-    const el = document.getElementById('welcome');
-    if(!seen){ el.classList.add('show'); }
-    document.getElementById('welcomeGo').addEventListener('click', ()=>{
-      localStorage.setItem(key,'1');
-      el.classList.remove('show');
-    });
-  })();
-
-})();
-</script>
-</body>
-</html>
-
 })();
 </script>
 </body>
