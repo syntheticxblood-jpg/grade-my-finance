@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
-<meta name="description" content="FI & age-aware money grade with profiles, history, and a shareable link.">
+<meta name="description" content="Age-aware financial wellness grade with profiles, progress history, and achievements.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Grade My Finance">
 <meta property="og:description" content="Get a letter grade for your money, track progress, and earn achievements.">
@@ -16,7 +16,7 @@
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
     --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
     --g1:#16a34a; --g2:#34d399; --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
-    --header-h:112px;
+    --header-h:128px;
   }
   .light{
     --bg:#f5faf6; --panel:#ffffff; --card:#ffffff; --text:#0f172a; --muted:#4b5563; --line:rgba(15,23,42,.12);
@@ -26,8 +26,8 @@
   body{
     margin:0;
     background:
-      radial-gradient(900px 480px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
-      radial-gradient(900px 480px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
+      radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
+      radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
       var(--bg);
     color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;line-height:1.35;
     padding-top:var(--header-h);
@@ -36,7 +36,7 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Fixed Header (mobile-safe) ---------- */
+  /* ---------- Fixed Header (2 rows, mobile-safe) ---------- */
   header{
     position:fixed; left:0; right:0; top:0; z-index:80; height:var(--header-h);
     background:linear-gradient(90deg,var(--accent),var(--accent2));
@@ -44,15 +44,20 @@
   }
   .hdr{
     max-width:1200px;margin:0 auto;height:100%;
-    display:grid;grid-template-rows:auto auto;align-content:center;gap:8px;padding:10px 16px;
-    justify-items:center;
+    display:grid;grid-template-rows:64px 1fr;gap:6px;padding:8px 16px 10px;
+    align-content:center;
   }
+  .hdr-logo{display:flex;justify-content:center;align-items:center;}
   .logoBig{height:62px;width:auto;display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
-  .hdr-rail{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
-  .pill{border:none;padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
+  .hdr-rail{
+    display:flex;gap:8px;align-items:center;justify-content:center;
+    padding:2px 0; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;
+  }
+  .hdr-rail::-webkit-scrollbar{display:none}
+  .pill{border:none;padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0;flex:0 0 auto}
   .light .pill{background:#0f172a}
-  #streakPill{font-weight:800;color:#062c1b;background:#ffffffc8;padding:6px 10px;border-radius:999px}
-  #profileSelect{max-width:200px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+  #streakPill{font-weight:800;color:#062c1b;background:#ffffffc8;padding:6px 10px;border-radius:999px;flex:0 0 auto}
+  #profileSelect{max-width:200px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;flex:0 0 auto}
 
   /* ---------- Hero ---------- */
   .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:start;padding:18px 0 6px}
@@ -86,7 +91,7 @@
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
   aside{position:sticky;top:calc(var(--header-h) + 12px);align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
-  .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
+  .tab{flex:0 0 auto;width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
   .tab:hover{transform:translateY(-1px)}
   .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--g1),var(--g2));color:#062c1b}
   .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
@@ -121,7 +126,7 @@
     aside{position:static}
     .nav{flex-direction:row; gap:8px; overflow-x:auto; padding:6px 2px 8px}
     .nav::-webkit-scrollbar{display:none}
-    .tab{flex:0 0 auto; white-space:nowrap; padding:10px 12px}
+    .tab{flex:0 0 auto; white-space:nowrap; padding:10px 12px; width:auto}
     .grid > [style*="grid-column:span 6"],
     .grid > [style*="grid-column:span 4"],
     .grid > [style*="grid-column:span 8"]{grid-column: span 12 !important;}
@@ -133,35 +138,35 @@
   <!-- Fixed Header -->
   <header>
     <div class="hdr">
-      <!-- Logo -->
-      <svg class="logoBig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-label="Grade My Finance logo">
-        <defs>
-          <radialGradient id="lg-badge" cx="50%" cy="50%" r="70%">
-            <stop offset="0" stop-color="#66E3B0"/><stop offset=".55" stop-color="#34D399"/><stop offset="1" stop-color="#16A34A"/>
-          </radialGradient>
-          <linearGradient id="lg-brand" x1="0" x2="1"><stop offset="0" stop-color="#CFFFEF"/><stop offset=".5" stop-color="#7CF8E7"/><stop offset="1" stop-color="#22D3EE"/></linearGradient>
-          <linearGradient id="lg-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B82F6"/><stop offset="1" stop-color="#1E40AF"/></linearGradient>
-          <linearGradient id="lg-paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E9FFF3"/></linearGradient>
-        </defs>
-        <circle cx="100" cy="100" r="90" fill="url(#lg-badge)"/>
-        <g transform="translate(100,110) rotate(-8)">
-          <text x="0" y="40" text-anchor="middle" font-size="140" font-weight="900"
-                font-family="Arial Black, Helvetica, sans-serif" fill="url(#lg-blue)" stroke="#062C1B" stroke-width="8" paint-order="stroke">G</text>
-        </g>
-        <g transform="translate(160,48) rotate(-10)">
-          <rect width="64" height="80" rx="12" fill="url(#lg-paper)" stroke="#BFF7DA" stroke-width="2"/>
-          <g stroke="#10B981" stroke-width="3" stroke-linecap="round">
-            <line x1="14" y1="26" x2="50" y2="26"/><line x1="14" y1="42" x2="50" y2="42"/><line x1="14" y1="58" x2="42" y2="58"/>
+      <div class="hdr-logo">
+        <!-- LOGO: Green circle + centered G + mini report card -->
+        <svg class="logoBig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-label="Grade My Finance logo">
+          <defs>
+            <radialGradient id="lg-badge" cx="50%" cy="50%" r="70%">
+              <stop offset="0" stop-color="#66E3B0"/><stop offset=".55" stop-color="#34D399"/><stop offset="1" stop-color="#16A34A"/>
+            </radialGradient>
+            <linearGradient id="lg-brand" x1="0" x2="1"><stop offset="0" stop-color="#CFFFEF"/><stop offset=".5" stop-color="#7CF8E7"/><stop offset="1" stop-color="#22D3EE"/></linearGradient>
+            <linearGradient id="lg-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B82F6"/><stop offset="1" stop-color="#1E40AF"/></linearGradient>
+            <linearGradient id="lg-paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E9FFF3"/></linearGradient>
+          </defs>
+          <circle cx="100" cy="100" r="90" fill="url(#lg-badge)"/>
+          <g transform="translate(100,110) rotate(-8)">
+            <text x="0" y="40" text-anchor="middle" font-size="140" font-weight="900"
+                  font-family="Arial Black, Helvetica, sans-serif" fill="url(#lg-blue)" stroke="#062C1B" stroke-width="8" paint-order="stroke">G</text>
           </g>
-          <text x="32" y="40" text-anchor="middle" dominant-baseline="central" font-size="24" font-weight="900" font-family="Inter" fill="#F87171">A+</text>
-        </g>
-        <g transform="translate(240,0)">
-          <text x="0" y="92" font-size="54" font-weight="900" font-family="Inter" fill="url(#lg-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Grade My</text>
-          <text x="0" y="150" font-size="54" font-weight="900" font-family="Inter" fill="url(#lg-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Finance</text>
-        </g>
-      </svg>
-
-      <!-- Controls -->
+          <g transform="translate(160,48) rotate(-10)">
+            <rect width="64" height="80" rx="12" fill="url(#lg-paper)" stroke="#BFF7DA" stroke-width="2"/>
+            <g stroke="#10B981" stroke-width="3" stroke-linecap="round">
+              <line x1="14" y1="26" x2="50" y2="26"/><line x1="14" y1="42" x2="50" y2="42"/><line x1="14" y1="58" x2="42" y2="58"/>
+            </g>
+            <text x="32" y="40" text-anchor="middle" dominant-baseline="central" font-size="24" font-weight="900" font-family="Inter" fill="#F87171">A+</text>
+          </g>
+          <g transform="translate(240,0)">
+            <text x="0" y="92" font-size="54" font-weight="900" font-family="Inter" fill="url(#lg-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Grade My</text>
+            <text x="0" y="150" font-size="54" font-weight="900" font-family="Inter" fill="url(#lg-brand)" stroke="#062C1B" stroke-width="1.5" paint-order="stroke">Finance</text>
+          </g>
+        </svg>
+      </div>
       <div class="hdr-rail">
         <span id="streakPill" style="display:none"></span>
         <select id="profileSelect" class="pill" aria-label="Select profile"></select>
@@ -215,7 +220,7 @@
           <circle id="eyeR" cx="208" cy="92" r="7.5" fill="#0f172a" style="transform-origin:208px 92px; animation:eyeBlink 6.2s infinite"/>
           <circle cx="136" cy="104" r="9" fill="#fecaca" opacity=".6"/><circle cx="220" cy="104" r="9" fill="#fecaca" opacity=".6"/>
           <path d="M144 120 q18 12 36 0" fill="none" stroke="#16a34a" stroke-width="5" stroke-linecap="round"/>
-          <!-- centered A+ -->
+          <!-- centered A+ token -->
           <g transform="translate(180,158)">
             <circle r="22" fill="#10b981" stroke="#065f46" stroke-width="3"/>
             <circle r="18" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
@@ -357,6 +362,10 @@
             <div id="histMeta" class="hint">Entries: 0</div>
           </div>
           <canvas id="historyChart" height="220" style="width:100%;max-width:100%;margin-top:10px"></canvas>
+          <div id="histDetail" class="card" style="margin-top:10px;border-style:dashed">
+            <div class="section">Entry details</div>
+            <div id="histText" class="hint">Tap a dot to see numbers.</div>
+          </div>
         </div>
       </section>
 
@@ -431,7 +440,7 @@
   })();
 
   /* ---------- Profiles ---------- */
-  const PROFILE_KEY='gmf_profiles_v6';
+  const PROFILE_KEY='gmf_profiles_v7';
   function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
   function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
   function ensureDefaultProfile(){
@@ -537,25 +546,26 @@
     return v;
   }
 
-  // Weights (kinder): Age-relative FI 40, NW/Income 20, Savings 15, EF 10, Debt 10, Housing 3, Cash Extra 2
+  // Kinder weights: Age-FI 45, NW/Income 18, Savings 15, EF 10, Debt 8, Housing 2, Extra Cash 2
   function scoreModel(v){
     const exp = expectedReadiness(val('age')||30);
-    const relFI = (exp>0) ? v.fiRatio/exp : (v.fiRatio>0?1:0); // 1.0 when meeting age curve
+    const relFI = (exp>0) ? v.fiRatio/exp : (v.fiRatio>0?1:0); // 1.0 = on the age curve
 
-    const sAgeFI = map01(relFI, 0, 1.1);            // 40%
-    const sNW    = map01(v.nwToIncome, -0.2, 1.2);  // 20% (kinder)
-    const sSave  = map01(v.saveRate, 0, 0.20);      // 15% full by 20% SR
-    const sEF    = map01(v.efMonths, 0, EF_TARGET); // 10%
+    const sAgeFI = map01(relFI, 0, 1.10);            // 45%
+    const sNW    = map01(v.nwToIncome, -0.15, 1.1);  // 18% (gentler)
+    const sSave  = map01(v.saveRate, 0, 0.20);       // 15% full by 20% SR
+    const sEF    = map01(v.efMonths, 0, EF_TARGET);  // 10%
     const debtIncome = (v.annualIncome>0) ? (v.nonMortDebt / v.annualIncome) : 1;
-    let sDebt  = map01(1-debtIncome, 0, 1);         // 10% (zero is best)
-    const sHouse = v.paidOffHouse ? 1 : 0;          // 3%
-    const sCashX = map01(Math.max(0, v.efMonths - EF_TARGET), 0, 6); // 2% for extra buffer
+    let sDebt  = map01(1-debtIncome, 0, 1);          // 8% (zero is best)
+    const sHouse = v.paidOffHouse ? 1 : 0;           // 2%
+    const sCashX = map01(Math.max(0, v.efMonths - EF_TARGET), 0, 6); // 2%
 
-    let score = 40*sAgeFI + 20*sNW + 15*sSave + 10*sEF + 10*sDebt + 3*sHouse + 2*sCashX;
+    let score = 45*sAgeFI + 18*sNW + 15*sSave + 10*sEF + 8*sDebt + 2*sHouse + 2*sCashX;
 
-    // Extra penalties for truly risky behavior
-    if(v.spendsMoreThanIncome) score -= 6;
-    if(v.cc > 0 && v.ccApr >= 20) score -= 4;
+    // Gentle penalties for risk flags
+    if(v.spendsMoreThanIncome) score -= 5;                   // spending > income
+    if(v.cc > 0 && v.ccApr >= 20) score -= 4;                // high APR
+    if(v.retire === 0 && v.brokerage === 0) score -= 6;      // no investing at all
 
     score = Math.max(0, Math.min(100, +score.toFixed(1)));
 
@@ -594,8 +604,8 @@
     ].join('');
 
     $('#whyList').innerHTML = [
-      `Investable total (retirement + brokerage + HSA + surplus cash + 40% home equity): <b>${money(s.investableTotal)}</b>.`,
-      `Annual spend: <b>${money(s.annualSpend)}</b> → Target FI @ ${Math.round(SWR*1000)/10}% SWR: <b>${money(s.targetFI)}</b>.`,
+      `Investables = retirement + brokerage + HSA + surplus cash + 40% home equity: <b>${money(s.investableTotal)}</b>.`,
+      `Annual spend: <b>${money(s.annualSpend)}</b> → Target FI @ ${Math.round(SWR*1000)/10}%: <b>${money(s.targetFI)}</b>.`,
       `Age ${val('age')||30} expected readiness ~ <b>${(s.expRead*100).toFixed(0)}%</b>.`,
       `FI vs age curve: <b>${(s.relFI*100).toFixed(0)}%</b> (1.0 = on track).`,
       `Net worth: <b>${money(s.net)}</b> (${(s.nwToIncome).toFixed(2)}× income).`,
@@ -647,7 +657,12 @@
 
     renderWhy(s); renderImprove(s);
 
-    const prof=getActive(); if(prof){ prof.history.push({date:new Date().toISOString(),score:s.score,letter:L}); putActive(prof); drawHistory(); }
+    const prof=getActive(); if(prof){
+      const snapshot={date:new Date().toISOString(),score:s.score,letter:L,inputs: Object.fromEntries(ids.map(id=>[id,Number(els[id]?.value||0)])), summary:{
+        assets:s.assets, liabs:s.liabs, net:s.net, investableTotal:s.investableTotal, targetFI:s.targetFI, efMonths:s.efMonths, saveRate:s.saveRate, fiRatio:s.fiRatio
+      }};
+      (prof.history=prof.history||[]).push(snapshot); putActive(prof); drawHistory();
+    }
   }
 
   /* ---------- Overlays ---------- */
@@ -673,7 +688,7 @@
     updateHints();
   });
   $('#copyTop').addEventListener('click', ()=>{
-    const state={}; ids.forEach(id=> state[id]=val(id));
+    const state={}; ids.forEach(id=> state[id]=Number(els[id]?.value||0));
     const url = location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(state))));
     navigator.clipboard?.writeText(url); alert('Shareable link copied.');
   });
@@ -692,32 +707,80 @@
   ids.forEach(id => els[id]?.addEventListener('input', updateHints));
   updateHints();
 
-  /* ---------- History (mini chart) ---------- */
+  /* ---------- History with clickable points ---------- */
   function drawHistory(){
     const prof=getActive(); if(!prof) return;
-    const pts=(prof.history||[]).map(h=>({date:h.date, score:h.score, letter:h.letter}));
-    $('#histMeta').textContent = `Entries: ${pts.length}`;
-    const canvas = $('#historyChart'); const ctx = canvas.getContext('2d'); if(!pts.length){ ctx.clearRect(0,0,canvas.width,canvas.height); return; }
+    const hist=prof.history||[];
+    $('#histMeta').textContent = `Entries: ${hist.length}`;
+    const canvas = $('#historyChart'); const ctx = canvas.getContext('2d');
     const dpr = Math.min(2, window.devicePixelRatio||1);
     const rect = canvas.getBoundingClientRect(); canvas.width = Math.floor(rect.width*dpr); canvas.height= Math.floor(220*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.clearRect(0,0,rect.width,220);
 
-    const pad=16, w=rect.width-pad*2, h=220-pad*2;
-    const xs=pts.map((_,i)=> pad + (i/(Math.max(1,pts.length-1)))*w);
-    const ys=pts.map(p=> pad + (1 - p.score/100)*h);
+    if(!hist.length){ $('#histText').textContent='No history yet.'; return; }
 
+    // layout
+    const pad=16, w=rect.width-pad*2, h=220-pad*2;
+    const xs=hist.map((_,i)=> pad + (i/(Math.max(1,hist.length-1)))*w);
+    const ys=hist.map(p=> pad + (1 - p.score/100)*h);
+
+    // grid
     ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--line'); ctx.lineWidth=1; ctx.beginPath();
     for(let k=0;k<=5;k++){ const gy=pad+(h*k/5); ctx.moveTo(pad,gy); ctx.lineTo(pad+w,gy); } ctx.stroke();
 
+    // line
     ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--accent'); ctx.lineWidth=2; ctx.beginPath();
     xs.forEach((x,i)=>{ if(i===0) ctx.moveTo(x,ys[i]); else ctx.lineTo(x,ys[i]); }); ctx.stroke();
+
+    // points
     ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2');
     xs.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(x,ys[i],3,0,Math.PI*2); ctx.fill(); });
+
+    // store hit zones
+    canvas._points = xs.map((x,i)=>({x,y:ys[i],i}));
+    canvas._hist   = hist;
+
+    // attach handlers once
+    if(!canvas._bound){
+      canvas.addEventListener('mousemove', e=>{
+        const p = nearest(canvas, e.offsetX, e.offsetY);
+        canvas.style.cursor = p ? 'pointer' : 'default';
+      });
+      canvas.addEventListener('click', e=>{
+        const p = nearest(canvas, e.offsetX, e.offsetY);
+        if(p) showDetail(canvas._hist[p.i]);
+      });
+      canvas._bound=true;
+    }
+  }
+
+  function nearest(canvas, x, y){
+    const pts = canvas._points||[]; if(!pts.length) return null;
+    let best=null, d2min=1000;
+    pts.forEach(p=>{
+      const dx = x - p.x, dy = y - p.y, d2 = dx*dx+dy*dy;
+      if(d2<d2min && d2<14*14){ d2min=d2; best=p; }
+    });
+    return best;
+  }
+
+  function showDetail(entry){
+    const dt = new Date(entry.date).toLocaleString();
+    const i = entry.inputs||{};
+    const lines = [
+      `Score: <b>${entry.score.toFixed(1)}</b> • Letter: <b>${entry.letter}</b>`,
+      `When: <b>${dt}</b>`,
+      `Income: ${money((i.income||0))}/mo • Expenses: ${money((i.expenses||0))}/mo • Age: ${i.age||'—'}`,
+      `Assets → Home ${money(i.home||0)}, 401k ${money(i.retire||0)}, Brokerage ${money(i.brokerage||0)}, HSA ${money(i.hsa||0)}, Cash ${money(i.cash||0)}, Car ${money(i.car||0)}`,
+      `Debts → Mortgage ${money(i.mortgage||0)}, Student ${money(i.student||0)}, Auto ${money(i.auto||0)}, Cards ${money(i.cc||0)}`,
+      `Contribs → Pre-tax ${money(i.pretaxMonthly||0)}/mo • Post-tax ${money(i.eduMonthly||0)}/mo`
+    ];
+    $('#histText').innerHTML = lines.map(s=>`<div>${s}</div>`).join('');
   }
 
   /* ---------- Welcome (once) ---------- */
   (function welcome(){
-    const key='gmf_welcome_seen_v6';
+    const key='gmf_welcome_seen_v7';
     const seen = localStorage.getItem(key)==='1';
     const el = $('#welcome');
     if(!seen){ el.classList.add('show'); }
@@ -740,11 +803,13 @@
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
 
-  /* ---------- Helpers ---------- */
+  /* ---------- Overlays & actions ---------- */
   function getActive(){ return ensureDefaultProfile().find(x=>x.id===getActiveId()); }
+
+  // History initial draw if tab visible
+  if($('#page-history').classList.contains('active')) drawHistory();
 })();
 </script>
 </body>
 </html>
-
 
