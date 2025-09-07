@@ -8,7 +8,6 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Grade My Finance">
 <meta property="og:description" content="Get a letter grade for your money, track progress, and earn achievements.">
-<meta property="og:url" content="https://grademyfinance.com/">
 <meta name="twitter:card" content="summary_large_image">
 <style>
   :root{
@@ -88,10 +87,11 @@
   /* ---------- App shell ---------- */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
   aside{position:sticky;top:calc(var(--header-h) + 12px);align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
-  .nav{display:flex;flex-direction:column;gap:10px}
+  .nav{display:flex;flex-direction:column;gap:10px;margin-top:10px}
   .tab{flex:0 0 auto;width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
   .tab:hover{transform:translateY(-1px)}
   .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--g1),var(--g2));color:#062c1b}
+
   .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
   .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
@@ -125,18 +125,25 @@
   .modal h3{margin:6px 0 8px}
   .row{display:flex;gap:8px;flex-wrap:wrap}
 
-  /* ---------- MOBILE STACK ---------- */
+  /* ---------- MOBILE FIXES (this is the important part) ---------- */
+  /* 1) Collapse the two-column shell */
   @media (max-width: 980px){
     .shell{grid-template-columns:1fr}
     aside{position:static}
-    .nav{flex-direction:row; gap:8px; overflow-x:auto; padding:6px 2px 8px}
-    .nav::-webkit-scrollbar{display:none}
-    .tab{flex:0 0 auto; white-space:nowrap; padding:10px 12px; width:auto}
-    .grid > *{grid-column: span 12 !important;}
   }
+  /* 2) Convert sidebar tabs into a tidy, scrollable pill bar */
+  @media (max-width: 980px){
+    .nav{flex-direction:row; gap:8px; overflow-x:auto; padding:8px 2px; margin-top:12px}
+    .nav::-webkit-scrollbar{display:none}
+    .tab{flex:0 0 auto; white-space:nowrap; padding:10px 14px; width:auto; font-size:14px}
+  }
+  /* 3) Force all input cards to stack vertically (no squeezed columns) */
+  @media (max-width: 980px){
+    .grid{grid-template-columns:1fr !important}
+    .grid > *{grid-column: 1 / -1 !important}
+  }
+  /* 4) Phone-size polish */
   @media (max-width: 640px){
-    .grid{display:block}
-    .grid > *{margin-bottom:14px}
     .hero-copy{padding:18px}
     input,select{font-size:16px}
   }
@@ -180,7 +187,6 @@
         <select id="profileSelect" class="pill" aria-label="Select profile"></select>
         <button id="newProfileBtn" class="pill">New Profile</button>
         <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
-        <span class="spacer"></span>
         <button id="authBtn" class="pill" title="Sign in / up">Sign in</button>
       </div>
     </div>
@@ -272,23 +278,23 @@
       <!-- Grade page -->
       <section id="page-grade" class="page active">
         <div class="grid">
-          <div class="card" style="grid-column:span 4">
+          <div class="card">
             <div class="section">Monthly Income (after-tax)</div>
             <label>What hits your bank each month</label>
             <input id="income" type="number" value="0" min="0" />
           </div>
-          <div class="card" style="grid-column:span 4">
+          <div class="card">
             <div class="section">Monthly Expenses</div>
             <label>All bills + spending (post-tax)</label>
             <input id="expenses" type="number" value="0" min="0" />
           </div>
-          <div class="card" style="grid-column:span 4">
+          <div class="card">
             <div class="section">Age</div>
             <label>Used for age-aware scoring</label>
             <input id="age" type="number" value="30" min="16" max="100" />
           </div>
 
-          <div class="card" style="grid-column:span 6">
+          <div class="card">
             <div class="section">Assets</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
               <div style="grid-column:span 6"><label>Home Value</label><input id="home" type="number" value="0" min="0"></div>
@@ -301,7 +307,7 @@
             <div class="hint" id="assetsHint">Total Assets: —</div>
           </div>
 
-          <div class="card" style="grid-column:span 6">
+          <div class="card">
             <div class="section">Liabilities (+ APR)</div>
             <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
               <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="0" min="0"></div>
@@ -316,18 +322,18 @@
             <div class="hint" id="liabHint">Total Liabilities: —</div>
           </div>
 
-          <div class="card" style="grid-column:span 6">
+          <div class="card">
             <div class="section">Monthly Contributions (pre-tax)</div>
             <label>Retirement + HSA payroll contributions</label>
             <input id="pretaxMonthly" type="number" value="0" min="0" />
           </div>
-          <div class="card" style="grid-column:span 6">
+          <div class="card">
             <div class="section">Monthly Contributions (post-tax)</div>
             <label>Education savings (529/ESA etc.)</label>
             <input id="eduMonthly" type="number" value="0" min="0" />
           </div>
 
-          <div class="card" style="grid-column:span 12">
+          <div class="card">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
               <div style="display:flex;align-items:center;gap:14px">
                 <div id="bigGrade" class="bigGrade">—</div>
@@ -360,7 +366,7 @@
 
       <!-- History -->
       <section id="page-history" class="page">
-        <div class="card" style="grid-column:span 12">
+        <div class="card">
           <div style="display:flex;align-items:center;justify-content:space-between">
             <h2 style="margin:0">Your Progress</h2>
             <div id="histMeta" class="hint">Entries: 0</div>
@@ -450,6 +456,7 @@
     $$('.page').forEach(p=>p.classList.remove('active'));
     $('#page-'+pg).classList.add('active');
     if(pg==='history') drawHistory();
+    window.scrollTo({top:document.querySelector('main').offsetTop - 20, behavior:'smooth'});
   });
 
   /* ---------- Streak ---------- */
@@ -467,17 +474,13 @@
     $('#streakHint').textContent = pill.textContent;
   })();
 
-  /* ---------- Profiles: storage abstraction (local or Firebase) ---------- */
+  /* ---------- Profiles: local/optional Firebase ---------- */
   const LOCAL_KEY='gmf_profiles_v9';
   let auth=null, db=null, currentUser=null;
-  let storageMode='local'; // 'local' | 'cloud'
+  let storageMode='local';
 
-  // >>>>>>>>>>>>  Paste your Firebase web config here to enable accounts  <<<<<<<<<<<<
-  const FIREBASE_CONFIG = /* FIREBASE_CONFIG_HERE */ null;
-  // Example:
-  // const FIREBASE_CONFIG = {
-  //   apiKey: "…", authDomain: "…", projectId: "…", storageBucket: "…", messagingSenderId: "…", appId: "…"
-  // };
+  // Paste your Firebase config here if you want cloud accounts (or leave null for local-only)
+  const FIREBASE_CONFIG = null;
 
   async function initFirebase(){
     if(!FIREBASE_CONFIG) return;
@@ -485,13 +488,11 @@
       firebase.initializeApp(FIREBASE_CONFIG);
       auth = firebase.auth();
       db   = firebase.firestore();
-      storageMode='local';
       auth.onAuthStateChanged((u)=>{
         currentUser = u || null;
         $('#authBtn').textContent = u ? `Sign out (${u.email||'user'})` : 'Sign in';
         storageMode = u ? 'cloud' : 'local';
-        if($('#page-history').classList.contains('active')) drawHistory();
-        renderProfileSelects(); // refresh after mode switch
+        renderProfileSelects();
       });
     }catch(e){ console.warn('Firebase init failed, staying local.', e); }
   }
@@ -502,14 +503,12 @@
       const snap = await db.collection('users').doc(currentUser.uid).collection('profiles').orderBy('name').get();
       return snap.docs.map(d=> ({id:d.id, ...(d.data())}));
     }
-    // local
     try { return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]'); } catch(e){ return []; }
   }
   async function saveProfiles(profiles){
     if(storageMode==='cloud' && currentUser && db){
       const batch=db.batch();
       const col = db.collection('users').doc(currentUser.uid).collection('profiles');
-      // overwrite: first delete missing docs
       const existing = await col.get();
       const keep = new Set(profiles.map(p=>p.id));
       existing.forEach(doc=>{ if(!keep.has(doc.id)) batch.delete(col.doc(doc.id)); });
@@ -518,53 +517,47 @@
     }
     localStorage.setItem(LOCAL_KEY, JSON.stringify(profiles));
   }
-
-  function ensureDefaultProfileSync(){
-    return listProfiles().then(p=>{
-      if(!p.length){
-        const id=crypto.randomUUID();
-        p=[{id,name:'Profile 1',history:[]}];
-        return saveProfiles(p).then(()=>p);
-      }
-      return p;
-    });
-  }
-  function getActiveId(){ return localStorage.getItem('gmf_active_profile'); }
   function setActiveId(id){ localStorage.setItem('gmf_active_profile', id); }
+  function getActiveId(){ return localStorage.getItem('gmf_active_profile'); }
 
+  async function ensureDefaultProfile(){
+    let p=await listProfiles();
+    if(!p.length){ const id=crypto.randomUUID(); p=[{id,name:'Profile 1',history:[]}]; await saveProfiles(p); setActiveId(p[0].id); }
+    return p;
+  }
   async function renderProfileSelects(){
-    const ps = await ensureDefaultProfileSync();
-    const cur = getActiveId() || ps[0].id;
-    if(!getActiveId()) setActiveId(ps[0].id);
+    const ps=await ensureDefaultProfile(); const cur=getActiveId()||ps[0].id;
+    if(!getActiveId()) setActiveId(cur);
     ['#profileSelect','#profileSelectSide'].forEach(sel=>{
       const el=$(sel); if(!el) return; el.innerHTML='';
-      ps.forEach(p=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; el.appendChild(o); });
+      ps.forEach(x=>{ const o=document.createElement('option'); o.value=x.id; o.textContent=x.name; el.appendChild(o); });
       el.value=cur;
     });
   }
   renderProfileSelects();
 
   async function getActiveProfile(){
-    const ps = await ensureDefaultProfileSync();
-    const id = getActiveId() || ps[0].id;
-    return ps.find(x=>x.id===id) || ps[0];
+    const ps=await ensureDefaultProfile();
+    const id=getActiveId()||ps[0].id;
+    return ps.find(x=>x.id===id)||ps[0];
   }
   async function putActiveProfile(profile){
-    const ps = await ensureDefaultProfileSync();
-    const idx = ps.findIndex(x=>x.id===profile.id);
+    const ps=await ensureDefaultProfile();
+    const idx=ps.findIndex(x=>x.id===profile.id);
     if(idx>=0){ ps[idx]=profile; await saveProfiles(ps); }
   }
 
-  $('#profileSelect').addEventListener('change', async e=>{ setActiveId(e.target.value); await renderProfileSelects(); if($('#page-history').classList.contains('active')) drawHistory(); });
-  $('#profileSelectSide').addEventListener('change', async e=>{ setActiveId(e.target.value); await renderProfileSelects(); if($('#page-history').classList.contains('active')) drawHistory(); });
+  $('#profileSelect').addEventListener('change', async e=>{ setActiveId(e.target.value); await renderProfileSelects(); });
+  $('#profileSelectSide').addEventListener('change', async e=>{ setActiveId(e.target.value); await renderProfileSelects(); });
 
-  $('#newProfileBtn').addEventListener('click', newProfile);
-  $('#newProfileBtnSide').addEventListener('click', newProfile);
   async function newProfile(){
     const name=prompt('Profile name?','Profile '+(Date.now()%1000)); if(!name) return;
-    const ps=await ensureDefaultProfileSync(); const id=crypto.randomUUID();
-    ps.push({id,name,history:[]}); await saveProfiles(ps); setActiveId(id); await renderProfileSelects(); drawHistory();
+    const ps=await ensureDefaultProfile(); const id=crypto.randomUUID();
+    ps.push({id,name,history:[]}); await saveProfiles(ps); setActiveId(id); await renderProfileSelects();
   }
+  $('#newProfileBtn')    .addEventListener('click', newProfile);
+  $('#newProfileBtnSide').addEventListener('click', newProfile);
+
   $('#renameProfileBtn')?.addEventListener('click', async ()=>{
     const prof=await getActiveProfile(); if(!prof) return;
     const name=prompt('New name', prof.name); if(!name) return;
@@ -572,12 +565,12 @@
   });
   $('#deleteProfileBtn')?.addEventListener('click', async ()=>{
     if(!confirm('Delete this profile?')) return;
-    let ps=await ensureDefaultProfileSync(); const cur=getActiveId();
+    let ps=await ensureDefaultProfile(); const cur=getActiveId();
     ps=ps.filter(x=>x.id!==cur); await saveProfiles(ps);
     const newId=(ps[0]?.id)||null; if(newId){ setActiveId(newId); } else {
       const id=crypto.randomUUID(); ps=[{id,name:'Profile 1',history:[]}]; await saveProfiles(ps); setActiveId(id);
     }
-    await renderProfileSelects(); drawHistory();
+    await renderProfileSelects();
   });
   $('#exportProfileBtn')?.addEventListener('click', async ()=>{
     const prof=await getActiveProfile(); if(!prof) return;
@@ -586,7 +579,7 @@
   $('#importProfileBtn')?.addEventListener('click', async ()=>{
     const txt=prompt('Paste profile JSON'); if(!txt) return;
     try{ const obj=JSON.parse(txt); if(!obj.id) obj.id=crypto.randomUUID();
-      const ps=await ensureDefaultProfileSync(); ps.push(obj); await saveProfiles(ps); setActiveId(obj.id); await renderProfileSelects(); drawHistory();
+      const ps=await ensureDefaultProfile(); ps.push(obj); await saveProfiles(ps); setActiveId(obj.id); await renderProfileSelects();
     }catch(e){ alert('Invalid JSON'); }
   });
 
@@ -595,11 +588,8 @@
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
 
-  /* ---------- Kinder Financial Model ---------- */
-  const SWR = 0.035;       // 3.5% safe withdrawal
-  const EF_TARGET = 6;     // months target EF
-  const ACCESS_EQ = 0.40;  // fraction of home equity considered accessible
-
+  /* ---------- Model ---------- */
+  const SWR = 0.035, EF_TARGET = 6, ACCESS_EQ = 0.40;
   const curvePts = [[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
   function expectedReadiness(age){
     if(age<=25) return 0.08; if(age>=60) return 1.0;
@@ -608,72 +598,51 @@
       if(age<=a1){ const t=(age-a0)/(a1-a0); return r0+(r1-r0)*t; }
     } return 1;
   }
-
   function values(){
     const v = Object.fromEntries(ids.map(id=>[id,val(id)]));
     v.assets = v.home + v.retire + v.brokerage + v.car + v.hsa + v.cash;
     v.liabs  = v.mortgage + v.student + v.auto + v.cc;
     v.net    = v.assets - v.liabs;
-
     v.annualIncome = v.income*12;
     v.annualSpend  = Math.max(0, v.expenses * 12);
-
     const surplusCash = Math.max(0, v.cash - EF_TARGET*(v.expenses||0));
     const homeEquity  = Math.max(0, v.home - v.mortgage);
+    v.homeEquity = homeEquity;
     const accessibleEquity = homeEquity * ACCESS_EQ;
     v.investableTotal = (v.retire + v.brokerage + v.hsa) + surplusCash + accessibleEquity;
-
     v.targetFI = v.annualSpend>0 ? v.annualSpend / SWR : 0;
     v.fiRatio = v.targetFI>0 ? v.investableTotal / v.targetFI : (v.net>0?1:0);
     v.efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
-
     const leftover = Math.max(0, v.income - v.expenses);
-    v.saveRate = (v.income>0)
-      ? clamp((leftover + v.pretaxMonthly + v.eduMonthly) / (v.income + v.pretaxMonthly), 0, 1)
-      : 0;
-
+    v.saveRate = (v.income>0) ? clamp((leftover + v.pretaxMonthly + v.eduMonthly) / (v.income + v.pretaxMonthly), 0, 1) : 0;
     v.nonMortDebt = v.student + v.auto + v.cc;
     v.nwToIncome = v.annualIncome>0 ? v.net / v.annualIncome : 0;
     v.paidOffHouse = (v.home>0 && v.mortgage<=0);
-    v.homeEquity = homeEquity;
     v.spendsMoreThanIncome = (v.expenses > v.income && v.income>0);
-
     return v;
   }
-
-  // Kinder weights to match your expectations (aim ~B/B+ for your example)
-  // Weights: Age-FI 50, NW/Income 20, Savings 15, EF 8, Debt 5, Housing 2, Equity bonus up to +6
   function scoreModel(v){
     const exp = expectedReadiness(val('age')||30);
     const relFI = (exp>0) ? v.fiRatio/exp : (v.fiRatio>0?1:0);
-
-    // Boost mid-range: gamma < 1 raises scores for average progress
-    const sAgeFI = Math.pow(clamp(relFI,0,1.2), 0.6);     // 0..1, kinder curve
-    const sNW    = Math.pow(map01(v.nwToIncome, 0, 2.5), 0.85); // up to 2.5x income → full
-    const sSave  = map01(v.saveRate, 0, 0.25);            // full credit at 25% SR
-    const sEF    = map01(v.efMonths, 0, EF_TARGET);       // full at 6 mo
+    const sAgeFI = Math.pow(clamp(relFI,0,1.2), 0.6);
+    const sNW    = Math.pow(map01(v.nwToIncome, 0, 2.5), 0.85);
+    const sSave  = map01(v.saveRate, 0, 0.25);
+    const sEF    = map01(v.efMonths, 0, EF_TARGET);
     const debtIncome = (v.annualIncome>0) ? (v.nonMortDebt / v.annualIncome) : 1;
-    const sDebt  = map01(1-debtIncome, 0.2, 1);           // gentle, rewards <80% (non-mort)
+    const sDebt  = map01(1-debtIncome, 0.2, 1);
     const sHouse = v.paidOffHouse ? 1 : 0;
-
-    // Equity bonus (recognizes real balance-sheet strength)
-    const equityBonus = map01(v.homeEquity - 50000, 0, 150000) * 6; // up to +6 pts for strong equity
+    const equityBonus = map01(v.homeEquity - 50000, 0, 150000) * 6;
 
     let score = 50*sAgeFI + 20*sNW + 15*sSave + 8*sEF + 5*sDebt + 2*sHouse + equityBonus;
-
-    // Small flags
     if(v.spendsMoreThanIncome) score -= 5;
     if(v.cc > 0 && v.ccApr >= 20) score -= 4;
     if(v.retire === 0 && v.brokerage === 0) score -= 6;
 
     score = Math.max(0, Math.min(100, +score.toFixed(1)));
-
-    // A+ if fully FI with little/no non-mortgage debt
     const cleanDebt = v.nonMortDebt < 1000;
     const FI_Aplus  = (v.fiRatio >= 1.0 && cleanDebt);
     return {score, FI_Aplus, relFI, expRead:exp, ...v};
   }
-
   function letter(score, flags){
     if(flags?.FI_Aplus) return "A+";
     if(score>=97) return "A+";
@@ -691,7 +660,7 @@
     return "F";
   }
 
-  const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
+  const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine');
 
   function renderWhy(s){
     $('#chips').innerHTML = [
@@ -712,7 +681,6 @@
       `Non-mortgage debt: <b>${money(s.nonMortDebt)}</b>.`
     ].map(x=>`<div>${x}</div>`).join('');
   }
-
   function renderImprove(s){
     const ideas=[];
     if(s.relFI < 1){
@@ -756,7 +724,6 @@
 
     renderWhy(s); renderImprove(s);
 
-    // Save to history
     const prof = await getActiveProfile();
     const snapshot={date:new Date().toISOString(),score:s.score,letter:L,inputs: Object.fromEntries(ids.map(id=>[id,Number(els[id]?.value||0)])), summary:{
       assets:s.assets, liabs:s.liabs, net:s.net, investableTotal:s.investableTotal, targetFI:s.targetFI, efMonths:s.efMonths, saveRate:s.saveRate, fiRatio:s.fiRatio, relFI:s.relFI
@@ -806,7 +773,7 @@
   ids.forEach(id => els[id]?.addEventListener('input', updateHints));
   updateHints();
 
-  /* ---------- History with clickable points ---------- */
+  /* ---------- History ---------- */
   async function drawHistory(){
     const prof=await getActiveProfile(); if(!prof) return;
     const hist=prof.history||[];
@@ -846,17 +813,15 @@
       canvas._bound=true;
     }
   }
-
   function nearest(canvas, x, y){
     const pts = canvas._points||[]; if(!pts.length) return null;
     let best=null, d2min=1000;
     pts.forEach(p=>{
       const dx = x - p.x, dy = y - p.y, d2 = dx*dx+dy*dy;
-      if(d2<d2min && d2<14*14){ d2min=d2; best=p; }
+      if(d2<d2min && d2<16*16){ d2min=d2; best=p; }
     });
     return best;
   }
-
   function showDetail(entry){
     const dt = new Date(entry.date).toLocaleString();
     const i = entry.inputs||{};
@@ -874,13 +839,12 @@
   /* ---------- Welcome ---------- */
   (function welcome(){
     const key='gmf_welcome_seen_v9';
-    const seen = localStorage.getItem(key)==='1';
     const el = $('#welcome');
-    if(!seen){ el.classList.add('show'); }
+    if(localStorage.getItem(key)!=='1'){ el.classList.add('show'); }
     $('#welcomeGo').addEventListener('click', ()=>{ localStorage.setItem(key,'1'); el.classList.remove('show'); });
   })();
 
-  /* ---------- Mascot eyes follow ---------- */
+  /* ---------- Mascot eyes ---------- */
   (function eyes(){
     const l=document.getElementById('eyeL'), r=document.getElementById('eyeR'); if(!l||!r) return;
     const cxL=+l.getAttribute('cx'), cyL=+l.getAttribute('cy');
@@ -904,42 +868,29 @@
   const authState = $('#authState');
 
   authBtn.addEventListener('click', async ()=>{
-    if(auth && auth.currentUser){
-      await auth.signOut();
+    if(firebase?.auth?.() && firebase.auth().currentUser){
+      await firebase.auth().signOut();
       alert('Signed out.');
-    }else{
-      authModal.classList.add('show');
-      authState.textContent = FIREBASE_CONFIG ? 'Sign in to sync with cloud.' : 'No Firebase config found—local mode only.';
+      return;
     }
+    authModal.classList.add('show');
+    authState.textContent = FIREBASE_CONFIG ? 'Sign in to sync with cloud.' : 'No Firebase config found—local mode only.';
   });
   $('#authClose').addEventListener('click', ()=> authModal.classList.remove('show'));
   $('#authGuest').addEventListener('click', ()=> authModal.classList.remove('show'));
   $('#authSignIn').addEventListener('click', async ()=>{
-    if(!auth || !FIREBASE_CONFIG){ alert('Cloud is not configured. Staying local.'); return; }
-    try{ await auth.signInWithEmailAndPassword(authEmail.value, authPass.value); authModal.classList.remove('show'); }
+    if(!FIREBASE_CONFIG){ alert('Cloud is not configured. Staying local.'); return; }
+    try{ await firebase.auth().signInWithEmailAndPassword(authEmail.value, authPass.value); authModal.classList.remove('show'); }
     catch(e){ alert(e.message||'Sign in failed'); }
   });
   $('#authSignUp').addEventListener('click', async ()=>{
-    if(!auth || !FIREBASE_CONFIG){ alert('Cloud is not configured. Staying local.'); return; }
-    try{ await auth.createUserWithEmailAndPassword(authEmail.value, authPass.value); authModal.classList.remove('show'); }
+    if(!FIREBASE_CONFIG){ alert('Cloud is not configured. Staying local.'); return; }
+    try{ await firebase.auth().createUserWithEmailAndPassword(authEmail.value, authPass.value); authModal.classList.remove('show'); }
     catch(e){ alert(e.message||'Sign up failed'); }
   });
 
-  /* ---------- Hints ---------- */
-  function getActive(){ return getActiveProfile(); }
-
-  // History initial draw if tab visible
-  (async ()=>{ if($('#page-history').classList.contains('active')) drawHistory(); })();
-
-  /* ---------- Share hash hydrate ---------- */
-  (function hydrateFromHash(){
-    const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
-    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); ids.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
-  })();
-
-  /* ---------- Assets/Liabs hints live ---------- */
-  ids.forEach(id => els[id]?.addEventListener('input', updateHints));
 })();
 </script>
 </body>
 </html>
+
