@@ -34,20 +34,21 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Sticky header with BIG logo ---------- */
+  /* ---------- Sticky header with GIANT logo ---------- */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
-  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:12px 16px}
+  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
   .brand{display:flex;align-items:center;gap:14px}
-  .logoBig{width:118px;height:118px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
-  .title{margin:0;font-size:26px;color:#062c1b;font-weight:900;letter-spacing:.2px}
+  /* 200% size vs previous: make it unmistakably a G */
+  .logoBig{width:236px;height:236px;filter:drop-shadow(0 10px 28px rgba(0,0,0,.25))}
+  .title{margin:0;font-size:28px;color:#062c1b;font-weight:900;letter-spacing:.2px}
   .tag{margin:0;color:#062c1bcc;font-size:12px}
   .spacer{flex:1}
   .pill{border:none;padding:10px 14px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
   .light .pill{background:#0f172a}
-  .streak{font-weight:800;color:#062c1b;background:#ffffffaa;padding:7px 10px;border-radius:999px}
+  .streak{font-weight:800;color:#062c1b;background:#ffffffc2;padding:7px 10px;border-radius:999px}
 
   /* ---------- HERO ---------- */
-  .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:start;padding:24px 0 4px;margin-bottom:4px}
+  .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start;padding:18px 0 6px}
   @media (max-width: 980px){ .hero{grid-template-columns:1fr;gap:10px} }
   .hero-copy{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
     border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:var(--shadow)}
@@ -60,10 +61,10 @@
   .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
   .btn.ghost{background:transparent}
 
-  /* ---------- Mascot ---------- */
+  /* ---------- 3D Mascot ---------- */
   .hero-mascot{position:relative;display:grid;place-items:center;align-self:start}
-  .buddy{max-height:230px;width:auto}
-  @media (max-width:1100px){ .buddy{max-height:200px} }
+  .buddy{max-height:260px;width:auto}
+  @media (max-width:1100px){ .buddy{max-height:220px} }
   @media (max-width:640px){ .hero{grid-template-columns:1fr}.hero-mascot{display:none} }
   .mascot-bubble{
     position:absolute;top:-6px;right:4px;background:rgba(0,0,0,.35);border:1px solid var(--line);
@@ -72,18 +73,16 @@
   .b-float{animation:floatCard 3.2s ease-in-out infinite}
   .b-shadow{animation:floatShadow 3.2s ease-in-out infinite}
   .b-blink{animation:blink 6s ease-in-out infinite}
-  .b-wave{transform-origin:215px 120px;animation:wave 2.3s ease-in-out infinite}
-  .b-badge{transform-origin:215px 120px;animation:badgePop 2.6s ease-in-out infinite}
-  .b-shine{animation:sweep 2.2s linear infinite;mix-blend-mode:overlay}
-  @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-6px) rotate(1.2deg)}}
+  .b-wave{transform-origin:235px 120px;animation:wave 2.3s ease-in-out infinite}
+  .b-badge{transform-origin:235px 120px;animation:badgePop 2.6s ease-in-out infinite}
+  @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
   @keyframes floatShadow{0%,100%{transform:scale(1);opacity:.35}50%{transform:scale(0.94);opacity:.2}}
   @keyframes blink{0%,95%,100%{opacity:0}96%,98%{opacity:1}}
-  @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg)}}
+  @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-12deg)}}
   @keyframes badgePop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-  @keyframes sweep{from{transform:translateX(-160px)}to{transform:translateX(160px)}}
 
   /* ---------- Shell ---------- */
-  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:280px 1fr;gap:18px;padding:12px 18px 18px}
+  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
   aside{position:sticky;top:92px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px}
   .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
@@ -127,13 +126,14 @@
   footer{max-width:1200px;margin:12px auto 24px;padding:0 18px 24px;color:var(--muted)}
   footer a{color:var(--accent)}
 
-  /* Profiles panel proportional grid */
-  .profiles-grid{display:grid;grid-template-columns:1fr;gap:10px}
-  .profiles-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
-  .profiles-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-  .profiles-io{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  /* ---------- Profiles panel (clean & proportional) ---------- */
+  .profiles-card .row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+  .profiles-card .row.tight{grid-template-columns:1fr 1fr}
+  .profiles-card select{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)}
+  .profiles-card .btn{width:100%}
+  .profiles-card .streakline{margin-top:10px}
 
-  /* History UI */
+  /* ---------- History UI ---------- */
   .hist-ui{display:grid;gap:12px}
   .hist-top{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
   .scrub{width:100%}
@@ -144,7 +144,7 @@
     .shell{grid-template-columns:1fr}
     aside{position:static}
     .grid{grid-template-columns:1fr}
-    .profiles-row,.profiles-actions,.profiles-io{grid-template-columns:1fr 1fr}
+    .profiles-card .row{grid-template-columns:1fr 1fr}
   }
   @media (max-width: 768px){
     .grid > [style*="grid-column:span 6"],
@@ -155,35 +155,33 @@
 </style>
 </head>
 <body class="dark">
-  <!-- Header with 2× custom logo -->
+  <!-- Header with GIANT custom logo -->
   <header>
     <div class="hdr">
       <div class="brand">
-        <!-- NEW Giant Green G + embedded Report Card (modern) -->
-        <svg class="logoBig" viewBox="0 0 260 260" aria-hidden="true">
+        <!-- GIANT Green G with embedded report card (clear G shape) -->
+        <svg class="logoBig" viewBox="0 0 300 300" aria-hidden="true">
           <defs>
-            <radialGradient id="gGlow" cx="50%" cy="45%" r="60%">
-              <stop offset="0" stop-color="#34d399"/><stop offset=".6" stop-color="#16a34a"/><stop offset="1" stop-color="#0c7a39"/>
+            <radialGradient id="gGlow" cx="50%" cy="40%" r="65%">
+              <stop offset="0" stop-color="#6ee7b7"/><stop offset=".5" stop-color="#34d399"/><stop offset="1" stop-color="#16a34a"/>
             </radialGradient>
-            <linearGradient id="paperGrad" x1="0" x2="0" y1="0" y2="1">
+            <linearGradient id="paperGradL" x1="0" x2="0" y1="0" y2="1">
               <stop offset="0" stop-color="#F0FFF4"/><stop offset="1" stop-color="#D1FAE5"/>
             </linearGradient>
           </defs>
-          <!-- body / coin -->
-          <circle cx="130" cy="130" r="118" fill="url(#gGlow)"/>
-          <!-- 3D rim -->
-          <circle cx="130" cy="130" r="118" fill="none" stroke="#052e1b" stroke-opacity=".25" stroke-width="10"/>
-          <!-- G path -->
-          <path d="M180 126h-56a34 34 0 1 1 0-68c24 0 43 12 52 30" fill="none" stroke="#052e1b" stroke-width="22" stroke-linecap="round"/>
-          <path d="M122 182a48 48 0 0 0 56-34" fill="none" stroke="#052e1b" stroke-width="22" stroke-linecap="round"/>
-          <!-- embedded report card tile -->
-          <g transform="translate(162,48)">
-            <rect width="56" height="68" rx="12" fill="url(#paperGrad)" stroke="#bbf7d0" stroke-width="2"/>
-            <g stroke="#10b981" stroke-width="4" stroke-linecap="round">
-              <line x1="10" y1="28" x2="46" y2="28"/>
-              <line x1="10" y1="42" x2="46" y2="42"/>
+          <!-- coin -->
+          <circle cx="150" cy="150" r="135" fill="url(#gGlow)"/>
+          <!-- crisp G: outer arc + inner bar -->
+          <path d="M210 150h-64a44 44 0 1 1 0-88c30 0 54 15 64 38" fill="none" stroke="#052e1b" stroke-width="26" stroke-linecap="round"/>
+          <path d="M146 212a60 60 0 0 0 64-44" fill="none" stroke="#052e1b" stroke-width="26" stroke-linecap="round"/>
+          <!-- embedded report card -->
+          <g transform="translate(205,62)">
+            <rect width="72" height="86" rx="14" fill="url(#paperGradL)" stroke="#bbf7d0" stroke-width="2"/>
+            <g stroke="#10b981" stroke-width="5" stroke-linecap="round">
+              <line x1="12" y1="34" x2="60" y2="34"/>
+              <line x1="12" y1="50" x2="60" y2="50"/>
             </g>
-            <path d="M14 20l8 8 18-18" fill="none" stroke="#059669" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 22l10 10 24-24" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
           </g>
         </svg>
         <div>
@@ -211,41 +209,48 @@
       </div>
     </div>
 
-    <!-- Kid-friendlier, 3D-ish mascot holding a star -->
+    <!-- 3D-style mascot (report card buddy) HOLDING A+ badge -->
     <div class="hero-mascot" aria-hidden="true">
-      <svg class="buddy b-float" viewBox="0 0 320 270" role="img" aria-label="Report Card Buddy">
+      <svg class="buddy b-float" viewBox="0 0 340 280" role="img" aria-label="Report Card Buddy 3D">
         <defs>
           <linearGradient id="paper3D" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7FFEF"/>
           </linearGradient>
+          <radialGradient id="vol" cx=".4" cy=".15" r=".9">
+            <stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff00"/>
+          </radialGradient>
           <radialGradient id="cheek" cx=".5" cy=".5" r=".5">
             <stop offset="0" stop-color="#fecdd3"/><stop offset="1" stop-color="#fecdd3" stop-opacity="0"/>
           </radialGradient>
         </defs>
-        <ellipse cx="160" cy="245" rx="70" ry="14" fill="rgba(0,0,0,.25)" class="b-shadow"/>
+        <ellipse cx="170" cy="252" rx="78" ry="16" fill="rgba(0,0,0,.25)" class="b-shadow"/>
         <g>
-          <rect x="80" y="34" width="160" height="208" rx="22" fill="url(#paper3D)" stroke="#86EFAC" stroke-width="2" />
+          <!-- card body with 3D gloss -->
+          <rect x="85" y="36" width="170" height="212" rx="26" fill="url(#paper3D)" stroke="#86EFAC" stroke-width="2"/>
+          <ellipse cx="140" cy="60" rx="80" ry="26" fill="url(#vol)" opacity=".35"/>
           <g stroke="#CCFBE1" stroke-width="2">
-            <line x1="95" x2="225" y1="98" y2="98"/>
-            <line x1="95" x2="225" y1="118" y2="118"/>
-            <line x1="95" x2="225" y1="138" y2="138"/>
-            <line x1="95" x2="225" y1="158" y2="158"/>
+            <line x1="100" x2="240" y1="104" y2="104"/>
+            <line x1="100" x2="240" y1="124" y2="124"/>
+            <line x1="100" x2="240" y1="144" y2="144"/>
+            <line x1="100" x2="240" y1="164" y2="164"/>
           </g>
-          <!-- arms -->
-          <path d="M80 130 q-26 4 -32 -12" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <path d="M240 165 q32 12 38 -14" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round" class="b-wave"/>
+          <!-- arms (waving right) -->
+          <path d="M85 132 q-28 6 -36 -14" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M255 168 q36 12 40 -18" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round" class="b-wave"/>
           <!-- legs -->
-          <path d="M126 242 q-10 16 -24 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <path d="M194 242 q10 16 24 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M134 246 q-12 18 -26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M206 246 q12 18 26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
           <!-- face -->
-          <circle id="eyeL" cx="132" cy="76" r="7" fill="#0f172a"/>
-          <circle id="eyeR" cx="188" cy="76" r="7" fill="#0f172a"/>
-          <g class="b-blink"><rect x="124" y="70" width="16" height="6" fill="#fff"/><rect x="180" y="70" width="16" height="6" fill="#fff"/></g>
-          <path id="smile" d="M128 104 q16 12 32 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="120" cy="88" r="10" fill="url(#cheek)"/><circle cx="200" cy="88" r="10" fill="url(#cheek)"/>
-          <!-- gold star in hand -->
-          <g transform="translate(260,150) rotate(-5)">
-            <path d="M0-14 L6-2 L20 0 L8 8 L10 22 L0 14 L-10 22 L-8 8 L-20 0 L-6-2 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+          <circle id="eyeL" cx="138" cy="82" r="8" fill="#0f172a"/>
+          <circle id="eyeR" cx="198" cy="82" r="8" fill="#0f172a"/>
+          <g class="b-blink"><rect x="130" y="76" width="16" height="6" fill="#fff"/><rect x="190" y="76" width="16" height="6" fill="#fff"/></g>
+          <path id="smile" d="M134 110 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="126" cy="94" r="11" fill="url(#cheek)"/><circle cx="210" cy="94" r="11" fill="url(#cheek)"/>
+          <!-- A+ badge (no star) -->
+          <g class="b-badge" transform="translate(270,150) rotate(-6)">
+            <circle r="24" fill="#10b981" stroke="#065f46" stroke-width="3"/>
+            <circle r="20" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
+            <text y="6" text-anchor="middle" font-size="20" font-weight="900" fill="#a7f3d0">A+</text>
           </g>
         </g>
       </svg>
@@ -257,21 +262,19 @@
 
   <div class="shell">
     <aside>
-      <div class="card" style="margin-bottom:10px">
+      <div class="card profiles-card" style="margin-bottom:10px">
         <div class="section" style="margin-bottom:6px">Profiles</div>
-        <div class="profiles-grid">
-          <div class="profiles-row">
-            <select id="profileSelectSide"></select>
-            <button id="newProfileBtnSide" class="btn">New</button>
-            <button id="renameProfileBtn" class="btn">Rename</button>
-            <button id="deleteProfileBtn" class="btn">Delete</button>
-          </div>
-          <div class="profiles-io">
-            <button id="exportProfileBtn" class="btn">Export</button>
-            <button id="importProfileBtn" class="btn">Import</button>
-          </div>
+        <div class="row">
+          <select id="profileSelectSide"></select>
+          <button id="newProfileBtnSide" class="btn">New</button>
+          <button id="renameProfileBtn" class="btn">Rename</button>
+          <button id="deleteProfileBtn" class="btn">Delete</button>
         </div>
-        <div class="hint" style="margin-top:10px" id="streakHint">Streak: 0 days</div>
+        <div class="row tight" style="margin-top:8px">
+          <button id="exportProfileBtn" class="btn">Export</button>
+          <button id="importProfileBtn" class="btn">Import</button>
+        </div>
+        <div class="hint streakline" id="streakHint">Streak: 0 days</div>
       </div>
 
       <nav class="nav" id="sidebar">
@@ -402,21 +405,18 @@
             <div id="histMeta" class="hint">Entries: 0</div>
           </div>
 
-          <!-- Interactive chart -->
           <div style="position:relative">
             <canvas id="historyChart" height="220" style="width:100%;max-width:100%"></canvas>
             <div id="cursorLine" class="cursor-line" style="display:none"></div>
             <div id="tip" class="tooltip" style="display:none"></div>
           </div>
 
-          <!-- Drag scale slider -->
           <div class="card" style="border-style:dashed">
             <div class="section">Drag the scale to compare entries</div>
             <input id="histRange" class="scrub" type="range" min="0" max="0" step="1" value="0" />
             <div id="histDetail" class="hint">Move the slider or hover the chart to see differences.</div>
           </div>
 
-          <!-- Trophy wall -->
           <div id="trophyWall" class="badges" style="margin-top:2px"></div>
         </div>
       </section>
@@ -435,28 +435,23 @@
         <div class="card"><h2>Contact</h2><p>grademyfinance@gmail.com</p></div>
       </section>
 
-      <!-- In-page “Read more” articles (no 404s) -->
+      <!-- In-page “Read more” articles -->
       <section id="read-saved-by-30" class="page">
         <div class="card">
           <h2>Saved by 30</h2>
-          <p>Quick explainer on why early savings matter: compounding + career agility + optionality. Hitting a baseline (e.g., 1× your annual expenses) by 30 creates resilience and runway.</p>
-          <ul>
-            <li>Automate contributions (401(k)/HSA/Brokerage)</li>
-            <li>Keep a lean expense base (EF target 6 months)</li>
-            <li>Invest simply (broad funds) and consistently</li>
-          </ul>
+          <p>Why early savings matter: compounding + agility + optionality. Hitting a baseline (e.g., 1× annual expenses) by 30 builds resilience.</p>
         </div>
       </section>
       <section id="read-savings-rate" class="page">
         <div class="card">
           <h2>Savings Rate Benchmarks</h2>
-          <p>Common targets: 15–20% for steady progress; 25–35% to accelerate milestones; >40% for aggressive FI. Your path depends on income stability and goals.</p>
+          <p>Common targets: 15–20% steady • 25–35% faster • 40%+ aggressive FI. Choose what fits your stability and goals.</p>
         </div>
       </section>
       <section id="read-what-is-fire" class="page">
         <div class="card">
           <h2>What is FIRE?</h2>
-          <p>Financial Independence, Retire Early: build assets so investment returns can sustainably cover living expenses (often modeled with a 3–4% withdrawal band and buffers).</p>
+          <p>Financial Independence, Retire Early: build assets so returns can sustainably cover expenses (often 3–4% withdrawal with buffers).</p>
         </div>
       </section>
     </main>
@@ -506,22 +501,22 @@
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // simple hash router for read pages
+  // hash router for read pages
   function routeFromHash(){
     const h = location.hash.replace('#','');
     const pages=['grade','history','about','goal','faq','contact','read-saved-by-30','read-savings-rate','read-what-is-fire'];
     const found = pages.includes(h) ? h : null;
     if(found){
       $$('.page').forEach(p=>p.classList.remove('active'));
-      $('#page-'+found)?.classList.add('active'); // for normal pages
-      $('#'+found)?.classList.add('active');      // for read pages
+      $('#page-'+found)?.classList.add('active');
+      $('#'+found)?.classList.add('active');
       $$('.tab').forEach(b=> b.classList.toggle('active', b.dataset.page===found));
     }
   }
   window.addEventListener('hashchange', routeFromHash);
   routeFromHash();
 
-  // tabs (no scroll jump)
+  // tabs
   const pages=['grade','history','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
@@ -556,7 +551,7 @@
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
 
-  // expected readiness curve (kept internal; Benchmarks tab removed)
+  // curve (internal only)
   const curvePts = [[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
   function expectedReadiness(age){
     const pts = curvePts;
@@ -569,13 +564,13 @@
     return 1;
   }
 
-  // pension present value
+  // pension PV
   function pensionPV(monthly, startAge, nowAge){
     if(monthly<=0) return 0;
-    if(startAge<=nowAge) return (monthly*12)/SWR; // eligible now
+    if(startAge<=nowAge) return (monthly*12)/SWR;
     const years = Math.max(0, startAge - nowAge);
-    const principalAtStart = (monthly*12)/SWR;
-    return principalAtStart / Math.pow(1+REAL_RET, years);
+    const atStart = (monthly*12)/SWR;
+    return atStart / Math.pow(1+REAL_RET, years);
   }
 
   function values(){
@@ -613,7 +608,6 @@
 
     const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
 
-    // Readiness ratio: 1.0 = fully funded; allow extra credit up to 1.2
     const r = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
 
     const sFI   = map01(r, 0, 1.2);
@@ -660,7 +654,7 @@
     return "F";
   }
 
-  /* ---------- Clipboard helper (mobile safe) ---------- */
+  /* ---------- Clipboard helper ---------- */
   function safeCopy(text){
     try{
       if(navigator.clipboard && navigator.clipboard.writeText){
@@ -703,7 +697,7 @@
   }
 
   // share link
-  const allInputIds = ids; // for share
+  const allInputIds = ids;
   function currentState(){ const s={}; allInputIds.forEach(id=> s[id]=val(id)); s.__ver='age2_pension'; return s; }
   function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
   (function hydrateFromHash(){
@@ -717,7 +711,7 @@
   function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
   function ensureDefaultProfile(){
     let p=loadProfiles();
-    if(!p.length){ p=[{id:crypto.randomUUID(), name:'My Profile', history:[], trophies:[]}]; saveProfiles(p); }
+    if(!p.length){ p=[{id:crypto.randomUUID(), name:'Profile 1', history:[], trophies:[]}]; saveProfiles(p); }
     return p;
   }
   function renderProfileSelect(){
@@ -732,7 +726,7 @@
   $('#profileSelectSide').addEventListener('change', e=>{ setActive(e.target.value); $('#profileSelect').value=e.target.value; renderHistory(); });
 
   function newProfile(){
-    const name=prompt('Profile name?','My Profile '+(loadProfiles().length+1)); if(!name) return;
+    const name=prompt('Profile name?','Profile '+(loadProfiles().length+1)); if(!name) return;
     const p=loadProfiles(); const id=crypto.randomUUID(); p.push({id,name,history:[],trophies:[]}); saveProfiles(p); renderProfileSelect(); setActive(id); renderHistory();
   }
   $('#newProfileBtn').addEventListener('click', newProfile);
@@ -763,7 +757,7 @@
   function maybeTrophies(profile, v, s, L){
     const list=[];
     if(profile.history.length===1) list.push(award(profile,'first_grade','First Grade'));
-    if(L==='A+','A','A-') list.push(award(profile,'a_club','A Club')); // intentional inclusion of all A variants
+    if(['A+','A','A-'].includes(L)) list.push(award(profile,'a_club','A Club'));
     if(s.efMonths>=6) list.push(award(profile,'ef_ready','Emergency Ready'));
     if((v.student+v.auto+v.cc)===0) list.push(award(profile,'debt_slayer','Debt Slayer'));
     if(profile.history.length>=2){
@@ -780,7 +774,7 @@
     return entry;
   }
 
-  // ---------- Mascot eye-follow ----------
+  /* ---------- Mascot eye-follow ---------- */
   (function eyes(){
     const l=$('#eyeL'), r=$('#eyeR');
     if(!l||!r) return;
@@ -789,7 +783,7 @@
     function move(e){
       const rect = document.body.getBoundingClientRect();
       const x = e.clientX/rect.width*2-1, y = e.clientY/rect.height*2-1;
-      const dx = clamp(x, -1, 1)*2.5, dy = clamp(y, -1, 1)*2.5;
+      const dx = clamp(x, -1, 1)*2.8, dy = clamp(y, -1, 1)*2.8;
       l.setAttribute('cx', cxL+dx); l.setAttribute('cy', cyL+dy);
       r.setAttribute('cx', cxR+dx); r.setAttribute('cy', cyR+dy);
     }
@@ -797,7 +791,7 @@
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
 
-  // ---------- Grade flow ----------
+  /* ---------- Grade flow ---------- */
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
 
   function doGrade(){
@@ -822,7 +816,7 @@
       logHistory(prof, s, L);
       const ts = maybeTrophies(prof, v, s, L);
       if(ts.length) confetti();
-      renderHistory(); // live update
+      renderHistory();
     }
   }
 
@@ -861,7 +855,7 @@
   $('#copyTop').addEventListener('click', ()=> { safeCopy(buildShareURL()); showToast(); });
   $('#copyAgain').addEventListener('click', ()=> safeCopy(buildShareURL()));
 
-  // reset (monetary fields to 0; keep age 30)
+  // reset (set all numbers to 0; keep age 30)
   $('#resetBtn').addEventListener('click', ()=>{
     $$('#page-grade input[type="number"]').forEach(el=>{
       el.value = (el.id==='age'?30:0);
@@ -973,7 +967,6 @@
       wall.appendChild(span);
     });
 
-    // detail panel update from slider
     function updateFromIndex(i){
       if(!pts.length){ detail.textContent='No history yet.'; return; }
       i = clamp(i, 0, pts.length-1);
@@ -985,13 +978,12 @@
         <br>Change vs prior: <b>${arrow} ${Math.abs(delta)}</b> points`;
     }
     updateFromIndex(+range.value);
-
     range.oninput = e => updateFromIndex(+e.target.value);
 
-    // chart hover / drag
+    // chart hover/drag
     const rect = chart.getBoundingClientRect();
     function pointPos(i){
-      const pad=16; const w=rect.width-pad*2; const h=220-pad*2;
+      const pad=16; const w=rect.width-pad*2;
       const x=pad+(i/(Math.max(1,pts.length-1)))*w;
       return x;
     }
@@ -1023,10 +1015,8 @@
     chart.addEventListener('mouseleave', hideTip);
     window.addEventListener('mouseup', ()=>{ isDown=false; });
 
-    $('#historyHint')?.remove(); // old hint cleanup
+    $('#historyHint')?.remove();
   }
-
-  // render history once on load if tab is open
   if($('#page-history').classList.contains('active')) renderHistory();
 
 })();
