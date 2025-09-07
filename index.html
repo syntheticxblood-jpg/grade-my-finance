@@ -39,7 +39,8 @@
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
   .brand{display:flex;align-items:center;gap:14px}
-  .logoBig{width:118px;height:118px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
+  /* 15% larger */
+  .logoBig{width:136px;height:136px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
   .title{margin:0;font-size:28px;color:#062c1b;font-weight:900;letter-spacing:.2px}
   .tag{margin:0;color:#062c1bcc;font-size:12px}
   .spacer{flex:1}
@@ -152,6 +153,13 @@
     .grid > [style*="grid-column:span 8"]{grid-column: span 12 !important;}
   }
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:85}
+
+  /* ---------- Welcome modal ---------- */
+  .welcome{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:95}
+  .welcome.show{display:grid}
+  .welcome-card{max-width:680px;width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow);text-align:center}
+  .welcome-card h2{margin:8px 0 6px}
+  .welcome-card p{margin:0 0 14px;color:var(--muted)}
 </style>
 </head>
 <body class="dark">
@@ -159,7 +167,7 @@
   <header>
     <div class="hdr">
       <div class="brand">
-        <!-- NEW Modern “G + report card” logo -->
+        <!-- NEW 3D “G + report card” logo (larger + clearer A+) -->
         <svg class="logoBig" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Grade My Finance logo">
           <defs>
             <radialGradient id="gmf-g" cx="45%" cy="38%" r="70%">
@@ -167,26 +175,39 @@
               <stop offset=".55" stop-color="#34D399"/>
               <stop offset="1"  stop-color="#16A34A"/>
             </radialGradient>
+            <linearGradient id="gmf-stroke" x1="0" x2="1">
+              <stop offset="0" stop-color="#052E1B"/>
+              <stop offset="1" stop-color="#0a5a37"/>
+            </linearGradient>
             <linearGradient id="gmf-paper" x1="0" x2="0" y1="0" y2="1">
               <stop offset="0" stop-color="#FFFFFF"/>
               <stop offset="1" stop-color="#E9FFF3"/>
             </linearGradient>
-            <linearGradient id="gmf-stroke" x1="0" x2="1">
-              <stop offset="0" stop-color="#052E1B"/>
-              <stop offset="1" stop-color="#094329"/>
-            </linearGradient>
+            <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feOffset dx="0" dy="3"/><feGaussianBlur stdDeviation="5" result="b"/>
+              <feComposite in="SourceAlpha" in2="b" operator="arithmetic" k2="-1" k3="1" result="s"/>
+              <feColorMatrix in="s" type="matrix" values="0 0 0 0 0  0 0 0 0 0.15  0 0 0 0 0.08  0 0 0 .7 0"/>
+              <feComposite in2="SourceGraphic" operator="over"/>
+            </filter>
           </defs>
+
+          <!-- 3D outer disc -->
           <circle cx="150" cy="150" r="138" fill="url(#gmf-g)"/>
-          <circle cx="150" cy="150" r="96" fill="none" stroke="url(#gmf-stroke)" stroke-width="26"/>
-          <rect x="206" y="92" width="60" height="58" fill="url(#gmf-g)"/>
-          <line x1="150" y1="150" x2="240" y2="150" stroke="url(#gmf-stroke)" stroke-width="26" stroke-linecap="round"/>
-          <g transform="translate(208,66) rotate(-8)">
-            <rect width="66" height="82" rx="14" fill="url(#gmf-paper)" stroke="#BFF7DA" stroke-width="2"/>
+          <!-- Inner ring with a GAP to read clearly as a “G” -->
+          <circle cx="150" cy="150" r="96" fill="none" stroke="url(#gmf-stroke)" stroke-width="26"
+                  stroke-linecap="round" stroke-dasharray="520 140" stroke-dashoffset="68" filter="url(#innerShadow)"/>
+          <!-- The “G” bar -->
+          <line x1="150" y1="150" x2="238" y2="150" stroke="url(#gmf-stroke)" stroke-width="26" stroke-linecap="round"/>
+
+          <!-- Tilted report card with bigger, outlined A+ for readability -->
+          <g transform="translate(206,66) rotate(-8)">
+            <rect width="72" height="90" rx="14" fill="url(#gmf-paper)" stroke="#BFF7DA" stroke-width="2"/>
             <g stroke="#10B981" stroke-width="4" stroke-linecap="round">
-              <line x1="12" y1="26" x2="52" y2="26"/>
-              <line x1="12" y1="42" x2="52" y2="42"/>
+              <line x1="14" y1="30" x2="58" y2="30"/>
+              <line x1="14" y1="47" x2="58" y2="47"/>
             </g>
-            <text x="14" y="66" font-family="Inter,ui-sans-serif,system-ui" font-weight="900" font-size="22" fill="#EF4444">A+</text>
+            <text x="16" y="72" font-family="Inter,ui-sans-serif,system-ui" font-weight="900" font-size="26"
+                  fill="#F87171" stroke="#064e3b" stroke-width="1.5">A+</text>
           </g>
         </svg>
         <div>
@@ -214,7 +235,7 @@
       </div>
     </div>
 
-    <!-- Mascot with A+ badge positioned safely inside view -->
+    <!-- Mascot with A+ badge positioned safely inside view (closer) -->
     <div class="hero-mascot" aria-hidden="true">
       <svg class="buddy b-float" viewBox="0 0 360 300" role="img" aria-label="Report Card Buddy 3D">
         <defs>
@@ -248,8 +269,8 @@
           <path id="smile" d="M144 120 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
           <circle cx="136" cy="104" r="11" fill="url(#cheek)"/><circle cx="220" cy="104" r="11" fill="url(#cheek)"/>
 
-          <!-- A+ badge moved inward so it never clips -->
-          <g class="b-pop" transform="translate(285,145) rotate(-10)">
+          <!-- A+ badge moved inward/closer so it never clips -->
+          <g class="b-pop" transform="translate(262,132) rotate(-10)">
             <circle r="26" fill="#10b981" stroke="#065f46" stroke-width="3"/>
             <circle r="22" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
             <text y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#a7f3d0">A+</text>
@@ -459,6 +480,38 @@
   <div id="toast" class="toast" role="status" aria-live="polite">
     <span>Shareable link copied.</span>
     <button id="copyAgain">Copy again</button>
+  </div>
+
+  <!-- Welcome Modal -->
+  <div id="welcome" class="welcome" aria-modal="true" role="dialog">
+    <div class="welcome-card">
+      <svg viewBox="0 0 360 220" width="260" aria-hidden="true" style="display:block;margin:0 auto 8px">
+        <defs>
+          <linearGradient id="wPaper" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7FFEF"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <rect x="95" y="14" width="170" height="162" rx="26" fill="url(#wPaper)" stroke="#86EFAC" stroke-width="2"/>
+          <g stroke="#CCFBE1" stroke-width="2">
+            <line x1="110" x2="250" y1="60" y2="60"/>
+            <line x1="110" x2="250" y1="80" y2="80"/>
+            <line x1="110" x2="250" y1="100" y2="100"/>
+          </g>
+          <circle cx="148" cy="52" r="6" fill="#0f172a"/>
+          <circle cx="208" cy="52" r="6" fill="#0f172a"/>
+          <path d="M144 70 q18 10 36 0" fill="none" stroke="#065f46" stroke-width="4" stroke-linecap="round"/>
+          <g transform="translate(262,72) rotate(-10)">
+            <circle r="22" fill="#10b981" stroke="#065f46" stroke-width="3"/>
+            <circle r="18" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
+            <text y="6" text-anchor="middle" font-size="18" font-weight="900" fill="#a7f3d0">A+</text>
+          </g>
+        </g>
+      </svg>
+      <h2>Welcome to Grade My Finance</h2>
+      <p>“Let’s make money feel easy.”</p>
+      <button id="welcomeGo" class="btn primary">Let’s go</button>
+    </div>
   </div>
 
   <footer class="container">
@@ -826,14 +879,14 @@
       mortgageApr:5.25, studentApr:4.9, autoApr:3.5, ccApr:24.99,
       pretaxMonthly:900, eduMonthly:200, pensionMonthly:0, pensionAge:67
     };
-    Object.keys(demo).forEach(id=>{ if(els[id]) els[id].value=demo[id]; });
+    Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; });
     updateHints();
     pages.forEach(p=> $('#page-'+p)?.classList.toggle('active', p==='grade'));
   });
   $('#copyTop').addEventListener('click', ()=> { safeCopy(buildShareURL()); showToast(); });
   $('#copyAgain').addEventListener('click', ()=> safeCopy(buildShareURL()));
 
-  // reset
+  // reset (all numbers default to 0; age to 30)
   $('#resetBtn').addEventListener('click', ()=>{
     $$('#page-grade input[type="number"]').forEach(el=>{
       el.value = (el.id==='age'?30:0);
@@ -867,7 +920,7 @@
     const expR = expectedReadiness(val('age'));
     if(s.readiness < expR) ideas.push(`Close the age gap: add ~${money(Math.max(0, v.targetFI*expR - v.investableTotal))} investable or trim spend.`);
     if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to ${EF_TARGET} months (${money(v.expenses*EF_TARGET)}).`);
-    if(s.saveRate < 0.2) ideas.push(`Boost savings rate to 20%+ by auto-moving ~${money(Math.ceil((val('income')+val('pretaxMonthly'))*0.05))}/mo.`);
+    if(s.saveRate < 0.2) ideas.push(`Boost savings rate to 20%+ by auto-moving ~${money(Math.ceil((val('income')+val('pretaxMonthly'))*0.05))}/mo`).;
     if(s.ltv > 0.9) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): occasional principal prepayments help.`);
     if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
     if(!ideas.length) ideas.push(`You’re ahead for your age. Keep the systems humming.`);
@@ -986,6 +1039,18 @@
     window.addEventListener('mouseup', ()=>{ isDown=false; });
   }
   if($('#page-history').classList.contains('active')) renderHistory();
+
+  // ===== Welcome modal logic =====
+  (function welcome(){
+    const key='gmf_welcome_seen';
+    const seen = localStorage.getItem(key)==='1';
+    const el = document.getElementById('welcome');
+    if(!seen){ el.classList.add('show'); }
+    document.getElementById('welcomeGo').addEventListener('click', ()=>{
+      localStorage.setItem(key,'1');
+      el.classList.remove('show');
+    });
+  })();
 
 })();
 </script>
