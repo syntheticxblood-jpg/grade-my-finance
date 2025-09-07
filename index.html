@@ -1,26 +1,880 @@
-<!-- GMF PROOF: 2025-09-07 16:05Z -->
-<title>GMF — PROOF BUILD</title>
-<script>console.log('GMF PROOF BUILD 2025-09-07 16:05Z');</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>GMF RESET TEST</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- GMF build: RESET -->
-  <script>console.log('GMF build: RESET');</script>
-  <style>
-    html,body{height:100%;margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;}
-    body{display:grid;place-items:center;background:#0f172a;color:#e2e8f0}
-    .card{padding:28px 32px;border:1px solid rgba(148,163,184,.25);border-radius:14px;background:#0b1226}
-    h1{margin:0 0 6px;font-size:28px}
-    p{margin:6px 0 0;color:#94a3b8}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Grade My Finance</title>
+<meta name="description" content="Age-aware retirement readiness grade with profiles, progress history, achievements, and a shareable link.">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Grade My Finance">
+<meta property="og:description" content="Get a letter grade for your money, track progress, and earn achievements.">
+<meta property="og:url" content="https://grademyfinance.com/">
+<meta property="og:image" content="https://grademyfinance.com/og-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-H6223HYVS6');
+</script>
+
+<style>
+  :root{
+    --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.20);
+    --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+    --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
+  }
+  .light{
+    --bg:#f5faf6; --panel:#ffffff; --card:#ffffff; --text:#0f172a; --muted:#4b5563; --line:rgba(15,23,42,.12);
+    --accent:#16a34a; --accent2:#34d399; --shadow:0 12px 34px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:
+      radial-gradient(1000px 500px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
+      radial-gradient(900px 500px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
+      var(--bg);
+    color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;line-height:1.35;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  button{cursor:pointer}
+
+  /* ===== Friendly HERO HEADER overhaul ===== */
+  header{
+    position:relative; z-index:60; border-bottom:1px solid var(--line);
+    background:linear-gradient(135deg, rgba(34,211,238,0.25), rgba(167,139,250,0.22));
+    overflow:hidden;
+  }
+  .hero{
+    max-width:1200px; margin:0 auto; padding:18px 16px 28px; position:relative;
+  }
+  .heroTop{
+    display:flex; align-items:center; gap:12px; margin-bottom:10px;
+  }
+  .brandLockup{display:flex; align-items:center; gap:12px}
+  .brandLogo{width:48px; height:48px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
+  .brandTitle{margin:0;font-size:26px;font-weight:900;letter-spacing:.2px;color:#052e1e}
+  .brandTag{margin:0;color:#052e1ecc;font-size:12px}
+
+  .heroBody{
+    display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:center; margin-top:8px;
+  }
+  .heroCard{
+    background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:16px 16px 18px; box-shadow:var(--shadow);
+  }
+  .heroTitle{font-size:28px; margin:4px 0 6px 0}
+  .heroSubtitle{color:var(--muted); margin:0 0 12px 0}
+  .heroActions{display:flex; flex-wrap:wrap; gap:10px}
+  .cta{padding:11px 15px; border-radius:12px; border:1px solid var(--line); font-weight:900; background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02)); color:var(--text)}
+  .cta.primary{background:linear-gradient(90deg,var(--accent),var(--accent2)); border-color:transparent; color:#062c1b}
+  .cta.ghost{background:var(--card)}
+  .modeBtn{margin-left:auto; border-radius:999px; padding:8px 12px; border:1px solid var(--line); background:var(--panel); font-weight:800}
+
+  /* curvy background */
+  .swoosh{
+    position:absolute; inset:auto 0 -80px 0; height:180px; pointer-events:none; opacity:.45;
+    background:radial-gradient(500px 120px at 15% 40%, rgba(255,255,255,.2), transparent),
+               radial-gradient(500px 120px at 85% 10%, rgba(255,255,255,.18), transparent);
+    mask: radial-gradient(70% 100% at 50% 0, #000 60%, transparent 62%);
+  }
+
+  /* ===== Mascot coin ===== */
+  .mascotWrap{
+    position:relative; display:flex; justify-content:center; align-items:center;
+  }
+  .mascotBubble{
+    position:absolute; top:-10px; right:-8px; font-size:12px; background:#fff8; color:#062c1b;
+    border:1px solid var(--line); padding:6px 8px; border-radius:10px; backdrop-filter: blur(3px);
+  }
+  .mascot{width:240px; max-width:40vw}
+  .mascot:hover{animation:bounce .8s ease}
+  @keyframes bounce{0%{transform:translateY(0)}35%{transform:translateY(-8px)}70%{transform:translateY(0)}100%{transform:translateY(0)}}
+
+  /* waving arm */
+  .arm{transform-origin: 170px 78px; animation: wave 2.2s ease-in-out infinite; animation-play-state:paused}
+  .arm.play{animation-play-state:running}
+  @keyframes wave{
+    0%,100%{transform:rotate(0deg)}
+    30%{transform:rotate(-18deg)}
+    60%{transform:rotate(10deg)}
+  }
+  /* blink */
+  .eyeLid{transform-origin: 92px 82px}
+  .blink{animation: blink 3.8s infinite}
+  @keyframes blink{
+    0%,92%,100%{transform:scaleY(1)}
+    94%{transform:scaleY(0.05)}
+    96%{transform:scaleY(1)}
+  }
+  /* sparkle coins */
+  .spark{opacity:.0; animation:sparkle 2.6s ease-in-out infinite}
+  .spark.s2{animation-delay:.8s}
+  .spark.s3{animation-delay:1.6s}
+  @keyframes sparkle{0%{opacity:0; transform:translateY(0) scale(.9)}30%{opacity:1; transform:translateY(-6px) scale(1)}100%{opacity:0; transform:translateY(-14px) scale(1.05)}}
+
+  /* Shell */
+  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:280px 1fr;gap:18px;padding:18px}
+  aside{position:sticky;top:86px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
+  .nav{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+  .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
+  .tab:hover{transform:translateY(-1px)}
+  .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#062c1b}
+  .asideCard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px}
+  .asideTitle{font-size:12px;color:var(--muted);font-weight:900;margin:0 0 8px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  select{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--card);color:var(--text);flex:1}
+  .mini{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:800;cursor:pointer}
+  .mini.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b}
+
+  /* Cards + grid */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+  .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
+  label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+  input,select.input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
+  input:focus,select.input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  .btn{padding:11px 15px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b}
+  .page{display:none} .page.active{display:block}
+
+  /* Results */
+  .resultTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .resultLeft{display:flex;align-items:center;gap:14px}
+  .bigGrade{font-size:80px;font-weight:900;opacity:0;transform:scale(.7) rotate(-6deg)}
+  .bigGrade.show{animation:pop .65s cubic-bezier(.2,.9,.2,1) forwards}
+  @keyframes pop{0%{opacity:0;transform:scale(.7) rotate(-6deg)}60%{opacity:1;transform:scale(1.08) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+  .scoreline{font-size:14px;color:var(--muted)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px}
+
+  .progress{height:10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
+
+  /* Badges */
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:var(--panel);font-size:12px;font-weight:800}
+
+  /* Loader overlay */
+  .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.35);z-index:80}
+  .overlay.show{display:grid}
+  .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+  .bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+  .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#22d3ee 0 14px,#a78bfa 14px 28px);animation:slide .7s linear infinite}
+  @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
+
+  /* Toast + confetti + footer */
+  .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(120%);background:var(--card);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;z-index:90;transition:transform .28s ease;}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .toast button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:85}
+  footer{max-width:1200px;margin:24px auto;padding:0 18px 24px;color:var(--muted)}
+  footer a{color:var(--accent)}
+
+  /* Mobile tweaks */
+  @media (max-width: 980px){
+    .heroBody{grid-template-columns:1fr}
+    .shell{grid-template-columns:1fr}
+    aside{position:static}
+    .nav{margin-top:12px}
+    .modeBtn{margin-left:0}
+  }
+  @media (max-width: 768px){
+    .grid > [style*="grid-column:span 6"],
+    .grid > [style*="grid-column:span 4"],
+    .grid > [style*="grid-column:span 8"]{grid-column: span 12 !important;}
+  }
+</style>
 </head>
-<body>
-  <div class="card">
-    <h1>Hello World — Reset Worked!</h1>
-    <p>If you see this here, deployments are good. Next paste your real site code.</p>
+<body class="dark">
+  <header>
+    <div class="hero">
+      <div class="heroTop">
+        <div class="brandLockup">
+          <!-- mini logo (kept from your brand) -->
+          <svg class="brandLogo" viewBox="0 0 160 160" aria-label="GMF mini logo" role="img">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#d1fae5"/></linearGradient>
+              <linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+            </defs>
+            <rect x="8" y="8" width="144" height="144" rx="24" fill="url(#g1)"/>
+            <rect x="95" y="40" width="40" height="54" rx="10" fill="url(#g2)"/>
+            <path d="M100 65l8 8 18-18" fill="none" stroke="#064e3b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M80,28a52,52 0 1 0 52,52h-27" fill="none" stroke="#065f46" stroke-opacity=".4" stroke-width="10"/>
+            <text x="30" y="110" font-size="70" font-weight="900" fill="#065f46">G</text>
+          </svg>
+          <div>
+            <h1 class="brandTitle">Grade My Finance</h1>
+            <p class="brandTag">Fun, friendly money grades—keep your streak alive!</p>
+          </div>
+          <button id="modeBtn" class="modeBtn">Dark</button>
+        </div>
+      </div>
+
+      <div class="heroBody">
+        <div class="heroCard">
+          <h2 class="heroTitle">Your money, graded like a report card (but nicer ♥)</h2>
+          <p class="heroSubtitle">Plug in your numbers, get a letter grade, and track progress with profiles, history, and achievements.</p>
+          <div class="heroActions">
+            <button id="heroDemo" class="cta ghost">Try Demo</button>
+            <button id="heroGrade" class="cta primary">Grade me now</button>
+            <button id="heroShare" class="cta">Copy share link</button>
+          </div>
+        </div>
+
+        <div class="mascotWrap">
+          <!-- friendly talk bubble -->
+          <div class="mascotBubble" id="mascotBubble">Hi! I’m Penny. Let’s get you an A+</div>
+          <!-- MASCOT: Penny the coin -->
+          <svg class="mascot" viewBox="0 0 220 200" role="img" aria-label="Penny the coin waves hello">
+            <!-- sparkles -->
+            <circle class="spark" cx="38" cy="30" r="4" fill="#fff"/>
+            <circle class="spark s2" cx="198" cy="28" r="3" fill="#fff"/>
+            <circle class="spark s3" cx="206" cy="96" r="3.5" fill="#fff"/>
+
+            <!-- coin body -->
+            <defs>
+              <radialGradient id="coinGrad" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#fde68a"/>
+                <stop offset="55%" stop-color="#fbbf24"/>
+                <stop offset="100%" stop-color="#f59e0b"/>
+              </radialGradient>
+            </defs>
+            <circle cx="110" cy="90" r="58" fill="url(#coinGrad)" stroke="#b45309" stroke-width="4"/>
+            <circle cx="110" cy="90" r="46" fill="none" stroke="#fef3c7" stroke-width="3" opacity=".8"/>
+
+            <!-- face -->
+            <circle cx="92" cy="82" r="6" fill="#0f172a"/>
+            <circle cx="128" cy="82" r="6" fill="#0f172a"/>
+            <!-- eyelid over left eye -->
+            <rect class="eyeLid blink" x="86" y="78" width="12" height="8" fill="#f59e0b" opacity="0.9"/>
+            <path d="M86 102 Q110 118 134 102" fill="none" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
+
+            <!-- waving arm (right) -->
+            <g class="arm" id="mascotArm">
+              <path d="M155 70 q20 -12 30 6" fill="none" stroke="#b45309" stroke-width="10" stroke-linecap="round"/>
+              <circle cx="188" cy="72" r="6" fill="#fde68a" stroke="#b45309" stroke-width="3"/>
+            </g>
+
+            <!-- little feet -->
+            <path d="M86 142 q-10 10 6 12" fill="none" stroke="#b45309" stroke-width="6" stroke-linecap="round"/>
+            <path d="M132 142 q10 10 -6 12" fill="none" stroke="#b45309" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="swoosh"></div>
+  </header>
+
+  <canvas id="confetti"></canvas>
+
+  <div class="shell">
+    <aside>
+      <!-- Profiles block -->
+      <div class="asideCard">
+        <p class="asideTitle">Profiles</p>
+        <div class="row">
+          <select id="profileSelect" class="input"></select>
+          <button id="newProfileBtn" class="mini">New</button>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <button id="renameProfileBtn" class="mini">Rename</button>
+          <button id="deleteProfileBtn" class="mini">Delete</button>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <button id="exportBtn" class="mini">Export</button>
+          <label class="mini" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+            <input id="importInput" type="file" accept="application/json" style="display:none">Import
+          </label>
+        </div>
+        <div id="streakPill" class="mini" style="margin-top:8px;display:none"></div>
+      </div>
+
+      <nav class="nav" id="sidebar">
+        <button class="tab active" data-page="grade">Grade</button>
+        <button class="tab" data-page="history">History</button>
+        <button class="tab" data-page="benchmarks">Benchmarks</button>
+        <button class="tab" data-page="about">About Us</button>
+        <button class="tab" data-page="goal">Our Goal</button>
+        <button class="tab" data-page="faq">FAQ</button>
+        <button class="tab" data-page="contact">Contact</button>
+      </nav>
+    </aside>
+
+    <main id="main">
+      <!-- Grade page -->
+      <section id="page-grade" class="page active">
+        <div class="grid">
+          <div class="card" style="grid-column:span 4">
+            <div class="section">Monthly Income (after-tax)</div>
+            <label>What hits your bank each month</label>
+            <input id="income" type="number" value="7500" min="0" />
+          </div>
+          <div class="card" style="grid-column:span 4">
+            <div class="section">Monthly Expenses</div>
+            <label>All bills + spending</label>
+            <input id="expenses" type="number" value="4000" min="0" />
+          </div>
+          <div class="card" style="grid-column:span 4">
+            <div class="section">Age</div>
+            <label>Used for age-aware scoring</label>
+            <input id="age" type="number" value="30" min="16" max="100" />
+          </div>
+
+          <div class="card" style="grid-column:span 6">
+            <div class="section">Assets</div>
+            <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
+              <div style="grid-column:span 6"><label>Home Value</label><input id="home" type="number" value="450000" min="0"></div>
+              <div style="grid-column:span 6"><label>Retirement (401k/IRA)</label><input id="retire" type="number" value="72000" min="0"></div>
+              <div style="grid-column:span 6"><label>Brokerage/Stocks</label><input id="brokerage" type="number" value="29000" min="0"></div>
+              <div style="grid-column:span 6"><label>Car Value</label><input id="car" type="number" value="17000" min="0"></div>
+              <div style="grid-column:span 6"><label>HSA (counted here)</label><input id="hsa" type="number" value="1500" min="0"></div>
+              <div style="grid-column:span 6"><label>Cash Savings</label><input id="cash" type="number" value="25000" min="0"></div>
+            </div>
+            <div class="hint" id="assetsHint">Total Assets: —</div>
+          </div>
+
+          <div class="card" style="grid-column:span 6">
+            <div class="section">Liabilities (+ APR)</div>
+            <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px">
+              <div style="grid-column:span 6"><label>Mortgage Balance</label><input id="mortgage" type="number" value="326000" min="0"></div>
+              <div style="grid-column:span 6"><label>Mortgage APR %</label><input id="mortgageApr" type="number" value="5.25" step="0.01" min="0"></div>
+              <div style="grid-column:span 6"><label>Student Loans</label><input id="student" type="number" value="26000" min="0"></div>
+              <div style="grid-column:span 6"><label>Student APR %</label><input id="studentApr" type="number" value="4.9" step="0.01" min="0"></div>
+              <div style="grid-column:span 6"><label>Auto Loans</label><input id="auto" type="number" value="13000" min="0"></div>
+              <div style="grid-column:span 6"><label>Auto APR %</label><input id="autoApr" type="number" value="3.5" step="0.01" min="0"></div>
+              <div style="grid-column:span 6"><label>Credit Cards (balance)</label><input id="cc" type="number" value="23" min="0"></div>
+              <div style="grid-column:span 6"><label>Credit Card APR %</label><input id="ccApr" type="number" value="24.99" step="0.01" min="0"></div>
+            </div>
+            <div class="hint" id="liabHint">Total Liabilities: —</div>
+          </div>
+
+          <!-- Results -->
+          <div class="card" style="grid-column:span 12">
+            <div class="resultTitle">
+              <div class="resultLeft">
+                <div id="bigGrade" class="bigGrade">—</div>
+                <div>
+                  <div id="scoreLine" class="scoreline">Score: — / 100.0</div>
+                  <div id="nwLine" class="scoreline">Net worth: —</div>
+                  <div class="chips" id="chips"></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <button id="demoBtn" class="btn">Demo Data</button>
+                <button id="resetBtn" class="btn">Reset Inputs</button>
+                <button id="gradeBtn" class="btn primary">Get My Score</button>
+              </div>
+            </div>
+
+            <div style="margin:12px 0 10px 0" class="progress"><div id="progressFill"></div></div>
+            <div id="badgeRow" class="badges"></div>
+
+            <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px">
+              <div class="card" style="border-style:dashed">
+                <h4>What went into your grade</h4>
+                <div id="whyList">Enter numbers and click Get My Score.</div>
+              </div>
+              <div class="card" style="border-style:dashed">
+                <h4>How to level up</h4>
+                <div id="improveList">Personalized ideas will show up here.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- History -->
+      <section id="page-history" class="page">
+        <div class="card" style="grid-column:span 12">
+          <h2>Your Progress</h2>
+          <canvas id="historyChart" height="180" style="width:100%;max-width:100%"></canvas>
+          <div class="hint" id="historyHint">Grade each month to build your history.</div>
+          <div id="trophyWall" class="badges" style="margin-top:12px"></div>
+          <div class="hint" style="margin-top:8px">Tip: Create profiles for you, your partner, or different scenarios.</div>
+        </div>
+      </section>
+
+      <!-- Benchmarks -->
+      <section id="page-benchmarks" class="page">
+        <div class="card">
+          <h2>Benchmarks</h2>
+          <p class="hint">General guideposts. Everyone’s situation is unique.</p>
+          <ul>
+            <li><b>Emergency fund:</b> 3–6 months of expenses (we target 6).</li>
+            <li><b>Age curve (investable vs. FI target):</b> ~20% by 30, 35% by 35, 50% by 40, 65% by 45, 80% by 50, 95% by 55, 100% by 60.</li>
+            <li><b>Savings rate:</b> Aim 20%+ of take-home; more if late start.</li>
+            <li><b>Mortgage LTV:</b> Under 80% is healthy; lower is better.</li>
+            <li><b>Non-mortgage debt:</b> Keep under 20% of assets.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="page-about" class="page">
+        <div class="card"><h2>About Us</h2><p>We grade your money on retirement readiness with simple math and friendly design. Everything runs in your browser.</p></div>
+      </section>
+      <!-- Goal -->
+      <section id="page-goal" class="page">
+        <div class="card"><h2>Our Goal</h2><p>Help one million people build calm, confident money habits.</p></div>
+      </section>
+      <!-- FAQ -->
+      <section id="page-faq" class="page">
+        <div class="card">
+          <h2>FAQ</h2>
+          <p>Educational only; not financial advice. Your numbers stay on your device.</p>
+          <p>Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
+        </div>
+      </section>
+      <!-- Contact -->
+      <section id="page-contact" class="page">
+        <div class="card"><h2>Contact</h2><p>grademyfinance@gmail.com</p></div>
+      </section>
+    </main>
   </div>
+
+  <!-- Loader -->
+  <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
+    <div class="loader">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <strong>Crunching numbers…</strong><span id="pct" class="scoreline">0%</span>
+      </div>
+      <div class="bar"><div class="fill" id="barFill"></div></div>
+    </div>
+  </div>
+
+  <!-- Share toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <span>Shareable link copied.</span>
+    <button id="copyAgain">Copy again</button>
+  </div>
+
+  <footer>
+    <p>Read more: <a href="/blog/saved-by-30.html">Saved by 30</a> · <a href="/blog/savings-rate.html">Savings Rate Benchmarks</a> · <a href="/blog/what-is-fire.html">What is FIRE?</a></p>
+  </footer>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  const money = n => isFinite(n) ? `$${Math.round(n).toLocaleString()}` : '—';
+  const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+  const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
+
+  // Polyfill randomUUID
+  if(!window.crypto?.randomUUID){
+    crypto = window.crypto || {};
+    crypto.randomUUID = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c=>{
+      const r = Math.random()*16|0, v = c==='x'? r : (r&0x3|0x8); return v.toString(16);
+    });
+  }
+
+  // constants
+  const SWR = 0.06, EF_TARGET = 6, EQUITY_FACTOR = 0.40;
+  const NW_W=15, FI_W=55, AGE_W=10, SAVE_W=6, EF_W=7, NONMORT_W=4, LTV_W=3;
+
+  /* ===== THEME ===== */
+  const modeBtn = $('#modeBtn');
+  function setMode(light){
+    document.body.classList.toggle('light', light);
+    modeBtn.textContent = light ? 'Dark' : 'Light'; // shows target mode
+    localStorage.setItem('gmf_theme', light?'light':'dark');
+  }
+  setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
+  modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
+
+  /* ===== TABS + GA ===== */
+  const pages=['grade','history','benchmarks','about','goal','faq','contact'];
+  $('#sidebar').addEventListener('click', (e)=>{
+    const t=e.target.closest('.tab'); if(!t) return;
+    const pg=t.dataset.page;
+    $$('.tab').forEach(b=>b.classList.toggle('active', b===t));
+    pages.forEach(p=> $('#page-'+p).classList.toggle('active', p===pg));
+    if(window.gtag){ gtag('event','page_view',{page_path:'/'+pg}); }
+    if(pg==='history') renderHistory();
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  /* ===== HERO CTA wiring ===== */
+  $('#heroDemo').addEventListener('click', ()=>document.getElementById('demoBtn').click());
+  $('#heroGrade').addEventListener('click', ()=>{
+    document.getElementById('gradeBtn').scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(()=>document.getElementById('gradeBtn').click(), 300);
+  });
+  $('#heroShare').addEventListener('click', ()=>{
+    navigator.clipboard.writeText(buildShareURL()).then(()=>showToast());
+  });
+
+  /* ===== Streak pill ===== */
+  (function streak(){
+    const key='gmf_streak';
+    const today = new Date().toDateString();
+    const data = JSON.parse(localStorage.getItem(key) || '{"last":"","count":0}');
+    let count = data.count;
+    if(data.last !== today){
+      const yesterday = new Date(Date.now()-86400000).toDateString();
+      count = (data.last === yesterday) ? (data.count+1) : 1;
+      localStorage.setItem(key, JSON.stringify({last:today,count}));
+    }
+    const pill = $('#streakPill'); pill.style.display='inline-flex'; pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
+  })();
+
+  /* ===== Inputs + calcs ===== */
+  const ids = ['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr'];
+  const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
+  const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
+
+  function values(){
+    const v = Object.fromEntries(ids.map(id=>[id,val(id)]));
+    v.assets = v.home + v.retire + v.brokerage + v.car + v.hsa + v.cash;
+    v.liabs  = v.mortgage + v.student + v.auto + v.cc;
+    v.net    = v.assets - v.liabs;
+    v.annualSpend = Math.max(0, v.expenses * 12);
+    v.targetFI = v.annualSpend>0 ? v.annualSpend / SWR : 0;
+    v.investableCore = v.retire + v.brokerage + v.hsa;
+    v.cashSurplus = Math.max(0, v.cash - EF_TARGET * (v.expenses||0));
+    v.homeEquity = Math.max(0, v.home - v.mortgage);
+    v.accessibleEquity = v.homeEquity * EQUITY_FACTOR;
+    v.investableTotal = v.investableCore + v.cashSurplus + v.accessibleEquity;
+    return v;
+  }
+  function updateHints(){
+    const v = values();
+    $('#assetsHint').textContent = `Total Assets: ${money(v.assets)} (Investable: ${money(v.investableCore)} • surplus cash: ${money(v.cashSurplus)} • accessible equity: ${money(v.accessibleEquity)})`;
+    $('#liabHint').textContent   = `Total Liabilities: ${money(v.liabs)}`;
+  }
+  ids.forEach(id => els[id].addEventListener('input', updateHints));
+  updateHints();
+
+  function expectedReadiness(age){
+    const pts = [[25,0.10],[30,0.20],[35,0.35],[40,0.50],[45,0.65],[50,0.80],[55,0.95],[60,1.00]];
+    if(age<=pts[0][0]) return pts[0][1];
+    if(age>=pts[pts.length-1][0]) return pts[pts.length-1][1];
+    for(let i=1;i<pts.length;i++){
+      const [a0,r0]=pts[i-1], [a1,r1]=pts[i];
+      if(age<=a1){ const t=(age-a0)/(a1-a0); return r0+(r1-r0)*t; }
+    }
+    return 1;
+  }
+
+  function scoreModel(v){
+    const leftover = Math.max(0, v.income - v.expenses);
+    const saveRate = v.income>0 ? leftover / v.income : 0;
+    const efMonths = v.expenses>0 ? v.cash / v.expenses : 0;
+
+    const r = (v.targetFI>0) ? (v.investableTotal / v.targetFI) : (v.net>0 ? 1 : 0);
+    const expR = expectedReadiness(val('age')||30);
+    const sFI   = map01(r/Math.max(0.05,expR), 0, 1);
+    const sNW   = map01((v.targetFI>0 ? v.net / v.targetFI : (v.net>0?1:0)), 0, 1);
+    const ageGap = clamp((r - expR), -1, 1);
+    const sAGE = map01( ageGap, -0.5, 0.2 );
+
+    const nonMortDebt = v.student + v.auto + v.cc;
+    const nonMortRatio = v.assets>0 ? nonMortDebt / v.assets : 0;
+    const sNonMort = map01(1-nonMortRatio, 0, 1);
+    const ltv = v.home>0 ? v.mortgage / v.home : 0;
+    const sLTV = map01(1-ltv, 0, 0.5);
+    const sSave = map01(saveRate, 0, 0.5);
+    const sEF   = map01(efMonths, 0, 6);
+
+    const score = FI_W*sFI + NW_W*sNW + AGE_W*sAGE + SAVE_W*sSave + EF_W*sEF + NONMORT_W*sNonMort + LTV_W*sLTV;
+
+    return {
+      score:+score.toFixed(1),
+      saveRate, efMonths, readiness:r, expR,
+      ltv, nonMortRatio,
+      net: v.net, assets: v.assets, liabs: v.liabs,
+      investableTotal:v.investableTotal, cashSurplus:v.cashSurplus, accessibleEquity:v.accessibleEquity
+    };
+  }
+  function letter(score){
+    if(score>=97) return "A+";
+    if(score>=93) return "A";
+    if(score>=90) return "A-";
+    if(score>=87) return "B+";
+    if(score>=83) return "B";
+    if(score>=80) return "B-";
+    if(score>=77) return "C+";
+    if(score>=73) return "C";
+    if(score>=70) return "C-";
+    if(score>=67) return "D+";
+    if(score>=63) return "D";
+    if(score>=60) return "D-";
+    return "F";
+  }
+
+  /* ===== Overlay + Toast ===== */
+  const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
+  function showOverlay(){
+    overlay.classList.add('show'); let prog=0; bar.style.width='0%'; pct.textContent='0%';
+    const t=setInterval(()=>{ if(!overlay.classList.contains('show')) return clearInterval(t);
+      prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%';
+    },200);
+  }
+  function hideOverlay(){ overlay.classList.remove('show'); }
+  const toast=$('#toast');
+  function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5000); }
+  $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
+
+  /* ===== Confetti (existing) ===== */
+  const canvas = $('#confetti'); const ctx = canvas.getContext('2d'); let bits=[];
+  function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+  function confetti(){
+    const n=140; bits=[];
+    for(let i=0;i<n;i++){
+      bits.push({x:Math.random()*canvas.width,y:-20-Math.random()*100,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,r:4+Math.random()*6,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.2,clr:`hsl(${Math.random()*360},90%,60%)`});
+    }
+    let t=0; const anim=()=>{
+      t++; ctx.clearRect(0,0,canvas.width,canvas.height);
+      bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.a); ctx.fillStyle=b.clr; ctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctx.restore(); });
+      if(t<240) requestAnimationFrame(anim); else ctx.clearRect(0,0,canvas.width,canvas.height);
+    }; anim();
+  }
+
+  /* ===== Share state ===== */
+  function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); s.__ver='age1'; return s; }
+  function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
+  (function hydrateFromHash(){
+    const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
+    try{
+      const decoded = JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+      const payload = decoded && decoded.inputs ? decoded.inputs : decoded; // support both formats
+      ids.forEach(id=>{ if(payload && (id in payload)) els[id].value=payload[id]; });
+      updateHints();
+    }catch(e){}
+  })();
+
+  /* ===== Profiles, History, Trophies ===== */
+  const PROFILE_KEY='gmf_profiles_v1';
+  function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
+  function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
+  function ensureDefaultProfile(){
+    let p=loadProfiles();
+    if(!p.length){ p=[{id:crypto.randomUUID(), name:'My Profile', history:[], trophies:[]}]; saveProfiles(p); }
+    const cur = localStorage.getItem('gmf_active_profile');
+    if(!cur || !p.find(x=>x.id===cur)) localStorage.setItem('gmf_active_profile', p[0].id);
+    return p;
+  }
+  function renderProfileSelect(){
+    const p=ensureDefaultProfile(); const sel=$('#profileSelect'); sel.innerHTML='';
+    p.forEach((x)=>{ const o=document.createElement('option'); o.value=x.id; o.textContent=x.name; sel.appendChild(o); });
+    const cur = localStorage.getItem('gmf_active_profile') || p[0].id; sel.value=cur;
+  }
+  function getActive(){ const id=localStorage.getItem('gmf_active_profile'); return ensureDefaultProfile().find(x=>x.id===id); }
+  function setActive(id){ localStorage.setItem('gmf_active_profile', id); renderHistory(); }
+  renderProfileSelect();
+  $('#profileSelect').addEventListener('change', e=> setActive(e.target.value));
+  $('#newProfileBtn').addEventListener('click', ()=>{
+    const name=prompt('Profile name?','My Profile '+(loadProfiles().length+1)); if(!name) return;
+    const p=loadProfiles(); const id=crypto.randomUUID(); p.push({id,name,history:[],trophies:[]}); saveProfiles(p);
+    renderProfileSelect(); setActive(id);
+  });
+  $('#renameProfileBtn').addEventListener('click', ()=>{
+    const prof=getActive(); if(!prof) return;
+    const name=prompt('New name:', prof.name); if(!name) return;
+    const p=loadProfiles(); const idx=p.findIndex(x=>x.id===prof.id); if(idx>=0){ p[idx].name=name; saveProfiles(p); renderProfileSelect(); }
+  });
+  $('#deleteProfileBtn').addEventListener('click', ()=>{
+    const prof=getActive(); if(!prof) return;
+    if(!confirm(`Delete profile "${prof.name}"? This removes its history and trophies.`)) return;
+    let p=loadProfiles().filter(x=>x.id!==prof.id);
+    if(!p.length){ p=[{id:crypto.randomUUID(), name:'My Profile', history:[], trophies:[]}]; }
+    saveProfiles(p); localStorage.setItem('gmf_active_profile', p[0].id);
+    renderProfileSelect(); renderHistory();
+  });
+  $('#exportBtn').addEventListener('click', ()=>{
+    const data = {profiles: loadProfiles(), active: localStorage.getItem('gmf_active_profile')};
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='gmf-backup.json'; a.click();
+    URL.revokeObjectURL(url);
+  });
+  $('#importInput').addEventListener('change', async (e)=>{
+    const file = e.target.files[0]; if(!file) return;
+    const text = await file.text();
+    try{
+      const data = JSON.parse(text);
+      if(Array.isArray(data.profiles)){ saveProfiles(data.profiles); }
+      if(data.active){ localStorage.setItem('gmf_active_profile', data.active); }
+      renderProfileSelect(); renderHistory();
+      alert('Import complete');
+    }catch(err){ alert('Import failed: invalid file'); }
+    e.target.value='';
+  });
+
+  function saveProfile(profile){
+    const ps=loadProfiles(); const idx=ps.findIndex(x=>x.id===profile.id); if(idx>=0){ ps[idx]=profile; saveProfiles(ps); }
+  }
+  function award(profile, code){
+    if(!profile.trophies.includes(code)){ profile.trophies.push(code); saveProfile(profile); confetti(); }
+  }
+  function maybeTrophies(profile, v, s, L){
+    if(profile.history.length===1) award(profile,'first_grade');
+    if(['A+','A','A-'].includes(L)) award(profile,'a_club');
+    if(s.efMonths>=6) award(profile,'ef_ready');
+    if((v.student+v.auto+v.cc)===0) award(profile,'debt_slayer');
+    if(profile.history.length>=2){
+      const last=profile.history[profile.history.length-2]?.score||s.score;
+      if(s.score>last) award(profile,'level_up');
+    }
+    const months=new Set(profile.history.slice(-3).map(h=>new Date(h.date).getMonth()+1));
+    if(months.size===3) award(profile,'streak_3');
+  }
+  function logHistory(profile, s, L){
+    const entry={date:new Date().toISOString(), score:s.score, letter:L};
+    profile.history.push(entry); saveProfile(profile);
+    return entry;
+  }
+
+  // chart
+  function drawChart(points){
+    const c=$('#historyChart'); const ctx=c.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = c.clientWidth || 600; const cssH = 180;
+    c.width = Math.round(cssW * dpr); c.height = Math.round(cssH * dpr);
+    c.style.width = cssW+'px'; c.style.height = cssH+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,cssW,cssH);
+    if(!points.length){ return; }
+    const pad=16, w=cssW-pad*2, h=cssH-pad*2;
+    const xs=points.map((_,i)=> (points.length>1? i/(points.length-1) : 0));
+    const ys=points.map(p=> 1-(p.score/100));
+    ctx.lineWidth=2; ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent') || '#22d3ee';
+    ctx.beginPath();
+    xs.forEach((t,i)=>{ const x=pad+t*w, y=pad+ys[i]*h; if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+    ctx.stroke();
+    ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2') || '#a78bfa';
+    xs.forEach((t,i)=>{ const x=pad+t*w, y=pad+ys[i]*h; ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill(); });
+  }
+  function renderHistory(){
+    const prof=getActive(); if(!prof) return;
+    const pts=(prof.history||[]).map(h=>({date:h.date, score:h.score}));
+    drawChart(pts);
+    $('#historyHint').textContent = prof.history?.length ? `Entries: ${prof.history.length}` : 'Grade each month to build your history.';
+    const wall=$('#trophyWall'); wall.innerHTML='';
+    (prof.trophies||[]).forEach(code=>{
+      const span=document.createElement('span'); span.className='badge'; span.textContent=({
+        'first_grade':'First Grade',
+        'a_club':'A Club',
+        'ef_ready':'Emergency Ready',
+        'debt_slayer':'Debt Slayer',
+        'level_up':'Level Up',
+        'streak_3':'3-Month Streak'
+      })[code] || code;
+      wall.appendChild(span);
+    });
+  }
+
+  // explanations
+  function renderWhy(v,s){
+    $('#chips').innerHTML = [
+      `<span class="chip">Age curve met: <b>${(s.readiness/Math.max(.05,expectedReadiness(val('age')))*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Savings rate: <b>${(s.saveRate*100).toFixed(0)}%</b></span>`,
+      `<span class="chip">Emergency fund: <b>${s.efMonths?.toFixed?.(1)??'0'} mo</b></span>`,
+      `<span class="chip">Mortgage LTV: <b>${(s.ltv*100).toFixed(0)}%</b></span>`
+    ].join('');
+    const nonMortDebt = val('student')+val('auto')+val('cc');
+    $('#whyList').innerHTML = [
+      `Age ${val('age')}: expected readiness ≈ ${(expectedReadiness(val('age'))*100).toFixed(0)}%.`,
+      `Counted investable ${money(v.investableCore)} + surplus cash ${money(s.cashSurplus)} + 40% home equity ${money(s.accessibleEquity)} = ${money(s.investableTotal)}.`,
+      `Net worth: ${money(v.net)} (assets ${money(v.assets)} – liabilities ${money(v.liabs)}).`,
+      `Savings rate: ${(s.saveRate*100).toFixed(0)}% (~${money(Math.max(0, val('income')-val('expenses')))} per month kept).`,
+      `Non-mortgage debt totals ${money(nonMortDebt)}; mortgage LTV is ${(s.ltv*100).toFixed(0)}%.`
+    ].map(x=>`<div>${x}</div>`).join('');
+  }
+  function renderImprove(v,s){
+    const ideas=[];
+    const expR = expectedReadiness(val('age'));
+    if(s.readiness < expR) ideas.push(`Catch up to your age curve: add ~${money(Math.max(0, v.targetFI*expR - v.investableTotal))} investable (or reduce spending).`);
+    if(s.efMonths < EF_TARGET) ideas.push(`Build emergency fund to ${EF_TARGET} months (${money(v.expenses*EF_TARGET)}).`);
+    if(s.saveRate < 0.2) ideas.push(`Aim for 20%+ savings by auto-moving ~${money(Math.ceil(val('income')*0.05))}/mo.`);
+    if(s.ltv > 0.8) ideas.push(`High mortgage LTV (${(s.ltv*100).toFixed(0)}%): occasional principal prepayments help.`);
+    if(s.nonMortRatio > 0.2) ideas.push(`Reduce non-mortgage debt — target <20% of assets.`);
+    if(!ideas.length) ideas.push(`You’re ahead for your age. Keep the systems humming.`);
+    $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
+  }
+
+  // Grade & Reset & Demo
+  const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
+
+  function doGrade(){
+    const v = values();
+    const s = scoreModel(v);
+    const L = letter(s.score);
+
+    bigGrade.textContent = L;
+    bigGrade.style.color = ({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
+    bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
+    scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
+    nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
+    progress.style.width = s.score + '%';
+    renderWhy(v,s); renderImprove(v,s);
+
+    // share link
+    const b64=btoa(unescape(encodeURIComponent(JSON.stringify({inputs:currentState(),score:s.score,letter:L}))));
+    const url = location.origin+location.pathname+'#s='+b64;
+    navigator.clipboard.writeText(url).catch(()=>{}); showToast();
+
+    // mascot happy wiggle
+    const arm = document.getElementById('mascotArm');
+    arm.classList.add('play');
+    setTimeout(()=>arm.classList.remove('play'), 1200);
+
+    if(['A+','A','A-','B+'].includes(L)) confetti();
+
+    const prof=getActive(); if(prof){
+      logHistory(prof, s, L);
+      maybeTrophies(prof, v, s, L);
+      renderHistory();
+    }
+  }
+
+  $('#gradeBtn').addEventListener('click', ()=>{
+    showOverlay();
+    setTimeout(()=>{ doGrade(); hideOverlay(); }, 650);
+  });
+
+  $('#resetBtn').addEventListener('click', ()=>{
+    document.querySelectorAll('input[type="number"]').forEach(el => el.value = (el.id==='age'?30:0));
+    updateHints();
+    bigGrade.textContent='—'; bigGrade.classList.remove('show');
+    scoreLine.textContent='Score: — / 100.0'; nwLine.textContent='Net worth: —';
+    progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
+  });
+
+  $('#demoBtn').addEventListener('click', ()=>{
+    const demo = {income:7500, expenses:4000, age:30, home:475000, retire:72000, brokerage:29000, car:15000, hsa:1500, cash:24000, mortgage:329000, student:26000, auto:13500, cc:0, mortgageApr:5.25, studentApr:4.9, autoApr:3.5, ccApr:24.99};
+    ids.forEach(id=>{ if(demo[id]!=null) els[id].value=demo[id]; });
+    updateHints();
+  });
+
+  // render history on load
+  renderHistory();
+
+  /* ===== Mascot behavior ===== */
+  const arm = document.getElementById('mascotArm');
+  const bubble = document.getElementById('mascotBubble');
+  function wave(){ arm.classList.add('play'); setTimeout(()=>arm.classList.remove('play'), 1800); }
+  // wave occasionally
+  setInterval(()=>{ if(document.visibilityState==='visible') wave(); }, 6000);
+  // fun messages
+  const lines = [
+    "Hi! I’m Penny. Let’s get you an A+",
+    "Blink and you’ll miss it 😄",
+    "Try demo if you’re shy!",
+    "Profiles live on the left ➜",
+    "Grade monthly and build a streak!"
+  ];
+  let li=0; setInterval(()=>{ li=(li+1)%lines.length; bubble.textContent=lines[li]; }, 7000);
+
+})();
+</script>
 </body>
 </html>
