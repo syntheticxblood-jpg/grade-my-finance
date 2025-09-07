@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-H6223HYVS6');
-</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
@@ -51,105 +43,75 @@
   }
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
-  button{cursor:pointer}
 
-  /* ===== Friendly HERO HEADER overhaul ===== */
-  header{
-    position:relative; z-index:60; border-bottom:1px solid var(--line);
-    background:linear-gradient(135deg, rgba(34,211,238,0.25), rgba(167,139,250,0.22));
-    overflow:hidden;
-  }
+  /* ---------- HERO (new header) ---------- */
+  .container{max-width:1200px;margin:0 auto;padding:0 16px}
   .hero{
-    max-width:1200px; margin:0 auto; padding:18px 16px 28px; position:relative;
+    position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;
+    align-items:center; padding:28px 0 18px;
   }
-  .heroTop{
-    display:flex; align-items:center; gap:12px; margin-bottom:10px;
-  }
-  .brandLockup{display:flex; align-items:center; gap:12px}
-  .brandLogo{width:48px; height:48px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
-  .brandTitle{margin:0;font-size:26px;font-weight:900;letter-spacing:.2px;color:#052e1e}
-  .brandTag{margin:0;color:#052e1ecc;font-size:12px}
+  @media (max-width: 980px){ .hero{grid-template-columns:1fr;gap:10px} }
+  .hero-copy{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:var(--shadow)}
+  .hero-title{margin:0 0 8px;font-size:34px;letter-spacing:.2px}
+  .hero-title .heart{color:#ffd3e1}
+  .hero-tag{margin:0 0 12px;color:var(--muted)}
+  .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{padding:11px 15px;border-radius:12px;border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b}
+  .btn.ghost{background:transparent}
 
-  .heroBody{
-    display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:center; margin-top:8px;
-  }
-  .heroCard{
-    background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:16px 16px 18px; box-shadow:var(--shadow);
-  }
-  .heroTitle{font-size:28px; margin:4px 0 6px 0}
-  .heroSubtitle{color:var(--muted); margin:0 0 12px 0}
-  .heroActions{display:flex; flex-wrap:wrap; gap:10px}
-  .cta{padding:11px 15px; border-radius:12px; border:1px solid var(--line); font-weight:900; background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02)); color:var(--text)}
-  .cta.primary{background:linear-gradient(90deg,var(--accent),var(--accent2)); border-color:transparent; color:#062c1b}
-  .cta.ghost{background:var(--card)}
-  .modeBtn{margin-left:auto; border-radius:999px; padding:8px 12px; border:1px solid var(--line); background:var(--panel); font-weight:800}
-
-  /* curvy background */
-  .swoosh{
-    position:absolute; inset:auto 0 -80px 0; height:180px; pointer-events:none; opacity:.45;
-    background:radial-gradient(500px 120px at 15% 40%, rgba(255,255,255,.2), transparent),
-               radial-gradient(500px 120px at 85% 10%, rgba(255,255,255,.18), transparent);
-    mask: radial-gradient(70% 100% at 50% 0, #000 60%, transparent 62%);
+  .hero-mascot{position:relative;display:grid;place-items:center}
+  .mascot-bubble{
+    position:absolute;top:8px;right:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);
+    padding:8px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
   }
 
-  /* ===== Mascot coin ===== */
-  .mascotWrap{
-    position:relative; display:flex; justify-content:center; align-items:center;
-  }
-  .mascotBubble{
-    position:absolute; top:-10px; right:-8px; font-size:12px; background:#fff8; color:#062c1b;
-    border:1px solid var(--line); padding:6px 8px; border-radius:10px; backdrop-filter: blur(3px);
-  }
-  .mascot{width:240px; max-width:40vw}
-  .mascot:hover{animation:bounce .8s ease}
-  @keyframes bounce{0%{transform:translateY(0)}35%{transform:translateY(-8px)}70%{transform:translateY(0)}100%{transform:translateY(0)}}
-
-  /* waving arm */
-  .arm{transform-origin: 170px 78px; animation: wave 2.2s ease-in-out infinite; animation-play-state:paused}
-  .arm.play{animation-play-state:running}
-  @keyframes wave{
-    0%,100%{transform:rotate(0deg)}
-    30%{transform:rotate(-18deg)}
-    60%{transform:rotate(10deg)}
-  }
-  /* blink */
-  .eyeLid{transform-origin: 92px 82px}
-  .blink{animation: blink 3.8s infinite}
+  /* Report Card mascot animation */
+  .report-card{width:340px;max-width:100%}
+  .report-card .shadow{animation:floatShadow 3s ease-in-out infinite}
+  .report-card .card{transform-origin:50% 10%;animation:floatCard 3s ease-in-out infinite}
+  .report-card .eyelids{animation:blink 5.5s ease-in-out infinite}
+  .report-card .badge{transform-origin:178px 150px;animation:badgePop 2.6s ease-in-out infinite}
+  .report-card .sweep{animation:sweep 2.2s linear infinite;mix-blend-mode:overlay}
+  @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-6px) rotate(1.2deg)}}
+  @keyframes floatShadow{0%,100%{transform:scale(1);opacity:.35}50%{transform:scale(0.94);opacity:.2}}
   @keyframes blink{
-    0%,92%,100%{transform:scaleY(1)}
-    94%{transform:scaleY(0.05)}
-    96%{transform:scaleY(1)}
+    0%,93%,100%{opacity:0}
+    94%,96%{opacity:1}
+    97%{opacity:0}
   }
-  /* sparkle coins */
-  .spark{opacity:.0; animation:sparkle 2.6s ease-in-out infinite}
-  .spark.s2{animation-delay:.8s}
-  .spark.s3{animation-delay:1.6s}
-  @keyframes sparkle{0%{opacity:0; transform:translateY(0) scale(.9)}30%{opacity:1; transform:translateY(-6px) scale(1)}100%{opacity:0; transform:translateY(-14px) scale(1.05)}}
+  @keyframes badgePop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+  @keyframes sweep{from{transform:translateX(-140px)}to{transform:translateX(140px)}}
+
+  /* Sticky mini-header bar (theme + profile quick) */
+  header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
+  .logo{width:44px;height:44px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
+  .title{margin:0;font-size:22px;color:#062c1b;font-weight:900;letter-spacing:.2px}
+  .tag{margin:0;color:#062c1bcc;font-size:12px}
+  .spacer{flex:1}
+  .pill{border:none;padding:7px 12px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
+  .light .pill{background:#0f172a}
+  .streak{font-weight:800;color:#062c1b;background:#ffffffaa;padding:7px 10px;border-radius:999px}
 
   /* Shell */
-  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:280px 1fr;gap:18px;padding:18px}
-  aside{position:sticky;top:86px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
-  .nav{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+  .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:260px 1fr;gap:18px;padding:18px}
+  aside{position:sticky;top:92px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
+  .nav{display:flex;flex-direction:column;gap:10px}
   .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
   .tab:hover{transform:translateY(-1px)}
   .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#062c1b}
-  .asideCard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px}
-  .asideTitle{font-size:12px;color:var(--muted);font-weight:900;margin:0 0 8px}
-  .row{display:flex;gap:8px;flex-wrap:wrap}
-  select{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--card);color:var(--text);flex:1}
-  .mini{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:800;cursor:pointer}
-  .mini.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b}
 
   /* Cards + grid */
   .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
   .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
   label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-  input,select.input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
-  input:focus,select.input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
+  input,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);color:var(--text)}
+  input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
   .hint{font-size:12px;color:var(--muted);margin-top:6px}
-  .btn{padding:11px 15px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--text);font-weight:900;cursor:pointer}
-  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border-color:transparent;color:#062c1b}
   .page{display:none} .page.active{display:block}
 
   /* Results */
@@ -177,21 +139,20 @@
   .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#22d3ee 0 14px,#a78bfa 14px 28px);animation:slide .7s linear infinite}
   @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 
-  /* Toast + confetti + footer */
+  /* Toast */
   .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(120%);background:var(--card);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:14px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;z-index:90;transition:transform .28s ease;}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .toast button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
+
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:85}
   footer{max-width:1200px;margin:24px auto;padding:0 18px 24px;color:var(--muted)}
   footer a{color:var(--accent)}
 
-  /* Mobile tweaks */
+  /* Mobile */
   @media (max-width: 980px){
-    .heroBody{grid-template-columns:1fr}
     .shell{grid-template-columns:1fr}
     aside{position:static}
-    .nav{margin-top:12px}
-    .modeBtn{margin-left:0}
+    .grid{grid-template-columns:1fr}
   }
   @media (max-width: 768px){
     .grid > [style*="grid-column:span 6"],
@@ -201,113 +162,116 @@
 </style>
 </head>
 <body class="dark">
+  <!-- Sticky mini header -->
   <header>
-    <div class="hero">
-      <div class="heroTop">
-        <div class="brandLockup">
-          <!-- mini logo (kept from your brand) -->
-          <svg class="brandLogo" viewBox="0 0 160 160" aria-label="GMF mini logo" role="img">
-            <defs>
-              <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#d1fae5"/></linearGradient>
-              <linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
-            </defs>
-            <rect x="8" y="8" width="144" height="144" rx="24" fill="url(#g1)"/>
-            <rect x="95" y="40" width="40" height="54" rx="10" fill="url(#g2)"/>
-            <path d="M100 65l8 8 18-18" fill="none" stroke="#064e3b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M80,28a52,52 0 1 0 52,52h-27" fill="none" stroke="#065f46" stroke-opacity=".4" stroke-width="10"/>
-            <text x="30" y="110" font-size="70" font-weight="900" fill="#065f46">G</text>
-          </svg>
-          <div>
-            <h1 class="brandTitle">Grade My Finance</h1>
-            <p class="brandTag">Fun, friendly money grades—keep your streak alive!</p>
-          </div>
-          <button id="modeBtn" class="modeBtn">Dark</button>
-        </div>
+    <div class="hdr">
+      <!-- Tiny glyph -->
+      <svg class="logo" viewBox="0 0 160 160" aria-hidden="true">
+        <defs>
+          <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#d1fae5"/></linearGradient>
+          <linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+        </defs>
+        <rect x="8" y="8" width="144" height="144" rx="24" fill="url(#g1)"/>
+        <rect x="95" y="40" width="40" height="54" rx="10" fill="url(#g2)"/>
+        <path d="M100 65l8 8 18-18" fill="none" stroke="#064e3b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M80,28a52,52 0 1 0 52,52h-27" fill="none" stroke="#065f46" stroke-opacity=".4" stroke-width="10"/>
+        <text x="30" y="110" font-size="70" font-weight="900" fill="#065f46">G</text>
+      </svg>
+      <div>
+        <h1 class="title">Grade My Finance</h1>
+        <p class="tag">Friendly grades, profiles, progress & trophies.</p>
       </div>
+      <span class="spacer"></span>
+      <span id="streakPill" class="streak" style="display:none"></span>
+      <select id="profileSelect" class="pill"></select>
+      <button id="newProfileBtn" class="pill">New Profile</button>
+      <button id="modeBtn" class="pill">Dark</button>
+    </div>
+  </header>
 
-      <div class="heroBody">
-        <div class="heroCard">
-          <h2 class="heroTitle">Your money, graded like a report card (but nicer ♥)</h2>
-          <p class="heroSubtitle">Plug in your numbers, get a letter grade, and track progress with profiles, history, and achievements.</p>
-          <div class="heroActions">
-            <button id="heroDemo" class="cta ghost">Try Demo</button>
-            <button id="heroGrade" class="cta primary">Grade me now</button>
-            <button id="heroShare" class="cta">Copy share link</button>
-          </div>
-        </div>
-
-        <div class="mascotWrap">
-          <!-- friendly talk bubble -->
-          <div class="mascotBubble" id="mascotBubble">Hi! I’m Penny. Let’s get you an A+</div>
-          <!-- MASCOT: Penny the coin -->
-          <svg class="mascot" viewBox="0 0 220 200" role="img" aria-label="Penny the coin waves hello">
-            <!-- sparkles -->
-            <circle class="spark" cx="38" cy="30" r="4" fill="#fff"/>
-            <circle class="spark s2" cx="198" cy="28" r="3" fill="#fff"/>
-            <circle class="spark s3" cx="206" cy="96" r="3.5" fill="#fff"/>
-
-            <!-- coin body -->
-            <defs>
-              <radialGradient id="coinGrad" cx="50%" cy="40%" r="60%">
-                <stop offset="0%" stop-color="#fde68a"/>
-                <stop offset="55%" stop-color="#fbbf24"/>
-                <stop offset="100%" stop-color="#f59e0b"/>
-              </radialGradient>
-            </defs>
-            <circle cx="110" cy="90" r="58" fill="url(#coinGrad)" stroke="#b45309" stroke-width="4"/>
-            <circle cx="110" cy="90" r="46" fill="none" stroke="#fef3c7" stroke-width="3" opacity=".8"/>
-
-            <!-- face -->
-            <circle cx="92" cy="82" r="6" fill="#0f172a"/>
-            <circle cx="128" cy="82" r="6" fill="#0f172a"/>
-            <!-- eyelid over left eye -->
-            <rect class="eyeLid blink" x="86" y="78" width="12" height="8" fill="#f59e0b" opacity="0.9"/>
-            <path d="M86 102 Q110 118 134 102" fill="none" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
-
-            <!-- waving arm (right) -->
-            <g class="arm" id="mascotArm">
-              <path d="M155 70 q20 -12 30 6" fill="none" stroke="#b45309" stroke-width="10" stroke-linecap="round"/>
-              <circle cx="188" cy="72" r="6" fill="#fde68a" stroke="#b45309" stroke-width="3"/>
-            </g>
-
-            <!-- little feet -->
-            <path d="M86 142 q-10 10 6 12" fill="none" stroke="#b45309" stroke-width="6" stroke-linecap="round"/>
-            <path d="M132 142 q10 10 -6 12" fill="none" stroke="#b45309" stroke-width="6" stroke-linecap="round"/>
-          </svg>
-        </div>
+  <!-- HERO -->
+  <section class="hero container" aria-label="Intro">
+    <div class="hero-copy">
+      <h2 class="hero-title">Your money, graded like a report card <span class="heart">♥</span></h2>
+      <p class="hero-tag">Plug in your numbers, get a letter grade, and track progress with profiles, history, and achievements.</p>
+      <div class="hero-cta">
+        <button class="btn ghost" id="demoBtnTop">Try Demo</button>
+        <button class="btn primary" id="gradeBtnTop">Grade me now</button>
+        <button class="btn" id="copyTop">Copy share link</button>
       </div>
     </div>
-    <div class="swoosh"></div>
-  </header>
+
+    <!-- Mascot -->
+    <div class="hero-mascot" aria-hidden="true">
+      <svg class="report-card" viewBox="0 0 260 260" role="img" aria-label="Report card mascot">
+        <defs>
+          <linearGradient id="paperGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset="1" stop-color="#eef7ff"/>
+          </linearGradient>
+          <linearGradient id="shine" x1="0" x2="1">
+            <stop offset="0" stop-color="#A7F3D0" stop-opacity=".0"/>
+            <stop offset=".5" stop-color="#A7F3D0" stop-opacity=".25"/>
+            <stop offset="1" stop-color="#A7F3D0" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <ellipse cx="130" cy="220" rx="60" ry="12" fill="rgba(0,0,0,.25)" class="shadow"/>
+        <g class="card">
+          <rect x="55" y="30" width="150" height="190" rx="18" fill="url(#paperGrad)" stroke="#c7e1ff" stroke-width="2"/>
+          <path d="M185 30 h20 v20 c-10-2-18-10-20-20z" fill="#e7f1ff"/>
+          <g stroke="#e1ecff" stroke-width="2">
+            <line x1="70" x2="190" y1="80" y2="80"/>
+            <line x1="70" x2="190" y1="100" y2="100"/>
+            <line x1="70" x2="190" y1="120" y2="120"/>
+            <line x1="70" x2="190" y1="140" y2="140"/>
+          </g>
+          <!-- face -->
+          <g class="face">
+            <circle cx="112" cy="60" r="6" fill="#0f172a"/>
+            <circle cx="152" cy="60" r="6" fill="#0f172a"/>
+            <path d="M112 76 q20 14 40 0" fill="none" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
+            <g class="eyelids">
+              <rect x="104" y="54" width="16" height="6" fill="#ffffff"/>
+              <rect x="144" y="54" width="16" height="6" fill="#ffffff"/>
+            </g>
+          </g>
+          <!-- A+ badge -->
+          <g class="badge">
+            <circle cx="178" cy="150" r="22" fill="#22d3ee"/>
+            <circle cx="178" cy="150" r="20" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
+            <text x="178" y="156" text-anchor="middle" font-size="18" font-weight="900" fill="#a7f3d0">A+</text>
+          </g>
+          <rect class="sweep" x="55" y="30" width="150" height="190" rx="18" fill="url(#shine)"/>
+        </g>
+      </svg>
+      <div class="mascot-bubble">“Blink and you’ll miss it 😄”</div>
+    </div>
+  </section>
 
   <canvas id="confetti"></canvas>
 
   <div class="shell">
     <aside>
-      <!-- Profiles block -->
-      <div class="asideCard">
-        <p class="asideTitle">Profiles</p>
-        <div class="row">
-          <select id="profileSelect" class="input"></select>
-          <button id="newProfileBtn" class="mini">New</button>
+      <div class="card" style="margin-bottom:10px">
+        <div class="section" style="margin-bottom:6px">Profiles</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <select id="profileSelectSide" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)"></select>
+          <button id="newProfileBtnSide" class="btn" style="padding:9px 12px">New</button>
+          <button id="renameProfileBtn" class="btn" style="padding:9px 12px">Rename</button>
+          <button id="deleteProfileBtn" class="btn" style="padding:9px 12px">Delete</button>
         </div>
-        <div class="row" style="margin-top:8px">
-          <button id="renameProfileBtn" class="mini">Rename</button>
-          <button id="deleteProfileBtn" class="mini">Delete</button>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button id="exportProfileBtn" class="btn" style="flex:1">Export</button>
+          <button id="importProfileBtn" class="btn" style="flex:1">Import</button>
         </div>
-        <div class="row" style="margin-top:8px">
-          <button id="exportBtn" class="mini">Export</button>
-          <label class="mini" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
-            <input id="importInput" type="file" accept="application/json" style="display:none">Import
-          </label>
-        </div>
-        <div id="streakPill" class="mini" style="margin-top:8px;display:none"></div>
+        <div class="hint" style="margin-top:10px" id="streakHint">Streak: 0 days</div>
       </div>
 
       <nav class="nav" id="sidebar">
         <button class="tab active" data-page="grade">Grade</button>
         <button class="tab" data-page="history">History</button>
-        <button class="tab" data-page="benchmarks">Benchmarks</button>
+        <button class="tab" data-page="bench">Benchmarks</button>
         <button class="tab" data-page="about">About Us</button>
         <button class="tab" data-page="goal">Our Goal</button>
         <button class="tab" data-page="faq">FAQ</button>
@@ -375,8 +339,7 @@
                 </div>
               </div>
               <div style="display:flex;gap:10px;flex-wrap:wrap">
-                <button id="demoBtn" class="btn">Demo Data</button>
-                <button id="resetBtn" class="btn">Reset Inputs</button>
+                <button id="resetBtn" class="btn">Reset</button>
                 <button id="gradeBtn" class="btn primary">Get My Score</button>
               </div>
             </div>
@@ -405,22 +368,19 @@
           <canvas id="historyChart" height="180" style="width:100%;max-width:100%"></canvas>
           <div class="hint" id="historyHint">Grade each month to build your history.</div>
           <div id="trophyWall" class="badges" style="margin-top:12px"></div>
-          <div class="hint" style="margin-top:8px">Tip: Create profiles for you, your partner, or different scenarios.</div>
         </div>
       </section>
 
       <!-- Benchmarks -->
-      <section id="page-benchmarks" class="page">
+      <section id="page-bench" class="page">
         <div class="card">
           <h2>Benchmarks</h2>
-          <p class="hint">General guideposts. Everyone’s situation is unique.</p>
+          <p>Age curve targets used in scoring:</p>
           <ul>
-            <li><b>Emergency fund:</b> 3–6 months of expenses (we target 6).</li>
-            <li><b>Age curve (investable vs. FI target):</b> ~20% by 30, 35% by 35, 50% by 40, 65% by 45, 80% by 50, 95% by 55, 100% by 60.</li>
-            <li><b>Savings rate:</b> Aim 20%+ of take-home; more if late start.</li>
-            <li><b>Mortgage LTV:</b> Under 80% is healthy; lower is better.</li>
-            <li><b>Non-mortgage debt:</b> Keep under 20% of assets.</li>
+            <li>25 → 10% ready</li><li>30 → 20%</li><li>35 → 35%</li><li>40 → 50%</li>
+            <li>45 → 65%</li><li>50 → 80%</li><li>55 → 95%</li><li>60 → 100%</li>
           </ul>
+          <p class="hint">We count investable assets (retirement/brokerage/HSA) + surplus cash + 40% of home equity.</p>
         </div>
       </section>
 
@@ -434,11 +394,7 @@
       </section>
       <!-- FAQ -->
       <section id="page-faq" class="page">
-        <div class="card">
-          <h2>FAQ</h2>
-          <p>Educational only; not financial advice. Your numbers stay on your device.</p>
-          <p>Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
-        </div>
+        <div class="card"><h2>FAQ</h2><p>Educational only; not financial advice. Your numbers stay on your device. Email: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p></div>
       </section>
       <!-- Contact -->
       <section id="page-contact" class="page">
@@ -463,7 +419,7 @@
     <button id="copyAgain">Copy again</button>
   </div>
 
-  <footer>
+  <footer class="container">
     <p>Read more: <a href="/blog/saved-by-30.html">Saved by 30</a> · <a href="/blog/savings-rate.html">Savings Rate Benchmarks</a> · <a href="/blog/what-is-fire.html">What is FIRE?</a></p>
   </footer>
 
@@ -475,30 +431,18 @@
   const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
   const map01 = (x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-  // Polyfill randomUUID
-  if(!window.crypto?.randomUUID){
-    crypto = window.crypto || {};
-    crypto.randomUUID = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c=>{
-      const r = Math.random()*16|0, v = c==='x'? r : (r&0x3|0x8); return v.toString(16);
-    });
-  }
-
   // constants
   const SWR = 0.06, EF_TARGET = 6, EQUITY_FACTOR = 0.40;
   const NW_W=15, FI_W=55, AGE_W=10, SAVE_W=6, EF_W=7, NONMORT_W=4, LTV_W=3;
 
-  /* ===== THEME ===== */
+  // theme
   const modeBtn = $('#modeBtn');
-  function setMode(light){
-    document.body.classList.toggle('light', light);
-    modeBtn.textContent = light ? 'Dark' : 'Light'; // shows target mode
-    localStorage.setItem('gmf_theme', light?'light':'dark');
-  }
+  function setMode(light){ document.body.classList.toggle('light', light); modeBtn.textContent = light ? 'Light' : 'Dark'; localStorage.setItem('gmf_theme', light?'light':'dark'); }
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  /* ===== TABS + GA ===== */
-  const pages=['grade','history','benchmarks','about','goal','faq','contact'];
+  // tabs + GA page views
+  const pages=['grade','history','bench','about','goal','faq','contact'];
   $('#sidebar').addEventListener('click', (e)=>{
     const t=e.target.closest('.tab'); if(!t) return;
     const pg=t.dataset.page;
@@ -509,17 +453,7 @@
     window.scrollTo({top:0,behavior:'smooth'});
   });
 
-  /* ===== HERO CTA wiring ===== */
-  $('#heroDemo').addEventListener('click', ()=>document.getElementById('demoBtn').click());
-  $('#heroGrade').addEventListener('click', ()=>{
-    document.getElementById('gradeBtn').scrollIntoView({behavior:'smooth', block:'center'});
-    setTimeout(()=>document.getElementById('gradeBtn').click(), 300);
-  });
-  $('#heroShare').addEventListener('click', ()=>{
-    navigator.clipboard.writeText(buildShareURL()).then(()=>showToast());
-  });
-
-  /* ===== Streak pill ===== */
+  // daily streak pill
   (function streak(){
     const key='gmf_streak';
     const today = new Date().toDateString();
@@ -530,10 +464,11 @@
       count = (data.last === yesterday) ? (data.count+1) : 1;
       localStorage.setItem(key, JSON.stringify({last:today,count}));
     }
-    const pill = $('#streakPill'); pill.style.display='inline-flex'; pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
+    const pill = $('#streakPill'); pill.style.display='inline-block'; pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
+    $('#streakHint').textContent = `Streak: ${count} day${count===1?'':'s'}`;
   })();
 
-  /* ===== Inputs + calcs ===== */
+  // inputs
   const ids = ['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc','mortgageApr','studentApr','autoApr','ccApr'];
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
@@ -560,6 +495,7 @@
   ids.forEach(id => els[id].addEventListener('input', updateHints));
   updateHints();
 
+  // expected readiness by age
   function expectedReadiness(age){
     const pts = [[25,0.10],[30,0.20],[35,0.35],[40,0.50],[45,0.65],[50,0.80],[55,0.95],[60,1.00]];
     if(age<=pts[0][0]) return pts[0][1];
@@ -617,20 +553,17 @@
     return "F";
   }
 
-  /* ===== Overlay + Toast ===== */
+  /* ---------- Overlay + toast ---------- */
   const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
-  function showOverlay(){
-    overlay.classList.add('show'); let prog=0; bar.style.width='0%'; pct.textContent='0%';
-    const t=setInterval(()=>{ if(!overlay.classList.contains('show')) return clearInterval(t);
-      prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%';
-    },200);
+  function showOverlay(){ let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
+    const t=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200);
+    setTimeout(()=>{ clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); },800);
   }
-  function hideOverlay(){ overlay.classList.remove('show'); }
   const toast=$('#toast');
   function showToast(){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 5000); }
   $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
 
-  /* ===== Confetti (existing) ===== */
+  // confetti
   const canvas = $('#confetti'); const ctx = canvas.getContext('2d'); let bits=[];
   function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   window.addEventListener('resize', resize); resize();
@@ -646,94 +579,76 @@
     }; anim();
   }
 
-  /* ===== Share state ===== */
+  // share link
   function currentState(){ const s={}; ids.forEach(id=> s[id]=val(id)); s.__ver='age1'; return s; }
   function buildShareURL(){ const b64=btoa(unescape(encodeURIComponent(JSON.stringify(currentState())))); return location.origin+location.pathname+'#s='+b64; }
   (function hydrateFromHash(){
     const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
-    try{
-      const decoded = JSON.parse(decodeURIComponent(escape(atob(m[1]))));
-      const payload = decoded && decoded.inputs ? decoded.inputs : decoded; // support both formats
-      ids.forEach(id=>{ if(payload && (id in payload)) els[id].value=payload[id]; });
-      updateHints();
-    }catch(e){}
+    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); ids.forEach(id=>{ if(id in obj) els[id].value=obj[id]; }); updateHints(); }catch(e){}
   })();
 
-  /* ===== Profiles, History, Trophies ===== */
+  /* -------- Profiles, History, Trophies (localStorage) -------- */
   const PROFILE_KEY='gmf_profiles_v1';
   function loadProfiles(){ try {return JSON.parse(localStorage.getItem(PROFILE_KEY)||'[]');} catch(e){return [];} }
   function saveProfiles(arr){ localStorage.setItem(PROFILE_KEY, JSON.stringify(arr)); }
   function ensureDefaultProfile(){
     let p=loadProfiles();
     if(!p.length){ p=[{id:crypto.randomUUID(), name:'My Profile', history:[], trophies:[]}]; saveProfiles(p); }
-    const cur = localStorage.getItem('gmf_active_profile');
-    if(!cur || !p.find(x=>x.id===cur)) localStorage.setItem('gmf_active_profile', p[0].id);
     return p;
   }
   function renderProfileSelect(){
-    const p=ensureDefaultProfile(); const sel=$('#profileSelect'); sel.innerHTML='';
-    p.forEach((x)=>{ const o=document.createElement('option'); o.value=x.id; o.textContent=x.name; sel.appendChild(o); });
-    const cur = localStorage.getItem('gmf_active_profile') || p[0].id; sel.value=cur;
+    const p=ensureDefaultProfile(); const sel=$('#profileSelect'); const sel2=$('#profileSelectSide'); sel.innerHTML=''; sel2.innerHTML='';
+    p.forEach((x)=>{ const o=document.createElement('option'); o.value=x.id; o.textContent=x.name; sel.appendChild(o.cloneNode(true)); sel2.appendChild(o); });
+    const cur = localStorage.getItem('gmf_active_profile') || p[0].id; sel.value=cur; sel2.value=cur; localStorage.setItem('gmf_active_profile', cur);
   }
-  function getActive(){ const id=localStorage.getItem('gmf_active_profile'); return ensureDefaultProfile().find(x=>x.id===id); }
-  function setActive(id){ localStorage.setItem('gmf_active_profile', id); renderHistory(); }
+  function getActive(){ const id=localStorage.getItem('gmf_active_profile'); return loadProfiles().find(x=>x.id===id); }
+  function setActive(id){ localStorage.setItem('gmf_active_profile', id); }
   renderProfileSelect();
-  $('#profileSelect').addEventListener('change', e=> setActive(e.target.value));
-  $('#newProfileBtn').addEventListener('click', ()=>{
+  $('#profileSelect').addEventListener('change', e=>{ setActive(e.target.value); $('#profileSelectSide').value=e.target.value; renderHistory(); });
+  $('#profileSelectSide').addEventListener('change', e=>{ setActive(e.target.value); $('#profileSelect').value=e.target.value; renderHistory(); });
+
+  function newProfile(){
     const name=prompt('Profile name?','My Profile '+(loadProfiles().length+1)); if(!name) return;
-    const p=loadProfiles(); const id=crypto.randomUUID(); p.push({id,name,history:[],trophies:[]}); saveProfiles(p);
-    renderProfileSelect(); setActive(id);
-  });
+    const p=loadProfiles(); const id=crypto.randomUUID(); p.push({id,name,history:[],trophies:[]}); saveProfiles(p); renderProfileSelect(); setActive(id); renderHistory();
+  }
+  $('#newProfileBtn').addEventListener('click', newProfile);
+  $('#newProfileBtnSide').addEventListener('click', newProfile);
   $('#renameProfileBtn').addEventListener('click', ()=>{
-    const prof=getActive(); if(!prof) return;
-    const name=prompt('New name:', prof.name); if(!name) return;
-    const p=loadProfiles(); const idx=p.findIndex(x=>x.id===prof.id); if(idx>=0){ p[idx].name=name; saveProfiles(p); renderProfileSelect(); }
+    const prof=getActive(); if(!prof) return; const name=prompt('New name', prof.name); if(!name) return;
+    const ps=loadProfiles(); const idx=ps.findIndex(x=>x.id===prof.id); ps[idx].name=name; saveProfiles(ps); renderProfileSelect();
   });
   $('#deleteProfileBtn').addEventListener('click', ()=>{
-    const prof=getActive(); if(!prof) return;
-    if(!confirm(`Delete profile "${prof.name}"? This removes its history and trophies.`)) return;
-    let p=loadProfiles().filter(x=>x.id!==prof.id);
-    if(!p.length){ p=[{id:crypto.randomUUID(), name:'My Profile', history:[], trophies:[]}]; }
-    saveProfiles(p); localStorage.setItem('gmf_active_profile', p[0].id);
-    renderProfileSelect(); renderHistory();
+    if(!confirm('Delete this profile?')) return;
+    let ps=loadProfiles(); const cur=getActive(); ps=ps.filter(x=>x.id!==cur.id); saveProfiles(ps); renderProfileSelect(); renderHistory();
   });
-  $('#exportBtn').addEventListener('click', ()=>{
-    const data = {profiles: loadProfiles(), active: localStorage.getItem('gmf_active_profile')};
-    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download='gmf-backup.json'; a.click();
-    URL.revokeObjectURL(url);
+  $('#exportProfileBtn').addEventListener('click', ()=>{
+    const prof=getActive(); if(!prof) return; navigator.clipboard.writeText(JSON.stringify(prof)); alert('Profile JSON copied to clipboard.');
   });
-  $('#importInput').addEventListener('change', async (e)=>{
-    const file = e.target.files[0]; if(!file) return;
-    const text = await file.text();
-    try{
-      const data = JSON.parse(text);
-      if(Array.isArray(data.profiles)){ saveProfiles(data.profiles); }
-      if(data.active){ localStorage.setItem('gmf_active_profile', data.active); }
-      renderProfileSelect(); renderHistory();
-      alert('Import complete');
-    }catch(err){ alert('Import failed: invalid file'); }
-    e.target.value='';
+  $('#importProfileBtn').addEventListener('click', ()=>{
+    const txt=prompt('Paste profile JSON'); if(!txt) return;
+    try{ const obj=JSON.parse(txt); if(!obj.id) obj.id=crypto.randomUUID(); const ps=loadProfiles(); ps.push(obj); saveProfiles(ps); renderProfileSelect(); }catch(e){ alert('Invalid JSON'); }
   });
 
   function saveProfile(profile){
     const ps=loadProfiles(); const idx=ps.findIndex(x=>x.id===profile.id); if(idx>=0){ ps[idx]=profile; saveProfiles(ps); }
   }
-  function award(profile, code){
+  function award(profile, code, label){
     if(!profile.trophies.includes(code)){ profile.trophies.push(code); saveProfile(profile); confetti(); }
+    return {code,label};
   }
   function maybeTrophies(profile, v, s, L){
-    if(profile.history.length===1) award(profile,'first_grade');
-    if(['A+','A','A-'].includes(L)) award(profile,'a_club');
-    if(s.efMonths>=6) award(profile,'ef_ready');
-    if((v.student+v.auto+v.cc)===0) award(profile,'debt_slayer');
+    const list=[];
+    if(profile.history.length===1) list.push(award(profile,'first_grade','First Grade'));
+    if(L==='A+'||L==='A'||L==='A-') list.push(award(profile,'a_club','A Club'));
+    if(s.efMonths>=6) list.push(award(profile,'ef_ready','Emergency Ready'));
+    if((v.student+v.auto+v.cc)===0) list.push(award(profile,'debt_slayer','Debt Slayer'));
     if(profile.history.length>=2){
       const last=profile.history[profile.history.length-2]?.score||s.score;
-      if(s.score>last) award(profile,'level_up');
+      if(s.score>last) list.push(award(profile,'level_up','Level Up'));
     }
     const months=new Set(profile.history.slice(-3).map(h=>new Date(h.date).getMonth()+1));
-    if(months.size===3) award(profile,'streak_3');
+    if(months.size===3) list.push(award(profile,'streak_3','3-Month Streak'));
+    return list;
   }
   function logHistory(profile, s, L){
     const entry={date:new Date().toISOString(), score:s.score, letter:L};
@@ -741,31 +656,32 @@
     return entry;
   }
 
-  // chart
+  // draw line chart
   function drawChart(points){
     const c=$('#historyChart'); const ctx=c.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
-    const cssW = c.clientWidth || 600; const cssH = 180;
-    c.width = Math.round(cssW * dpr); c.height = Math.round(cssH * dpr);
-    c.style.width = cssW+'px'; c.style.height = cssH+'px';
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.clearRect(0,0,cssW,cssH);
+    ctx.clearRect(0,0,c.width,c.height);
+    const w=c.width=c.clientWidth; const h=c.height=c.height;
     if(!points.length){ return; }
-    const pad=16, w=cssW-pad*2, h=cssH-pad*2;
-    const xs=points.map((_,i)=> (points.length>1? i/(points.length-1) : 0));
-    const ys=points.map(p=> 1-(p.score/100));
+    const xs=points.map((_,i)=>i/(points.length-1||1));
+    const ys=points.map(p=>1-(p.score/100));
     ctx.lineWidth=2; ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent') || '#22d3ee';
     ctx.beginPath();
-    xs.forEach((t,i)=>{ const x=pad+t*w, y=pad+ys[i]*h; if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+    for(let i=0;i<points.length;i++){
+      const x=16+xs[i]*(w-32), y=16+ys[i]*(h-32);
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
     ctx.stroke();
     ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent2') || '#a78bfa';
-    xs.forEach((t,i)=>{ const x=pad+t*w, y=pad+ys[i]*h; ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill(); });
+    points.forEach((p,i)=>{
+      const x=16+xs[i]*(w-32), y=16+ys[i]*(h-32);
+      ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+    });
   }
   function renderHistory(){
     const prof=getActive(); if(!prof) return;
-    const pts=(prof.history||[]).map(h=>({date:h.date, score:h.score}));
+    const pts=prof.history.map(h=>({date:h.date, score:h.score}));
     drawChart(pts);
-    $('#historyHint').textContent = prof.history?.length ? `Entries: ${prof.history.length}` : 'Grade each month to build your history.';
+    $('#historyHint').textContent = prof.history.length ? `Entries: ${prof.history.length}` : 'Grade each month to build your history.';
     const wall=$('#trophyWall'); wall.innerHTML='';
     (prof.trophies||[]).forEach(code=>{
       const span=document.createElement('span'); span.className='badge'; span.textContent=({
@@ -809,7 +725,7 @@
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
 
-  // Grade & Reset & Demo
+  // Grade & Reset
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine'), progress=$('#progressFill');
 
   function doGrade(){
@@ -825,29 +741,32 @@
     progress.style.width = s.score + '%';
     renderWhy(v,s); renderImprove(v,s);
 
-    // share link
+    // share
     const b64=btoa(unescape(encodeURIComponent(JSON.stringify({inputs:currentState(),score:s.score,letter:L}))));
     const url = location.origin+location.pathname+'#s='+b64;
     navigator.clipboard.writeText(url).catch(()=>{}); showToast();
 
-    // mascot happy wiggle
-    const arm = document.getElementById('mascotArm');
-    arm.classList.add('play');
-    setTimeout(()=>arm.classList.remove('play'), 1200);
-
     if(['A+','A','A-','B+'].includes(L)) confetti();
 
+    // history + trophies
     const prof=getActive(); if(prof){
       logHistory(prof, s, L);
-      maybeTrophies(prof, v, s, L);
-      renderHistory();
+      const ts = maybeTrophies(prof, v, s, L);
+      if(ts.length) confetti();
     }
   }
 
-  $('#gradeBtn').addEventListener('click', ()=>{
-    showOverlay();
-    setTimeout(()=>{ doGrade(); hideOverlay(); }, 650);
+  $('#gradeBtn').addEventListener('click', ()=>{ showOverlay(); setTimeout(doGrade, 820); });
+  // top hero buttons
+  $('#gradeBtnTop').addEventListener('click', ()=>{ pages.forEach(p=> $('#page-'+p).classList.toggle('active', p==='grade')); showOverlay(); setTimeout(doGrade, 820); window.scrollTo({top:document.querySelector('#page-grade').offsetTop-20,behavior:'smooth'}); });
+  $('#demoBtnTop').addEventListener('click', ()=>{
+    const demo={income:7500, expenses:4000, age:30, home:475000, retire:72000, brokerage:29000, car:15000, hsa:1500, cash:24000, mortgage:329000, student:26000, auto:13500, cc:0, mortgageApr:5.25, studentApr:4.9, autoApr:3.5, ccApr:24.99};
+    ids.forEach(id=>{ if(demo[id]!=null) els[id].value=demo[id]; });
+    updateHints();
+    pages.forEach(p=> $('#page-'+p).classList.toggle('active', p==='grade'));
+    window.scrollTo({top:document.querySelector('#page-grade').offsetTop-20,behavior:'smooth'});
   });
+  $('#copyTop').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()).then(showToast));
 
   $('#resetBtn').addEventListener('click', ()=>{
     document.querySelectorAll('input[type="number"]').forEach(el => el.value = (el.id==='age'?30:0));
@@ -857,32 +776,15 @@
     progress.style.width='0%'; $('#chips').innerHTML=''; $('#whyList').textContent=''; $('#improveList').textContent='';
   });
 
-  $('#demoBtn').addEventListener('click', ()=>{
-    const demo = {income:7500, expenses:4000, age:30, home:475000, retire:72000, brokerage:29000, car:15000, hsa:1500, cash:24000, mortgage:329000, student:26000, auto:13500, cc:0, mortgageApr:5.25, studentApr:4.9, autoApr:3.5, ccApr:24.99};
-    ids.forEach(id=>{ if(demo[id]!=null) els[id].value=demo[id]; });
-    updateHints();
-  });
+  $('#copyAgain').addEventListener('click', ()=> navigator.clipboard.writeText(buildShareURL()));
 
-  // render history on load
+  // render history once so tab is instant later
   renderHistory();
-
-  /* ===== Mascot behavior ===== */
-  const arm = document.getElementById('mascotArm');
-  const bubble = document.getElementById('mascotBubble');
-  function wave(){ arm.classList.add('play'); setTimeout(()=>arm.classList.remove('play'), 1800); }
-  // wave occasionally
-  setInterval(()=>{ if(document.visibilityState==='visible') wave(); }, 6000);
-  // fun messages
-  const lines = [
-    "Hi! I’m Penny. Let’s get you an A+",
-    "Blink and you’ll miss it 😄",
-    "Try demo if you’re shy!",
-    "Profiles live on the left ➜",
-    "Grade monthly and build a streak!"
-  ];
-  let li=0; setInterval(()=>{ li=(li+1)%lines.length; bubble.textContent=lines[li]; }, 7000);
-
 })();
+</script>
+</body>
+</html>
+
 </script>
 </body>
 </html>
