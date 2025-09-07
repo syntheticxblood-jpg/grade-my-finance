@@ -24,17 +24,20 @@ body{
   color:var(--text); font-family:Inter,system-ui,Segoe UI,Roboto,Arial; line-height:1.35;
 }
 .container{max-width:1100px;margin:0 auto;padding:0 16px}
-header{ position:fixed; inset:0 0 auto 0; z-index:10; height:var(--header-h);
+
+/* Header */
+header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
   background:linear-gradient(90deg,var(--accent),var(--accent2)); border-bottom:1px solid var(--line);
 }
 .hdr{ height:100%; display:flex; align-items:center; justify-content:center; gap:14px }
 .logo{height:86px; width:auto; display:block; filter:drop-shadow(0 10px 24px rgba(0,0,0,.35))}
 .brand{font-weight:900; font-size:22px; color:#062c1b}
 
+/* Hero */
 .hero{ display:flex; flex-direction:column; align-items:center; gap:14px; padding:16px 0 8px; text-align:center; }
-.hero-card{ width:min(720px,92vw); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+.hero-card{ width:min(760px,92vw); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
   border:1px solid var(--line); border-radius:22px; padding:22px; box-shadow:var(--shadow); }
-.hero-title{margin:0 0 8px;font-size:30px;font-weight:900}
+.hero-title{margin:0 0 8px;font-size:32px;font-weight:900}
 .hero-tag{margin:0 0 10px;color:var(--muted)}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);
@@ -42,6 +45,7 @@ header{ position:fixed; inset:0 0 auto 0; z-index:10; height:var(--header-h);
   color:var(--text);font-weight:900;cursor:pointer}
 .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
 
+/* Layout */
 .shell{max-width:1100px;margin:0 auto;padding:0 16px 24px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
 .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
@@ -54,19 +58,31 @@ input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;ba
 input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
 
 .flex{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.big{font-size:70px;font-weight:900}
+.big{font-size:72px;font-weight:900}
 .progress{height:10px;background:#0b1226;border:1px solid var(--line);border-radius:999px;overflow:hidden}
 .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .5s cubic-bezier(.2,.9,.2,1)}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .chip{padding:7px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px}
 
+/* Mascot */
 .mascot{display:grid;place-items:center}
-@keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-6px) rotate(1.2deg)}}
+@keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
 .m-bubble{margin-top:6px;background:rgba(0,0,0,.35);border:1px solid var(--line);padding:6px 10px;border-radius:999px;font-size:12px;backdrop-filter:blur(6px)}
+
+/* Overlay loader */
+.overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:50}
+.overlay.show{display:grid}
+.loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+.bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
+@keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 </style>
 </head>
 
 <body>
+<!-- Confetti canvas -->
+<canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:40;"></canvas>
+
 <header>
   <div class="hdr">
     <svg class="logo" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
@@ -101,15 +117,32 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
   </div>
 
   <div class="mascot">
-    <svg viewBox="0 0 240 220" width="170" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
-      <defs><linearGradient id="mc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient></defs>
-      <ellipse cx="120" cy="206" rx="50" ry="10" fill="rgba(0,0,0,.3)"/>
-      <rect x="60" y="36" width="120" height="150" rx="22" fill="url(#mc)" stroke="#86EFAC" stroke-width="2"/>
-      <circle cx="96" cy="78" r="6" fill="#0f172a"/><circle cx="144" cy="78" r="6" fill="#0f172a"/>
-      <path d="M98 98 q22 14 44 0" stroke="#16a34a" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <g transform="translate(120,120)"><circle r="20" fill="#10b981" stroke="#065f46" stroke-width="3"/><circle r="15" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/><text text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="900" fill="#a7f3d0">A+</text></g>
+    <!-- Bigger, friendlier mascot -->
+    <svg viewBox="0 0 260 240" width="220" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
+      <defs>
+        <linearGradient id="mc" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/>
+        </linearGradient>
+      </defs>
+      <ellipse cx="130" cy="220" rx="56" ry="12" fill="rgba(0,0,0,.3)"/>
+      <rect x="60" y="38" width="140" height="160" rx="26" fill="url(#mc)" stroke="#86EFAC" stroke-width="2.5"/>
+      <!-- Friendly face -->
+      <circle cx="100" cy="88" r="7" fill="#0f172a"/><circle cx="160" cy="88" r="7" fill="#0f172a"/>
+      <circle cx="92" cy="104" r="4" fill="#fca5a5"/><circle cx="168" cy="104" r="4" fill="#fca5a5"/>
+      <path d="M105 110 q25 18 50 0" stroke="#16a34a" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <!-- Lines -->
+      <g stroke="#a7f3d0" stroke-width="2"><line x1="80" y1="130" x2="180" y2="130"/><line x1="80" y1="148" x2="180" y2="148"/><line x1="80" y1="166" x2="180" y2="166"/></g>
+      <!-- Badge -->
+      <g transform="translate(130,132)">
+        <circle r="20" fill="#10b981" stroke="#065f46" stroke-width="3"/>
+        <circle r="15" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
+        <text text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="900" fill="#a7f3d0">A+</text>
+      </g>
+      <!-- Arms -->
+      <path d="M60 130 q-22 10 -28 -8" stroke="#22c55e" stroke-linecap="round" stroke-width="8" fill="none"/>
+      <path d="M200 158 q26 12 28 -10" stroke="#22c55e" stroke-linecap="round" stroke-width="8" fill="none"/>
     </svg>
-    <div class="m-bubble">“Let’s make money feel easy.”</div>
+    <div class="m-bubble">“You’ve got this.”</div>
   </div>
 </section>
 
@@ -160,20 +193,42 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
   </main>
 </div>
 
+<!-- Loading overlay -->
+<div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
+  <div class="loader">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <strong>Crunching numbers…</strong><span id="pct">0%</span>
+    </div>
+    <div class="bar"><div class="fill" id="barFill"></div></div>
+  </div>
+</div>
+
 <script>
 (() => {
-/* === helpers === */
+/* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
 const money=n=>isFinite(n)?`$${Math.round(n).toLocaleString()}`:'—';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-/* inputs */
+/* ---------- confetti ---------- */
+const cf=$('#confetti'), cctx=cf.getContext('2d');
+function resizeC(){ cf.width=window.innerWidth; cf.height=window.innerHeight }
+window.addEventListener('resize',resizeC); resizeC();
+function confettiBurst(n=200){
+  const bits=[]; for(let i=0;i<n;i++) bits.push({x:Math.random()*cf.width,y:-20-Math.random()*140,vx:(Math.random()-.5)*3,vy:2+Math.random()*3.5,r:4+Math.random()*7,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.28,clr:`hsl(${Math.random()*360},90%,60%)`});
+  let t=0; (function anim(){ t++; cctx.clearRect(0,0,cf.width,cf.height);
+    bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; cctx.save(); cctx.translate(b.x,b.y); cctx.rotate(b.a); cctx.fillStyle=b.clr; cctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); cctx.restore(); });
+    if(t<260) requestAnimationFrame(anim); else cctx.clearRect(0,0,cf.width,cf.height);
+  })();
+}
+
+/* ---------- inputs ---------- */
 const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc'];
 const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
 const val=id=>{const n=Number(els[id]?.value||0); return isFinite(n)?n:0;};
 
-/* curves & constants */
+/* ---------- curves & constants ---------- */
 const NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
 function targetNW(age){
   if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
@@ -187,7 +242,7 @@ function targetNW(age){
 const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25;
 const MEDIAN_INCOME=70000, TOP_INCOME=MEDIAN_INCOME*3;
 
-/* values */
+/* ---------- values ---------- */
 function values(){
   const v=Object.fromEntries(ids.map(id=>[id,val(id)]));
   v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
@@ -218,7 +273,7 @@ function values(){
   return v;
 }
 
-/* scoring */
+/* ---------- scoring ---------- */
 function scoreModel(v){
   const sSave = map01(v.saveRate, 0, MAX_SAVINGS);
   const sEF   = map01(v.efMonths, 0, EF_TARGET);
@@ -235,7 +290,7 @@ function gradeLetter(s){
   return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F';
 }
 
-/* UI */
+/* ---------- UI ---------- */
 const big=$('#bigGrade'), sline=$('#scoreLine'), nwln=$('#nwLine');
 function chip(txt){ const span=document.createElement('span'); span.className='chip'; span.innerHTML=txt; return span; }
 function renderWhy(s){
@@ -261,7 +316,7 @@ function renderImprove(s){
   if(!ideas.length) ideas.push(`You’re in great shape — keep compounding and stay the course.`);
   $('#improveList').innerHTML=ideas.map(x=>`<div>• ${x}</div>`).join('');
 }
-function show(s){
+function showResult(s){
   const L=gradeLetter(s);
   big.textContent=L;
   big.style.color=({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'})[L]||'var(--text)';
@@ -269,10 +324,23 @@ function show(s){
   $('#progressFill').style.width=s.score+'%';
   nwln.textContent=`Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
   renderWhy(s); renderImprove(s);
+
+  // Celebrate B- and above
+  if(['A+','A','A-','B+','B','B-'].includes(L)) confettiBurst();
 }
 
-/* actions */
-function grade(){ show(scoreModel(values())); }
+/* ---------- overlay workflow ---------- */
+const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
+function withOverlay(runFn, doneFn){
+  let elapsed=0, dur=900; // little moment of delight
+  overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
+  const t=setInterval(()=>{ elapsed+=100; const p=Math.min(100,Math.round((elapsed/dur)*100)); bar.style.width=p+'%'; pct.textContent=p+'%'; if(elapsed>=dur){clearInterval(t); overlay.classList.remove('show'); doneFn(runFn());}},100);
+}
+
+/* ---------- actions ---------- */
+function grade(){
+  withOverlay(() => scoreModel(values()), (s)=>showResult(s));
+}
 $('#gradeBtn').addEventListener('click',grade);
 $('#gradeBtnTop').addEventListener('click',()=>{ grade(); window.scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
 
@@ -296,18 +364,16 @@ $('#copyLink').addEventListener('click',()=>{
   navigator.clipboard?.writeText(url); alert('Shareable link copied.');
 });
 
-/* hints */
+/* ---------- hints & hash hydrate ---------- */
 function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}`; }
 ids.forEach(id=>els[id]?.addEventListener('input',updateHints)); updateHints();
 
-/* hash hydrate (optional) */
 (function(){ const m=location.hash.match(/#s=([^&]+)/); if(!m) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=obj[id]; }); updateHints(); }catch(e){} })();
 
 })();
 </script>
 </body>
 </html>
-
 
 
 
