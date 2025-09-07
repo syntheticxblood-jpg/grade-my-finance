@@ -4,30 +4,27 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance</title>
-<meta name="description" content="Age-aware financial wellness grade with profiles, progress history, and achievements.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Grade My Finance">
-<meta property="og:description" content="Get a letter grade for your money, track progress, and earn achievements.">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Age-aware financial wellness grade with profiles, history, and achievements.">
 <style>
   :root{
     --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
     --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
     --g1:#16a34a; --g2:#34d399; --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
-    --header-h:128px;
+    --header-h:124px;
   }
   .light{
     --bg:#f5faf6; --panel:#ffffff; --card:#ffffff; --text:#0f172a; --muted:#4b5563; --line:rgba(15,23,42,.12);
     --accent:#16a34a; --accent2:#34d399; --shadow:0 12px 34px rgba(15,23,42,.08);
   }
   *{box-sizing:border-box}
+  html,body{width:100%}
   body{
-    margin:0;
+    margin:0; overflow-x:hidden;
     background:
       radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
       radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
       var(--bg);
-    color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;line-height:1.35;
+    color:var(--text); font-family:Inter,system-ui,Segoe UI,Roboto,Arial; line-height:1.35;
     padding-top:var(--header-h);
   }
   a{color:var(--accent);text-decoration:none}
@@ -40,22 +37,15 @@
     background:linear-gradient(90deg,var(--accent),var(--accent2));
     border-bottom:1px solid var(--line);
   }
-  .hdr{
-    max-width:1200px;margin:0 auto;height:100%;
-    display:grid;grid-template-rows:64px 1fr;gap:6px;padding:8px 16px 10px;
-    align-content:center;
-  }
-  .hdr-logo{display:flex;justify-content:center;align-items:center;}
-  .logoBig{height:62px;width:auto;display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
-  .hdr-rail{
-    display:flex;gap:8px;align-items:center;justify-content:center;
-    padding:2px 0; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;
-  }
-  .hdr-rail::-webkit-scrollbar{display:none}
-  .pill{border:none;padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0;flex:0 0 auto}
+  .hdr{max-width:1200px;margin:0 auto;height:100%;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;gap:6px;padding:10px 16px}
+  .hdr-logo{grid-column:1 / span 1;grid-row:1 / span 2;display:flex;align-items:center}
+  .logoBig{height:64px;width:auto;display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
+  .hdr-rail{grid-column:2;grid-row:1;display:flex;gap:8px;align-items:center;justify-content:flex-end}
+  .pill{border:none;padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:800;background:#0b1226;color:#e2e8f0}
   .light .pill{background:#0f172a}
-  #streakPill{font-weight:800;color:#062c1b;background:#ffffffc8;padding:6px 10px;border-radius:999px;flex:0 0 auto}
-  #profileSelect{max-width:200px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;flex:0 0 auto}
+  #profileSelect{max-width:180px}
+  .hdr-sub{grid-column:1 / -1;grid-row:2;display:flex;gap:8px;align-items:center;justify-content:space-between}
+  .streak{font-weight:800;background:#ffffffc8;color:#062c1b;padding:6px 10px;border-radius:999px}
 
   /* ---------- Hero ---------- */
   .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:start;padding:18px 0 6px}
@@ -72,8 +62,8 @@
 
   /* ---------- Mascot ---------- */
   .hero-mascot{position:relative;display:grid;place-items:center;align-self:start}
-  .buddy{max-height:240px;width:auto}
-  @media (max-width:1100px){ .buddy{max-height:210px} }
+  .buddy{max-height:220px;width:auto}
+  @media (max-width:1100px){ .buddy{max-height:200px} }
   @media (max-width:640px){ .buddy{max-height:170px} }
   .mascot-bubble{
     position:absolute;top:-6px;right:4px;background:rgba(0,0,0,.35);border:1px solid var(--line);
@@ -86,9 +76,9 @@
 
   /* ---------- App shell ---------- */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
-  aside{position:sticky;top:calc(var(--header-h) + 12px);align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+  aside{align-self:start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
   .nav{display:flex;flex-direction:column;gap:10px;margin-top:10px}
-  .tab{flex:0 0 auto;width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
+  .tab{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:800;transition:transform .08s ease, background .15s ease}
   .tab:hover{transform:translateY(-1px)}
   .tab.active{border-color:transparent;background:linear-gradient(90deg,var(--g1),var(--g2));color:#062c1b}
 
@@ -125,41 +115,26 @@
   .modal h3{margin:6px 0 8px}
   .row{display:flex;gap:8px;flex-wrap:wrap}
 
-  /* ---------- MOBILE FIXES (this is the important part) ---------- */
-  /* 1) Collapse the two-column shell */
+  /* ---------- MOBILE STACK (no horizontal scroll) ---------- */
   @media (max-width: 980px){
     .shell{grid-template-columns:1fr}
     aside{position:static}
-  }
-  /* 2) Convert sidebar tabs into a tidy, scrollable pill bar */
-  @media (max-width: 980px){
-    .nav{flex-direction:row; gap:8px; overflow-x:auto; padding:8px 2px; margin-top:12px}
-    .nav::-webkit-scrollbar{display:none}
-    .tab{flex:0 0 auto; white-space:nowrap; padding:10px 14px; width:auto; font-size:14px}
-  }
-  /* 3) Force all input cards to stack vertically (no squeezed columns) */
-  @media (max-width: 980px){
+    .nav{flex-direction:column; gap:10px}   /* vertical tabs on mobile */
     .grid{grid-template-columns:1fr !important}
     .grid > *{grid-column: 1 / -1 !important}
-  }
-  /* 4) Phone-size polish */
-  @media (max-width: 640px){
-    .hero-copy{padding:18px}
     input,select{font-size:16px}
   }
 </style>
 </head>
 <body class="dark">
-  <!-- Fixed Header -->
+  <!-- Header -->
   <header>
     <div class="hdr">
       <div class="hdr-logo">
-        <!-- LOGO -->
+        <!-- Simple “G + Report Card” logo -->
         <svg class="logoBig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" role="img" aria-label="Grade My Finance logo">
           <defs>
-            <radialGradient id="lg-badge" cx="50%" cy="50%" r="70%">
-              <stop offset="0" stop-color="#66E3B0"/><stop offset=".55" stop-color="#34D399"/><stop offset="1" stop-color="#16A34A"/>
-            </radialGradient>
+            <radialGradient id="lg-badge" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#66E3B0"/><stop offset=".55" stop-color="#34D399"/><stop offset="1" stop-color="#16A34A"/></radialGradient>
             <linearGradient id="lg-brand" x1="0" x2="1"><stop offset="0" stop-color="#CFFFEF"/><stop offset=".5" stop-color="#7CF8E7"/><stop offset="1" stop-color="#22D3EE"/></linearGradient>
             <linearGradient id="lg-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B82F6"/><stop offset="1" stop-color="#1E40AF"/></linearGradient>
             <linearGradient id="lg-paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E9FFF3"/></linearGradient>
@@ -183,11 +158,15 @@
         </svg>
       </div>
       <div class="hdr-rail">
-        <span id="streakPill" style="display:none"></span>
         <select id="profileSelect" class="pill" aria-label="Select profile"></select>
         <button id="newProfileBtn" class="pill">New Profile</button>
         <button id="modeBtn" class="pill" aria-pressed="false">Dark</button>
-        <button id="authBtn" class="pill" title="Sign in / up">Sign in</button>
+        <!-- Top-right account button -->
+        <button id="authBtn" class="pill">Create Account / Sign in</button>
+      </div>
+      <div class="hdr-sub">
+        <span id="streakPill" class="streak" style="display:none"></span>
+        <span></span>
       </div>
     </div>
   </header>
@@ -203,17 +182,11 @@
         <button class="btn" id="copyTop">Copy share link</button>
       </div>
     </div>
-
-    <!-- Mascot -->
     <div class="hero-mascot" aria-hidden="true">
       <svg class="buddy" viewBox="0 0 360 300" aria-label="Green Report Card Buddy">
         <defs>
-          <linearGradient id="mCard" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/>
-          </linearGradient>
-          <radialGradient id="mSh" cx=".5" cy=".2" r=".9">
-            <stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#ffffff00"/>
-          </radialGradient>
+          <linearGradient id="mCard" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient>
+          <radialGradient id="mSh" cx=".5" cy=".2" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#ffffff00"/></radialGradient>
         </defs>
         <ellipse cx="180" cy="270" rx="84" ry="16" fill="rgba(0,0,0,.28)"/>
         <g style="animation:floatCard 3.2s ease-in-out infinite">
@@ -236,6 +209,7 @@
           <circle id="eyeR" cx="208" cy="92" r="7.5" fill="#0f172a" style="transform-origin:208px 92px; animation:eyeBlink 6.2s infinite"/>
           <circle cx="136" cy="104" r="9" fill="#fecaca" opacity=".6"/><circle cx="220" cy="104" r="9" fill="#fecaca" opacity=".6"/>
           <path d="M144 120 q18 12 36 0" fill="none" stroke="#16a34a" stroke-width="5" stroke-linecap="round"/>
+          <!-- A+ badge in the center of the card (never clipped) -->
           <g transform="translate(180,158)">
             <circle r="22" fill="#10b981" stroke="#065f46" stroke-width="3"/>
             <circle r="18" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
@@ -252,16 +226,17 @@
       <div class="card" style="margin-bottom:10px">
         <div class="section" style="margin-bottom:6px">Profiles</div>
         <div style="margin-bottom:8px"><select id="profileSelectSide" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)"></select></div>
-        <div style="display:flex;gap:8px;margin-bottom:8px">
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
           <button id="newProfileBtnSide" class="btn">New</button>
           <button id="renameProfileBtn" class="btn">Rename</button>
           <button id="deleteProfileBtn" class="btn">Delete</button>
         </div>
-        <div style="display:flex;gap:8px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button id="exportProfileBtn" class="btn">Export</button>
           <button id="importProfileBtn" class="btn">Import</button>
         </div>
-        <div class="hint" id="streakHint" style="margin-top:8px">Streak: 0 days</div>
+        <div class="section" id="acctLabel" style="margin-top:10px">Account: <b>Local</b></div>
+        <div class="hint" id="streakHint" style="margin-top:4px">Streak: 0 days</div>
       </div>
 
       <nav class="nav" id="sidebar">
@@ -278,21 +253,9 @@
       <!-- Grade page -->
       <section id="page-grade" class="page active">
         <div class="grid">
-          <div class="card">
-            <div class="section">Monthly Income (after-tax)</div>
-            <label>What hits your bank each month</label>
-            <input id="income" type="number" value="0" min="0" />
-          </div>
-          <div class="card">
-            <div class="section">Monthly Expenses</div>
-            <label>All bills + spending (post-tax)</label>
-            <input id="expenses" type="number" value="0" min="0" />
-          </div>
-          <div class="card">
-            <div class="section">Age</div>
-            <label>Used for age-aware scoring</label>
-            <input id="age" type="number" value="30" min="16" max="100" />
-          </div>
+          <div class="card"><div class="section">Monthly Income (after-tax)</div><label>What hits your bank each month</label><input id="income" type="number" value="0" min="0"/></div>
+          <div class="card"><div class="section">Monthly Expenses</div><label>All bills + spending (post-tax)</label><input id="expenses" type="number" value="0" min="0"/></div>
+          <div class="card"><div class="section">Age</div><label>Used for age-aware scoring</label><input id="age" type="number" value="30" min="16" max="100"/></div>
 
           <div class="card">
             <div class="section">Assets</div>
@@ -322,16 +285,8 @@
             <div class="hint" id="liabHint">Total Liabilities: —</div>
           </div>
 
-          <div class="card">
-            <div class="section">Monthly Contributions (pre-tax)</div>
-            <label>Retirement + HSA payroll contributions</label>
-            <input id="pretaxMonthly" type="number" value="0" min="0" />
-          </div>
-          <div class="card">
-            <div class="section">Monthly Contributions (post-tax)</div>
-            <label>Education savings (529/ESA etc.)</label>
-            <input id="eduMonthly" type="number" value="0" min="0" />
-          </div>
+          <div class="card"><div class="section">Monthly Contributions (pre-tax)</div><label>Retirement + HSA payroll contributions</label><input id="pretaxMonthly" type="number" value="0" min="0"/></div>
+          <div class="card"><div class="section">Monthly Contributions (post-tax)</div><label>Education savings (529/ESA etc.)</label><input id="eduMonthly" type="number" value="0" min="0"/></div>
 
           <div class="card">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -351,14 +306,8 @@
             <div style="margin:12px 0 10px 0" class="progress"><div id="progressFill"></div></div>
             <div id="badgeRow" class="badges"></div>
             <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px">
-              <div class="card" style="border-style:dashed">
-                <h4>What went into your grade</h4>
-                <div id="whyList">Enter numbers and click Get My Score.</div>
-              </div>
-              <div class="card" style="border-style:dashed">
-                <h4>How to level up</h4>
-                <div id="improveList">Personalized ideas will show up here.</div>
-              </div>
+              <div class="card" style="border-style:dashed"><h4>What went into your grade</h4><div id="whyList">Enter numbers and click Get My Score.</div></div>
+              <div class="card" style="border-style:dashed"><h4>How to level up</h4><div id="improveList">Personalized ideas will show up here.</div></div>
             </div>
           </div>
         </div>
@@ -405,29 +354,24 @@
     </div>
   </div>
 
-  <!-- Auth modal -->
+  <!-- Local account modal -->
   <div id="authModal" class="modal" aria-modal="true" role="dialog">
     <div class="modal-card">
-      <h3>Sign in to save your data</h3>
-      <p id="authState" class="hint">You can also continue without an account (local only).</p>
+      <h3 id="authTitle">Create Account / Sign in</h3>
+      <p id="authState" class="hint">Accounts here are local (saved on this device). You can switch to a cloud backend later.</p>
       <div class="row" style="margin:8px 0">
         <input id="authEmail" type="email" placeholder="Email" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel);color:var(--text)">
         <input id="authPass" type="password" placeholder="Password" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel);color:var(--text)">
       </div>
       <div class="row">
-        <button id="authSignIn" class="btn primary">Sign in</button>
-        <button id="authSignUp" class="btn">Create account</button>
+        <button id="authCreate" class="btn primary">Create account</button>
+        <button id="authSignIn" class="btn">Sign in</button>
+        <button id="authSignOut" class="btn" style="display:none">Sign out</button>
         <span style="flex:1"></span>
-        <button id="authGuest" class="btn ghost">Continue without account</button>
         <button id="authClose" class="btn">Close</button>
       </div>
     </div>
   </div>
-
-<!-- Firebase (optional) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
 
 <script>
 (() => {
@@ -456,7 +400,7 @@
     $$('.page').forEach(p=>p.classList.remove('active'));
     $('#page-'+pg).classList.add('active');
     if(pg==='history') drawHistory();
-    window.scrollTo({top:document.querySelector('main').offsetTop - 20, behavior:'smooth'});
+    window.scrollTo({top:document.querySelector('main').offsetTop - 8, behavior:'smooth'});
   });
 
   /* ---------- Streak ---------- */
@@ -470,55 +414,85 @@
       count = (data.last === yesterday) ? (data.count+1) : 1;
       localStorage.setItem(key, JSON.stringify({last:today,count}));
     }
-    const pill = $('#streakPill'); pill.style.display='inline-block'; pill.textContent = `Streak: ${count} day${count===1?'':'s'}`;
+    const pill = $('#streakPill'); pill.style.display='inline-block'; pill.textContent = `Streak: ${count} day${count===1?'':''}s`;
     $('#streakHint').textContent = pill.textContent;
   })();
 
-  /* ---------- Profiles: local/optional Firebase ---------- */
-  const LOCAL_KEY='gmf_profiles_v9';
-  let auth=null, db=null, currentUser=null;
-  let storageMode='local';
+  /* ---------- Local Accounts (demo) ---------- */
+  const AUTH_KEY='gmf_local_accounts_v2';
+  const ACTIVE_ACCT='gmf_active_account_v2';
+  let currentAccount = localStorage.getItem(ACTIVE_ACCT) || 'local:guest';
 
-  // Paste your Firebase config here if you want cloud accounts (or leave null for local-only)
-  const FIREBASE_CONFIG = null;
+  const authBtn   = $('#authBtn');
+  const authModal = $('#authModal');
+  const authEmail = $('#authEmail');
+  const authPass  = $('#authPass');
+  const authState = $('#authState');
+  const authTitle = $('#authTitle');
+  const btnCreate = $('#authCreate');
+  const btnSignIn = $('#authSignIn');
+  const btnSignOut= $('#authSignOut');
+  const acctLabel = $('#acctLabel');
 
-  async function initFirebase(){
-    if(!FIREBASE_CONFIG) return;
-    try{
-      firebase.initializeApp(FIREBASE_CONFIG);
-      auth = firebase.auth();
-      db   = firebase.firestore();
-      auth.onAuthStateChanged((u)=>{
-        currentUser = u || null;
-        $('#authBtn').textContent = u ? `Sign out (${u.email||'user'})` : 'Sign in';
-        storageMode = u ? 'cloud' : 'local';
-        renderProfileSelects();
-      });
-    }catch(e){ console.warn('Firebase init failed, staying local.', e); }
+  function loadAccounts(){ try{return JSON.parse(localStorage.getItem(AUTH_KEY)||'{}');}catch(e){return {}} }
+  function saveAccounts(obj){ localStorage.setItem(AUTH_KEY, JSON.stringify(obj)); }
+  function hash(p){ return btoa(unescape(encodeURIComponent(p))).slice(0,40); } // simple, not secure (demo)
+
+  function updateAuthUI(){
+    const label = currentAccount.startsWith('local:')
+      ? (currentAccount==='local:guest'?'Guest':'Local • '+currentAccount.split(':')[1])
+      : currentAccount;
+    acctLabel.innerHTML = 'Account: <b>'+label+'</b>';
+    $('#authBtn').textContent = currentAccount==='local:guest' ? 'Create Account / Sign in' : 'Account';
   }
-  initFirebase();
+  updateAuthUI();
 
-  async function listProfiles(){
-    if(storageMode==='cloud' && currentUser && db){
-      const snap = await db.collection('users').doc(currentUser.uid).collection('profiles').orderBy('name').get();
-      return snap.docs.map(d=> ({id:d.id, ...(d.data())}));
+  authBtn.addEventListener('click', ()=>{
+    authModal.classList.add('show');
+    const loggedIn = currentAccount!=='local:guest';
+    authTitle.textContent = loggedIn ? 'Your Account' : 'Create Account / Sign in';
+    authState.textContent = 'Accounts are stored on this device.';
+    btnSignOut.style.display = loggedIn ? 'inline-block' : 'none';
+  });
+  $('#authClose').addEventListener('click', ()=> authModal.classList.remove('show'));
+
+  btnCreate.addEventListener('click', ()=>{
+    const email=(authEmail.value||'').trim().toLowerCase();
+    const pass=(authPass.value||'').trim();
+    if(!email || !pass) return alert('Enter email and password.');
+    const db=loadAccounts();
+    if(db[email]) return alert('Account already exists. Try signing in.');
+    db[email]=hash(pass);
+    saveAccounts(db);
+    currentAccount='local:'+email; localStorage.setItem(ACTIVE_ACCT,currentAccount);
+    alert('Account created.');
+    authModal.classList.remove('show'); updateAuthUI(); renderProfileSelects();
+  });
+  btnSignIn.addEventListener('click', ()=>{
+    const email=(authEmail.value||'').trim().toLowerCase();
+    const pass=(authPass.value||'').trim();
+    if(!email || !pass) return alert('Enter email and password.');
+    const db=loadAccounts();
+    if(db[email] && db[email]===hash(pass)){
+      currentAccount='local:'+email; localStorage.setItem(ACTIVE_ACCT,currentAccount);
+      alert('Signed in.');
+      authModal.classList.remove('show'); updateAuthUI(); renderProfileSelects();
+    }else{
+      alert('Invalid credentials.');
     }
-    try { return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]'); } catch(e){ return []; }
-  }
-  async function saveProfiles(profiles){
-    if(storageMode==='cloud' && currentUser && db){
-      const batch=db.batch();
-      const col = db.collection('users').doc(currentUser.uid).collection('profiles');
-      const existing = await col.get();
-      const keep = new Set(profiles.map(p=>p.id));
-      existing.forEach(doc=>{ if(!keep.has(doc.id)) batch.delete(col.doc(doc.id)); });
-      profiles.forEach(p=> batch.set(col.doc(p.id), {name:p.name, history:p.history||[]}));
-      await batch.commit(); return;
-    }
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(profiles));
-  }
-  function setActiveId(id){ localStorage.setItem('gmf_active_profile', id); }
-  function getActiveId(){ return localStorage.getItem('gmf_active_profile'); }
+  });
+  btnSignOut.addEventListener('click', ()=>{
+    currentAccount='local:guest'; localStorage.setItem(ACTIVE_ACCT,currentAccount);
+    alert('Signed out.');
+    authModal.classList.remove('show'); updateAuthUI(); renderProfileSelects();
+  });
+
+  /* ---------- Profiles (scoped by account) ---------- */
+  function storeKey(){ return 'gmf_profiles_'+(currentAccount||'local:guest'); }
+  async function listProfiles(){ try{return JSON.parse(localStorage.getItem(storeKey())||'[]');}catch(e){return []} }
+  async function saveProfiles(p){ localStorage.setItem(storeKey(), JSON.stringify(p)); }
+  function setActiveId(id){ localStorage.setItem('gmf_active_profile_'+(currentAccount||'local:guest'), id); }
+  function getActiveId(){ return localStorage.getItem('gmf_active_profile_'+(currentAccount||'local:guest')); }
 
   async function ensureDefaultProfile(){
     let p=await listProfiles();
@@ -549,15 +523,13 @@
 
   $('#profileSelect').addEventListener('change', async e=>{ setActiveId(e.target.value); await renderProfileSelects(); });
   $('#profileSelectSide').addEventListener('change', async e=>{ setActiveId(e.target.value); await renderProfileSelects(); });
-
   async function newProfile(){
     const name=prompt('Profile name?','Profile '+(Date.now()%1000)); if(!name) return;
     const ps=await ensureDefaultProfile(); const id=crypto.randomUUID();
     ps.push({id,name,history:[]}); await saveProfiles(ps); setActiveId(id); await renderProfileSelects();
   }
-  $('#newProfileBtn')    .addEventListener('click', newProfile);
+  $('#newProfileBtn').addEventListener('click', newProfile);
   $('#newProfileBtnSide').addEventListener('click', newProfile);
-
   $('#renameProfileBtn')?.addEventListener('click', async ()=>{
     const prof=await getActiveProfile(); if(!prof) return;
     const name=prompt('New name', prof.name); if(!name) return;
@@ -567,9 +539,7 @@
     if(!confirm('Delete this profile?')) return;
     let ps=await ensureDefaultProfile(); const cur=getActiveId();
     ps=ps.filter(x=>x.id!==cur); await saveProfiles(ps);
-    const newId=(ps[0]?.id)||null; if(newId){ setActiveId(newId); } else {
-      const id=crypto.randomUUID(); ps=[{id,name:'Profile 1',history:[]}]; await saveProfiles(ps); setActiveId(id);
-    }
+    const newId=(ps[0]?.id)||null; if(newId){ setActiveId(newId); }
     await renderProfileSelects();
   });
   $('#exportProfileBtn')?.addEventListener('click', async ()=>{
@@ -661,7 +631,6 @@
   }
 
   const bigGrade=$('#bigGrade'), scoreLine=$('#scoreLine'), nwLine=$('#nwLine');
-
   function renderWhy(s){
     $('#chips').innerHTML = [
       `<span class="chip">FI vs age: <b>${(s.relFI*100).toFixed(0)}%</b></span>`,
@@ -670,10 +639,9 @@
       `<span class="chip">Debt/Income: <b>${((s.nonMortDebt/(s.annualIncome||1))*100).toFixed(0)}%</b></span>`,
       s.paidOffHouse?`<span class="chip">House: <b>Paid off</b></span>`:`<span class="chip">Equity: <b>${money(s.homeEquity)}</b></span>`
     ].join('');
-
     $('#whyList').innerHTML = [
-      `Investables = retirement + brokerage + HSA + surplus cash + 40% home equity: <b>${money(s.investableTotal)}</b>.`,
-      `Annual spend: <b>${money(s.annualSpend)}</b> → Target FI @ ${Math.round(SWR*1000)/10}%: <b>${money(s.targetFI)}</b>.`,
+      `Investables (401k + brokerage + HSA + surplus cash + 40% equity): <b>${money(s.investableTotal)}</b>.`,
+      `Annual spend: <b>${money(s.annualSpend)}</b> → Target FI @ ${(SWR*100).toFixed(1)}%: <b>${money(s.targetFI)}</b>.`,
       `Age ${val('age')||30} expected readiness ~ <b>${(s.expRead*100).toFixed(0)}%</b>.`,
       `FI vs age curve: <b>${(s.relFI*100).toFixed(0)}%</b> (1.0 = on track).`,
       `Net worth: <b>${money(s.net)}</b> (${(s.nwToIncome).toFixed(2)}× income).`,
@@ -683,75 +651,51 @@
   }
   function renderImprove(s){
     const ideas=[];
-    if(s.relFI < 1){
-      const goal = s.targetFI*s.expRead;
-      const gap = Math.max(0, goal - s.investableTotal);
-      ideas.push(`Get on track for age: add ~${money(gap)} to investables (raise savings and/or trim spend).`);
-    }else{
-      ideas.push(`You’re on track for your age—nice. Keep compounding and your systems humming.`);
-    }
-    if(s.efMonths < EF_TARGET){
-      ideas.push(`Build emergency fund to ${EF_TARGET} months (${money((s.expenses||0)*EF_TARGET)}).`);
-    }else if(s.efMonths < EF_TARGET+6){
-      ideas.push(`Add a buffer: target ${EF_TARGET+6} months cash for resilience.`);
-    }
-    if(s.saveRate < 0.20){
-      const bump = Math.ceil((s.income + s.pretaxMonthly)*0.05);
-      ideas.push(`Boost savings rate: automate +${money(bump)}/mo (aim ≥ 20%).`);
-    }
-    if(s.nonMortDebt > 0){
-      ideas.push(`Aggressively pay down non-mortgage debt; keep debt/income < 20%.`);
-    }
-    if(!s.paidOffHouse && s.home>0){
-      ideas.push(`Consider periodic principal prepayments to improve housing security.`);
-    }
-    if(s.spendsMoreThanIncome){
-      ideas.push(`Spending exceeds income—trim variable spend or raise income to stop the bleed.`);
-    }
+    if(s.relFI < 1){ const goal = s.targetFI*s.expRead; const gap = Math.max(0, goal - s.investableTotal); ideas.push(`Get on track for age: add ~${money(gap)} to investables.`); }
+    else ideas.push(`You’re on track for your age—nice. Keep compounding.`);
+    if(s.efMonths < EF_TARGET) ideas.push(`Build EF to ${EF_TARGET} months (${money((s.expenses||0)*EF_TARGET)}).`);
+    if(s.saveRate < 0.20){ const bump = Math.ceil((s.income + s.pretaxMonthly)*0.05); ideas.push(`Boost savings rate by automating +${money(bump)}/mo.`); }
+    if(s.nonMortDebt > 0) ideas.push(`Aggressively pay down non-mortgage debt.`); 
+    if(!s.paidOffHouse && s.home>0) ideas.push(`Periodic principal prepayments can improve security.`);
+    if(s.spendsMoreThanIncome) ideas.push(`Spending exceeds income—trim variable spend or raise income.`);
     $('#improveList').innerHTML = ideas.map(x=>`<div>• ${x}</div>`).join('');
   }
-
   async function doGrade(){
     const s = scoreModel(values());
     const L = letter(s.score, s);
-
     bigGrade.textContent = L;
     bigGrade.style.color = ({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'} )[L] || 'var(--text)';
     bigGrade.classList.remove('show'); requestAnimationFrame(()=>bigGrade.classList.add('show'));
     scoreLine.textContent = `Score: ${s.score.toFixed(1)} / 100.0`;
     nwLine.textContent = `Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
     $('#progressFill').style.width = s.score + '%';
-
     renderWhy(s); renderImprove(s);
 
     const prof = await getActiveProfile();
-    const snapshot={date:new Date().toISOString(),score:s.score,letter:L,inputs: Object.fromEntries(ids.map(id=>[id,Number(els[id]?.value||0)])), summary:{
-      assets:s.assets, liabs:s.liabs, net:s.net, investableTotal:s.investableTotal, targetFI:s.targetFI, efMonths:s.efMonths, saveRate:s.saveRate, fiRatio:s.fiRatio, relFI:s.relFI
-    }};
-    (prof.history=prof.history||[]).push(snapshot); await putActiveProfile(prof); drawHistory();
+    (prof.history=prof.history||[]).push({
+      date:new Date().toISOString(),score:s.score,letter:L,
+      inputs:Object.fromEntries(ids.map(id=>[id,Number(els[id]?.value||0)])),
+      summary:{assets:s.assets, liabs:s.liabs, net:s.net, investableTotal:s.investableTotal, targetFI:s.targetFI, efMonths:s.efMonths, saveRate:s.saveRate, fiRatio:s.fiRatio, relFI:s.relFI}
+    });
+    await putActiveProfile(prof); drawHistory();
   }
 
   /* ---------- Overlays ---------- */
   const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
-  function showOverlay(){
-    let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
-    const timer=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200);
-    return ()=>{ clearInterval(timer); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); };
+  function showOverlay(){ let prog=0; overlay.classList.add('show'); bar.style.width='0%'; pct.textContent='0%';
+    const t=setInterval(()=>{ prog=Math.min(96, prog+Math.random()*8+4); bar.style.width=prog+'%'; pct.textContent=Math.round(prog)+'%'; },200);
+    return ()=>{ clearInterval(t); bar.style.width='100%'; pct.textContent='100%'; setTimeout(()=>overlay.classList.remove('show'),250); };
   }
-  function runGradeSafely(){ const hide=showOverlay(); requestAnimationFrame(()=> setTimeout(()=>{ try{ doGrade(); }catch(e){ console.error(e); alert('Oops—could not calculate. Try again.'); } hide(); }, 480)); }
+  function runGradeSafely(){ const hide=showOverlay(); requestAnimationFrame(()=> setTimeout(()=>{ try{ doGrade(); }catch(e){ console.error(e); alert('Oops—could not calculate.'); } hide(); }, 480)); }
 
   /* ---------- Buttons ---------- */
-  $('#gradeBtn')    .addEventListener('click', runGradeSafely);
-  $('#gradeBtnTop') .addEventListener('click', ()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); runGradeSafely(); });
-
+  $('#gradeBtn').addEventListener('click', runGradeSafely);
+  $('#gradeBtnTop').addEventListener('click', ()=>{ $$('.page').forEach(p=>p.classList.remove('active')); $('#page-grade').classList.add('active'); runGradeSafely(); });
   $('#demoBtnTop').addEventListener('click', ()=>{
-    const demo={income:7500,expenses:4000,age:30,
-      home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000,
-      mortgage:329000,student:26000,auto:13500,cc:0,
-      mortgageApr:5.25,studentApr:4.9,autoApr:3.5,ccApr:24.99,
-      pretaxMonthly:900,eduMonthly:200};
-    Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; });
-    updateHints();
+    const demo={income:7500,expenses:4000,age:30, home:475000,retire:72000,brokerage:29000,car:15000,hsa:1500,cash:24000,
+      mortgage:329000,student:26000,auto:13500,cc:0, mortgageApr:5.25,studentApr:4.9,autoApr:3.5,ccApr:24.99, pretaxMonthly:900,eduMonthly:200};
+    Object.keys(demo).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=demo[id]; }); updateHints();
+    window.scrollTo({top:document.querySelector('main').offsetTop - 8, behavior:'smooth'});
   });
   $('#copyTop').addEventListener('click', ()=>{
     const state={}; ids.forEach(id=> state[id]=Number(els[id]?.value||0));
@@ -838,7 +782,7 @@
 
   /* ---------- Welcome ---------- */
   (function welcome(){
-    const key='gmf_welcome_seen_v9';
+    const key='gmf_welcome_seen_v10';
     const el = $('#welcome');
     if(localStorage.getItem(key)!=='1'){ el.classList.add('show'); }
     $('#welcomeGo').addEventListener('click', ()=>{ localStorage.setItem(key,'1'); el.classList.remove('show'); });
@@ -860,34 +804,12 @@
     window.addEventListener('touchmove', (e)=>{ if(e.touches?.[0]) move(e.touches[0]); }, {passive:true});
   })();
 
-  /* ---------- Auth UI ---------- */
-  const authBtn   = $('#authBtn');
-  const authModal = $('#authModal');
-  const authEmail = $('#authEmail');
-  const authPass  = $('#authPass');
-  const authState = $('#authState');
-
-  authBtn.addEventListener('click', async ()=>{
-    if(firebase?.auth?.() && firebase.auth().currentUser){
-      await firebase.auth().signOut();
-      alert('Signed out.');
-      return;
-    }
-    authModal.classList.add('show');
-    authState.textContent = FIREBASE_CONFIG ? 'Sign in to sync with cloud.' : 'No Firebase config found—local mode only.';
-  });
-  $('#authClose').addEventListener('click', ()=> authModal.classList.remove('show'));
-  $('#authGuest').addEventListener('click', ()=> authModal.classList.remove('show'));
-  $('#authSignIn').addEventListener('click', async ()=>{
-    if(!FIREBASE_CONFIG){ alert('Cloud is not configured. Staying local.'); return; }
-    try{ await firebase.auth().signInWithEmailAndPassword(authEmail.value, authPass.value); authModal.classList.remove('show'); }
-    catch(e){ alert(e.message||'Sign in failed'); }
-  });
-  $('#authSignUp').addEventListener('click', async ()=>{
-    if(!FIREBASE_CONFIG){ alert('Cloud is not configured. Staying local.'); return; }
-    try{ await firebase.auth().createUserWithEmailAndPassword(authEmail.value, authPass.value); authModal.classList.remove('show'); }
-    catch(e){ alert(e.message||'Sign up failed'); }
-  });
+  /* ---------- Input hints init ---------- */
+  function hydrateFromHash(){
+    const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
+    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=obj[id]; }); updateHints(); }catch(e){}
+  }
+  hydrateFromHash();
 
 })();
 </script>
