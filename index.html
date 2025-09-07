@@ -34,12 +34,11 @@
   a:hover{text-decoration:underline}
   .container{max-width:1200px;margin:0 auto;padding:0 16px}
 
-  /* ---------- Sticky header with GIANT logo ---------- */
+  /* ---------- Sticky header with CLEAR "G" logo (reduced size) ---------- */
   header{position:sticky;top:0;z-index:60;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .hdr{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 16px}
   .brand{display:flex;align-items:center;gap:14px}
-  /* 200% size vs previous: make it unmistakably a G */
-  .logoBig{width:236px;height:236px;filter:drop-shadow(0 10px 28px rgba(0,0,0,.25))}
+  .logoBig{width:118px;height:118px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.22))}
   .title{margin:0;font-size:28px;color:#062c1b;font-weight:900;letter-spacing:.2px}
   .tag{margin:0;color:#062c1bcc;font-size:12px}
   .spacer{flex:1}
@@ -49,7 +48,7 @@
 
   /* ---------- HERO ---------- */
   .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start;padding:18px 0 6px}
-  @media (max-width: 980px){ .hero{grid-template-columns:1fr;gap:10px} }
+  @media (max-width: 980px){ .hero{grid-template-columns:1fr;gap:14px} }
   .hero-copy{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
     border:1px solid var(--line);border-radius:22px;padding:22px 20px;box-shadow:var(--shadow)}
   .hero-title{margin:0 0 8px;font-size:34px;letter-spacing:.2px}
@@ -61,11 +60,11 @@
   .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
   .btn.ghost{background:transparent}
 
-  /* ---------- 3D Mascot ---------- */
+  /* ---------- 3D Mascot (ALWAYS visible on mobile) ---------- */
   .hero-mascot{position:relative;display:grid;place-items:center;align-self:start}
   .buddy{max-height:260px;width:auto}
   @media (max-width:1100px){ .buddy{max-height:220px} }
-  @media (max-width:640px){ .hero{grid-template-columns:1fr}.hero-mascot{display:none} }
+  @media (max-width:640px){ .buddy{max-height:180px} }  /* no display:none; keep it visible */
   .mascot-bubble{
     position:absolute;top:-6px;right:4px;background:rgba(0,0,0,.35);border:1px solid var(--line);
     padding:6px 10px;border-radius:999px;font-size:12px;color:var(--text);backdrop-filter: blur(6px)
@@ -73,13 +72,15 @@
   .b-float{animation:floatCard 3.2s ease-in-out infinite}
   .b-shadow{animation:floatShadow 3.2s ease-in-out infinite}
   .b-blink{animation:blink 6s ease-in-out infinite}
-  .b-wave{transform-origin:235px 120px;animation:wave 2.3s ease-in-out infinite}
-  .b-badge{transform-origin:235px 120px;animation:badgePop 2.6s ease-in-out infinite}
+  .b-wave{transform-origin:235px 120px;animation:wave 2.4s ease-in-out infinite}
+  .b-pop{animation:badgePop 2.2s ease-in-out infinite}
+  .spark{animation:sparkle 1.8s linear infinite}
   @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
   @keyframes floatShadow{0%,100%{transform:scale(1);opacity:.35}50%{transform:scale(0.94);opacity:.2}}
   @keyframes blink{0%,95%,100%{opacity:0}96%,98%{opacity:1}}
-  @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-12deg)}}
+  @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-11deg)}}
   @keyframes badgePop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+  @keyframes sparkle{0%{opacity:0;transform:translateY(-6px) scale(.8)}30%{opacity:1}100%{opacity:0;transform:translateY(-22px) scale(1.1)}}
 
   /* ---------- Shell ---------- */
   .shell{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:300px 1fr;gap:18px;padding:12px 18px 18px}
@@ -126,12 +127,15 @@
   footer{max-width:1200px;margin:12px auto 24px;padding:0 18px 24px;color:var(--muted)}
   footer a{color:var(--accent)}
 
-  /* ---------- Profiles panel (clean & proportional) ---------- */
-  .profiles-card .row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
-  .profiles-card .row.tight{grid-template-columns:1fr 1fr}
+  /* ---------- Profiles panel (fixed layout) ---------- */
+  .profiles-card .row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
+    gap:10px
+  }
   .profiles-card select{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text)}
   .profiles-card .btn{width:100%}
-  .profiles-card .streakline{margin-top:10px}
+  .profiles-card .streakline{margin-top:8px}
 
   /* ---------- History UI ---------- */
   .hist-ui{display:grid;gap:12px}
@@ -144,7 +148,6 @@
     .shell{grid-template-columns:1fr}
     aside{position:static}
     .grid{grid-template-columns:1fr}
-    .profiles-card .row{grid-template-columns:1fr 1fr}
   }
   @media (max-width: 768px){
     .grid > [style*="grid-column:span 6"],
@@ -155,11 +158,11 @@
 </style>
 </head>
 <body class="dark">
-  <!-- Header with GIANT custom logo -->
+  <!-- Header with CLEAR “G” logo -->
   <header>
     <div class="hdr">
       <div class="brand">
-        <!-- GIANT Green G with embedded report card (clear G shape) -->
+        <!-- Unmistakable G: circular form + horizontal bar; embedded report card tile -->
         <svg class="logoBig" viewBox="0 0 300 300" aria-hidden="true">
           <defs>
             <radialGradient id="gGlow" cx="50%" cy="40%" r="65%">
@@ -169,19 +172,21 @@
               <stop offset="0" stop-color="#F0FFF4"/><stop offset="1" stop-color="#D1FAE5"/>
             </linearGradient>
           </defs>
-          <!-- coin -->
           <circle cx="150" cy="150" r="135" fill="url(#gGlow)"/>
-          <!-- crisp G: outer arc + inner bar -->
-          <path d="M210 150h-64a44 44 0 1 1 0-88c30 0 54 15 64 38" fill="none" stroke="#052e1b" stroke-width="26" stroke-linecap="round"/>
-          <path d="M146 212a60 60 0 0 0 64-44" fill="none" stroke="#052e1b" stroke-width="26" stroke-linecap="round"/>
+          <!-- G ring -->
+          <circle cx="150" cy="150" r="95" fill="none" stroke="#052e1b" stroke-width="26"/>
+          <!-- inner notch to make G opening -->
+          <rect x="205" y="90" width="60" height="60" fill="url(#gGlow)"/>
+          <!-- horizontal bar for G -->
+          <line x1="150" y1="150" x2="240" y2="150" stroke="#052e1b" stroke-width="26" stroke-linecap="round"/>
           <!-- embedded report card -->
-          <g transform="translate(205,62)">
-            <rect width="72" height="86" rx="14" fill="url(#paperGradL)" stroke="#bbf7d0" stroke-width="2"/>
+          <g transform="translate(208,60)">
+            <rect width="64" height="76" rx="13" fill="url(#paperGradL)" stroke="#bbf7d0" stroke-width="2"/>
             <g stroke="#10b981" stroke-width="5" stroke-linecap="round">
-              <line x1="12" y1="34" x2="60" y2="34"/>
-              <line x1="12" y1="50" x2="60" y2="50"/>
+              <line x1="12" y1="30" x2="52" y2="30"/>
+              <line x1="12" y1="45" x2="52" y2="45"/>
             </g>
-            <path d="M16 22l10 10 24-24" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 20l10 10 22-22" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
           </g>
         </svg>
         <div>
@@ -209,9 +214,9 @@
       </div>
     </div>
 
-    <!-- 3D-style mascot (report card buddy) HOLDING A+ badge -->
+    <!-- 3D-style mascot: holds an A+ badge; more animations; mobile-visible -->
     <div class="hero-mascot" aria-hidden="true">
-      <svg class="buddy b-float" viewBox="0 0 340 280" role="img" aria-label="Report Card Buddy 3D">
+      <svg class="buddy b-float" viewBox="0 0 360 300" role="img" aria-label="Report Card Buddy 3D">
         <defs>
           <linearGradient id="paper3D" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7FFEF"/>
@@ -223,34 +228,42 @@
             <stop offset="0" stop-color="#fecdd3"/><stop offset="1" stop-color="#fecdd3" stop-opacity="0"/>
           </radialGradient>
         </defs>
-        <ellipse cx="170" cy="252" rx="78" ry="16" fill="rgba(0,0,0,.25)" class="b-shadow"/>
+        <ellipse cx="180" cy="270" rx="80" ry="16" fill="rgba(0,0,0,.25)" class="b-shadow"/>
         <g>
           <!-- card body with 3D gloss -->
-          <rect x="85" y="36" width="170" height="212" rx="26" fill="url(#paper3D)" stroke="#86EFAC" stroke-width="2"/>
-          <ellipse cx="140" cy="60" rx="80" ry="26" fill="url(#vol)" opacity=".35"/>
+          <rect x="95" y="44" width="170" height="212" rx="26" fill="url(#paper3D)" stroke="#86EFAC" stroke-width="2"/>
+          <ellipse cx="150" cy="66" rx="86" ry="26" fill="url(#vol)" opacity=".35"/>
           <g stroke="#CCFBE1" stroke-width="2">
-            <line x1="100" x2="240" y1="104" y2="104"/>
-            <line x1="100" x2="240" y1="124" y2="124"/>
-            <line x1="100" x2="240" y1="144" y2="144"/>
-            <line x1="100" x2="240" y1="164" y2="164"/>
+            <line x1="110" x2="250" y1="110" y2="110"/>
+            <line x1="110" x2="250" y1="130" y2="130"/>
+            <line x1="110" x2="250" y1="150" y2="150"/>
+            <line x1="110" x2="250" y1="170" y2="170"/>
           </g>
-          <!-- arms (waving right) -->
-          <path d="M85 132 q-28 6 -36 -14" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <path d="M255 168 q36 12 40 -18" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round" class="b-wave"/>
+          <!-- arms (right arm holds badge) -->
+          <path d="M95 142 q-28 6 -36 -14" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M265 170 q36 12 40 -18" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round" class="b-wave"/>
           <!-- legs -->
-          <path d="M134 246 q-12 18 -26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
-          <path d="M206 246 q12 18 26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M144 254 q-12 18 -26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M216 254 q12 18 26 0" stroke="#86efac" stroke-width="10" fill="none" stroke-linecap="round"/>
           <!-- face -->
-          <circle id="eyeL" cx="138" cy="82" r="8" fill="#0f172a"/>
-          <circle id="eyeR" cx="198" cy="82" r="8" fill="#0f172a"/>
-          <g class="b-blink"><rect x="130" y="76" width="16" height="6" fill="#fff"/><rect x="190" y="76" width="16" height="6" fill="#fff"/></g>
-          <path id="smile" d="M134 110 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="126" cy="94" r="11" fill="url(#cheek)"/><circle cx="210" cy="94" r="11" fill="url(#cheek)"/>
-          <!-- A+ badge (no star) -->
-          <g class="b-badge" transform="translate(270,150) rotate(-6)">
-            <circle r="24" fill="#10b981" stroke="#065f46" stroke-width="3"/>
-            <circle r="20" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
-            <text y="6" text-anchor="middle" font-size="20" font-weight="900" fill="#a7f3d0">A+</text>
+          <circle id="eyeL" cx="148" cy="92" r="8" fill="#0f172a"/>
+          <circle id="eyeR" cx="208" cy="92" r="8" fill="#0f172a"/>
+          <g class="b-blink"><rect x="140" y="86" width="16" height="6" fill="#fff"/><rect x="200" y="86" width="16" height="6" fill="#fff"/></g>
+          <path id="smile" d="M144 120 q18 12 36 0" fill="none" stroke="#065f46" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="136" cy="104" r="11" fill="url(#cheek)"/><circle cx="220" cy="104" r="11" fill="url(#cheek)"/>
+
+          <!-- A+ badge in hand -->
+          <g class="b-pop" transform="translate(308,142) rotate(-10)">
+            <circle r="26" fill="#10b981" stroke="#065f46" stroke-width="3"/>
+            <circle r="22" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/>
+            <text y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#a7f3d0">A+</text>
+          </g>
+
+          <!-- sparkles -->
+          <g fill="#a7f3d0" opacity=".8">
+            <circle class="spark" cx="280" cy="70" r="2"/>
+            <circle class="spark" cx="300" cy="86" r="2.5"/>
+            <circle class="spark" cx="262" cy="62" r="1.8"/>
           </g>
         </g>
       </svg>
@@ -264,13 +277,15 @@
     <aside>
       <div class="card profiles-card" style="margin-bottom:10px">
         <div class="section" style="margin-bottom:6px">Profiles</div>
-        <div class="row">
+        <div class="row" style="margin-bottom:8px">
           <select id="profileSelectSide"></select>
+        </div>
+        <div class="row" style="margin-bottom:8px">
           <button id="newProfileBtnSide" class="btn">New</button>
           <button id="renameProfileBtn" class="btn">Rename</button>
           <button id="deleteProfileBtn" class="btn">Delete</button>
         </div>
-        <div class="row tight" style="margin-top:8px">
+        <div class="row">
           <button id="exportProfileBtn" class="btn">Export</button>
           <button id="importProfileBtn" class="btn">Import</button>
         </div>
@@ -501,7 +516,7 @@
   setMode((localStorage.getItem('gmf_theme')||'dark')==='light');
   modeBtn.addEventListener('click', ()=> setMode(!document.body.classList.contains('light')));
 
-  // hash router for read pages
+  // simple hash router for read pages
   function routeFromHash(){
     const h = location.hash.replace('#','');
     const pages=['grade','history','about','goal','faq','contact','read-saved-by-30','read-savings-rate','read-what-is-fire'];
@@ -510,7 +525,7 @@
       $$('.page').forEach(p=>p.classList.remove('active'));
       $('#page-'+found)?.classList.add('active');
       $('#'+found)?.classList.add('active');
-      $$('.tab').forEach(b=> b.classList.toggle('active', b.dataset.page===found));
+      $$('.tab').forEach(b=> b.dataset.page && b.classList.toggle('active', b.dataset.page===found));
     }
   }
   window.addEventListener('hashchange', routeFromHash);
@@ -551,7 +566,6 @@
   const els = Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
   const val = id => { const n=Number(els[id]?.value||0); return isFinite(n)?n:0; };
 
-  // curve (internal only)
   const curvePts = [[25,0.08],[30,0.18],[35,0.33],[40,0.50],[45,0.66],[50,0.82],[55,0.96],[60,1.00]];
   function expectedReadiness(age){
     const pts = curvePts;
@@ -855,7 +869,7 @@
   $('#copyTop').addEventListener('click', ()=> { safeCopy(buildShareURL()); showToast(); });
   $('#copyAgain').addEventListener('click', ()=> safeCopy(buildShareURL()));
 
-  // reset (set all numbers to 0; keep age 30)
+  // reset
   $('#resetBtn').addEventListener('click', ()=>{
     $$('#page-grade input[type="number"]').forEach(el=>{
       el.value = (el.id==='age'?30:0);
