@@ -195,7 +195,7 @@ body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
 .faq .item{background:var(--panel); border:1px solid var(--line); border-radius:14px; margin:8px 0; overflow:hidden}
 .faq summary{cursor:pointer; padding:12px 14px; font-weight:800; list-style:none}
 .faq details[open] summary{border-bottom:1px solid var(--line)}
-.faq .content{padding:12px 14px; color:var(--muted)}
+.faq .content{padding:12px 14px; color:#var(--muted)}
 
 /* Footer */
 footer{
@@ -387,10 +387,14 @@ ins.adsbygoogle { min-height:0 !important; }
 <section class="container subscribe" id="subscribe">
   <h3>Get simple money tips & updates</h3>
   <p>Drop your email and we’ll send occasional improvements — no spam, unsubscribe anytime.</p>
-  <form id="subForm" class="sub-row" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+
+  <!-- ✅ Formspree wired with your real endpoint -->
+  <form id="subForm" class="sub-row" action="https://formspree.io/f/xvgblayy" method="POST">
     <input type="email" name="email" id="subEmail" placeholder="you@example.com" required />
     <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
     <input type="hidden" name="_subject" value="New Grade My Finance subscriber" />
+    <!-- optional redirect as a safety net -->
+    <input type="hidden" name="_redirect" value="https://grademyfinance.com/?subscribed=1" />
     <button type="submit" class="btn primary">Subscribe</button>
   </form>
 </section>
@@ -656,8 +660,16 @@ on($('#demoBtn'),'click',()=>{ const d={income:7500,expenses:4000,age:30, home:4
 const subForm=$('#subForm'), subEmail=$('#subEmail'), toast=$('#toast');
 on(subForm,'submit',async (e)=>{
   e.preventDefault();
+
+  // ✅ Guard: ensure a real Formspree endpoint is configured
+  if (!/^https:\/\/formspree\.io\/f\/[a-z0-9]+$/i.test(subForm.action)) {
+    alert('Subscribe isn’t configured yet. Paste your real Formspree endpoint into the form action.');
+    return;
+  }
+
   const email=subEmail.value.trim();
   if(!/^\S+@\S+\.\S+$/.test(email)){ alert('Please enter a valid email.'); return; }
+
   try{
     const res=await fetch(subForm.action,{
       method:'POST',
@@ -675,6 +687,12 @@ on(subForm,'submit',async (e)=>{
     }
   }catch{ alert('Network error. Please try again later.'); }
 });
+
+// show toast if user returns via ?subscribed=1 (from hidden _redirect)
+if (new URLSearchParams(location.search).get('subscribed') === '1') {
+  toast.textContent='Thanks! You’re on the list.';
+  toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000);
+}
 })();
 </script>
 </body>
