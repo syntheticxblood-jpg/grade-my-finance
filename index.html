@@ -1,50 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="msvalidate.01" content="508F67417812BB5BD0689797124195E4" />
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<!-- Primary Meta Tags -->
 <title>Grade My Finance | Free Financial Grade Calculator</title>
 <meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score, track net worth, and find ways to improve. No sign-up required.">
-<meta name="keywords" content="financial grade calculator, money score, personal finance tool, net worth tracker, debt calculator, financial health check, retirement readiness, free finance app, budgeting tool, wealth score">
 <meta name="theme-color" content="#0f172a">
-
-<!-- Canonical URL & Icons -->
 <link rel="canonical" href="https://grademyfinance.com/">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://grademyfinance.com/">
-<meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
-<meta property="og:description" content="See your money like a report card. Get a free financial grade, track net worth, and find improvement tips instantly.">
-<meta property="og:image" content="https://grademyfinance.com/og-cover.png">
-
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="https://grademyfinance.com/">
-<meta name="twitter:title" content="Grade My Finance | Free Financial Grade Calculator">
-<meta name="twitter:description" content="See your money like a report card. Get a free financial grade, track net worth, and find improvement tips instantly.">
-<meta name="twitter:image" content="https://grademyfinance.com/og-cover.png">
-
-<!-- Structured Data (JSON-LD for Google) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Grade My Finance",
-  "url": "https://grademyfinance.com/",
-  "description": "Free financial grade calculator that gives you a money score, tracks net worth, and provides improvement tips instantly.",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "All",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-}
-</script>
-
-<!-- Google Analytics (GA4) -->
+<!-- GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -52,9 +19,8 @@
   gtag('config', 'G-H6223HYVS6');
 </script>
 
-<!-- Google AdSense (load once globally) -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514"
-     crossorigin="anonymous"></script>
+<!-- Google AdSense (loader once) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514" crossorigin="anonymous"></script>
 
 <style>
 :root{
@@ -63,20 +29,15 @@
   --g1:#16a34a; --g2:#34d399; --radius:16px; --shadow:0 14px 40px rgba(0,0,0,.35);
   --header-h:122px;
 }
-*{box-sizing:border-box}
-html,body{width:100%}
-body{
-  margin:0; padding-top:var(--header-h); overflow-x:hidden;
+*{box-sizing:border-box} html,body{width:100%}
+body{margin:0; padding-top:var(--header-h); overflow-x:hidden;
   background:
     radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
     radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
     var(--bg);
   color:var(--text); font-family:Inter,system-ui,Segoe UI,Roboto,Arial; line-height:1.35;
 }
-body.no-scroll{overflow:hidden}
 .container{max-width:1100px;margin:0 auto;padding:0 16px}
-
-/* Header */
 header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
   background:linear-gradient(90deg,var(--accent),var(--accent2)); border-bottom:1px solid var(--line);
 }
@@ -84,7 +45,6 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
 .logo{height:86px; width:auto; display:block; filter:drop-shadow(0 10px 24px rgba(0,0,0,.35))}
 .brand{font-weight:900; font-size:22px; color:#062c1b}
 
-/* Hero */
 .hero{ display:flex; flex-direction:column; align-items:center; gap:14px; padding:16px 0 8px; text-align:center; }
 .hero-card{ width:min(760px,92vw); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
   border:1px solid var(--line); border-radius:22px; padding:22px; box-shadow:var(--shadow); }
@@ -96,19 +56,14 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
   color:var(--text);font-weight:900;cursor:pointer;min-width:140px}
 .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
 .btn:focus{outline:3px solid rgba(34,211,238,.35)}
-
-/* Layout */
 .shell{max-width:1100px;margin:0 auto;padding:0 16px 24px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
 .section{font-size:14px;margin:0 0 8px 0;color:var(--muted);font-weight:800}
-
 .inputs{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:16px}
 @media (max-width:1060px){ .inputs{grid-template-columns:repeat(2,minmax(220px,1fr))} }
 @media (max-width:720px){ .inputs{grid-template-columns:1fr} .logo{height:78px} }
-
 input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:var(--text)}
 input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
-
 .flex{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .big{font-size:72px;font-weight:900;opacity:0;transform:translateY(6px);transition:opacity .35s ease, transform .35s ease}
 .big.show{opacity:1;transform:none}
@@ -116,16 +71,10 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .6s cubic-bezier(.2,.9,.2,1)}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .chip{padding:7px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px}
+footer{background:#0b1226;border-top:1px solid var(--line);padding:24px;text-align:center;color:var(--muted);font-size:14px}
+footer a{ color:var(--accent); text-decoration:none; font-weight:700; } footer a:hover{ text-decoration:underline }
 
-/* Mascot */
-.mascot{display:grid;place-items:center;position:relative}
-@keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
-.m-bubble{margin-top:6px;background:rgba(0,0,0,.35);border:1px solid var(--line);padding:6px 10px;border-radius:999px;font-size:12px;backdrop-filter:blur(6px)}
-/* Floating A+ badge anchored bottom-right (mobile-safe) */
-.floatA{position:absolute; right:8px; bottom:0; transform:translate(20%, 30%); background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac; border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)}
-@media (min-width:760px){ .floatA{right:18px; bottom:2px; transform:translate(35%,35%)} }
-
-/* Overlays */
+/* --- Overlay Loader (existing) --- */
 .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:50}
 .overlay.show{display:grid}
 .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
@@ -133,34 +82,51 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 .bar .fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);animation:slide .7s linear infinite}
 @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 
-/* Welcome modal */
-.welcome{
-  width:640px; max-width:92vw; background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:20px; box-shadow:var(--shadow);
+/* --- Report Card Modal --- */
+.modal{position:fixed; inset:0; display:none; z-index:60; }
+.modal.show{display:grid; place-items:center; background:rgba(0,0,0,.55); backdrop-filter: blur(2px);}
+.sheet{
+  width:min(900px,94vw); background:var(--panel); border:1px solid var(--line);
+  border-radius:22px; box-shadow:var(--shadow); padding:18px;
 }
-.welcome h2{margin:0 0 6px}
-.welcome p{margin:6px 0 12px; color:var(--muted)}
+.sheet-header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
+.rc-title{font-weight:900; font-size:22px}
+.xbtn{background:#19223d;border:1px solid var(--line); color:var(--text); border-radius:10px; padding:8px 12px; cursor:pointer}
+.rc-top{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.rc-left{display:flex;align-items:center;gap:12px}
+.rc-grade{font-size:64px;font-weight:1000; color:#062c1b; background:linear-gradient(180deg,#34d399,#16a34a); border:2px solid #86efac; border-radius:16px; padding:8px 16px}
+.rc-mascot{width:120px}
+.rc-meta{color:var(--muted); font-size:14px}
+.rc-grid{margin-top:10px; display:grid; grid-template-columns: 1.2fr .5fr .5fr; gap:8px; align-items:center}
+.rc-head{color:#9fb0c7; font-weight:800; font-size:12px}
+.rc-row{background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:12px; padding:10px; display:grid; grid-template-columns:subgrid; grid-column:1/-1}
+.badge{font-weight:900; border:1px solid var(--line); border-radius:10px; padding:6px 10px; text-align:center}
+.badge.good{color:#062c1b;background:linear-gradient(180deg,#34d399,#16a34a); border-color:#86efac}
+.badge.mid{color:#062c1b;background:linear-gradient(180deg,#facc15,#f59e0b)}
+.badge.bad{color:#fff;background:#ef4444}
+.rc-actions{display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap}
+@media (max-width:620px){
+  .rc-grade{font-size:48px}
+  .rc-grid{grid-template-columns: 1fr .6fr}
+  .rc-row{grid-template-columns: 1fr .6fr}
+  .rc-head.hide-sm{display:none}
+}
 
-/* Footer */
-footer{
-  background:#0b1226;
-  border-top:1px solid var(--line);
-  padding:24px;
-  text-align:center;
-  color:var(--muted);
-  font-size:14px;
-}
-footer a{ color:var(--accent); text-decoration:none; font-weight:700; }
-footer a:hover{ text-decoration:underline }
+/* Mascot float badge (kept) */
+.mascot{display:grid;place-items:center;position:relative}
+@keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
+.floatA{position:absolute; right:8px; bottom:0; transform:translate(20%, 30%); background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac; border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)}
+@media (min-width:760px){ .floatA{right:18px; bottom:2px; transform:translate(35%,35%)} }
 </style>
 </head>
 
 <body>
-<!-- Confetti canvas (non-interactive) -->
-<canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:40;"></canvas>
+<!-- Confetti canvas -->
+<canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:80;"></canvas>
 
 <header>
   <div class="hdr">
-    <!-- 3D-ish G + Report Card logo -->
+    <!-- G + report card logo -->
     <svg class="logo" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
       <defs>
         <radialGradient id="gSphere" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#b9f4d1"/><stop offset=".55" stop-color="#34d399"/><stop offset="1" stop-color="#128a3f"/></radialGradient>
@@ -187,13 +153,13 @@ footer a:hover{ text-decoration:underline }
     <p class="hero-tag">No sign-up. Plug in numbers → get a score. Simple and effective.</p>
     <div class="hero-cta">
       <button class="btn" id="demoBtn" type="button">Try Demo</button>
-      <button class="btn primary" id="gradeBtnTop" type="button">Grade me now</button>
+      <button class="btn primary" id="gradeBtnTop" type="button">Get My Report Card</button>
       <button class="btn" id="copyLink" type="button">Copy share link</button>
     </div>
   </div>
 
   <div class="mascot">
-    <!-- Friendlier mascot -->
+    <!-- friendly mascot -->
     <svg viewBox="0 0 260 240" width="220" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
       <defs><linearGradient id="mc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient></defs>
       <ellipse cx="130" cy="220" rx="56" ry="12" fill="rgba(0,0,0,.3)"/>
@@ -203,22 +169,14 @@ footer a:hover{ text-decoration:underline }
       <path d="M105 110 q25 18 50 0" stroke="#16a34a" stroke-width="6" fill="none" stroke-linecap="round"/>
       <g stroke="#a7f3d0" stroke-width="2"><line x1="80" y1="130" x2="180" y2="130"/><line x1="80" y1="148" x2="180" y2="148"/><line x1="80" y1="166" x2="180" y2="166"/></g>
       <g transform="translate(130,132)"><circle r="20" fill="#10b981" stroke="#065f46" stroke-width="3"/><circle r="15" fill="#0b1226" stroke="#a7f3d0" stroke-width="2"/><text text-anchor="middle" dominant-baseline="central" font-size="16" font-weight="900" fill="#a7f3d0">A+</text></g>
-      <path d="M60 130 q-22 10 -28 -8" stroke="#22c55e" stroke-linecap="round" stroke-width="8" fill="none"/>
-      <path d="M200 158 q26 12 28 -10" stroke="#22c55e" stroke-linecap="round" stroke-width="8" fill="none"/>
     </svg>
     <div class="floatA" aria-hidden="true">A+</div>
-    <div class="m-bubble">“You’ve got this.”</div>
   </div>
 </section>
 
-<!-- AdSense unit #1: below hero -->
+<!-- Ad #1 (below hero) -->
 <div class="container" style="margin:24px auto;">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-3638344211698514"
-       data-ad-slot="REPLACE_WITH_YOUR_SLOT_1"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3638344211698514" data-ad-slot="REPLACE_WITH_YOUR_SLOT_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
@@ -245,31 +203,21 @@ footer a:hover{ text-decoration:underline }
 
         <div class="card" style="grid-column:1/-1">
           <div class="flex">
-            <div style="display:flex;align-items:center;gap:14px">
-              <div id="bigGrade" class="big" aria-live="polite">—</div>
-              <div>
-                <div id="scoreLine">Score: — / 100.0</div>
-                <div id="nwLine">Net worth: —</div>
-                <div class="chips" id="chips"></div>
-              </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button id="resetBtn" class="btn" type="button">Reset</button>
             </div>
             <div style="display:flex;gap:8px">
-              <button id="resetBtn" class="btn" type="button">Reset</button>
-              <button id="gradeBtn" class="btn primary" type="button">Get My Score</button>
+              <button id="gradeBtn" class="btn primary" type="button">Get My Report Card</button>
             </div>
           </div>
           <div class="progress" style="margin:10px 0"><div id="progressFill"></div></div>
-          <div class="inputs" style="grid-template-columns:repeat(2,minmax(220px,1fr));margin-top:6px">
-            <div class="card" style="border-style:dashed"><b>What went into your grade</b><div id="whyList" style="margin-top:8px;color:var(--muted)">Enter numbers and click Get My Score.</div></div>
-            <div class="card" style="border-style:dashed"><b>How to level up</b><div id="improveList" style="margin-top:8px;color:var(--muted)">Personalized ideas will show up here.</div></div>
-          </div>
         </div>
       </div>
     </section>
   </main>
 </div>
 
-<!-- Loading overlay -->
+<!-- Overlay loader (brief) -->
 <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
   <div class="loader">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -279,36 +227,51 @@ footer a:hover{ text-decoration:underline }
   </div>
 </div>
 
-<!-- Welcome overlay (first visit only) -->
-<div id="welcome" class="overlay" aria-modal="true" role="dialog">
-  <div class="welcome">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-      <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
-        <defs><radialGradient id="g2" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#b9f4d1"/><stop offset="1" stop-color="#34d399"/></radialGradient></defs>
-        <circle cx="22" cy="22" r="20" fill="url(#g2)"/><text x="22" y="28" text-anchor="middle" font-size="20" font-weight="1000" fill="#072b19" stroke="#eafff3" stroke-width="1.2" paint-order="stroke">G</text>
-      </svg>
-      <h2 style="margin:0">Welcome to Grade My Finance</h2>
+<!-- REPORT CARD MODAL -->
+<div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rcTitle">
+  <div class="sheet">
+    <div class="sheet-header">
+      <div class="rc-top">
+        <div class="rc-left">
+          <!-- Mini mascot -->
+          <svg class="rc-mascot" viewBox="0 0 260 240" aria-hidden="true">
+            <ellipse cx="130" cy="220" rx="56" ry="12" fill="rgba(0,0,0,.18)"/>
+            <rect x="60" y="38" width="140" height="160" rx="26" fill="#eafff3" stroke="#86EFAC" stroke-width="2.2"/>
+            <g stroke="#a7f3d0" stroke-width="1.8"><line x1="80" y1="130" x2="180" y2="130"/><line x1="80" y1="148" x2="180" y2="148"/></g>
+          </svg>
+          <div>
+            <div id="rcTitle" class="rc-title">Your Report Card</div>
+            <div id="rcMeta" class="rc-meta">—</div>
+          </div>
+        </div>
+        <div id="rcGrade" class="rc-grade">A</div>
+      </div>
+      <button class="xbtn" id="closeReport" type="button">Close</button>
     </div>
-    <p>The friendly report-card for your money. Enter basic numbers, get a letter grade, and ideas to level up. No sign-up, no spam.</p>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-      <button class="btn" id="skipWelcome" type="button">Skip</button>
-      <button class="btn primary" id="startWelcome" type="button">Let’s go</button>
+
+    <!-- Head row -->
+    <div class="rc-grid">
+      <div class="rc-head">Category</div>
+      <div class="rc-head">Details</div>
+      <div class="rc-head hide-sm">Grade</div>
+      <!-- rows injected here -->
+    </div>
+    <div id="rcRows"></div>
+
+    <div class="rc-actions">
+      <button class="btn" id="copyReport" type="button">Share my Report Card</button>
+      <button class="btn" id="copyJSON" type="button">Copy as Link</button>
+      <button class="btn primary" id="calcAgain" type="button">Recalculate</button>
     </div>
   </div>
 </div>
 
-<!-- AdSense unit #2: above footer -->
+<!-- Ad #2 (above footer) -->
 <div class="container" style="margin:28px auto;">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-3638344211698514"
-       data-ad-slot="REPLACE_WITH_YOUR_SLOT_2"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3638344211698514" data-ad-slot="REPLACE_WITH_YOUR_SLOT_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-<!-- Footer / Contact -->
 <footer>
   <p>Contact: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
   <p>© 2025 Grade My Finance. Educational use only — not financial advice.</p>
@@ -316,47 +279,42 @@ footer a:hover{ text-decoration:underline }
 
 <script>
 (() => {
-/* --- error guard --- */
-window.addEventListener('error', e => console.error('[GMF]', e?.message || e));
-
-/* --- helpers --- */
+/* utils */
 const $=s=>document.querySelector(s);
-const on=(el,ev,fn)=>el&&el.addEventListener(ev,fn,{passive:true});
+const el=(t,a={},ch=[])=>{const n=document.createElement(t);Object.assign(n,a);ch.forEach(c=>n.append(c));return n;}
+const on=(x,e,f)=>x&&x.addEventListener(e,f,{passive:true});
 const money=n=>isFinite(n)?`$${Math.round(n).toLocaleString()}`:'—';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-/* --- confetti --- */
-const cf=$('#confetti'), cctx=cf.getContext('2d');
+/* confetti */
+const cf=$('#confetti'), ctx=cf.getContext('2d');
 function resizeC(){ cf.width=innerWidth; cf.height=innerHeight } addEventListener('resize',resizeC); resizeC();
-function confettiBurst(n=200){
+function confettiBurst(n=240){
   const bits=[]; for(let i=0;i<n;i++) bits.push({x:Math.random()*cf.width,y:-20-Math.random()*140,vx:(Math.random()-.5)*3,vy:2+Math.random()*3.5,r:4+Math.random()*7,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.28,clr:`hsl(${Math.random()*360},90%,60%)`});
-  let t=0; (function anim(){ t++; cctx.clearRect(0,0,cf.width,cf.height);
-    bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; cctx.save(); cctx.translate(b.x,b.y); cctx.rotate(b.a); cctx.fillStyle=b.clr; cctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); cctx.restore(); });
-    if(t<260) requestAnimationFrame(anim); else cctx.clearRect(0,0,cf.width,cf.height);
+  let t=0; (function anim(){ t++; ctx.clearRect(0,0,cf.width,cf.height);
+    bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.a); ctx.fillStyle=b.clr; ctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctx.restore(); });
+    if(t<260) requestAnimationFrame(anim); else ctx.clearRect(0,0,cf.width,cf.height);
   })();
 }
 
-/* --- inputs --- */
+/* inputs */
 const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc'];
 const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
-const val=id=>{const n=Number(els[id]?.value||0); return isFinite(n)?n:0};
+const val=id=>Number(els[id]?.value||0);
 
-/* --- curves & constants --- */
+/* curves/params */
 const NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
+const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25;
+const MEDIAN_INCOME=70000, TOP_INCOME=MEDIAN_INCOME*3;
 function targetNW(age){
   if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
   if(age>=NW_CURVE[NW_CURVE.length-1][0]) return NW_CURVE[NW_CURVE.length-1][1];
-  for(let i=1;i<NW_CURVE.length;i++){
-    const[a0,t0]=NW_CURVE[i-1],[a1,t1]=NW_CURVE[i];
-    if(age<=a1){ const t=(age-a0)/(a1-a0); return t0+(t1-t0)*t; }
-  }
+  for(let i=1;i<NW_CURVE.length;i++){const[a0,t0]=NW_CURVE[i-1],[a1,t1]=NW_CURVE[i]; if(age<=a1){ const t=(age-a0)/(a1-a0); return t0+(t1-t0)*t; }}
   return NW_CURVE[NW_CURVE.length-1][1];
 }
-const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25;
-const MEDIAN_INCOME=70000, TOP_INCOME=MEDIAN_INCOME*3;
 
-/* --- values --- */
+/* values */
 function values(){
   const v=Object.fromEntries(ids.map(id=>[id,val(id)]));
   v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
@@ -378,99 +336,111 @@ function values(){
   return v;
 }
 
-/* --- scoring --- */
-function scoreModel(v){
+/* scoring + category grades */
+function letterFrom01(s){
+  const x = Math.round(s*100);
+  return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F';
+}
+function overallLetter(score){
+  return score>=97?'A+':score>=93?'A':score>=90?'A-':score>=87?'B+':score>=83?'B':score>=80?'B-':score>=77?'C+':score>=73?'C':score>=70?'C-':score>=67?'D+':score>=63?'D':score>=60?'D-':'F';
+}
+function categoryScores(v){
   const sSave = map01(v.saveRate, 0, MAX_SAVINGS);
   const sEF   = map01(v.efMonths, 0, EF_TARGET);
   const sDebt = clamp(1 - v.dtiNonMort/DTI_ZERO_AT, 0, 1);
   const sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
-  const raw = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + v.incomeStrength*0.05) * 100;
-  const score = v.fiProgress >= 1 ? Math.max(raw, 94) : raw; // FI -> A- floor
-  return {score:Math.round(score*10)/10,sSave,sEF,sDebt,sAgeNW,...v};
-}
-function gradeLetter(x){
-  const s=x.score;
-  return s>=97?'A+':s>=93?'A':s>=90?'A-':s>=87?'B+':s>=83?'B':s>=80?'B-':s>=77?'C+':s>=73?'C':s>=70?'C-':s>=67?'D+':s>=63?'D':s>=60?'D-':'F';
+  const sInc  = v.incomeStrength;
+
+  const weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + sInc*0.05)*100;
+  const score = v.fiProgress >= 1 ? Math.max(weighted, 94) : weighted;
+
+  return {
+    components: [
+      {key:'Savings rate', val:`${Math.round(v.saveRate*100)}% of take-home`, score:sSave, letter:letterFrom01(sSave), help:`Toward 25% target`},
+      {key:'Emergency fund', val:`${v.efMonths.toFixed(1)} months`, score:sEF, letter:letterFrom01(sEF), help:`Goal 6 months`},
+      {key:'Debt load (non-mort.)', val:`${Math.round(v.dtiNonMort*100)}% of baseline`, score:sDebt, letter:letterFrom01(sDebt), help:`Lower is better`},
+      {key:'Age-based net worth', val:`${(v.nwProgress*100).toFixed(0)}% of age target`, score:sAgeNW, letter:letterFrom01(sAgeNW), help:`Target ${v.nwTargetMultiple.toFixed(2)}× baseline`},
+      {key:'Income strength', val:money(v.annualIncome)+'/yr', score:sInc, letter:letterFrom01(sInc), help:`vs median to high income`},
+    ],
+    overall: { score: Math.round(score*10)/10, letter: overallLetter(Math.round(score*10)/10) }
+  };
 }
 
-/* --- UI refs --- */
-const big=$('#bigGrade'), sline=$('#scoreLine'), nwln=$('#nwLine');
-const chipsBox=$('#chips'); const whyBox=$('#whyList'); const improveBox=$('#improveList'); const fill=$('#progressFill');
-function chip(txt){ const span=document.createElement('span'); span.className='chip'; span.innerHTML=txt; return span }
-function renderWhy(s){
-  chipsBox.innerHTML='';
-  chipsBox.append(chip(`Savings rate: <b>${Math.round(s.saveRate*100)}%</b>`));
-  chipsBox.append(chip(`EF: <b>${s.efMonths.toFixed(1)} mo</b>`));
-  chipsBox.append(chip(`Debt vs baseline: <b>${Math.round(s.dtiNonMort*100)}%</b>`));
-  chipsBox.append(chip(`NW progress: <b>${(s.nwProgress*100).toFixed(0)}%</b> (age ${s.age} target ${s.nwTargetMultiple.toFixed(2)}×)`));
-  chipsBox.append(chip(`Income strength: <b>${Math.round(map01(s.annualIncome, MEDIAN_INCOME, TOP_INCOME)*100)}%</b>`));
-  whyBox.innerHTML=[
-    `Baseline (spend-based, $${SPEND_FLOOR.toLocaleString()} floor): <b>${money(s.baseline)}</b>/yr.`,
-    `Age ${s.age} target NW: <b>${money(s.nwTargetAmount)}</b>.`,
-    `FI progress vs 25× spend: <b>${Math.round(s.fiProgress*100)}%</b>.`
-  ].map(x=>`<div>${x}</div>`).join('');
-}
-function renderImprove(s){
-  const ideas=[];
-  if(s.fiProgress<1 && s.nwProgress<1){ const gap=Math.max(0,s.nwTargetAmount - s.net); ideas.push(`Close age-based NW gap: add ~${money(gap)} to net worth.`) }
-  if(s.saveRate<0.25){ const needMo=Math.ceil(Math.max(0,(s.income*0.25)-(s.income-s.expenses))); if(needMo>0) ideas.push(`Boost savings toward 25% (~$${needMo.toLocaleString()}/mo).`) }
-  if(s.efMonths<6){ ideas.push(`Build emergency fund to 6 months (≈ $${Math.round((s.expenses||0)*6).toLocaleString()}).`) }
-  if(s.dtiNonMort>0.25){ ideas.push(`Pay down non-mortgage debt (now ~${Math.round(s.dtiNonMort*100)}% of baseline).`) }
-  if(!ideas.length) ideas.push(`You’re in great shape — keep compounding and stay the course.`)
-  improveBox.innerHTML=ideas.map(x=>`<div>• ${x}</div>`).join('');
-}
-function showResult(s){
-  const L=gradeLetter(s);
-  big.textContent=L; big.classList.add('show');
-  big.style.color=({'A+':'var(--good)','A':'var(--good)','A-':'var(--good)','B+':'#86efac','B':'#86efac','B-':'#86efac','C+':'var(--warn)','C':'var(--warn)','C-':'var(--warn)','D+':'#f97316','D':'#f97316','D-':'#f97316','F':'var(--bad)'})[L]||'var(--text)';
-  sline.textContent=`Score: ${s.score.toFixed(1)} / 100.0`;
-  fill.style.width=s.score+'%';
-  nwln.textContent=`Net worth: ${money(s.net)} • Assets: ${money(s.assets)} • Liabilities: ${money(s.liabs)}`;
-  renderWhy(s); renderImprove(s);
-  if(['A+','A','A-','B+','B','B-'].includes(L)) confettiBurst();
-  try{ gtag('event','grade_complete',{value:s.score}); }catch(_){/* noop */}
-}
-
-/* --- overlay workflow (with guaranteed exit) --- */
+/* overlay */
 const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
-function toggleOverlay(show){ overlay.classList.toggle('show', !!show); document.body.classList.toggle('no-scroll', !!show) }
+function toggleOverlay(show){ overlay.classList.toggle('show', !!show) }
 function withOverlay(runFn, doneFn){
-  let elapsed=0, dur=3000, bailed=false; // 3s loader
+  let elapsed=0, dur=1400, bailed=false;
   toggleOverlay(true); bar.style.width='0%'; pct.textContent='0%';
   const t=setInterval(()=>{ elapsed+=100; const p=Math.min(100,Math.round((elapsed/dur)*100)); bar.style.width=p+'%'; pct.textContent=p+'%'; },100);
-  const hardStop=setTimeout(()=>{ if(bailed) return; bailed=true; clearInterval(t); toggleOverlay(false); doneFn(runFn()); }, dur+400);
-  // Safety: also collapse overlay after 6s no matter what
-  setTimeout(()=>{ if(!bailed){ bailed=true; clearInterval(t); toggleOverlay(false); try{doneFn(runFn())}catch(e){console.warn('grade failed',e)} } }, 6000);
+  setTimeout(()=>{ if(bailed) return; bailed=true; clearInterval(t); toggleOverlay(false); doneFn(runFn()); }, dur+200);
+  setTimeout(()=>{ if(!bailed){ bailed=true; clearInterval(t); toggleOverlay(false); doneFn(runFn()); } }, 4000);
 }
 
-/* --- actions --- */
-function grade(){ try{ gtag('event','grade_start'); }catch(_){/* noop */} withOverlay(()=>scoreModel(values()), s=>showResult(s)); }
-on($('#gradeBtn'),'click',grade);
-on($('#gradeBtnTop'),'click',()=>{ grade(); scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'}); });
+/* Report Card rendering */
+const modal=$('#reportModal'), rcRows=$('#rcRows'), rcGrade=$('#rcGrade'), rcMeta=$('#rcMeta');
+function badgeClass(letter){
+  if(['A+','A','A-','B+'].includes(letter)) return 'badge good';
+  if(['B','B-','C+','C','C-'].includes(letter)) return 'badge mid';
+  return 'badge bad';
+}
+function openReport(v, cats){
+  // header meta
+  rcMeta.textContent = `Overall score ${cats.overall.score.toFixed(1)} / 100 • Net worth ${money(v.net)} • Assets ${money(v.assets)} • Liabilities ${money(v.liabs)}`;
+  rcGrade.textContent = cats.overall.letter;
 
-on($('#demoBtn'),'click',()=>{
-  const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000};
-  Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id]});
-  updateHints();
-  scrollTo({top:document.querySelector('.shell').offsetTop-8,behavior:'smooth'});
-});
+  // rows
+  rcRows.innerHTML = '';
+  const head = document.querySelector('.rc-grid');
+  // add rows after head
+  cats.components.forEach(c=>{
+    const row = el('div',{className:'rc-row'});
+    row.append(
+      el('div',{},[document.createTextNode(c.key), el('div',{style:"color:#9fb0c7;font-size:12px;margin-top:4px"},[document.createTextNode(c.help)])]),
+      el('div',{},[document.createTextNode(c.val)]),
+      el('div',{className:'hide-sm'},[el('span',{className:badgeClass(c.letter)},[document.createTextNode(c.letter)])])
+    );
+    rcRows.append(row);
+  });
 
-on($('#resetBtn'),'click',()=>{
-  document.querySelectorAll('input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0));
-  updateHints();
-  fill.style.width='0%'; chipsBox.innerHTML=''; whyBox.textContent=''; improveBox.textContent='';
-  $('#bigGrade').textContent='—'; $('#bigGrade').classList.remove('show'); $('#scoreLine').textContent='Score: — / 100.0'; $('#nwLine').textContent='Net worth: —';
-});
+  // fire confetti for B- and up
+  if (['A+','A','A-','B+','B','B-'].includes(cats.overall.letter)) confettiBurst();
 
-on($('#copyLink'),'click',()=>{
+  modal.classList.add('show');
+  try{ gtag('event','report_open',{value:cats.overall.score}); }catch(_){}
+}
+
+/* actions */
+function gradeSequence(){
+  withOverlay(()=>{ const v=values(); const cats=categoryScores(v); return {v,cats}; },
+    ({v,cats})=> openReport(v,cats));
+}
+
+on($('#gradeBtn'),'click',gradeSequence);
+on($('#gradeBtnTop'),'click',()=>{ gradeSequence(); });
+on($('#resetBtn'),'click',()=>{ document.querySelectorAll('input[type="number"]').forEach(el=>el.value=(el.id==='age'?30:0)); updateHints(); });
+on($('#closeReport'),'click',()=> modal.classList.remove('show'));
+on($('#calcAgain'),'click',()=> { modal.classList.remove('show'); });
+
+/* share buttons */
+on($('#copyLink'),'click',copyLinkNow);
+on($('#copyJSON'),'click',copyLinkNow);
+function copyLinkNow(){
   const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0));
   const url=location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s))));
-  navigator.clipboard?.writeText(url).then(()=>{
-    alert('Shareable link copied.'); try{gtag('event','share_copy')}catch(_){/* noop */}
-  }).catch(()=>{ alert(url) })
+  navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url));
+  try{ gtag('event','share_copy'); }catch(_){}
+}
+// “Share my Report Card” tries Web Share; falls back to copy
+on($('#copyReport'),'click',async ()=>{
+  const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0));
+  const url=location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s))));
+  const text=`My Grade My Finance report card. Try yours: ${url}`;
+  if (navigator.share){ try{ await navigator.share({title:'My Report Card', text, url}); }catch(_){ copyLinkNow(); } }
+  else copyLinkNow();
 });
 
-/* --- hints & hydrate --- */
+/* hints & hydrate */
 function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}` }
 ids.forEach(id=>els[id]?.addEventListener('input',updateHints));
 updateHints();
@@ -482,17 +452,16 @@ updateHints();
   }catch(e){ console.warn('Bad hash payload') }
 })();
 
-/* --- Welcome modal (first visit) --- */
-const WKEY='gmf_welcomed_v2';
-function hideWelcome(){ $('#welcome')?.classList.remove('show'); $('#welcome')?.remove(); document.body.classList.remove('no-scroll') }
-function showWelcome(){ const el=$('#welcome'); if(!el) return; el.classList.add('show'); document.body.classList.add('no-scroll') }
-if(!localStorage.getItem(WKEY)) showWelcome();
-on($('#startWelcome'),'click',()=>{ localStorage.setItem(WKEY,'1'); hideWelcome() });
-on($('#skipWelcome'),'click',hideWelcome);
-
+/* demo */
+on($('#demoBtn'),'click',()=>{
+  const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000};
+  Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id]});
+  updateHints();
+});
 })();
 </script>
 </body>
 </html>
+
 
 
