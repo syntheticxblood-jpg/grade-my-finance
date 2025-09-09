@@ -41,7 +41,7 @@ header{ position:fixed; left:0; right:0; top:0; z-index:20; height:var(--header-
 @media (max-width:720px){ .logo{height:58px} }
 .brand{font-weight:900; font-size:22px; color:#062c1b}
 
-/* true top-right toolbar */
+/* top-right toolbar */
 .header-right{position:absolute; right:12px; top:10px; display:flex; gap:8px; align-items:center}
 .btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
   background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
@@ -81,24 +81,35 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
 .floatA{position:absolute; right:8px; bottom:0; transform:translate(20%,30%); background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac; border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)}
 
-/* Overlay & modal */
-.overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:80}
+/* Overlay & loader */
+.overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:80}
 .overlay.show{display:grid}
-.loader{width:420px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.load-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.bar .fill{height:100%;width:0;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);transition:width .25s cubic-bezier(.2,.9,.2,1)}
 
-.modal{position:fixed; inset:0; display:none; z-index:100; background:rgba(0,0,0,.55);}
+/* Modal + reveal animations */
+.modal{position:fixed; inset:0; display:none; z-index:100; background:rgba(0,0,0,.55); }
 .modal.show{display:grid; place-items:center}
 .sheet{width:min(920px,94vw); max-height:88vh; overflow:auto; background:var(--panel); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); padding:18px; margin:10px;}
+.modal.show .sheet{animation:popIn .45s cubic-bezier(.2,1,.2,1)}
+@keyframes popIn{0%{transform:scale(.9);opacity:.0}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
 .sheet-header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
 .xbtn{background:#19223d;border:1px solid var(--line); color:#e2e8f0; border-radius:10px; padding:8px 12px; cursor:pointer}
 .rc-top{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px}
-.rc-mascot{width:54px; height:54px; border-radius:14px; background:linear-gradient(180deg,#eafff3,#c8ffe3); border:2px solid #86EFAC; display:grid; place-items:center;}
+.rc-mascot{width:54px; height:54px; border-radius:14px; background:linear-gradient(180deg,#eafff3,#c8ffe3); border:2px solid #86EFAC; display:grid; place-items:center; box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.rc-mascot.party{animation:wiggle .8s ease 2}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(6deg)}}
 .rc-title{font-weight:900; font-size:22px}
 .rc-meta{color:#9fb0c7; font-size:14px}
-.rc-grade{font-size:56px;font-weight:1000; border-radius:16px; padding:6px 16px; border:2px solid transparent}
+.rc-grade{font-size:56px;font-weight:1000; border-radius:16px; padding:6px 16px; border:2px solid transparent; transform-origin:center}
 .rc-grade.good{color:#062c1b; background:linear-gradient(180deg,#34d399,#16a34a); border-color:#86efac}
 .rc-grade.mid{color:#062c1b; background:linear-gradient(180deg,#facc15,#f59e0b); border-color:#fde68a}
 .rc-grade.bad{color:#fff; background:#ef4444; border-color:#fecaca}
+.rc-grade.pop{animation:gradePop .6s cubic-bezier(.2,1,.2,1)}
+@keyframes gradePop{0%{transform:scale(.85)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+
 .rc-head{display:grid; grid-template-columns: 1.2fr 1fr auto; gap:8px; color:#9fb0c7; font-weight:800; font-size:12px; margin-top:6px}
 .rc-rows{display:grid; gap:8px; margin-top:6px}
 .rc-row{display:grid; grid-template-columns: 1.2fr 1fr auto; gap:8px; align-items:center; background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:12px; padding:10px;}
@@ -116,11 +127,15 @@ footer{background:#0b1226; border-top:1px solid var(--line); margin-top:22px; pa
 .mobile-cta{position:fixed;left:0;right:0;bottom:0;padding:10px;background:rgba(15,23,42,.86); border-top:1px solid rgba(148,163,184,.22);display:none;z-index:90}
 .mobile-cta.on{display:block}
 
+/* Small tweaks */
 svg, img { display:block; max-width:100%; height:auto; }
 @media (max-width:720px){ .hero-card{ padding:14px } .inputs{ gap:10px } .card{ padding:12px } }
 </style>
 </head>
 <body>
+
+<!-- Confetti canvas -->
+<canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:150;"></canvas>
 
 <header>
   <div class="hdr">
@@ -226,14 +241,19 @@ svg, img { display:block; max-width:100%; height:auto; }
 </div>
 
 <!-- Loader -->
-<div id="overlay" class="overlay"><div class="loader"><strong>Crunching numbers…</strong></div></div>
+<div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
+  <div class="loader">
+    <div class="load-row"><strong id="loadMsg">Crunching numbers…</strong><span id="pct">0%</span></div>
+    <div class="bar"><div class="fill" id="barFill"></div></div>
+  </div>
+</div>
 
 <!-- Report Modal -->
 <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rcTitle">
   <div class="sheet">
     <div class="sheet-header">
       <div class="rc-top">
-        <div class="rc-mascot" aria-hidden="true">
+        <div class="rc-mascot" id="rcMascot" aria-hidden="true">
           <svg viewBox="0 0 64 64" width="38" height="38">
             <rect x="6" y="6" width="52" height="52" rx="12" fill="#eafff3"/>
             <circle cx="26" cy="28" r="3.5" fill="#0f172a"/><circle cx="42" cy="28" r="3.5" fill="#0f172a"/>
@@ -289,7 +309,7 @@ svg, img { display:block; max-width:100%; height:auto; }
   function $(id){ return document.getElementById(id); }
   function qs(sel){ return document.querySelector(sel); }
 
-  /* ===== Helpers & curves (declare BEFORE any updateHints call) ===== */
+  /* ===== Helpers & curves ===== */
   var NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
   function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
   function map01(x,a,b){ return clamp((x-a)/(b-a),0,1); }
@@ -348,7 +368,7 @@ svg, img { display:block; max-width:100%; height:auto; }
   }
   function updateHints(){ var v=values(); var ah=$("assetsHint"), lh=$("liabHint"); if(ah) ah.textContent="Total Assets: "+money(v.assets); if(lh) lh.textContent="Total Liabilities: "+money(v.liabs); }
 
-  /* ===== Housing mode (calls updateHints AFTER helpers are ready) ===== */
+  /* ===== Housing mode ===== */
   function setHousing(mode){
     var show = (mode==="owner");
     var hc=qs("#homeCard"), mc=qs("#mortCard");
@@ -396,13 +416,46 @@ svg, img { display:block; max-width:100%; height:auto; }
     };
   }
 
-  /* ===== Overlay & modal ===== */
-  var overlay=$("overlay");
-  function showOverlay(b){ if(overlay) overlay.classList.toggle("show", !!b); }
+  /* ===== Confetti ===== */
+  var cf=$("confetti"), ctx=cf.getContext("2d");
+  function resizeC(){ cf.width=innerWidth; cf.height=innerHeight }
+  addEventListener("resize",resizeC); resizeC();
+  function confettiBurst(n){
+    n = n||260;
+    var bits=[];
+    for(var i=0;i<n;i++){
+      bits.push({x:Math.random()*cf.width,y:-20-Math.random()*120,vx:(Math.random()-.5)*3,vy:2+Math.random()*3.5,r:4+Math.random()*7,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.28,clr:"hsl("+(Math.random()*360)+",90%,60%)"});
+    }
+    var t=0;
+    (function anim(){
+      t++;
+      ctx.clearRect(0,0,cf.width,cf.height);
+      for(var j=0;j<bits.length;j++){
+        var b=bits[j]; b.x+=b.vx; b.y+=b.vy; b.a+=b.spin;
+        ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.a);
+        ctx.fillStyle=b.clr; ctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctx.restore();
+      }
+      if(t<220) requestAnimationFrame(anim); else ctx.clearRect(0,0,cf.width,cf.height);
+    })();
+  }
 
-  var modal=$("reportModal"), rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta");
+  /* ===== Overlay & modal ===== */
+  var overlay=$("overlay"), bar=$("barFill"), pct=$("pct"), loadMsg=$("loadMsg");
+  function runWithLoader(fnDone){
+    var steps=["Checking savings rate…","Measuring emergency fund runway…","Comparing net worth vs age…","Weighing debt load…","Factoring income strength…"];
+    var i=0, prog=0, total=steps.length+2, interval=1400/total;
+    overlay.classList.add("show"); bar.style.width="0%"; pct.textContent="0%"; loadMsg.textContent="Crunching numbers…";
+    var t=setInterval(function(){
+      prog=Math.min(100,Math.round(((i+1)/total)*100));
+      bar.style.width=prog+"%"; pct.textContent=prog+"%";
+      loadMsg.textContent = steps[i] || "Finalizing…";
+      i++;
+      if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
+    }, interval);
+  }
+
+  var modal=$("reportModal"), rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), rcMascot=$("rcMascot");
   function openReport(v,cats){
-    if(!modal) return;
     rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
     rcGrade.textContent=cats.overall.letter;
     rcGrade.className="rc-grade "+(
@@ -419,28 +472,30 @@ svg, img { display:block; max-width:100%; height:auto; }
         '<div class="rc-cell"><span class="'+badgeClass(c.letter)+'">'+c.letter+'</span></div>';
       rcRows.appendChild(row);
     });
-    modal.classList.add("show");
-  }
-  var closeReport=$("closeReport"); if(closeReport) closeReport.addEventListener("click",function(){ modal.classList.remove("show"); });
 
-  /* ===== Grade sequence ===== */
+    // Reveal flair
+    modal.classList.add("show");
+    rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop"); // restart animation
+    rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
+    if(["A+","A","A-","B+","B","B-"].indexOf(cats.overall.letter)>-1){ confettiBurst(320); }
+  }
+  $("closeReport").addEventListener("click",function(){ modal.classList.remove("show"); });
+  $("printReport").addEventListener("click",function(){ window.print(); });
+  $("calcAgain").addEventListener("click",function(){ modal.classList.remove("show"); });
+
+  /* ===== Grade sequence (with loader + reveal) ===== */
   function gradeNow(){
-    showOverlay(true);
-    setTimeout(function(){
+    runWithLoader(function(){
       var v=values();
       var cats=categoryScores(v);
-      showOverlay(false);
       openReport(v,cats);
-    }, 200);
+    });
   }
 
   /* ===== Button wires ===== */
-  var gradeBtnTop=$("gradeBtnTop"), gradeBtn=$("gradeBtn"), gradeBtnSticky=$("gradeBtnSticky");
-  if(gradeBtnTop) gradeBtnTop.addEventListener("click", gradeNow);
-  if(gradeBtn) gradeBtn.addEventListener("click", gradeNow);
-  if(gradeBtnSticky) gradeBtnSticky.addEventListener("click", gradeNow);
-  var printReport=$("printReport"); if(printReport) printReport.addEventListener("click", function(){ window.print(); });
-  var calcAgain=$("calcAgain"); if(calcAgain) calcAgain.addEventListener("click", function(){ modal.classList.remove("show"); });
+  $("gradeBtnTop").addEventListener("click", gradeNow);
+  $("gradeBtn").addEventListener("click", gradeNow);
+  $("gradeBtnSticky").addEventListener("click", gradeNow);
 
   /* ===== Demo (randomized every click) ===== */
   function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
@@ -468,10 +523,10 @@ svg, img { display:block; max-width:100%; height:auto; }
     Object.keys(d).forEach(function(id){ if(els[id]) els[id].value=d[id]; });
     updateHints();
   }
-  var demoBtn=$("demoBtn"); if(demoBtn) demoBtn.addEventListener("click", randomDemo);
+  $("demoBtn").addEventListener("click", randomDemo);
 
   /* ===== Reset ===== */
-  var resetBtn=$("resetBtn"); if(resetBtn) resetBtn.addEventListener("click", function(){
+  $("resetBtn").addEventListener("click", function(){
     ids.forEach(function(id){ if(els[id]) els[id].value = (id==="age") ? 30 : 0; });
     updateHints();
   });
@@ -481,7 +536,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     var s={}; ids.forEach(function(id){ s[id]=Number(els[id]?els[id].value:0); });
     return location.origin+location.pathname+"#s="+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(s)))));
   }
-  var copyLink=$("copyLink"); if(copyLink) copyLink.addEventListener("click", function(){
+  $("copyLink").addEventListener("click", function(){
     var url=shareLink();
     if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){ alert("Share link copied!"); }).catch(function(){ alert(url); }); }
     else { alert(url); }
@@ -494,11 +549,11 @@ svg, img { display:block; max-width:100%; height:auto; }
       Object.keys(obj).forEach(function(id){ if(els[id]) els[id].value=obj[id]; });
       updateHints();
     }
-  }catch(e){ /* ignore */ }
+  }catch(e){/* ignore */}
 
   /* ===== Subscribe (Formspree) ===== */
   var subForm=$("subForm"), subEmail=$("subEmail"), toast=$("toast");
-  if(subForm) subForm.addEventListener("submit", function(e){
+  subForm.addEventListener("submit", function(e){
     e.preventDefault();
     var email=subEmail.value.trim();
     if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
@@ -513,14 +568,13 @@ svg, img { display:block; max-width:100%; height:auto; }
 
   /* ===== Sticky CTA on mobile ===== */
   var mcta=$("mobileCta");
-  function onScroll(){ if(!mcta) return; mcta.classList.toggle("on", window.scrollY>300 && window.matchMedia("(max-width: 720px)").matches ); }
+  function onScroll(){ mcta.classList.toggle("on", window.scrollY>300 && window.matchMedia("(max-width: 720px)").matches ); }
   window.addEventListener("scroll", onScroll); onScroll();
 
 })(); // end IIFE
 </script>
 </body>
 </html>
-
 
 
 
