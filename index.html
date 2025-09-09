@@ -19,7 +19,7 @@
   gtag('config', 'G-H6223HYVS6');
 </script>
 
-<!-- Google AdSense (loader once) -->
+<!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514" crossorigin="anonymous"></script>
 
 <style>
@@ -53,11 +53,12 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
 .brand{font-weight:900; font-size:22px; color:#062c1b}
 
 /* Hero */
-.hero{ display:flex; flex-direction:column; align-items:center; gap:14px; padding:16px 0 8px; text-align:center; }
+.hero{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:14px 0 4px; text-align:center; }
+@media (max-width:720px){ .hero{ gap:8px; padding:8px 0 2px } }
 .hero-card{ width:min(760px,92vw); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-  border:1px solid var(--line); border-radius:22px; padding:22px; box-shadow:var(--shadow); }
-.hero-title{margin:0 0 8px;font-size:32px;font-weight:900}
-.hero-tag{margin:0 0 10px;color:var(--muted)}
+  border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(--shadow); }
+.hero-title{margin:0 0 6px;font-size:30px;font-weight:900}
+.hero-tag{margin:0 0 8px;color:var(--muted)}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
   background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
@@ -66,13 +67,14 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
 .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 
 /* Layout */
-.shell{max-width:1100px;margin:0 auto;padding:0 16px 24px}
+.shell{max-width:1100px;margin:0 auto;padding:0 16px 22px}
+@media (max-width:720px){ .shell{padding-top:2px} } /* fix top gap on mobile */
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
 .section{font-size:14px;margin:0 0 8px;color:var(--muted);font-weight:800}
 
-.inputs{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:16px}
+.inputs{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:14px}
 @media (max-width:1060px){ .inputs{grid-template-columns:repeat(2,minmax(220px,1fr))} }
-@media (max-width:720px){ .inputs{grid-template-columns:1fr} }
+@media (max-width:720px){ .inputs{grid-template-columns:1fr; gap:12px} }
 
 input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:var(--text)}
 input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
@@ -81,13 +83,13 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .6s cubic-bezier(.2,.9,.2,1)}
 
 /* Mascot in hero */
-.mascot{display:grid;place-items:center;position:relative}
+.mascot{display:grid;place-items:center;position:relative; margin-top:2px}
 @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
 .floatA{position:absolute; right:8px; bottom:0; transform:translate(20%,30%); background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac; border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)}
 @media (min-width:760px){ .floatA{right:18px; bottom:2px; transform:translate(35%,35%)} }
 
 /* Loader overlay */
-.overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:60}
+.overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:80}
 .overlay.show{display:grid}
 .loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
 .bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
@@ -95,16 +97,19 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 
 /* REPORT CARD MODAL */
-.modal{position:fixed; inset:0; display:none; z-index:80; }
-.modal.show{display:grid; place-items:center; background:rgba(0,0,0,.55); backdrop-filter:blur(2px);}
+.modal{position:fixed; inset:0; display:none; z-index:100; background:rgba(0,0,0,.55); backdrop-filter:blur(2px); }
+.modal.show{display:grid; place-items:center}
 .sheet{
-  width:min(920px,94vw); background:var(--panel); border:1px solid var(--line);
+  width:min(920px,94vw); max-height:88vh; overflow:auto;
+  background:var(--panel); border:1px solid var(--line);
   border-radius:22px; box-shadow:var(--shadow); padding:18px;
+  overscroll-behavior:contain;
 }
+.sheet::-webkit-scrollbar{width:10px} .sheet::-webkit-scrollbar-thumb{background:#1f2a48;border-radius:10px}
+
+/* Sheet header with smiling mascot + overall badge */
 .sheet-header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
 .xbtn{background:#19223d;border:1px solid var(--line); color:var(--text); border-radius:10px; padding:8px 12px; cursor:pointer}
-
-/* Smiling mascot (top-left) + overall badge (top-right) */
 .rc-top{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px}
 .rc-mascot{width:54px; height:54px; border-radius:14px; background:linear-gradient(180deg,#eafff3,#c8ffe3); border:2px solid #86EFAC; display:grid; place-items:center; box-shadow:0 8px 20px rgba(0,0,0,.25)}
 .rc-mascot svg{display:block}
@@ -114,7 +119,7 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 .rc-grade{font-size:56px;font-weight:1000; color:#062c1b; background:linear-gradient(180deg,#34d399,#16a34a); border:2px solid #86efac; border-radius:16px; padding:6px 16px}
 
 /* Table */
-.rc-head{display:grid; grid-template-columns: 1.2fr 1fr auto; gap:8px; color:#9fb0c7; font-weight:800; font-size:12px; margin-top:10px}
+.rc-head{display:grid; grid-template-columns: 1.2fr 1fr auto; gap:8px; color:#9fb0c7; font-weight:800; font-size:12px; margin-top:6px}
 .rc-rows{display:grid; gap:8px; margin-top:6px}
 .rc-row{display:grid; grid-template-columns: 1.2fr 1fr auto; gap:8px; align-items:center;
   background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:12px; padding:10px;}
@@ -135,19 +140,14 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
   .rc-row .detail-col{grid-column:1/-1}
 }
 
-/* Footer */
-footer{
-  background:#0b1226; border-top:1px solid var(--line);
-  padding:24px; text-align:center; color:var(--muted); font-size:14px
-}
-footer a{ color:var(--accent); text-decoration:none; font-weight:700; }
-footer a:hover{ text-decoration:underline }
+/* Lock background scroll when modal open (incl. iOS) */
+body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
 </style>
 </head>
 
 <body>
 <!-- Confetti canvas -->
-<canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:100;"></canvas>
+<canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:150;"></canvas>
 
 <header>
   <div class="hdr">
@@ -198,7 +198,7 @@ footer a:hover{ text-decoration:underline }
 </section>
 
 <!-- Ad #1 (below hero) -->
-<div class="container" style="margin:24px auto;">
+<div class="container" style="margin:16px auto;">
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3638344211698514" data-ad-slot="REPLACE_WITH_YOUR_SLOT_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
@@ -285,7 +285,7 @@ footer a:hover{ text-decoration:underline }
 </div>
 
 <!-- Ad #2 (above footer) -->
-<div class="container" style="margin:28px auto;">
+<div class="container" style="margin:22px auto;">
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3638344211698514" data-ad-slot="REPLACE_WITH_YOUR_SLOT_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
@@ -324,10 +324,7 @@ const val=id=>Number(els[id]?.value||0);
 /* --- curves & constants --- */
 const NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
 const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25;
-
-/* Use soft defaults; tweak if you want regional numbers */
-const MEDIAN_INCOME=70000;           // reference median (household-style)
-const TOP_INCOME=MEDIAN_INCOME*3;    // used for scaling only
+const MEDIAN_INCOME=70000, TOP_INCOME=MEDIAN_INCOME*3;
 
 function targetNW(age){
   if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
@@ -357,11 +354,8 @@ function values(){
   const fiSpendBase = Math.max(v.annualSpend, SPEND_FLOOR);
   v.fiProgress = fiSpendBase>0 ? v.net / (FI_MULT * fiSpendBase) : 0;
 
-  /* Income strength:
-     - Score uses a smooth curve centered on the median (median ≈ solid C/B-).
-     - Letter uses ratio-to-median so $90k on $70k median is ~B+ (not an F). */
   const ratio = v.annualIncome / MEDIAN_INCOME;
-  v.incomeScore = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2), 0, 1); // smooth 0→1
+  v.incomeScore = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2), 0, 1);
   v.incomeLetter = incomeLetterFromRatio(ratio);
   return v;
 }
@@ -374,7 +368,6 @@ function letterFrom01(s){
   const x = Math.round(s*100);
   return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F';
 }
-/* Income-specific letter: relative to median */
 function incomeLetterFromRatio(r){
   return r>=2.2?'A+': r>=1.8?'A': r>=1.5?'A-': r>=1.3?'B+': r>=1.15?'B': r>=1.0?'B-'
        : r>=0.9?'C+': r>=0.8?'C': r>=0.7?'C-': r>=0.6?'D': 'F';
@@ -405,7 +398,7 @@ function categoryScores(v){
       {key:'Debt load (non-mort.)', sub:'Lower is better', val:`${Math.round(v.dtiNonMort*100)}% of baseline`,
        score:sDebt, letter:letterFrom01(sDebt),
        tip: v.dtiNonMort>0.25
-          ? `Aggressively pay highest-interest balances first. Target extra ${money(Math.round(v.baseline*0.05))}/mo until non-mortgage debt <25% of baseline.`
+          ? `Attack highest-interest balances first. Target extra ${money(Math.round(v.baseline*0.05))}/mo until non-mortgage debt <25% of baseline.`
           : `Healthy debt level. Keep balances paid in full monthly.`},
       {key:'Age-based net worth', sub:`Target ${v.nwTargetMultiple.toFixed(2)}× baseline`, val:`${(v.nwProgress*100).toFixed(0)}% of age target`,
        score:sAgeNW, letter:letterFrom01(sAgeNW),
@@ -415,7 +408,7 @@ function categoryScores(v){
       {key:'Income strength', sub:'vs median to high income', val:`${money(v.annualIncome)}/yr`,
        score:sInc, letter:v.incomeLetter,
        tip: (v.annualIncome < MEDIAN_INCOME*1.15)
-          ? `Focus on skill-ups, certifications, or negotiation. Track market rates; aim for ${money(Math.round(MEDIAN_INCOME*1.15))}+ within 12–18 months.`
+          ? `Focus on skill-ups, certs, or negotiation. Track market rates; aim for ${money(Math.round(MEDIAN_INCOME*1.15))}+ within 12–18 months.`
           : `Leverage surplus income: automate investing and employer match.`},
     ],
     overall: { score: Math.round(score*10)/10, letter: overallLetter(Math.round(score*10)/10) }
@@ -432,22 +425,31 @@ function withOverlay(runFn, doneFn){
   setTimeout(()=>{ if(done) return; done=true; clearInterval(t); toggleOverlay(false); doneFn(runFn()); }, dur+220);
 }
 
-/* --- Report Card rendering --- */
+/* --- Report Card rendering + scroll lock --- */
 const modal=$('#reportModal'), rcRows=$('#rcRows'), rcGrade=$('#rcGrade'), rcMeta=$('#rcMeta');
+let savedScrollY = 0;
+function lockScroll(){
+  savedScrollY = window.scrollY || 0;
+  document.body.classList.add('lock-scroll');
+  document.body.style.top = `-${savedScrollY}px`;
+}
+function unlockScroll(){
+  document.body.classList.remove('lock-scroll');
+  document.body.style.top = '';
+  window.scrollTo(0, savedScrollY || 0);
+}
 function badgeClass(letter){
   if(['A+','A','A-','B+'].includes(letter)) return 'badge good';
   if(['B','B-','C+','C','C-'].includes(letter)) return 'badge mid';
   return 'badge bad';
 }
 function openReport(v, cats){
-  // header
   rcMeta.textContent = `Overall score ${cats.overall.score.toFixed(1)} / 100 • Net worth ${money(v.net)} • Assets ${money(v.assets)} • Liabilities ${money(v.liabs)}`;
   rcGrade.textContent = cats.overall.letter;
 
   rcRows.innerHTML='';
   cats.components.forEach(c=>{
     const row = el('div',{className:'rc-row'});
-    // category cell
     const catCol = el('div',{className:'rc-cell'},[
       el('div',{className:'label'},[document.createTextNode(c.key)]),
       el('div',{className:'sub'},[document.createTextNode(c.sub)])
@@ -464,26 +466,27 @@ function openReport(v, cats){
   });
 
   if (['A+','A','A-','B+','B','B-'].includes(cats.overall.letter)) confettiBurst();
+  lockScroll();
   modal.classList.add('show');
   try{ gtag('event','report_open',{value:cats.overall.score}); }catch(_){}
 }
 
-/* --- actions --- */
+/* close handlers */
+on($('#closeReport'),'click',()=>{ modal.classList.remove('show'); unlockScroll(); });
+on($('#calcAgain'),'click',()=>{ modal.classList.remove('show'); unlockScroll(); });
+
+/* actions */
 function gradeSequence(){
   withOverlay(()=>{ const v=values(); const cats=categoryScores(v); return {v,cats}; },
     ({v,cats})=> openReport(v,cats));
 }
-
 on($('#gradeBtn'),'click',gradeSequence);
 on($('#gradeBtnTop'),'click',gradeSequence);
-on($('#closeReport'),'click',()=> modal.classList.remove('show'));
-on($('#calcAgain'),'click',()=> { modal.classList.remove('show'); });
 
 /* share buttons */
 function shareLink(){
   const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0));
-  const url=location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s))));
-  return url;
+  return location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s))));
 }
 on($('#copyLink'),'click',()=>{
   const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url));
@@ -525,6 +528,7 @@ on($('#demoBtn'),'click',()=>{
 </script>
 </body>
 </html>
+
 
 
 
