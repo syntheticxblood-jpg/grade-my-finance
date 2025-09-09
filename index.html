@@ -94,7 +94,7 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .rc-top{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px}
 .rc-mascot{width:54px; height:54px; border-radius:14px; background:linear-gradient(180deg,#eafff3,#c8ffe3); border:2px solid #86EFAC; display:grid; place-items:center;}
 .rc-title{font-weight:900; font-size:22px}
-.rc-meta{color:var(--muted); font-size:14px}
+.rc-meta{color:#9fb0c7; font-size:14px}
 .rc-grade{font-size:56px;font-weight:1000; border-radius:16px; padding:6px 16px; border:2px solid transparent}
 .rc-grade.good{color:#062c1b; background:linear-gradient(180deg,#34d399,#16a34a); border-color:#86efac}
 .rc-grade.mid{color:#062c1b; background:linear-gradient(180deg,#facc15,#f59e0b); border-color:#fde68a}
@@ -106,7 +106,6 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .badge.good{color:#062c1b;background:linear-gradient(180deg,#34d399,#16a34a); border-color:#86efac}
 .badge.mid{color:#062c1b;background:linear-gradient(180deg,#facc15,#f59e0b)}
 .badge.bad{color:#fff;background:#ef4444}
-.tip{margin-top:6px; padding:8px; border:1px dashed var(--line); border-radius:10px; color:#cbd5e1; font-size:12px}
 
 /* Footer + sticky CTA */
 footer{background:#0b1226; border-top:1px solid var(--line); margin-top:22px; padding:22px 16px; color:#cbd5e1; font-size:14px}
@@ -262,7 +261,7 @@ svg, img { display:block; max-width:100%; height:auto; }
 <!-- Subscribe -->
 <section class="container" style="max-width:900px; margin:30px auto; padding:18px;background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)">
   <h3 style="margin:0 0 6px; font-size:20px">Get simple money tips & updates</h3>
-  <p style="margin:6px 0 12px; color:var(--muted)">No spam, unsubscribe anytime.</p>
+  <p style="margin:6px 0 12px; color:#9fb0c7">No spam, unsubscribe anytime.</p>
   <form id="subForm" style="display:flex; gap:10px; flex-wrap:wrap" action="https://formspree.io/f/xvgblayy" method="POST">
     <input type="email" name="email" id="subEmail" placeholder="you@example.com" required style="flex:1 1 280px; padding:12px; border-radius:12px; border:1px solid var(--line); background:#0b1226; color:#e2e8f0;">
     <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
@@ -286,7 +285,6 @@ svg, img { display:block; max-width:100%; height:auto; }
 </footer>
 
 <script>
-/* ======= SAFE JS (no passive listeners, guards everywhere) ======= */
 (function(){
   function $(id){ return document.getElementById(id); }
   function qs(sel){ return document.querySelector(sel); }
@@ -326,7 +324,7 @@ svg, img { display:block; max-width:100%; height:auto; }
   if(modeOwner) modeOwner.addEventListener('click', function(){ setHousing('owner'); });
   if(modeRenter) modeRenter.addEventListener('click', function(){ setHousing('renter'); });
 
-  // Hints
+  // Hints & values
   function values(){
     var v={}; ids.forEach(function(id){ v[id]=val(id); });
     v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
@@ -380,7 +378,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       components: [
         {key:'Savings rate', sub:'Toward 25% target', val:Math.round(v.saveRate*100)+'% of take-home',
          letter:letterFrom01(sSave),
-         tip: v.saveRate<0.25 ? 'Aim for 25%. You’re short ~'+money(Math.max(0,(v.income*0.25)-(v.income-v.expenses))))+'/mo.' : 'Great job—stay consistent.'},
+         tip: v.saveRate<0.25 ? 'Aim for 25%. You’re short ~'+money(Math.max(0,(v.income*0.25)-(v.income-v.expenses)))+'/mo.' : 'Great job—stay consistent.'},
         {key:'Emergency fund', sub:'Goal 6 months', val:v.efMonths.toFixed(1)+' months',
          letter:letterFrom01(sEF),
          tip: v.efMonths<6 ? 'Save ~'+money(Math.round((v.expenses*6 - v.cash)/6))+'/mo to reach 6 months.' : 'Solid cushion — keep it liquid.'},
@@ -434,7 +432,7 @@ svg, img { display:block; max-width:100%; height:auto; }
         var cats=categoryScores(v);
         showOverlay(false);
         openReport(v,cats);
-      }, 300); // quick visual feedback
+      }, 300);
     }catch(err){
       showOverlay(false);
       console.error(err);
@@ -442,7 +440,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     }
   }
 
-  // Button wires (top, bottom, sticky)
+  // Button wires
   var gradeBtnTop=$('gradeBtnTop'), gradeBtn=$('gradeBtn'), gradeBtnSticky=$('gradeBtnSticky');
   if(gradeBtnTop) gradeBtnTop.addEventListener('click', gradeNow);
   if(gradeBtn) gradeBtn.addEventListener('click', gradeNow);
@@ -455,7 +453,7 @@ svg, img { display:block; max-width:100%; height:auto; }
   function randomDemo(){
     var isOwner = (localStorage.getItem('gmf_housing')||'owner')==='owner';
     var age = rand(22,60);
-    var income = rand(2500,15000); // monthly take-home
+    var income = rand(2500,15000);
     var expenses = Math.max(800, Math.floor(income*rand(55,88)/100));
     var retire = rand(2000, 250000);
     var brokerage = rand(0, 120000);
@@ -465,19 +463,15 @@ svg, img { display:block; max-width:100%; height:auto; }
     var student = rand(0, 45000);
     var auto = rand(0, 22000);
     var cc = rand(0, 6000);
-
     var home=0, mortgage=0;
     if(isOwner){
       home = rand(120000, 900000);
-      // keep LTV between 40–90%
       var ltv = rand(40,90)/100;
       mortgage = Math.floor(home*ltv) - rand(0,20000);
       if(mortgage<0) mortgage=0;
     }
-
     var d={age:age,income:income,expenses:expenses,home:home,retire:retire,brokerage:brokerage,
       car:car,hsa:hsa,cash:cash,mortgage:mortgage,student:student,auto:auto,cc:cc};
-
     Object.keys(d).forEach(function(id){ if(els[id]) els[id].value=d[id]; });
     updateHints();
   }
