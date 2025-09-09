@@ -15,8 +15,7 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);} gtag('js', new Date());
-  gtag('config', 'G-H6223HYVS6');
+  function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config','G-H6223HYVS6');
 </script>
 
 <!-- Google AdSense -->
@@ -68,7 +67,7 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
 
 /* Layout */
 .shell{max-width:1100px;margin:0 auto;padding:0 16px 22px}
-@media (max-width:720px){ .shell{padding-top:2px} } /* fix top gap on mobile */
+@media (max-width:720px){ .shell{padding-top:2px} }
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
 .section{font-size:14px;margin:0 0 8px;color:var(--muted);font-weight:800}
 
@@ -116,7 +115,12 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 .rc-titlewrap{display:flex; flex-direction:column}
 .rc-title{font-weight:900; font-size:22px}
 .rc-meta{color:var(--muted); font-size:14px}
-.rc-grade{font-size:56px;font-weight:1000; color:#062c1b; background:linear-gradient(180deg,#34d399,#16a34a); border:2px solid #86efac; border-radius:16px; padding:6px 16px}
+
+/* Overall grade badge with dynamic colors */
+.rc-grade{font-size:56px;font-weight:1000; border-radius:16px; padding:6px 16px; border:2px solid transparent}
+.rc-grade.good{color:#062c1b; background:linear-gradient(180deg,#34d399,#16a34a); border-color:#86efac}
+.rc-grade.mid{color:#062c1b; background:linear-gradient(180deg,#facc15,#f59e0b); border-color:#fde68a}
+.rc-grade.bad{color:#fff; background:#ef4444; border-color:#fecaca}
 
 /* Table */
 .rc-head{display:grid; grid-template-columns: 1.2fr 1fr auto; gap:8px; color:#9fb0c7; font-weight:800; font-size:12px; margin-top:6px}
@@ -142,11 +146,43 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 
 /* Lock background scroll when modal open (incl. iOS) */
 body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
+
+/* Subscribe section */
+.subscribe{
+  max-width:900px; margin:30px auto; padding:18px;
+  background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow);
+}
+.subscribe h3{margin:0 0 6px; font-size:20px}
+.subscribe p{margin:6px 0 12px; color:var(--muted)}
+.sub-row{display:flex; gap:10px; flex-wrap:wrap}
+.sub-row input[type="email"]{
+  flex:1 1 280px; padding:12px; border-radius:12px; border:1px solid var(--line);
+  background:#0b1226; color:var(--text);
+}
+.sub-row button{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
+  background:linear-gradient(90deg,var(--g1),var(--g2)); color:#062c1b; font-weight:900; cursor:pointer}
+
+/* Toast */
+.toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:#0b1226; color:var(--text);
+  border:1px solid var(--line); border-radius:12px; padding:10px 14px; box-shadow:var(--shadow); display:none; z-index:120}
+.toast.show{display:block}
+
+/* Footer */
+footer{
+  background:#0b1226; border-top:1px solid var(--line); margin-top:22px;
+  padding:22px 16px; color:var(--muted); font-size:14px
+}
+.fwrap{max-width:1000px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:8px}
+.fcontact{display:flex; gap:8px; align-items:center}
+.pill{padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.03); color:#cfe4ff}
+.fnote{opacity:.9}
+footer a{ color:#9bd2ff; text-decoration:none; font-weight:700; }
+footer a:hover{ text-decoration:underline }
 </style>
 </head>
 
 <body>
-<!-- Confetti canvas -->
+<!-- Confetti -->
 <canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:150;"></canvas>
 
 <header>
@@ -251,7 +287,6 @@ body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
   <div class="sheet">
     <div class="sheet-header">
       <div class="rc-top">
-        <!-- Smiling mascot (top-left) -->
         <div class="rc-mascot" aria-hidden="true">
           <svg viewBox="0 0 64 64" width="38" height="38">
             <rect x="6" y="6" width="52" height="52" rx="12" fill="#eafff3"/>
@@ -268,12 +303,7 @@ body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
       <button class="xbtn" id="closeReport" type="button">Close</button>
     </div>
 
-    <!-- Headers -->
-    <div class="rc-head">
-      <div>Category</div>
-      <div>Details</div>
-      <div>Grade</div>
-    </div>
+    <div class="rc-head"><div>Category</div><div>Details</div><div>Grade</div></div>
     <div class="rc-rows" id="rcRows"></div>
 
     <div class="rc-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap">
@@ -284,6 +314,18 @@ body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
   </div>
 </div>
 
+<!-- Subscribe -->
+<section class="container subscribe" id="subscribe">
+  <h3>Get simple money tips & updates</h3>
+  <p>Drop your email and we’ll send occasional improvements — no spam, unsubscribe anytime.</p>
+  <form id="subForm" class="sub-row" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+    <input type="email" name="email" id="subEmail" placeholder="you@example.com" required />
+    <input type="hidden" name="source" value="grademyfinance.com" />
+    <button type="submit" class="btn primary">Subscribe</button>
+  </form>
+</section>
+<div class="toast" id="toast">Thanks! Check your inbox for a confirmation.</div>
+
 <!-- Ad #2 (above footer) -->
 <div class="container" style="margin:22px auto;">
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3638344211698514" data-ad-slot="REPLACE_WITH_YOUR_SLOT_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -291,13 +333,18 @@ body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
 </div>
 
 <footer>
-  <p>Contact: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
-  <p>© 2025 Grade My Finance. Educational use only — not financial advice.</p>
+  <div class="fwrap">
+    <div class="fcontact">
+      <span class="pill">Contact</span>
+      <a class="pill" href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a>
+    </div>
+    <div class="fnote">© 2025 Grade My Finance — educational use only (not financial advice).</div>
+  </div>
 </footer>
 
 <script>
 (() => {
-/* --- helpers --- */
+/* helpers */
 const $=s=>document.querySelector(s);
 const el=(t,a={},ch=[])=>{const n=document.createElement(t);Object.assign(n,a);ch.forEach(c=>n.append(c));return n;}
 const on=(x,e,f)=>x&&x.addEventListener(e,f,{passive:true});
@@ -305,7 +352,7 @@ const money=n=>isFinite(n)?`$${Math.round(n).toLocaleString()}`:'—';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
 
-/* --- confetti --- */
+/* confetti */
 const cf=$('#confetti'), ctx=cf.getContext('2d');
 function resizeC(){ cf.width=innerWidth; cf.height=innerHeight } addEventListener('resize',resizeC); resizeC();
 function confettiBurst(n=260){
@@ -316,26 +363,25 @@ function confettiBurst(n=260){
   })();
 }
 
-/* --- inputs --- */
+/* inputs */
 const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc'];
 const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
 const val=id=>Number(els[id]?.value||0);
 
-/* --- curves & constants --- */
+/* curves/params */
 const NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
 const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25;
-const MEDIAN_INCOME=70000, TOP_INCOME=MEDIAN_INCOME*3;
+const MEDIAN_INCOME=70000;
 
+/* helpers */
 function targetNW(age){
   if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
   if(age>=NW_CURVE[NW_CURVE.length-1][0]) return NW_CURVE[NW_CURVE.length-1][1];
-  for(let i=1;i<NW_CURVE.length;i++){
-    const[a0,t0]=NW_CURVE[i-1],[a1,t1]=NW_CURVE[i];
-    if(age<=a1){ const t=(age-a0)/(a1-a0); return t0+(t1-t0)*t; }
-  } return NW_CURVE[NW_CURVE.length-1][1];
+  for(let i=1;i<NW_CURVE.length;i++){const[a0,t0]=NW_CURVE[i-1],[a1,t1]=NW_CURVE[i]; if(age<=a1){ const t=(age-a0)/(a1-a0); return t0+(t1-t0)*t; }}
+  return NW_CURVE[NW_CURVE.length-1][1];
 }
 
-/* --- values --- */
+/* collect values */
 function values(){
   const v=Object.fromEntries(ids.map(id=>[id,val(id)]));
   v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
@@ -351,26 +397,32 @@ function values(){
   v.nwTargetMultiple = targetNW(v.age||30);
   v.nwTargetAmount = v.nwTargetMultiple * v.baseline;
   v.nwProgress = v.nwTargetAmount>0 ? v.net/v.nwTargetAmount : 0;
-  const fiSpendBase = Math.max(v.annualSpend, SPEND_FLOOR);
-  v.fiProgress = fiSpendBase>0 ? v.net / (FI_MULT * fiSpendBase) : 0;
-
   const ratio = v.annualIncome / MEDIAN_INCOME;
   v.incomeScore = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2), 0, 1);
   v.incomeLetter = incomeLetterFromRatio(ratio);
   return v;
 }
 
-/* --- scoring --- */
+/* grades */
 function overallLetter(score){
   return score>=97?'A+':score>=93?'A':score>=90?'A-':score>=87?'B+':score>=83?'B':score>=80?'B-':score>=77?'C+':score>=73?'C':score>=70?'C-':score>=67?'D+':score>=63?'D':score>=60?'D-':'F';
 }
-function letterFrom01(s){
-  const x = Math.round(s*100);
+function letterFrom01(s){ const x=Math.round(s*100);
   return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F';
 }
 function incomeLetterFromRatio(r){
   return r>=2.2?'A+': r>=1.8?'A': r>=1.5?'A-': r>=1.3?'B+': r>=1.15?'B': r>=1.0?'B-'
        : r>=0.9?'C+': r>=0.8?'C': r>=0.7?'C-': r>=0.6?'D': 'F';
+}
+function badgeClass(letter){
+  if(['A+','A','A-','B+'].includes(letter)) return 'badge good';
+  if(['B','B-','C+','C','C-'].includes(letter)) return 'badge mid';
+  return 'badge bad';
+}
+function overallClass(letter){
+  if(['A+','A','A-','B+'].includes(letter)) return 'good';
+  if(['B','B-','C+','C','C-'].includes(letter)) return 'mid';
+  return 'bad';
 }
 
 function categoryScores(v){
@@ -381,32 +433,32 @@ function categoryScores(v){
   const sInc  = v.incomeScore;
 
   const weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + sInc*0.05)*100;
-  const score = v.fiProgress >= 1 ? Math.max(weighted, 94) : weighted;
+  const score = (v.annualSpend>0 && v.net >= FI_MULT*Math.max(v.annualSpend, SPEND_FLOOR)) ? Math.max(weighted,94) : weighted;
 
   return {
     components: [
       {key:'Savings rate', sub:'Toward 25% target', val:`${Math.round(v.saveRate*100)}% of take-home`,
-       score:sSave, letter:letterFrom01(sSave),
+       letter:letterFrom01(sSave),
        tip: v.saveRate<0.25
           ? `Aim for 25%. You’re short by about ${money(Math.max(0,(v.income*0.25)-(v.income-v.expenses)))} per month. Automate transfers on payday.`
           : `Great job keeping spending below income—stay consistent.`},
       {key:'Emergency fund', sub:'Goal 6 months', val:`${v.efMonths.toFixed(1)} months`,
-       score:sEF, letter:letterFrom01(sEF),
+       letter:letterFrom01(sEF),
        tip: v.efMonths<6
           ? `Set aside ${money(Math.round((v.expenses*6 - v.cash)/6))}/mo to reach 6 months in ~6 months. Park in a high-yield savings.`
           : `Solid cushion—maintain it in a safe, liquid account.`},
       {key:'Debt load (non-mort.)', sub:'Lower is better', val:`${Math.round(v.dtiNonMort*100)}% of baseline`,
-       score:sDebt, letter:letterFrom01(sDebt),
+       letter:letterFrom01(sDebt),
        tip: v.dtiNonMort>0.25
           ? `Attack highest-interest balances first. Target extra ${money(Math.round(v.baseline*0.05))}/mo until non-mortgage debt <25% of baseline.`
           : `Healthy debt level. Keep balances paid in full monthly.`},
       {key:'Age-based net worth', sub:`Target ${v.nwTargetMultiple.toFixed(2)}× baseline`, val:`${(v.nwProgress*100).toFixed(0)}% of age target`,
-       score:sAgeNW, letter:letterFrom01(sAgeNW),
+       letter:letterFrom01(sAgeNW),
        tip: v.nwProgress<1
           ? `Gap of ~${money(Math.max(0, v.nwTargetAmount - v.net))}. Invest the difference steadily; prioritize tax-advantaged accounts.`
           : `You’re ahead of schedule—keep compounding.`},
       {key:'Income strength', sub:'vs median to high income', val:`${money(v.annualIncome)}/yr`,
-       score:sInc, letter:v.incomeLetter,
+       letter:v.incomeLetter,
        tip: (v.annualIncome < MEDIAN_INCOME*1.15)
           ? `Focus on skill-ups, certs, or negotiation. Track market rates; aim for ${money(Math.round(MEDIAN_INCOME*1.15))}+ within 12–18 months.`
           : `Leverage surplus income: automate investing and employer match.`},
@@ -415,7 +467,7 @@ function categoryScores(v){
   };
 }
 
-/* --- overlay workflow --- */
+/* overlay */
 const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
 function toggleOverlay(show){ overlay.classList.toggle('show', !!show) }
 function withOverlay(runFn, doneFn){
@@ -425,110 +477,76 @@ function withOverlay(runFn, doneFn){
   setTimeout(()=>{ if(done) return; done=true; clearInterval(t); toggleOverlay(false); doneFn(runFn()); }, dur+220);
 }
 
-/* --- Report Card rendering + scroll lock --- */
+/* report modal + scroll lock */
 const modal=$('#reportModal'), rcRows=$('#rcRows'), rcGrade=$('#rcGrade'), rcMeta=$('#rcMeta');
 let savedScrollY = 0;
-function lockScroll(){
-  savedScrollY = window.scrollY || 0;
-  document.body.classList.add('lock-scroll');
-  document.body.style.top = `-${savedScrollY}px`;
-}
-function unlockScroll(){
-  document.body.classList.remove('lock-scroll');
-  document.body.style.top = '';
-  window.scrollTo(0, savedScrollY || 0);
-}
-function badgeClass(letter){
-  if(['A+','A','A-','B+'].includes(letter)) return 'badge good';
-  if(['B','B-','C+','C','C-'].includes(letter)) return 'badge mid';
-  return 'badge bad';
-}
-function openReport(v, cats){
+function lockScroll(){ savedScrollY = window.scrollY||0; document.body.classList.add('lock-scroll'); document.body.style.top = `-${savedScrollY}px`; }
+function unlockScroll(){ document.body.classList.remove('lock-scroll'); document.body.style.top=''; window.scrollTo(0,savedScrollY||0); }
+
+function openReport(v,cats){
   rcMeta.textContent = `Overall score ${cats.overall.score.toFixed(1)} / 100 • Net worth ${money(v.net)} • Assets ${money(v.assets)} • Liabilities ${money(v.liabs)}`;
   rcGrade.textContent = cats.overall.letter;
+  rcGrade.className = 'rc-grade ' + overallClass(cats.overall.letter); // color by letter
 
   rcRows.innerHTML='';
   cats.components.forEach(c=>{
-    const row = el('div',{className:'rc-row'});
-    const catCol = el('div',{className:'rc-cell'},[
+    const row=el('div',{className:'rc-row'});
+    const catCol=el('div',{className:'rc-cell'},[
       el('div',{className:'label'},[document.createTextNode(c.key)]),
       el('div',{className:'sub'},[document.createTextNode(c.sub)])
     ]);
-    const detailCol = el('div',{className:'rc-cell detail-col'},[
+    const detailCol=el('div',{className:'rc-cell detail-col'},[
       el('div',{className:'detail'},[document.createTextNode(c.val)]),
       el('div',{className:'tip'},[document.createTextNode(c.tip)])
     ]);
-    const gradeCol = el('div',{className:'rc-cell'},[
+    const gradeCol=el('div',{className:'rc-cell'},[
       el('span',{className:badgeClass(c.letter)},[document.createTextNode(c.letter)])
     ]);
-    row.append(catCol, detailCol, gradeCol);
-    rcRows.append(row);
+    row.append(catCol,detailCol,gradeCol); rcRows.append(row);
   });
 
   if (['A+','A','A-','B+','B','B-'].includes(cats.overall.letter)) confettiBurst();
-  lockScroll();
-  modal.classList.add('show');
+  lockScroll(); modal.classList.add('show');
   try{ gtag('event','report_open',{value:cats.overall.score}); }catch(_){}
 }
-
-/* close handlers */
 on($('#closeReport'),'click',()=>{ modal.classList.remove('show'); unlockScroll(); });
 on($('#calcAgain'),'click',()=>{ modal.classList.remove('show'); unlockScroll(); });
 
 /* actions */
-function gradeSequence(){
-  withOverlay(()=>{ const v=values(); const cats=categoryScores(v); return {v,cats}; },
-    ({v,cats})=> openReport(v,cats));
-}
+function gradeSequence(){ withOverlay(()=>{ const v=values(); const cats=categoryScores(v); return {v,cats}; }, ({v,cats})=>openReport(v,cats)); }
 on($('#gradeBtn'),'click',gradeSequence);
 on($('#gradeBtnTop'),'click',gradeSequence);
 
-/* share buttons */
-function shareLink(){
-  const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0));
-  return location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s))));
-}
-on($('#copyLink'),'click',()=>{
-  const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url));
-  try{ gtag('event','share_copy'); }catch(_){}
-});
-on($('#copyJSON'),'click',()=>{
-  const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url));
-});
-on($('#copyReport'),'click',async ()=>{
-  const url=shareLink();
-  const text=`My Grade My Finance report card → ${url}`;
-  if (navigator.share){ try{ await navigator.share({title:'My Report Card', text, url}); }catch(_){ navigator.clipboard?.writeText(url) } }
-  else navigator.clipboard?.writeText(url);
-});
+/* share */
+function shareLink(){ const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0)); return location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s)))); }
+on($('#copyLink'),'click',()=>{ const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url)); });
+on($('#copyJSON'),'click',()=>{ const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url)); });
+on($('#copyReport'),'click',async ()=>{ const url=shareLink(); const text=`My Grade My Finance report card → ${url}`; if(navigator.share){try{await navigator.share({title:'My Report Card',text,url})}catch{navigator.clipboard?.writeText(url)}} else navigator.clipboard?.writeText(url) });
 
 /* hints & hydrate */
-function updateHints(){
-  const v=values();
-  $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`;
-  $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}`;
-}
-ids.forEach(id=>els[id]?.addEventListener('input',updateHints));
-updateHints();
-(function hydrateFromHash(){
-  const m=location.hash.match(/#s=([^&]+)/); if(!m) return;
-  try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1]))));
-    Object.keys(obj).forEach(id=>{ const el=document.getElementById(id); if(el) el.value=obj[id] });
-    updateHints();
-  }catch(e){ console.warn('Bad hash payload') }
-})();
+function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}` }
+ids.forEach(id=>els[id]?.addEventListener('input',updateHints)); updateHints();
+(function(){ const m=location.hash.match(/#s=([^&]+)/); if(!m) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{const el=document.getElementById(id); if(el) el.value=obj[id]}); updateHints(); }catch{} })();
 
-/* demo values */
-on($('#demoBtn'),'click',()=>{
-  const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000};
-  Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id]});
-  updateHints();
+/* demo */
+on($('#demoBtn'),'click',()=>{ const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000}; Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id]}); updateHints(); });
+
+/* subscribe (Formspree) */
+const subForm=$('#subForm'), subEmail=$('#subEmail'), toast=$('#toast');
+on(subForm,'submit',async (e)=>{
+  e.preventDefault();
+  const email=subEmail.value.trim();
+  if(!/^\S+@\S+\.\S+$/.test(email)){ alert('Please enter a valid email.'); return; }
+  try{
+    const res=await fetch(subForm.action,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({email,source:'grademyfinance.com'})});
+    if(res.ok){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000); subEmail.value=''; }
+    else{ alert('Signup failed. Please try again in a bit.'); }
+  }catch{ alert('Network error. Please try again later.'); }
 });
 })();
 </script>
 </body>
 </html>
-
 
 
 
