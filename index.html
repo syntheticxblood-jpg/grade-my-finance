@@ -21,16 +21,6 @@
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <link rel="preconnect" href="https://pagead2.googlesyndication.com">
 
-<!-- GA4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config','G-H6223HYVS6');
-</script>
-
-<!-- AdSense (leave slots as-is until you have them) -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514" crossorigin="anonymous"></script>
-
 <style>
 :root{
   --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
@@ -64,8 +54,9 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
 .logo{height:72px}
 @media (max-width:720px){ .logo{height:58px} }
 .brand{font-weight:900; font-size:22px; color:#062c1b}
-.theme-toggle{position:absolute; right:10px; top:10px}
+.header-right{position:absolute; right:10px; top:10px; display:flex; gap:8px; align-items:center}
 .theme-toggle .btn{min-width:0;padding:8px 10px}
+select.btn{appearance:none; background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02)); color:var(--text); border:1px solid var(--line); border-radius:12px; padding:8px 10px; font-weight:900; cursor:pointer}
 
 /* Hero */
 .hero{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:14px 0 4px; text-align:center; }
@@ -169,9 +160,6 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .page{display:none}
 .page.active{display:block}
 
-/* Lock background scroll */
-body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
-
 /* Subscribe + lead magnet */
 .subscribe{
   max-width:900px; margin:30px auto; padding:18px;
@@ -222,6 +210,10 @@ backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.22);display:non
 .mobile-cta.on{display:block}
 .mobile-cta .btn{width:100%}
 
+/* Consent banner */
+#consent{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:200;background:#0b1226;color:#e2e8f0;border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:none;box-shadow:var(--shadow);max-width:92vw}
+#consent .btn{min-width:0;padding:8px 10px}
+
 /* --- Mobile spacing polish --- */
 svg, img { display:block; max-width:100%; height:auto; }
 .hero-card > :first-child { margin-top:0; }
@@ -244,9 +236,9 @@ ins.adsbygoogle { min-height:0 !important; }
 /* Print stylesheet */
 @media print{
   body{background:#fff}
-  #reportModal{position:static;background:#fff}
+  #reportModal,#guideModal{position:static;background:#fff}
   .sheet{max-height:none;box-shadow:none;border:none}
-  header,.mobile-cta,.subscribe,footer,.adsbygoogle,.theme-toggle,.bubble{display:none!important}
+  header,.mobile-cta,.subscribe,footer,.adsbygoogle,.theme-toggle,.bubble,#consent{display:none!important}
 }
 </style>
 </head>
@@ -275,13 +267,18 @@ ins.adsbygoogle { min-height:0 !important; }
       </g>
     </svg>
     <div class="brand">Grade My Finance</div>
-    <div class="theme-toggle"><button id="themeToggle" class="btn" aria-label="Toggle theme">🌙/☀️</button></div>
+    <div class="header-right">
+      <div class="theme-toggle"><button id="themeToggle" class="btn" aria-label="Toggle theme">🌙/☀️</button></div>
+      <select id="currencySel" class="btn" aria-label="Currency">
+        <option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option><option>AUD</option>
+      </select>
+    </div>
   </div>
 </header>
 
 <section class="container hero">
   <div class="hero-card">
-    <h1 class="hero-title">Your money, graded like a report card ♥</h1>
+    <h1 class="hero-title" id="heroTitle">Your money, graded like a report card ♥</h1>
     <p class="hero-tag">No sign-up. Plug in numbers → get a score. Simple and effective.</p>
     <div class="hero-cta">
       <button class="btn" id="demoBtn" type="button">Try Demo</button>
@@ -339,6 +336,13 @@ ins.adsbygoogle { min-height:0 !important; }
   <main>
     <section id="grade" class="page active">
       <div class="inputs">
+        <!-- Housing mode -->
+        <div class="card" style="grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span class="section-label" style="margin:0">Housing</span>
+          <button id="modeOwner" class="btn" type="button">Owner</button>
+          <button id="modeRenter" class="btn" type="button">Renter</button>
+        </div>
+
         <div class="card">
           <label class="section-label" for="income">Monthly Income (after-tax)</label>
           <input id="income" type="number" inputmode="decimal" value="0" min="0" aria-label="Monthly income">
@@ -372,14 +376,25 @@ ins.adsbygoogle { min-height:0 !important; }
 
         <div class="card"><label class="section-label" for="cc">Credit Cards (balance)</label><input id="cc" type="number" inputmode="decimal" value="0" min="0" aria-label="Credit card balance"></div>
 
+        <!-- Advanced weights -->
+        <div class="card" style="grid-column:1/-1">
+          <details>
+            <summary class="section-label" style="cursor:pointer">Advanced weights</summary>
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px">
+              <label>Save <input type="range" id="wSave" min="0" max="0.5" step="0.01"></label>
+              <label>EF <input type="range" id="wEf" min="0" max="0.5" step="0.01"></label>
+              <label>Debt <input type="range" id="wDebt" min="0" max="0.3" step="0.01"></label>
+              <label>Age <input type="range" id="wAge" min="0.3" max="0.9" step="0.01"></label>
+              <label>Income <input type="range" id="wInc" min="0" max="0.3" step="0.01"></label>
+            </div>
+            <p class="section-label" style="margin-top:8px">Weights auto-normalize to 100%.</p>
+          </details>
+        </div>
+
         <div class="card" style="grid-column:1/-1">
           <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap">
             <div style="display:flex;gap:8px;flex-wrap:wrap">
               <button id="resetBtn" class="btn" type="button">Reset</button>
-              <button id="saveProfile" class="btn" type="button">Save Profile</button>
-              <button id="loadProfile" class="btn" type="button">Load Profile</button>
-              <button id="exportProfiles" class="btn" type="button">Export</button>
-              <label class="btn" for="importFile" style="cursor:pointer">Import<input id="importFile" type="file" accept="application/json" style="display:none"></label>
             </div>
             <div style="display:flex;gap:8px">
               <button id="gradeBtn" class="btn primary" type="button">Get My Report Card</button>
@@ -394,9 +409,10 @@ ins.adsbygoogle { min-height:0 !important; }
     <section id="privacy" class="page" aria-labelledby="privacyH">
       <div class="card" style="margin-top:12px">
         <h2 id="privacyH">Privacy Policy</h2>
-        <p>We don’t store your numbers on a server. All calculations run in your browser. If you share a link, your inputs are encoded in the URL; delete it to remove access. Emails you submit for updates are processed by Formspree and delivered to us for communication only. We use Google Analytics (GA4) and AdSense to understand usage and serve ads.</p>
-        <p>Contact: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
-        <p>Last updated: 2025-09-09</p>
+        <p>We don’t store your numbers on a server. All calculations run in your browser. If you share a link, your inputs are encoded in the URL; delete it to remove access.</p>
+        <p>Preferences saved locally: theme, currency, housing mode, advanced weights, and anonymized score history (to render your sparkline). You can clear them via your browser’s site data.</p>
+        <p>Emails submitted for updates are processed by Formspree and delivered to us for communication only. We use Google Analytics (GA4) and AdSense, loaded only after your consent.</p>
+        <p>Contact: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a> • Last updated: 2025-09-09</p>
       </div>
     </section>
 
@@ -404,7 +420,7 @@ ins.adsbygoogle { min-height:0 !important; }
     <section id="terms" class="page" aria-labelledby="termsH">
       <div class="card" style="margin-top:12px">
         <h2 id="termsH">Terms of Use</h2>
-        <p>This site is for educational purposes only and does not constitute financial, tax, or legal advice. You’re responsible for your own decisions. We provide the service “as is,” without warranties. By using the site, you agree not to misuse it or attempt to reverse engineer the code. Some links may be affiliate links; we may earn a commission at no cost to you.</p>
+        <p>This site is for educational purposes only and does not constitute financial, tax, or legal advice. You’re responsible for your own decisions. Service provided “as is,” without warranties. Some links may be affiliate links; we may earn a commission at no cost to you.</p>
       </div>
     </section>
 
@@ -582,6 +598,38 @@ Sitemap: https://grademyfinance.com/sitemap.xml
 }
 </script>
 
+<!-- Inline Service Worker source (for single-file deploy) -->
+<script id="sw-src" type="text/plain">
+const CACHE='gmf-v1';
+const ASSETS=['/','/index.html','/favicon.svg','/apple-touch-icon.png'];
+self.addEventListener('install', e=>{
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS).catch(()=>{})));
+});
+self.addEventListener('activate', e=>{
+  e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));
+});
+self.addEventListener('fetch', e=>{
+  const req=e.request;
+  if(req.method!=='GET') return;
+  if(req.headers.get('accept')?.includes('text/html')){
+    e.respondWith(fetch(req).catch(()=>caches.match('/index.html')));
+    return;
+  }
+  e.respondWith(
+    caches.match(req).then(c=>c || fetch(req).then(r=>{
+      const copy=r.clone(); caches.open(CACHE).then(cache=>cache.put(req,copy)); return r;
+    }).catch(()=>caches.match(req)))
+  );
+});
+</script>
+
+<!-- Consent banner -->
+<div id="consent">
+  We use cookies for analytics and ads. OK?
+  <button id="c-accept" class="btn">Accept</button>
+  <button id="c-reject" class="btn">Reject</button>
+</div>
+
 <script>
 (() => {
 /* helpers */
@@ -589,7 +637,12 @@ const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const el=(t,a={},ch=[])=>{const n=document.createElement(t);Object.assign(n,a);ch.forEach(c=>n.append(c));return n;}
 const on=(x,e,f)=>x&&x.addEventListener(e,f,{passive:true});
-const money=n=>isFinite(n)?`$${Math.round(n).toLocaleString()}`:'—';
+let CURRENCY = localStorage.getItem('gmf_curr') || 'USD';
+function money(n){
+  return isFinite(n)
+   ? new Intl.NumberFormat(undefined,{style:'currency',currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n))
+   : '—';
+}
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
 const g = (...a)=>{ try{ gtag(...a) }catch{} };
@@ -599,6 +652,68 @@ const root=document.documentElement;
 const saved=localStorage.getItem('gmf_theme');
 if(saved==='light') root.dataset.theme='light';
 on($('#themeToggle'),'click',()=>{ const next=root.dataset.theme==='light'?'':'light'; root.dataset.theme=next; localStorage.setItem('gmf_theme', next||'dark'); });
+
+/* Currency selector */
+const curSel=$('#currencySel');
+if(curSel){ curSel.value=CURRENCY; curSel.addEventListener('change',()=>{ CURRENCY=curSel.value; localStorage.setItem('gmf_curr',CURRENCY); updateHints(); }); }
+
+/* Consent + gated loaders */
+(function(){
+  const key='gmf_consent';
+  const bar=$('#consent');
+  function loadGA(){
+    if (window.__gaLoaded) return; window.__gaLoaded=true;
+    const s=document.createElement('script');
+    s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6';
+    document.head.appendChild(s);
+    window.dataLayer=window.dataLayer||[];
+    window.gtag=function(){dataLayer.push(arguments)}
+    gtag('js', new Date()); gtag('config', 'G-H6223HYVS6');
+  }
+  function loadAds(){
+    if (window.__adsLoaded) return; window.__adsLoaded=true;
+    const s=document.createElement('script');
+    s.async=true; s.crossOrigin='anonymous';
+    s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514';
+    document.head.appendChild(s);
+  }
+  const c=localStorage.getItem(key);
+  if(c==='accept'){ loadGA(); loadAds(); }
+  else{
+    bar.style.display='block';
+    $('#c-accept').onclick=()=>{ localStorage.setItem(key,'accept'); bar.remove(); loadGA(); loadAds(); };
+    $('#c-reject').onclick=()=>{ localStorage.setItem(key,'reject'); bar.remove(); };
+  }
+})();
+
+/* Inline Manifest (single-file) */
+(function(){
+  const manifest = {
+    name:"Grade My Finance", short_name:"GMF", start_url:"/", display:"standalone",
+    background_color:"#0f172a", theme_color:"#0f172a",
+    icons:[]
+  };
+  const url = URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'}));
+  const link = document.createElement('link'); link.rel='manifest'; link.href=url; document.head.appendChild(link);
+})();
+
+/* Service Worker from inline blob (single-file) */
+if('serviceWorker' in navigator){
+  const code = document.getElementById('sw-src')?.textContent || '';
+  const swUrl = URL.createObjectURL(new Blob([code],{type:'text/javascript'}));
+  navigator.serviceWorker.register(swUrl).catch(()=>{});
+}
+
+/* A/B copy */
+const VARIANT = new URLSearchParams(location.search).get('v') ||
+                localStorage.getItem('gmf_variant') ||
+                (Math.random()<0.5 ? 'A' : 'B');
+localStorage.setItem('gmf_variant', VARIANT);
+g('event','ab_variant',{variant:VARIANT});
+if(VARIANT==='B'){
+  const ht=document.getElementById('heroTitle');
+  if(ht) ht.textContent = 'Get your free money grade in seconds';
+}
 
 /* confetti */
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -626,10 +741,45 @@ ids.forEach(id=>{
   on(elInp,'blur',()=>{ if(elInp.value!=='') elInp.value = String(Math.round(+elInp.value)); });
 });
 
+/* Housing mode */
+function setHousingMode(mode){
+  const ownerFields=['home','mortgage'];
+  ownerFields.forEach(fid=>{
+    const card = els[fid]?.closest('.card');
+    if(!card) return;
+    card.style.display = (mode==='renter') ? 'none' : '';
+    if(mode==='renter'){ els[fid].value=0; }
+  });
+  localStorage.setItem('gmf_housing', mode);
+  updateHints();
+}
+const savedHousing = localStorage.getItem('gmf_housing') || 'owner';
+setHousingMode(savedHousing);
+$('#modeOwner')?.addEventListener('click',()=>setHousingMode('owner'));
+$('#modeRenter')?.addEventListener('click',()=>setHousingMode('renter'));
+
 /* curves/params */
 const NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
 const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25;
 const MEDIAN_INCOME=70000;
+
+/* advanced weights */
+let WEIGHTS = JSON.parse(localStorage.getItem('gmf_weights')||'null') ||
+  {save:0.15, ef:0.10, debt:0.05, age:0.65, inc:0.05};
+function bindWeightsUI(){
+  const map={Save:'save', Ef:'ef', Debt:'debt', Age:'age', Inc:'inc'};
+  Object.entries(map).forEach(([K,k])=>{
+    const e=$('#w'+K); if(!e) return;
+    e.value = WEIGHTS[k];
+    e.oninput=()=>{
+      WEIGHTS={save:+$('#wSave').value, ef:+$('#wEf').value, debt:+$('#wDebt').value, age:+$('#wAge').value, inc:+$('#wInc').value};
+      const sum=WEIGHTS.save+WEIGHTS.ef+WEIGHTS.debt+WEIGHTS.age+WEIGHTS.inc;
+      if(Math.abs(sum-1)>0.001){ Object.keys(WEIGHTS).forEach(x=>WEIGHTS[x]/=sum); }
+      localStorage.setItem('gmf_weights', JSON.stringify(WEIGHTS));
+    };
+  });
+}
+bindWeightsUI();
 
 /* helpers */
 function targetNW(age){
@@ -690,7 +840,8 @@ function categoryScores(v){
   const sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
   const sInc  = v.incomeScore;
 
-  const weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + sInc*0.05)*100;
+  const w=WEIGHTS;
+  const weighted = (sSave*w.save + sEF*w.ef + sDebt*w.debt + sAgeNW*w.age + sInc*w.inc)*100;
   const score = (v.annualSpend>0 && v.net >= FI_MULT*Math.max(v.annualSpend, SPEND_FLOOR)) ? Math.max(weighted,94) : weighted;
 
   return {
@@ -866,32 +1017,6 @@ if (new URLSearchParams(location.search).get('subscribed') === '1') {
   toast.textContent='Thanks! You’re on the list.'; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000);
 }
 
-/* Saved profiles */
-function getProfiles(){ return JSON.parse(localStorage.getItem('gmf_profiles')||'{}'); }
-function setProfiles(p){ localStorage.setItem('gmf_profiles', JSON.stringify(p)); }
-$('#saveProfile')?.addEventListener('click',()=>{
-  const name=prompt('Save profile as (e.g., “Me”, “Household A”)');
-  if(!name) return;
-  const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0));
-  const p=getProfiles(); p[name]={...s, ts:Date.now()}; setProfiles(p);
-  alert('Saved!');
-});
-$('#loadProfile')?.addEventListener('click',()=>{
-  const p=getProfiles(); const names=Object.keys(p);
-  if(!names.length){ alert('No saved profiles yet.'); return; }
-  const pick=prompt('Type a profile name to load:\n'+names.join(', '));
-  if(!pick || !p[pick]) return;
-  const s=p[pick]; Object.keys(s).forEach(id=>{ if(els[id]) els[id].value=s[id]; }); updateHints();
-});
-$('#exportProfiles')?.addEventListener('click',()=>{
-  const blob=new Blob([localStorage.getItem('gmf_profiles')||'{}'],{type:'application/json'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='gmf_profiles.json'; a.click();
-});
-$('#importFile')?.addEventListener('change',e=>{
-  const f=e.target.files?.[0]; if(!f) return;
-  const r=new FileReader(); r.onload=()=>{ try{ const p=JSON.parse(r.result); setProfiles(p); alert('Imported!'); }catch{ alert('Invalid JSON file.'); } }; r.readAsText(f);
-});
-
 /* Sticky CTA only after scroll and only on mobile */
 const mcta=$('#mobileCta'); const onScroll=()=>{ mcta.classList.toggle('on', window.scrollY>300 && window.matchMedia('(max-width: 720px)').matches ); };
 addEventListener('scroll', onScroll, {passive:true}); onScroll();
@@ -904,12 +1029,6 @@ addEventListener('scroll', onScroll, {passive:true}); onScroll();
   $('#closeBubble')?.addEventListener('click',()=>{ b.style.display='none'; localStorage.setItem('gmf_greeted','1'); });
 })();
 
-/* Lead magnet modal */
-const guideModal=$('#guideModal');
-$('#openGuide')?.addEventListener('click',()=>{ guideModal.classList.add('show'); lockScroll(); });
-$('#closeGuide')?.addEventListener('click',()=>{ guideModal.classList.remove('show'); unlockScroll(); });
-$('#printGuide')?.addEventListener('click',()=>window.print());
-
 /* Developer copy buttons */
 $('#copyRobots')?.addEventListener('click',()=>{ navigator.clipboard?.writeText($('#robotsTxt').textContent.trim()); alert('robots.txt copied'); });
 $('#copySitemap')?.addEventListener('click',()=>{ navigator.clipboard?.writeText($('#smap').textContent.replace(/&lt;/g,'<').replace(/&gt;/g,'>')); alert('sitemap.xml copied'); });
@@ -917,12 +1036,14 @@ $('#copySitemap')?.addEventListener('click',()=>{ navigator.clipboard?.writeText
 /* Reset button */
 $('#resetBtn')?.addEventListener('click',()=>{ ids.forEach(id=>{ if(els[id]) els[id].value=0; }); updateHints(); });
 
+/* Error telemetry */
+window.addEventListener('error', e => g('event','js_error',{message:String(e.message||e.error)}));
+window.addEventListener('unhandledrejection', e => g('event','js_unhandled_rejection',{reason:String(e.reason)}));
+
 renderSpark();
 })();
 </script>
 </body>
 </html>
-
-
 
 
