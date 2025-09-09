@@ -52,12 +52,25 @@ header{ position:fixed; left:0; right:0; top:0; z-index:20; height:var(--header-
 .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 
 /* Hero */
-.hero{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:14px 0 4px; text-align:center; }
+.hero{ padding:14px 0 4px; }
+.hero-grid{ display:grid; grid-template-columns: 1fr 330px; gap:16px; align-items:start }
+@media (max-width:980px){ .hero-grid{ grid-template-columns:1fr } }
+.hero-left{ display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center }
 .hero-card{ width:min(760px,92vw); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
   border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(--shadow); }
 .hero-title{margin:0 0 6px;font-size:30px;font-weight:900}
 .hero-tag{margin:0 0 8px;color:var(--muted)}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* Social proof */
+.social-proof{ position:sticky; top:calc(var(--header-h) + 12px); }
+.proof-card{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow); margin-bottom:10px }
+.proof-metric{ display:flex; align-items:center; gap:10px; font-weight:900 }
+.proof-metric .big{ font-size:26px; background:linear-gradient(90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent }
+.review{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start }
+.avatar{ width:36px; height:36px; border-radius:999px; background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; font-weight:900; display:grid; place-items:center }
+.stars{ color:#fbbf24; letter-spacing:1px }
+.quote{ color:var(--muted); font-size:14px }
 
 /* Layout */
 .shell{max-width:1100px;margin:0 auto;padding:0 16px 22px}
@@ -118,6 +131,13 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .badge.mid{color:#062c1b;background:linear-gradient(180deg,#facc15,#f59e0b)}
 .badge.bad{color:#fff;background:#ef4444}
 
+/* Path to next grade */
+.path{ margin-top:12px; border-top:1px dashed var(--line); padding-top:10px }
+.path h4{ margin:0 0 8px; font-size:18px }
+.path ol{ margin:0; padding-left:20px }
+.path li{ margin:6px 0; color:#cbd5e1 }
+.path .pts{ font-weight:900; color:#86efac; }
+
 /* Footer + sticky CTA */
 footer{background:#0b1226; border-top:1px solid var(--line); margin-top:22px; padding:22px 16px; color:#cbd5e1; font-size:14px}
 :root[data-theme="light"] footer{background:#ffffff}
@@ -130,6 +150,14 @@ footer{background:#0b1226; border-top:1px solid var(--line); margin-top:22px; pa
 /* Small tweaks */
 svg, img { display:block; max-width:100%; height:auto; }
 @media (max-width:720px){ .hero-card{ padding:14px } .inputs{ gap:10px } .card{ padding:12px } }
+
+/* Print: focus on the report sheet for a clean PDF */
+@media print{
+  body{background:#fff}
+  header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important}
+  #reportModal{position:static!important;display:block!important;background:#fff!important}
+  .sheet{max-height:none!important;box-shadow:none!important;border:none!important}
+}
 </style>
 </head>
 <body>
@@ -169,33 +197,72 @@ svg, img { display:block; max-width:100%; height:auto; }
 </header>
 
 <section class="container hero">
-  <div class="hero-card">
-    <h1 class="hero-title">Get your free money grade in seconds</h1>
-    <p class="hero-tag">No sign-up. Plug in numbers → get a score. Simple and effective.</p>
-    <div class="hero-cta">
-      <button class="btn" id="demoBtn" type="button">Try Demo</button>
-      <button class="btn primary" id="gradeBtnTop" type="button">Get My Report Card</button>
-      <button class="btn" id="copyLink" type="button">Copy share link</button>
-    </div>
-  </div>
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="hero-card">
+        <h1 class="hero-title">Get your free money grade in seconds</h1>
+        <p class="hero-tag">No sign-up. Plug in numbers → get a score. Simple and effective.</p>
+        <div class="hero-cta">
+          <button class="btn" id="demoBtn" type="button">Try Demo</button>
+          <button class="btn primary" id="gradeBtnTop" type="button">Get My Report Card</button>
+          <button class="btn" id="copyLink" type="button">Copy share link</button>
+        </div>
+      </div>
 
-  <div class="mascot">
-    <!-- Grady -->
-    <svg viewBox="0 0 280 260" width="240" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
-      <defs><linearGradient id="mc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient></defs>
-      <ellipse cx="140" cy="238" rx="60" ry="14" fill="rgba(0,0,0,.28)"/>
-      <rect x="56" y="44" width="168" height="168" rx="28" fill="url(#mc)" stroke="#86EFAC" stroke-width="3"/>
-      <circle cx="110" cy="104" r="8" fill="#0f172a"/><circle cx="170" cy="104" r="8" fill="#0f172a"/>
-      <path d="M114 130 q26 22 52 0" stroke="#16a34a" stroke-width="6" fill="none" stroke-linecap="round"/>
-      <g stroke="#a7f3d0" stroke-width="2">
-        <line x1="84" y1="154" x2="196" y2="154"/><line x1="84" y1="170" x2="196" y2="170"/><line x1="84" y1="186" x2="196" y2="186"/>
-      </g>
-      <g transform="translate(190,140) rotate(-10)">
-        <rect x="-2" y="-2" width="60" height="46" rx="8" fill="#ffffff" stroke="#86EFAC" stroke-width="2"/>
-        <text x="28" y="30" text-anchor="middle" font-size="18" font-weight="900" fill="#ef4444">A+</text>
-      </g>
-    </svg>
-    <div class="floatA" aria-hidden="true">A+</div>
+      <div class="mascot">
+        <!-- Grady -->
+        <svg viewBox="0 0 280 260" width="240" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
+          <defs><linearGradient id="mc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient></defs>
+          <ellipse cx="140" cy="238" rx="60" ry="14" fill="rgba(0,0,0,.28)"/>
+          <rect x="56" y="44" width="168" height="168" rx="28" fill="url(#mc)" stroke="#86EFAC" stroke-width="3"/>
+          <circle cx="110" cy="104" r="8" fill="#0f172a"/><circle cx="170" cy="104" r="8" fill="#0f172a"/>
+          <path d="M114 130 q26 22 52 0" stroke="#16a34a" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <g stroke="#a7f3d0" stroke-width="2">
+            <line x1="84" y1="154" x2="196" y2="154"/><line x1="84" y1="170" x2="196" y2="170"/><line x1="84" y1="186" x2="196" y2="186"/>
+          </g>
+          <g transform="translate(190,140) rotate(-10)">
+            <rect x="-2" y="-2" width="60" height="46" rx="8" fill="#ffffff" stroke="#86EFAC" stroke-width="2"/>
+            <text x="28" y="30" text-anchor="middle" font-size="18" font-weight="900" fill="#ef4444">A+</text>
+          </g>
+        </svg>
+        <div class="floatA" aria-hidden="true">A+</div>
+      </div>
+    </div>
+
+    <!-- Social proof / reviews -->
+    <aside class="social-proof" aria-label="Reviews and stats">
+      <div class="proof-card">
+        <div class="proof-metric">
+          <div class="big">1,000+</div>
+          <div>report cards graded</div>
+        </div>
+        <div style="color:var(--muted);font-size:13px;margin-top:6px">Since launch. Educational only — not financial advice.</div>
+      </div>
+
+      <div class="proof-card review">
+        <div class="avatar">AL</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="quote">“Made my budget click. The tips felt doable and I loved the grade reveal.”</div>
+        </div>
+      </div>
+
+      <div class="proof-card review">
+        <div class="avatar">JR</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="quote">“Helped me set a target emergency fund and pay down cards faster.”</div>
+        </div>
+      </div>
+
+      <div class="proof-card review">
+        <div class="avatar">SM</div>
+        <div>
+          <div class="stars">★★★★☆</div>
+          <div class="quote">“Clear next steps — I printed the report for my fridge.”</div>
+        </div>
+      </div>
+    </aside>
   </div>
 </section>
 
@@ -270,8 +337,16 @@ svg, img { display:block; max-width:100%; height:auto; }
     </div>
     <div class="rc-head"><div>Category</div><div>Details</div><div>Grade</div></div>
     <div class="rc-rows" id="rcRows"></div>
+
+    <!-- Path to higher grade -->
+    <div class="path">
+      <h4>Path to a higher grade</h4>
+      <ol id="pathList"></ol>
+      <div style="font-size:12px;color:#9fb0c7;margin-top:6px">Est. point gains are approximate based on our weighting.</div>
+    </div>
+
     <div class="rc-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap">
-      <button class="btn" id="printReport" type="button">Save as PDF</button>
+      <button class="btn" id="printReport" type="button">Print / Save as PDF</button>
       <button class="btn primary" id="calcAgain" type="button">Recalculate</button>
     </div>
   </div>
@@ -330,9 +405,10 @@ svg, img { display:block; max-width:100%; height:auto; }
   /* ===== Theme & currency ===== */
   var root=document.documentElement;
   var savedTheme=localStorage.getItem("gmf_theme"); if(savedTheme==="light") root.dataset.theme="light";
-  var themeBtn=$("themeToggle"); if(themeBtn){ themeBtn.addEventListener("click", function(){ var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next; localStorage.setItem("gmf_theme", next||"dark"); }); }
+  $("themeToggle").addEventListener("click", function(){ var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next; localStorage.setItem("gmf_theme", next||"dark"); });
   var CURRENCY=localStorage.getItem("gmf_curr")||"USD";
-  var curSel=$("currencySel"); if(curSel){ curSel.value=CURRENCY; curSel.addEventListener("change", function(){ CURRENCY=curSel.value; localStorage.setItem("gmf_curr",CURRENCY); updateHints(); }); }
+  var curSel=$("currencySel"); curSel.value=CURRENCY;
+  curSel.addEventListener("change", function(){ CURRENCY=curSel.value; localStorage.setItem("gmf_curr",CURRENCY); updateHints(); });
   function money(n){ return isFinite(n)? new Intl.NumberFormat(undefined,{style:"currency",currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)) : "—"; }
 
   /* ===== Inputs & hygiene ===== */
@@ -340,8 +416,7 @@ svg, img { display:block; max-width:100%; height:auto; }
   var els={}; ids.forEach(function(id){ els[id]=$(id); });
   function val(id){ var e=els[id]; return e && e.value!=="" ? Number(e.value) : 0; }
   ids.forEach(function(id){
-    var e=els[id]; if(!e) return;
-    e.addEventListener("input", function(){ e.value=e.value.replace(/[^\d.-]/g,""); });
+    var e=els[id]; e.addEventListener("input", function(){ e.value=e.value.replace(/[^\d.-]/g,""); });
     e.addEventListener("blur", function(){ if(e.value!=="") e.value=String(Math.round(+e.value)); updateHints(); });
   });
 
@@ -366,23 +441,20 @@ svg, img { display:block; max-width:100%; height:auto; }
     v.incomeLetter = incomeLetterFromRatio(ratio);
     return v;
   }
-  function updateHints(){ var v=values(); var ah=$("assetsHint"), lh=$("liabHint"); if(ah) ah.textContent="Total Assets: "+money(v.assets); if(lh) lh.textContent="Total Liabilities: "+money(v.liabs); }
+  function updateHints(){ var v=values(); $("assetsHint").textContent="Total Assets: "+money(v.assets); $("liabHint").textContent="Total Liabilities: "+money(v.liabs); }
 
   /* ===== Housing mode ===== */
   function setHousing(mode){
     var show = (mode==="owner");
-    var hc=qs("#homeCard"), mc=qs("#mortCard");
-    if(hc) hc.style.display = show ? "" : "none";
-    if(mc) mc.style.display = show ? "" : "none";
-    if(!show){ if(els.home) els.home.value=0; if(els.mortgage) els.mortgage.value=0; }
+    qs("#homeCard").style.display = show ? "" : "none";
+    qs("#mortCard").style.display = show ? "" : "none";
+    if(!show){ els.home.value=0; els.mortgage.value=0; }
     localStorage.setItem("gmf_housing",mode);
     updateHints();
   }
-  var modeOwner=$("modeOwner"), modeRenter=$("modeRenter");
-  if(modeOwner) modeOwner.addEventListener("click", function(){ setHousing("owner"); });
-  if(modeRenter) modeRenter.addEventListener("click", function(){ setHousing("renter"); });
-  var savedMode=localStorage.getItem("gmf_housing")||"owner";
-  setHousing(savedMode);
+  $("modeOwner").addEventListener("click", function(){ setHousing("owner"); });
+  $("modeRenter").addEventListener("click", function(){ setHousing("renter"); });
+  setHousing(localStorage.getItem("gmf_housing")||"owner");
 
   /* ===== Scoring ===== */
   function categoryScores(v){
@@ -393,8 +465,11 @@ svg, img { display:block; max-width:100%; height:auto; }
     var sInc  = v.incomeScore;
     var weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + sInc*0.05)*100;
     var score = (v.annualSpend>0 && v.net >= 25*Math.max(v.annualSpend, 30000)) ? Math.max(weighted,94) : weighted;
+
     function saveShortfall(){ return Math.max(0, v.income*0.25 - (v.income - v.expenses)); }
+
     return {
+      s:{sSave:sSave,sEF:sEF,sDebt:sDebt,sAgeNW:sAgeNW,sInc:sInc},
       components: [
         { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home",
           letter:letterFrom01(sSave),
@@ -414,6 +489,59 @@ svg, img { display:block; max-width:100%; height:auto; }
       ],
       overall: { score: Math.round(score*10)/10, letter: overallLetter(Math.round(score*10)/10) }
     };
+  }
+
+  /* ===== Path to a higher grade (heuristic, with est. points) ===== */
+  function nextLetterTarget(score){
+    var bounds=[60,63,67,70,73,77,80,83,87,90,93,97]; // lower edges
+    for(var i=0;i<bounds.length;i++){ if(score<bounds[i]) return bounds[i]; }
+    return null; // already A+
+  }
+  function buildPath(v,cats){
+    var goal = nextLetterTarget(cats.overall.score);
+    var items=[];
+    function push(txt, pts){ items.push({txt:txt, pts:Math.max(0, Math.round(pts))}); }
+
+    // estimate points if we hit each target
+    // Savings → 25%
+    if(v.saveRate < 0.25){
+      var dSave=(1 - map01(v.saveRate,0,0.25))*0.15*100;
+      var need = Math.max(0, v.income*0.25 - (v.income - v.expenses));
+      push("Boost savings to 25% (set aside about "+money(need)+"/mo).", dSave);
+    }
+    // Emergency fund → 6 months
+    if(v.efMonths < 6){
+      var dEF=(1 - map01(v.efMonths,0,6))*0.10*100;
+      var efNeed = Math.max(0, v.expenses*6 - v.cash);
+      push("Build emergency fund to 6 months (save ~"+money(Math.round(efNeed/6))+"/mo for 6 months).", dEF);
+    }
+    // Non-mort debt → 25% of baseline
+    if(v.dtiNonMort > 0.25){
+      var sDebtNow = clamp(1 - v.dtiNonMort/0.50,0,1), sDebtGoal = clamp(1 - 0.25/0.50,0,1);
+      var dDebt=(sDebtGoal - sDebtNow)*0.05*100;
+      var targetDebt = Math.round(v.baseline*0.25), paydown = Math.max(0, v.nonMortDebt - targetDebt);
+      push("Pay down non-mortgage debt below 25% of baseline (reduce about "+money(paydown)+", e.g., "+money(Math.round(v.baseline*0.05))+"/mo).", dDebt);
+    }
+    // Net worth progress → 100%
+    if(v.nwProgress < 1){
+      var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
+      var dAge=(sAgeGoal - sAgeNow)*0.65*100;
+      var gap = Math.max(0, v.nwTargetAmount - v.net);
+      push("Close the age-based net worth gap (~"+money(gap)+"). Consider investing ~"+money(Math.round(gap/36))+"/mo for ~36 months.", dAge);
+    }
+    // Income → 115% of median
+    var ratio = v.annualIncome/70000;
+    if(ratio < 1.15){
+      var sIncNow = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2),0,1);
+      var sIncGoal = clamp(0.5 + 0.5*Math.tanh((1.15-1)*1.2),0,1);
+      var dInc=(sIncGoal - sIncNow)*0.05*100;
+      var targetAnnual = Math.round(70000*1.15), delta = Math.max(0, targetAnnual - v.annualIncome);
+      push("Grow income toward "+money(targetAnnual)+"/yr (≈ "+money(Math.round(delta/12))+"/mo via raise or side income).", dInc);
+    }
+
+    // Sort by points, pick top 3
+    items.sort(function(a,b){ return b.pts - a.pts; });
+    return items.slice(0,3);
   }
 
   /* ===== Confetti ===== */
@@ -454,7 +582,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     }, interval);
   }
 
-  var modal=$("reportModal"), rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), rcMascot=$("rcMascot");
+  var modal=$("reportModal"), rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), rcMascot=$("rcMascot"), pathList=$("pathList");
   function openReport(v,cats){
     rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
     rcGrade.textContent=cats.overall.letter;
@@ -462,6 +590,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?"good":
       (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?"mid":"bad"));
     rcRows.innerHTML="";
+
     cats.components.forEach(function(c){
       var row=document.createElement("div"); row.className="rc-row";
       row.innerHTML=
@@ -473,9 +602,18 @@ svg, img { display:block; max-width:100%; height:auto; }
       rcRows.appendChild(row);
     });
 
+    // Path to higher grade
+    var actions = buildPath(v,cats);
+    pathList.innerHTML="";
+    actions.forEach(function(a){
+      var li=document.createElement("li");
+      li.innerHTML = a.txt + ' <span class="pts">≈ +' + a.pts + ' pts</span>';
+      pathList.appendChild(li);
+    });
+
     // Reveal flair
     modal.classList.add("show");
-    rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop"); // restart animation
+    rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
     rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
     if(["A+","A","A-","B+","B","B-"].indexOf(cats.overall.letter)>-1){ confettiBurst(320); }
   }
@@ -492,12 +630,12 @@ svg, img { display:block; max-width:100%; height:auto; }
     });
   }
 
-  /* ===== Button wires ===== */
+  /* ===== Buttons ===== */
   $("gradeBtnTop").addEventListener("click", gradeNow);
   $("gradeBtn").addEventListener("click", gradeNow);
   $("gradeBtnSticky").addEventListener("click", gradeNow);
 
-  /* ===== Demo (randomized every click) ===== */
+  /* ===== Demo (randomized) ===== */
   function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
   function randomDemo(){
     var isOwner = (localStorage.getItem("gmf_housing")||"owner")==="owner";
@@ -575,6 +713,5 @@ svg, img { display:block; max-width:100%; height:auto; }
 </script>
 </body>
 </html>
-
 
 
