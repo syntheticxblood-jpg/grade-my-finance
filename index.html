@@ -68,7 +68,7 @@ header{ position:fixed; left:0; right:0; top:0; z-index:20; height:var(--header-
 @media (max-width:1060px){ .inputs{grid-template-columns:repeat(2,minmax(220px,1fr))} }
 @media (max-width:720px){ .inputs{grid-template-columns:1fr; gap:12px} }
 
-input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:#0ee;}
+input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:var(--text)}
 :root[data-theme="light"] input{background:#fff;color:#0b1226}
 input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.30)}
 
@@ -86,7 +86,7 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .overlay.show{display:grid}
 .loader{width:420px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
 
-.modal{position:fixed; inset:0; display:none; z-index:100; background:rgba(0,0,0,.55); }
+.modal{position:fixed; inset:0; display:none; z-index:100; background:rgba(0,0,0,.55);}
 .modal.show{display:grid; place-items:center}
 .sheet{width:min(920px,94vw); max-height:88vh; overflow:auto; background:var(--panel); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); padding:18px; margin:10px;}
 .sheet-header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
@@ -289,43 +289,10 @@ svg, img { display:block; max-width:100%; height:auto; }
   function $(id){ return document.getElementById(id); }
   function qs(sel){ return document.querySelector(sel); }
 
-  // Theme & currency
-  var root=document.documentElement;
-  var savedTheme=localStorage.getItem("gmf_theme"); if(savedTheme==="light") root.dataset.theme="light";
-  var themeBtn=$("themeToggle"); if(themeBtn){ themeBtn.addEventListener("click", function(){ var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next; localStorage.setItem("gmf_theme", next||"dark"); }); }
-  var CURRENCY=localStorage.getItem("gmf_curr")||"USD";
-  var curSel=$("currencySel"); if(curSel){ curSel.value=CURRENCY; curSel.addEventListener("change", function(){ CURRENCY=curSel.value; localStorage.setItem("gmf_curr",CURRENCY); updateHints(); }); }
-  function money(n){ return isFinite(n)? new Intl.NumberFormat(undefined,{style:"currency",currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)) : "—"; }
-
-  // Inputs map
-  var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","mortgage","student","auto","cc"];
-  var els={}; ids.forEach(function(id){ els[id]=$(id); });
-  function val(id){ var e=els[id]; return e && e.value!=="" ? Number(e.value) : 0; }
-
-  // Input hygiene
-  ids.forEach(function(id){
-    var e=els[id]; if(!e) return;
-    e.addEventListener("input", function(){ e.value=e.value.replace(/[^\d.-]/g,""); });
-    e.addEventListener("blur", function(){ if(e.value!=="") e.value=String(Math.round(+e.value)); updateHints(); });
-  });
-
-  // Housing mode
-  function setHousing(mode){
-    var show = (mode==="owner");
-    var hc=qs("#homeCard"), mc=qs("#mortCard");
-    if(hc) hc.style.display = show ? "" : "none";
-    if(mc) mc.style.display = show ? "" : "none";
-    if(!show){ if(els.home) els.home.value=0; if(els.mortgage) els.mortgage.value=0; }
-    localStorage.setItem("gmf_housing",mode); updateHints();
-  }
-  var savedMode=localStorage.getItem("gmf_housing")||"owner";
-  setHousing(savedMode);
-  var modeOwner=$("modeOwner"), modeRenter=$("modeRenter");
-  if(modeOwner) modeOwner.addEventListener("click", function(){ setHousing("owner"); });
-  if(modeRenter) modeRenter.addEventListener("click", function(){ setHousing("renter"); });
-
-  // Curves & helpers
+  /* ===== Helpers & curves (declare BEFORE any updateHints call) ===== */
   var NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
+  function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
+  function map01(x,a,b){ return clamp((x-a)/(b-a),0,1); }
   function targetNW(age){
     if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
     if(age>=NW_CURVE[NW_CURVE.length-1][0]) return NW_CURVE[NW_CURVE.length-1][1];
@@ -335,12 +302,30 @@ svg, img { display:block; max-width:100%; height:auto; }
     }
     return NW_CURVE[NW_CURVE.length-1][1];
   }
-  function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
-  function map01(x,a,b){ return clamp((x-a)/(b-a),0,1); }
   function overallLetter(s){ return s>=97?"A+":s>=93?"A":s>=90?"A-":s>=87?"B+":s>=83?"B":s>=80?"B-":s>=77?"C+":s>=73?"C":s>=70?"C-":s>=67?"D+":s>=63?"D":s>=60?"D-":"F"; }
   function letterFrom01(s){ return overallLetter(Math.round(s*100)); }
   function incomeLetterFromRatio(r){ return r>=2.2?"A+": r>=1.8?"A": r>=1.5?"A-": r>=1.3?"B+": r>=1.15?"B": r>=1.0?"B-": r>=0.9?"C+": r>=0.8?"C": r>=0.7?"C-": r>=0.6?"D": "F"; }
+  function badgeClass(l){ return (["A+","A","A-","B+"].indexOf(l)>-1)?"badge good":((["B","B-","C+","C","C-"].indexOf(l)>-1)?"badge mid":"badge bad"); }
 
+  /* ===== Theme & currency ===== */
+  var root=document.documentElement;
+  var savedTheme=localStorage.getItem("gmf_theme"); if(savedTheme==="light") root.dataset.theme="light";
+  var themeBtn=$("themeToggle"); if(themeBtn){ themeBtn.addEventListener("click", function(){ var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next; localStorage.setItem("gmf_theme", next||"dark"); }); }
+  var CURRENCY=localStorage.getItem("gmf_curr")||"USD";
+  var curSel=$("currencySel"); if(curSel){ curSel.value=CURRENCY; curSel.addEventListener("change", function(){ CURRENCY=curSel.value; localStorage.setItem("gmf_curr",CURRENCY); updateHints(); }); }
+  function money(n){ return isFinite(n)? new Intl.NumberFormat(undefined,{style:"currency",currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)) : "—"; }
+
+  /* ===== Inputs & hygiene ===== */
+  var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","mortgage","student","auto","cc"];
+  var els={}; ids.forEach(function(id){ els[id]=$(id); });
+  function val(id){ var e=els[id]; return e && e.value!=="" ? Number(e.value) : 0; }
+  ids.forEach(function(id){
+    var e=els[id]; if(!e) return;
+    e.addEventListener("input", function(){ e.value=e.value.replace(/[^\d.-]/g,""); });
+    e.addEventListener("blur", function(){ if(e.value!=="") e.value=String(Math.round(+e.value)); updateHints(); });
+  });
+
+  /* ===== Values & hints ===== */
   function values(){
     var v={}; ids.forEach(function(id){ v[id]=val(id); });
     v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
@@ -361,13 +346,25 @@ svg, img { display:block; max-width:100%; height:auto; }
     v.incomeLetter = incomeLetterFromRatio(ratio);
     return v;
   }
-
-  // Hints
   function updateHints(){ var v=values(); var ah=$("assetsHint"), lh=$("liabHint"); if(ah) ah.textContent="Total Assets: "+money(v.assets); if(lh) lh.textContent="Total Liabilities: "+money(v.liabs); }
-  updateHints();
 
-  function badgeClass(l){ return (["A+","A","A-","B+"].indexOf(l)>-1)?"badge good":((["B","B-","C+","C","C-"].indexOf(l)>-1)?"badge mid":"badge bad"); }
+  /* ===== Housing mode (calls updateHints AFTER helpers are ready) ===== */
+  function setHousing(mode){
+    var show = (mode==="owner");
+    var hc=qs("#homeCard"), mc=qs("#mortCard");
+    if(hc) hc.style.display = show ? "" : "none";
+    if(mc) mc.style.display = show ? "" : "none";
+    if(!show){ if(els.home) els.home.value=0; if(els.mortgage) els.mortgage.value=0; }
+    localStorage.setItem("gmf_housing",mode);
+    updateHints();
+  }
+  var modeOwner=$("modeOwner"), modeRenter=$("modeRenter");
+  if(modeOwner) modeOwner.addEventListener("click", function(){ setHousing("owner"); });
+  if(modeRenter) modeRenter.addEventListener("click", function(){ setHousing("renter"); });
+  var savedMode=localStorage.getItem("gmf_housing")||"owner";
+  setHousing(savedMode);
 
+  /* ===== Scoring ===== */
   function categoryScores(v){
     var sSave = map01(v.saveRate, 0, 0.25);
     var sEF   = map01(v.efMonths, 0, 6);
@@ -376,40 +373,37 @@ svg, img { display:block; max-width:100%; height:auto; }
     var sInc  = v.incomeScore;
     var weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + sInc*0.05)*100;
     var score = (v.annualSpend>0 && v.net >= 25*Math.max(v.annualSpend, 30000)) ? Math.max(weighted,94) : weighted;
-
     function saveShortfall(){ return Math.max(0, v.income*0.25 - (v.income - v.expenses)); }
-
     return {
       components: [
-        { key:"Savings rate", sub:"Toward 25% target", val:`${Math.round(v.saveRate*100)}% of take-home`,
+        { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home",
           letter:letterFrom01(sSave),
-          tip: v.saveRate<0.25 ? `Aim for 25%. You're short ~${money(saveShortfall())}/mo.` : `Great job—stay consistent.` },
-        { key:"Emergency fund", sub:"Goal 6 months", val:`${v.efMonths.toFixed(1)} months`,
+          tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(saveShortfall())+"/mo." : "Great job—stay consistent." },
+        { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months",
           letter:letterFrom01(sEF),
-          tip: v.efMonths<6 ? `Save ~${money(Math.round((v.expenses*6 - v.cash)/6))}/mo to reach 6 months.` : `Solid cushion — keep it liquid.` },
-        { key:"Debt load (non-mort.)", sub:"Lower is better", val:`${Math.round(v.dtiNonMort*100)}% of baseline`,
+          tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
+        { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline",
           letter:letterFrom01(sDebt),
-          tip: v.dtiNonMort>0.25 ? `Add ${money(Math.round(v.baseline*0.05))}/mo to highest APR first.` : `Healthy debt level.` },
-        { key:"Age-based net worth", sub:`Target ${v.nwTargetMultiple.toFixed(2)}× baseline`, val:`${Math.round(v.nwProgress*100)}% of age target`,
+          tip: v.dtiNonMort>0.25 ? "Add "+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt level." },
+        { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(v.nwProgress*100)+"% of age target",
           letter:letterFrom01(sAgeNW),
-          tip: v.nwProgress<1 ? `Gap ~${money(Math.max(0, v.nwTargetAmount - v.net))}. Invest steadily.` : `You're ahead — nice!` },
-        { key:"Income strength", sub:"vs median", val:`${money(v.annualIncome)}/yr`,
+          tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+". Invest steadily." : "You're ahead — nice!" },
+        { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr",
           letter:v.incomeLetter,
-          tip: (v.annualIncome < 70000*1.15) ? `Plan skill/raise to reach ${money(Math.round(70000*1.15))}+.` : `Automate investing + match.` }
+          tip: (v.annualIncome < 70000*1.15) ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
       ],
       overall: { score: Math.round(score*10)/10, letter: overallLetter(Math.round(score*10)/10) }
     };
   }
 
-  // Overlay helpers
+  /* ===== Overlay & modal ===== */
   var overlay=$("overlay");
   function showOverlay(b){ if(overlay) overlay.classList.toggle("show", !!b); }
 
-  // Report modal
   var modal=$("reportModal"), rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta");
   function openReport(v,cats){
     if(!modal) return;
-    rcMeta.textContent=`Overall ${cats.overall.score.toFixed(1)}/100 • Net worth ${money(v.net)} • Assets ${money(v.assets)} • Liabilities ${money(v.liabs)}`;
+    rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
     rcGrade.textContent=cats.overall.letter;
     rcGrade.className="rc-grade "+(
       ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?"good":
@@ -418,33 +412,29 @@ svg, img { display:block; max-width:100%; height:auto; }
     cats.components.forEach(function(c){
       var row=document.createElement("div"); row.className="rc-row";
       row.innerHTML=
-        `<div class="rc-cell"><div class="label" title="${c.sub}">${c.key}</div><div class="sub">${c.sub}</div></div>`+
-        `<div class="rc-cell detail-col"><div class="detail">${c.val}</div><div class="tip">${c.tip}</div></div>`+
-        `<div class="rc-cell"><span class="${badgeClass(c.letter)}">${c.letter}</span></div>`;
+        '<div class="rc-cell"><div class="label" title="'+c.sub+'">'+c.key+
+        '</div><div class="sub">'+c.sub+'</div></div>'+
+        '<div class="rc-cell detail-col"><div class="detail">'+c.val+
+        '</div><div class="tip">'+c.tip+'</div></div>'+
+        '<div class="rc-cell"><span class="'+badgeClass(c.letter)+'">'+c.letter+'</span></div>';
       rcRows.appendChild(row);
     });
     modal.classList.add("show");
   }
   var closeReport=$("closeReport"); if(closeReport) closeReport.addEventListener("click",function(){ modal.classList.remove("show"); });
 
-  // Grade sequence
+  /* ===== Grade sequence ===== */
   function gradeNow(){
-    try{
-      showOverlay(true);
-      setTimeout(function(){
-        var v=values();
-        var cats=categoryScores(v);
-        showOverlay(false);
-        openReport(v,cats);
-      }, 200);
-    }catch(err){
+    showOverlay(true);
+    setTimeout(function(){
+      var v=values();
+      var cats=categoryScores(v);
       showOverlay(false);
-      console.error(err);
-      alert("Oops — something went wrong. Check the console for details.");
-    }
+      openReport(v,cats);
+    }, 200);
   }
 
-  // Button wires
+  /* ===== Button wires ===== */
   var gradeBtnTop=$("gradeBtnTop"), gradeBtn=$("gradeBtn"), gradeBtnSticky=$("gradeBtnSticky");
   if(gradeBtnTop) gradeBtnTop.addEventListener("click", gradeNow);
   if(gradeBtn) gradeBtn.addEventListener("click", gradeNow);
@@ -452,12 +442,12 @@ svg, img { display:block; max-width:100%; height:auto; }
   var printReport=$("printReport"); if(printReport) printReport.addEventListener("click", function(){ window.print(); });
   var calcAgain=$("calcAgain"); if(calcAgain) calcAgain.addEventListener("click", function(){ modal.classList.remove("show"); });
 
-  // Demo button — RANDOMIZED every click
+  /* ===== Demo (randomized every click) ===== */
   function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
   function randomDemo(){
     var isOwner = (localStorage.getItem("gmf_housing")||"owner")==="owner";
     var age = rand(22,60);
-    var income = rand(2500,15000); // monthly take-home
+    var income = rand(2500,15000);
     var expenses = Math.max(800, Math.floor(income*rand(55,88)/100));
     var retire = rand(2000, 250000);
     var brokerage = rand(0, 120000);
@@ -467,38 +457,37 @@ svg, img { display:block; max-width:100%; height:auto; }
     var student = rand(0, 45000);
     var auto = rand(0, 22000);
     var cc = rand(0, 6000);
-
     var home=0, mortgage=0;
     if(isOwner){
       home = rand(120000, 900000);
       var ltv = rand(40,90)/100;
       mortgage = Math.max(0, Math.floor(home*ltv) - rand(0,20000));
     }
-
     var d={age:age,income:income,expenses:expenses,home:home,retire:retire,brokerage:brokerage,
       car:car,hsa:hsa,cash:cash,mortgage:mortgage,student:student,auto:auto,cc:cc};
-
     Object.keys(d).forEach(function(id){ if(els[id]) els[id].value=d[id]; });
     updateHints();
   }
   var demoBtn=$("demoBtn"); if(demoBtn) demoBtn.addEventListener("click", randomDemo);
 
-  // Reset
+  /* ===== Reset ===== */
   var resetBtn=$("resetBtn"); if(resetBtn) resetBtn.addEventListener("click", function(){
     ids.forEach(function(id){ if(els[id]) els[id].value = (id==="age") ? 30 : 0; });
     updateHints();
   });
 
-  // Share link
+  /* ===== Share link ===== */
   function shareLink(){
     var s={}; ids.forEach(function(id){ s[id]=Number(els[id]?els[id].value:0); });
     return location.origin+location.pathname+"#s="+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(s)))));
   }
   var copyLink=$("copyLink"); if(copyLink) copyLink.addEventListener("click", function(){
-    var url=shareLink(); if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){ alert("Share link copied!"); }).catch(function(){ alert(url); }); } else { alert(url); }
+    var url=shareLink();
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){ alert("Share link copied!"); }).catch(function(){ alert(url); }); }
+    else { alert(url); }
   });
 
-  // Hydrate from shared link
+  /* ===== Hydrate from shared link ===== */
   try{
     var m=location.hash.match(/#s=([^&]+)/);
     if(m){ var obj=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
@@ -507,7 +496,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     }
   }catch(e){ /* ignore */ }
 
-  // Subscribe (Formspree)
+  /* ===== Subscribe (Formspree) ===== */
   var subForm=$("subForm"), subEmail=$("subEmail"), toast=$("toast");
   if(subForm) subForm.addEventListener("submit", function(e){
     e.preventDefault();
@@ -522,7 +511,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       .catch(function(){ alert("Network error. Please try again later."); });
   });
 
-  // Sticky CTA on mobile
+  /* ===== Sticky CTA on mobile ===== */
   var mcta=$("mobileCta");
   function onScroll(){ if(!mcta) return; mcta.classList.toggle("on", window.scrollY>300 && window.matchMedia("(max-width: 720px)").matches ); }
   window.addEventListener("scroll", onScroll); onScroll();
@@ -531,6 +520,7 @@ svg, img { display:block; max-width:100%; height:auto; }
 </script>
 </body>
 </html>
+
 
 
 
