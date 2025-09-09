@@ -9,7 +9,7 @@
 <meta name="keywords" content="financial grade calculator, money score, personal finance tool, net worth tracker, debt calculator, financial health check, retirement readiness, free finance app, budgeting tool, wealth score">
 <meta name="theme-color" content="#0f172a">
 
-<!-- Canonical URL -->
+<!-- Canonical URL & Icons -->
 <link rel="canonical" href="https://grademyfinance.com/">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -43,13 +43,17 @@
 }
 </script>
 
-<!-- Google tag (gtag.js) -->
+<!-- Google Analytics (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);} gtag('js', new Date());
   gtag('config', 'G-H6223HYVS6');
 </script>
+
+<!-- Google AdSense (load once globally) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514"
+     crossorigin="anonymous"></script>
 
 <style>
 :root{
@@ -206,6 +210,17 @@ footer a:hover{ text-decoration:underline }
   </div>
 </section>
 
+<!-- AdSense unit #1: below hero -->
+<div class="container" style="margin:24px auto;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-3638344211698514"
+       data-ad-slot="REPLACE_WITH_YOUR_SLOT_1"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
 <div class="shell">
   <main>
     <section id="grade" class="page active">
@@ -273,12 +288,23 @@ footer a:hover{ text-decoration:underline }
       </svg>
       <h2 style="margin:0">Welcome to Grade My Finance</h2>
     </div>
-    <p>The friendly report-card for your money. Enter basic numbers, get a letter grade, and ideas to level up. No sign‑up, no spam.</p>
+    <p>The friendly report-card for your money. Enter basic numbers, get a letter grade, and ideas to level up. No sign-up, no spam.</p>
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
       <button class="btn" id="skipWelcome" type="button">Skip</button>
       <button class="btn primary" id="startWelcome" type="button">Let’s go</button>
     </div>
   </div>
+</div>
+
+<!-- AdSense unit #2: above footer -->
+<div class="container" style="margin:28px auto;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-3638344211698514"
+       data-ad-slot="REPLACE_WITH_YOUR_SLOT_2"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <!-- Footer / Contact -->
@@ -336,7 +362,7 @@ function values(){
   v.liabs=v.mortgage+v.student+v.auto+v.cc;
   v.net=v.assets-v.liabs;
   v.annualIncome=v.income*12; v.annualSpend=v.expenses*12;
-  v.baseline=Math.max(v.annualSpend, SPEND_FLOOR); // spend-based baseline
+  v.baseline=Math.max(v.annualSpend, SPEND_FLOOR);
   const denomSav=Math.max(v.income, v.expenses, 2000);
   v.saveRate=denomSav>0 ? Math.max(0, v.income - v.expenses)/denomSav : 0;
   v.efMonths=v.expenses>0 ? v.cash/v.expenses : 0;
@@ -467,4 +493,5 @@ on($('#skipWelcome'),'click',hideWelcome);
 </script>
 </body>
 </html>
+
 
