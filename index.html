@@ -11,6 +11,10 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
+<!-- Preconnects for perf -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<link rel="preconnect" href="https://pagead2.googlesyndication.com">
+
 <!-- GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
 <script>
@@ -24,8 +28,7 @@
 <style>
 :root{
   --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
-  --accent:#22d3ee; --accent2:#a78bfa; --good:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-  --g1:#16a34a; --g2:#34d399; --shadow:0 14px 40px rgba(0,0,0,.35);
+  --accent:#22d3ee; --accent2:#a78bfa; --g1:#16a34a; --g2:#34d399; --shadow:0 14px 40px rgba(0,0,0,.35);
   --header-h:96px;
 }
 @media (max-width:720px){ :root{ --header-h:74px } }
@@ -81,7 +84,7 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 .progress{height:12px;background:#0b1226;border:1px solid var(--line);border-radius:999px;overflow:hidden}
 .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .6s cubic-bezier(.2,.9,.2,1)}
 
-/* Mascot in hero */
+/* Mascot */
 .mascot{display:grid;place-items:center;position:relative; margin-top:2px}
 @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
 .floatA{position:absolute; right:8px; bottom:0; transform:translate(20%,30%); background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac; border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)}
@@ -96,17 +99,16 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 @keyframes slide{from{background-position:0 0}to{background-position:56px 0}}
 
 /* REPORT CARD MODAL */
-.modal{position:fixed; inset:0; display:none; z-index:100; background:rgba(0,0,0,.55); backdrop-filter:blur(2px); }
+.modal{position:fixed; inset:0; display:none; z-index:100; background:rgba(0,0,0,.55); backdrop-filter:blur(2px); overscroll-behavior:contain; }
 .modal.show{display:grid; place-items:center}
 .sheet{
   width:min(920px,94vw); max-height:88vh; overflow:auto;
   background:var(--panel); border:1px solid var(--line);
-  border-radius:22px; box-shadow:var(--shadow); padding:18px;
-  overscroll-behavior:contain;
+  border-radius:22px; box-shadow:var(--shadow); padding:18px; margin:10px;
 }
 .sheet::-webkit-scrollbar{width:10px} .sheet::-webkit-scrollbar-thumb{background:#1f2a48;border-radius:10px}
 
-/* Sheet header with smiling mascot + overall badge */
+/* Sheet header */
 .sheet-header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
 .xbtn{background:#19223d;border:1px solid var(--line); color:var(--text); border-radius:10px; padding:8px 12px; cursor:pointer}
 .rc-top{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px}
@@ -144,7 +146,7 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
   .rc-row .detail-col{grid-column:1/-1}
 }
 
-/* Lock background scroll when modal open (incl. iOS) */
+/* Lock background scroll */
 body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
 
 /* Subscribe section */
@@ -170,7 +172,7 @@ body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
 /* Footer */
 footer{
   background:#0b1226; border-top:1px solid var(--line); margin-top:22px;
-  padding:22px 16px; color:var(--muted); font-size:14px
+  padding:22px 16px; color:#cbd5e1; font-size:14px
 }
 .fwrap{max-width:1000px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:8px}
 .fcontact{display:flex; gap:8px; align-items:center}
@@ -178,6 +180,29 @@ footer{
 .fnote{opacity:.9}
 footer a{ color:#9bd2ff; text-decoration:none; font-weight:700; }
 footer a:hover{ text-decoration:underline }
+
+/* --- Mobile spacing polish & normalization --- */
+svg, img { display:block; max-width:100%; height:auto; }
+.hero-card > :first-child { margin-top:0; }
+.hero-card > :last-child  { margin-bottom:0; }
+
+@media (max-width:720px){
+  .hero { padding:8px 0 6px; }
+  .hero-card { padding:14px; margin-bottom:10px; }
+  .mascot { margin-top:0; }
+  .shell { padding-top:0; }
+  .inputs { gap:10px; }
+  .card { padding:12px; }
+}
+
+/* Prevent ad gaps if collapsed */
+ins.adsbygoogle { min-height:0 !important; }
+
+/* iOS safe areas */
+@supports (padding: max(0px)) {
+  header { padding-top: env(safe-area-inset-top); }
+  body   { padding-bottom: max(22px, env(safe-area-inset-bottom)); }
+}
 </style>
 </head>
 
@@ -233,7 +258,7 @@ footer a:hover{ text-decoration:underline }
   </div>
 </section>
 
-<!-- Ad #1 (below hero) -->
+<!-- Ad #1 -->
 <div class="container" style="margin:16px auto;">
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3638344211698514" data-ad-slot="REPLACE_WITH_YOUR_SLOT_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -300,15 +325,15 @@ footer a:hover{ text-decoration:underline }
         </div>
         <div id="rcGrade" class="rc-grade">A</div>
       </div>
-      <button class="xbtn" id="closeReport" type="button">Close</button>
+      <button class="xbtn" id="closeReport" type="button" aria-label="Close report card">Close</button>
     </div>
 
     <div class="rc-head"><div>Category</div><div>Details</div><div>Grade</div></div>
     <div class="rc-rows" id="rcRows"></div>
 
     <div class="rc-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap">
-      <button class="btn" id="copyReport" type="button">Share my Report Card</button>
-      <button class="btn" id="copyJSON" type="button">Copy as Link</button>
+      <button class="btn" id="copyReport" type="button" aria-label="Share my report card">Share my Report Card</button>
+      <button class="btn" id="copyJSON" type="button" aria-label="Copy as link">Copy as Link</button>
       <button class="btn primary" id="calcAgain" type="button">Recalculate</button>
     </div>
   </div>
@@ -320,13 +345,14 @@ footer a:hover{ text-decoration:underline }
   <p>Drop your email and we’ll send occasional improvements — no spam, unsubscribe anytime.</p>
   <form id="subForm" class="sub-row" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
     <input type="email" name="email" id="subEmail" placeholder="you@example.com" required />
-    <input type="hidden" name="source" value="grademyfinance.com" />
+    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+    <input type="hidden" name="_subject" value="New Grade My Finance subscriber" />
     <button type="submit" class="btn primary">Subscribe</button>
   </form>
 </section>
-<div class="toast" id="toast">Thanks! Check your inbox for a confirmation.</div>
+<div class="toast" id="toast" role="status" aria-live="polite">Thanks! Check your inbox for a confirmation.</div>
 
-<!-- Ad #2 (above footer) -->
+<!-- Ad #2 -->
 <div class="container" style="margin:22px auto;">
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3638344211698514" data-ad-slot="REPLACE_WITH_YOUR_SLOT_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -486,7 +512,7 @@ function unlockScroll(){ document.body.classList.remove('lock-scroll'); document
 function openReport(v,cats){
   rcMeta.textContent = `Overall score ${cats.overall.score.toFixed(1)} / 100 • Net worth ${money(v.net)} • Assets ${money(v.assets)} • Liabilities ${money(v.liabs)}`;
   rcGrade.textContent = cats.overall.letter;
-  rcGrade.className = 'rc-grade ' + overallClass(cats.overall.letter); // color by letter
+  rcGrade.className = 'rc-grade ' + overallClass(cats.overall.letter);
 
   rcRows.innerHTML='';
   cats.components.forEach(c=>{
@@ -538,9 +564,20 @@ on(subForm,'submit',async (e)=>{
   const email=subEmail.value.trim();
   if(!/^\S+@\S+\.\S+$/.test(email)){ alert('Please enter a valid email.'); return; }
   try{
-    const res=await fetch(subForm.action,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({email,source:'grademyfinance.com'})});
-    if(res.ok){ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000); subEmail.value=''; }
-    else{ alert('Signup failed. Please try again in a bit.'); }
+    const res=await fetch(subForm.action,{
+      method:'POST',
+      headers:{'Accept':'application/json','Content-Type':'application/json'},
+      body:JSON.stringify({email,source:'grademyfinance.com'})
+    });
+    if(res.ok){
+      toast.textContent='Thanks! Check your inbox for a confirmation.';
+      toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000);
+      subEmail.value='';
+    }else if(res.status===404){
+      alert('Form not found. Replace the Formspree action URL with your real one.');
+    }else{
+      alert('Signup failed. Please try again later.');
+    }
   }catch{ alert('Network error. Please try again later.'); }
 });
 })();
