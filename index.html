@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance | Free Financial Grade Calculator</title>
 <meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score, track net worth, and find ways to improve. No sign-up required.">
+<meta name="theme-color" content="#0f172a">
 <link rel="canonical" href="https://grademyfinance.com/">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<!-- Social preview -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://grademyfinance.com/">
 <meta property="og:title" content="Grade My Finance — Free Financial Grade Calculator">
@@ -43,28 +46,13 @@
   --bg:#f7fafc; --panel:#ffffff; --card:#ffffff; --text:#0b1226; --muted:#4b5563; --line:rgba(15,23,42,.12);
 }
 
-/* Dynamic background intensities by grade */
-body.grade-good{ background:
-  radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
-  radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
-  radial-gradient(1200px 600px at 50% 110%, rgba(34,197,94,.18), transparent 60%),
-  var(--bg);
-}
-body.grade-mid{ background:
-  radial-gradient(900px 460px at -10% -10%, rgba(250,204,21,.18), transparent 50%),
-  radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.10), transparent 55%),
-  var(--bg);
-}
-body.grade-bad{ background:
-  radial-gradient(900px 460px at -10% -10%, rgba(248,113,113,.18), transparent 50%),
-  radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.10), transparent 55%),
-  var(--bg);
-}
-
 *{box-sizing:border-box} html,body{width:100%}
 body{
   margin:0; padding-top:var(--header-h); overflow-x:hidden;
-  background:var(--bg);
+  background:
+    radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
+    radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
+    var(--bg);
   color:var(--text); font-family:Inter,system-ui,Segoe UI,Roboto,Arial; line-height:1.35;
 }
 .container{max-width:1100px;margin:0 auto;padding:0 16px}
@@ -97,13 +85,6 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
 .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
 .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 
-/* Progress / completion */
-.progress-wrap{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:8px}
-.progress{height:12px;background:#0b1226;border:1px solid var(--line);border-radius:999px;overflow:hidden; width:360px; max-width:88vw}
-:root[data-theme="light"] .progress{background:#fff}
-.progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .6s cubic-bezier(.2,.9,.2,1)}
-.progress-emoji{font-size:18px}
-
 /* Layout */
 .shell{max-width:1100px;margin:0 auto;padding:0 16px 22px}
 @media (max-width:720px){ .shell{padding-top:2px} }
@@ -118,17 +99,15 @@ input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;ba
 :root[data-theme="light"] input{background:#fff}
 input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.30)}
 
+.progress{height:12px;background:#0b1226;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+:root[data-theme="light"] .progress{background:#fff}
+.progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .6s cubic-bezier(.2,.9,.2,1)}
+
 /* Mascot */
 .mascot{display:grid;place-items:center;position:relative; margin-top:2px}
 @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
 .floatA{position:absolute; right:8px; bottom:0; transform:translate(20%,30%); background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac; border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)}
 @media (min-width:760px){ .floatA{right:18px; bottom:2px; transform:translate(35%,35%)} }
-.mascot.fire::after{
-  content:""; position:absolute; bottom:-6px; width:110px; height:110px; border-radius:50%;
-  background: conic-gradient(from 0deg, rgba(255,0,0,.4), rgba(255,165,0,.5), rgba(255,0,0,.4));
-  filter:blur(12px); animation:fire 1.2s infinite linear;
-}
-@keyframes fire{to{transform:rotate(360deg)}}
 
 /* Loader overlay */
 .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.45);z-index:80}
@@ -158,7 +137,7 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .rc-title{font-weight:900; font-size:22px}
 .rc-meta{color:var(--muted); font-size:14px}
 
-/* Overall grade badge */
+/* Overall grade badge with dynamic colors */
 .rc-grade{font-size:56px;font-weight:1000; border-radius:16px; padding:6px 16px; border:2px solid transparent}
 .rc-grade.good{color:#062c1b; background:linear-gradient(180deg,#34d399,#16a34a); border-color:#86efac}
 .rc-grade.mid{color:#062c1b; background:linear-gradient(180deg,#facc15,#f59e0b); border-color:#fde68a}
@@ -210,18 +189,13 @@ body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
   border:1px solid var(--line); border-radius:12px; padding:10px 14px; box-shadow:var(--shadow); display:none; z-index:120}
 .toast.show{display:block}
 
-/* Toys row */
-.toys{max-width:1000px;margin:18px auto;display:grid;gap:12px;grid-template-columns:repeat(3,minmax(220px,1fr))}
-@media (max-width:900px){.toys{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:620px){.toys{grid-template-columns:1fr}}
-.toy{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px}
-.toy h4{margin:4px 0 6px}
-.track{height:16px;background:#0b1226;border:1px solid var(--line);border-radius:999px;position:relative;overflow:hidden}
-.car{position:absolute;top:-5px;width:26px;height:26px;border-radius:50%;background:linear-gradient(180deg,#34d399,#16a34a);border:2px solid #86efac;box-shadow:0 6px 14px rgba(0,0,0,.35)}
-.needle{width:4px;height:40px;background:#ef4444;margin:10px auto;border-radius:2px;transform-origin:bottom center;}
-
-/* Meme card canvas */
-#memeCanvas{width:100%;background:#0b1226;border:1px dashed var(--line);border-radius:10px}
+/* FAQ */
+.faq{max-width:900px; margin:24px auto; padding:0 16px}
+.faq h3{margin:0 0 10px}
+.faq .item{background:var(--panel); border:1px solid var(--line); border-radius:14px; margin:8px 0; overflow:hidden}
+.faq summary{cursor:pointer; padding:12px 14px; font-weight:800; list-style:none}
+.faq details[open] summary{border-bottom:1px solid var(--line)}
+.faq .content{padding:12px 14px; color:var(--muted)}
 
 /* Footer */
 footer{
@@ -267,7 +241,7 @@ ins.adsbygoogle { min-height:0 !important; }
   body{background:#fff}
   #reportModal{position:static;background:#fff}
   .sheet{max-height:none;box-shadow:none;border:none}
-  header,.mobile-cta,.subscribe,footer,.adsbygoogle,.theme-toggle,.toys{display:none!important}
+  header,.mobile-cta,.subscribe,footer,.adsbygoogle,.theme-toggle{display:none!important}
 }
 </style>
 </head>
@@ -309,23 +283,19 @@ ins.adsbygoogle { min-height:0 !important; }
       <button class="btn primary" id="gradeBtnTop" type="button">Get My Report Card</button>
       <button class="btn" id="copyLink" type="button">Copy share link</button>
     </div>
-    <div class="progress-wrap">
-      <div class="progress"><div id="progressFill"></div></div>
-      <div id="progressEmoji" class="progress-emoji" aria-hidden="true">🙂</div>
-    </div>
   </div>
 
-  <div class="mascot" id="mascot">
-    <!-- Friendly mascot with changeable mouth curve -->
-    <svg id="mascotSVG" viewBox="0 0 260 240" width="220" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
+  <div class="mascot">
+    <!-- Friendly mascot -->
+    <svg viewBox="0 0 260 240" width="220" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
       <defs><linearGradient id="mc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient></defs>
       <ellipse cx="130" cy="220" rx="56" ry="12" fill="rgba(0,0,0,.3)"/>
       <rect x="60" y="38" width="140" height="160" rx="26" fill="url(#mc)" stroke="#86EFAC" stroke-width="2.5"/>
       <circle cx="100" cy="88" r="7" fill="#0f172a"/><circle cx="160" cy="88" r="7" fill="#0f172a"/>
-      <path id="faceMouth" d="M105 110 q25 18 50 0" stroke="#16a34a" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M105 110 q25 18 50 0" stroke="#16a34a" stroke-width="6" fill="none" stroke-linecap="round"/>
       <g stroke="#a7f3d0" stroke-width="2"><line x1="80" y1="130" x2="180" y2="130"/><line x1="80" y1="148" x2="180" y2="148"/><line x1="80" y1="166" x2="180" y2="166"/></g>
     </svg>
-    <div class="floatA" aria-hidden="true" id="floatBadge">A+</div>
+    <div class="floatA" aria-hidden="true">A+</div>
   </div>
 </section>
 
@@ -338,81 +308,37 @@ ins.adsbygoogle { min-height:0 !important; }
 <div class="shell">
   <main>
     <section id="grade" class="page active">
-      <div class="inputs" id="inputsGrid">
-        <div class="card"><div class="section">Monthly Income (after-tax)</div><input id="income" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Monthly Expenses</div><input id="expenses" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Age</div><input id="age" type="number" value="30" min="16" max="100"></div>
-        <div class="card"><div class="section">Home Value</div><input id="home" type="number" inputmode="decimal" value="0" min="0"><div class="section" id="assetsHint">Total Assets: —</div></div>
+      <div class="inputs">
+        <div class="card"><div class="section">Monthly Income (after-tax)</div><input id="income" type="number" inputmode="decimal" value="0" min="0" aria-label="Monthly income"></div>
+        <div class="card"><div class="section">Monthly Expenses</div><input id="expenses" type="number" inputmode="decimal" value="0" min="0" aria-label="Monthly expenses"></div>
+        <div class="card"><div class="section">Age</div><input id="age" type="number" value="30" min="16" max="100" aria-label="Age"></div>
+        <div class="card"><div class="section">Home Value</div><input id="home" type="number" inputmode="decimal" value="0" min="0" aria-label="Home value"><div class="section" id="assetsHint">Total Assets: —</div></div>
 
-        <div class="card"><div class="section">Retirement (401k/IRA)</div><input id="retire" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Brokerage / Stocks</div><input id="brokerage" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">HSA</div><input id="hsa" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Cash Savings</div><input id="cash" type="number" inputmode="decimal" value="0" min="0"></div>
+        <div class="card"><div class="section">Retirement (401k/IRA)</div><input id="retire" type="number" inputmode="decimal" value="0" min="0" aria-label="Retirement balance"></div>
+        <div class="card"><div class="section">Brokerage / Stocks</div><input id="brokerage" type="number" inputmode="decimal" value="0" min="0" aria-label="Brokerage balance"></div>
+        <div class="card"><div class="section">HSA</div><input id="hsa" type="number" inputmode="decimal" value="0" min="0" aria-label="HSA balance"></div>
+        <div class="card"><div class="section">Cash Savings</div><input id="cash" type="number" inputmode="decimal" value="0" min="0" aria-label="Cash savings"></div>
 
-        <div class="card"><div class="section">Car Value</div><input id="car" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Mortgage Balance</div><input id="mortgage" type="number" inputmode="decimal" value="0" min="0"><div class="section" id="liabHint">Total Liabilities: —</div></div>
-        <div class="card"><div class="section">Student Loans</div><input id="student" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Auto Loans</div><input id="auto" type="number" inputmode="decimal" value="0" min="0"></div>
+        <div class="card"><div class="section">Car Value</div><input id="car" type="number" inputmode="decimal" value="0" min="0" aria-label="Car value"></div>
+        <div class="card"><div class="section">Mortgage Balance</div><input id="mortgage" type="number" inputmode="decimal" value="0" min="0" aria-label="Mortgage balance"><div class="section" id="liabHint">Total Liabilities: —</div></div>
+        <div class="card"><div class="section">Student Loans</div><input id="student" type="number" inputmode="decimal" value="0" min="0" aria-label="Student loan balance"></div>
+        <div class="card"><div class="section">Auto Loans</div><input id="auto" type="number" inputmode="decimal" value="0" min="0" aria-label="Auto loan balance"></div>
 
-        <div class="card"><div class="section">Credit Cards (balance)</div><input id="cc" type="number" inputmode="decimal" value="0" min="0"></div>
+        <div class="card"><div class="section">Credit Cards (balance)</div><input id="cc" type="number" inputmode="decimal" value="0" min="0" aria-label="Credit card balance"></div>
 
         <div class="card" style="grid-column:1/-1">
           <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap">
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <button class="btn" id="btnWhatIfUp">What-if: +10% income</button>
-              <button class="btn" id="btnWhatIfDown">What-if: −15% expenses</button>
-            </div>
+            <button id="resetBtn" class="btn" type="button">Reset</button>
             <div style="display:flex;gap:8px">
-              <button id="resetBtn" class="btn" type="button">Reset</button>
               <button id="gradeBtn" class="btn primary" type="button">Get My Report Card</button>
             </div>
           </div>
-          <div class="progress" style="margin:10px 0"><div id="progressFill2"></div></div>
+          <div class="progress" style="margin:10px 0"><div id="progressFill"></div></div>
         </div>
       </div>
     </section>
   </main>
 </div>
-
-<!-- Toys: XP / Age Projection / FI Race / Risk Meter / Wheel / Meme -->
-<section class="toys container" aria-label="Fun helpers">
-  <div class="toy">
-    <h4>🎮 XP & Rank</h4>
-    <div id="xpLine">XP: 0 • Rank: Rookie</div>
-    <div style="height:10px;background:#0b1226;border:1px solid var(--line);border-radius:999px;margin-top:6px;overflow:hidden">
-      <div id="xpFill" style="height:100%;width:0;background:linear-gradient(90deg,#34d399,#16a34a)"></div>
-    </div>
-  </div>
-  <div class="toy">
-    <h4>⏳ Age Projection</h4>
-    <input id="ageSim" type="range" min="20" max="70" value="30" />
-    <div id="ageSimOut">Projected grade at age 30: —</div>
-  </div>
-  <div class="toy">
-    <h4>🏁 Savings Race to FI</h4>
-    <div class="track"><div id="car" class="car" style="left:0%"></div></div>
-    <div id="fiLine" style="margin-top:6px;color:#9fb0c7">Progress to 25× spend: —</div>
-  </div>
-  <div class="toy">
-    <h4>📈 Risk Meter</h4>
-    <input id="risk" type="range" min="0" max="100" value="40" />
-    <div class="needle" id="needle"></div>
-    <div id="riskOut" style="text-align:center;color:#9fb0c7">Moderate</div>
-  </div>
-  <div class="toy">
-    <h4>🎡 Spin the Wheel Tip</h4>
-    <button class="btn" id="wheelBtn">Spin</button>
-    <div id="wheelTip" style="margin-top:8px;color:#cbd5e1">—</div>
-  </div>
-  <div class="toy">
-    <h4>🖼️ Meme Share Card</h4>
-    <canvas id="memeCanvas" width="900" height="480"></canvas>
-    <div style="display:flex;gap:8px;margin-top:8px">
-      <button class="btn" id="memeGen">Generate</button>
-      <button class="btn primary" id="memeDL">Download PNG</button>
-    </div>
-  </div>
-</section>
 
 <!-- Loader overlay -->
 <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
@@ -433,7 +359,7 @@ ins.adsbygoogle { min-height:0 !important; }
           <svg viewBox="0 0 64 64" width="38" height="38">
             <rect x="6" y="6" width="52" height="52" rx="12" fill="#eafff3"/>
             <circle cx="26" cy="28" r="3.5" fill="#0f172a"/><circle cx="42" cy="28" r="3.5" fill="#0f172a"/>
-            <path id="rcMouth" d="M22 38 q10 8 20 0" stroke="#16a34a" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M22 38 q10 8 20 0" stroke="#16a34a" stroke-width="4" fill="none" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="rc-titlewrap">
@@ -442,13 +368,8 @@ ins.adsbygoogle { min-height:0 !important; }
         </div>
         <div id="rcGrade" class="rc-grade">A</div>
       </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="xbtn" id="soundToggle" type="button" aria-label="Toggle sound">🔈</button>
-        <button class="xbtn" id="closeReport" type="button" aria-label="Close report card">Close</button>
-      </div>
+      <button class="xbtn" id="closeReport" type="button" aria-label="Close report card">Close</button>
     </div>
-
-    <div id="achievements" style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"></div>
 
     <div class="rc-head"><div>Category</div><div>Details</div><div>Grade</div></div>
     <div class="rc-rows" id="rcRows"></div>
@@ -481,6 +402,23 @@ ins.adsbygoogle { min-height:0 !important; }
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
+<!-- FAQ -->
+<section class="faq" aria-labelledby="faqHeading">
+  <h3 id="faqHeading">FAQ</h3>
+  <details class="item">
+    <summary>How is my overall grade calculated?</summary>
+    <div class="content">We weight savings rate (15%), emergency fund (10%), non-mortgage debt load (5%), age-based net worth progress (65%), and income strength (5%). We bias toward behavior you control and long-term net worth.</div>
+  </details>
+  <details class="item">
+    <summary>Do you store my numbers?</summary>
+    <div class="content">No. Everything runs in your browser. If you copy a share link, your inputs are encoded in the URL — you can delete it anytime.</div>
+  </details>
+  <details class="item">
+    <summary>Is this financial advice?</summary>
+    <div class="content">It’s educational only — not financial, tax, or legal advice. Consider talking with a professional for personalized guidance.</div>
+  </details>
+</section>
+
 <!-- Sticky mobile CTA -->
 <div class="mobile-cta">
   <button id="gradeBtnSticky" class="btn primary" type="button">Get My Report Card</button>
@@ -496,6 +434,19 @@ ins.adsbygoogle { min-height:0 !important; }
   </div>
 </footer>
 
+<!-- FAQ Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question","name": "How is my overall grade calculated?","acceptedAnswer": {"@type": "Answer","text": "We weight savings rate (15%), emergency fund (10%), non-mortgage debt load (5%), age-based net worth progress (65%), and income strength (5%)."}},
+    {"@type": "Question","name": "Do you store my numbers?","acceptedAnswer": {"@type": "Answer","text": "No. Everything runs in your browser. If you copy a share link, your inputs are encoded in the URL — you can delete it anytime."}},
+    {"@type": "Question","name": "Is this financial advice?","acceptedAnswer": {"@type": "Answer","text": "It’s educational only — not financial, tax, or legal advice."}}
+  ]
+}
+</script>
+
 <script>
 (() => {
 /* helpers */
@@ -508,8 +459,8 @@ const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
 
 /* theme */
 const root=document.documentElement;
-const savedTheme=localStorage.getItem('gmf_theme');
-if(savedTheme==='light') root.dataset.theme='light';
+const saved=localStorage.getItem('gmf_theme');
+if(saved==='light') root.dataset.theme='light';
 on($('#themeToggle'),'click',()=>{ const next=root.dataset.theme==='light'?'':'light'; root.dataset.theme=next; localStorage.setItem('gmf_theme', next||'dark'); });
 
 /* confetti */
@@ -528,11 +479,12 @@ const ids=['age','income','expenses','home','retire','brokerage','car','hsa','ca
 const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
 const val=id=>Number(els[id]?.value||0);
 
-/* currency input hygiene */
+/* Currency input hygiene (keeps math valid, no fancy mask) */
 ids.forEach(id=>{
-  const elInp=els[id]; if(!elInp) return;
+  const elInp=els[id];
+  if(!elInp) return;
   on(elInp,'input',()=>{ elInp.value = elInp.value.replace(/[^\d.-]/g,''); });
-  on(elInp,'blur',()=>{ if(elInp.value!=='') elInp.value = String(Math.round(+elInp.value)); updateHints(); updateCompletion(); walletFire(); });
+  on(elInp,'blur',()=>{ if(elInp.value!=='') elInp.value = String(Math.round(+elInp.value)); });
 });
 
 /* curves/params */
@@ -567,7 +519,6 @@ function values(){
   const ratio = v.annualIncome / MEDIAN_INCOME;
   v.incomeScore = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2), 0, 1);
   v.incomeLetter = incomeLetterFromRatio(ratio);
-  v.fiProgress = (v.annualSpend>0) ? v.net / (FI_MULT*Math.max(v.annualSpend, SPEND_FLOOR)) : 0;
   return v;
 }
 
@@ -608,28 +559,28 @@ function categoryScores(v){
       {key:'Savings rate', sub:'Toward 25% target', val:`${Math.round(v.saveRate*100)}% of take-home`,
        letter:letterFrom01(sSave),
        tip: v.saveRate<0.25
-          ? `Aim for 25%. Short by about ${money(Math.max(0,(v.income*0.25)-(v.income-v.expenses)))} per month. Automate transfers.`
-          : `Nice! Keep that savings habit compounding.`},
-      {key:'Emergency fund', sub:'Goal ~6 months', val:`${v.efMonths.toFixed(1)} months`,
+          ? `Aim for 25%. You’re short by about ${money(Math.max(0,(v.income*0.25)-(v.income-v.expenses)))} per month. Automate transfers on payday.`
+          : `Great job keeping spending below income—stay consistent.`},
+      {key:'Emergency fund', sub:'Goal 6 months', val:`${v.efMonths.toFixed(1)} months`,
        letter:letterFrom01(sEF),
        tip: v.efMonths<6
-          ? `Put aside ${money(Math.round((v.expenses*6 - v.cash)/6))}/mo to reach 6 months in ~6 months.`
-          : `Solid buffer — park it in high-yield savings.`},
+          ? `Set aside ${money(Math.round((v.expenses*6 - v.cash)/6))}/mo to reach 6 months in ~6 months. Park in a high-yield savings.`
+          : `Solid cushion—maintain it in a safe, liquid account.`},
       {key:'Debt load (non-mort.)', sub:'Lower is better', val:`${Math.round(v.dtiNonMort*100)}% of baseline`,
        letter:letterFrom01(sDebt),
        tip: v.dtiNonMort>0.25
-          ? `Snowball or avalanche method. Add ${money(Math.round(v.baseline*0.05))}/mo to debts until <25%.`
-          : `Healthy levels. Keep cards paid in full.`},
+          ? `Attack highest-interest balances first. Target extra ${money(Math.round(v.baseline*0.05))}/mo until non-mortgage debt <25% of baseline.`
+          : `Healthy debt level. Keep balances paid in full monthly.`},
       {key:'Age-based net worth', sub:`Target ${v.nwTargetMultiple.toFixed(2)}× baseline`, val:`${(v.nwProgress*100).toFixed(0)}% of age target`,
        letter:letterFrom01(sAgeNW),
        tip: v.nwProgress<1
-          ? `Gap ~${money(Math.max(0, v.nwTargetAmount - v.net))}. Invest steadily; prioritize tax-advantaged accounts.`
-          : `Ahead of pace — great compounding.`},
+          ? `Gap of ~${money(Math.max(0, v.nwTargetAmount - v.net))}. Invest the difference steadily; prioritize tax-advantaged accounts.`
+          : `You’re ahead of schedule—keep compounding.`},
       {key:'Income strength', sub:'vs median to high income', val:`${money(v.annualIncome)}/yr`,
        letter:v.incomeLetter,
        tip: (v.annualIncome < MEDIAN_INCOME*1.15)
-          ? `Level up skills & negotiate. Aim for ${money(Math.round(MEDIAN_INCOME*1.15))}+ in 12–18 months.`
-          : `Leverage surplus: automate investing + employer match.`},
+          ? `Focus on skill-ups, certs, or negotiation. Track market rates; aim for ${money(Math.round(MEDIAN_INCOME*1.15))}+ within 12–18 months.`
+          : `Leverage surplus income: automate investing and employer match.`},
     ],
     overall: { score: Math.round(score*10)/10, letter: overallLetter(Math.round(score*10)/10) }
   };
@@ -645,191 +596,63 @@ function withOverlay(runFn, doneFn){
   setTimeout(()=>{ if(done) return; done=true; clearInterval(t); toggleOverlay(false); doneFn(runFn()); }, dur+220);
 }
 
-/* mascot reactions + dynamic BG + float badge */
-function setMood(letter){
-  const mouth=$('#faceMouth'), rcMouth=$('#rcMouth'), badge=$('#floatBadge');
-  badge.textContent = letter;
-  document.body.classList.remove('grade-good','grade-mid','grade-bad');
-  if(['A+','A','A-','B+'].includes(letter)){
-    mouth?.setAttribute('d','M105 110 q25 18 50 0');
-    rcMouth?.setAttribute('d','M22 38 q10 8 20 0');
-    document.body.classList.add('grade-good');
-  } else if(['B','B-','C+','C','C-'].includes(letter)){
-    mouth?.setAttribute('d','M105 118 q25 0 50 0');
-    rcMouth?.setAttribute('d','M22 40 q10 0 20 0');
-    document.body.classList.add('grade-mid');
-  } else {
-    mouth?.setAttribute('d','M105 124 q25 -18 50 0');
-    rcMouth?.setAttribute('d','M22 44 q10 -8 20 0');
-    document.body.classList.add('grade-bad');
-  }
-}
-
-/* achievements */
-function renderAchievements(v){
-  const box=$('#achievements'); box.innerHTML='';
-  const list=[];
-  if(v.dtiNonMort<=0.15) list.push(['Debt Crusher','badge good']);
-  if(v.saveRate>=0.25)   list.push(['Super Saver','badge good']);
-  if(v.efMonths>=6)      list.push(['Emergency Ready','badge mid']);
-  if(v.nwProgress>=1)    list.push(['Over Target NW','badge mid']);
-  if(v.fiProgress>=1)    list.push(['FI Achiever','badge good']);
-  if(!list.length) list.push(['Getting Started','badge mid']);
-  list.forEach(([t,cls])=> box.append(el('span',{className:cls,style:"margin:2px 0"},[document.createTextNode(t)])));
-}
-
-/* XP */
-const xpState = JSON.parse(localStorage.getItem('gmf_xp')||'{"xp":0}');
-function addXP(letter){
-  const map={ 'A+':60,'A':50,'A-':45,'B+':35,'B':30,'B-':25,'C+':18,'C':15,'C-':12,'D+':8,'D':6,'D-':4,'F':2 };
-  xpState.xp = (xpState.xp||0) + (map[letter]||5);
-  localStorage.setItem('gmf_xp', JSON.stringify(xpState));
-  renderXP();
-}
-function rankFromXP(x){ return x>=600?'Wealth Wizard': x>=400?'Savvy':'Rookie' }
-function renderXP(){
-  $('#xpLine').textContent = `XP: ${xpState.xp} • Rank: ${rankFromXP(xpState.xp)}`;
-  $('#xpFill').style.width = Math.min(100, (xpState.xp%200)/2*1)+'%';
-}
-renderXP();
-
-/* FI Race */
-function renderFIRace(v){
-  const car=$('.car'); const p=clamp(v.fiProgress,0,1)*100;
-  car.style.left = Math.max(0, Math.min(100,p)) + '%';
-  $('#fiLine').textContent = `Progress to 25× spend: ${(p).toFixed(0)}%`;
-}
-
-/* risk meter mini-game */
-function renderRisk(val){ const n=$('#needle'); const deg = -40 + (val/100)*160; n.style.transform=`rotate(${deg}deg)`; $('#riskOut').textContent = val<35?'Low':val<65?'Moderate':'High' }
-on($('#risk'),'input',e=>renderRisk(e.target.value)); renderRisk(40);
-
-/* wheel tips */
-const TIPS=[
-  'Automate savings on payday (pay yourself first).',
-  'Raise 401(k) by 1% this month.',
-  'Move EF to a high-yield account.',
-  'Snowball smallest debt; celebrate each win.',
-  'Negotiate a bill (internet, phone) today.',
-  'Track every spend for 7 days.',
-  'Sell one unused item and add to savings.',
-  'Set a calendar nudge for investing day.'
-];
-on($('#wheelBtn'),'click',()=>{
-  const tip=TIPS[Math.floor(Math.random()*TIPS.length)];
-  $('#wheelTip').textContent = '🎯 ' + tip;
-});
-
-/* meme card */
-function drawMeme(letter, score){
-  const c=$('#memeCanvas'), g=c.getContext('2d'); const W=c.width,H=c.height;
-  g.fillStyle='#0b1226'; g.fillRect(0,0,W,H);
-  const grad=g.createLinearGradient(0,0,W,0); grad.addColorStop(0,'#22d3ee'); grad.addColorStop(1,'#a78bfa');
-  g.fillStyle=grad; g.fillRect(0,0,W,10);
-  g.fillStyle='#e2e8f0'; g.font='bold 44px Inter,system-ui,Arial'; g.fillText('Grade My Finance', 30, 70);
-  const badgeColor = (['A+','A','A-','B+'].includes(letter)) ? '#34d399' : (['B','B-','C+','C','C-'].includes(letter)) ? '#f59e0b' : '#ef4444';
-  g.fillStyle=badgeColor; g.fillRect(30, 100, 220, 220); g.fillStyle='#062c1b'; g.font='bold 120px Inter,Arial'; g.fillText(letter, 60, 250);
-  g.fillStyle='#cbd5e1'; g.font='24px Inter,Arial'; g.fillText(`Overall score: ${score.toFixed(1)} / 100`, 280, 160);
-  g.fillText('I just graded my money. Try it → grademyfinance.com', 280, 210);
-  g.font='20px Inter,Arial'; g.fillText('“You’ve got this.”', 280, 260);
-}
-on($('#memeGen'),'click',()=>{ const s=lastCats?.overall||{letter:'A',score:95}; drawMeme(s.letter,s.score||95); });
-on($('#memeDL'),'click',()=>{
-  const c=$('#memeCanvas'); const a=document.createElement('a'); a.href=c.toDataURL('image/png'); a.download='gmf-report-card.png'; a.click();
-});
-
 /* report modal + scroll lock */
 const modal=$('#reportModal'), rcRows=$('#rcRows'), rcGrade=$('#rcGrade'), rcMeta=$('#rcMeta');
 let savedScrollY = 0;
 function lockScroll(){ savedScrollY = window.scrollY||0; document.body.classList.add('lock-scroll'); document.body.style.top = `-${savedScrollY}px`; }
 function unlockScroll(){ document.body.classList.remove('lock-scroll'); document.body.style.top=''; window.scrollTo(0,savedScrollY||0); }
+
+function openReport(v,cats){
+  rcMeta.textContent = `Overall score ${cats.overall.score.toFixed(1)} / 100 • Net worth ${money(v.net)} • Assets ${money(v.assets)} • Liabilities ${money(v.liabs)}`;
+  rcGrade.textContent = cats.overall.letter;
+  rcGrade.className = 'rc-grade ' + overallClass(cats.overall.letter);
+
+  rcRows.innerHTML='';
+  cats.components.forEach(c=>{
+    const row=el('div',{className:'rc-row'});
+    const catCol=el('div',{className:'rc-cell'},[
+      el('div',{className:'label', title:c.sub},[document.createTextNode(c.key)]),
+      el('div',{className:'sub'},[document.createTextNode(c.sub)])
+    ]);
+    const detailCol=el('div',{className:'rc-cell detail-col'},[
+      el('div',{className:'detail'},[document.createTextNode(c.val)]),
+      el('div',{className:'tip'},[document.createTextNode(c.tip)])
+    ]);
+    const gradeCol=el('div',{className:'rc-cell'},[
+      el('span',{className:badgeClass(c.letter)},[document.createTextNode(c.letter)])
+    ]);
+    row.append(catCol,detailCol,gradeCol); rcRows.append(row);
+  });
+
+  if (['A+','A','A-','B+','B','B-'].includes(cats.overall.letter)) confettiBurst();
+  lockScroll(); modal.classList.add('show');
+  try{ gtag('event','report_open',{value:cats.overall.score}); }catch(_){}
+}
 on($('#closeReport'),'click',()=>{ modal.classList.remove('show'); unlockScroll(); });
 on($('#calcAgain'),'click',()=>{ modal.classList.remove('show'); unlockScroll(); });
 on($('#printReport'),'click',()=>window.print());
 
-/* sound FX */
-let soundOn = JSON.parse(localStorage.getItem('gmf_sound')||'true');
-function beep(type='good'){
-  if(!soundOn) return;
-  const ctx=new (window.AudioContext||window.webkitAudioContext)();
-  const o=ctx.createOscillator(); const g=ctx.createGain(); o.connect(g); g.connect(ctx.destination);
-  o.type='sine'; const now=ctx.currentTime;
-  if(type==='good'){ o.frequency.setValueAtTime(880,now); o.frequency.exponentialRampToValueAtTime(440, now+0.25); }
-  else { o.frequency.setValueAtTime(220,now); o.frequency.exponentialRampToValueAtTime(110, now+0.35); }
-  g.gain.setValueAtTime(0.0001,now); g.gain.exponentialRampToValueAtTime(0.2, now+0.02); g.gain.exponentialRampToValueAtTime(0.0001, now+0.4);
-  o.start(); o.stop(now+0.42);
-}
-$('#soundToggle').textContent = soundOn?'🔈':'🔇';
-on($('#soundToggle'),'click',()=>{ soundOn=!soundOn; localStorage.setItem('gmf_sound', JSON.stringify(soundOn)); $('#soundToggle').textContent = soundOn?'🔈':'🔇'; });
+/* actions */
+function gradeSequence(){ withOverlay(()=>{ const v=values(); const cats=categoryScores(v); return {v,cats}; }, ({v,cats})=>openReport(v,cats)); }
+on($('#gradeBtn'),'click',gradeSequence);
+on($('#gradeBtnTop'),'click',gradeSequence);
+on($('#gradeBtnSticky'),'click',gradeSequence);
 
-/* share link */
+/* share */
 function shareLink(){ const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0)); return location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s)))); }
 on($('#copyLink'),'click',()=>{ const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url)); });
 on($('#copyJSON'),'click',()=>{ const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url)); });
 on($('#copyReport'),'click',async ()=>{ const url=shareLink(); if(navigator.share){try{await navigator.share({title:'My Report Card',text:'Check out my money grade!',url})}catch{navigator.clipboard?.writeText(url)}} else navigator.clipboard?.writeText(url) });
 
 /* hints & hydrate */
-function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}`; renderFIRace(v); }
+function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}` }
 ids.forEach(id=>els[id]?.addEventListener('input',updateHints)); updateHints();
 (function(){ const m=location.hash.match(/#s=([^&]+)/); if(!m) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{const el=document.getElementById(id); if(el) el.value=obj[id]}); updateHints(); }catch{} })();
 
-/* completion bar + emoji */
-function completionPct(){
-  const need=ids.length; let done=0;
-  ids.forEach(id=>{ const v=val(id); if(id==='age') { if(v>0) done++; } else if(v>0) done++; });
-  return Math.round((done/need)*100);
-}
-function updateCompletion(){
-  const p=completionPct(); $('#progressFill').style.width=p+'%'; $('#progressFill2').style.width=p+'%';
-  $('#progressEmoji').textContent = p>=90?'🚀':p>=60?'🙂':p>=30?'🧠':'👋';
-}
-updateCompletion();
-
 /* demo */
-on($('#demoBtn'),'click',()=>{ const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000}; Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id]}); updateHints(); updateCompletion(); });
+on($('#demoBtn'),'click',()=>{ const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000}; Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id]}); updateHints(); });
 
-/* what-if */
-on($('#btnWhatIfUp'),'click',()=>{ const el=els.income; el.value = String(Math.round(val('income')*1.1)); updateHints(); });
-on($('#btnWhatIfDown'),'click',()=>{ const el=els.expenses; el.value = String(Math.round(val('expenses')*0.85)); updateHints(); });
-
-/* wallet fire Easter egg when burn rate is negative */
-function walletFire(){ const m=$('#mascot'); if(val('expenses')>val('income')) m.classList.add('fire'); else m.classList.remove('fire'); }
-walletFire();
-
-/* Konami code -> mascot dance */
-(function(){
-  const seq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']; let idx=0;
-  document.addEventListener('keydown',e=>{
-    if(e.key===seq[idx] || e.key.toLowerCase()===seq[idx]){ idx++; if(idx===seq.length){ idx=0; $('#mascotSVG').style.animation='floatCard 0.9s ease-in-out infinite'; setTimeout(()=>$('#mascotSVG').style.animation='floatCard 3s ease-in-out infinite',6000); } }
-    else idx=0;
-  });
-})();
-
-/* 69/420 wink */
-ids.forEach(id=> on(els[id],'blur',()=>{ const v=val(id); if(v===69||v===420||v===69420){ alert('😏 Nice.'); } }));
-
-/* mascot face & grade color in header badge */
-function setHeaderMood(letter){ setMood(letter); }
-
-/* age projection */
-on($('#ageSim'),'input',e=>{
-  const age=+e.target.value; const v=values(); const tmp={...v, age};
-  const cats=categoryScores(tmp);
-  $('#ageSimOut').textContent=`Projected grade at age ${age}: ${cats.overall.letter} (${cats.overall.score.toFixed(1)})`;
-});
-
-/* sticky CTA */
-on($('#gradeBtnSticky'),'click',()=>$('#gradeBtn')?.click());
-on($('#gradeBtnTop'),'click',()=>$('#gradeBtn')?.click());
-
-/* keyboard shortcuts */
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') $('#closeReport')?.click();
-  if (e.key.toLowerCase() === 'g') $('#gradeBtn')?.click();
-  if (e.key === '/' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); $('#income')?.focus(); }
-});
-
-/* subscribe */
+/* subscribe (Formspree) */
 const subForm=$('#subForm'), subEmail=$('#subEmail'), toast=$('#toast');
 on(subForm,'submit',async (e)=>{
   e.preventDefault();
@@ -852,64 +675,11 @@ on(subForm,'submit',async (e)=>{
     }
   }catch{ alert('Network error. Please try again later.'); }
 });
-
-/* grading flow */
-const modalEl=$('#reportModal'), rcRows=$('#rcRows');
-let lastCats=null;
-function openReport(v,cats){
-  lastCats=cats;
-  rcMeta.textContent = `Overall score ${cats.overall.score.toFixed(1)} / 100 • Net worth ${money(v.net)} • Assets ${money(v.assets)} • Liabilities ${money(v.liabs)}`;
-  rcGrade.textContent = cats.overall.letter;
-  rcGrade.className = 'rc-grade ' + overallClass(cats.overall.letter);
-  setHeaderMood(cats.overall.letter);
-  renderAchievements(v);
-
-  rcRows.innerHTML='';
-  cats.components.forEach(c=>{
-    const row=el('div',{className:'rc-row'});
-    const catCol=el('div',{className:'rc-cell'},[
-      el('div',{className:'label', title:c.sub},[document.createTextNode(c.key)]),
-      el('div',{className:'sub'},[document.createTextNode(c.sub)])
-    ]);
-    const detailCol=el('div',{className:'rc-cell detail-col'},[
-      el('div',{className:'detail'},[document.createTextNode(c.val)]),
-      el('div',{className:'tip'},[document.createTextNode(c.tip)])
-    ]);
-    const gradeCol=el('div',{className:'rc-cell'},[
-      el('span',{className:badgeClass(c.letter)},[document.createTextNode(c.letter)])
-    ]);
-    row.append(catCol,detailCol,gradeCol); rcRows.append(row);
-  });
-
-  if (['A+','A','A-','B+','B','B-'].includes(cats.overall.letter)){ confettiBurst(); beep('good'); }
-  else { beep('bad'); }
-  addXP(cats.overall.letter);
-  lockScroll(); modalEl.classList.add('show');
-  try{ gtag('event','report_open',{value:cats.overall.score}); }catch(_){}
-}
-
-/* compute button + overlay */
-function gradeSequence(){
-  withOverlay(()=>{ const v=values(); const cats=categoryScores(v); return {v,cats}; }, ({v,cats})=>{
-    openReport(v,cats);
-    drawMeme(cats.overall.letter, cats.overall.score);
-  });
-}
-on($('#gradeBtn'),'click',gradeSequence);
-
-/* completion on load */
-updateCompletion();
-
-/* mascot + float badge initial */
-setMood('A');
-
-/* update FI race + mood on edits */
-ids.forEach(id=> on(els[id],'input',()=>{ const v=values(); renderFIRace(v); }));
-
 })();
 </script>
 </body>
 </html>
+
 
 
 
