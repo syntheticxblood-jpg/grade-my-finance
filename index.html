@@ -11,7 +11,15 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-<!-- Preconnects for perf -->
+<!-- Social preview -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://grademyfinance.com/">
+<meta property="og:title" content="Grade My Finance — Free Financial Grade Calculator">
+<meta property="og:description" content="See your money like a report card. Get a free financial grade, track net worth, and find improvement tips instantly.">
+<meta property="og:image" content="https://grademyfinance.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Preconnects -->
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <link rel="preconnect" href="https://pagead2.googlesyndication.com">
 
@@ -22,7 +30,7 @@
   function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config','G-H6223HYVS6');
 </script>
 
-<!-- Google AdSense -->
+<!-- AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514" crossorigin="anonymous"></script>
 
 <style>
@@ -32,6 +40,11 @@
   --header-h:96px;
 }
 @media (max-width:720px){ :root{ --header-h:74px } }
+
+/* LIGHT THEME */
+:root[data-theme="light"]{
+  --bg:#f7fafc; --panel:#ffffff; --card:#ffffff; --text:#0b1226; --muted:#4b5563; --line:rgba(15,23,42,.12);
+}
 
 *{box-sizing:border-box} html,body{width:100%}
 body{
@@ -53,6 +66,8 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
 .logo{height:72px}
 @media (max-width:720px){ .logo{height:58px} }
 .brand{font-weight:900; font-size:22px; color:#062c1b}
+.theme-toggle{position:absolute; right:10px; top:10px}
+.theme-toggle .btn{min-width:0;padding:8px 10px}
 
 /* Hero */
 .hero{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:14px 0 4px; text-align:center; }
@@ -64,7 +79,9 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
   background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-  color:var(--text);font-weight:900;cursor:pointer;min-width:140px}
+  color:var(--text);font-weight:900;cursor:pointer;min-width:140px;transition:transform .15s ease, filter .15s ease}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(1px)}
 .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
 .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 
@@ -79,9 +96,11 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
 @media (max-width:720px){ .inputs{grid-template-columns:1fr; gap:12px} }
 
 input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:var(--text)}
-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,211,238,.30)}
+:root[data-theme="light"] input{background:#fff}
+input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.30)}
 
 .progress{height:12px;background:#0b1226;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+:root[data-theme="light"] .progress{background:#fff}
 .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .6s cubic-bezier(.2,.9,.2,1)}
 
 /* Mascot */
@@ -149,7 +168,7 @@ input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34
 /* Lock background scroll */
 body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
 
-/* Subscribe section */
+/* Subscribe */
 .subscribe{
   max-width:900px; margin:30px auto; padding:18px;
   background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow);
@@ -159,33 +178,49 @@ body.lock-scroll{ position:fixed; width:100%; overflow:hidden; }
 .sub-row{display:flex; gap:10px; flex-wrap:wrap}
 .sub-row input[type="email"]{
   flex:1 1 280px; padding:12px; border-radius:12px; border:1px solid var(--line);
-  background:#0b1226; color:var(--text);
+  background:#0b1226; color:#e2e8f0;
 }
+:root[data-theme="light"] .sub-row input[type="email"]{background:#fff;color:#0b1226}
 .sub-row button{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
   background:linear-gradient(90deg,var(--g1),var(--g2)); color:#062c1b; font-weight:900; cursor:pointer}
 
 /* Toast */
-.toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:#0b1226; color:var(--text);
+.toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:#0b1226; color:#e2e8f0;
   border:1px solid var(--line); border-radius:12px; padding:10px 14px; box-shadow:var(--shadow); display:none; z-index:120}
 .toast.show{display:block}
+
+/* FAQ */
+.faq{max-width:900px; margin:24px auto; padding:0 16px}
+.faq h3{margin:0 0 10px}
+.faq .item{background:var(--panel); border:1px solid var(--line); border-radius:14px; margin:8px 0; overflow:hidden}
+.faq summary{cursor:pointer; padding:12px 14px; font-weight:800; list-style:none}
+.faq details[open] summary{border-bottom:1px solid var(--line)}
+.faq .content{padding:12px 14px; color:var(--muted)}
 
 /* Footer */
 footer{
   background:#0b1226; border-top:1px solid var(--line); margin-top:22px;
   padding:22px 16px; color:#cbd5e1; font-size:14px
 }
+:root[data-theme="light"] footer{background:#ffffff}
 .fwrap{max-width:1000px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:8px}
 .fcontact{display:flex; gap:8px; align-items:center}
-.pill{padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.03); color:#cfe4ff}
+.pill{padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.03); color:#3fb7ff}
 .fnote{opacity:.9}
-footer a{ color:#9bd2ff; text-decoration:none; font-weight:700; }
+footer a{ color:#3fb7ff; text-decoration:none; font-weight:700; }
 footer a:hover{ text-decoration:underline }
 
-/* --- Mobile spacing polish & normalization --- */
+/* Sticky mobile CTA */
+.mobile-cta{position:fixed;left:0;right:0;bottom:0;padding:10px;background:rgba(15,23,42,.86);
+backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.22);display:none;z-index:90}
+:root[data-theme="light"] .mobile-cta{background:rgba(255,255,255,.94)}
+@media (max-width:720px){ .mobile-cta{display:block} }
+.mobile-cta .btn{width:100%}
+
+/* --- Mobile spacing polish --- */
 svg, img { display:block; max-width:100%; height:auto; }
 .hero-card > :first-child { margin-top:0; }
 .hero-card > :last-child  { margin-bottom:0; }
-
 @media (max-width:720px){
   .hero { padding:8px 0 6px; }
   .hero-card { padding:14px; margin-bottom:10px; }
@@ -194,14 +229,19 @@ svg, img { display:block; max-width:100%; height:auto; }
   .inputs { gap:10px; }
   .card { padding:12px; }
 }
-
-/* Prevent ad gaps if collapsed */
+/* Ad blocks collapsing shouldn't add big gaps */
 ins.adsbygoogle { min-height:0 !important; }
-
 /* iOS safe areas */
 @supports (padding: max(0px)) {
   header { padding-top: env(safe-area-inset-top); }
   body   { padding-bottom: max(22px, env(safe-area-inset-bottom)); }
+}
+/* Print stylesheet */
+@media print{
+  body{background:#fff}
+  #reportModal{position:static;background:#fff}
+  .sheet{max-height:none;box-shadow:none;border:none}
+  header,.mobile-cta,.subscribe,footer,.adsbygoogle,.theme-toggle{display:none!important}
 }
 </style>
 </head>
@@ -230,6 +270,7 @@ ins.adsbygoogle { min-height:0 !important; }
       </g>
     </svg>
     <div class="brand">Grade My Finance</div>
+    <div class="theme-toggle"><button id="themeToggle" class="btn" aria-label="Toggle theme">🌙/☀️</button></div>
   </div>
 </header>
 
@@ -268,27 +309,29 @@ ins.adsbygoogle { min-height:0 !important; }
   <main>
     <section id="grade" class="page active">
       <div class="inputs">
-        <div class="card"><div class="section">Monthly Income (after-tax)</div><input id="income" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Monthly Expenses</div><input id="expenses" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Age</div><input id="age" type="number" value="30" min="16" max="100"></div>
-        <div class="card"><div class="section">Home Value</div><input id="home" type="number" inputmode="decimal" value="0" min="0"><div class="section" id="assetsHint">Total Assets: —</div></div>
+        <div class="card"><div class="section">Monthly Income (after-tax)</div><input id="income" type="number" inputmode="decimal" value="0" min="0" aria-label="Monthly income"></div>
+        <div class="card"><div class="section">Monthly Expenses</div><input id="expenses" type="number" inputmode="decimal" value="0" min="0" aria-label="Monthly expenses"></div>
+        <div class="card"><div class="section">Age</div><input id="age" type="number" value="30" min="16" max="100" aria-label="Age"></div>
+        <div class="card"><div class="section">Home Value</div><input id="home" type="number" inputmode="decimal" value="0" min="0" aria-label="Home value"><div class="section" id="assetsHint">Total Assets: —</div></div>
 
-        <div class="card"><div class="section">Retirement (401k/IRA)</div><input id="retire" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Brokerage / Stocks</div><input id="brokerage" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">HSA</div><input id="hsa" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Cash Savings</div><input id="cash" type="number" inputmode="decimal" value="0" min="0"></div>
+        <div class="card"><div class="section">Retirement (401k/IRA)</div><input id="retire" type="number" inputmode="decimal" value="0" min="0" aria-label="Retirement balance"></div>
+        <div class="card"><div class="section">Brokerage / Stocks</div><input id="brokerage" type="number" inputmode="decimal" value="0" min="0" aria-label="Brokerage balance"></div>
+        <div class="card"><div class="section">HSA</div><input id="hsa" type="number" inputmode="decimal" value="0" min="0" aria-label="HSA balance"></div>
+        <div class="card"><div class="section">Cash Savings</div><input id="cash" type="number" inputmode="decimal" value="0" min="0" aria-label="Cash savings"></div>
 
-        <div class="card"><div class="section">Car Value</div><input id="car" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Mortgage Balance</div><input id="mortgage" type="number" inputmode="decimal" value="0" min="0"><div class="section" id="liabHint">Total Liabilities: —</div></div>
-        <div class="card"><div class="section">Student Loans</div><input id="student" type="number" inputmode="decimal" value="0" min="0"></div>
-        <div class="card"><div class="section">Auto Loans</div><input id="auto" type="number" inputmode="decimal" value="0" min="0"></div>
+        <div class="card"><div class="section">Car Value</div><input id="car" type="number" inputmode="decimal" value="0" min="0" aria-label="Car value"></div>
+        <div class="card"><div class="section">Mortgage Balance</div><input id="mortgage" type="number" inputmode="decimal" value="0" min="0" aria-label="Mortgage balance"><div class="section" id="liabHint">Total Liabilities: —</div></div>
+        <div class="card"><div class="section">Student Loans</div><input id="student" type="number" inputmode="decimal" value="0" min="0" aria-label="Student loan balance"></div>
+        <div class="card"><div class="section">Auto Loans</div><input id="auto" type="number" inputmode="decimal" value="0" min="0" aria-label="Auto loan balance"></div>
 
-        <div class="card"><div class="section">Credit Cards (balance)</div><input id="cc" type="number" inputmode="decimal" value="0" min="0"></div>
+        <div class="card"><div class="section">Credit Cards (balance)</div><input id="cc" type="number" inputmode="decimal" value="0" min="0" aria-label="Credit card balance"></div>
 
         <div class="card" style="grid-column:1/-1">
           <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap">
             <button id="resetBtn" class="btn" type="button">Reset</button>
-            <button id="gradeBtn" class="btn primary" type="button">Get My Report Card</button>
+            <div style="display:flex;gap:8px">
+              <button id="gradeBtn" class="btn primary" type="button">Get My Report Card</button>
+            </div>
           </div>
           <div class="progress" style="margin:10px 0"><div id="progressFill"></div></div>
         </div>
@@ -332,6 +375,7 @@ ins.adsbygoogle { min-height:0 !important; }
     <div class="rc-rows" id="rcRows"></div>
 
     <div class="rc-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap">
+      <button class="btn" id="printReport" type="button">Save as PDF</button>
       <button class="btn" id="copyReport" type="button" aria-label="Share my report card">Share my Report Card</button>
       <button class="btn" id="copyJSON" type="button" aria-label="Copy as link">Copy as Link</button>
       <button class="btn primary" id="calcAgain" type="button">Recalculate</button>
@@ -358,6 +402,28 @@ ins.adsbygoogle { min-height:0 !important; }
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
+<!-- FAQ -->
+<section class="faq" aria-labelledby="faqHeading">
+  <h3 id="faqHeading">FAQ</h3>
+  <details class="item">
+    <summary>How is my overall grade calculated?</summary>
+    <div class="content">We weight savings rate (15%), emergency fund (10%), non-mortgage debt load (5%), age-based net worth progress (65%), and income strength (5%). We bias toward behavior you control and long-term net worth.</div>
+  </details>
+  <details class="item">
+    <summary>Do you store my numbers?</summary>
+    <div class="content">No. Everything runs in your browser. If you copy a share link, your inputs are encoded in the URL — you can delete it anytime.</div>
+  </details>
+  <details class="item">
+    <summary>Is this financial advice?</summary>
+    <div class="content">It’s educational only — not financial, tax, or legal advice. Consider talking with a professional for personalized guidance.</div>
+  </details>
+</section>
+
+<!-- Sticky mobile CTA -->
+<div class="mobile-cta">
+  <button id="gradeBtnSticky" class="btn primary" type="button">Get My Report Card</button>
+</div>
+
 <footer>
   <div class="fwrap">
     <div class="fcontact">
@@ -368,6 +434,19 @@ ins.adsbygoogle { min-height:0 !important; }
   </div>
 </footer>
 
+<!-- FAQ Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question","name": "How is my overall grade calculated?","acceptedAnswer": {"@type": "Answer","text": "We weight savings rate (15%), emergency fund (10%), non-mortgage debt load (5%), age-based net worth progress (65%), and income strength (5%)."}},
+    {"@type": "Question","name": "Do you store my numbers?","acceptedAnswer": {"@type": "Answer","text": "No. Everything runs in your browser. If you copy a share link, your inputs are encoded in the URL — you can delete it anytime."}},
+    {"@type": "Question","name": "Is this financial advice?","acceptedAnswer": {"@type": "Answer","text": "It’s educational only — not financial, tax, or legal advice."}}
+  ]
+}
+</script>
+
 <script>
 (() => {
 /* helpers */
@@ -377,6 +456,12 @@ const on=(x,e,f)=>x&&x.addEventListener(e,f,{passive:true});
 const money=n=>isFinite(n)?`$${Math.round(n).toLocaleString()}`:'—';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
+
+/* theme */
+const root=document.documentElement;
+const saved=localStorage.getItem('gmf_theme');
+if(saved==='light') root.dataset.theme='light';
+on($('#themeToggle'),'click',()=>{ const next=root.dataset.theme==='light'?'':'light'; root.dataset.theme=next; localStorage.setItem('gmf_theme', next||'dark'); });
 
 /* confetti */
 const cf=$('#confetti'), ctx=cf.getContext('2d');
@@ -393,6 +478,14 @@ function confettiBurst(n=260){
 const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc'];
 const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
 const val=id=>Number(els[id]?.value||0);
+
+/* Currency input hygiene (keeps math valid, no fancy mask) */
+ids.forEach(id=>{
+  const elInp=els[id];
+  if(!elInp) return;
+  on(elInp,'input',()=>{ elInp.value = elInp.value.replace(/[^\d.-]/g,''); });
+  on(elInp,'blur',()=>{ if(elInp.value!=='') elInp.value = String(Math.round(+elInp.value)); });
+});
 
 /* curves/params */
 const NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
@@ -518,7 +611,7 @@ function openReport(v,cats){
   cats.components.forEach(c=>{
     const row=el('div',{className:'rc-row'});
     const catCol=el('div',{className:'rc-cell'},[
-      el('div',{className:'label'},[document.createTextNode(c.key)]),
+      el('div',{className:'label', title:c.sub},[document.createTextNode(c.key)]),
       el('div',{className:'sub'},[document.createTextNode(c.sub)])
     ]);
     const detailCol=el('div',{className:'rc-cell detail-col'},[
@@ -537,17 +630,19 @@ function openReport(v,cats){
 }
 on($('#closeReport'),'click',()=>{ modal.classList.remove('show'); unlockScroll(); });
 on($('#calcAgain'),'click',()=>{ modal.classList.remove('show'); unlockScroll(); });
+on($('#printReport'),'click',()=>window.print());
 
 /* actions */
 function gradeSequence(){ withOverlay(()=>{ const v=values(); const cats=categoryScores(v); return {v,cats}; }, ({v,cats})=>openReport(v,cats)); }
 on($('#gradeBtn'),'click',gradeSequence);
 on($('#gradeBtnTop'),'click',gradeSequence);
+on($('#gradeBtnSticky'),'click',gradeSequence);
 
 /* share */
 function shareLink(){ const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0)); return location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s)))); }
 on($('#copyLink'),'click',()=>{ const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url)); });
 on($('#copyJSON'),'click',()=>{ const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url)); });
-on($('#copyReport'),'click',async ()=>{ const url=shareLink(); const text=`My Grade My Finance report card → ${url}`; if(navigator.share){try{await navigator.share({title:'My Report Card',text,url})}catch{navigator.clipboard?.writeText(url)}} else navigator.clipboard?.writeText(url) });
+on($('#copyReport'),'click',async ()=>{ const url=shareLink(); if(navigator.share){try{await navigator.share({title:'My Report Card',text:'Check out my money grade!',url})}catch{navigator.clipboard?.writeText(url)}} else navigator.clipboard?.writeText(url) });
 
 /* hints & hydrate */
 function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}` }
@@ -584,6 +679,7 @@ on(subForm,'submit',async (e)=>{
 </script>
 </body>
 </html>
+
 
 
 
