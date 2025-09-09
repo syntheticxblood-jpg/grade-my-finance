@@ -491,18 +491,19 @@ svg, img { display:block; max-width:100%; height:auto; }
     };
   }
 
-  /* ===== Path to a higher grade (heuristic, with est. points) ===== */
+  /* ===== Path to a higher grade (heuristic) ===== */
   function nextLetterTarget(score){
     var bounds=[60,63,67,70,73,77,80,83,87,90,93,97]; // lower edges
     for(var i=0;i<bounds.length;i++){ if(score<bounds[i]) return bounds[i]; }
-    return null; // already A+
+    return null; // A+ already
   }
   function buildPath(v,cats){
     var goal = nextLetterTarget(cats.overall.score);
     var items=[];
     function push(txt, pts){ items.push({txt:txt, pts:Math.max(0, Math.round(pts))}); }
 
-    // estimate points if we hit each target
+    if(goal===null){ return [{txt:"You’re already at A+. Keep compounding and maintaining your buffers!", pts:0}]; }
+
     // Savings → 25%
     if(v.saveRate < 0.25){
       var dSave=(1 - map01(v.saveRate,0,0.25))*0.15*100;
@@ -515,7 +516,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       var efNeed = Math.max(0, v.expenses*6 - v.cash);
       push("Build emergency fund to 6 months (save ~"+money(Math.round(efNeed/6))+"/mo for 6 months).", dEF);
     }
-    // Non-mort debt → 25% of baseline
+    // Debt load → 25% of baseline
     if(v.dtiNonMort > 0.25){
       var sDebtNow = clamp(1 - v.dtiNonMort/0.50,0,1), sDebtGoal = clamp(1 - 0.25/0.50,0,1);
       var dDebt=(sDebtGoal - sDebtNow)*0.05*100;
@@ -539,7 +540,6 @@ svg, img { display:block; max-width:100%; height:auto; }
       push("Grow income toward "+money(targetAnnual)+"/yr (≈ "+money(Math.round(delta/12))+"/mo via raise or side income).", dInc);
     }
 
-    // Sort by points, pick top 3
     items.sort(function(a,b){ return b.pts - a.pts; });
     return items.slice(0,3);
   }
@@ -635,30 +635,99 @@ svg, img { display:block; max-width:100%; height:auto; }
   $("gradeBtn").addEventListener("click", gradeNow);
   $("gradeBtnSticky").addEventListener("click", gradeNow);
 
-  /* ===== Demo (randomized) ===== */
-  function rand(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+  /* ===== Demo (realistic + small + negative NW common) ===== */
   function randomDemo(){
-    var isOwner = (localStorage.getItem("gmf_housing")||"owner")==="owner";
-    var age = rand(22,60);
-    var income = rand(2500,15000);
-    var expenses = Math.max(800, Math.floor(income*rand(55,88)/100));
-    var retire = rand(2000, 250000);
-    var brokerage = rand(0, 120000);
-    var car = rand(0, 35000);
-    var hsa = rand(0, 8000);
-    var cash = rand(0, 30000);
-    var student = rand(0, 45000);
-    var auto = rand(0, 22000);
-    var cc = rand(0, 6000);
-    var home=0, mortgage=0;
-    if(isOwner){
-      home = rand(120000, 900000);
-      var ltv = rand(40,90)/100;
-      mortgage = Math.max(0, Math.floor(home*ltv) - rand(0,20000));
+    function r(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+    function pickWeighted(entries){
+      var x=Math.random(), cum=0;
+      for(var i=0;i<entries.length;i++){ cum+=entries[i].w; if(x<cum) return entries[i].v; }
+      return entries[entries.length-1].v;
     }
-    var d={age:age,income:income,expenses:expenses,home:home,retire:retire,brokerage:brokerage,
-      car:car,hsa:hsa,cash:cash,mortgage:mortgage,student:student,auto:auto,cc:cc};
-    Object.keys(d).forEach(function(id){ if(els[id]) els[id].value=d[id]; });
+
+    // Weighted scenario selection
+    var scenario = pickWeighted([
+      { w:0.40, v:"starter_renter" },   // low/small, often negative net worth
+      { w:0.25, v:"stressed_debt" },    // higher debt, often negative net worth
+      { w:0.25, v:"balanced_owner" },   // modest, small positive
+      { w:0.10, v:"ahead_owner" }       // strong (rarer)
+    ]);
+
+    var d={age:0,income:0,expenses:0,home:0,retire:0,brokerage:0,car:0,hsa:0,cash:0,mortgage:0,student:0,auto:0,cc:0};
+
+    if(scenario==="starter_renter"){
+      setHousing("renter");
+      d.age = r(20,35);
+      d.income = r(1600,3800);
+      d.expenses = r(Math.floor(d.income*0.70), Math.floor(d.income*1.10)); // sometimes > income
+      d.home=0; d.mortgage=0;
+      d.cash = r(50,2000);
+      d.retire = r(0,3000);
+      d.brokerage = r(0,1200);
+      d.hsa = r(0,500);
+      d.car = r(0,8000);
+      d.student = r(0,30000);
+      d.auto = r(0,12000);
+      d.cc = r(500,5000);
+
+    }else if(scenario==="stressed_debt"){
+      setHousing("renter");
+      d.age = r(24,45);
+      d.income = r(2200,6000);
+      d.expenses = r(Math.floor(d.income*0.85), Math.floor(d.income*1.10)); // can exceed income
+      d.home=0; d.mortgage=0;
+      d.cash = r(0,1500);
+      d.retire = r(0,12000);
+      d.brokerage = r(0,5000);
+      d.hsa = r(0,1000);
+      d.car = r(2000,20000);
+      d.student = r(10000,50000);
+      d.auto = r(5000,28000);
+      d.cc = r(1500,9000);
+
+    }else if(scenario==="balanced_owner"){
+      setHousing("owner");
+      d.age = r(28,55);
+      d.income = r(4000,9000);
+      d.expenses = r(Math.floor(d.income*0.60), Math.floor(d.income*0.80));
+      d.home = r(180000,600000);
+      var ltv = r(60,90)/100;
+      d.mortgage = Math.max(0, Math.floor(d.home*ltv) - r(0,20000));
+      d.cash = r(1000,15000);
+      d.retire = r(20000,120000);
+      d.brokerage = r(5000,60000);
+      d.hsa = r(0,4000);
+      d.car = r(3000,20000);
+      d.student = r(0,25000);
+      d.auto = r(0,15000);
+      d.cc = r(0,4000);
+
+    }else{ // ahead_owner
+      setHousing("owner");
+      d.age = r(30,60);
+      d.income = r(8000,15000);
+      d.expenses = r(Math.floor(d.income*0.55), Math.floor(d.income*0.75));
+      d.home = r(350000,1200000);
+      var ltv2 = r(30,70)/100;
+      d.mortgage = Math.max(0, Math.floor(d.home*ltv2) - r(0,50000));
+      d.cash = r(5000,60000);
+      d.retire = r(100000,400000);
+      d.brokerage = r(60000,250000);
+      d.hsa = r(0,8000);
+      d.car = r(5000,40000);
+      d.student = r(0,15000);
+      d.auto = r(0,15000);
+      d.cc = r(0,3000);
+    }
+
+    // Force some negatives for renter/debt-heavy if it accidentally went positive
+    var assets = d.home + d.retire + d.brokerage + d.car + d.hsa + d.cash;
+    var liabs  = d.mortgage + d.student + d.auto + d.cc;
+    if((scenario==="starter_renter" || scenario==="stressed_debt") && assets - liabs >= 0){
+      var pushNeg = (assets - liabs) + r(500,4000); // tip slightly negative
+      d.cc += pushNeg;
+    }
+
+    Object.keys(d).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=d[id]; });
     updateHints();
   }
   $("demoBtn").addEventListener("click", randomDemo);
