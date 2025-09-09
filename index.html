@@ -24,8 +24,7 @@
 <style>
 :root{
   --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
-  --accent:#22d3ee; --accent2:#a78bfa; --g1:#16a34a; --g2:#34d399; --shadow:0 14px 40px rgba(0,0,0,.35);
-  --header-h:96px;
+  --accent:#22d3ee; --accent2:#a78bfa; --g1:#16a34a; --g2:#34d399; --header-h:96px; --shadow:0 14px 40px rgba(0,0,0,.35);
 }
 @media (max-width:720px){ :root{ --header-h:74px } }
 
@@ -54,9 +53,18 @@ header{ position:fixed; inset:0 0 auto 0; z-index:20; height:var(--header-h);
 .logo{height:72px}
 @media (max-width:720px){ .logo{height:58px} }
 .brand{font-weight:900; font-size:22px; color:#062c1b}
-.header-right{position:absolute; right:10px; top:10px; display:flex; gap:8px; align-items:center}
-.theme-toggle .btn{min-width:0;padding:8px 10px}
-select.btn{appearance:none; background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02)); color:var(--text); border:1px solid var(--line); border-radius:12px; padding:8px 10px; font-weight:900; cursor:pointer}
+
+/* compact controls in top-right */
+.header-right{position:absolute; right:10px; top:10px; display:flex; gap:6px; align-items:center}
+.btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  color:var(--text);font-weight:900;cursor:pointer;min-width:140px;transition:transform .15s ease, filter .15s ease}
+.btn.mini{padding:6px 10px; min-width:0; font-weight:800}
+select.btn{appearance:none}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
+.btn:focus{outline:3px solid rgba(34,211,238,.35)}
 
 /* Hero */
 .hero{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:14px 0 4px; text-align:center; }
@@ -66,13 +74,6 @@ select.btn{appearance:none; background:linear-gradient(180deg,rgba(255,255,255,.
 .hero-title{margin:0 0 6px;font-size:30px;font-weight:900}
 .hero-tag{margin:0 0 8px;color:var(--muted)}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
-  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-  color:var(--text);font-weight:900;cursor:pointer;min-width:140px;transition:transform .15s ease, filter .15s ease}
-.btn:hover{filter:brightness(1.06)}
-.btn:active{transform:translateY(1px)}
-.btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
-.btn:focus{outline:3px solid rgba(34,211,238,.35)}
 
 /* Layout */
 .shell{max-width:1100px;margin:0 auto;padding:0 16px 22px}
@@ -160,28 +161,20 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .page{display:none}
 .page.active{display:block}
 
-/* Subscribe + lead magnet */
-.subscribe{
-  max-width:900px; margin:30px auto; padding:18px;
-  background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow);
-}
+/* Subscribe */
+.subscribe{max-width:900px; margin:30px auto; padding:18px;background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)}
 .subscribe h3{margin:0 0 6px; font-size:20px}
 .subscribe p{margin:6px 0 12px; color:var(--muted)}
 .sub-row{display:flex; gap:10px; flex-wrap:wrap}
-.sub-row input[type="email"]{
-  flex:1 1 280px; padding:12px; border-radius:12px; border:1px solid var(--line);
-  background:#0b1226; color:#e2e8f0;
-}
+.sub-row input[type="email"]{flex:1 1 280px; padding:12px; border-radius:12px; border:1px solid var(--line); background:#0b1226; color:#e2e8f0;}
 :root[data-theme="light"] .sub-row input[type="email"]{background:#fff;color:#0b1226}
-.sub-row button{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
-  background:linear-gradient(90deg,var(--g1),var(--g2)); color:#062c1b; font-weight:900; cursor:pointer}
 
 /* Toast */
 .toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:#0b1226; color:#e2e8f0;
   border:1px solid var(--line); border-radius:12px; padding:10px 14px; box-shadow:var(--shadow); display:none; z-index:120}
 .toast.show{display:block}
 
-/* FAQ / legal */
+/* FAQ / Footer */
 .faq{max-width:900px; margin:24px auto; padding:0 16px}
 .faq h3{margin:0 0 10px}
 .faq .item{background:var(--panel); border:1px solid var(--line); border-radius:14px; margin:8px 0; overflow:hidden}
@@ -189,11 +182,7 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .faq details[open] summary{border-bottom:1px solid var(--line)}
 .faq .content{padding:12px 14px; color:var(--muted)}
 
-/* Footer */
-footer{
-  background:#0b1226; border-top:1px solid var(--line); margin-top:22px;
-  padding:22px 16px; color:#cbd5e1; font-size:14px
-}
+footer{background:#0b1226; border-top:1px solid var(--line); margin-top:22px; padding:22px 16px; color:#cbd5e1; font-size:14px}
 :root[data-theme="light"] footer{background:#ffffff}
 .fwrap{max-width:1000px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:8px}
 .fcontact{display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:center}
@@ -204,8 +193,7 @@ footer a{ color:#3fb7ff; text-decoration:none; font-weight:700; }
 footer a:hover{ text-decoration:underline }
 
 /* Sticky mobile CTA */
-.mobile-cta{position:fixed;left:0;right:0;bottom:0;padding:10px;background:rgba(15,23,42,.86);
-backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.22);display:none;z-index:90}
+.mobile-cta{position:fixed;left:0;right:0;bottom:0;padding:10px;background:rgba(15,23,42,.86); backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.22);display:none;z-index:90}
 :root[data-theme="light"] .mobile-cta{background:rgba(255,255,255,.94)}
 .mobile-cta.on{display:block}
 .mobile-cta .btn{width:100%}
@@ -214,7 +202,7 @@ backdrop-filter:blur(8px);border-top:1px solid rgba(148,163,184,.22);display:non
 #consent{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:200;background:#0b1226;color:#e2e8f0;border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:none;box-shadow:var(--shadow);max-width:92vw}
 #consent .btn{min-width:0;padding:8px 10px}
 
-/* --- Mobile spacing polish --- */
+/* Mobile polish, print, ads */
 svg, img { display:block; max-width:100%; height:auto; }
 .hero-card > :first-child { margin-top:0; }
 .hero-card > :last-child  { margin-bottom:0; }
@@ -226,14 +214,11 @@ svg, img { display:block; max-width:100%; height:auto; }
   .inputs { gap:10px; }
   .card { padding:12px; }
 }
-/* Ad blocks collapsing shouldn't add big gaps */
 ins.adsbygoogle { min-height:0 !important; }
-/* iOS safe areas */
 @supports (padding: max(0px)) {
   header { padding-top: env(safe-area-inset-top); }
   body   { padding-bottom: max(22px, env(safe-area-inset-bottom)); }
 }
-/* Print stylesheet */
 @media print{
   body{background:#fff}
   #reportModal,#guideModal{position:static;background:#fff}
@@ -267,18 +252,20 @@ ins.adsbygoogle { min-height:0 !important; }
       </g>
     </svg>
     <div class="brand">Grade My Finance</div>
+
+    <!-- compact top-right controls -->
     <div class="header-right">
-      <div class="theme-toggle"><button id="themeToggle" class="btn" aria-label="Toggle theme">🌙/☀️</button></div>
-      <select id="currencySel" class="btn" aria-label="Currency">
+      <select id="currencySel" class="btn mini" aria-label="Currency">
         <option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option><option>AUD</option>
       </select>
+      <button id="themeToggle" class="btn mini" aria-label="Toggle theme">🌙/☀️</button>
     </div>
   </div>
 </header>
 
 <section class="container hero">
   <div class="hero-card">
-    <h1 class="hero-title" id="heroTitle">Your money, graded like a report card ♥</h1>
+    <h1 class="hero-title" id="heroTitle">Get your free money grade in seconds</h1>
     <p class="hero-tag">No sign-up. Plug in numbers → get a score. Simple and effective.</p>
     <div class="hero-cta">
       <button class="btn" id="demoBtn" type="button">Try Demo</button>
@@ -289,35 +276,28 @@ ins.adsbygoogle { min-height:0 !important; }
   </div>
 
   <div class="mascot">
-    <!-- “Grady” mascot (more detailed) -->
+    <!-- Grady -->
     <svg viewBox="0 0 280 260" width="240" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
       <defs>
         <linearGradient id="mc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient>
         <linearGradient id="arm" x1="0" x2="1"><stop offset="0" stop-color="#a7f3d0"/><stop offset="1" stop-color="#86efac"/></linearGradient>
       </defs>
       <ellipse cx="140" cy="238" rx="60" ry="14" fill="rgba(0,0,0,.28)"/>
-      <!-- body -->
       <rect x="56" y="44" width="168" height="168" rx="28" fill="url(#mc)" stroke="#86EFAC" stroke-width="3"/>
-      <!-- face -->
       <circle cx="110" cy="104" r="8" fill="#0f172a"/><circle cx="170" cy="104" r="8" fill="#0f172a"/>
       <path d="M114 130 q26 22 52 0" stroke="#16a34a" stroke-width="6" fill="none" stroke-linecap="round"/>
-      <!-- card lines -->
       <g stroke="#a7f3d0" stroke-width="2">
-        <line x1="84" y1="154" x2="196" y2="154"/>
-        <line x1="84" y1="170" x2="196" y2="170"/>
-        <line x1="84" y1="186" x2="196" y2="186"/>
+        <line x1="84" y1="154" x2="196" y2="154"/><line x1="84" y1="170" x2="196" y2="170"/><line x1="84" y1="186" x2="196" y2="186"/>
       </g>
-      <!-- hand holding mini report card -->
       <g transform="translate(190,140) rotate(-10)">
         <rect x="-2" y="-2" width="60" height="46" rx="8" fill="#ffffff" stroke="#86EFAC" stroke-width="2"/>
         <text x="28" y="30" text-anchor="middle" font-size="18" font-weight="900" fill="#ef4444">A+</text>
       </g>
-      <!-- waving arm -->
       <path d="M60,120 q-30,10 -34,40 q10,12 26,0" fill="none" stroke="url(#arm)" stroke-width="10" stroke-linecap="round"/>
     </svg>
     <div class="floatA" aria-hidden="true">A+</div>
 
-    <!-- Intro bubble (first visit) -->
+    <!-- intro bubble -->
     <div class="bubble" id="gradyBubble" style="display:none">
       <button class="close" id="closeBubble" type="button">×</button>
       <h4>Hey! I’m <strong>Grady</strong> 👋</h4>
@@ -343,23 +323,10 @@ ins.adsbygoogle { min-height:0 !important; }
           <button id="modeRenter" class="btn" type="button">Renter</button>
         </div>
 
-        <div class="card">
-          <label class="section-label" for="income">Monthly Income (after-tax)</label>
-          <input id="income" type="number" inputmode="decimal" value="0" min="0" aria-label="Monthly income">
-        </div>
-        <div class="card">
-          <label class="section-label" for="expenses">Monthly Expenses</label>
-          <input id="expenses" type="number" inputmode="decimal" value="0" min="0" aria-label="Monthly expenses">
-        </div>
-        <div class="card">
-          <label class="section-label" for="age">Age</label>
-          <input id="age" type="number" value="30" min="16" max="100" aria-label="Age">
-        </div>
-        <div class="card">
-          <label class="section-label" for="home">Home Value</label>
-          <input id="home" type="number" inputmode="decimal" value="0" min="0" aria-label="Home value">
-          <div class="section-label" id="assetsHint" style="margin-top:6px">Total Assets: —</div>
-        </div>
+        <div class="card"><label class="section-label" for="income">Monthly Income (after-tax)</label><input id="income" type="number" inputmode="decimal" value="0" min="0" aria-label="Monthly income"></div>
+        <div class="card"><label class="section-label" for="expenses">Monthly Expenses</label><input id="expenses" type="number" inputmode="decimal" value="0" min="0" aria-label="Monthly expenses"></div>
+        <div class="card"><label class="section-label" for="age">Age</label><input id="age" type="number" value="30" min="16" max="100" aria-label="Age"></div>
+        <div class="card"><label class="section-label" for="home">Home Value</label><input id="home" type="number" inputmode="decimal" value="0" min="0" aria-label="Home value"><div class="section-label" id="assetsHint" style="margin-top:6px">Total Assets: —</div></div>
 
         <div class="card"><label class="section-label" for="retire">Retirement (401k/IRA)</label><input id="retire" type="number" inputmode="decimal" value="0" min="0" aria-label="Retirement balance"></div>
         <div class="card"><label class="section-label" for="brokerage">Brokerage / Stocks</label><input id="brokerage" type="number" inputmode="decimal" value="0" min="0" aria-label="Brokerage balance"></div>
@@ -367,29 +334,11 @@ ins.adsbygoogle { min-height:0 !important; }
         <div class="card"><label class="section-label" for="cash">Cash Savings</label><input id="cash" type="number" inputmode="decimal" value="0" min="0" aria-label="Cash savings"></div>
 
         <div class="card"><label class="section-label" for="car">Car Value</label><input id="car" type="number" inputmode="decimal" value="0" min="0" aria-label="Car value"></div>
-        <div class="card">
-          <label class="section-label" for="mortgage">Mortgage Balance</label><input id="mortgage" type="number" inputmode="decimal" value="0" min="0" aria-label="Mortgage balance">
-          <div class="section-label" id="liabHint" style="margin-top:6px">Total Liabilities: —</div>
-        </div>
+        <div class="card"><label class="section-label" for="mortgage">Mortgage Balance</label><input id="mortgage" type="number" inputmode="decimal" value="0" min="0" aria-label="Mortgage balance"><div class="section-label" id="liabHint" style="margin-top:6px">Total Liabilities: —</div></div>
         <div class="card"><label class="section-label" for="student">Student Loans</label><input id="student" type="number" inputmode="decimal" value="0" min="0" aria-label="Student loan balance"></div>
         <div class="card"><label class="section-label" for="auto">Auto Loans</label><input id="auto" type="number" inputmode="decimal" value="0" min="0" aria-label="Auto loan balance"></div>
 
         <div class="card"><label class="section-label" for="cc">Credit Cards (balance)</label><input id="cc" type="number" inputmode="decimal" value="0" min="0" aria-label="Credit card balance"></div>
-
-        <!-- Advanced weights -->
-        <div class="card" style="grid-column:1/-1">
-          <details>
-            <summary class="section-label" style="cursor:pointer">Advanced weights</summary>
-            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px">
-              <label>Save <input type="range" id="wSave" min="0" max="0.5" step="0.01"></label>
-              <label>EF <input type="range" id="wEf" min="0" max="0.5" step="0.01"></label>
-              <label>Debt <input type="range" id="wDebt" min="0" max="0.3" step="0.01"></label>
-              <label>Age <input type="range" id="wAge" min="0.3" max="0.9" step="0.01"></label>
-              <label>Income <input type="range" id="wInc" min="0" max="0.3" step="0.01"></label>
-            </div>
-            <p class="section-label" style="margin-top:8px">Weights auto-normalize to 100%.</p>
-          </details>
-        </div>
 
         <div class="card" style="grid-column:1/-1">
           <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap">
@@ -410,7 +359,7 @@ ins.adsbygoogle { min-height:0 !important; }
       <div class="card" style="margin-top:12px">
         <h2 id="privacyH">Privacy Policy</h2>
         <p>We don’t store your numbers on a server. All calculations run in your browser. If you share a link, your inputs are encoded in the URL; delete it to remove access.</p>
-        <p>Preferences saved locally: theme, currency, housing mode, advanced weights, and anonymized score history (to render your sparkline). You can clear them via your browser’s site data.</p>
+        <p>Preferences saved locally: theme, currency, housing mode, and anonymized score history (for your sparkline). You can clear them via your browser’s site data.</p>
         <p>Emails submitted for updates are processed by Formspree and delivered to us for communication only. We use Google Analytics (GA4) and AdSense, loaded only after your consent.</p>
         <p>Contact: <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a> • Last updated: 2025-09-09</p>
       </div>
@@ -420,27 +369,7 @@ ins.adsbygoogle { min-height:0 !important; }
     <section id="terms" class="page" aria-labelledby="termsH">
       <div class="card" style="margin-top:12px">
         <h2 id="termsH">Terms of Use</h2>
-        <p>This site is for educational purposes only and does not constitute financial, tax, or legal advice. You’re responsible for your own decisions. Service provided “as is,” without warranties. Some links may be affiliate links; we may earn a commission at no cost to you.</p>
-      </div>
-    </section>
-
-    <!-- Developer helper (robots/sitemap copy) -->
-    <section id="dev" class="page" aria-labelledby="devH">
-      <div class="card" style="margin-top:12px">
-        <h2 id="devH">Site Files (copy & add to root)</h2>
-        <h3>robots.txt</h3>
-        <pre id="robotsTxt">User-agent: *
-Allow: /
-Sitemap: https://grademyfinance.com/sitemap.xml
-</pre>
-        <button class="btn" id="copyRobots" type="button">Copy robots.txt</button>
-        <h3 style="margin-top:12px">sitemap.xml</h3>
-<pre id="smap">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
-  &lt;url&gt;&lt;loc&gt;https://grademyfinance.com/&lt;/loc&gt;&lt;/url&gt;
-&lt;/urlset&gt;
-</pre>
-        <button class="btn" id="copySitemap" type="button">Copy sitemap.xml</button>
+        <p>This site is for educational purposes only and does not constitute financial, tax, or legal advice. You’re responsible for your own decisions. Service provided “as is,” without warranties.</p>
       </div>
     </section>
   </main>
@@ -472,9 +401,7 @@ Sitemap: https://grademyfinance.com/sitemap.xml
           <div id="rcTitle" class="rc-title">Your Report Card</div>
           <div id="rcMeta" class="rc-meta">—</div>
         </div>
-        <div>
-          <svg id="spark" class="spark" viewBox="0 0 160 38" preserveAspectRatio="none"></svg>
-        </div>
+        <div><svg id="spark" class="spark" viewBox="0 0 160 38" preserveAspectRatio="none"></svg></div>
         <div id="rcGrade" class="rc-grade">A</div>
       </div>
       <button class="xbtn" id="closeReport" type="button" aria-label="Close report card">Close</button>
@@ -487,7 +414,7 @@ Sitemap: https://grademyfinance.com/sitemap.xml
       <button class="btn" id="printReport" type="button">Save as PDF</button>
       <button class="btn" id="shareTwitter" type="button">Share on X</button>
       <button class="btn" id="copyReport" type="button" aria-label="Share my report card">Share my Report Card</button>
-      <button class="btn" id="copyJSON" type="button" aria-label="Copy as link">Copy as Link</button>
+      <button class="btn" id="copyJSON" type="button" aria-label="Copy as Link">Copy as Link</button>
       <button class="btn primary" id="calcAgain" type="button">Recalculate</button>
     </div>
   </div>
@@ -507,7 +434,7 @@ Sitemap: https://grademyfinance.com/sitemap.xml
       <li><strong>Auto-transfer on payday</strong> → 15–25% to savings/investing.</li>
       <li><strong>Build emergency cushion</strong> → target 3→6 months of expenses in HYSA.</li>
       <li><strong>Slash high-APR first</strong> → throw extra at the highest rate, keep cards paid in full.</li>
-      <li><strong>Cut one bill</strong> → call and negotiate (phone, internet, insurance) for $10–$50/mo wins.</li>
+      <li><strong>Cut one bill</strong> → call and negotiate one bill for $10–$50/mo wins.</li>
       <li><strong>Income nudge</strong> → add one cert/skill or ask for a small raise with a data-backed pitch.</li>
     </ol>
     <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px">
@@ -549,7 +476,7 @@ Sitemap: https://grademyfinance.com/sitemap.xml
   </details>
   <details class="item">
     <summary>Is this financial advice?</summary>
-    <div class="content">It’s educational only — not financial, tax, or legal advice. Consider talking with a professional for personalized guidance.</div>
+    <div class="content">It’s educational only — not financial, tax, or legal advice.</div>
   </details>
 </section>
 
@@ -567,7 +494,6 @@ Sitemap: https://grademyfinance.com/sitemap.xml
     <div class="flinks">
       <a href="#privacy" data-nav>Privacy</a>
       <a href="#terms" data-nav>Terms</a>
-      <a href="#dev" data-nav>Developer</a>
     </div>
     <div class="fnote">© 2025 Grade My Finance — educational use only (not financial advice).</div>
   </div>
@@ -575,30 +501,16 @@ Sitemap: https://grademyfinance.com/sitemap.xml
 
 <!-- Schema: WebApplication + FAQ -->
 <script type="application/ld+json">
-{
- "@context":"https://schema.org",
- "@type":"WebApplication",
- "name":"Grade My Finance",
- "url":"https://grademyfinance.com/",
- "applicationCategory":"FinanceApplication",
- "operatingSystem":"Web",
- "description":"Free financial grade calculator.",
- "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
-}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Grade My Finance","url":"https://grademyfinance.com/","applicationCategory":"FinanceApplication","operatingSystem":"Web","description":"Free financial grade calculator.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
 </script>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {"@type": "Question","name": "How is my overall grade calculated?","acceptedAnswer": {"@type": "Answer","text": "We weight savings rate (15%), emergency fund (10%), non-mortgage debt load (5%), age-based net worth progress (65%), and income strength (5%)."}},
-    {"@type": "Question","name": "Do you store my numbers?","acceptedAnswer": {"@type": "Answer","text": "No. Everything runs in your browser. If you copy a share link, your inputs are encoded in the URL — you can delete it anytime."}},
-    {"@type": "Question","name": "Is this financial advice?","acceptedAnswer": {"@type": "Answer","text": "It’s educational only — not financial, tax, or legal advice."}}
-  ]
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How is my overall grade calculated?","acceptedAnswer":{"@type":"Answer","text":"We weight savings rate (15%), emergency fund (10%), non-mortgage debt load (5%), age-based net worth progress (65%), and income strength (5%)."}},
+{"@type":"Question","name":"Do you store my numbers?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. If you copy a share link, your inputs are encoded in the URL — you can delete it anytime."}},
+{"@type":"Question","name":"Is this financial advice?","acceptedAnswer":{"@type":"Answer","text":"It’s educational only — not financial, tax, or legal advice."}}]}
 </script>
 
-<!-- Inline Service Worker source (for single-file deploy) -->
+<!-- Inline Service Worker source -->
 <script id="sw-src" type="text/plain">
 const CACHE='gmf-v1';
 const ASSETS=['/','/index.html','/favicon.svg','/apple-touch-icon.png'];
@@ -609,17 +521,11 @@ self.addEventListener('activate', e=>{
   e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));
 });
 self.addEventListener('fetch', e=>{
-  const req=e.request;
-  if(req.method!=='GET') return;
+  const req=e.request; if(req.method!=='GET') return;
   if(req.headers.get('accept')?.includes('text/html')){
-    e.respondWith(fetch(req).catch(()=>caches.match('/index.html')));
-    return;
+    e.respondWith(fetch(req).catch(()=>caches.match('/index.html'))); return;
   }
-  e.respondWith(
-    caches.match(req).then(c=>c || fetch(req).then(r=>{
-      const copy=r.clone(); caches.open(CACHE).then(cache=>cache.put(req,copy)); return r;
-    }).catch(()=>caches.match(req)))
-  );
+  e.respondWith(caches.match(req).then(c=>c||fetch(req).then(r=>{const cp=r.clone(); caches.open(CACHE).then(cache=>cache.put(req,cp)); return r;}).catch(()=>caches.match(req))));
 });
 </script>
 
@@ -633,163 +539,72 @@ self.addEventListener('fetch', e=>{
 <script>
 (() => {
 /* helpers */
-const $=s=>document.querySelector(s);
-const $$=s=>[...document.querySelectorAll(s)];
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const el=(t,a={},ch=[])=>{const n=document.createElement(t);Object.assign(n,a);ch.forEach(c=>n.append(c));return n;}
 const on=(x,e,f)=>x&&x.addEventListener(e,f,{passive:true});
 let CURRENCY = localStorage.getItem('gmf_curr') || 'USD';
-function money(n){
-  return isFinite(n)
-   ? new Intl.NumberFormat(undefined,{style:'currency',currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n))
-   : '—';
-}
+const money=n=>isFinite(n)?new Intl.NumberFormat(undefined,{style:'currency',currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)):'—';
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const map01=(x,a,b)=>clamp((x-a)/(b-a),0,1);
-const g = (...a)=>{ try{ gtag(...a) }catch{} };
+const g=(...a)=>{try{gtag(...a)}catch{}};
 
-/* theme */
+/* theme + currency */
 const root=document.documentElement;
-const saved=localStorage.getItem('gmf_theme');
-if(saved==='light') root.dataset.theme='light';
+const savedTheme=localStorage.getItem('gmf_theme'); if(savedTheme==='light') root.dataset.theme='light';
 on($('#themeToggle'),'click',()=>{ const next=root.dataset.theme==='light'?'':'light'; root.dataset.theme=next; localStorage.setItem('gmf_theme', next||'dark'); });
-
-/* Currency selector */
-const curSel=$('#currencySel');
-if(curSel){ curSel.value=CURRENCY; curSel.addEventListener('change',()=>{ CURRENCY=curSel.value; localStorage.setItem('gmf_curr',CURRENCY); updateHints(); }); }
+const curSel=$('#currencySel'); if(curSel){ curSel.value=CURRENCY; curSel.addEventListener('change',()=>{ CURRENCY=curSel.value; localStorage.setItem('gmf_curr',CURRENCY); updateHints(); }); }
 
 /* Consent + gated loaders */
 (function(){
-  const key='gmf_consent';
-  const bar=$('#consent');
-  function loadGA(){
-    if (window.__gaLoaded) return; window.__gaLoaded=true;
-    const s=document.createElement('script');
-    s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6';
-    document.head.appendChild(s);
-    window.dataLayer=window.dataLayer||[];
-    window.gtag=function(){dataLayer.push(arguments)}
-    gtag('js', new Date()); gtag('config', 'G-H6223HYVS6');
-  }
-  function loadAds(){
-    if (window.__adsLoaded) return; window.__adsLoaded=true;
-    const s=document.createElement('script');
-    s.async=true; s.crossOrigin='anonymous';
-    s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514';
-    document.head.appendChild(s);
-  }
+  const key='gmf_consent', bar=$('#consent');
+  function loadGA(){ if(window.__gaLoaded) return; window.__gaLoaded=true;
+    const s=document.createElement('script'); s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6'; document.head.appendChild(s);
+    window.dataLayer=window.dataLayer||[]; window.gtag=function(){dataLayer.push(arguments)}; gtag('js', new Date()); gtag('config','G-H6223HYVS6'); }
+  function loadAds(){ if(window.__adsLoaded) return; window.__adsLoaded=true;
+    const s=document.createElement('script'); s.async=true; s.crossOrigin='anonymous';
+    s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514'; document.head.appendChild(s); }
   const c=localStorage.getItem(key);
-  if(c==='accept'){ loadGA(); loadAds(); }
-  else{
-    bar.style.display='block';
+  if(c==='accept'){ loadGA(); loadAds(); } else { bar.style.display='block';
     $('#c-accept').onclick=()=>{ localStorage.setItem(key,'accept'); bar.remove(); loadGA(); loadAds(); };
-    $('#c-reject').onclick=()=>{ localStorage.setItem(key,'reject'); bar.remove(); };
-  }
+    $('#c-reject').onclick=()=>{ localStorage.setItem(key,'reject'); bar.remove(); }; }
 })();
 
-/* Inline Manifest (single-file) */
-(function(){
-  const manifest = {
-    name:"Grade My Finance", short_name:"GMF", start_url:"/", display:"standalone",
-    background_color:"#0f172a", theme_color:"#0f172a",
-    icons:[]
-  };
-  const url = URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'}));
-  const link = document.createElement('link'); link.rel='manifest'; link.href=url; document.head.appendChild(link);
+/* Inline manifest + SW registration */
+(function(){ const m={name:"Grade My Finance",short_name:"GMF",start_url:"/",display:"standalone",background_color:"#0f172a",theme_color:"#0f172a",icons:[]};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));
+  const link=document.createElement('link'); link.rel='manifest'; link.href=url; document.head.appendChild(link);
 })();
+if('serviceWorker' in navigator){ const code=document.getElementById('sw-src')?.textContent||''; const swUrl=URL.createObjectURL(new Blob([code],{type:'text/javascript'})); navigator.serviceWorker.register(swUrl).catch(()=>{}); }
 
-/* Service Worker from inline blob (single-file) */
-if('serviceWorker' in navigator){
-  const code = document.getElementById('sw-src')?.textContent || '';
-  const swUrl = URL.createObjectURL(new Blob([code],{type:'text/javascript'}));
-  navigator.serviceWorker.register(swUrl).catch(()=>{});
-}
-
-/* A/B copy */
-const VARIANT = new URLSearchParams(location.search).get('v') ||
-                localStorage.getItem('gmf_variant') ||
-                (Math.random()<0.5 ? 'A' : 'B');
-localStorage.setItem('gmf_variant', VARIANT);
-g('event','ab_variant',{variant:VARIANT});
-if(VARIANT==='B'){
-  const ht=document.getElementById('heroTitle');
-  if(ht) ht.textContent = 'Get your free money grade in seconds';
-}
+/* A/B title (sticky locally) */
+const VARIANT=new URLSearchParams(location.search).get('v')||localStorage.getItem('gmf_variant')||(Math.random()<0.5?'A':'B');
+localStorage.setItem('gmf_variant',VARIANT); g('event','ab_variant',{variant:VARIANT});
+if(VARIANT==='A'){ document.getElementById('heroTitle').textContent='Your money, graded like a report card ♥'; }
 
 /* confetti */
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const cf=$('#confetti'), ctx=cf.getContext('2d');
-function resizeC(){ cf.width=innerWidth; cf.height=innerHeight } addEventListener('resize',resizeC); resizeC();
-function confettiBurst(n=260){
-  if(reduceMotion) return;
-  const bits=[]; for(let i=0;i<n;i++) bits.push({x:Math.random()*cf.width,y:-20-Math.random()*140,vx:(Math.random()-.5)*3,vy:2+Math.random()*3.5,r:4+Math.random()*7,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.28,clr:`hsl(${Math.random()*360},90%,60%)`});
-  let t=0; (function anim(){ t++; ctx.clearRect(0,0,cf.width,cf.height);
-    bits.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; b.a+=b.spin; ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.a); ctx.fillStyle=b.clr; ctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctx.restore(); });
-    if(t<260) requestAnimationFrame(anim); else ctx.clearRect(0,0,cf.width,cf.height);
-  })();
-}
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cf=$('#confetti'), ctx=cf.getContext('2d'); function resizeC(){cf.width=innerWidth;cf.height=innerHeight} addEventListener('resize',resizeC); resizeC();
+function confettiBurst(n=260){ if(reduceMotion)return; const bits=[]; for(let i=0;i<n;i++) bits.push({x:Math.random()*cf.width,y:-20-Math.random()*140,vx:(Math.random()-.5)*3,vy:2+Math.random()*3.5,r:4+Math.random()*7,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.28,clr:`hsl(${Math.random()*360},90%,60%)`});
+  let t=0;(function anim(){t++;ctx.clearRect(0,0,cf.width,cf.height);bits.forEach(b=>{b.x+=b.vx;b.y+=b.vy;b.a+=b.spin;ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.a);ctx.fillStyle=b.clr;ctx.fillRect(-b.r/2,-b.r/2,b.r,b.r);ctx.restore();}); if(t<260) requestAnimationFrame(anim); else ctx.clearRect(0,0,cf.width,cf.height); })(); }
 
 /* inputs */
 const ids=['age','income','expenses','home','retire','brokerage','car','hsa','cash','mortgage','student','auto','cc'];
-const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)]));
-const val=id=>Number(els[id]?.value||0);
-
-/* Currency input hygiene */
-ids.forEach(id=>{
-  const elInp=els[id];
-  if(!elInp) return;
-  on(elInp,'input',()=>{ elInp.value = elInp.value.replace(/[^\d.-]/g,''); });
-  on(elInp,'blur',()=>{ if(elInp.value!=='') elInp.value = String(Math.round(+elInp.value)); });
-});
+const els=Object.fromEntries(ids.map(id=>[id,$('#'+id)])); const val=id=>Number(els[id]?.value||0);
+ids.forEach(id=>{const e=els[id]; if(!e) return; on(e,'input',()=>{ e.value=e.value.replace(/[^\d.-]/g,''); }); on(e,'blur',()=>{ if(e.value!=='') e.value=String(Math.round(+e.value)); }); });
 
 /* Housing mode */
-function setHousingMode(mode){
-  const ownerFields=['home','mortgage'];
-  ownerFields.forEach(fid=>{
-    const card = els[fid]?.closest('.card');
-    if(!card) return;
-    card.style.display = (mode==='renter') ? 'none' : '';
-    if(mode==='renter'){ els[fid].value=0; }
-  });
-  localStorage.setItem('gmf_housing', mode);
-  updateHints();
-}
-const savedHousing = localStorage.getItem('gmf_housing') || 'owner';
-setHousingMode(savedHousing);
+function setHousingMode(mode){ ['home','mortgage'].forEach(fid=>{ const card=els[fid]?.closest('.card'); if(!card) return; card.style.display=(mode==='renter')?'none':''; if(mode==='renter'){ els[fid].value=0; } }); localStorage.setItem('gmf_housing',mode); updateHints(); }
+setHousingMode(localStorage.getItem('gmf_housing')||'owner');
 $('#modeOwner')?.addEventListener('click',()=>setHousingMode('owner'));
 $('#modeRenter')?.addEventListener('click',()=>setHousingMode('renter'));
 
 /* curves/params */
 const NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
-const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25;
-const MEDIAN_INCOME=70000;
-
-/* advanced weights */
-let WEIGHTS = JSON.parse(localStorage.getItem('gmf_weights')||'null') ||
-  {save:0.15, ef:0.10, debt:0.05, age:0.65, inc:0.05};
-function bindWeightsUI(){
-  const map={Save:'save', Ef:'ef', Debt:'debt', Age:'age', Inc:'inc'};
-  Object.entries(map).forEach(([K,k])=>{
-    const e=$('#w'+K); if(!e) return;
-    e.value = WEIGHTS[k];
-    e.oninput=()=>{
-      WEIGHTS={save:+$('#wSave').value, ef:+$('#wEf').value, debt:+$('#wDebt').value, age:+$('#wAge').value, inc:+$('#wInc').value};
-      const sum=WEIGHTS.save+WEIGHTS.ef+WEIGHTS.debt+WEIGHTS.age+WEIGHTS.inc;
-      if(Math.abs(sum-1)>0.001){ Object.keys(WEIGHTS).forEach(x=>WEIGHTS[x]/=sum); }
-      localStorage.setItem('gmf_weights', JSON.stringify(WEIGHTS));
-    };
-  });
-}
-bindWeightsUI();
+const EF_TARGET=6, MAX_SAVINGS=0.25, DTI_ZERO_AT=0.50, SPEND_FLOOR=30000, FI_MULT=25, MEDIAN_INCOME=70000;
 
 /* helpers */
-function targetNW(age){
-  if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
-  if(age>=NW_CURVE[NW_CURVE.length-1][0]) return NW_CURVE[NW_CURVE.length-1][1];
-  for(let i=1;i<NW_CURVE.length;i++){const[a0,t0]=NW_CURVE[i-1],[a1,t1]=NW_CURVE[i]; if(age<=a1){ const t=(age-a0)/(a1-a0); return t0+(t1-t0)*t; }}
-  return NW_CURVE[NW_CURVE.length-1][1];
-}
-
-/* collect values */
+function targetNW(age){ if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1]; if(age>=NW_CURVE[NW_CURVE.length-1][0]) return NW_CURVE[NW_CURVE.length-1][1];
+  for(let i=1;i<NW_CURVE.length;i++){const[a0,t0]=NW_CURVE[i-1],[a1,t1]=NW_CURVE[i]; if(age<=a1){ const t=(age-a0)/(a1-a0); return t0+(t1-t0)*t; }} return NW_CURVE[NW_CURVE.length-1][1]; }
 function values(){
   const v=Object.fromEntries(ids.map(id=>[id,val(id)]));
   v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
@@ -807,240 +622,122 @@ function values(){
   v.nwProgress = v.nwTargetAmount>0 ? v.net/v.nwTargetAmount : 0;
   const ratio = v.annualIncome / MEDIAN_INCOME;
   v.incomeScore = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2), 0, 1);
-  v.incomeLetter = incomeLetterFromRatio(ratio);
+  v.incomeLetter = (r=> r>=2.2?'A+': r>=1.8?'A': r>=1.5?'A-': r>=1.3?'B+': r>=1.15?'B': r>=1.0?'B-': r>=0.9?'C+': r>=0.8?'C': r>=0.7?'C-': r>=0.6?'D': 'F')(ratio);
   return v;
 }
-
-/* grades */
-function overallLetter(score){
-  return score>=97?'A+':score>=93?'A':score>=90?'A-':score>=87?'B+':score>=83?'B':score>=80?'B-':score>=77?'C+':score>=73?'C':score>=70?'C-':score>=67?'D+':score>=63?'D':score>=60?'D-':'F';
-}
-function letterFrom01(s){ const x=Math.round(s*100);
-  return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F';
-}
-function incomeLetterFromRatio(r){
-  return r>=2.2?'A+': r>=1.8?'A': r>=1.5?'A-': r>=1.3?'B+': r>=1.15?'B': r>=1.0?'B-'
-       : r>=0.9?'C+': r>=0.8?'C': r>=0.7?'C-': r>=0.6?'D': 'F';
-}
-function badgeClass(letter){
-  if(['A+','A','A-','B+'].includes(letter)) return 'badge good';
-  if(['B','B-','C+','C','C-'].includes(letter)) return 'badge mid';
-  return 'badge bad';
-}
-function overallClass(letter){
-  if(['A+','A','A-','B+'].includes(letter)) return 'good';
-  if(['B','B-','C+','C','C-'].includes(letter)) return 'mid';
-  return 'bad';
-}
+function overallLetter(score){ return score>=97?'A+':score>=93?'A':score>=90?'A-':score>=87?'B+':score>=83?'B':score>=80?'B-':score>=77?'C+':score>=73?'C':score>=70?'C-':score>=67?'D+':score>=63?'D':score>=60?'D-':'F'; }
+function letterFrom01(s){ const x=Math.round(s*100); return x>=97?'A+':x>=93?'A':x>=90?'A-':x>=87?'B+':x>=83?'B':x>=80?'B-':x>=77?'C+':x>=73?'C':x>=70?'C-':x>=67?'D+':x>=63?'D':x>=60?'D-':'F'; }
+function badgeClass(l){ return ['A+','A','A-','B+'].includes(l)?'badge good':(['B','B-','C+','C','C-'].includes(l)?'badge mid':'badge bad'); }
+function overallClass(l){ return ['A+','A','A-','B+'].includes(l)?'good':(['B','B-','C+','C','C-'].includes(l)?'mid':'bad'); }
 
 function categoryScores(v){
-  const sSave = map01(v.saveRate, 0, MAX_SAVINGS);
-  const sEF   = map01(v.efMonths, 0, EF_TARGET);
-  const sDebt = clamp(1 - v.dtiNonMort/DTI_ZERO_AT, 0, 1);
-  const sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
-  const sInc  = v.incomeScore;
-
-  const w=WEIGHTS;
-  const weighted = (sSave*w.save + sEF*w.ef + sDebt*w.debt + sAgeNW*w.age + sInc*w.inc)*100;
-  const score = (v.annualSpend>0 && v.net >= FI_MULT*Math.max(v.annualSpend, SPEND_FLOOR)) ? Math.max(weighted,94) : weighted;
-
+  const sSave=map01(v.saveRate,0,MAX_SAVINGS);
+  const sEF=map01(v.efMonths,0,EF_TARGET);
+  const sDebt=clamp(1 - v.dtiNonMort/DTI_ZERO_AT,0,1);
+  const sAgeNW=Math.pow(clamp(v.nwProgress,0,1.0),0.85);
+  const sInc=v.incomeScore;
+  const weighted=(sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + sInc*0.05)*100;
+  const score=(v.annualSpend>0 && v.net>=FI_MULT*Math.max(v.annualSpend,SPEND_FLOOR)) ? Math.max(weighted,94) : weighted;
   return {
-    components: [
-      {key:'Savings rate', sub:'Toward 25% target', val:`${Math.round(v.saveRate*100)}% of take-home`,
-       letter:letterFrom01(sSave),
-       tip: v.saveRate<0.25
-          ? `Aim for 25%. You’re short by about ${money(Math.max(0,(v.income*0.25)-(v.income-v.expenses)))} per month. Automate transfers on payday.`
-          : `Great job keeping spending below income—stay consistent.`},
-      {key:'Emergency fund', sub:'Goal 6 months', val:`${v.efMonths.toFixed(1)} months`,
-       letter:letterFrom01(sEF),
-       tip: v.efMonths<6
-          ? `Set aside ${money(Math.round((v.expenses*6 - v.cash)/6))}/mo to reach 6 months in ~6 months. Park in a high-yield savings.`
-          : `Solid cushion—maintain it in a safe, liquid account.`},
-      {key:'Debt load (non-mort.)', sub:'Lower is better', val:`${Math.round(v.dtiNonMort*100)}% of baseline`,
-       letter:letterFrom01(sDebt),
-       tip: v.dtiNonMort>0.25
-          ? `Attack highest-interest balances first. Target extra ${money(Math.round(v.baseline*0.05))}/mo until non-mortgage debt <25% of baseline.`
-          : `Healthy debt level. Keep balances paid in full monthly.`},
-      {key:'Age-based net worth', sub:`Target ${v.nwTargetMultiple.toFixed(2)}× baseline`, val:`${(v.nwProgress*100).toFixed(0)}% of age target`,
-       letter:letterFrom01(sAgeNW),
-       tip: v.nwProgress<1
-          ? `Gap of ~${money(Math.max(0, v.nwTargetAmount - v.net))}. Invest the difference steadily; prioritize tax-advantaged accounts.`
-          : `You’re ahead of schedule—keep compounding.`},
-      {key:'Income strength', sub:'vs median to high income', val:`${money(v.annualIncome)}/yr`,
-       letter:v.incomeLetter,
-       tip: (v.annualIncome < MEDIAN_INCOME*1.15)
-          ? `Focus on skill-ups, certs, or negotiation. Track market rates; aim for ${money(Math.round(MEDIAN_INCOME*1.15))}+ within 12–18 months.`
-          : `Leverage surplus income: automate investing and employer match.`},
+    components:[
+      {key:'Savings rate',sub:'Toward 25% target',val:`${Math.round(v.saveRate*100)}% of take-home`,letter:letterFrom01(sSave),
+        tip:v.saveRate<0.25?`Aim for 25%. You’re short by about ${money(Math.max(0,(v.income*0.25)-(v.income-v.expenses)))} per month. Automate transfers on payday.`:`Great job keeping spending below income—stay consistent.`},
+      {key:'Emergency fund',sub:'Goal 6 months',val:`${v.efMonths.toFixed(1)} months`,letter:letterFrom01(sEF),
+        tip:v.efMonths<6?`Set aside ${money(Math.round((v.expenses*6 - v.cash)/6))}/mo to reach 6 months in ~6 months. Park in a high-yield savings.`:`Solid cushion—maintain it in a safe, liquid account.`},
+      {key:'Debt load (non-mort.)',sub:'Lower is better',val:`${Math.round(v.dtiNonMort*100)}% of baseline`,letter:letterFrom01(sDebt),
+        tip:v.dtiNonMort>0.25?`Attack highest-interest balances first. Target extra ${money(Math.round(v.baseline*0.05))}/mo until non-mortgage debt <25% of baseline.`:`Healthy debt level. Keep balances paid in full monthly.`},
+      {key:'Age-based net worth',sub:`Target ${v.nwTargetMultiple.toFixed(2)}× baseline`,val:`${(v.nwProgress*100).toFixed(0)}% of age target`,letter:letterFrom01(sAgeNW),
+        tip:v.nwProgress<1?`Gap of ~${money(Math.max(0,v.nwTargetAmount - v.net))}. Invest the difference steadily; prioritize tax-advantaged accounts.`:`You’re ahead of schedule—keep compounding.`},
+      {key:'Income strength',sub:'vs median to high income',val:`${money(v.annualIncome)}/yr`,letter:v.incomeLetter,
+        tip:(v.annualIncome<MEDIAN_INCOME*1.15)?`Focus on skill-ups, certs, or negotiation. Aim for ${money(Math.round(MEDIAN_INCOME*1.15))}+ within 12–18 months.`:`Leverage surplus income: automate investing and employer match.`},
     ],
-    overall: { score: Math.round(score*10)/10, letter: overallLetter(Math.round(score*10)/10) }
+    overall:{score:Math.round(score*10)/10,letter:overallLetter(Math.round(score*10)/10)}
   };
 }
 
-/* overlay */
+/* overlay + report */
 const overlay=$('#overlay'), bar=$('#barFill'), pct=$('#pct');
-function toggleOverlay(show){ overlay.classList.toggle('show', !!show) }
-function withOverlay(runFn, doneFn){
-  let elapsed=0, dur=1200, done=false;
-  toggleOverlay(true); bar.style.width='0%'; pct.textContent='0%';
+function toggleOverlay(show){ overlay.classList.toggle('show',!!show) }
+function withOverlay(run,done){ let elapsed=0,dur=1200,doneF=false; toggleOverlay(true); bar.style.width='0%'; pct.textContent='0%';
   const t=setInterval(()=>{ elapsed+=120; const p=Math.min(100,Math.round((elapsed/dur)*100)); bar.style.width=p+'%'; pct.textContent=p+'%'; },120);
-  setTimeout(()=>{ if(done) return; done=true; clearInterval(t); toggleOverlay(false); doneFn(runFn()); }, dur+220);
-}
+  setTimeout(()=>{ if(doneF) return; doneF=true; clearInterval(t); toggleOverlay(false); done(run()); },dur+220); }
 
-/* report modal + scroll lock + focus trap */
 const modal=$('#reportModal'), rcRows=$('#rcRows'), rcGrade=$('#rcGrade'), rcMeta=$('#rcMeta');
-let savedScrollY = 0;
-function lockScroll(){ savedScrollY = window.scrollY||0; document.body.classList.add('lock-scroll'); document.body.style.top = `-${savedScrollY}px`; }
+let savedScrollY=0; function lockScroll(){ savedScrollY=window.scrollY||0; document.body.classList.add('lock-scroll'); document.body.style.top=`-${savedScrollY}px`; }
 function unlockScroll(){ document.body.classList.remove('lock-scroll'); document.body.style.top=''; window.scrollTo(0,savedScrollY||0); }
-function trapFocus(modal){
-  const sel='button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])';
-  modal.addEventListener('keydown',e=>{
-    if(e.key!=='Tab') return;
-    const f=[...modal.querySelectorAll(sel)].filter(x=>!x.disabled && x.offsetParent);
-    const first=f[0], last=f[f.length-1];
-    if(!first||!last) return;
-    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
-    if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
-  });
+function renderSpark(){ const svg=$('#spark'); if(!svg) return; const data=JSON.parse(localStorage.getItem('gmf_history')||'[]').slice(-30); svg.innerHTML=''; if(!data.length) return;
+  const scores=data.map(d=>d.score); const min=Math.min(...scores,50), max=Math.max(...scores,100);
+  const pts=scores.map((s,i)=>`${(i/(scores.length-1||1))*160},${38-((s-min)/(max-min||1))*38}`).join(' ');
+  svg.append(el('polyline',{points:pts,fill:'none',stroke:'#34d399','stroke-width':2}));
 }
-trapFocus(modal);
-
-/* sparkline */
-function renderSpark(){
-  const svg=$('#spark');
-  if(!svg) return;
-  const data=JSON.parse(localStorage.getItem('gmf_history')||'[]').slice(-30);
-  svg.innerHTML='';
-  if(!data.length){ return; }
-  const scores=data.map(d=>d.score);
-  const min=Math.min(...scores,50), max=Math.max(...scores,100);
-  const pts=scores.map((s,i)=>`${(i/(scores.length-1||1))*160},${38 - ((s-min)/(max-min||1))*38}`).join(' ');
-  const pl=el('polyline',{points:pts, fill:'none', stroke:'#34d399', 'stroke-width':2});
-  svg.append(pl);
-}
-
-/* open report */
 function openReport(v,cats){
-  rcMeta.textContent = `Overall ${cats.overall.score.toFixed(1)}/100 • Net worth ${money(v.net)} • Assets ${money(v.assets)} • Liabilities ${money(v.liabs)}`;
-  rcGrade.textContent = cats.overall.letter;
-  rcGrade.className = 'rc-grade ' + overallClass(cats.overall.letter);
-
-  rcRows.innerHTML='';
-  cats.components.forEach(c=>{
-    const row=el('div',{className:'rc-row'});
-    const catCol=el('div',{className:'rc-cell'},[
-      el('div',{className:'label', title:c.sub},[document.createTextNode(c.key)]),
-      el('div',{className:'sub'},[document.createTextNode(c.sub)])
-    ]);
-    const detailCol=el('div',{className:'rc-cell detail-col'},[
-      el('div',{className:'detail'},[document.createTextNode(c.val)]),
-      el('div',{className:'tip'},[document.createTextNode(c.tip)])
-    ]);
-    const gradeCol=el('div',{className:'rc-cell'},[
-      el('span',{className:badgeClass(c.letter)},[document.createTextNode(c.letter)])
-    ]);
-    row.append(catCol,detailCol,gradeCol); rcRows.append(row);
-  });
-
-  // save history
-  const history=JSON.parse(localStorage.getItem('gmf_history')||'[]');
-  history.push({ts:Date.now(),score:cats.overall.score,letter:cats.overall.letter,net:v.net,assets:v.assets,liabs:v.liabs});
-  localStorage.setItem('gmf_history', JSON.stringify(history.slice(-60)));
-  renderSpark();
-
-  if (['A+','A','A-','B+','B','B-'].includes(cats.overall.letter)) confettiBurst();
-
-  lockScroll(); modal.classList.add('show');
-  g('event','report_open',{score:cats.overall.score, letter:cats.overall.letter});
+  rcMeta.textContent=`Overall ${cats.overall.score.toFixed(1)}/100 • Net worth ${money(v.net)} • Assets ${money(v.assets)} • Liabilities ${money(v.liabs)}`;
+  rcGrade.textContent=cats.overall.letter; rcGrade.className='rc-grade '+(['A+','A','A-','B+'].includes(cats.overall.letter)?'good':(['B','B-','C+','C','C-'].includes(cats.overall.letter)?'mid':'bad'));
+  rcRows.innerHTML=''; cats.components.forEach(c=>{ const row=el('div',{className:'rc-row'}); const catCol=el('div',{className:'rc-cell'},[el('div',{className:'label',title:c.sub},[document.createTextNode(c.key)]),el('div',{className:'sub'},[document.createTextNode(c.sub)])]);
+    const detailCol=el('div',{className:'rc-cell detail-col'},[el('div',{className:'detail'},[document.createTextNode(c.val)]),el('div',{className:'tip'},[document.createTextNode(c.tip)])]);
+    const gradeCol=el('div',{className:'rc-cell'},[el('span',{className:badgeClass(c.letter)},[document.createTextNode(c.letter)])]); row.append(catCol,detailCol,gradeCol); rcRows.append(row); });
+  const history=JSON.parse(localStorage.getItem('gmf_history')||'[]'); history.push({ts:Date.now(),score:cats.overall.score,letter:cats.overall.letter,net:v.net,assets:v.assets,liabs:v.liabs}); localStorage.setItem('gmf_history',JSON.stringify(history.slice(-60))); renderSpark();
+  if(['A+','A','A-','B+','B','B-'].includes(cats.overall.letter)) confettiBurst(); lockScroll(); modal.classList.add('show'); g('event','report_open',{score:cats.overall.score,letter:cats.overall.letter});
 }
-on($('#closeReport'),'click',()=>{ modal.classList.remove('show'); unlockScroll(); });
-on($('#calcAgain'),'click',()=>{ modal.classList.remove('show'); unlockScroll(); });
-on($('#printReport'),'click',()=>window.print());
+$('#closeReport')?.addEventListener('click',()=>{ modal.classList.remove('show'); unlockScroll(); });
+$('#calcAgain')?.addEventListener('click',()=>{ modal.classList.remove('show'); unlockScroll(); });
+$('#printReport')?.addEventListener('click',()=>window.print());
 
 /* actions */
-function gradeSequence(){ withOverlay(()=>{ const v=values(); const cats=categoryScores(v); return {v,cats}; }, ({v,cats})=>openReport(v,cats)); }
-on($('#gradeBtn'),'click',()=>{ g('event','grade_click',{id:'gradeBtn'}); gradeSequence(); });
-on($('#gradeBtnTop'),'click',()=>{ g('event','grade_click',{id:'gradeBtnTop'}); gradeSequence(); });
-on($('#gradeBtnSticky'),'click',()=>{ g('event','grade_click',{id:'gradeBtnSticky'}); gradeSequence(); });
+function gradeSequence(){ withOverlay(()=>{ const v=values(); const cats=categoryScores(v); return {v,cats}; },({v,cats})=>openReport(v,cats)); }
+$('#gradeBtn')?.addEventListener('click',()=>{ g('event','grade_click',{id:'gradeBtn'}); gradeSequence(); });
+$('#gradeBtnTop')?.addEventListener('click',()=>{ g('event','grade_click',{id:'gradeBtnTop'}); gradeSequence(); });
+$('#gradeBtnSticky')?.addEventListener('click',()=>{ g('event','grade_click',{id:'gradeBtnSticky'}); gradeSequence(); });
 
-/* nav between in-page sections */
-function showSection(hash){
-  $$('.page').forEach(p=>p.classList.remove('active'));
-  const id=(hash||'#grade').replace('#','');
-  const elT=$('#'+id);
-  (elT||$('#grade')).classList.add('active');
-}
-on(window,'hashchange',()=>showSection(location.hash));
-$$('a[data-nav]').forEach(a=>a.addEventListener('click',()=>showSection(a.getAttribute('href'))));
-showSection(location.hash);
+/* Simple nav for in-page sections */
+function showSection(hash){ $$('.page').forEach(p=>p.classList.remove('active')); const id=(hash||'#grade').replace('#',''); (document.getElementById(id)||document.getElementById('grade')).classList.add('active'); }
+window.addEventListener('hashchange',()=>showSection(location.hash),{passive:true}); $$('a[data-nav]').forEach(a=>a.addEventListener('click',()=>showSection(a.getAttribute('href')))); showSection(location.hash);
 
-/* share */
+/* share & guide */
 function shareLink(){ const s={}; ids.forEach(id=>s[id]=Number(els[id]?.value||0)); return location.origin+location.pathname+'#s='+btoa(unescape(encodeURIComponent(JSON.stringify(s)))); }
-on($('#copyLink'),'click',()=>{ const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url)); });
-on($('#copyJSON'),'click',()=>{ const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url)); });
-on($('#copyReport'),'click',async ()=>{ const url=shareLink(); if(navigator.share){try{await navigator.share({title:'My Report Card',text:'Check out my money grade!',url})}catch{navigator.clipboard?.writeText(url)}} else navigator.clipboard?.writeText(url) });
-on($('#shareTwitter'),'click',()=>{ const url=encodeURIComponent(shareLink()); const text=encodeURIComponent('I just graded my money on Grade My Finance — check yours:'); open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`,'_blank','noopener'); });
+$('#copyLink')?.addEventListener('click',()=>{ const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url)); });
+$('#copyJSON')?.addEventListener('click',()=>{ const url=shareLink(); navigator.clipboard?.writeText(url).then(()=>alert('Shareable link copied.')).catch(()=>alert(url)); });
+$('#copyReport')?.addEventListener('click',async()=>{ const url=shareLink(); if(navigator.share){try{await navigator.share({title:'My Report Card',text:'Check out my money grade!',url})}catch{navigator.clipboard?.writeText(url)}} else navigator.clipboard?.writeText(url) });
+$('#shareTwitter')?.addEventListener('click',()=>{ const url=encodeURIComponent(shareLink()); const text=encodeURIComponent('I just graded my money on Grade My Finance — check yours:'); open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`,'_blank','noopener'); });
 
 /* hints & hydrate */
 function updateHints(){ const v=values(); $('#assetsHint').textContent=`Total Assets: ${money(v.assets)}`; $('#liabHint').textContent=`Total Liabilities: ${money(v.liabs)}` }
 ids.forEach(id=>els[id]?.addEventListener('input',updateHints)); updateHints();
-(function(){ const m=location.hash.match(/#s=([^&]+)/); if(!m) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{const el=document.getElementById(id); if(el) el.value=obj[id]}); updateHints(); }catch{} })();
+(function(){ const m=location.hash.match(/#s=([^&]+)/); if(!m) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(m[1])))); Object.keys(obj).forEach(id=>{const e=document.getElementById(id); if(e) e.value=obj[id]}); updateHints(); }catch{} })();
 
 /* demo */
-on($('#demoBtn'),'click',()=>{ g('event','demo_used'); const d={income:7500,expenses:4000,age:30, home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0, mortgage:326000,student:25100,auto:13000,cc:5000}; Object.keys(d).forEach(id=>{const el=document.getElementById(id); if(el) el.value=d[id]}); updateHints(); });
+$('#demoBtn')?.addEventListener('click',()=>{ g('event','demo_used'); const d={income:7500,expenses:4000,age:30,home:450000,retire:72000,brokerage:29000,car:18000,hsa:2000,cash:0,mortgage:326000,student:25100,auto:13000,cc:5000}; Object.keys(d).forEach(id=>{const e=document.getElementById(id); if(e) e.value=d[id]}); updateHints(); });
 
 /* subscribe (Formspree) */
 const subForm=$('#subForm'), subEmail=$('#subEmail'), toast=$('#toast');
-on(subForm,'submit',async (e)=>{
+subForm?.addEventListener('submit',async e=>{
   e.preventDefault();
-  if (!/^https:\/\/formspree\.io\/f\/[a-z0-9]+$/i.test(subForm.action)) { alert('Subscribe isn’t configured yet. Paste your real Formspree endpoint.'); return; }
-  const email=subEmail.value.trim();
-  if(!/^\S+@\S+\.\S+$/.test(email)){ alert('Please enter a valid email.'); return; }
+  if(!/^https:\/\/formspree\.io\/f\/[a-z0-9]+$/i.test(subForm.action)){ alert('Subscribe isn’t configured yet. Paste your real Formspree endpoint.'); return; }
+  const email=subEmail.value.trim(); if(!/^\S+@\S+\.\S+$/.test(email)){ alert('Please enter a valid email.'); return; }
   try{
-    const res=await fetch(subForm.action,{
-      method:'POST',
-      headers:{'Accept':'application/json','Content-Type':'application/json'},
-      body:JSON.stringify({email,source:'grademyfinance.com'})
-    });
-    if(res.ok){
-      g('event','subscribe_success');
-      toast.textContent='Thanks! Check your inbox for a confirmation.';
-      toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000);
-      subEmail.value='';
-    }else if(res.status===404){
-      alert('Form not found. Replace the Formspree action URL with your real one.');
-    }else{
-      alert('Signup failed. Please try again later.');
-    }
+    const res=await fetch(subForm.action,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({email,source:'grademyfinance.com'})});
+    if(res.ok){ g('event','subscribe_success'); toast.textContent='Thanks! Check your inbox for a confirmation.'; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000); subEmail.value=''; }
+    else if(res.status===404){ alert('Form not found. Replace the Formspree action URL with your real one.'); }
+    else{ alert('Signup failed. Please try again later.'); }
   }catch{ alert('Network error. Please try again later.'); }
 });
-if (new URLSearchParams(location.search).get('subscribed') === '1') {
-  toast.textContent='Thanks! You’re on the list.'; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000);
-}
+if(new URLSearchParams(location.search).get('subscribed')==='1'){ toast.textContent='Thanks! You’re on the list.'; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000); }
 
-/* Sticky CTA only after scroll and only on mobile */
+/* Sticky CTA on mobile */
 const mcta=$('#mobileCta'); const onScroll=()=>{ mcta.classList.toggle('on', window.scrollY>300 && window.matchMedia('(max-width: 720px)').matches ); };
-addEventListener('scroll', onScroll, {passive:true}); onScroll();
+addEventListener('scroll',onScroll,{passive:true}); onScroll();
 
 /* Grady intro bubble */
-(function(){
-  const seen = localStorage.getItem('gmf_greeted');
-  const b = $('#gradyBubble');
-  if(!seen && b){ b.style.display='block'; }
-  $('#closeBubble')?.addEventListener('click',()=>{ b.style.display='none'; localStorage.setItem('gmf_greeted','1'); });
-})();
-
-/* Developer copy buttons */
-$('#copyRobots')?.addEventListener('click',()=>{ navigator.clipboard?.writeText($('#robotsTxt').textContent.trim()); alert('robots.txt copied'); });
-$('#copySitemap')?.addEventListener('click',()=>{ navigator.clipboard?.writeText($('#smap').textContent.replace(/&lt;/g,'<').replace(/&gt;/g,'>')); alert('sitemap.xml copied'); });
-
-/* Reset button */
-$('#resetBtn')?.addEventListener('click',()=>{ ids.forEach(id=>{ if(els[id]) els[id].value=0; }); updateHints(); });
+(function(){ const seen=localStorage.getItem('gmf_greeted'), b=$('#gradyBubble'); if(!seen&&b) b.style.display='block'; $('#closeBubble')?.addEventListener('click',()=>{ b.style.display='none'; localStorage.setItem('gmf_greeted','1'); }); })();
 
 /* Error telemetry */
-window.addEventListener('error', e => g('event','js_error',{message:String(e.message||e.error)}));
-window.addEventListener('unhandledrejection', e => g('event','js_unhandled_rejection',{reason:String(e.reason)}));
+window.addEventListener('error', e=>g('event','js_error',{message:String(e.message||e.error)}));
+window.addEventListener('unhandledrejection', e=>g('event','js_unhandled_rejection',{reason:String(e.reason)}));
 
-renderSpark();
+/* Register SW last + render spark */
+if('serviceWorker' in navigator){ /* already registered above */ }
+function showSectionInit(){ /* ensure correct initial page */ showSection(location.hash); }
+renderSpark(); showSectionInit();
 })();
 </script>
 </body>
