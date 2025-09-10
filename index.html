@@ -151,7 +151,7 @@ footer{background:#0b1226; border-top:1px solid var(--line); margin-top:22px; pa
 svg, img { display:block; max-width:100%; height:auto; }
 @media (max-width:720px){ .hero-card{ padding:14px } .inputs{ gap:10px } .card{ padding:12px } }
 
-/* Print: focus on the report sheet for a clean PDF */
+/* Print */
 @media print{
   body{background:#fff}
   header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important}
@@ -346,6 +346,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     </div>
 
     <div class="rc-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap">
+      <button class="btn" id="shareReport" type="button" title="Share only your overall letter & score">Share</button>
       <button class="btn" id="printReport" type="button">Print / Save as PDF</button>
       <button class="btn primary" id="calcAgain" type="button">Recalculate</button>
     </div>
@@ -493,9 +494,9 @@ svg, img { display:block; max-width:100%; height:auto; }
 
   /* ===== Path to a higher grade (heuristic) ===== */
   function nextLetterTarget(score){
-    var bounds=[60,63,67,70,73,77,80,83,87,90,93,97]; // lower edges
+    var bounds=[60,63,67,70,73,77,80,83,87,90,93,97];
     for(var i=0;i<bounds.length;i++){ if(score<bounds[i]) return bounds[i]; }
-    return null; // A+ already
+    return null;
   }
   function buildPath(v,cats){
     var goal = nextLetterTarget(cats.overall.score);
@@ -504,33 +505,28 @@ svg, img { display:block; max-width:100%; height:auto; }
 
     if(goal===null){ return [{txt:"You’re already at A+. Keep compounding and maintaining your buffers!", pts:0}]; }
 
-    // Savings → 25%
     if(v.saveRate < 0.25){
       var dSave=(1 - map01(v.saveRate,0,0.25))*0.15*100;
       var need = Math.max(0, v.income*0.25 - (v.income - v.expenses));
       push("Boost savings to 25% (set aside about "+money(need)+"/mo).", dSave);
     }
-    // Emergency fund → 6 months
     if(v.efMonths < 6){
       var dEF=(1 - map01(v.efMonths,0,6))*0.10*100;
       var efNeed = Math.max(0, v.expenses*6 - v.cash);
       push("Build emergency fund to 6 months (save ~"+money(Math.round(efNeed/6))+"/mo for 6 months).", dEF);
     }
-    // Debt load → 25% of baseline
     if(v.dtiNonMort > 0.25){
       var sDebtNow = clamp(1 - v.dtiNonMort/0.50,0,1), sDebtGoal = clamp(1 - 0.25/0.50,0,1);
       var dDebt=(sDebtGoal - sDebtNow)*0.05*100;
       var targetDebt = Math.round(v.baseline*0.25), paydown = Math.max(0, v.nonMortDebt - targetDebt);
       push("Pay down non-mortgage debt below 25% of baseline (reduce about "+money(paydown)+", e.g., "+money(Math.round(v.baseline*0.05))+"/mo).", dDebt);
     }
-    // Net worth progress → 100%
     if(v.nwProgress < 1){
       var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
       var dAge=(sAgeGoal - sAgeNow)*0.65*100;
       var gap = Math.max(0, v.nwTargetAmount - v.net);
       push("Close the age-based net worth gap (~"+money(gap)+"). Consider investing ~"+money(Math.round(gap/36))+"/mo for ~36 months.", dAge);
     }
-    // Income → 115% of median
     var ratio = v.annualIncome/70000;
     if(ratio < 1.15){
       var sIncNow = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2),0,1);
@@ -583,7 +579,12 @@ svg, img { display:block; max-width:100%; height:auto; }
   }
 
   var modal=$("reportModal"), rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), rcMascot=$("rcMascot"), pathList=$("pathList");
+
+  // store last overall result for sharing (letter + score only)
+  var lastOverall = null;
+
   function openReport(v,cats){
+    lastOverall = { letter: cats.overall.letter, score: cats.overall.score }; // <= ONLY this gets shared
     rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
     rcGrade.textContent=cats.overall.letter;
     rcGrade.className="rc-grade "+(
@@ -644,12 +645,11 @@ svg, img { display:block; max-width:100%; height:auto; }
       return entries[entries.length-1].v;
     }
 
-    // Weighted scenario selection
     var scenario = pickWeighted([
-      { w:0.40, v:"starter_renter" },   // low/small, often negative net worth
-      { w:0.25, v:"stressed_debt" },    // higher debt, often negative net worth
-      { w:0.25, v:"balanced_owner" },   // modest, small positive
-      { w:0.10, v:"ahead_owner" }       // strong (rarer)
+      { w:0.40, v:"starter_renter" },
+      { w:0.25, v:"stressed_debt" },
+      { w:0.25, v:"balanced_owner" },
+      { w:0.10, v:"ahead_owner" }
     ]);
 
     var d={age:0,income:0,expenses:0,home:0,retire:0,brokerage:0,car:0,hsa:0,cash:0,mortgage:0,student:0,auto:0,cc:0};
@@ -658,7 +658,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       setHousing("renter");
       d.age = r(20,35);
       d.income = r(1600,3800);
-      d.expenses = r(Math.floor(d.income*0.70), Math.floor(d.income*1.10)); // sometimes > income
+      d.expenses = r(Math.floor(d.income*0.70), Math.floor(d.income*1.10));
       d.home=0; d.mortgage=0;
       d.cash = r(50,2000);
       d.retire = r(0,3000);
@@ -673,7 +673,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       setHousing("renter");
       d.age = r(24,45);
       d.income = r(2200,6000);
-      d.expenses = r(Math.floor(d.income*0.85), Math.floor(d.income*1.10)); // can exceed income
+      d.expenses = r(Math.floor(d.income*0.85), Math.floor(d.income*1.10));
       d.home=0; d.mortgage=0;
       d.cash = r(0,1500);
       d.retire = r(0,12000);
@@ -701,7 +701,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.auto = r(0,15000);
       d.cc = r(0,4000);
 
-    }else{ // ahead_owner
+    }else{
       setHousing("owner");
       d.age = r(30,60);
       d.income = r(8000,15000);
@@ -719,11 +719,10 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.cc = r(0,3000);
     }
 
-    // Force some negatives for renter/debt-heavy if it accidentally went positive
     var assets = d.home + d.retire + d.brokerage + d.car + d.hsa + d.cash;
     var liabs  = d.mortgage + d.student + d.auto + d.cc;
     if((scenario==="starter_renter" || scenario==="stressed_debt") && assets - liabs >= 0){
-      var pushNeg = (assets - liabs) + r(500,4000); // tip slightly negative
+      var pushNeg = (assets - liabs) + r(500,4000);
       d.cc += pushNeg;
     }
 
@@ -738,7 +737,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     updateHints();
   });
 
-  /* ===== Share link ===== */
+  /* ===== Share link (full inputs) ===== */
   function shareLink(){
     var s={}; ids.forEach(function(id){ s[id]=Number(els[id]?els[id].value:0); });
     return location.origin+location.pathname+"#s="+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(s)))));
@@ -777,6 +776,35 @@ svg, img { display:block; max-width:100%; height:auto; }
   var mcta=$("mobileCta");
   function onScroll(){ mcta.classList.toggle("on", window.scrollY>300 && window.matchMedia("(max-width: 720px)").matches ); }
   window.addEventListener("scroll", onScroll); onScroll();
+
+  /* ===== Report share (letter + score only) ===== */
+  $("shareReport").addEventListener("click", function(){
+    if(!lastOverall){ alert("Run a calculation first, then share your result."); return; }
+    var baseUrl = location.origin + location.pathname;
+    var text = "I just got a " + lastOverall.letter + " (" + lastOverall.score.toFixed(1) + "/100) on Grade My Finance — get your free report card:";
+    var shareData = { title:"My Grade My Finance score", text:text, url:baseUrl };
+
+    function fallbackCopy(){
+      var clip = text + " " + baseUrl;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(clip).then(function(){
+          toast.textContent="Summary copied! Paste anywhere to share.";
+          toast.style.display="block"; setTimeout(function(){toast.style.display="none"},2600);
+        }).catch(function(){ alert(clip); });
+      } else {
+        alert(clip);
+      }
+    }
+
+    if(navigator.share){
+      navigator.share(shareData).catch(function(err){
+        // ignore user cancellations; otherwise fallback
+        if(!(err && (err.name==="AbortError" || err.name==="NotAllowedError"))) fallbackCopy();
+      });
+    } else {
+      fallbackCopy();
+    }
+  });
 
 })(); // end IIFE
 </script>
