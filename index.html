@@ -142,12 +142,44 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .badge.mid{color:#062c1b;background:linear-gradient(180deg,#facc15,#f59e0b)}
 .badge.bad{color:#fff;background:#ef4444}
 
-/* Path to next grade */
+/* Path */
 .path{ margin-top:12px; border-top:1px dashed var(--line); padding-top:10px }
 .path h4{ margin:0 0 8px; font-size:18px }
 .path ol{ margin:0; padding-left:20px }
 .path li{ margin:6px 0; color:#cbd5e1 }
 .path .pts{ font-weight:900; color:#86efac; }
+
+/* 🔥 Attention-grabbing inline subscribe (inside report card) */
+.subscribe-inline{
+  margin-top:18px;
+  padding:16px;
+  border-radius:14px;
+  position:relative;
+  background:linear-gradient(180deg, rgba(22,163,74,.12), rgba(52,211,153,.10));
+  border:1px solid rgba(134,239,172,.7);
+  box-shadow:0 10px 30px rgba(16,185,129,.18), inset 0 0 0 1px rgba(134,239,172,.35);
+  animation:pulseGlow 2.2s ease-in-out infinite;
+}
+.subscribe-inline .sub-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.subscribe-inline .icon{
+  width:38px; height:38px; border-radius:10px;
+  display:grid; place-items:center; font-size:22px; background:#eafff3; color:#065f46;
+  border:1px solid #86efac; box-shadow:0 6px 18px rgba(16,185,129,.18);
+}
+.subscribe-inline h4{ margin:0; font-size:18px; line-height:1.2 }
+.subscribe-inline p{ margin:6px 0 10px; color:#c8ffe3 }
+.subscribe-inline input[type="email"]{
+  flex:1 1 260px; padding:12px; border-radius:12px; border:1px solid var(--line);
+  background:#0b1226; color:#e2e8f0;
+}
+:root[data-theme="light"] .subscribe-inline{
+  background:linear-gradient(180deg, rgba(16,185,129,.08), rgba(110,231,183,.06));
+  box-shadow:0 10px 26px rgba(16,185,129,.12), inset 0 0 0 1px rgba(16,185,129,.18);
+}
+@keyframes pulseGlow{
+  0%,100%{ box-shadow:0 10px 30px rgba(16,185,129,.18), inset 0 0 0 1px rgba(134,239,172,.35) }
+  50%{    box-shadow:0 14px 38px rgba(16,185,129,.28), inset 0 0 0 2px rgba(134,239,172,.55) }
+}
 
 /* Footer + sticky CTA */
 footer{background:#0b1226; border-top:1px solid var(--line); margin-top:22px; padding:22px 16px; color:#cbd5e1; font-size:14px}
@@ -356,6 +388,21 @@ svg, img { display:block; max-width:100%; height:auto; }
       <div style="font-size:12px;color:#9fb0c7;margin-top:6px">Est. point gains are approximate based on our weighting.</div>
     </div>
 
+    <!-- 🔥 Inline Subscribe inside Report Card (attention-grabbing) -->
+    <div class="subscribe-inline" id="subscribeInlineRC">
+      <div class="sub-row" style="margin-bottom:10px">
+        <div class="icon" aria-hidden="true">📬</div>
+        <div>
+          <h4>Get tips to raise your grade</h4>
+          <p>1–2 emails/month. Actionable, no fluff. Unsubscribe anytime.</p>
+        </div>
+      </div>
+      <form id="subFormRC" class="sub-row" action="https://formspree.io/f/xvgblayy" method="POST" novalidate>
+        <input type="email" name="email" placeholder="you@example.com" required>
+        <button type="submit" class="btn primary" style="min-width:140px">Subscribe</button>
+      </form>
+    </div>
+
     <div class="rc-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap">
       <button class="btn" id="shareReport" type="button" title="Share only your overall letter & score">Share</button>
       <button class="btn" id="printReport" type="button">Print / Save as PDF</button>
@@ -364,7 +411,7 @@ svg, img { display:block; max-width:100%; height:auto; }
   </div>
 </div>
 
-<!-- Subscribe -->
+<!-- Subscribe section (footer keeps existing one) -->
 <section class="container" style="max-width:900px; margin:30px auto; padding:18px;background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)">
   <h3 style="margin:0 0 6px; font-size:20px">Get simple money tips & updates</h3>
   <p style="margin:6px 0 12px; color:#9fb0c7">No spam, unsubscribe anytime.</p>
@@ -480,9 +527,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     var sInc  = v.incomeScore;
     var weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + sInc*0.05)*100;
     var score = (v.annualSpend>0 && v.net >= 25*Math.max(v.annualSpend, 30000)) ? Math.max(weighted,94) : weighted;
-
     function saveShortfall(){ return Math.max(0, v.income*0.25 - (v.income - v.expenses)); }
-
     return {
       s:{sSave:sSave,sEF:sEF,sDebt:sDebt,sAgeNW:sAgeNW,sInc:sInc},
       components: [
@@ -506,7 +551,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     };
   }
 
-  /* ===== Path to a higher grade (heuristic) ===== */
+  /* ===== Path to a higher grade ===== */
   function nextLetterTarget(score){
     var bounds=[60,63,67,70,73,77,80,83,87,90,93,97];
     for(var i=0;i<bounds.length;i++){ if(score<bounds[i]) return bounds[i]; }
@@ -598,7 +643,7 @@ svg, img { display:block; max-width:100%; height:auto; }
   var lastOverall = null;
 
   function openReport(v,cats){
-    lastOverall = { letter: cats.overall.letter, score: cats.overall.score }; // <= ONLY this gets shared
+    lastOverall = { letter: cats.overall.letter, score: cats.overall.score };
     rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
     rcGrade.textContent=cats.overall.letter;
     rcGrade.className="rc-grade "+(
@@ -661,16 +706,13 @@ svg, img { display:block; max-width:100%; height:auto; }
       for(var i=0;i<entries.length;i++){ cum+=entries[i].w; if(x<cum) return entries[i].v; }
       return entries[entries.length-1].v;
     }
-
     var scenario = pickWeighted([
       { w:0.40, v:"starter_renter" },
       { w:0.25, v:"stressed_debt" },
       { w:0.25, v:"balanced_owner" },
       { w:0.10, v:"ahead_owner" }
     ]);
-
     var d={age:0,income:0,expenses:0,home:0,retire:0,brokerage:0,car:0,hsa:0,cash:0,mortgage:0,student:0,auto:0,cc:0};
-
     if(scenario==="starter_renter"){
       setHousing("renter");
       d.age = r(20,35);
@@ -685,7 +727,6 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.student = r(0,30000);
       d.auto = r(0,12000);
       d.cc = r(500,5000);
-
     }else if(scenario==="stressed_debt"){
       setHousing("renter");
       d.age = r(24,45);
@@ -700,7 +741,6 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.student = r(10000,50000);
       d.auto = r(5000,28000);
       d.cc = r(1500,9000);
-
     }else if(scenario==="balanced_owner"){
       setHousing("owner");
       d.age = r(28,55);
@@ -717,7 +757,6 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.student = r(0,25000);
       d.auto = r(0,15000);
       d.cc = r(0,4000);
-
     }else{
       setHousing("owner");
       d.age = r(30,60);
@@ -735,14 +774,12 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.auto = r(0,15000);
       d.cc = r(0,3000);
     }
-
     var assets = d.home + d.retire + d.brokerage + d.car + d.hsa + d.cash;
     var liabs  = d.mortgage + d.student + d.auto + d.cc;
     if((scenario==="starter_renter" || scenario==="stressed_debt") && assets - liabs >= 0){
       var pushNeg = (assets - liabs) + r(500,4000);
       d.cc += pushNeg;
     }
-
     Object.keys(d).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=d[id]; });
     updateHints();
   }
@@ -777,20 +814,51 @@ svg, img { display:block; max-width:100%; height:auto; }
     }
   }catch(e){/* ignore */}
 
-  /* ===== Subscribe (Formspree) ===== */
+  /* ===== Subscribe (footer) ===== */
   var subForm=$("subForm"), subEmail=$("subEmail"), toast=$("toast");
-  subForm.addEventListener("submit", function(e){
-    e.preventDefault();
-    var email=subEmail.value.trim();
-    if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
-    fetch(subForm.action, { method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"}, body:JSON.stringify({email:email,source:"grademyfinance.com"}) })
-      .then(function(res){
-        if(res.ok){ toast.textContent="Thanks! Check your inbox for a confirmation."; toast.style.display="block"; setTimeout(function(){toast.style.display="none"},2800); subEmail.value=""; __track('subscribe_success'); }
-        else if(res.status===404){ alert("Form not found — verify your Formspree form ID."); __track('subscribe_error',{code:404}); }
-        else{ alert("Signup failed. Please try again later."); __track('subscribe_error',{code:res.status}); }
+  if(subForm){
+    subForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      var email=subEmail.value.trim();
+      if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
+      fetch(subForm.action, { method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"}, body:JSON.stringify({email:email,source:"grademyfinance.com"}) })
+        .then(function(res){
+          if(res.ok){ toast.textContent="Thanks! Check your inbox for a confirmation."; toast.style.display="block"; setTimeout(function(){toast.style.display="none"},2800); subEmail.value=""; __track('subscribe_success',{placement:'footer'}); }
+          else if(res.status===404){ alert("Form not found — verify your Formspree form ID."); __track('subscribe_error',{placement:'footer',code:404}); }
+          else{ alert("Signup failed. Please try again later."); __track('subscribe_error',{placement:'footer',code:res.status}); }
+        })
+        .catch(function(){ alert("Network error. Please try again later."); __track('subscribe_error',{placement:'footer',code:'network'}); });
+    });
+  }
+
+  /* ===== Subscribe (Report Card inline) ===== */
+  var subFormRC=$("subFormRC");
+  if(subFormRC){
+    subFormRC.addEventListener("submit", function(e){
+      e.preventDefault();
+      var email=subFormRC.querySelector("input[name='email']").value.trim();
+      if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
+      fetch(subFormRC.action, {
+        method:"POST",
+        headers:{"Accept":"application/json","Content-Type":"application/json"},
+        body:JSON.stringify({email:email,source:"grademyfinance.com/reportcard"})
       })
-      .catch(function(){ alert("Network error. Please try again later."); __track('subscribe_error',{code:'network'}); });
-  });
+      .then(function(res){
+        if(res.ok){
+          __track('subscribe_success',{placement:'report_card'});
+          alert("Thanks for subscribing! Check your inbox for confirmation.");
+          subFormRC.reset();
+        }else{
+          __track('subscribe_error',{placement:'report_card',code:res.status});
+          alert("Signup failed. Please try again later.");
+        }
+      })
+      .catch(function(){
+        __track('subscribe_error',{placement:'report_card',code:'network'});
+        alert("Network error. Please try again later.");
+      });
+    });
+  }
 
   /* ===== Sticky CTA on mobile ===== */
   var mcta=$("mobileCta");
@@ -803,7 +871,6 @@ svg, img { display:block; max-width:100%; height:auto; }
     var baseUrl = location.origin + location.pathname;
     var text = "I just got a " + lastOverall.letter + " (" + lastOverall.score.toFixed(1) + "/100) on Grade My Finance — get your free report card:";
     var shareData = { title:"My Grade My Finance score", text:text, url:baseUrl };
-
     function fallbackCopy(){
       var clip = text + " " + baseUrl;
       if(navigator.clipboard && navigator.clipboard.writeText){
@@ -811,11 +878,8 @@ svg, img { display:block; max-width:100%; height:auto; }
           toast.textContent="Summary copied! Paste anywhere to share.";
           toast.style.display="block"; setTimeout(function(){toast.style.display="none"},2600);
         }).catch(function(){ alert(clip); });
-      } else {
-        alert(clip);
-      }
+      } else { alert(clip); }
     }
-
     if(navigator.share){
       navigator.share(shareData).then(function(){ __track('share_report_native'); }).catch(function(err){
         if(!(err && (err.name==="AbortError" || err.name==="NotAllowedError"))) { fallbackCopy(); __track('share_report_fallback'); }
@@ -826,24 +890,15 @@ svg, img { display:block; max-width:100%; height:auto; }
     }
   });
 
-  /* ===== Grade button on main inputs ===== */
+  /* ===== Visual progress fill (cosmetic) ===== */
   var progressFill = $("progressFill");
-  function fakeProgress(){ /* visually fills bar while loader runs */ progressFill.style.width="100%"; setTimeout(function(){ progressFill.style.width="0%"; }, 1600); }
+  function fakeProgress(){ progressFill.style.width="100%"; setTimeout(function(){ progressFill.style.width="0%"; }, 1600); }
   ["gradeBtnTop","gradeBtn","gradeBtnSticky"].forEach(function(id){ var b=$(id); if(b) b.addEventListener("click", fakeProgress); });
-
-  /* ===== Run Grade from main flow ===== */
-  function gradeFromMain(){
-    var v=values();
-    var cats=categoryScores(v);
-    openReport(v,cats);
-  }
-
-  /* ===== Grade trigger used above ===== */
-  // already wired via gradeNow()
 
 })(); // end IIFE
 </script>
 </body>
 </html>
+
 
 
