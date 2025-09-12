@@ -17,6 +17,7 @@
   function gtag(){ dataLayer.push(arguments); }
   gtag('js', new Date());
   gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true });
+
   // small helper so calls don't error if gtag is blocked
   window.__track = function(event, params){ try { gtag('event', event, params || {}); } catch(e){} };
 </script>
@@ -30,8 +31,7 @@
 :root[data-theme="light"]{
   --bg:#f7fafc; --panel:#ffffff; --card:#ffffff; --text:#0b1226; --muted:#4b5563; --line:rgba(15,23,42,.12);
 }
-*{box-sizing:border-box}
-html,body{width:100%}
+*{box-sizing:border-box} html,body{width:100%}
 body{
   margin:0; padding-top:var(--header-h); overflow-x:hidden;
   background:
@@ -43,9 +43,11 @@ body{
 .container{max-width:1100px;margin:0 auto;padding:0 16px}
 
 /* Header */
-header{ position:fixed; left:0; right:0; top:0; z-index:20; height:var(--header-h);
+header{
+  position:fixed; left:0; right:0; top:0; z-index:20; height:var(--header-h);
   display:grid; place-items:center;
-  background:linear-gradient(90deg,var(--accent),var(--accent2)); border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-bottom:1px solid var(--line);
 }
 .hdr{height:100%; display:flex; align-items:center; gap:12px; position:relative}
 .logo{height:72px}
@@ -59,43 +61,41 @@ header{ position:fixed; left:0; right:0; top:0; z-index:20; height:var(--header-
   color:var(--text);font-weight:900;cursor:pointer;min-width:140px;transition:transform .15s ease, filter .15s ease}
 .btn:hover{filter:brightness(1.06)} .btn:active{transform:translateY(1px)}
 .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
-.btn.mini{min-width:0;padding:6px 10px;font-weight:800} select.btn{appearance:none}
-.btn:focus{outline:3px solid rgba(34,211,238,.35)}
+.btn.mini{min-width:0;padding:6px 10px;font-weight:800}
+select.btn{appearance:none} .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 
 /* Hero */
 .hero{ padding:14px 0 4px; }
 .hero-grid{ display:grid; grid-template-columns: 1fr 330px; gap:16px; align-items:start }
 @media (max-width:980px){ .hero-grid{ grid-template-columns:1fr } }
 .hero-left{ display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center }
-.hero-card{ width:min(760px,92vw); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-  border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(--shadow); }
+.hero-card{ width:min(760px,92vw);
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(--shadow);
+}
 .hero-title{margin:0 0 6px;font-size:30px;font-weight:900}
 .hero-tag{margin:0 0 8px;color:var(--muted)}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 
-/* Social proof */
+/* Social proof / right column */
 .social-proof{ position:sticky; top:calc(var(--header-h) + 12px); }
 .proof-card{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow); margin-bottom:10px }
 .proof-metric{ display:flex; align-items:center; gap:10px; font-weight:900 }
 .proof-metric .big{ font-size:26px; background:linear-gradient(90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent }
 .review{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start }
 .avatar{ width:36px; height:36px; border-radius:999px; background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; font-weight:900; display:grid; place-items:center }
-.stars{ color:#fbbf24; letter-spacing:1px }
-.quote{ color:var(--muted); font-size:14px }
+.stars{ color:#fbbf24; letter-spacing:1px } .quote{ color:var(--muted); font-size:14px }
 
-/* Layout */
+/* Layout + inputs */
 .shell{max-width:1100px;margin:0 auto;padding:0 16px 22px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
 .section-label{font-size:14px;margin:0 0 8px;color:var(--muted);font-weight:800;display:block}
-
 .inputs{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:14px}
 @media (max-width:1060px){ .inputs{grid-template-columns:repeat(2,minmax(220px,1fr))} }
 @media (max-width:720px){ .inputs{grid-template-columns:1fr; gap:12px} }
-
 input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:var(--text)}
 :root[data-theme="light"] input{background:#fff;color:#0b1226}
 input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.30)}
-
 .progress{height:12px;background:#0b1226;border:1px solid var(--line);border-radius:999px;overflow:hidden}
 :root[data-theme="light"] .progress{background:#fff}
 .progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .6s cubic-bezier(.2,.9,.2,1)}
@@ -103,7 +103,10 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 /* Mascot (Grady) */
 .mascot{display:grid;place-items:center;position:relative; margin-top:2px}
 @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
-.floatA{position:absolute; right:8px; bottom:0; transform:translate(20%,30%); background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac; border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)}
+.floatA{position:absolute; right:8px; bottom:0; transform:translate(20%,30%);
+  background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac;
+  border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)
+}
 
 /* Overlay & loader */
 .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:80}
@@ -113,7 +116,7 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
 .bar .fill{height:100%;width:0;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);transition:width .25s cubic-bezier(.2,.9,.2,1)}
 
-/* Modal + reveal animations */
+/* Modal + reveal */
 .modal{position:fixed; inset:0; display:none; z-index:100; background:rgba(0,0,0,.55); }
 .modal.show{display:grid; place-items:center}
 .sheet{width:min(920px,94vw); max-height:88vh; overflow:auto; background:var(--panel); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); padding:18px; margin:10px;}
@@ -121,6 +124,7 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 @keyframes popIn{0%{transform:scale(.9);opacity:.0}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
 .sheet-header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
 .xbtn{background:#19223d;border:1px solid var(--line); color:#e2e8f0; border-radius:10px; padding:8px 12px; cursor:pointer}
+
 .rc-top{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px}
 .rc-mascot{width:54px; height:54px; border-radius:14px; background:linear-gradient(180deg,#eafff3,#c8ffe3); border:2px solid #86EFAC; display:grid; place-items:center; box-shadow:0 8px 20px rgba(0,0,0,.25)}
 .rc-mascot.party{animation:wiggle .8s ease 2}
@@ -133,7 +137,6 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 .rc-grade.bad{color:#fff; background:#ef4444; border-color:#fecaca}
 .rc-grade.pop{animation:gradePop .6s cubic-bezier(.2,1,.2,1)}
 @keyframes gradePop{0%{transform:scale(.85)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
-
 .rc-head{display:grid; grid-template-columns: 1.2fr 1fr auto; gap:8px; color:#9fb0c7; font-weight:800; font-size:12px; margin-top:6px}
 .rc-rows{display:grid; gap:8px; margin-top:6px}
 .rc-row{display:grid; grid-template-columns: 1.2fr 1fr auto; gap:8px; align-items:center; background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:12px; padding:10px;}
@@ -144,42 +147,26 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 
 /* Path */
 .path{ margin-top:12px; border-top:1px dashed var(--line); padding-top:10px }
-.path h4{ margin:0 0 8px; font-size:18px }
-.path ol{ margin:0; padding-left:20px }
-.path li{ margin:6px 0; color:#cbd5e1 }
-.path .pts{ font-weight:900; color:#86efac; }
+.path h4{ margin:0 0 8px; font-size:18px } .path ol{ margin:0; padding-left:20px }
+.path li{ margin:6px 0; color:#cbd5e1 } .path .pts{ font-weight:900; color:#86efac; }
 
-/* 🔥 Attention-grabbing inline subscribe (inside report card) */
-.subscribe-inline{
-  margin-top:18px;
-  padding:16px;
-  border-radius:14px;
-  position:relative;
+/* 🔥 Inline subscribe */
+.subscribe-inline{ margin-top:18px; padding:16px; border-radius:14px; position:relative;
   background:linear-gradient(180deg, rgba(22,163,74,.12), rgba(52,211,153,.10));
   border:1px solid rgba(134,239,172,.7);
   box-shadow:0 10px 30px rgba(16,185,129,.18), inset 0 0 0 1px rgba(134,239,172,.35);
   animation:pulseGlow 2.2s ease-in-out infinite;
 }
 .subscribe-inline .sub-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-.subscribe-inline .icon{
-  width:38px; height:38px; border-radius:10px;
-  display:grid; place-items:center; font-size:22px; background:#eafff3; color:#065f46;
-  border:1px solid #86efac; box-shadow:0 6px 18px rgba(16,185,129,.18);
-}
+.subscribe-inline .icon{ width:38px; height:38px; border-radius:10px; display:grid; place-items:center; font-size:22px; background:#eafff3; color:#065f46; border:1px solid #86efac; box-shadow:0 6px 18px rgba(16,185,129,.18); }
 .subscribe-inline h4{ margin:0; font-size:18px; line-height:1.2 }
 .subscribe-inline p{ margin:6px 0 10px; color:#c8ffe3 }
-.subscribe-inline input[type="email"]{
-  flex:1 1 260px; padding:12px; border-radius:12px; border:1px solid var(--line);
-  background:#0b1226; color:#e2e8f0;
-}
+.subscribe-inline input[type="email"]{ flex:1 1 260px; padding:12px; border-radius:12px; border:1px solid var(--line); background:#0b1226; color:#e2e8f0; }
 :root[data-theme="light"] .subscribe-inline{
   background:linear-gradient(180deg, rgba(16,185,129,.08), rgba(110,231,183,.06));
   box-shadow:0 10px 26px rgba(16,185,129,.12), inset 0 0 0 1px rgba(16,185,129,.18);
 }
-@keyframes pulseGlow{
-  0%,100%{ box-shadow:0 10px 30px rgba(16,185,129,.18), inset 0 0 0 1px rgba(134,239,172,.35) }
-  50%{    box-shadow:0 14px 38px rgba(16,185,129,.28), inset 0 0 0 2px rgba(134,239,172,.55) }
-}
+@keyframes pulseGlow{ 0%,100%{ box-shadow:0 10px 30px rgba(16,185,129,.18), inset 0 0 0 1px rgba(134,239,172,.35) } 50%{ box-shadow:0 14px 38px rgba(16,185,129,.28), inset 0 0 0 2px rgba(134,239,172,.55) } }
 
 /* Footer + sticky CTA */
 footer{background:#0b1226; border-top:1px solid var(--line); margin-top:22px; padding:22px 16px; color:#cbd5e1; font-size:14px}
@@ -201,6 +188,19 @@ svg, img { display:block; max-width:100%; height:auto; }
   #reportModal{position:static!important;display:block!important;background:#fff!important}
   .sheet{max-height:none!important;box-shadow:none!important;border:none!important}
 }
+
+/* 📘 Book styles */
+.book-card{
+  display:grid; grid-template-columns:86px 1fr; gap:10px; align-items:center;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow);
+}
+.book-cover{
+  width:86px; height:110px; border-radius:10px; background:linear-gradient(180deg,#eafff3,#c8ffe3);
+  border:2px solid #86efac; display:grid; place-items:center; color:#0b1226; font-weight:1000;
+}
+.book-title{font-weight:900;margin:0 0 4px}
+.book-desc{color:var(--muted);font-size:13px;margin:0 0 8px}
 </style>
 </head>
 <body>
@@ -236,6 +236,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       <option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option><option>AUD</option>
     </select>
     <button id="themeToggle" class="btn mini" type="button" aria-label="Toggle theme">🌙/☀️</button>
+    <a id="bookTop" class="btn mini primary" href="https://grademyfinance.gumroad.com/l/zlwid?_gl=1*1facwp3*_ga*MTE1MjUzMDI0MS4xNzU3Njk5NTYw*_ga_6LJN6D94N6*czE3NTc2OTk1NTkkbzEkZzEkdDE3NTc3MDEyNDkkajYwJGwwJGgw" target="_blank" rel="noopener noreferrer">📘 Get the Book</a>
   </div>
 </header>
 
@@ -272,8 +273,24 @@ svg, img { display:block; max-width:100%; height:auto; }
       </div>
     </div>
 
-    <!-- Social proof / reviews -->
-    <aside class="social-proof" aria-label="Reviews and stats">
+    <!-- Right column: Book promo + social proof -->
+    <aside class="social-proof" aria-label="Book & reviews">
+      <!-- 📘 Book promo card -->
+      <div class="book-card">
+        <div class="book-cover">
+          <div style="text-align:center; line-height:1">
+            <div style="font-size:18px">GMF</div>
+            <div style="font-size:12px">Guide</div>
+          </div>
+        </div>
+        <div>
+          <h4 class="book-title">Grade My Finance — The Guide</h4>
+          <p class="book-desc">A quick, practical playbook to boost your score: savings, debt, emergency fund, and net worth milestones.</p>
+          <a id="bookSide" class="btn primary" style="min-width:0" target="_blank" rel="noopener noreferrer"
+             href="https://grademyfinance.gumroad.com/l/zlwid?_gl=1*1facwp3*_ga*MTE1MjUzMDI0MS4xNzU3Njk5NTYw*_ga_6LJN6D94N6*czE3NTc2OTk1NTkkbzEkZzEkdDE3NTc3MDEyNDkkajYwJGwwJGgw">📘 Buy the Book</a>
+        </div>
+      </div>
+
       <div class="proof-card">
         <div class="proof-metric">
           <div class="big">1,000+</div>
@@ -289,7 +306,6 @@ svg, img { display:block; max-width:100%; height:auto; }
           <div class="quote">“Made my budget click. The tips felt doable and I loved the grade reveal.”</div>
         </div>
       </div>
-
       <div class="proof-card review">
         <div class="avatar">JR</div>
         <div>
@@ -297,7 +313,6 @@ svg, img { display:block; max-width:100%; height:auto; }
           <div class="quote">“Helped me set a target emergency fund and pay down cards faster.”</div>
         </div>
       </div>
-
       <div class="proof-card review">
         <div class="avatar">SM</div>
         <div>
@@ -324,18 +339,17 @@ svg, img { display:block; max-width:100%; height:auto; }
         <div class="card"><label class="section-label" for="income">Monthly Income (after-tax)</label><input id="income" type="number" value="0" min="0"></div>
         <div class="card"><label class="section-label" for="expenses">Monthly Expenses</label><input id="expenses" type="number" value="0" min="0"></div>
         <div class="card"><label class="section-label" for="age">Age</label><input id="age" type="number" value="30" min="16" max="100"></div>
-        <div class="card" id="homeCard"><label class="section-label" for="home">Home Value</label><input id="home" type="number" value="0" min="0"><div class="section-label" id="assetsHint" style="margin-top:6px">Total Assets: —</div></div>
 
+        <div class="card" id="homeCard"><label class="section-label" for="home">Home Value</label><input id="home" type="number" value="0" min="0"><div class="section-label" id="assetsHint" style="margin-top:6px">Total Assets: —</div></div>
         <div class="card"><label class="section-label" for="retire">Retirement (401k/IRA)</label><input id="retire" type="number" value="0" min="0"></div>
         <div class="card"><label class="section-label" for="brokerage">Brokerage / Stocks</label><input id="brokerage" type="number" value="0" min="0"></div>
         <div class="card"><label class="section-label" for="hsa">HSA</label><input id="hsa" type="number" value="0" min="0"></div>
         <div class="card"><label class="section-label" for="cash">Cash Savings</label><input id="cash" type="number" value="0" min="0"></div>
-
         <div class="card"><label class="section-label" for="car">Car Value</label><input id="car" type="number" value="0" min="0"></div>
+
         <div class="card" id="mortCard"><label class="section-label" for="mortgage">Mortgage Balance</label><input id="mortgage" type="number" value="0" min="0"><div class="section-label" id="liabHint" style="margin-top:6px">Total Liabilities: —</div></div>
         <div class="card"><label class="section-label" for="student">Student Loans</label><input id="student" type="number" value="0" min="0"></div>
         <div class="card"><label class="section-label" for="auto">Auto Loans</label><input id="auto" type="number" value="0" min="0"></div>
-
         <div class="card"><label class="section-label" for="cc">Credit Cards (balance)</label><input id="cc" type="number" value="0" min="0"></div>
 
         <div class="card" style="grid-column:1/-1">
@@ -378,6 +392,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       </div>
       <button class="xbtn" id="closeReport" type="button">Close</button>
     </div>
+
     <div class="rc-head"><div>Category</div><div>Details</div><div>Grade</div></div>
     <div class="rc-rows" id="rcRows"></div>
 
@@ -388,7 +403,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       <div style="font-size:12px;color:#9fb0c7;margin-top:6px">Est. point gains are approximate based on our weighting.</div>
     </div>
 
-    <!-- 🔥 Inline Subscribe inside Report Card (attention-grabbing) -->
+    <!-- 🔥 Inline Subscribe inside Report Card -->
     <div class="subscribe-inline" id="subscribeInlineRC">
       <div class="sub-row" style="margin-bottom:10px">
         <div class="icon" aria-hidden="true">📬</div>
@@ -406,12 +421,14 @@ svg, img { display:block; max-width:100%; height:auto; }
     <div class="rc-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap">
       <button class="btn" id="shareReport" type="button" title="Share only your overall letter & score">Share</button>
       <button class="btn" id="printReport" type="button">Print / Save as PDF</button>
+      <a id="bookRC" class="btn" target="_blank" rel="noopener noreferrer"
+         href="https://grademyfinance.gumroad.com/l/zlwid?_gl=1*1facwp3*_ga*MTE1MjUzMDI0MS4xNzU3Njk5NTYw*_ga_6LJN6D94N6*czE3NTc2OTk1NTkkbzEkZzEkdDE3NTc3MDEyNDkkajYwJGwwJGgw">📘 Level up with the Guide</a>
       <button class="btn primary" id="calcAgain" type="button">Recalculate</button>
     </div>
   </div>
 </div>
 
-<!-- Subscribe section (footer keeps existing one) -->
+<!-- Subscribe section -->
 <section class="container" style="max-width:900px; margin:30px auto; padding:18px;background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)">
   <h3 style="margin:0 0 6px; font-size:20px">Get simple money tips & updates</h3>
   <p style="margin:6px 0 12px; color:#9fb0c7">No spam, unsubscribe anytime.</p>
@@ -423,7 +440,31 @@ svg, img { display:block; max-width:100%; height:auto; }
   </form>
 </section>
 
-<div style="position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:#0b1226; color:#e2e8f0; border:1px solid var(--line); border-radius:12px; padding:10px 14px; box-shadow:var(--shadow); display:none; z-index:120" id="toast" role="status" aria-live="polite">Thanks! Check your inbox for a confirmation.</div>
+<!-- 📘 Mid-page book banner -->
+<section class="container" style="max-width:1000px; margin:12px auto 0; padding:0 2px 12px;">
+  <div class="card" style="display:grid; grid-template-columns:110px 1fr auto; gap:14px; align-items:center;">
+    <div class="book-cover" style="width:110px; height:140px;">
+      <div style="text-align:center; line-height:1">
+        <div style="font-size:22px">GMF</div>
+        <div style="font-size:13px">Guide</div>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin:0 0 6px">Turn your grade into a plan — get the book</h3>
+      <ul style="margin:6px 0; padding-left:18px; color:#cbd5e1; font-size:14px">
+        <li>Step-by-step actions for savings, debt, and emergency fund</li>
+        <li>Age-based net worth targets with examples</li>
+        <li>Printable checklists + quick wins</li>
+      </ul>
+    </div>
+    <a id="bookMid" class="btn primary" style="min-width:160px" target="_blank" rel="noopener noreferrer"
+       href="https://grademyfinance.gumroad.com/l/zlwid?_gl=1*1facwp3*_ga*MTE1MjUzMDI0MS4xNzU3Njk5NTYw*_ga_6LJN6D94N6*czE3NTc2OTk1NTkkbzEkZzEkdDE3NTc3MDEyNDkkajYwJGwwJGgw">📘 Buy the Book</a>
+  </div>
+</section>
+
+<div style="position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:#0b1226; color:#e2e8f0; border:1px solid var(--line); border-radius:12px; padding:10px 14px; box-shadow:var(--shadow); display:none; z-index:120" id="toast" role="status" aria-live="polite">
+  Thanks! Check your inbox for a confirmation.
+</div>
 
 <!-- Sticky CTA -->
 <div class="mobile-cta" id="mobileCta">
@@ -440,6 +481,7 @@ svg, img { display:block; max-width:100%; height:auto; }
 <script>
 "use strict";
 (function(){
+
   function $(id){ return document.getElementById(id); }
   function qs(sel){ return document.querySelector(sel); }
 
@@ -456,29 +498,48 @@ svg, img { display:block; max-width:100%; height:auto; }
     }
     return NW_CURVE[NW_CURVE.length-1][1];
   }
-  function overallLetter(s){ return s>=97?"A+":s>=93?"A":s>=90?"A-":s>=87?"B+":s>=83?"B":s>=80?"B-":s>=77?"C+":s>=73?"C":s>=70?"C-":s>=67?"D+":s>=63?"D":s>=60?"D-":"F"; }
+  function overallLetter(s){
+    return s>=97?"A+":s>=93?"A":s>=90?"A-":s>=87?"B+":s>=83?"B":s>=80?"B-":s>=77?"C+":s>=73?"C":s>=70?"C-":s>=67?"D+":s>=63?"D":s>=60?"D-":"F";
+  }
   function letterFrom01(s){ return overallLetter(Math.round(s*100)); }
-  function incomeLetterFromRatio(r){ return r>=2.2?"A+": r>=1.8?"A": r>=1.5?"A-": r>=1.3?"B+": r>=1.15?"B": r>=1.0?"B-": r>=0.9?"C+": r>=0.8?"C": r>=0.7?"C-": r>=0.6?"D": "F"; }
-  function badgeClass(l){ return (["A+","A","A-","B+"].indexOf(l)>-1)?"badge good":((["B","B-","C+","C","C-"].indexOf(l)>-1)?"badge mid":"badge bad"); }
+  function incomeLetterFromRatio(r){
+    return r>=2.2?"A+": r>=1.8?"A": r>=1.5?"A-": r>=1.3?"B+": r>=1.15?"B": r>=1.0?"B-": r>=0.9?"C+": r>=0.8?"C": r>=0.7?"C-": r>=0.6?"D": "F";
+  }
+  function badgeClass(l){
+    return (["A+","A","A-","B+"].indexOf(l)>-1)?"badge good":((["B","B-","C+","C","C-"].indexOf(l)>-1)?"badge mid":"badge bad");
+  }
 
   /* ===== Theme & currency ===== */
   var root=document.documentElement;
-  var savedTheme=localStorage.getItem("gmf_theme"); if(savedTheme==="light") root.dataset.theme="light";
+  var savedTheme=localStorage.getItem("gmf_theme");
+  if(savedTheme==="light") root.dataset.theme="light";
   $("themeToggle").addEventListener("click", function(){
-    var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next; localStorage.setItem("gmf_theme", next||"dark");
+    var next=root.dataset.theme==="light"?"":"light";
+    root.dataset.theme=next;
+    localStorage.setItem("gmf_theme", next||"dark");
     __track('toggle_theme', {theme: next||'dark'});
   });
+
   var CURRENCY=localStorage.getItem("gmf_curr")||"USD";
-  var curSel=$("currencySel"); curSel.value=CURRENCY;
-  curSel.addEventListener("change", function(){ CURRENCY=curSel.value; localStorage.setItem("gmf_curr",CURRENCY); updateHints(); __track('change_currency',{currency:CURRENCY}); });
-  function money(n){ return isFinite(n)? new Intl.NumberFormat(undefined,{style:"currency",currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)) : "—"; }
+  var curSel=$("currencySel");
+  curSel.value=CURRENCY;
+  curSel.addEventListener("change", function(){
+    CURRENCY=curSel.value;
+    localStorage.setItem("gmf_curr",CURRENCY);
+    updateHints();
+    __track('change_currency',{currency:CURRENCY});
+  });
+  function money(n){
+    return isFinite(n)? new Intl.NumberFormat(undefined,{style:"currency",currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)) : "—";
+  }
 
   /* ===== Inputs & hygiene ===== */
   var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","mortgage","student","auto","cc"];
   var els={}; ids.forEach(function(id){ els[id]=$(id); });
   function val(id){ var e=els[id]; return e && e.value!=="" ? Number(e.value) : 0; }
   ids.forEach(function(id){
-    var e=els[id]; e.addEventListener("input", function(){ e.value=e.value.replace(/[^\d.-]/g,""); });
+    var e=els[id];
+    e.addEventListener("input", function(){ e.value=e.value.replace(/[^\d.-]/g,""); });
     e.addEventListener("blur", function(){ if(e.value!=="") e.value=String(Math.round(+e.value)); updateHints(); });
   });
 
@@ -488,7 +549,8 @@ svg, img { display:block; max-width:100%; height:auto; }
     v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
     v.liabs=v.mortgage+v.student+v.auto+v.cc;
     v.net=v.assets-v.liabs;
-    v.annualIncome=v.income*12; v.annualSpend=v.expenses*12;
+    v.annualIncome=v.income*12;
+    v.annualSpend=v.expenses*12;
     v.baseline=Math.max(v.annualSpend, 30000);
     var denomSav=Math.max(v.income, v.expenses, 2000);
     v.saveRate=denomSav>0 ? Math.max(0, v.income - v.expenses)/denomSav : 0;
@@ -503,7 +565,11 @@ svg, img { display:block; max-width:100%; height:auto; }
     v.incomeLetter = incomeLetterFromRatio(ratio);
     return v;
   }
-  function updateHints(){ var v=values(); $("assetsHint").textContent="Total Assets: "+money(v.assets); $("liabHint").textContent="Total Liabilities: "+money(v.liabs); }
+  function updateHints(){
+    var v=values();
+    $("assetsHint").textContent="Total Assets: "+money(v.assets);
+    $("liabHint").textContent="Total Liabilities: "+money(v.liabs);
+  }
 
   /* ===== Housing mode ===== */
   function setHousing(mode){
@@ -521,37 +587,27 @@ svg, img { display:block; max-width:100%; height:auto; }
   /* ===== Scoring ===== */
   function categoryScores(v){
     var sSave = map01(v.saveRate, 0, 0.25);
-    var sEF   = map01(v.efMonths, 0, 6);
+    var sEF = map01(v.efMonths, 0, 6);
     var sDebt = clamp(1 - v.dtiNonMort/0.50, 0, 1);
     var sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
-    var sInc  = v.incomeScore;
+    var sInc = v.incomeScore;
     var weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + sInc*0.05)*100;
     var score = (v.annualSpend>0 && v.net >= 25*Math.max(v.annualSpend, 30000)) ? Math.max(weighted,94) : weighted;
     function saveShortfall(){ return Math.max(0, v.income*0.25 - (v.income - v.expenses)); }
     return {
       s:{sSave:sSave,sEF:sEF,sDebt:sDebt,sAgeNW:sAgeNW,sInc:sInc},
       components: [
-        { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home",
-          letter:letterFrom01(sSave),
-          tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(saveShortfall())+"/mo." : "Great job—stay consistent." },
-        { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months",
-          letter:letterFrom01(sEF),
-          tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
-        { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline",
-          letter:letterFrom01(sDebt),
-          tip: v.dtiNonMort>0.25 ? "Add "+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt level." },
-        { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(v.nwProgress*100)+"% of age target",
-          letter:letterFrom01(sAgeNW),
-          tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+". Invest steadily." : "You're ahead — nice!" },
-        { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr",
-          letter:v.incomeLetter,
-          tip: (v.annualIncome < 70000*1.15) ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
+        { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home", letter:letterFrom01(sSave), tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(saveShortfall())+"/mo." : "Great job—stay consistent." },
+        { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months", letter:letterFrom01(sEF), tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
+        { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add "+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt level." },
+        { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(v.nwProgress*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+". Invest steadily." : "You're ahead — nice!" },
+        { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: (v.annualIncome < 70000*1.15) ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
       ],
       overall: { score: Math.round(score*10)/10, letter: overallLetter(Math.round(score*10)/10) }
     };
   }
 
-  /* ===== Path to a higher grade ===== */
+  /* ===== Path ===== */
   function nextLetterTarget(score){
     var bounds=[60,63,67,70,73,77,80,83,87,90,93,97];
     for(var i=0;i<bounds.length;i++){ if(score<bounds[i]) return bounds[i]; }
@@ -561,9 +617,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     var goal = nextLetterTarget(cats.overall.score);
     var items=[];
     function push(txt, pts){ items.push({txt:txt, pts:Math.max(0, Math.round(pts))}); }
-
     if(goal===null){ return [{txt:"You’re already at A+. Keep compounding and maintaining your buffers!", pts:0}]; }
-
     if(v.saveRate < 0.25){
       var dSave=(1 - map01(v.saveRate,0,0.25))*0.15*100;
       var need = Math.max(0, v.income*0.25 - (v.income - v.expenses));
@@ -594,29 +648,24 @@ svg, img { display:block; max-width:100%; height:auto; }
       var targetAnnual = Math.round(70000*1.15), delta = Math.max(0, targetAnnual - v.annualIncome);
       push("Grow income toward "+money(targetAnnual)+"/yr (≈ "+money(Math.round(delta/12))+"/mo via raise or side income).", dInc);
     }
-
     items.sort(function(a,b){ return b.pts - a.pts; });
     return items.slice(0,3);
   }
 
   /* ===== Confetti ===== */
   var cf=$("confetti"), ctx=cf.getContext("2d");
-  function resizeC(){ cf.width=innerWidth; cf.height=innerHeight }
-  addEventListener("resize",resizeC); resizeC();
+  function resizeC(){ cf.width=innerWidth; cf.height=innerHeight } addEventListener("resize",resizeC); resizeC();
   function confettiBurst(n){
-    n = n||260;
-    var bits=[];
+    n = n||260; var bits=[];
     for(var i=0;i<n;i++){
       bits.push({x:Math.random()*cf.width,y:-20-Math.random()*120,vx:(Math.random()-.5)*3,vy:2+Math.random()*3.5,r:4+Math.random()*7,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.28,clr:"hsl("+(Math.random()*360)+",90%,60%)"});
     }
     var t=0;
     (function anim(){
-      t++;
-      ctx.clearRect(0,0,cf.width,cf.height);
+      t++; ctx.clearRect(0,0,cf.width,cf.height);
       for(var j=0;j<bits.length;j++){
         var b=bits[j]; b.x+=b.vx; b.y+=b.vy; b.a+=b.spin;
-        ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.a);
-        ctx.fillStyle=b.clr; ctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctx.restore();
+        ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.a); ctx.fillStyle=b.clr; ctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctx.restore();
       }
       if(t<220) requestAnimationFrame(anim); else ctx.clearRect(0,0,cf.width,cf.height);
     })();
@@ -630,29 +679,23 @@ svg, img { display:block; max-width:100%; height:auto; }
     overlay.classList.add("show"); bar.style.width="0%"; pct.textContent="0%"; loadMsg.textContent="Crunching numbers…";
     var t=setInterval(function(){
       prog=Math.min(100,Math.round(((i+1)/total)*100));
-      bar.style.width=prog+"%"; pct.textContent=prog+"%";
-      loadMsg.textContent = steps[i] || "Finalizing…";
-      i++;
+      bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[i] || "Finalizing…"; i++;
       if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
     }, interval);
   }
 
   var modal=$("reportModal"), rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), rcMascot=$("rcMascot"), pathList=$("pathList");
-
-  // store last overall result for sharing (letter + score only)
   var lastOverall = null;
 
   function openReport(v,cats){
     lastOverall = { letter: cats.overall.letter, score: cats.overall.score };
     rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
     rcGrade.textContent=cats.overall.letter;
-    rcGrade.className="rc-grade "+(
-      ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?"good":
-      (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?"mid":"bad"));
+    rcGrade.className="rc-grade "+( ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?"good": (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?"mid":"bad"));
     rcRows.innerHTML="";
-
     cats.components.forEach(function(c){
-      var row=document.createElement("div"); row.className="rc-row";
+      var row=document.createElement("div");
+      row.className="rc-row";
       row.innerHTML=
         '<div class="rc-cell"><div class="label" title="'+c.sub+'">'+c.key+
         '</div><div class="sub">'+c.sub+'</div></div>'+
@@ -662,7 +705,6 @@ svg, img { display:block; max-width:100%; height:auto; }
       rcRows.appendChild(row);
     });
 
-    // Path to higher grade
     var actions = buildPath(v,cats);
     pathList.innerHTML="";
     actions.forEach(function(a){
@@ -671,25 +713,21 @@ svg, img { display:block; max-width:100%; height:auto; }
       pathList.appendChild(li);
     });
 
-    // Reveal flair
     modal.classList.add("show");
     rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
     rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
     if(["A+","A","A-","B+","B","B-"].indexOf(cats.overall.letter)>-1){ confettiBurst(320); }
     __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
   }
+
   $("closeReport").addEventListener("click",function(){ modal.classList.remove("show"); });
   $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
   $("calcAgain").addEventListener("click",function(){ modal.classList.remove("show"); });
 
-  /* ===== Grade sequence (with loader + reveal) ===== */
+  /* ===== Grade sequence ===== */
   function gradeNow(){
     __track('click_get_report_card', {location: 'main'});
-    runWithLoader(function(){
-      var v=values();
-      var cats=categoryScores(v);
-      openReport(v,cats);
-    });
+    runWithLoader(function(){ var v=values(); var cats=categoryScores(v); openReport(v,cats); });
   }
 
   /* ===== Buttons ===== */
@@ -701,11 +739,7 @@ svg, img { display:block; max-width:100%; height:auto; }
   function randomDemo(){
     __track('click_demo');
     function r(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
-    function pickWeighted(entries){
-      var x=Math.random(), cum=0;
-      for(var i=0;i<entries.length;i++){ cum+=entries[i].w; if(x<cum) return entries[i].v; }
-      return entries[entries.length-1].v;
-    }
+    function pickWeighted(entries){ var x=Math.random(), cum=0; for(var i=0;i<entries.length;i++){ cum+=entries[i].w; if(x<cum) return entries[i].v; } return entries[entries.length-1].v; }
     var scenario = pickWeighted([
       { w:0.40, v:"starter_renter" },
       { w:0.25, v:"stressed_debt" },
@@ -719,28 +753,16 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.income = r(1600,3800);
       d.expenses = r(Math.floor(d.income*0.70), Math.floor(d.income*1.10));
       d.home=0; d.mortgage=0;
-      d.cash = r(50,2000);
-      d.retire = r(0,3000);
-      d.brokerage = r(0,1200);
-      d.hsa = r(0,500);
-      d.car = r(0,8000);
-      d.student = r(0,30000);
-      d.auto = r(0,12000);
-      d.cc = r(500,5000);
+      d.cash = r(50,2000); d.retire = r(0,3000); d.brokerage = r(0,1200); d.hsa = r(0,500); d.car = r(0,8000);
+      d.student = r(0,30000); d.auto = r(0,12000); d.cc = r(500,5000);
     }else if(scenario==="stressed_debt"){
       setHousing("renter");
       d.age = r(24,45);
       d.income = r(2200,6000);
       d.expenses = r(Math.floor(d.income*0.85), Math.floor(d.income*1.10));
       d.home=0; d.mortgage=0;
-      d.cash = r(0,1500);
-      d.retire = r(0,12000);
-      d.brokerage = r(0,5000);
-      d.hsa = r(0,1000);
-      d.car = r(2000,20000);
-      d.student = r(10000,50000);
-      d.auto = r(5000,28000);
-      d.cc = r(1500,9000);
+      d.cash = r(0,1500); d.retire = r(0,12000); d.brokerage = r(0,5000); d.hsa = r(0,1000); d.car = r(2000,20000);
+      d.student = r(10000,50000); d.auto = r(5000,28000); d.cc = r(1500,9000);
     }else if(scenario==="balanced_owner"){
       setHousing("owner");
       d.age = r(28,55);
@@ -749,15 +771,9 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.home = r(180000,600000);
       var ltv = r(60,90)/100;
       d.mortgage = Math.max(0, Math.floor(d.home*ltv) - r(0,20000));
-      d.cash = r(1000,15000);
-      d.retire = r(20000,120000);
-      d.brokerage = r(5000,60000);
-      d.hsa = r(0,4000);
-      d.car = r(3000,20000);
-      d.student = r(0,25000);
-      d.auto = r(0,15000);
-      d.cc = r(0,4000);
-    }else{
+      d.cash = r(1000,15000); d.retire = r(20000,120000); d.brokerage = r(5000,60000); d.hsa = r(0,4000); d.car = r(3000,20000);
+      d.student = r(0,25000); d.auto = r(0,15000); d.cc = r(0,4000);
+    }else{ // ahead_owner
       setHousing("owner");
       d.age = r(30,60);
       d.income = r(8000,15000);
@@ -765,17 +781,12 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.home = r(350000,1200000);
       var ltv2 = r(30,70)/100;
       d.mortgage = Math.max(0, Math.floor(d.home*ltv2) - r(0,50000));
-      d.cash = r(5000,60000);
-      d.retire = r(100000,400000);
-      d.brokerage = r(60000,250000);
-      d.hsa = r(0,8000);
-      d.car = r(5000,40000);
-      d.student = r(0,15000);
-      d.auto = r(0,15000);
-      d.cc = r(0,3000);
+      d.cash = r(5000,60000); d.retire = r(100000,400000); d.brokerage = r(60000,250000); d.hsa = r(0,8000); d.car = r(5000,40000);
+      d.student = r(0,15000); d.auto = r(0,15000); d.cc = r(0,3000);
     }
+
     var assets = d.home + d.retire + d.brokerage + d.car + d.hsa + d.cash;
-    var liabs  = d.mortgage + d.student + d.auto + d.cc;
+    var liabs = d.mortgage + d.student + d.auto + d.cc;
     if((scenario==="starter_renter" || scenario==="stressed_debt") && assets - liabs >= 0){
       var pushNeg = (assets - liabs) + r(500,4000);
       d.cc += pushNeg;
@@ -788,8 +799,7 @@ svg, img { display:block; max-width:100%; height:auto; }
   /* ===== Reset ===== */
   $("resetBtn").addEventListener("click", function(){
     ids.forEach(function(id){ if(els[id]) els[id].value = (id==="age") ? 30 : 0; });
-    updateHints();
-    __track('reset_inputs');
+    updateHints(); __track('reset_inputs');
   });
 
   /* ===== Share link (full inputs) ===== */
@@ -799,18 +809,19 @@ svg, img { display:block; max-width:100%; height:auto; }
   }
   $("copyLink").addEventListener("click", function(){
     var url=shareLink();
-    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){ alert("Share link copied!"); }).catch(function(){ alert(url); }); }
-    else { alert(url); }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(function(){ alert("Share link copied!"); }).catch(function(){ alert(url); });
+    } else { alert(url); }
     __track('copy_share_link');
   });
 
   /* ===== Hydrate from shared link ===== */
   try{
     var m=location.hash.match(/#s=([^&]+)/);
-    if(m){ var obj=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
+    if(m){
+      var obj=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
       Object.keys(obj).forEach(function(id){ if(els[id]) els[id].value=obj[id]; });
-      updateHints();
-      __track('hydrate_from_share');
+      updateHints(); __track('hydrate_from_share');
     }
   }catch(e){/* ignore */}
 
@@ -821,13 +832,20 @@ svg, img { display:block; max-width:100%; height:auto; }
       e.preventDefault();
       var email=subEmail.value.trim();
       if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
-      fetch(subForm.action, { method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"}, body:JSON.stringify({email:email,source:"grademyfinance.com"}) })
-        .then(function(res){
-          if(res.ok){ toast.textContent="Thanks! Check your inbox for a confirmation."; toast.style.display="block"; setTimeout(function(){toast.style.display="none"},2800); subEmail.value=""; __track('subscribe_success',{placement:'footer'}); }
-          else if(res.status===404){ alert("Form not found — verify your Formspree form ID."); __track('subscribe_error',{placement:'footer',code:404}); }
-          else{ alert("Signup failed. Please try again later."); __track('subscribe_error',{placement:'footer',code:res.status}); }
-        })
-        .catch(function(){ alert("Network error. Please try again later."); __track('subscribe_error',{placement:'footer',code:'network'}); });
+      fetch(subForm.action, {
+        method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+        body:JSON.stringify({email:email,source:"grademyfinance.com"})
+      })
+      .then(function(res){
+        if(res.ok){
+          toast.textContent="Thanks! Check your inbox for a confirmation.";
+          toast.style.display="block"; setTimeout(function(){toast.style.display="none"},2800);
+          subEmail.value=""; __track('subscribe_success',{placement:'footer'});
+        } else if(res.status===404){
+          alert("Form not found — verify your Formspree form ID."); __track('subscribe_error',{placement:'footer',code:404});
+        } else { alert("Signup failed. Please try again later."); __track('subscribe_error',{placement:'footer',code:res.status}); }
+      })
+      .catch(function(){ alert("Network error. Please try again later."); __track('subscribe_error',{placement:'footer',code:'network'}); });
     });
   }
 
@@ -839,24 +857,14 @@ svg, img { display:block; max-width:100%; height:auto; }
       var email=subFormRC.querySelector("input[name='email']").value.trim();
       if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
       fetch(subFormRC.action, {
-        method:"POST",
-        headers:{"Accept":"application/json","Content-Type":"application/json"},
+        method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
         body:JSON.stringify({email:email,source:"grademyfinance.com/reportcard"})
       })
       .then(function(res){
-        if(res.ok){
-          __track('subscribe_success',{placement:'report_card'});
-          alert("Thanks for subscribing! Check your inbox for confirmation.");
-          subFormRC.reset();
-        }else{
-          __track('subscribe_error',{placement:'report_card',code:res.status});
-          alert("Signup failed. Please try again later.");
-        }
+        if(res.ok){ __track('subscribe_success',{placement:'report_card'}); alert("Thanks for subscribing! Check your inbox for confirmation."); subFormRC.reset(); }
+        else { __track('subscribe_error',{placement:'report_card',code:res.status}); alert("Signup failed. Please try again later."); }
       })
-      .catch(function(){
-        __track('subscribe_error',{placement:'report_card',code:'network'});
-        alert("Network error. Please try again later.");
-      });
+      .catch(function(){ __track('subscribe_error',{placement:'report_card',code:'network'}); alert("Network error. Please try again later."); });
     });
   }
 
@@ -875,30 +883,40 @@ svg, img { display:block; max-width:100%; height:auto; }
       var clip = text + " " + baseUrl;
       if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(clip).then(function(){
-          toast.textContent="Summary copied! Paste anywhere to share.";
-          toast.style.display="block"; setTimeout(function(){toast.style.display="none"},2600);
+          var t=$("toast"); t.textContent="Summary copied! Paste anywhere to share."; t.style.display="block"; setTimeout(function(){t.style.display="none"},2600);
         }).catch(function(){ alert(clip); });
       } else { alert(clip); }
     }
     if(navigator.share){
-      navigator.share(shareData).then(function(){ __track('share_report_native'); }).catch(function(err){
+      navigator.share(shareData).then(function(){ __track('share_report_native'); })
+      .catch(function(err){
         if(!(err && (err.name==="AbortError" || err.name==="NotAllowedError"))) { fallbackCopy(); __track('share_report_fallback'); }
       });
-    } else {
-      fallbackCopy();
-      __track('share_report_fallback');
-    }
+    } else { fallbackCopy(); __track('share_report_fallback'); }
   });
 
   /* ===== Visual progress fill (cosmetic) ===== */
   var progressFill = $("progressFill");
   function fakeProgress(){ progressFill.style.width="100%"; setTimeout(function(){ progressFill.style.width="0%"; }, 1600); }
-  ["gradeBtnTop","gradeBtn","gradeBtnSticky"].forEach(function(id){ var b=$(id); if(b) b.addEventListener("click", fakeProgress); });
+  ["gradeBtnTop","gradeBtn","gradeBtnSticky"].forEach(function(id){
+    var b=$(id); if(b) b.addEventListener("click", fakeProgress);
+  });
+
+  /* ===== 📘 Book CTA tracking ===== */
+  function trackBookClick(id, placement){
+    var el=$(id); if(!el) return;
+    el.addEventListener('click', function(){ __track('click_book_cta', {placement: placement}); });
+  }
+  trackBookClick('bookTop','header');
+  trackBookClick('bookSide','sidebar');
+  trackBookClick('bookMid','midpage');
+  trackBookClick('bookRC','report_card');
 
 })(); // end IIFE
 </script>
 </body>
 </html>
+
 
 
 
