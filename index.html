@@ -128,6 +128,9 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
   background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac;
   border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)
 }
+/* New owl image sizing */
+.grady-logo{ width:260px; height:auto; animation:floatCard 3s ease-in-out infinite; }
+@media (max-width:980px){ .grady-logo{ width:220px } }
 
 /* Overlay & loader */
 .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:80}
@@ -261,22 +264,15 @@ svg, img { display:block; max-width:100%; height:auto; }
         </div>
       </div>
 
-      <div class="mascot">
-        <!-- Grady -->
-        <svg viewBox="0 0 280 260" width="240" aria-hidden="true" style="animation:floatCard 3s ease-in-out infinite">
-          <defs><linearGradient id="mc" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8FFF2"/><stop offset="1" stop-color="#CFFDE7"/></linearGradient></defs>
-          <ellipse cx="140" cy="238" rx="60" ry="14" fill="rgba(0,0,0,.28)"/>
-          <rect x="56" y="44" width="168" height="168" rx="28" fill="url(#mc)" stroke="#86EFAC" stroke-width="3"/>
-          <circle cx="110" cy="104" r="8" fill="#0f172a"/><circle cx="170" cy="104" r="8" fill="#0f172a"/>
-          <path d="M114 130 q26 22 52 0" stroke="#16a34a" stroke-width="6" fill="none" stroke-linecap="round"/>
-          <g stroke="#a7f3d0" stroke-width="2">
-            <line x1="84" y1="154" x2="196" y2="154"/><line x1="84" y1="170" x2="196" y2="170"/><line x1="84" y1="186" x2="196" y2="186"/>
-          </g>
-          <g transform="translate(190,140) rotate(-10)">
-            <rect x="-2" y="-2" width="60" height="46" rx="8" fill="#ffffff" stroke="#86EFAC" stroke-width="2"/>
-            <text x="28" y="30" text-anchor="middle" font-size="18" font-weight="900" fill="#ef4444">A+</text>
-          </g>
-        </svg>
+      <div class="mascot" aria-label="Grady the Owl mascot">
+        <!-- ⬇️ Replace the filenames below with your actual paths.
+             If you have a 4K PNG (e.g., grady-owl-4k.png), the browser will use it automatically. -->
+        <img
+          class="grady-logo"
+          src="grady-owl-1024.png"
+          srcset="grady-owl-4k.png 4096w, grady-owl-1024.png 1024w"
+          sizes="(max-width: 980px) 220px, 260px"
+          alt="Grady the Owl holding an A+ report card">
         <div class="floatA" aria-hidden="true">A+</div>
       </div>
     </div>
@@ -383,11 +379,13 @@ svg, img { display:block; max-width:100%; height:auto; }
     <div class="sheet-header">
       <div class="rc-top">
         <div class="rc-mascot" id="rcMascot" aria-hidden="true">
-          <svg viewBox="0 0 64 64" width="38" height="38">
-            <rect x="6" y="6" width="52" height="52" rx="12" fill="#eafff3"/>
-            <circle cx="26" cy="28" r="3.5" fill="#0f172a"/><circle cx="42" cy="28" r="3.5" fill="#0f172a"/>
-            <path d="M22 38 q10 8 20 0" stroke="#16a34a" stroke-width="4" fill="none" stroke-linecap="round"/>
-          </svg>
+          <!-- Small Grady in the report modal -->
+          <img
+            src="grady-owl-1024.png"
+            srcset="grady-owl-4k.png 4096w, grady-owl-1024.png 1024w"
+            sizes="38px"
+            alt=""
+            style="width:38px;height:38px;object-fit:contain;border-radius:10px;">
         </div>
         <div class="rc-titlewrap">
           <div id="rcTitle" class="rc-title">Your Report Card</div>
@@ -916,6 +914,7 @@ svg, img { display:block; max-width:100%; height:auto; }
 </script>
 </body>
 </html>
+
 
 
 
