@@ -17,8 +17,6 @@
   function gtag(){ dataLayer.push(arguments); }
   gtag('js', new Date());
   gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true });
-
-  // small helper so calls don't error if gtag is blocked
   window.__track = function(event, params){ try { gtag('event', event, params || {}); } catch(e){} };
 </script>
 
@@ -58,7 +56,7 @@ header{
 .header-right{position:absolute; right:12px; top:10px; display:flex; gap:8px; align-items:center}
 .btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
   background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-  color:var(--text);font-weight:900;cursor:pointer;min-width:140px;transition:transform .15s ease, filter .15s ease}
+  color:var(--text);font-weight:900;cursor:pointer;min-width:140px;transition:transform .15s ease, filter .15s ease; display:inline-flex; align-items:center; justify-content:center; text-align:center}
 .btn:hover{filter:brightness(1.06)} .btn:active{transform:translateY(1px)}
 .btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
 .btn.mini{min-width:0;padding:6px 10px;font-weight:800}
@@ -66,7 +64,11 @@ select.btn{appearance:none} .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 
 /* Hero */
 .hero{ padding:14px 0 4px; }
-.hero-grid{ display:grid; grid-template-columns: 1fr 330px; gap:16px; align-items:start }
+.hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 340px; /* add minmax so columns can’t smash each other */
+  gap:16px; align-items:start
+}
 @media (max-width:980px){ .hero-grid{ grid-template-columns:1fr } }
 .hero-left{ display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center }
 .hero-card{ width:min(760px,92vw);
@@ -77,14 +79,32 @@ select.btn{appearance:none} .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 .hero-tag{margin:0 0 8px;color:var(--muted)}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 
-/* Social proof / right column */
-.social-proof{ position:sticky; top:calc(var(--header-h) + 12px); }
+/* Right column (book + proof) */
+.social-proof{ position:sticky; top:calc(var(--header-h) + 12px); min-width:0 } /* prevent overflow */
+.social-proof > *{min-width:0}
 .proof-card{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow); margin-bottom:10px }
 .proof-metric{ display:flex; align-items:center; gap:10px; font-weight:900 }
 .proof-metric .big{ font-size:26px; background:linear-gradient(90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent }
 .review{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start }
 .avatar{ width:36px; height:36px; border-radius:999px; background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; font-weight:900; display:grid; place-items:center }
 .stars{ color:#fbbf24; letter-spacing:1px } .quote{ color:var(--muted); font-size:14px }
+
+/* 📘 Book card — fixed for overlap */
+.book-card{
+  display:grid;
+  grid-template-columns:86px minmax(0,1fr);
+  column-gap:12px; row-gap:8px;
+  align-items:start;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow); margin-bottom:10px;
+}
+.book-cover{
+  width:86px; height:110px; border-radius:10px; background:linear-gradient(180deg,#eafff3,#c8ffe3);
+  border:2px solid #86efac; display:grid; place-items:center; color:#0b1226; font-weight:1000;
+}
+.book-title{font-weight:900;margin:0 0 4px; overflow-wrap:anywhere}
+.book-desc{color:var(--muted);font-size:13px;margin:0 0 8px; overflow-wrap:anywhere}
+.book-card .btn{min-width:0; width:100%; max-width:260px} /* button becomes full-width in tight spaces */
 
 /* Layout + inputs */
 .shell{max-width:1100px;margin:0 auto;padding:0 16px 22px}
@@ -188,19 +208,6 @@ svg, img { display:block; max-width:100%; height:auto; }
   #reportModal{position:static!important;display:block!important;background:#fff!important}
   .sheet{max-height:none!important;box-shadow:none!important;border:none!important}
 }
-
-/* 📘 Book styles */
-.book-card{
-  display:grid; grid-template-columns:86px 1fr; gap:10px; align-items:center;
-  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-  border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow);
-}
-.book-cover{
-  width:86px; height:110px; border-radius:10px; background:linear-gradient(180deg,#eafff3,#c8ffe3);
-  border:2px solid #86efac; display:grid; place-items:center; color:#0b1226; font-weight:1000;
-}
-.book-title{font-weight:900;margin:0 0 4px}
-.book-desc{color:var(--muted);font-size:13px;margin:0 0 8px}
 </style>
 </head>
 <body>
@@ -286,7 +293,7 @@ svg, img { display:block; max-width:100%; height:auto; }
         <div>
           <h4 class="book-title">Grade My Finance — The Guide</h4>
           <p class="book-desc">A quick, practical playbook to boost your score: savings, debt, emergency fund, and net worth milestones.</p>
-          <a id="bookSide" class="btn primary" style="min-width:0" target="_blank" rel="noopener noreferrer"
+          <a id="bookSide" class="btn primary" target="_blank" rel="noopener noreferrer"
              href="https://grademyfinance.gumroad.com/l/zlwid?_gl=1*1facwp3*_ga*MTE1MjUzMDI0MS4xNzU3Njk5NTYw*_ga_6LJN6D94N6*czE3NTc2OTk1NTkkbzEkZzEkdDE3NTc3MDEyNDkkajYwJGwwJGgw">📘 Buy the Book</a>
         </div>
       </div>
@@ -442,7 +449,7 @@ svg, img { display:block; max-width:100%; height:auto; }
 
 <!-- 📘 Mid-page book banner -->
 <section class="container" style="max-width:1000px; margin:12px auto 0; padding:0 2px 12px;">
-  <div class="card" style="display:grid; grid-template-columns:110px 1fr auto; gap:14px; align-items:center;">
+  <div class="card" style="display:grid; grid-template-columns:110px minmax(0,1fr) auto; gap:14px; align-items:center;">
     <div class="book-cover" style="width:110px; height:140px;">
       <div style="text-align:center; line-height:1">
         <div style="font-size:22px">GMF</div>
@@ -603,7 +610,7 @@ svg, img { display:block; max-width:100%; height:auto; }
         { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(v.nwProgress*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+". Invest steadily." : "You're ahead — nice!" },
         { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: (v.annualIncome < 70000*1.15) ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
       ],
-      overall: { score: Math.round(score*10)/10, letter: overallLetter(Math.round(score*10)/10) }
+      overall: { score: Math.round(weighted*10)/10, letter: overallLetter(Math.round(weighted*10)/10) }
     };
   }
 
@@ -705,7 +712,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       rcRows.appendChild(row);
     });
 
-    var actions = buildPath(v,cats);
+    var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; }})();
     pathList.innerHTML="";
     actions.forEach(function(a){
       var li=document.createElement("li");
@@ -916,6 +923,7 @@ svg, img { display:block; max-width:100%; height:auto; }
 </script>
 </body>
 </html>
+
 
 
 
