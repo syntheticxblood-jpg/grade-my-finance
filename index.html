@@ -1,437 +1,1266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Grade My Finance | Free Financial Grade Calculator</title>
-  <meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, assets, and debts to see your report card, tips, and projections. No sign-up required.">
-  <meta name="theme-color" content="#0f172a">
-  <meta name="robots" content="index,follow">
-  <link rel="canonical" href="https://grademyfinance.com/" />
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Grade My Finance | Free Financial Grade Calculator</title>
+<meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and ways to improve. No sign-up required.">
+<meta name="theme-color" content="#0f172a">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://grademyfinance.com/">
 
-  <!-- Google Analytics 4 (kept) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true });
-    window.__track = (ev, p={})=>{ try{ gtag('event', ev, p); }catch(e){} };
-  </script>
+<!-- Icons -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-  <!-- Libraries (small, CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
+<!-- OG/Twitter -->
+<meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
+<meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it. No sign-up.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://grademyfinance.com/">
+<meta property="og:image" content="https://grademyfinance.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grade My Finance | Free Financial Grade Calculator">
+<meta name="twitter:description" content="Get your money grade in seconds — plus a simple plan to raise it.">
+<meta name="twitter:image" content="https://grademyfinance.com/og-image.png">
 
-  <style>
-    :root{
-      --bg:#0b1220;--bg-soft:#0f172a;--card:#111827;--muted:#64748b;--text:#e5e7eb;--accent:#38bdf8;--accent-2:#34d399;--warn:#f59e0b;--bad:#ef4444;--good:#22c55e;--ring:#60a5fa;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-soft) 100%);color:var(--text);font:400 16px/1.5 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-    a{color:var(--accent)}
-    .container{max-width:1100px;margin:auto;padding:24px}
-    header{display:flex;align-items:center;gap:12px}
-    .logo{width:40px;height:40px;border-radius:10px;background:#1f2937;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.25)}
-    .logo svg{width:28px;height:28px}
-    h1{font-size:clamp(24px,4vw,36px);margin:0}
-    .sub{color:var(--muted)}
+<!-- Perf preconnects -->
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+<link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin>
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 
-    .grid{display:grid;gap:16px;grid-template-columns:1fr;}
-    @media(min-width:900px){.grid{grid-template-columns:1.1fr .9fr}}
+<!-- Google AdSense Auto Ads -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514" crossorigin="anonymous"></script>
 
-    .card{background:linear-gradient(180deg,#0f172a 0%,#0b1220 100%);border:1px solid #1f2937;border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    .card h2{margin:0 0 8px;font-size:20px}
-    label{display:block;margin:8px 0 4px;color:#a3b2c7}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    input[type="number"],input[type="text"],input[type="email"],select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #22314b;background:#0b1220;color:var(--text)}
-    input[type="checkbox"]{transform:scale(1.2)}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;background:linear-gradient(90deg,#22c55e,#34d399);color:#06240f;border:0;font-weight:700;cursor:pointer}
-    .btn.secondary{background:#16233c;color:#cbd5e1;border:1px solid #22314b}
-    .btn.ghost{background:transparent;border:1px solid #22314b;color:#cbd5e1}
-    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true });
+  window.__track = function(event, params){ try { gtag('event', event, params || {}); } catch(e){} };
+</script>
 
-    /* Report Card */
-    .report{display:grid;gap:12px}
-    .report-header{display:flex;justify-content:space-between;align-items:center}
-    .grade-badge{font-size:48px;font-weight:900;line-height:1;letter-spacing:-2px;padding:8px 14px;border-radius:16px;background:linear-gradient(120deg,#22c55e,#10b981,#34d399);color:#052b19;box-shadow:inset 0 0 0 3px rgba(255,255,255,.2)}
-    .subgrades{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-    .sg{background:#0b1220;border:1px solid #22314b;border-radius:12px;padding:10px}
-    .sg h4{margin:0 0 6px;color:#cbd5e1;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
-    .progress{height:8px;background:#152036;border-radius:999px;overflow:hidden}
-    .progress>i{display:block;height:100%;background:linear-gradient(90deg,#38bdf8,#34d399)}
-    .thermo{--p:0;position:relative;height:10px;background:#0a0f1d;border-radius:999px;overflow:hidden}
-    .thermo::after{content:"";position:absolute;inset:0;width:calc(var(--p)*1%);background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e)}
+<style>
+:root{
+  --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
+  --accent:#22d3ee; --accent2:#a78bfa; --g1:#16a34a; --g2:#34d399; --header-h:96px; --shadow:0 14px 40px rgba(0,0,0,.35);
+}
+@media (max-width:720px){ :root{ --header-h:74px } }
+:root[data-theme="light"]{
+  --bg:#f7fafc; --panel:#ffffff; --card:#ffffff; --text:#0b1226; --muted:#4b5563; --line:rgba(15,23,42,.12);
+}
+*{box-sizing:border-box} html,body{width:100%}
+body{
+  margin:0; padding-top:var(--header-h); overflow-x:hidden;
+  background:
+    radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
+    radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
+    var(--bg);
+  color:var(--text); font-family:Inter,system-ui,Segoe UI,Roboto,Arial; line-height:1.35;
+}
+.container{max-width:1100px;margin:0 auto;padding:0 16px}
 
-    /* Charts */
-    .charts{display:grid;grid-template-columns:1fr;gap:12px}
-    @media(min-width:700px){.charts{grid-template-columns:1fr 1fr}}
-    canvas{width:100%;height:auto}
+/* Header */
+header{
+  position:fixed; left:0; right:0; top:0; z-index:20; height:var(--header-h);
+  display:grid; place-items:center;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-bottom:1px solid var(--line);
+}
+.hdr{height:100%; display:flex; align-items:center; gap:12px; position:relative}
+.logo{height:72px}
+@media (max-width:720px){ .logo{height:58px} }
+.brand{font-weight:900; font-size:22px; color:#062c1b}
 
-    /* Tips */
-    .tips{display:grid;gap:8px}
-    .tip{background:#0b1220;border:1px dashed #22314b;border-radius:12px;padding:10px}
+/* top-right toolbar */
+.header-right{position:absolute; right:12px; top:10px; display:flex; gap:8px; align-items:center}
+.btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  color:var(--text);font-weight:900;cursor:pointer;min-width:140px;transition:transform .15s ease, filter .15s ease; display:inline-flex; align-items:center; justify-content:center; text-align:center}
+.btn:hover{filter:brightness(1.06)} .btn:active{transform:translateY(1px)}
+.btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
+.btn.mini{min-width:0;padding:6px 10px;font-weight:800}
+select.btn{appearance:none} .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 
-    /* Toast */
-    .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(40px);background:#111827;border:1px solid #22314b;color:#e5e7eb;padding:10px 14px;border-radius:10px;opacity:0;transition:.25s;z-index:60}
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Hero */
+.hero{ padding:14px 0 4px; }
+.hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 340px;
+  gap:16px; align-items:start
+}
+@media (max-width:980px){ .hero-grid{ grid-template-columns:1fr } }
+.hero-left{ display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center }
+.hero-card{ width:min(760px,92vw);
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(--shadow);
+}
+.hero-title{margin:0 0 6px;font-size:30px;font-weight:900}
+.hero-tag{margin:0 0 8px;color:var(--muted)}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 
-    /* Sticky mobile CTA */
-    .sticky-cta{position:fixed;bottom:10px;left:12px;right:12px;display:none;z-index:50}
-    @media(max-width:780px){.sticky-cta{display:block}}
+/* Right column (book + proof) */
+.social-proof{ position:sticky; top:calc(var(--header-h) + 12px); min-width:0 }
+.social-proof > *{min-width:0}
+.proof-card{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow); margin-bottom:10px }
+.proof-metric{ display:flex; align-items:center; gap:10px; font-weight:900 }
+.proof-metric .big{ font-size:26px; background:linear-gradient(90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent }
+.review{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start }
+.avatar{ width:36px; height:36px; border-radius:999px; background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; font-weight:900; display:grid; place-items:center }
+.stars{ color:#fbbf24; letter-spacing:1px } .quote{ color: var(--muted); font-size:14px }
 
-    /* Print for PDF export */
-    @media print{
-      body{background:#fff}
-      .no-print{display:none !important}
-      .card{border:1px solid #e5e7eb;background:#fff;color:#111}
-      .grade-badge{box-shadow:none}
-    }
+/* 📘 Book card */
+.book-card{
+  display:grid;
+  grid-template-columns:86px minmax(0,1fr);
+  column-gap:12px; row-gap:8px;
+  align-items:start;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow); margin-bottom:10px;
+}
+.book-cover{
+  width:86px; height:110px; border-radius:10px;
+  border:2px solid #86efac; overflow:hidden; display:grid; place-items:center; background:#eafff3;
+}
+.book-cover img{ width:100%; height:100%; object-fit:cover; display:block; }
+.book-title{font-weight:900;margin:0 0 4px; overflow-wrap:anywhere}
+.book-desc{color:var(--muted);font-size:13px;margin:0 0 8px; overflow-wrap:anywhere}
+.book-card .btn{min-width:0; width:100%; max-width:260px}
 
-    /* Reduce motion support */
-    @media (prefers-reduced-motion: reduce){
-      *{scroll-behavior:auto !important;animation:none !important;transition:none !important}
-    }
-  </style>
+/* Layout + inputs */
+.shell{max-width:1100px;margin:0 auto;padding:0 16px 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+.section-label{font-size:14px;margin:0 0 8px;color:var(--muted);font-weight:800;display:block}
+.inputs{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:14px}
+@media (max-width:1060px){ .inputs{grid-template-columns:repeat(2,minmax(220px,1fr))} }
+@media (max-width:720px){ .inputs{grid-template-columns:1fr; gap:12px} }
+input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:var(--text)}
+:root[data-theme="light"] input{background:#fff;color:#0b1226}
+input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.30)}
+.progress{height:12px;background:#0b1226;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+:root[data-theme="light"] .progress{background:#fff}
+.progress>div{height:100%;width:0%;background:linear-gradient(90deg,var(--g1),var(--g2));transition:width .6s cubic-bezier(.2,.9,.2,1)}
+
+/* Mascot (Grady) */
+.mascot{display:grid;place-items:center;position:relative; margin-top:2px}
+@keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
+.floatA{position:absolute; right:8px; bottom:0; transform:translate(20%,30%);
+  background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac;
+  border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)
+}
+.grady-logo{ width:260px; height:auto; animation:floatCard 3s ease-in-out infinite; }
+@media (max-width:980px){ .grady-logo{ width:220px } }
+
+/* Overlay & loader */
+.overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:80}
+.overlay.show{display:grid}
+.loader{width:520px;max-width:92vw;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.load-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.bar{height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.bar .fill{height:100%;width:0;background:repeating-linear-gradient(45deg,#16a34a 0 14px,#34d399 14px 28px);transition:width .25s cubic-bezier(.2,.9,.2,1)}
+
+/* Modal + reveal */
+.modal{position:fixed; inset:0; display:none; z-index:100; background:rgba(0,0,0,.55); }
+.modal.show{display:grid; place-items:center}
+.sheet{width:min(980px,96vw); max-height:90vh; overflow:auto; background:var(--panel); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); padding:18px; margin:10px;}
+.modal.show .sheet{animation:popIn .45s cubic-bezier(.2,1,.2,1)}
+@keyframes popIn{0%{transform:scale(.9);opacity:.0}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
+.sheet-header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
+.xbtn{background:#19223d;border:1px solid var(--line); color:#e2e8f0; border-radius:10px; padding:8px 12px; cursor:pointer}
+
+.rc-top{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px}
+.rc-mascot{width:54px; height:54px; border-radius:14px; background:linear-gradient(180deg,#eafff3,#c8ffe3); border:2px solid #86EFAC; display:grid; place-items:center; box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.rc-mascot.party{animation:wiggle .8s ease 2}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(6deg)}}
+.rc-title{font-weight:900; font-size:22px}
+.rc-meta{color:#9fb0c7; font-size:14px}
+.rc-grade{font-size:56px;font-weight:1000; border-radius:16px; padding:6px 16px; border:2px solid transparent; transform-origin:center}
+.rc-grade.good{color:#062c1b; background:linear-gradient(180deg,#34d399,#16a34a); border-color:#86efac}
+.rc-grade.mid{color:#062c1b; background:linear-gradient(180deg,#facc15,#f59e0b); border-color:#fde68a}
+.rc-grade.bad{color:#fff; background:#ef4444; border-color:#fecaca}
+.rc-grade.pop{animation:gradePop .6s cubic-bezier(.2,1,.2,1)}
+@keyframes gradePop{0%{transform:scale(.85)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+
+/* grid areas inside modal */
+.rc-sections{display:grid; grid-template-columns:1.2fr 1fr; gap:12px; margin-top:12px}
+@media (max-width:980px){ .rc-sections{grid-template-columns:1fr; } }
+
+/* rows table */
+.rc-head{display:grid; grid-template-columns: 1.2fr 1fr auto; gap:8px; color:#9fb0c7; font-weight:800; font-size:12px; margin-top:6px}
+.rc-rows{display:grid; gap:8px; margin-top:6px}
+.rc-row{display:grid; grid-template-columns: 1.2fr 1fr auto; gap:8px; align-items:center; background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:12px; padding:10px;}
+.badge{font-weight:900; border:1px solid var(--line); border-radius:10px; padding:6px 10px; text-align:center; display:inline-block}
+.badge.good{color:#062c1b;background:linear-gradient(180deg,#34d399,#16a34a); border-color:#86efac}
+.badge.mid{color:#062c1b;background:linear-gradient(180deg,#facc15,#f59e0b)}
+.badge.bad{color:#fff;background:#ef4444}
+
+/* Path */
+.path{ margin-top:12px; border-top:1px dashed var(--line); padding-top:10px }
+.path h4{ margin:0 0 8px; font-size:18px } .path ol{ margin:0; padding-left:20px }
+.path li{ margin:6px 0; color:#cbd5e1 } .path .pts{ font-weight:900; color:#86efac; }
+
+/* 🔥 Inline subscribe */
+.subscribe-inline{ margin-top:18px; padding:16px; border-radius:14px; position:relative;
+  background:linear-gradient(180deg, rgba(22,163,74,.12), rgba(52,211,153,.10));
+  border:1px solid rgba(134,239,172,.7);
+  box-shadow:0 10px 30px rgba(16,185,129,.18), inset 0 0 0 1px rgba(134,239,172,.35);
+  animation:pulseGlow 2.2s ease-in-out infinite;
+}
+.subscribe-inline .sub-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.subscribe-inline .icon{ width:38px; height:38px; border-radius:10px; display:grid; place-items:center; font-size:22px; background:#eafff3; color:#065f46; border:1px solid #86efac; box-shadow:0 6px 18px rgba(16,185,129,.18); }
+.subscribe-inline h4{ margin:0; font-size:18px; line-height:1.2 }
+.subscribe-inline p{ margin:6px 0 10px; color:#c8ffe3 }
+.subscribe-inline input[type="email"]{ flex:1 1 260px; padding:12px; border-radius:12px; border:1px solid var(--line); background:#0b1226; color:#e2e8f0; }
+:root[data-theme="light"] .subscribe-inline{
+  background:linear-gradient(180deg, rgba(16,185,129,.08), rgba(110,231,183,.06));
+  box-shadow:0 10px 26px rgba(16,185,129,.12), inset 0 0 0 1px rgba(16,185,129,.18);
+}
+@keyframes pulseGlow{ 0%,100%{ box-shadow:0 10px 30px rgba(16,185,129,.18), inset 0 0 0 1px rgba(134,239,172,.35) } 50%{ box-shadow:0 14px 38px rgba(16,185,129,.28), inset 0 0 0 2px rgba(134,239,172,.55) } }
+
+/* Footer + sticky CTA */
+footer{background:#0b1226; border-top:1px solid var(--line); margin-top:22px; padding:22px 16px; color:#cbd5e1; font-size:14px}
+:root[data-theme="light"] footer{background:#ffffff}
+.fwrap{max-width:1000px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:8px}
+.fcontact{display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:center}
+.pill{padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.03); color:#3fb7ff}
+.mobile-cta{position:fixed;left:0;right:0;bottom:0;padding:10px;background:rgba(15,23,42,.86); border-top:1px solid rgba(148,163,184,.22);display:none;z-index:90}
+.mobile-cta.on{display:block}
+
+/* Misc */
+svg, img { display:block; max-width:100%; height:auto; }
+@media (max-width:720px){ .hero-card{ padding:14px } .inputs{ gap:10px } .card{ padding:12px } }
+
+/* Print */
+@media print{
+  body{background:#fff}
+  header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important}
+  #reportModal{position:static!important;display:block!important;background:#fff!important}
+  .sheet{max-height:none!important;box-shadow:none!important;border:none!important}
+}
+.small{font-size:12px;color:#9fb0c7}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.legend .dot{width:10px;height:10px;border-radius:999px;display:inline-block;border:1px solid rgba(255,255,255,.35)}
+.fade-in{animation:fade .28s ease}
+@keyframes fade{from{opacity:.0;transform:translateY(2px)}to{opacity:1;transform:none}}
+</style>
 </head>
 <body>
-  <div class="container">
-    <header class="no-print">
-      <div class="logo" aria-hidden="true" title="Grady the Owl">
-        <!-- Grady: simple owl mark -->
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 3c4.97 0 9 3.582 9 8v6a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-6c0-4.418 4.03-8 9-8Z" fill="#1f2937"/>
-          <circle cx="8.5" cy="11" r="2.5" fill="#fff"/><circle cx="15.5" cy="11" r="2.5" fill="#fff"/>
-          <circle cx="8.5" cy="11" r="1.2" fill="#111827"/><circle cx="15.5" cy="11" r="1.2" fill="#111827"/>
-          <path d="M12 12.2 14 14l-2 1.6L10 14l2-1.8Z" fill="#f59e0b"/>
-        </svg>
+
+<noscript>
+  <div style="background:#fee2e2;color:#7f1d1d;padding:10px;text-align:center">
+    JavaScript is required to calculate your report card. Please enable it in your browser.
+  </div>
+</noscript>
+
+<!-- Confetti canvas -->
+<canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:150;"></canvas>
+
+<header>
+  <div class="hdr">
+    <!-- Logo -->
+    <svg class="logo" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
+      <defs>
+        <radialGradient id="gSphere" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#b9f4d1"/><stop offset=".55" stop-color="#34d399"/><stop offset="1" stop-color="#128a3f"/></radialGradient>
+        <linearGradient id="paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e8ffe9"/></linearGradient>
+      </defs>
+      <g transform="translate(20,14)">
+        <circle cx="40" cy="45" r="38" fill="url(#gSphere)"/>
+        <circle cx="40" cy="45" r="38" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+        <text x="40" y="58" text-anchor="middle" font-size="44" font-weight="1000" fill="#072b19" stroke="#eafff3" stroke-width="1.6" paint-order="stroke">G</text>
+      </g>
+      <g transform="translate(110,10) rotate(-9)">
+        <rect width="70" height="94" rx="12" fill="url(#paper)" stroke="#86EFAC" stroke-width="2"/>
+        <g stroke="#10B981" stroke-width="2"><line x1="12" y1="28" x2="58" y2="28"/><line x1="12" y1="42" x2="58" y2="42"/><line x1="12" y1="56" x2="58" y2="56"/></g>
+        <text x="35" y="76" text-anchor="middle" font-size="24" font-weight="900" fill="#ef4444">A+</text>
+      </g>
+    </svg>
+    <div class="brand">Grade My Finance</div>
+  </div>
+
+  <!-- Top-right toolbar -->
+  <div class="header-right">
+    <select id="currencySel" class="btn mini" aria-label="Currency">
+      <option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option><option>AUD</option>
+    </select>
+    <button id="themeToggle" class="btn mini" type="button" aria-label="Toggle theme">🌙/☀️</button>
+    <a id="bookTop" class="btn mini primary" href="https://grademyfinance.gumroad.com/l/zlwid" target="_blank" rel="noopener">📘 Get the Book</a>
+  </div>
+</header>
+
+<section class="container hero" aria-label="Hero">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="hero-card">
+        <h1 class="hero-title">Get your free money grade in seconds</h1>
+        <p class="hero-tag">No sign-up. Plug in numbers → get a score. Simple and effective.</p>
+        <div class="hero-cta">
+          <button class="btn" id="demoBtn" type="button">Try Demo</button>
+          <button class="btn primary" id="gradeBtnTop" type="button">Get My Report Card</button>
+          <button class="btn" id="copyLink" type="button">Copy share link</button>
+        </div>
       </div>
-      <div>
-        <h1>Grade My Finance</h1>
-        <div class="sub">Free, instant financial grade with tips, charts & shareable PDF.</div>
+
+      <div class="mascot" aria-label="Grady the Owl">
+        <img
+          class="grady-logo"
+          src="grady-owl-1024.png"
+          srcset="grady-owl-4k.png 4096w, grady-owl-1024.png 1024w"
+          sizes="(max-width: 980px) 220px, 260px"
+          alt="Grady the Owl holding an A+ report card"
+          fetchpriority="high"
+          loading="eager">
+        <div class="floatA" aria-hidden="true">A+</div>
       </div>
-    </header>
+    </div>
 
-    <main class="grid">
-      <!-- INPUTS -->
-      <section class="card" aria-labelledby="inputs-title">
-        <h2 id="inputs-title">Your Info</h2>
-        <div class="row">
-          <div>
-            <label for="income">Monthly Income ($)</label>
-            <input id="income" type="number" inputmode="decimal" pattern="[0-9]*" placeholder="5000" />
-          </div>
-          <div>
-            <label for="expenses">Monthly Expenses ($)</label>
-            <input id="expenses" type="number" inputmode="decimal" pattern="[0-9]*" placeholder="4000" />
-          </div>
-          <div>
-            <label for="assets">Total Assets ($)</label>
-            <input id="assets" type="number" inputmode="decimal" pattern="[0-9]*" placeholder="75000" />
-          </div>
-          <div>
-            <label for="debts">Total Debts ($)</label>
-            <input id="debts" type="number" inputmode="decimal" pattern="[0-9]*" placeholder="25000" />
-          </div>
+    <!-- Right column: Book promo + social proof -->
+    <aside class="social-proof" aria-label="Book & reviews">
+      <div class="book-card">
+        <div class="book-cover">
+          <img src="book-cover.png" alt="Grade My Finance — The Guide" loading="lazy">
         </div>
-        <div class="row">
-          <div>
-            <label for="savingsRate">Savings Rate (% of income)</label>
-            <input id="savingsRate" type="number" inputmode="decimal" placeholder="10" />
-          </div>
-          <div>
-            <label for="retCntr">Retirement Balance ($)</label>
-            <input id="retCntr" type="number" inputmode="decimal" placeholder="60000" />
-          </div>
+        <div>
+          <h4 class="book-title">Grade My Finance — The Guide</h4>
+          <p class="book-desc">A quick, practical playbook to boost your score: savings, debt, emergency fund, and net worth milestones.</p>
+          <a id="bookSide" class="btn primary" target="_blank" rel="noopener"
+             href="https://grademyfinance.gumroad.com/l/zlwid">📘 Buy the Book</a>
         </div>
-        <div class="actions">
-          <button class="btn" id="calcBtn">Get My Report Card</button>
-          <button class="btn secondary" id="shareBtn" aria-describedby="toast">Copy share link</button>
-          <button class="btn ghost" id="pdfBtn" title="Print or Save to PDF">Download PDF</button>
-        </div>
-        <div style="margin-top:10px;display:flex;align-items:center;gap:12px">
-          <label><input id="reduceMotion" type="checkbox"> Reduce motion</label>
-          <span class="sub">Accessibility: Confetti/animations will be minimized.</span>
-        </div>
-      </section>
-
-      <!-- REPORT / CHARTS -->
-      <section class="card" aria-live="polite">
-        <div class="report" id="report">
-          <div class="report-header">
-            <div>
-              <h2>Report Card</h2>
-              <div class="sub">Your personalized grade with quick wins</div>
-            </div>
-            <div class="grade-badge" id="gradeBadge" aria-label="Overall grade">—</div>
-          </div>
-
-          <div class="subgrades" id="subgrades">
-            <!-- templated -->
-          </div>
-
-          <div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0">
-              <strong>Progress toward next grade</strong>
-              <span id="thermoPct">0%</span>
-            </div>
-            <div class="thermo" id="thermo" style="--p:0"></div>
-          </div>
-
-          <div class="charts">
-            <div class="card">
-              <h2>Assets vs Liabilities</h2>
-              <canvas id="pieAL" height="220" aria-label="Assets vs Liabilities chart" role="img"></canvas>
-            </div>
-            <div class="card">
-              <h2>Income vs Expenses</h2>
-              <canvas id="pieIE" height="220" aria-label="Income vs Expenses chart" role="img"></canvas>
-            </div>
-          </div>
-
-          <div class="card">
-            <h2>Net-worth Trend Simulator (10 years)</h2>
-            <div class="row">
-              <div>
-                <label for="assumedReturn">Assumed Annual Return (%)</label>
-                <input id="assumedReturn" type="number" inputmode="decimal" placeholder="6" value="6" />
-              </div>
-              <div>
-                <label for="savingsGrowth">Annual Savings Growth (%)</label>
-                <input id="savingsGrowth" type="number" inputmode="decimal" placeholder="2" value="2" />
-              </div>
-            </div>
-            <canvas id="trendChart" height="260" aria-label="Net worth projection chart" role="img"></canvas>
-          </div>
-
-          <div class="card">
-            <h2>Smart Tips</h2>
-            <div class="tips" id="tips"></div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <section class="card no-print" style="margin-top:16px">
-      <h2>Get the 3‑step plan PDF</h2>
-      <p class="sub">Enter your email to receive a simple, customized 3‑step plan.</p>
-      <div class="row">
-        <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
-        <button class="btn" id="emailBtn">Send me the PDF</button>
       </div>
-      <small class="sub">We’ll never sell your email. <a href="/disclaimer" target="_blank" rel="noopener">Educational only</a>.</small>
+
+      <div class="proof-card">
+        <div class="proof-metric">
+          <div class="big">1,000+</div>
+          <div>report cards graded</div>
+        </div>
+        <div class="small">Since launch. Educational only — not financial advice.</div>
+      </div>
+
+      <div class="proof-card review">
+        <div class="avatar">AL</div>
+        <div>
+          <div class="stars" aria-label="5 stars">★★★★★</div>
+          <div class="quote">“Made my budget click. The tips felt doable and I loved the grade reveal.”</div>
+        </div>
+      </div>
+      <div class="proof-card review">
+        <div class="avatar">JR</div>
+        <div>
+          <div class="stars" aria-label="5 stars">★★★★★</div>
+          <div class="quote">“Helped me set a target emergency fund and pay down cards faster.”</div>
+        </div>
+      </div>
+      <div class="proof-card review">
+        <div class="avatar">SM</div>
+        <div>
+          <div class="stars" aria-label="4 stars">★★★★☆</div>
+          <div class="quote">“Clear next steps — I printed the report for my fridge.”</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- Inputs -->
+<div class="shell">
+  <main>
+    <section id="grade" class="page active" aria-label="Inputs">
+      <div class="inputs">
+        <!-- Housing mode -->
+        <div class="card" style="grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span class="section-label" style="margin:0">Housing</span>
+          <button id="modeOwner" class="btn" type="button">Owner</button>
+          <button id="modeRenter" class="btn" type="button">Renter</button>
+        </div>
+
+        <div class="card"><label class="section-label" for="income">Monthly Income (after-tax)</label><input id="income" type="number" value="0" min="0" inputmode="decimal"></div>
+        <div class="card"><label class="section-label" for="expenses">Monthly Expenses</label><input id="expenses" type="number" value="0" min="0" inputmode="decimal"></div>
+        <div class="card"><label class="section-label" for="age">Age</label><input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"></div>
+
+        <div class="card" id="homeCard"><label class="section-label" for="home">Home Value</label><input id="home" type="number" value="0" min="0" inputmode="decimal"><div class="section-label" id="assetsHint" style="margin-top:6px">Total Assets: —</div></div>
+        <div class="card"><label class="section-label" for="retire">Retirement (401k/IRA)</label><input id="retire" type="number" value="0" min="0" inputmode="decimal"></div>
+        <div class="card"><label class="section-label" for="brokerage">Brokerage / Stocks</label><input id="brokerage" type="number" value="0" min="0" inputmode="decimal"></div>
+        <div class="card"><label class="section-label" for="hsa">HSA</label><input id="hsa" type="number" value="0" min="0" inputmode="decimal"></div>
+        <div class="card"><label class="section-label" for="cash">Cash Savings</label><input id="cash" type="number" value="0" min="0" inputmode="decimal"></div>
+        <div class="card"><label class="section-label" for="car">Car Value</label><input id="car" type="number" value="0" min="0" inputmode="decimal"></div>
+
+        <div class="card" id="mortCard"><label class="section-label" for="mortgage">Mortgage Balance</label><input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="section-label" id="liabHint" style="margin-top:6px">Total Liabilities: —</div></div>
+        <div class="card"><label class="section-label" for="student">Student Loans</label><input id="student" type="number" value="0" min="0" inputmode="decimal"></div>
+        <div class="card"><label class="section-label" for="auto">Auto Loans</label><input id="auto" type="number" value="0" min="0" inputmode="decimal"></div>
+        <div class="card"><label class="section-label" for="cc">Credit Cards (balance)</label><input id="cc" type="number" value="0" min="0" inputmode="decimal"></div>
+
+        <div class="card" style="grid-column:1/-1">
+          <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap">
+            <button id="resetBtn" class="btn" type="button">Reset</button>
+            <button id="gradeBtn" class="btn primary" type="button">Get My Report Card</button>
+          </div>
+          <div class="progress" style="margin:10px 0"><div id="progressFill"></div></div>
+        </div>
+      </div>
     </section>
+  </main>
+</div>
 
-    <footer class="no-print" style="opacity:.8;text-align:center;margin:24px 0">
-      <div>© <span id="y"></span> Grade My Finance · <a href="/disclaimer" target="_blank" rel="noopener">Disclaimer</a></div>
-      <div style="margin-top:6px">Built with love by <strong>Grady</strong> the owl 🦉</div>
-    </footer>
+<!-- Loader -->
+<div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
+  <div class="loader">
+    <div class="load-row"><strong id="loadMsg">Crunching numbers…</strong><span id="pct">0%</span></div>
+    <div class="bar"><div class="fill" id="barFill"></div></div>
   </div>
+</div>
 
-  <!-- Sticky CTA (mobile) -->
-  <div class="sticky-cta no-print">
-    <button class="btn" style="width:100%" id="stickyBtn">Get My Report Card</button>
+<!-- Report Modal -->
+<div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rcTitle">
+  <div class="sheet">
+    <div class="sheet-header">
+      <div class="rc-top">
+        <div class="rc-mascot" id="rcMascot" aria-hidden="true">
+          <img
+            src="grady-owl-1024.png"
+            srcset="grady-owl-4k.png 4096w, grady-owl-1024.png 1024w"
+            sizes="38px"
+            alt=""
+            style="width:38px;height:38px;object-fit:contain;border-radius:10px;">
+        </div>
+        <div class="rc-titlewrap">
+          <div id="rcTitle" class="rc-title">Your Report Card</div>
+          <div id="rcMeta" class="rc-meta">—</div>
+        </div>
+        <div id="rcGrade" class="rc-grade">A</div>
+      </div>
+      <button class="xbtn" id="closeReport" type="button" aria-label="Close report">Close</button>
+    </div>
+
+    <!-- Summary/compare row -->
+    <div class="rc-sections">
+      <div class="card" style="display:grid;gap:10px">
+        <div id="compareBlock" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span class="section-label">Progress</span>
+          <div id="compareText" style="font-weight:800;color:#cbd5e1">—</div>
+          <svg id="spark" width="180" height="32" aria-hidden="true"></svg>
+        </div>
+        <div id="benchWrap" class="card" style="display:grid;gap:8px">
+          <span class="section-label">Benchmarks & Percentiles (est.)</span>
+          <div id="benchRows" style="display:grid;gap:8px"></div>
+        </div>
+      </div>
+
+      <!-- Weakest link -->
+      <div class="card">
+        <span class="section-label">Weakest Link</span>
+        <div id="weakWrap" style="display:grid;gap:8px"></div>
+      </div>
+    </div>
+
+    <div class="rc-head"><div>Category</div><div>Details</div><div>Grade</div></div>
+    <div class="rc-rows" id="rcRows"></div>
+
+    <!-- Charts -->
+    <div class="rc-sections" style="margin-top:10px">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="section-label">Assets vs Liabilities</span>
+          <span id="barALCaption" class="small">—</span>
+        </div>
+        <svg id="barAL" width="100%" height="140" viewBox="0 0 520 140" preserveAspectRatio="none" role="img" aria-label="Assets vs Liabilities chart"></svg>
+        <div class="legend" id="barALLegend"></div>
+      </div>
+      <div class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <span class="section-label">Assets Mix</span>
+          <svg id="pieAssets" width="100%" height="160" viewBox="0 0 160 160" role="img" aria-label="Assets pie"></svg>
+          <div class="legend" id="legendAssets"></div>
+        </div>
+        <div>
+          <span class="section-label">Liabilities Mix</span>
+          <svg id="pieLiabs" width="100%" height="160" viewBox="0 0 160 160" role="img" aria-label="Liabilities pie"></svg>
+          <div class="legend" id="legendLiabs"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Path to higher grade -->
+    <div class="path">
+      <h4>Path to a higher grade</h4>
+      <ol id="pathList"></ol>
+      <div class="small">Est. point gains are approximate based on our weighting.</div>
+    </div>
+
+    <!-- Projections -->
+    <div class="card" style="margin-top:12px">
+      <span class="section-label">What-If Projections</span>
+      <div style="display:grid;gap:10px">
+        <label style="display:grid;gap:6px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span>Reduce monthly expenses</span><strong id="projExpVal">-$0</strong></div>
+          <input id="projExp" type="range" min="0" max="2000" step="50" value="0" aria-label="Reduce monthly expenses">
+        </label>
+        <label style="display:grid;gap:6px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span>One-time debt payoff</span><strong id="projDebtVal">$0</strong></div>
+          <input id="projDebt" type="range" min="0" max="20000" step="500" value="0" aria-label="One-time debt payoff">
+        </label>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <div class="badge" id="projBadge">Projected: —</div>
+          <div id="projText" style="color:#cbd5e1;font-weight:800">Adjust sliders to preview your new grade.</div>
+          <button id="applyProjection" class="btn" type="button" title="Apply these changes to inputs">Apply to Inputs</button>
+        </div>
+        <div class="small" id="projNotes">Projection updates charts & weakest link live (preview only until you apply).</div>
+      </div>
+    </div>
+
+    <!-- 🔥 Inline Subscribe inside Report Card -->
+    <div class="subscribe-inline" id="subscribeInlineRC">
+      <div class="sub-row" style="margin-bottom:10px">
+        <div class="icon" aria-hidden="true">📬</div>
+        <div>
+          <h4>Get tips to raise your grade</h4>
+          <p>1–2 emails/month. Actionable, no fluff. Unsubscribe anytime.</p>
+        </div>
+      </div>
+      <form id="subFormRC" class="sub-row" action="https://formspree.io/f/xvgblayy" method="POST" novalidate>
+        <input type="email" name="email" placeholder="you@example.com" required>
+        <button type="submit" class="btn primary" style="min-width:140px">Subscribe</button>
+      </form>
+    </div>
+
+    <div class="rc-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap">
+      <button class="btn" id="shareReport" type="button" title="Share only your overall letter & score">Share</button>
+      <button class="btn" id="printReport" type="button">Print / Save as PDF</button>
+      <a id="bookRC" class="btn" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/zlwid">📘 Level up with the Guide</a>
+      <button class="btn primary" id="calcAgain" type="button">Recalculate</button>
+    </div>
+
+    <!-- Mini FAQ / Trust -->
+    <div class="card" style="margin-top:12px">
+      <details>
+        <summary style="cursor:pointer;font-weight:900">Methodology, assumptions & privacy</summary>
+        <div style="margin-top:8px;color:#cbd5e1;font-size:14px;display:grid;gap:6px">
+          <div>• We weigh areas roughly as: Age-based Net Worth (65%), Savings Rate (15%), Emergency Fund (10%), Income vs median (5%), Non-mortgage Debt (5%).</div>
+          <div>• Targets: savings rate ≈ 25% of take-home; emergency fund ≈ 6 months; age-based net worth uses a baseline of your annual spend (or $30k minimum).</div>
+          <div>• Benchmarks and percentiles are rough estimates for context, not strict comparisons.</div>
+          <div>• Privacy: calculations run in your browser. We don’t store your numbers on our servers. If you opt to save, it’s saved only to your device (local storage).</div>
+        </div>
+      </details>
+    </div>
+
   </div>
+</div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast" role="status" aria-live="polite">Link copied!</div>
+<!-- Subscribe section -->
+<section class="container" style="max-width:900px; margin:30px auto; padding:18px;background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)">
+  <h3 style="margin:0 0 6px; font-size:20px">Get simple money tips & updates</h3>
+  <p style="margin:6px 0 12px; color:#9fb0c7">No spam, unsubscribe anytime.</p>
+  <form id="subForm" style="display:flex; gap:10px; flex-wrap:wrap" action="https://formspree.io/f/xvgblayy" method="POST">
+    <input type="email" name="email" id="subEmail" placeholder="you@example.com" required style="flex:1 1 280px; padding:12px; border-radius:12px; border:1px solid var(--line); background:#0b1226; color:#e2e8f0;">
+    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+    <input type="hidden" name="_subject" value="New Grade My Finance subscriber" />
+    <button type="submit" class="btn primary">Subscribe</button>
+  </form>
+</section>
 
-  <script>
-  // --- Utilities ---
-  const $ = s => document.querySelector(s);
-  const fmt = n => isFinite(n)? n.toLocaleString(undefined,{maximumFractionDigits:0}) : '—';
-  const num = id => Math.max(0, +$(id).value || 0);
-  const clamp=(v,min,max)=>Math.min(max,Math.max(min,v));
-  const on=(el,ev,fn)=>el.addEventListener(ev,fn);
-  const toast=(msg)=>{ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); };
+<!-- 📘 Mid-page book banner -->
+<section class="container" style="max-width:1000px; margin:12px auto 0; padding:0 2px 12px;">
+  <div class="card" style="display:grid; grid-template-columns:110px minmax(0,1fr) auto; gap:14px; align-items:center;">
+    <div class="book-cover" style="width:110px; height:140px;">
+      <img src="book-cover.png" alt="Grade My Finance — The Guide" loading="lazy">
+    </div>
+    <div>
+      <h3 style="margin:0 0 6px">Turn your grade into a plan — get the book</h3>
+      <ul style="margin:6px 0; padding-left:18px; color:#cbd5e1; font-size:14px">
+        <li>Step-by-step actions for savings, debt, and emergency fund</li>
+        <li>Age-based net worth targets with examples</li>
+        <li>Printable checklists + quick wins</li>
+      </ul>
+    </div>
+    <a id="bookMid" class="btn primary" style="min-width:160px" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/zlwid">📘 Buy the Book</a>
+  </div>
+</section>
 
-  const state={ charts:{}, reduceMotion:false };
+<div style="position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:#0b1226; color:#e2e8f0; border:1px solid var(--line); border-radius:12px; padding:10px 14px; box-shadow:var(--shadow); display:none; z-index:120" id="toast" role="status" aria-live="polite">
+  Thanks! Check your inbox for a confirmation.
+</div>
 
-  // --- Grade logic (simple, transparent) ---
-  function compute({income,expenses,assets,debts,ret,sr}){
-    const savings = Math.max(0,income-expenses);
-    const savingsRate = income? (savings/income)*100 : (sr||0);
-    const net = Math.max(0,assets - debts);
-    const debtToAsset = assets? debts/assets : (debts? 1:0);
-    const monthsRunway = expenses? ( (net)/expenses ) : 0;
-    const retireHealth = ret>0? Math.min(100, (ret / (income*12*10))*100 ) : 0; // 10y heuristic
+<!-- Sticky CTA -->
+<div class="mobile-cta" id="mobileCta">
+  <button id="gradeBtnSticky" class="btn primary" type="button">Get My Report Card</button>
+</div>
 
-    // Subgrades 0..100
-    const sgNW = clamp((net>0? Math.log10(net+1)/6*100:0),0,100);
-    const sgDebt = clamp((1-debtToAsset)*100,0,100);
-    const sgSave = clamp(savingsRate,0,100);
-    const sgRet = clamp(retireHealth,0,100);
+<footer>
+  <div class="fwrap">
+    <div class="fcontact"><span class="pill">Contact</span> <a class="pill" href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></div>
+    <div class="fnote">© 2025 Grade My Finance — educational use only (not financial advice).</div>
+  </div>
+</footer>
 
-    const overall = Math.round( (sgNW*0.35 + sgDebt*0.25 + sgSave*0.25 + sgRet*0.15) );
-    const letter = overall>=90?'A':overall>=80?'B':overall>=70?'C':overall>=60?'D':'F';
-    const next = letter==='A'?100: letter==='B'?90: letter==='C'?80: letter==='D'?70:60;
-    const towardNext = clamp(((overall - (next-10)) / 10)*100,0,100);
+<script>
+"use strict";
+(function(){
 
-    return {savings,savingsRate,net,monthsRunway,sg:{NW:sgNW,Debt:sgDebt,Savings:sgSave,Retirement:sgRet},overall,letter,towardNext};
+  function $(id){ return document.getElementById(id); }
+  function qs(sel){ return document.querySelector(sel); }
+  function el(tag, attrs){ var n=document.createElement(tag); if(attrs) Object.assign(n, attrs); return n; }
+
+  /* ===== Helpers & curves ===== */
+  var NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
+  function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
+  function map01(x,a,b){ return clamp((x-a)/(b-a),0,1); }
+  function targetNW(age){
+    if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
+    if(age>=NW_CURVE[NW_CURVE.length-1][0]) return NW_CURVE[NW_CURVE.length-1][1];
+    for(var i=1;i<NW_CURVE.length;i++){
+      var a0=NW_CURVE[i-1][0], t0=NW_CURVE[i-1][1], a1=NW_CURVE[i][0], t1=NW_CURVE[i][1];
+      if(age<=a1){ var t=(age-a0)/(a1-a0); return t0+(t1-t0)*t; }
+    }
+    return NW_CURVE[NW_CURVE.length-1][1];
+  }
+  function overallLetter(s){
+    return s>=97?"A+":s>=93?"A":s>=90?"A-":s>=87?"B+":s>=83?"B":s>=80?"B-":s>=77?"C+":s>=73?"C":s>=70?"C-":s>=67?"D+":s>=63?"D":s>=60?"D-":"F";
+  }
+  function letterFrom01(s){ return overallLetter(Math.round(s*100)); }
+  function incomeLetterFromRatio(r){
+    return r>=2.2?"A+": r>=1.8?"A": r>=1.5?"A-": r>=1.3?"B+": r>=1.15?"B": r>=1.0?"B-": r>=0.9?"C+": r>=0.8?"C": r>=0.7?"C-": r>=0.6?"D": "F";
+  }
+  function badgeClass(l){
+    return (["A+","A","A-","B+"].indexOf(l)>-1)?"badge good":((["B","B-","C+","C","C-"].indexOf(l)>-1)?"badge mid":"badge bad");
   }
 
-  // --- Render subgrades ---
-  function renderSubgrades(obj){
-    const wrap=$('#subgrades');
-    wrap.innerHTML='';
-    Object.entries(obj.sg).forEach(([k,v])=>{
-      const d=document.createElement('div'); d.className='sg';
-      d.innerHTML=`<h4>${k}</h4><div style="display:flex;justify-content:space-between"><b>${Math.round(v)}%</b><span class="sub">${v<60?'Needs work':v<80?'Okay':'Strong'}</span></div><div class="progress"><i style="width:${v}%"></i></div>`;
-      wrap.appendChild(d);
+  /* ===== Theme & currency ===== */
+  var root=document.documentElement;
+  var savedTheme=localStorage.getItem("gmf_theme"); if(savedTheme==="light") root.dataset.theme="light";
+  $("themeToggle").addEventListener("click", function(){
+    var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next;
+    localStorage.setItem("gmf_theme", next||"dark"); __track('toggle_theme', {theme: next||'dark'});
+  });
+
+  var CURRENCY=localStorage.getItem("gmf_curr")||"USD";
+  var curSel=$("currencySel"); curSel.value=CURRENCY;
+  curSel.addEventListener("change", function(){ CURRENCY=curSel.value; localStorage.setItem("gmf_curr",CURRENCY); updateHints(); __track('change_currency',{currency:CURRENCY}); });
+  function money(n){ return isFinite(n)? new Intl.NumberFormat(undefined,{style:"currency",currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)) : "—"; }
+
+  /* ===== Inputs & hygiene + autosave ===== */
+  var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","mortgage","student","auto","cc"];
+  var els={}; ids.forEach(function(id){ els[id]=$(id); });
+  function val(id){ var e=els[id]; return e && e.value!=="" ? Number(e.value) : 0; }
+  ids.forEach(function(id){
+    var e=els[id];
+    e.addEventListener("input", function(){ e.value=e.value.replace(/[^\d.-]/g,""); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); });
+    e.addEventListener("blur", function(){ if(e.value!=="") e.value=String(Math.round(+e.value)); updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); });
+  });
+  function currentRaw(){ var obj={}; ids.forEach(function(id){ obj[id]=Number(els[id]?els[id].value:0); }); return obj; }
+  // Restore autosave
+  try{
+    var saved = JSON.parse(localStorage.getItem("gmf_autosave")||"null");
+    if(saved){ Object.keys(saved).forEach(function(id){ if(els[id]) els[id].value = saved[id]; }); }
+  }catch(_){}
+
+  /* ===== Values & hints ===== */
+  function values(){
+    var v={}; ids.forEach(function(id){ v[id]=val(id); });
+    v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
+    v.liabs=v.mortgage+v.student+v.auto+v.cc;
+    v.net=v.assets-v.liabs;
+    v.annualIncome=v.income*12;
+    v.annualSpend=v.expenses*12;
+    v.baseline=Math.max(v.annualSpend, 30000);
+    var denomSav=Math.max(v.income, v.expenses, 2000);
+    v.saveRate=denomSav>0 ? Math.max(0, v.income - v.expenses)/denomSav : 0;
+    v.efMonths=v.expenses>0 ? v.cash/v.expenses : 0;
+    v.nonMortDebt=v.student+v.auto+v.cc;
+    v.dtiNonMort = v.baseline>0 ? v.nonMortDebt/v.baseline : 1;
+    v.nwTargetMultiple = targetNW(v.age||30);
+    v.nwTargetAmount = v.nwTargetMultiple * v.baseline;
+    v.nwProgress = v.nwTargetAmount>0 ? v.net/v.nwTargetAmount : 0;
+    var ratio = v.annualIncome / 70000;
+    v.incomeScore = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2), 0, 1);
+    v.incomeLetter = incomeLetterFromRatio(ratio);
+    return v;
+  }
+  function updateHints(){
+    var v=values();
+    $("assetsHint").textContent="Total Assets: "+money(v.assets);
+    $("liabHint").textContent="Total Liabilities: "+money(v.liabs);
+  }
+
+  /* ===== Housing mode ===== */
+  function setHousing(mode){
+    var show = (mode==="owner");
+    qs("#homeCard").style.display = show ? "" : "none";
+    qs("#mortCard").style.display = show ? "" : "none";
+    if(!show){ els.home.value=0; els.mortgage.value=0; }
+    localStorage.setItem("gmf_housing",mode);
+    updateHints();
+  }
+  $("modeOwner").addEventListener("click", function(){ setHousing("owner"); __track('select_housing',{mode:'owner'}); });
+  $("modeRenter").addEventListener("click", function(){ setHousing("renter"); __track('select_housing',{mode:'renter'}); });
+  setHousing(localStorage.getItem("gmf_housing")||"owner");
+
+  /* ===== Scoring ===== */
+  function categoryScores(v){
+    var sSave = map01(v.saveRate, 0, 0.25);
+    var sEF = map01(v.efMonths, 0, 6);
+    var sDebt = clamp(1 - v.dtiNonMort/0.50, 0, 1);
+    var sAgeNW = Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
+    var sInc = v.incomeScore;
+    var weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.65 + sInc*0.05)*100;
+    return {
+      s:{sSave:sSave,sEF:sEF,sDebt:sDebt,sAgeNW:sAgeNW,sInc:sInc},
+      components: [
+        { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home", letter:letterFrom01(sSave), tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(Math.max(0, v.income*0.25 - (v.income - v.expenses)))+"/mo." : "Great job—stay consistent." },
+        { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months", letter:letterFrom01(sEF), tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
+        { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add "+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt level." },
+        { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(v.nwProgress*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+". Invest steadily." : "You're ahead — nice!" },
+        { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: (v.annualIncome < 70000*1.15) ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
+      ],
+      overall: { score: Math.round(weighted*10)/10, letter: overallLetter(Math.round(weighted*10)/10) }
+    };
+  }
+
+  /* ===== Path ===== */
+  function nextLetterTarget(score){
+    var bounds=[60,63,67,70,73,77,80,83,87,90,93,97];
+    for(var i=0;i<bounds.length;i++){ if(score<bounds[i]) return bounds[i]; }
+    return null;
+  }
+  function buildPath(v,cats){
+    var goal = nextLetterTarget(cats.overall.score);
+    var items=[];
+    function push(txt, pts){ items.push({txt:txt, pts:Math.max(0, Math.round(pts))}); }
+    if(goal===null){ return [{txt:"You’re already at A+. Keep compounding and maintaining your buffers!", pts:0}]; }
+    if(v.saveRate < 0.25){
+      var dSave=(1 - map01(v.saveRate,0,0.25))*0.15*100;
+      var need = Math.max(0, v.income*0.25 - (v.income - v.expenses));
+      push("Boost savings to 25% (set aside about "+money(need)+"/mo).", dSave);
+    }
+    if(v.efMonths < 6){
+      var dEF=(1 - map01(v.efMonths,0,6))*0.10*100;
+      var efNeed = Math.max(0, v.expenses*6 - v.cash);
+      push("Build emergency fund to 6 months (save ~"+money(Math.round(efNeed/6))+"/mo for 6 months).", dEF);
+    }
+    if(v.dtiNonMort > 0.25){
+      var sDebtNow = clamp(1 - v.dtiNonMort/0.50,0,1), sDebtGoal = clamp(1 - 0.25/0.50,0,1);
+      var dDebt=(sDebtGoal - sDebtNow)*0.05*100;
+      var targetDebt = Math.round(v.baseline*0.25), paydown = Math.max(0, v.nonMortDebt - targetDebt);
+      push("Pay down non-mortgage debt below 25% of baseline (reduce about "+money(paydown)+", e.g., "+money(Math.round(v.baseline*0.05))+"/mo).", dDebt);
+    }
+    if(v.nwProgress < 1){
+      var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
+      var dAge=(sAgeGoal - sAgeNow)*0.65*100;
+      var gap = Math.max(0, v.nwTargetAmount - v.net);
+      push("Close the age-based net worth gap (~"+money(gap)+"). Consider investing ~"+money(Math.round(gap/36))+"/mo for ~36 months.", dAge);
+    }
+    var ratio = v.annualIncome/70000;
+    if(ratio < 1.15){
+      var sIncNow = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2),0,1);
+      var sIncGoal = clamp(0.5 + 0.5*Math.tanh((1.15-1)*1.2),0,1);
+      var dInc=(sIncGoal - sIncNow)*0.05*100;
+      var targetAnnual = Math.round(70000*1.15), delta = Math.max(0, targetAnnual - v.annualIncome);
+      push("Grow income toward "+money(targetAnnual)+"/yr (≈ "+money(Math.round(delta/12))+"/mo via raise or side income).", dInc);
+    }
+    items.sort(function(a,b){ return b.pts - a.pts; });
+    return items.slice(0,3);
+  }
+
+  /* ===== Confetti ===== */
+  var cf=$("confetti"), ctx=cf.getContext("2d");
+  function resizeC(){ cf.width=innerWidth; cf.height=innerHeight } addEventListener("resize",resizeC); resizeC();
+  function confettiBurst(n){
+    n = n||260; var bits=[];
+    for(var i=0;i<n;i++){
+      bits.push({x:Math.random()*cf.width,y:-20-Math.random()*120,vx:(Math.random()-.5)*3,vy:2+Math.random()*3.5,r:4+Math.random()*7,a:Math.random()*Math.PI,spin:(Math.random()-.5)*0.28,clr:"hsl("+(Math.random()*360)+",90%,60%)"});
+    }
+    var t=0;
+    (function anim(){
+      t++; ctx.clearRect(0,0,cf.width,cf.height);
+      for(var j=0;j<bits.length;j++){
+        var b=bits[j]; b.x+=b.vx; b.y+=b.vy; b.a+=b.spin;
+        ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.a); ctx.fillStyle=b.clr; ctx.fillRect(-b.r/2,-b.r/2,b.r,b.r); ctx.restore();
+      }
+      if(t<220) requestAnimationFrame(anim); else ctx.clearRect(0,0,cf.width,cf.height);
+    })();
+  }
+
+  /* ===== SVG helpers ===== */
+  function setHTML(svgEl, html){ svgEl.innerHTML = html; }
+  function barCompare(svgEl, leftLabel, leftValue, rightLabel, rightValue){
+    var max = Math.max(leftValue, rightValue, 1);
+    var L = Math.round((leftValue/max)*480), R = Math.round((rightValue/max)*480);
+    var html = ''
+      + '<rect x="20" y="30" width="'+L+'" height="26" rx="6" fill="#34d399"></rect>'
+      + '<rect x="20" y="84" width="'+R+'" height="26" rx="6" fill="#f87171"></rect>'
+      + '<text x="20" y="24" fill="#9fb0c7" font-size="12">'+leftLabel+' ('+leftValue.toLocaleString()+')</text>'
+      + '<text x="20" y="78" fill="#9fb0c7" font-size="12">'+rightLabel+' ('+rightValue.toLocaleString()+')</text>';
+    setHTML(svgEl, html);
+  }
+  function pie(svgEl, parts, legendEl){
+    var total = parts.reduce((a,b)=>a+b.v,0);
+    var cx=80, cy=80, r=60, a0=-Math.PI/2, html='';
+    if(total<=0){
+      // Empty ring + label
+      html+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="rgba(148,163,184,.35)" stroke-dasharray="4 6" stroke-width="6"></circle>';
+      html+='<text x="'+cx+'" y="'+cy+'" text-anchor="middle" fill="#9fb0c7" font-size="12">No data</text>';
+      setHTML(svgEl, html);
+      if(legendEl){ legendEl.innerHTML=''; }
+      return;
+    }
+    parts.forEach(function(p){
+      if(p.v<=0) return;
+      var frac=p.v/total, a1=a0+Math.PI*2*frac;
+      var x0=cx+r*Math.cos(a0), y0=cy+r*Math.sin(a0);
+      var x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1);
+      var large=(a1-a0)>Math.PI?1:0;
+      html+='<path d="M '+cx+' '+cy+' L '+x0+' '+y0+' A '+r+' '+r+' 0 '+large+' 1 '+x1+' '+y1+' Z" fill="'+p.color+'"></path>';
+      a0=a1;
+    });
+    html+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r+0.5)+'" fill="none" stroke="rgba(255,255,255,.25)"></circle>';
+    setHTML(svgEl, html);
+    // legend
+    if(legendEl){
+      legendEl.innerHTML='';
+      parts.filter(p=>p.v>0).forEach(function(p){
+        var item=el('div',{className:'small', style:'display:flex;align-items:center;gap:6px'});
+        var dot=el('span',{className:'dot'}); dot.style.background=p.color; item.appendChild(dot);
+        var pct=Math.round((p.v/total)*100);
+        item.appendChild(document.createTextNode(p.label+' — '+pct+'% ('+p.v.toLocaleString()+')'));
+        legendEl.appendChild(item);
+      });
+    }
+  }
+  function hbars(container, items){
+    container.innerHTML='';
+    items.forEach(function(it){
+      var row=el('div'); row.style.display='grid'; row.style.gridTemplateColumns='120px 1fr 52px'; row.style.alignItems='center'; row.style.gap='8px';
+      var lab=el('div'); lab.textContent=it.label; lab.style.color='#cbd5e1'; lab.style.fontSize='13px'; lab.style.fontWeight='800';
+      var bar=el('div'); bar.style.height='12px'; bar.style.borderRadius='999px'; bar.style.border='1px solid var(--line)'; bar.style.background='rgba(255,255,255,.04)'; bar.style.overflow='hidden';
+      var fill=el('div'); fill.style.height='100%'; fill.style.width=Math.round(it.score*100)+'%';
+      fill.style.background = it.isWeak ? '#ef4444' : 'linear-gradient(90deg,var(--g1),var(--g2))';
+      bar.appendChild(fill);
+      var pct=el('div'); pct.textContent=Math.round(it.score*100)+'%'; pct.style.textAlign='right'; pct.style.fontWeight='900'; pct.style.color=it.isWeak?'#fecaca':'#9fb0c7';
+      row.append(lab,bar,pct);
+      container.appendChild(row);
+    });
+  }
+  function sparkline(svgEl, arr){
+    if(!arr || !arr.length){ setHTML(svgEl,''); return; }
+    var w=180,h=32,p=2; var n=arr.length;
+    var min=Math.min.apply(null,arr), max=Math.max.apply(null,arr); if(max===min){ max=min+1; }
+    function x(i){ return p + i*( (w-2*p)/(n-1) ); }
+    function y(v){ return h-p - ( (v-min)/(max-min) )*(h-2*p); }
+    var d=''; for(var i=0;i<n;i++){ d+=(i?' L ':'M ')+x(i)+' '+y(arr[i]); }
+    setHTML(svgEl, '<path d="'+d+'" fill="none" stroke="#34d399" stroke-width="2"/>' );
+  }
+
+  /* ===== Benchmarks (rough) ===== */
+  function estimatePercentiles(v, cats){
+    var incomeRatio = v.annualIncome/70000;
+    var incomePct = Math.round(clamp(50 + (incomeRatio-1)*35*100/100, 5, 95));
+    var efPct     = Math.round(clamp(v.efMonths/6,0,1)*90);
+    var nwPct     = Math.round(clamp(v.nwProgress,0,1)*90);
+    return [
+      {label:'Income', value: incomePct, expl: v.annualIncome? money(v.annualIncome)+'/yr vs median proxy' : '—'},
+      {label:'Emergency Fund', value: efPct, expl: v.efMonths.toFixed(1)+' mo runway (goal 6)'},
+      {label:'Age-Based Net Worth', value: nwPct, expl: Math.round(v.nwProgress*100)+'% of target ('+v.nwTargetMultiple.toFixed(2)+'× baseline)'}
+    ];
+  }
+
+  /* ===== Save & Compare (local only) ===== */
+  var HISTORY_KEY='gmf_history_v2';
+  function saveHistory(entry){
+    var arr=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]'); arr.push(entry);
+    if(arr.length>10) arr=arr.slice(arr.length-10);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(arr));
+  }
+  function getHistory(){ try{ return JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]'); }catch(_){ return []; } }
+
+  /* ===== Report render ===== */
+  var compareText=$("compareText"), spark=$("spark"), benchRows=$("benchRows"), weakWrap=$("weakWrap");
+  var barAL=$("barAL"), pieAssets=$("pieAssets"), pieLiabs=$("pieLiabs"), legendAssets=$("legendAssets"), legendLiabs=$("legendLiabs"), barALCaption=$("barALCaption"), barALLegend=$("barALLegend");
+
+  function drawCharts(v){
+    barCompare(barAL, 'Assets', v.assets, 'Liabilities', v.liabs);
+    barALCaption.textContent = money(v.assets) + " vs " + money(v.liabs);
+    barALLegend.innerHTML='';
+    [['#34d399','Assets'],['#f87171','Liabilities']].forEach(function(entry){
+      var item=el('div',{className:'small', style:'display:flex;align-items:center;gap:6px'});
+      var dot=el('span',{className:'dot'}); dot.style.background=entry[0]; item.appendChild(dot);
+      item.appendChild(document.createTextNode(entry[1]));
+      barALLegend.appendChild(item);
+    });
+    pie(pieAssets, [
+      {v:v.home,      label:'Home',      color:'#10b981'},
+      {v:v.retire,    label:'Retirement',color:'#22c55e'},
+      {v:v.brokerage, label:'Brokerage', color:'#34d399'},
+      {v:v.cash,      label:'Cash',      color:'#86efac'},
+      {v:v.hsa,       label:'HSA',       color:'#6ee7b7'},
+      {v:v.car,       label:'Car',       color:'#a7f3d0'}
+    ], legendAssets);
+    pie(pieLiabs, [
+      {v:v.mortgage, label:'Mortgage', color:'#f87171'},
+      {v:v.student,  label:'Student',  color:'#fb7185'},
+      {v:v.auto,     label:'Auto',     color:'#fca5a5'},
+      {v:v.cc,       label:'Cards',    color:'#fecaca'}
+    ], legendLiabs);
+  }
+
+  function openReport(v,cats){
+    var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), rcMascot=$("rcMascot"), pathList=$("pathList");
+    var modal=$("reportModal");
+    window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score }; // keep for share/projection deltas
+
+    rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
+    rcGrade.textContent=cats.overall.letter;
+    rcGrade.className="rc-grade "+( ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?"good": (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?"mid":"bad"));
+
+    rcRows.innerHTML="";
+    cats.components.forEach(function(c){
+      var row=document.createElement("div");
+      row.className="rc-row fade-in";
+      row.innerHTML=
+        '<div class="rc-cell"><div class="label" title="'+c.sub+'">'+c.key+
+        '</div><div class="sub" style="color:#9fb0c7;font-size:12px">'+c.sub+'</div></div>'+
+        '<div class="rc-cell detail-col"><div class="detail" style="font-weight:900;color:#e2e8f0">'+c.val+
+        '</div><div class="tip" style="color:#cbd5e1;font-size:13px">'+c.tip+'</div></div>'+
+        '<div class="rc-cell"><span class="'+badgeClass(c.letter)+'">'+c.letter+'</span></div>';
+      rcRows.appendChild(row);
+    });
+
+    // Weakest link visualization
+    var items = [
+      {label:"Savings", score:cats.s.sSave},
+      {label:"Emergency Fund", score:cats.s.sEF},
+      {label:"Debt", score:cats.s.sDebt},
+      {label:"Age-based NW", score:cats.s.sAgeNW},
+      {label:"Income", score:cats.s.sInc},
+    ];
+    var minIdx=0; for(var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
+    items = items.map(function(it,idx){ it.isWeak = (idx===minIdx); return it; });
+    hbars(weakWrap, items);
+
+    // Benchmarks
+    benchRows.innerHTML='';
+    var b=estimatePercentiles(v,cats);
+    b.forEach(function(t){
+      var row=el('div'); row.style.display='grid'; row.style.gridTemplateColumns='1fr auto'; row.style.alignItems='center';
+      var label=el('div'); label.innerHTML='<strong>'+t.label+'</strong> — <span style="color:#9fb0c7">'+t.expl+'</span>';
+      var chip=el('div'); chip.className='badge'; chip.textContent=t.value+'th %ile';
+      row.append(label,chip); benchRows.appendChild(row);
+    });
+
+    // Charts
+    drawCharts(v);
+
+    // Path
+    var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; }})();
+    pathList.innerHTML="";
+    actions.forEach(function(a){
+      var li=document.createElement("li");
+      li.innerHTML = a.txt + ' <span class="pts">≈ +' + a.pts + ' pts</span>';
+      pathList.appendChild(li);
+    });
+
+    // History: compare to last run
+    var hist=getHistory();
+    var trendArr=hist.map(function(h){ return h.score; }).concat([cats.overall.score]).slice(-12);
+    sparkline(spark, trendArr);
+    if(hist.length){
+      var last=hist[hist.length-1];
+      var diff=Math.round((cats.overall.score - last.score)*10)/10;
+      var arrow= diff>0?'↑':(diff<0?'↓':'→');
+      var color= diff>0?'#86efac':(diff<0?'#fecaca':'#9fb0c7');
+      compareText.innerHTML = 'Since last check: <span style="font-weight:900;color:'+color+'">'+arrow+' '+(diff>0?'+':'')+diff+'</span> pts';
+    } else {
+      compareText.textContent = 'First run saved on this device.';
+    }
+
+    // Save entry
+    saveHistory({ ts: Date.now(), score: cats.overall.score });
+
+    // Open modal + celebration
+    modal.classList.add("show");
+    rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
+    rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
+    if(["A+","A","A-","B+","B","B-"].indexOf(cats.overall.letter)>-1){ confettiBurst(320); }
+    __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
+
+    // Initialize projections module with current values
+    initProjections(v, cats);
+  }
+
+  $("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
+  $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
+  $("calcAgain").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
+
+  /* ===== Grade sequence ===== */
+  function gradeNow(){
+    __track('click_get_report_card', {location: 'main'});
+    runWithLoader(function(){ var v=values(); var cats=categoryScores(v); openReport(v,cats); });
+  }
+
+  /* ===== Buttons ===== */
+  $("gradeBtnTop").addEventListener("click", function(){ __track('click_get_report_card',{location:'hero'}); gradeNow(); });
+  $("gradeBtn").addEventListener("click", gradeNow);
+  $("gradeBtnSticky").addEventListener("click", function(){ __track('click_get_report_card',{location:'sticky'}); gradeNow(); });
+
+  /* ===== Demo (realistic + negative NW okay) ===== */
+  function randomDemo(){
+    __track('click_demo');
+    function r(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+    function pickWeighted(entries){ var x=Math.random(), cum=0; for(var i=0;i<entries.length;i++){ cum+=entries[i].w; if(x<cum) return entries[i].v; } return entries[entries.length-1].v; }
+    var scenario = pickWeighted([
+      { w:0.40, v:"starter_renter" },
+      { w:0.25, v:"stressed_debt" },
+      { w:0.25, v:"balanced_owner" },
+      { w:0.10, v:"ahead_owner" }
+    ]);
+    var d={age:0,income:0,expenses:0,home:0,retire:0,brokerage:0,car:0,hsa:0,cash:0,mortgage:0,student:0,auto:0,cc:0};
+    if(scenario==="starter_renter"){
+      setHousing("renter");
+      d.age = r(20,35);
+      d.income = r(1600,3800);
+      d.expenses = r(Math.floor(d.income*0.70), Math.floor(d.income*1.10));
+      d.home=0; d.mortgage=0;
+      d.cash = r(50,2000); d.retire = r(0,3000); d.brokerage = r(0,1200); d.hsa = r(0,500); d.car = r(0,8000);
+      d.student = r(0,30000); d.auto = r(0,12000); d.cc = r(500,5000);
+    }else if(scenario==="stressed_debt"){
+      setHousing("renter");
+      d.age = r(24,45);
+      d.income = r(2200,6000);
+      d.expenses = r(Math.floor(d.income*0.85), Math.floor(d.income*1.10));
+      d.home=0; d.mortgage=0;
+      d.cash = r(0,1500); d.retire = r(0,12000); d.brokerage = r(0,5000); d.hsa = r(0,1000); d.car = r(2000,20000);
+      d.student = r(10000,50000); d.auto = r(5000,28000); d.cc = r(1500,9000);
+    }else if(scenario==="balanced_owner"){
+      setHousing("owner");
+      d.age = r(28,55);
+      d.income = r(4000,9000);
+      d.expenses = r(Math.floor(d.income*0.60), Math.floor(d.income*0.80));
+      d.home = r(180000,600000);
+      var ltv = r(60,90)/100;
+      d.mortgage = Math.max(0, Math.floor(d.home*ltv) - r(0,20000));
+      d.cash = r(1000,15000); d.retire = r(20000,120000); d.brokerage = r(5000,60000); d.hsa = r(0,4000); d.car = r(3000,20000);
+      d.student = r(0,25000); d.auto = r(0,15000); d.cc = r(0,4000);
+    }else{ // ahead_owner
+      setHousing("owner");
+      d.age = r(30,60);
+      d.income = r(8000,15000);
+      d.expenses = r(Math.floor(d.income*0.55), Math.floor(d.income*0.75));
+      d.home = r(350000,1200000);
+      var ltv2 = r(30,70)/100;
+      d.mortgage = Math.max(0, Math.floor(d.home*ltv2) - r(0,50000));
+      d.cash = r(5000,60000); d.retire = r(100000,400000); d.brokerage = r(60000,250000); d.hsa = r(0,8000); d.car = r(5000,40000);
+      d.student = r(0,15000); d.auto = r(0,15000); d.cc = r(0,3000);
+    }
+
+    var assets = d.home + d.retire + d.brokerage + d.car + d.hsa + d.cash;
+    var liabs = d.mortgage + d.student + d.auto + d.cc;
+    if((scenario==="starter_renter" || scenario==="stressed_debt") && assets - liabs >= 0){
+      var pushNeg = (assets - liabs) + r(500,4000);
+      d.cc += pushNeg;
+    }
+    Object.keys(d).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=d[id]; });
+    updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw()));
+  }
+  $("demoBtn").addEventListener("click", randomDemo);
+
+  /* ===== Reset ===== */
+  $("resetBtn").addEventListener("click", function(){
+    ids.forEach(function(id){ if(els[id]) els[id].value = (id==="age") ? 30 : 0; });
+    updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); __track('reset_inputs');
+  });
+
+  /* ===== Share link (full inputs) ===== */
+  function shareLink(){
+    var s=currentRaw();
+    return location.origin+location.pathname+"#s="+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(s)))));
+  }
+  $("copyLink").addEventListener("click", function(){
+    var url=shareLink();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(function(){ alert("Share link copied!"); }).catch(function(){ alert(url); });
+    } else { alert(url); }
+    __track('copy_share_link');
+  });
+
+  /* ===== Hydrate from shared link ===== */
+  try{
+    var m=location.hash.match(/#s=([^&]+)/);
+    if(m){
+      var obj=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
+      Object.keys(obj).forEach(function(id){ if(els[id]) els[id].value=obj[id]; });
+      updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); __track('hydrate_from_share');
+    }
+  }catch(e){/* ignore */}
+
+  /* ===== Subscribe (footer) ===== */
+  var subForm=$("subForm"), subEmail=$("subEmail"), toast=$("toast");
+  if(subForm){
+    subForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      var email=subEmail.value.trim();
+      if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
+      fetch(subForm.action, {
+        method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+        body:JSON.stringify({email:email,source:"grademyfinance.com"})
+      })
+      .then(function(res){
+        if(res.ok){
+          toast.textContent="Thanks! Check your inbox for a confirmation.";
+          toast.style.display="block"; setTimeout(function(){toast.style.display="none"},2800);
+          subEmail.value=""; __track('subscribe_success',{placement:'footer'});
+        } else if(res.status===404){
+          alert("Form not found — verify your Formspree form ID."); __track('subscribe_error',{placement:'footer',code:404});
+        } else { alert("Signup failed. Please try again later."); __track('subscribe_error',{placement:'footer',code:res.status}); }
+      })
+      .catch(function(){ alert("Network error. Please try again later."); __track('subscribe_error',{placement:'footer',code:'network'}); });
     });
   }
 
-  // --- Charts ---
-  function pie(id,labels,vals){
-    const ctx=$(id);
-    const data = vals.every(v=>v<=0)? [1] : vals; // avoid blank pies
-    const lab = vals.every(v=>v<=0)? ['No data yet'] : labels;
-    if(state.charts[id]) state.charts[id].destroy();
-    state.charts[id]= new Chart(ctx,{ type:'doughnut', data:{ labels:lab, datasets:[{ data, borderWidth:0 }]}, options:{ responsive:true, cutout:'60%', plugins:{ legend:{display:true, labels:{color:'#cbd5e1'}}, tooltip:{enabled:true} } }});
+  /* ===== Subscribe (Report Card inline) ===== */
+  var subFormRC=$("subFormRC");
+  if(subFormRC){
+    subFormRC.addEventListener("submit", function(e){
+      e.preventDefault();
+      var email=subFormRC.querySelector("input[name='email']").value.trim();
+      if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
+      fetch(subFormRC.action, {
+        method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+        body:JSON.stringify({email:email,source:"grademyfinance.com/reportcard"})
+      })
+      .then(function(res){
+        if(res.ok){ __track('subscribe_success',{placement:'report_card'}); alert("Thanks for subscribing! Check your inbox for confirmation."); subFormRC.reset(); }
+        else { __track('subscribe_error',{placement:'report_card',code:res.status}); alert("Signup failed. Please try again later."); }
+      })
+      .catch(function(){ __track('subscribe_error',{placement:'report_card',code:'network'}); alert("Network error. Please try again later."); });
+    });
   }
 
-  function line(id,points){
-    if(state.charts[id]) state.charts[id].destroy();
-    state.charts[id]= new Chart($(id),{ type:'line', data:{ labels: points.map((_,i)=>`Y${i}`), datasets:[{ data:points, tension:.25, fill:true }]}, options:{ plugins:{legend:{display:false}}, scales:{ x:{ticks:{color:'#9fb0c8'}}, y:{ticks:{color:'#9fb0c8'}} }}});
-  }
+  /* ===== Sticky CTA on mobile ===== */
+  var mcta=$("mobileCta");
+  function onScroll(){ mcta.classList.toggle("on", window.scrollY>300 && window.matchMedia("(max-width: 720px)").matches ); }
+  window.addEventListener("scroll", onScroll); onScroll();
 
-  // --- Trend simulator ---
-  function simulate({assets,debts,income,expenses,ret}, yrs=10){
-    const r = (+$('#assumedReturn').value||6)/100;
-    const g = (+$('#savingsGrowth').value||2)/100;
-    let nw = Math.max(0,assets-debts);
-    let sav = Math.max(0,income-expenses);
-    const out=[nw];
-    for(let i=1;i<=yrs;i++){
-      nw = (nw+ret+sav)*(1+r); // rough compounding on base + new savings
-      sav *= (1+g);
-      out.push(Math.round(nw));
+  /* ===== Report share (letter + score only) ===== */
+  $("shareReport").addEventListener("click", function(){
+    if(!window.__lastOverall){ alert("Run a calculation first, then share your result."); return; }
+    var baseUrl = location.origin + location.pathname;
+    var text = "I just got a " + window.__lastOverall.letter + " (" + window.__lastOverall.score.toFixed(1) + "/100) on Grade My Finance — get your free report card:";
+    var shareData = { title:"My Grade My Finance score", text:text, url:baseUrl };
+    function fallbackCopy(){
+      var clip = text + " " + baseUrl;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(clip).then(function(){
+          var t=$("toast"); t.textContent="Summary copied! Paste anywhere to share."; t.style.display="block"; setTimeout(function(){t.style.display="none"},2600);
+        }).catch(function(){ alert(clip); });
+      } else { alert(clip); }
     }
-    return out;
-  }
+    if(navigator.share){
+      navigator.share(shareData).then(function(){ __track('share_report_native'); })
+      .catch(function(err){
+        if(!(err && (err.name==="AbortError" || err.name==="NotAllowedError"))) { fallbackCopy(); __track('share_report_fallback'); }
+      });
+    } else { fallbackCopy(); __track('share_report_fallback'); }
+  });
 
-  // --- Tips ---
-  function genTips(m){
-    const tips=[];
-    if(m.savingsRate<15) tips.push(`Your savings rate is ${m.savingsRate.toFixed(1)}%. Aim for 15%. Try cutting $${fmt(Math.round((15-m.savingsRate)/100*(num('#income')||0)))} across wants.`);
-    if(m.sg.Debt<80 && num('#debts')>0) tips.push(`Debt load is weighing you down. Consider a snowball/avalanche extra $${fmt(Math.round((num('#income')||0)*0.05))}/mo toward highest APR.`);
-    if(m.monthsRunway<6) tips.push(`Emergency buffer ≈ ${m.monthsRunway.toFixed(1)} months. Target 6+. Try auto-saving $${fmt(Math.round((num('#expenses')||0)*0.2))} to high‑yield savings.`);
-    if(m.sg.Retirement<60) tips.push(`Retirement balance looks light. If available, capture full employer match first—then ramp to 15% of income.`);
-    tips.push(`Re-check weekly. Consistency compounds.`);
-    return tips.slice(0,5);
-  }
+  /* ===== Visual progress fill (cosmetic) ===== */
+  var progressFill = $("progressFill");
+  function fakeProgress(){ progressFill.style.width="100%"; setTimeout(function(){ progressFill.style.width="0%"; }, 1600); }
+  ["gradeBtnTop","gradeBtn","gradeBtnSticky"].forEach(function(id){
+    var b=$(id); if(b) b.addEventListener("click", fakeProgress);
+  });
 
-  // --- Confetti + Grady quips ---
-  const quips=[
-    "Nice bump! Grady approves.",
-    "Feathers up! That grade flew higher.",
-    "Hoot! Small steps, big gains.",
-    "Savings seeds well planted.",
-  ];
-  function celebrate(){ if(state.reduceMotion) return; confetti({ particleCount:80, spread:70, origin:{y:.8} }); toast(quips[Math.floor(Math.random()*quips.length)]); }
+  /* ===== Book CTA tracking ===== */
+  ['bookTop','bookSide','bookMid','bookRC'].forEach(function(id){
+    var el=$(id); if(el) el.addEventListener('click', function(){ __track('click_book_cta', {placement: id}); });
+  });
 
-  // --- Share link ---
-  function buildShare(){
-    const params=new URLSearchParams();
-    ['income','expenses','assets','debts','savingsRate','retCntr'].forEach(id=>{ const v=$("#"+id).value; if(v) params.set(id,v) });
-    return location.origin + location.pathname + (params.toString()? ('?'+params.toString()):'');
-  }
+  /* ===== Projections (what-if) — now live preview + apply ===== */
+  var projExp=$("projExp"), projDebt=$("projDebt"), projExpVal=$("projExpVal"), projDebtVal=$("projDebtVal"), projBadge=$("projBadge"), projText=$("projText"), applyBtn=$("applyProjection");
+  function initProjections(vBase, catsBase){
+    // Calibrate ranges based on current situation for better feel
+    projExp.max = String(Math.min(3000, Math.max(0, Math.round(vBase.expenses*0.6))));
+    projDebt.max = String(Math.min(50000, Math.max(0, Math.round(vBase.nonMortDebt))));
+    projExp.value=0; projDebt.value=0;
+    projExpVal.textContent='-$0'; projDebtVal.textContent='$0';
+    updateProjection();
 
-  function loadFromURL(){
-    const q=new URLSearchParams(location.search);
-    ['income','expenses','assets','debts','savingsRate','retCntr'].forEach(id=>{ if(q.has(id)) $("#"+id).value=q.get(id) });
-  }
+    projExp.oninput = function(){ projExpVal.textContent = '-'+money(+projExp.value); updateProjection(); };
+    projDebt.oninput = function(){ projDebtVal.textContent = money(+projDebt.value); updateProjection(); };
 
-  // --- Streaks (gamify) ---
-  function streakUpdate(){
-    const k='gmf:last'; const sKey='gmf:streak';
-    const today=new Date().toDateString();
-    const last=localStorage.getItem(k);
-    let streak=+(localStorage.getItem(sKey)||0);
-    if(last!==today){
-      const d= last? Math.round((new Date(today)-new Date(last))/86400000) : 0;
-      if(d===1) streak+=1; else streak=1;
-      localStorage.setItem(k,today); localStorage.setItem(sKey,String(streak));
+    function simulate(v0){
+      // Deep clone
+      var v=JSON.parse(JSON.stringify(v0));
+      var expCut = +projExp.value;
+      var pay = +projDebt.value;
+      v.expenses = Math.max(0, v.expenses - Math.round(expCut));
+      // Apply payoff to cc, then auto, then student
+      var left=pay;
+      var order=['cc','auto','student'];
+      for(var i=0;i<order.length;i++){
+        var key=order[i];
+        var cur=v[key];
+        var dec=Math.min(cur,left);
+        v[key]=cur-dec; left-=dec; if(left<=0) break;
+      }
+      // recompute derived
+      return v;
     }
-    return streak;
-  }
 
-  // --- Render main ---
-  let lastOverall=0;
-  function render(){
-    const data={
-      income:num('#income'), expenses:num('#expenses'), assets:num('#assets'), debts:num('#debts'), ret:num('#retCntr'), sr:num('#savingsRate')
+    function updateProjection(){
+      var vSim = simulate(vBase);
+      var cats = categoryScores(vSim);
+      projBadge.textContent = 'Projected: '+cats.overall.letter+' ('+cats.overall.score.toFixed(1)+')';
+      projBadge.className = 'badge '+( ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?'good': (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?'mid':'bad') );
+      var delta = Math.round((cats.overall.score - catsBase.overall.score)*10)/10;
+      projText.textContent = (delta>=0?'+':'')+delta+' pts vs current';
+
+      // Live preview charts & weakest link
+      drawCharts(vSim);
+      var items = [
+        {label:"Savings", score:cats.s.sSave},
+        {label:"Emergency Fund", score:cats.s.sEF},
+        {label:"Debt", score:cats.s.sDebt},
+        {label:"Age-based NW", score:cats.s.sAgeNW},
+        {label:"Income", score:cats.s.sInc},
+      ];
+      var minIdx=0; for(var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
+      items = items.map(function(it,idx){ it.isWeak = (idx===minIdx); return it; });
+      hbars(weakWrap, items);
+    }
+
+    applyBtn.onclick = function(){
+      var vApplied = simulate(vBase);
+      // Push back to inputs & close modal for recalculation
+      els.expenses.value = Math.round(vApplied.expenses);
+      els.cc.value = Math.round(vApplied.cc);
+      els.auto.value = Math.round(vApplied.auto);
+      els.student.value = Math.round(vApplied.student);
+      updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw()));
+      alert("Projection applied to inputs. Click “Recalculate” to see the updated full report.");
+      __track('apply_projection');
     };
-    const m=compute(data);
-    $('#gradeBadge').textContent=m.letter;
-    renderSubgrades(m);
-    $('#thermo').style.setProperty('--p', m.towardNext);
-    $('#thermoPct').textContent=Math.round(m.towardNext)+'%';
-
-    pie('#pieAL',['Assets','Liabilities'],[data.assets, data.debts]);
-    pie('#pieIE',['Income','Expenses'],[data.income, data.expenses]);
-
-    const series=simulate(data,10);
-    line('#trendChart',series);
-
-    const tWrap=$('#tips'); tWrap.innerHTML='';
-    genTips(m).forEach(t=>{ const d=document.createElement('div'); d.className='tip'; d.textContent='• '+t; tWrap.appendChild(d); });
-
-    if(m.overall>lastOverall){ celebrate(); lastOverall=m.overall; }
-
-    // Badge color shift
-    const gb=$('#gradeBadge');
-    gb.style.background = m.letter==='A'? 'linear-gradient(120deg,#22c55e,#10b981,#34d399)'
-      : m.letter==='B'? 'linear-gradient(120deg,#34d399,#38bdf8)'
-      : m.letter==='C'? 'linear-gradient(120deg,#f59e0b,#38bdf8)'
-      : 'linear-gradient(120deg,#ef4444,#f59e0b)';
-
-    __track('calculated', {grade:m.letter});
   }
 
-  // --- PDF export (print) ---
-  function exportPDF(){ window.print(); __track('export_pdf'); }
+  /* ===== Loader sequence ===== */
+  var overlay=$("overlay"), bar=$("barFill"), pct=$("pct"), loadMsg=$("loadMsg");
+  function runWithLoader(fnDone){
+    var steps=["Checking savings rate…","Measuring emergency fund runway…","Comparing net worth vs age…","Weighing debt load…","Factoring income strength…"];
+    var i=0, prog=0, total=steps.length+2, interval=1200/total;
+    overlay.classList.add("show"); bar.style.width="0%"; pct.textContent="0%"; loadMsg.textContent="Crunching numbers…";
+    var t=setInterval(function(){
+      prog=Math.min(100,Math.round(((i+1)/total)*100));
+      bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[i] || "Finalizing…"; i++;
+      if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
+    }, interval);
+  }
 
-  // --- Events ---
-  on(document,'DOMContentLoaded',()=>{
-    $('#y').textContent=new Date().getFullYear();
-    loadFromURL();
-    state.reduceMotion = localStorage.getItem('gmf:reduceMotion')==='1';
-    $('#reduceMotion').checked = state.reduceMotion;
-    render();
-  });
-
-  ['#income','#expenses','#assets','#debts','#savingsRate','#retCntr','#assumedReturn','#savingsGrowth'].forEach(sel=>{
-    on($(sel),'input',()=>{ render(); });
-  });
-
-  on($('#calcBtn'),'click',()=>{ const s=streakUpdate(); render(); toast(`Checked in! Streak: ${s} week${s===1?'':'s'}`) });
-  on($('#stickyBtn'),'click',()=> $('#calcBtn').click());
-
-  on($('#shareBtn'),'click',async()=>{
-    const url=buildShare();
-    try{ await navigator.clipboard.writeText(url); toast('✅ Link copied!'); __track('share_copied'); }
-    catch{ toast('Link ready: long-press to copy'); }
-  });
-
-  on($('#pdfBtn'),'click', exportPDF);
-
-  on($('#emailBtn'),'click',()=>{
-    const v=$('#email').value.trim();
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) return toast('Please enter a valid email');
-    localStorage.setItem('gmf:email',v); toast('💾 Saved! Check your inbox soon.'); __track('email_capture');
-  });
-
-  on($('#reduceMotion'),'change',e=>{
-    state.reduceMotion = !!e.target.checked; localStorage.setItem('gmf:reduceMotion', state.reduceMotion?'1':'0');
-  });
-  </script>
+})(); // end IIFE
+</script>
 </body>
 </html>
+
+
+
+
 
 
 
