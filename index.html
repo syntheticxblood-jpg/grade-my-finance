@@ -6,9 +6,29 @@
 <title>Grade My Finance | Free Financial Grade Calculator</title>
 <meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and ways to improve. No sign-up required.">
 <meta name="theme-color" content="#0f172a">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://grademyfinance.com/">
+
+<!-- Icons -->
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<!-- OG/Twitter -->
+<meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
+<meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it. No sign-up.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://grademyfinance.com/">
+<meta property="og:image" content="https://grademyfinance.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grade My Finance | Free Financial Grade Calculator">
+<meta name="twitter:description" content="Get your money grade in seconds — plus a simple plan to raise it.">
+<meta name="twitter:image" content="https://grademyfinance.com/og-image.png">
+
+<!-- Perf preconnects -->
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+<link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin>
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 
 <!-- Google AdSense Auto Ads -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514" crossorigin="anonymous"></script>
@@ -90,7 +110,7 @@ select.btn{appearance:none} .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 .proof-metric .big{ font-size:26px; background:linear-gradient(90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent }
 .review{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start }
 .avatar{ width:36px; height:36px; border-radius:999px; background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; font-weight:900; display:grid; place-items:center }
-.stars{ color:#fbbf24; letter-spacing:1px } .quote{ color:#var(--muted); font-size:14px }
+.stars{ color:#fbbf24; letter-spacing:1px } .quote{ color: var(--muted); font-size:14px }
 
 /* 📘 Book card */
 .book-card{
@@ -117,7 +137,7 @@ select.btn{appearance:none} .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 .inputs{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:14px}
 @media (max-width:1060px){ .inputs{grid-template-columns:repeat(2,minmax(220px,1fr))} }
 @media (max-width:720px){ .inputs{grid-template-columns:1fr; gap:12px} }
-input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:#var(--text)}
+input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:var(--text)}
 :root[data-theme="light"] input{background:#fff;color:#0b1226}
 input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.30)}
 .progress{height:12px;background:#0b1226;border:1px solid var(--line);border-radius:999px;overflow:hidden}
@@ -209,7 +229,7 @@ footer{background:#0b1226; border-top:1px solid var(--line); margin-top:22px; pa
 .mobile-cta{position:fixed;left:0;right:0;bottom:0;padding:10px;background:rgba(15,23,42,.86); border-top:1px solid rgba(148,163,184,.22);display:none;z-index:90}
 .mobile-cta.on{display:block}
 
-/* Small tweaks */
+/* Misc */
 svg, img { display:block; max-width:100%; height:auto; }
 @media (max-width:720px){ .hero-card{ padding:14px } .inputs{ gap:10px } .card{ padding:12px } }
 
@@ -220,9 +240,20 @@ svg, img { display:block; max-width:100%; height:auto; }
   #reportModal{position:static!important;display:block!important;background:#fff!important}
   .sheet{max-height:none!important;box-shadow:none!important;border:none!important}
 }
+.small{font-size:12px;color:#9fb0c7}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.legend .dot{width:10px;height:10px;border-radius:999px;display:inline-block;border:1px solid rgba(255,255,255,.35)}
+.fade-in{animation:fade .28s ease}
+@keyframes fade{from{opacity:.0;transform:translateY(2px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
+
+<noscript>
+  <div style="background:#fee2e2;color:#7f1d1d;padding:10px;text-align:center">
+    JavaScript is required to calculate your report card. Please enable it in your browser.
+  </div>
+</noscript>
 
 <!-- Confetti canvas -->
 <canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:150;"></canvas>
@@ -255,11 +286,11 @@ svg, img { display:block; max-width:100%; height:auto; }
       <option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option><option>AUD</option>
     </select>
     <button id="themeToggle" class="btn mini" type="button" aria-label="Toggle theme">🌙/☀️</button>
-    <a id="bookTop" class="btn mini primary" href="https://grademyfinance.gumroad.com/l/zlwid?_gl=1*1facwp3*_ga*MTE1MjUzMDI0MS4xNzU3Njk5NTYw*_ga_6LJN6D94N6*czE3NTc2OTk1NTkkbzEkZzEkdDE3NTc3MDEyNDkkajYwJGwwJGgw" target="_blank" rel="noopener noreferrer">📘 Get the Book</a>
+    <a id="bookTop" class="btn mini primary" href="https://grademyfinance.gumroad.com/l/zlwid" target="_blank" rel="noopener">📘 Get the Book</a>
   </div>
 </header>
 
-<section class="container hero">
+<section class="container hero" aria-label="Hero">
   <div class="hero-grid">
     <div class="hero-left">
       <div class="hero-card">
@@ -272,13 +303,15 @@ svg, img { display:block; max-width:100%; height:auto; }
         </div>
       </div>
 
-      <div class="mascot" aria-label="Grady the Owl mascot">
+      <div class="mascot" aria-label="Grady the Owl">
         <img
           class="grady-logo"
           src="grady-owl-1024.png"
           srcset="grady-owl-4k.png 4096w, grady-owl-1024.png 1024w"
           sizes="(max-width: 980px) 220px, 260px"
-          alt="Grady the Owl holding an A+ report card">
+          alt="Grady the Owl holding an A+ report card"
+          fetchpriority="high"
+          loading="eager">
         <div class="floatA" aria-hidden="true">A+</div>
       </div>
     </div>
@@ -287,13 +320,13 @@ svg, img { display:block; max-width:100%; height:auto; }
     <aside class="social-proof" aria-label="Book & reviews">
       <div class="book-card">
         <div class="book-cover">
-          <img src="book-cover.png" alt="Grade My Finance — The Guide">
+          <img src="book-cover.png" alt="Grade My Finance — The Guide" loading="lazy">
         </div>
         <div>
           <h4 class="book-title">Grade My Finance — The Guide</h4>
           <p class="book-desc">A quick, practical playbook to boost your score: savings, debt, emergency fund, and net worth milestones.</p>
-          <a id="bookSide" class="btn primary" target="_blank" rel="noopener noreferrer"
-             href="https://grademyfinance.gumroad.com/l/zlwid?_gl=1*1facwp3*_ga*MTE1MjUzMDI0MS4xNzU3Njk5NTYw*_ga_6LJN6D94N6*czE3NTc2OTk1NTkkbzEkZzEkdDE3NTc3MDEyNDkkajYwJGwwJGgw">📘 Buy the Book</a>
+          <a id="bookSide" class="btn primary" target="_blank" rel="noopener"
+             href="https://grademyfinance.gumroad.com/l/zlwid">📘 Buy the Book</a>
         </div>
       </div>
 
@@ -302,27 +335,27 @@ svg, img { display:block; max-width:100%; height:auto; }
           <div class="big">1,000+</div>
           <div>report cards graded</div>
         </div>
-        <div style="color:var(--muted);font-size:13px;margin-top:6px">Since launch. Educational only — not financial advice.</div>
+        <div class="small">Since launch. Educational only — not financial advice.</div>
       </div>
 
       <div class="proof-card review">
         <div class="avatar">AL</div>
         <div>
-          <div class="stars">★★★★★</div>
+          <div class="stars" aria-label="5 stars">★★★★★</div>
           <div class="quote">“Made my budget click. The tips felt doable and I loved the grade reveal.”</div>
         </div>
       </div>
       <div class="proof-card review">
         <div class="avatar">JR</div>
         <div>
-          <div class="stars">★★★★★</div>
+          <div class="stars" aria-label="5 stars">★★★★★</div>
           <div class="quote">“Helped me set a target emergency fund and pay down cards faster.”</div>
         </div>
       </div>
       <div class="proof-card review">
         <div class="avatar">SM</div>
         <div>
-          <div class="stars">★★★★☆</div>
+          <div class="stars" aria-label="4 stars">★★★★☆</div>
           <div class="quote">“Clear next steps — I printed the report for my fridge.”</div>
         </div>
       </div>
@@ -333,7 +366,7 @@ svg, img { display:block; max-width:100%; height:auto; }
 <!-- Inputs -->
 <div class="shell">
   <main>
-    <section id="grade" class="page active">
+    <section id="grade" class="page active" aria-label="Inputs">
       <div class="inputs">
         <!-- Housing mode -->
         <div class="card" style="grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
@@ -397,7 +430,7 @@ svg, img { display:block; max-width:100%; height:auto; }
         </div>
         <div id="rcGrade" class="rc-grade">A</div>
       </div>
-      <button class="xbtn" id="closeReport" type="button">Close</button>
+      <button class="xbtn" id="closeReport" type="button" aria-label="Close report">Close</button>
     </div>
 
     <!-- Summary/compare row -->
@@ -427,17 +460,23 @@ svg, img { display:block; max-width:100%; height:auto; }
     <!-- Charts -->
     <div class="rc-sections" style="margin-top:10px">
       <div class="card">
-        <span class="section-label">Assets vs Liabilities</span>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="section-label">Assets vs Liabilities</span>
+          <span id="barALCaption" class="small">—</span>
+        </div>
         <svg id="barAL" width="100%" height="140" viewBox="0 0 520 140" preserveAspectRatio="none" role="img" aria-label="Assets vs Liabilities chart"></svg>
+        <div class="legend" id="barALLegend"></div>
       </div>
       <div class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div>
           <span class="section-label">Assets Mix</span>
           <svg id="pieAssets" width="100%" height="160" viewBox="0 0 160 160" role="img" aria-label="Assets pie"></svg>
+          <div class="legend" id="legendAssets"></div>
         </div>
         <div>
           <span class="section-label">Liabilities Mix</span>
           <svg id="pieLiabs" width="100%" height="160" viewBox="0 0 160 160" role="img" aria-label="Liabilities pie"></svg>
+          <div class="legend" id="legendLiabs"></div>
         </div>
       </div>
     </div>
@@ -446,7 +485,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     <div class="path">
       <h4>Path to a higher grade</h4>
       <ol id="pathList"></ol>
-      <div style="font-size:12px;color:#9fb0c7;margin-top:6px">Est. point gains are approximate based on our weighting.</div>
+      <div class="small">Est. point gains are approximate based on our weighting.</div>
     </div>
 
     <!-- Projections -->
@@ -454,17 +493,19 @@ svg, img { display:block; max-width:100%; height:auto; }
       <span class="section-label">What-If Projections</span>
       <div style="display:grid;gap:10px">
         <label style="display:grid;gap:6px">
-          <div style="display:flex;justify-content:space-between"><span>Reduce monthly expenses</span><strong id="projExpVal">-$0</strong></div>
-          <input id="projExp" type="range" min="0" max="2000" step="50" value="0">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span>Reduce monthly expenses</span><strong id="projExpVal">-$0</strong></div>
+          <input id="projExp" type="range" min="0" max="2000" step="50" value="0" aria-label="Reduce monthly expenses">
         </label>
         <label style="display:grid;gap:6px">
-          <div style="display:flex;justify-content:space-between"><span>One-time debt payoff</span><strong id="projDebtVal">$0</strong></div>
-          <input id="projDebt" type="range" min="0" max="20000" step="500" value="0">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span>One-time debt payoff</span><strong id="projDebtVal">$0</strong></div>
+          <input id="projDebt" type="range" min="0" max="20000" step="500" value="0" aria-label="One-time debt payoff">
         </label>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
           <div class="badge" id="projBadge">Projected: —</div>
           <div id="projText" style="color:#cbd5e1;font-weight:800">Adjust sliders to preview your new grade.</div>
+          <button id="applyProjection" class="btn" type="button" title="Apply these changes to inputs">Apply to Inputs</button>
         </div>
+        <div class="small" id="projNotes">Projection updates charts & weakest link live (preview only until you apply).</div>
       </div>
     </div>
 
@@ -486,8 +527,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     <div class="rc-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap">
       <button class="btn" id="shareReport" type="button" title="Share only your overall letter & score">Share</button>
       <button class="btn" id="printReport" type="button">Print / Save as PDF</button>
-      <a id="bookRC" class="btn" target="_blank" rel="noopener noreferrer"
-         href="https://grademyfinance.gumroad.com/l/zlwid?_gl=1*1facwp3*_ga*MTE1MjUzMDI0MS4xNzU3Njk5NTYw*_ga_6LJN6D94N6*czE3NTc2OTk1NTkkbzEkZzEkdDE3NTc3MDEyNDkkajYwJGwwJGgw">📘 Level up with the Guide</a>
+      <a id="bookRC" class="btn" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/zlwid">📘 Level up with the Guide</a>
       <button class="btn primary" id="calcAgain" type="button">Recalculate</button>
     </div>
 
@@ -523,7 +563,7 @@ svg, img { display:block; max-width:100%; height:auto; }
 <section class="container" style="max-width:1000px; margin:12px auto 0; padding:0 2px 12px;">
   <div class="card" style="display:grid; grid-template-columns:110px minmax(0,1fr) auto; gap:14px; align-items:center;">
     <div class="book-cover" style="width:110px; height:140px;">
-      <img src="book-cover.png" alt="Grade My Finance — The Guide">
+      <img src="book-cover.png" alt="Grade My Finance — The Guide" loading="lazy">
     </div>
     <div>
       <h3 style="margin:0 0 6px">Turn your grade into a plan — get the book</h3>
@@ -533,8 +573,7 @@ svg, img { display:block; max-width:100%; height:auto; }
         <li>Printable checklists + quick wins</li>
       </ul>
     </div>
-    <a id="bookMid" class="btn primary" style="min-width:160px" target="_blank" rel="noopener noreferrer"
-       href="https://grademyfinance.gumroad.com/l/zlwid?_gl=1*1facwp3*_ga*MTE1MjUzMDI0MS4xNzU3Njk5NTYw*_ga_6LJN6D94N6*czE3NTc2OTk1NTkkbzEkZzEkdDE3NTc3MDEyNDkkajYwJGwwJGgw">📘 Buy the Book</a>
+    <a id="bookMid" class="btn primary" style="min-width:160px" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/zlwid">📘 Buy the Book</a>
   </div>
 </section>
 
@@ -566,7 +605,6 @@ svg, img { display:block; max-width:100%; height:auto; }
   var NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
   function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
   function map01(x,a,b){ return clamp((x-a)/(b-a),0,1); }
-  function lerp(a,b,t){ return a+(b-a)*t; }
   function targetNW(age){
     if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
     if(age>=NW_CURVE[NW_CURVE.length-1][0]) return NW_CURVE[NW_CURVE.length-1][1];
@@ -589,37 +627,32 @@ svg, img { display:block; max-width:100%; height:auto; }
 
   /* ===== Theme & currency ===== */
   var root=document.documentElement;
-  var savedTheme=localStorage.getItem("gmf_theme");
-  if(savedTheme==="light") root.dataset.theme="light";
+  var savedTheme=localStorage.getItem("gmf_theme"); if(savedTheme==="light") root.dataset.theme="light";
   $("themeToggle").addEventListener("click", function(){
-    var next=root.dataset.theme==="light"?"":"light";
-    root.dataset.theme=next;
-    localStorage.setItem("gmf_theme", next||"dark");
-    __track('toggle_theme', {theme: next||'dark'});
+    var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next;
+    localStorage.setItem("gmf_theme", next||"dark"); __track('toggle_theme', {theme: next||'dark'});
   });
 
   var CURRENCY=localStorage.getItem("gmf_curr")||"USD";
-  var curSel=$("currencySel");
-  curSel.value=CURRENCY;
-  curSel.addEventListener("change", function(){
-    CURRENCY=curSel.value;
-    localStorage.setItem("gmf_curr",CURRENCY);
-    updateHints();
-    __track('change_currency',{currency:CURRENCY});
-  });
-  function money(n){
-    return isFinite(n)? new Intl.NumberFormat(undefined,{style:"currency",currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)) : "—";
-  }
+  var curSel=$("currencySel"); curSel.value=CURRENCY;
+  curSel.addEventListener("change", function(){ CURRENCY=curSel.value; localStorage.setItem("gmf_curr",CURRENCY); updateHints(); __track('change_currency',{currency:CURRENCY}); });
+  function money(n){ return isFinite(n)? new Intl.NumberFormat(undefined,{style:"currency",currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)) : "—"; }
 
-  /* ===== Inputs & hygiene ===== */
+  /* ===== Inputs & hygiene + autosave ===== */
   var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","mortgage","student","auto","cc"];
   var els={}; ids.forEach(function(id){ els[id]=$(id); });
   function val(id){ var e=els[id]; return e && e.value!=="" ? Number(e.value) : 0; }
   ids.forEach(function(id){
     var e=els[id];
-    e.addEventListener("input", function(){ e.value=e.value.replace(/[^\d.-]/g,""); });
-    e.addEventListener("blur", function(){ if(e.value!=="") e.value=String(Math.round(+e.value)); updateHints(); });
+    e.addEventListener("input", function(){ e.value=e.value.replace(/[^\d.-]/g,""); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); });
+    e.addEventListener("blur", function(){ if(e.value!=="") e.value=String(Math.round(+e.value)); updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); });
   });
+  function currentRaw(){ var obj={}; ids.forEach(function(id){ obj[id]=Number(els[id]?els[id].value:0); }); return obj; }
+  // Restore autosave
+  try{
+    var saved = JSON.parse(localStorage.getItem("gmf_autosave")||"null");
+    if(saved){ Object.keys(saved).forEach(function(id){ if(els[id]) els[id].value = saved[id]; }); }
+  }catch(_){}
 
   /* ===== Values & hints ===== */
   function values(){
@@ -710,6 +743,12 @@ svg, img { display:block; max-width:100%; height:auto; }
       var targetDebt = Math.round(v.baseline*0.25), paydown = Math.max(0, v.nonMortDebt - targetDebt);
       push("Pay down non-mortgage debt below 25% of baseline (reduce about "+money(paydown)+", e.g., "+money(Math.round(v.baseline*0.05))+"/mo).", dDebt);
     }
+    if(v.nwProgress < 1){
+      var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
+      var dAge=(sAgeGoal - sAgeNow)*0.65*100;
+      var gap = Math.max(0, v.nwTargetAmount - v.net);
+      push("Close the age-based net worth gap (~"+money(gap)+"). Consider investing ~"+money(Math.round(gap/36))+"/mo for ~36 months.", dAge);
+    }
     var ratio = v.annualIncome/70000;
     if(ratio < 1.15){
       var sIncNow = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2),0,1);
@@ -717,12 +756,6 @@ svg, img { display:block; max-width:100%; height:auto; }
       var dInc=(sIncGoal - sIncNow)*0.05*100;
       var targetAnnual = Math.round(70000*1.15), delta = Math.max(0, targetAnnual - v.annualIncome);
       push("Grow income toward "+money(targetAnnual)+"/yr (≈ "+money(Math.round(delta/12))+"/mo via raise or side income).", dInc);
-    }
-    if(v.nwProgress < 1){
-      var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
-      var dAge=(sAgeGoal - sAgeNow)*0.65*100;
-      var gap = Math.max(0, v.nwTargetAmount - v.net);
-      push("Close the age-based net worth gap (~"+money(gap)+"). Consider investing ~"+money(Math.round(gap/36))+"/mo for ~36 months.", dAge);
     }
     items.sort(function(a,b){ return b.pts - a.pts; });
     return items.slice(0,3);
@@ -747,23 +780,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     })();
   }
 
-  /* ===== Overlay & modal ===== */
-  var overlay=$("overlay"), bar=$("barFill"), pct=$("pct"), loadMsg=$("loadMsg");
-  function runWithLoader(fnDone){
-    var steps=["Checking savings rate…","Measuring emergency fund runway…","Comparing net worth vs age…","Weighing debt load…","Factoring income strength…"];
-    var i=0, prog=0, total=steps.length+2, interval=1200/total;
-    overlay.classList.add("show"); bar.style.width="0%"; pct.textContent="0%"; loadMsg.textContent="Crunching numbers…";
-    var t=setInterval(function(){
-      prog=Math.min(100,Math.round(((i+1)/total)*100));
-      bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[i] || "Finalizing…"; i++;
-      if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
-    }, interval);
-  }
-
-  var modal=$("reportModal"), rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), rcMascot=$("rcMascot"), pathList=$("pathList");
-  var lastOverall = null;
-
-  /* ===== Simple SVG chart helpers (no libs) ===== */
+  /* ===== SVG helpers ===== */
   function setHTML(svgEl, html){ svgEl.innerHTML = html; }
   function barCompare(svgEl, leftLabel, leftValue, rightLabel, rightValue){
     var max = Math.max(leftValue, rightValue, 1);
@@ -775,9 +792,17 @@ svg, img { display:block; max-width:100%; height:auto; }
       + '<text x="20" y="78" fill="#9fb0c7" font-size="12">'+rightLabel+' ('+rightValue.toLocaleString()+')</text>';
     setHTML(svgEl, html);
   }
-  function pie(svgEl, parts){
-    var total = parts.reduce((a,b)=>a+b.v,0); if(total<=0){ setHTML(svgEl,''); return; }
+  function pie(svgEl, parts, legendEl){
+    var total = parts.reduce((a,b)=>a+b.v,0);
     var cx=80, cy=80, r=60, a0=-Math.PI/2, html='';
+    if(total<=0){
+      // Empty ring + label
+      html+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="rgba(148,163,184,.35)" stroke-dasharray="4 6" stroke-width="6"></circle>';
+      html+='<text x="'+cx+'" y="'+cy+'" text-anchor="middle" fill="#9fb0c7" font-size="12">No data</text>';
+      setHTML(svgEl, html);
+      if(legendEl){ legendEl.innerHTML=''; }
+      return;
+    }
     parts.forEach(function(p){
       if(p.v<=0) return;
       var frac=p.v/total, a1=a0+Math.PI*2*frac;
@@ -789,6 +814,17 @@ svg, img { display:block; max-width:100%; height:auto; }
     });
     html+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r+0.5)+'" fill="none" stroke="rgba(255,255,255,.25)"></circle>';
     setHTML(svgEl, html);
+    // legend
+    if(legendEl){
+      legendEl.innerHTML='';
+      parts.filter(p=>p.v>0).forEach(function(p){
+        var item=el('div',{className:'small', style:'display:flex;align-items:center;gap:6px'});
+        var dot=el('span',{className:'dot'}); dot.style.background=p.color; item.appendChild(dot);
+        var pct=Math.round((p.v/total)*100);
+        item.appendChild(document.createTextNode(p.label+' — '+pct+'% ('+p.v.toLocaleString()+')'));
+        legendEl.appendChild(item);
+      });
+    }
   }
   function hbars(container, items){
     container.innerHTML='';
@@ -810,8 +846,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     var min=Math.min.apply(null,arr), max=Math.max.apply(null,arr); if(max===min){ max=min+1; }
     function x(i){ return p + i*( (w-2*p)/(n-1) ); }
     function y(v){ return h-p - ( (v-min)/(max-min) )*(h-2*p); }
-    var d='';
-    for(var i=0;i<n;i++){ d+=(i?' L ':'M ')+x(i)+' '+y(arr[i]); }
+    var d=''; for(var i=0;i<n;i++){ d+=(i?' L ':'M ')+x(i)+' '+y(arr[i]); }
     setHTML(svgEl, '<path d="'+d+'" fill="none" stroke="#34d399" stroke-width="2"/>' );
   }
 
@@ -831,8 +866,7 @@ svg, img { display:block; max-width:100%; height:auto; }
   /* ===== Save & Compare (local only) ===== */
   var HISTORY_KEY='gmf_history_v2';
   function saveHistory(entry){
-    var arr=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
-    arr.push(entry);
+    var arr=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]'); arr.push(entry);
     if(arr.length>10) arr=arr.slice(arr.length-10);
     localStorage.setItem(HISTORY_KEY, JSON.stringify(arr));
   }
@@ -840,17 +874,47 @@ svg, img { display:block; max-width:100%; height:auto; }
 
   /* ===== Report render ===== */
   var compareText=$("compareText"), spark=$("spark"), benchRows=$("benchRows"), weakWrap=$("weakWrap");
-  var barAL=$("barAL"), pieAssets=$("pieAssets"), pieLiabs=$("pieLiabs");
+  var barAL=$("barAL"), pieAssets=$("pieAssets"), pieLiabs=$("pieLiabs"), legendAssets=$("legendAssets"), legendLiabs=$("legendLiabs"), barALCaption=$("barALCaption"), barALLegend=$("barALLegend");
+
+  function drawCharts(v){
+    barCompare(barAL, 'Assets', v.assets, 'Liabilities', v.liabs);
+    barALCaption.textContent = money(v.assets) + " vs " + money(v.liabs);
+    barALLegend.innerHTML='';
+    [['#34d399','Assets'],['#f87171','Liabilities']].forEach(function(entry){
+      var item=el('div',{className:'small', style:'display:flex;align-items:center;gap:6px'});
+      var dot=el('span',{className:'dot'}); dot.style.background=entry[0]; item.appendChild(dot);
+      item.appendChild(document.createTextNode(entry[1]));
+      barALLegend.appendChild(item);
+    });
+    pie(pieAssets, [
+      {v:v.home,      label:'Home',      color:'#10b981'},
+      {v:v.retire,    label:'Retirement',color:'#22c55e'},
+      {v:v.brokerage, label:'Brokerage', color:'#34d399'},
+      {v:v.cash,      label:'Cash',      color:'#86efac'},
+      {v:v.hsa,       label:'HSA',       color:'#6ee7b7'},
+      {v:v.car,       label:'Car',       color:'#a7f3d0'}
+    ], legendAssets);
+    pie(pieLiabs, [
+      {v:v.mortgage, label:'Mortgage', color:'#f87171'},
+      {v:v.student,  label:'Student',  color:'#fb7185'},
+      {v:v.auto,     label:'Auto',     color:'#fca5a5'},
+      {v:v.cc,       label:'Cards',    color:'#fecaca'}
+    ], legendLiabs);
+  }
 
   function openReport(v,cats){
-    lastOverall = { letter: cats.overall.letter, score: cats.overall.score };
+    var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), rcMascot=$("rcMascot"), pathList=$("pathList");
+    var modal=$("reportModal");
+    window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score }; // keep for share/projection deltas
+
     rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
     rcGrade.textContent=cats.overall.letter;
     rcGrade.className="rc-grade "+( ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?"good": (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?"mid":"bad"));
+
     rcRows.innerHTML="";
     cats.components.forEach(function(c){
       var row=document.createElement("div");
-      row.className="rc-row";
+      row.className="rc-row fade-in";
       row.innerHTML=
         '<div class="rc-cell"><div class="label" title="'+c.sub+'">'+c.key+
         '</div><div class="sub" style="color:#9fb0c7;font-size:12px">'+c.sub+'</div></div>'+
@@ -860,6 +924,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       rcRows.appendChild(row);
     });
 
+    // Weakest link visualization
     var items = [
       {label:"Savings", score:cats.s.sSave},
       {label:"Emergency Fund", score:cats.s.sEF},
@@ -871,6 +936,7 @@ svg, img { display:block; max-width:100%; height:auto; }
     items = items.map(function(it,idx){ it.isWeak = (idx===minIdx); return it; });
     hbars(weakWrap, items);
 
+    // Benchmarks
     benchRows.innerHTML='';
     var b=estimatePercentiles(v,cats);
     b.forEach(function(t){
@@ -880,22 +946,10 @@ svg, img { display:block; max-width:100%; height:auto; }
       row.append(label,chip); benchRows.appendChild(row);
     });
 
-    barCompare(barAL, 'Assets', v.assets, 'Liabilities', v.liabs);
-    pie(pieAssets, [
-      {v:v.home,      label:'Home',      color:'#10b981'},
-      {v:v.retire,    label:'Retire',    color:'#22c55e'},
-      {v:v.brokerage, label:'Brokerage', color:'#34d399'},
-      {v:v.cash,      label:'Cash',      color:'#86efac'},
-      {v:v.hsa,       label:'HSA',       color:'#6ee7b7'},
-      {v:v.car,       label:'Car',       color:'#a7f3d0'}
-    ]);
-    pie(pieLiabs, [
-      {v:v.mortgage, label:'Mortgage', color:'#f87171'},
-      {v:v.student,  label:'Student',  color:'#fb7185'},
-      {v:v.auto,     label:'Auto',     color:'#fca5a5'},
-      {v:v.cc,       label:'Cards',    color:'#fecaca'}
-    ]);
+    // Charts
+    drawCharts(v);
 
+    // Path
     var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; }})();
     pathList.innerHTML="";
     actions.forEach(function(a){
@@ -904,6 +958,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       pathList.appendChild(li);
     });
 
+    // History: compare to last run
     var hist=getHistory();
     var trendArr=hist.map(function(h){ return h.score; }).concat([cats.overall.score]).slice(-12);
     sparkline(spark, trendArr);
@@ -917,30 +972,36 @@ svg, img { display:block; max-width:100%; height:auto; }
       compareText.textContent = 'First run saved on this device.';
     }
 
+    // Save entry
     saveHistory({ ts: Date.now(), score: cats.overall.score });
 
+    // Open modal + celebration
     modal.classList.add("show");
     rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
     rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
     if(["A+","A","A-","B+","B","B-"].indexOf(cats.overall.letter)>-1){ confettiBurst(320); }
     __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
 
+    // Initialize projections module with current values
     initProjections(v, cats);
   }
 
-  $("closeReport").addEventListener("click",function(){ modal.classList.remove("show"); });
+  $("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
   $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
-  $("calcAgain").addEventListener("click",function(){ modal.classList.remove("show"); });
+  $("calcAgain").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
 
+  /* ===== Grade sequence ===== */
   function gradeNow(){
     __track('click_get_report_card', {location: 'main'});
     runWithLoader(function(){ var v=values(); var cats=categoryScores(v); openReport(v,cats); });
   }
 
+  /* ===== Buttons ===== */
   $("gradeBtnTop").addEventListener("click", function(){ __track('click_get_report_card',{location:'hero'}); gradeNow(); });
   $("gradeBtn").addEventListener("click", gradeNow);
   $("gradeBtnSticky").addEventListener("click", function(){ __track('click_get_report_card',{location:'sticky'}); gradeNow(); });
 
+  /* ===== Demo (realistic + negative NW okay) ===== */
   function randomDemo(){
     __track('click_demo');
     function r(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
@@ -978,7 +1039,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.mortgage = Math.max(0, Math.floor(d.home*ltv) - r(0,20000));
       d.cash = r(1000,15000); d.retire = r(20000,120000); d.brokerage = r(5000,60000); d.hsa = r(0,4000); d.car = r(3000,20000);
       d.student = r(0,25000); d.auto = r(0,15000); d.cc = r(0,4000);
-    }else{
+    }else{ // ahead_owner
       setHousing("owner");
       d.age = r(30,60);
       d.income = r(8000,15000);
@@ -997,19 +1058,19 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.cc += pushNeg;
     }
     Object.keys(d).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=d[id]; });
-    updateHints();
+    updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw()));
   }
   $("demoBtn").addEventListener("click", randomDemo);
 
   /* ===== Reset ===== */
   $("resetBtn").addEventListener("click", function(){
     ids.forEach(function(id){ if(els[id]) els[id].value = (id==="age") ? 30 : 0; });
-    updateHints(); __track('reset_inputs');
+    updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); __track('reset_inputs');
   });
 
   /* ===== Share link (full inputs) ===== */
   function shareLink(){
-    var s={}; ids.forEach(function(id){ s[id]=Number(els[id]?els[id].value:0); });
+    var s=currentRaw();
     return location.origin+location.pathname+"#s="+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(s)))));
   }
   $("copyLink").addEventListener("click", function(){
@@ -1026,9 +1087,9 @@ svg, img { display:block; max-width:100%; height:auto; }
     if(m){
       var obj=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
       Object.keys(obj).forEach(function(id){ if(els[id]) els[id].value=obj[id]; });
-      updateHints(); __track('hydrate_from_share');
+      updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); __track('hydrate_from_share');
     }
-  }catch(e){}
+  }catch(e){/* ignore */}
 
   /* ===== Subscribe (footer) ===== */
   var subForm=$("subForm"), subEmail=$("subEmail"), toast=$("toast");
@@ -1080,9 +1141,9 @@ svg, img { display:block; max-width:100%; height:auto; }
 
   /* ===== Report share (letter + score only) ===== */
   $("shareReport").addEventListener("click", function(){
-    if(!lastOverall){ alert("Run a calculation first, then share your result."); return; }
+    if(!window.__lastOverall){ alert("Run a calculation first, then share your result."); return; }
     var baseUrl = location.origin + location.pathname;
-    var text = "I just got a " + lastOverall.letter + " (" + lastOverall.score.toFixed(1) + "/100) on Grade My Finance — get your free report card:";
+    var text = "I just got a " + window.__lastOverall.letter + " (" + window.__lastOverall.score.toFixed(1) + "/100) on Grade My Finance — get your free report card:";
     var shareData = { title:"My Grade My Finance score", text:text, url:baseUrl };
     function fallbackCopy(){
       var clip = text + " " + baseUrl;
@@ -1108,18 +1169,16 @@ svg, img { display:block; max-width:100%; height:auto; }
   });
 
   /* ===== Book CTA tracking ===== */
-  function trackBookClick(id, placement){
-    var el=$(id); if(!el) return;
-    el.addEventListener('click', function(){ __track('click_book_cta', {placement: placement}); });
-  }
-  trackBookClick('bookTop','header');
-  trackBookClick('bookSide','sidebar');
-  trackBookClick('bookMid','midpage');
-  trackBookClick('bookRC','report_card');
+  ['bookTop','bookSide','bookMid','bookRC'].forEach(function(id){
+    var el=$(id); if(el) el.addEventListener('click', function(){ __track('click_book_cta', {placement: id}); });
+  });
 
-  /* ===== Projections (what-if) ===== */
-  var projExp=$("projExp"), projDebt=$("projDebt"), projExpVal=$("projExpVal"), projDebtVal=$("projDebtVal"), projBadge=$("projBadge"), projText=$("projText");
+  /* ===== Projections (what-if) — now live preview + apply ===== */
+  var projExp=$("projExp"), projDebt=$("projDebt"), projExpVal=$("projExpVal"), projDebtVal=$("projDebtVal"), projBadge=$("projBadge"), projText=$("projText"), applyBtn=$("applyProjection");
   function initProjections(vBase, catsBase){
+    // Calibrate ranges based on current situation for better feel
+    projExp.max = String(Math.min(3000, Math.max(0, Math.round(vBase.expenses*0.6))));
+    projDebt.max = String(Math.min(50000, Math.max(0, Math.round(vBase.nonMortDebt))));
     projExp.value=0; projDebt.value=0;
     projExpVal.textContent='-$0'; projDebtVal.textContent='$0';
     updateProjection();
@@ -1127,12 +1186,13 @@ svg, img { display:block; max-width:100%; height:auto; }
     projExp.oninput = function(){ projExpVal.textContent = '-'+money(+projExp.value); updateProjection(); };
     projDebt.oninput = function(){ projDebtVal.textContent = money(+projDebt.value); updateProjection(); };
 
-    function updateProjection(){
-      var v=JSON.parse(JSON.stringify(vBase));
+    function simulate(v0){
+      // Deep clone
+      var v=JSON.parse(JSON.stringify(v0));
       var expCut = +projExp.value;
       var pay = +projDebt.value;
-
       v.expenses = Math.max(0, v.expenses - Math.round(expCut));
+      // Apply payoff to cc, then auto, then student
       var left=pay;
       var order=['cc','auto','student'];
       for(var i=0;i<order.length;i++){
@@ -1141,18 +1201,63 @@ svg, img { display:block; max-width:100%; height:auto; }
         var dec=Math.min(cur,left);
         v[key]=cur-dec; left-=dec; if(left<=0) break;
       }
-      var cats = categoryScores(v);
+      // recompute derived
+      return v;
+    }
+
+    function updateProjection(){
+      var vSim = simulate(vBase);
+      var cats = categoryScores(vSim);
       projBadge.textContent = 'Projected: '+cats.overall.letter+' ('+cats.overall.score.toFixed(1)+')';
       projBadge.className = 'badge '+( ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?'good': (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?'mid':'bad') );
       var delta = Math.round((cats.overall.score - catsBase.overall.score)*10)/10;
       projText.textContent = (delta>=0?'+':'')+delta+' pts vs current';
+
+      // Live preview charts & weakest link
+      drawCharts(vSim);
+      var items = [
+        {label:"Savings", score:cats.s.sSave},
+        {label:"Emergency Fund", score:cats.s.sEF},
+        {label:"Debt", score:cats.s.sDebt},
+        {label:"Age-based NW", score:cats.s.sAgeNW},
+        {label:"Income", score:cats.s.sInc},
+      ];
+      var minIdx=0; for(var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
+      items = items.map(function(it,idx){ it.isWeak = (idx===minIdx); return it; });
+      hbars(weakWrap, items);
     }
+
+    applyBtn.onclick = function(){
+      var vApplied = simulate(vBase);
+      // Push back to inputs & close modal for recalculation
+      els.expenses.value = Math.round(vApplied.expenses);
+      els.cc.value = Math.round(vApplied.cc);
+      els.auto.value = Math.round(vApplied.auto);
+      els.student.value = Math.round(vApplied.student);
+      updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw()));
+      alert("Projection applied to inputs. Click “Recalculate” to see the updated full report.");
+      __track('apply_projection');
+    };
+  }
+
+  /* ===== Loader sequence ===== */
+  var overlay=$("overlay"), bar=$("barFill"), pct=$("pct"), loadMsg=$("loadMsg");
+  function runWithLoader(fnDone){
+    var steps=["Checking savings rate…","Measuring emergency fund runway…","Comparing net worth vs age…","Weighing debt load…","Factoring income strength…"];
+    var i=0, prog=0, total=steps.length+2, interval=1200/total;
+    overlay.classList.add("show"); bar.style.width="0%"; pct.textContent="0%"; loadMsg.textContent="Crunching numbers…";
+    var t=setInterval(function(){
+      prog=Math.min(100,Math.round(((i+1)/total)*100));
+      bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[i] || "Finalizing…"; i++;
+      if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
+    }, interval);
   }
 
 })(); // end IIFE
 </script>
 </body>
 </html>
+
 
 
 
