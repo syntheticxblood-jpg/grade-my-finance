@@ -10,6 +10,9 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
+<!-- Google AdSense Auto Ads -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514" crossorigin="anonymous"></script>
+
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
 <script>
@@ -114,7 +117,7 @@ select.btn{appearance:none} .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 .inputs{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:14px}
 @media (max-width:1060px){ .inputs{grid-template-columns:repeat(2,minmax(220px,1fr))} }
 @media (max-width:720px){ .inputs{grid-template-columns:1fr; gap:12px} }
-input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:var(--text)}
+input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0b1226;color:#var(--text)}
 :root[data-theme="light"] input{background:#fff;color:#0b1226}
 input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.30)}
 .progress{height:12px;background:#0b1226;border:1px solid var(--line);border-radius:999px;overflow:hidden}
@@ -707,12 +710,6 @@ svg, img { display:block; max-width:100%; height:auto; }
       var targetDebt = Math.round(v.baseline*0.25), paydown = Math.max(0, v.nonMortDebt - targetDebt);
       push("Pay down non-mortgage debt below 25% of baseline (reduce about "+money(paydown)+", e.g., "+money(Math.round(v.baseline*0.05))+"/mo).", dDebt);
     }
-    if(v.nwProgress < 1){
-      var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
-      var dAge=(sAgeGoal - sAgeNow)*0.65*100;
-      var gap = Math.max(0, v.nwTargetAmount - v.net);
-      push("Close the age-based net worth gap (~"+money(gap)+"). Consider investing ~"+money(Math.round(gap/36))+"/mo for ~36 months.", dAge);
-    }
     var ratio = v.annualIncome/70000;
     if(ratio < 1.15){
       var sIncNow = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2),0,1);
@@ -720,6 +717,12 @@ svg, img { display:block; max-width:100%; height:auto; }
       var dInc=(sIncGoal - sIncNow)*0.05*100;
       var targetAnnual = Math.round(70000*1.15), delta = Math.max(0, targetAnnual - v.annualIncome);
       push("Grow income toward "+money(targetAnnual)+"/yr (≈ "+money(Math.round(delta/12))+"/mo via raise or side income).", dInc);
+    }
+    if(v.nwProgress < 1){
+      var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
+      var dAge=(sAgeGoal - sAgeNow)*0.65*100;
+      var gap = Math.max(0, v.nwTargetAmount - v.net);
+      push("Close the age-based net worth gap (~"+money(gap)+"). Consider investing ~"+money(Math.round(gap/36))+"/mo for ~36 months.", dAge);
     }
     items.sort(function(a,b){ return b.pts - a.pts; });
     return items.slice(0,3);
@@ -773,7 +776,6 @@ svg, img { display:block; max-width:100%; height:auto; }
     setHTML(svgEl, html);
   }
   function pie(svgEl, parts){
-    // parts: [{v: number, label: string, color: string}]
     var total = parts.reduce((a,b)=>a+b.v,0); if(total<=0){ setHTML(svgEl,''); return; }
     var cx=80, cy=80, r=60, a0=-Math.PI/2, html='';
     parts.forEach(function(p){
@@ -785,12 +787,10 @@ svg, img { display:block; max-width:100%; height:auto; }
       html+='<path d="M '+cx+' '+cy+' L '+x0+' '+y0+' A '+r+' '+r+' 0 '+large+' 1 '+x1+' '+y1+' Z" fill="'+p.color+'"></path>';
       a0=a1;
     });
-    // outline + legend dots
     html+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r+0.5)+'" fill="none" stroke="rgba(255,255,255,.25)"></circle>';
     setHTML(svgEl, html);
   }
   function hbars(container, items){
-    // items: [{label, score (0..1)}]
     container.innerHTML='';
     items.forEach(function(it){
       var row=el('div'); row.style.display='grid'; row.style.gridTemplateColumns='120px 1fr 52px'; row.style.alignItems='center'; row.style.gap='8px';
@@ -804,7 +804,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       container.appendChild(row);
     });
   }
-  function sparkline(svgEl, arr){ // arr of numbers 0..100
+  function sparkline(svgEl, arr){
     if(!arr || !arr.length){ setHTML(svgEl,''); return; }
     var w=180,h=32,p=2; var n=arr.length;
     var min=Math.min.apply(null,arr), max=Math.max.apply(null,arr); if(max===min){ max=min+1; }
@@ -817,8 +817,7 @@ svg, img { display:block; max-width:100%; height:auto; }
 
   /* ===== Benchmarks (rough) ===== */
   function estimatePercentiles(v, cats){
-    // crude, offline estimates to give context (not authoritative)
-    var incomeRatio = v.annualIncome/70000; // ~US median proxy
+    var incomeRatio = v.annualIncome/70000;
     var incomePct = Math.round(clamp(50 + (incomeRatio-1)*35*100/100, 5, 95));
     var efPct     = Math.round(clamp(v.efMonths/6,0,1)*90);
     var nwPct     = Math.round(clamp(v.nwProgress,0,1)*90);
@@ -861,7 +860,6 @@ svg, img { display:block; max-width:100%; height:auto; }
       rcRows.appendChild(row);
     });
 
-    // Weakest link visualization
     var items = [
       {label:"Savings", score:cats.s.sSave},
       {label:"Emergency Fund", score:cats.s.sEF},
@@ -873,7 +871,6 @@ svg, img { display:block; max-width:100%; height:auto; }
     items = items.map(function(it,idx){ it.isWeak = (idx===minIdx); return it; });
     hbars(weakWrap, items);
 
-    // Benchmarks
     benchRows.innerHTML='';
     var b=estimatePercentiles(v,cats);
     b.forEach(function(t){
@@ -883,7 +880,6 @@ svg, img { display:block; max-width:100%; height:auto; }
       row.append(label,chip); benchRows.appendChild(row);
     });
 
-    // Charts
     barCompare(barAL, 'Assets', v.assets, 'Liabilities', v.liabs);
     pie(pieAssets, [
       {v:v.home,      label:'Home',      color:'#10b981'},
@@ -900,7 +896,6 @@ svg, img { display:block; max-width:100%; height:auto; }
       {v:v.cc,       label:'Cards',    color:'#fecaca'}
     ]);
 
-    // Path
     var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; }})();
     pathList.innerHTML="";
     actions.forEach(function(a){
@@ -909,9 +904,8 @@ svg, img { display:block; max-width:100%; height:auto; }
       pathList.appendChild(li);
     });
 
-    // History: compare to last run
     var hist=getHistory();
-    var trendArr=hist.map(function(h){ return h.score; }).concat([cats.overall.score]).slice(-12); // last 12 points
+    var trendArr=hist.map(function(h){ return h.score; }).concat([cats.overall.score]).slice(-12);
     sparkline(spark, trendArr);
     if(hist.length){
       var last=hist[hist.length-1];
@@ -923,17 +917,14 @@ svg, img { display:block; max-width:100%; height:auto; }
       compareText.textContent = 'First run saved on this device.';
     }
 
-    // Save entry
     saveHistory({ ts: Date.now(), score: cats.overall.score });
 
-    // Open modal + celebration
     modal.classList.add("show");
     rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
     rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
     if(["A+","A","A-","B+","B","B-"].indexOf(cats.overall.letter)>-1){ confettiBurst(320); }
     __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
 
-    // Initialize projections module with current values
     initProjections(v, cats);
   }
 
@@ -941,18 +932,15 @@ svg, img { display:block; max-width:100%; height:auto; }
   $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
   $("calcAgain").addEventListener("click",function(){ modal.classList.remove("show"); });
 
-  /* ===== Grade sequence ===== */
   function gradeNow(){
     __track('click_get_report_card', {location: 'main'});
     runWithLoader(function(){ var v=values(); var cats=categoryScores(v); openReport(v,cats); });
   }
 
-  /* ===== Buttons ===== */
   $("gradeBtnTop").addEventListener("click", function(){ __track('click_get_report_card',{location:'hero'}); gradeNow(); });
   $("gradeBtn").addEventListener("click", gradeNow);
   $("gradeBtnSticky").addEventListener("click", function(){ __track('click_get_report_card',{location:'sticky'}); gradeNow(); });
 
-  /* ===== Demo (realistic + small + negative NW common) ===== */
   function randomDemo(){
     __track('click_demo');
     function r(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
@@ -990,7 +978,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       d.mortgage = Math.max(0, Math.floor(d.home*ltv) - r(0,20000));
       d.cash = r(1000,15000); d.retire = r(20000,120000); d.brokerage = r(5000,60000); d.hsa = r(0,4000); d.car = r(3000,20000);
       d.student = r(0,25000); d.auto = r(0,15000); d.cc = r(0,4000);
-    }else{ // ahead_owner
+    }else{
       setHousing("owner");
       d.age = r(30,60);
       d.income = r(8000,15000);
@@ -1040,7 +1028,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       Object.keys(obj).forEach(function(id){ if(els[id]) els[id].value=obj[id]; });
       updateHints(); __track('hydrate_from_share');
     }
-  }catch(e){/* ignore */}
+  }catch(e){}
 
   /* ===== Subscribe (footer) ===== */
   var subForm=$("subForm"), subEmail=$("subEmail"), toast=$("toast");
@@ -1140,13 +1128,11 @@ svg, img { display:block; max-width:100%; height:auto; }
     projDebt.oninput = function(){ projDebtVal.textContent = money(+projDebt.value); updateProjection(); };
 
     function updateProjection(){
-      // simulate: lower expenses, pay lump-sum on highest non-mortgage debt (apply to cc -> auto -> student)
       var v=JSON.parse(JSON.stringify(vBase));
       var expCut = +projExp.value;
       var pay = +projDebt.value;
 
       v.expenses = Math.max(0, v.expenses - Math.round(expCut));
-      // Apply payoff to cc, then auto, then student
       var left=pay;
       var order=['cc','auto','student'];
       for(var i=0;i<order.length;i++){
@@ -1155,7 +1141,6 @@ svg, img { display:block; max-width:100%; height:auto; }
         var dec=Math.min(cur,left);
         v[key]=cur-dec; left-=dec; if(left<=0) break;
       }
-      // recompute derived values
       var cats = categoryScores(v);
       projBadge.textContent = 'Projected: '+cats.overall.letter+' ('+cats.overall.score.toFixed(1)+')';
       projBadge.className = 'badge '+( ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?'good': (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?'mid':'bad') );
