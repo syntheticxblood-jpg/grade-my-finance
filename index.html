@@ -87,7 +87,7 @@ select.btn{appearance:none} .btn:focus{outline:3px solid rgba(34,211,238,.35)}
 .proof-metric .big{ font-size:26px; background:linear-gradient(90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent }
 .review{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start }
 .avatar{ width:36px; height:36px; border-radius:999px; background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; font-weight:900; display:grid; place-items:center }
-.stars{ color:#fbbf24; letter-spacing:1px } .quote{ color:var(--muted); font-size:14px }
+.stars{ color:#fbbf24; letter-spacing:1px } .quote{ color:#var(--muted); font-size:14px }
 
 /* 📘 Book card */
 .book-card{
@@ -265,8 +265,7 @@ svg, img { display:block; max-width:100%; height:auto; }
       </div>
 
       <div class="mascot" aria-label="Grady the Owl mascot">
-        <!-- ⬇️ Replace the filenames below with your actual paths.
-             If you have a 4K PNG (e.g., grady-owl-4k.png), the browser will use it automatically. -->
+        <!-- ⬇️ Root-level images -->
         <img
           class="grady-logo"
           src="grady-owl-1024.png"
@@ -914,6 +913,7 @@ svg, img { display:block; max-width:100%; height:auto; }
 </script>
 </body>
 </html>
+
 
 
 
