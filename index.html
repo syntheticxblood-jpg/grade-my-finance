@@ -314,6 +314,61 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
   .brand{ display:none; }
   #currencySel{ max-width:72px; }
 }
+/* === HARD OVERRIDE: keep everything on one line (≤720px) === */
+@media (max-width: 720px) {
+  /* kill the grid and absolute layout */
+  header { 
+    display: flex !important; 
+    align-items: center !important; 
+    gap: 8px !important;
+    padding: 6px 8px !important;
+    height: var(--header-h) !important;
+  }
+  .header-right { 
+    position: static !important; 
+    margin-left: auto !important; 
+    display: flex !important; 
+    align-items: center !important; 
+    gap: 6px !important; 
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+  }
+  .hdr { 
+    display: flex !important; 
+    align-items: center !important; 
+    gap: 6px !important; 
+    flex: 1 1 auto !important; 
+    min-width: 0 !important; 
+  }
+
+  /* compact everything */
+  .logo { height: 44px !important; }
+  .brand {
+    font-size: 16px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 48vw !important;  /* keeps room for controls */
+  }
+  .btn.mini, .header-right select.btn {
+    padding: 4px 8px !important;
+    font-size: .9rem !important;
+    min-width: 0 !important;
+  }
+  #currencySel { width: auto !important; max-width: 88px !important; }
+
+  /* collapse book text to icon on phones */
+  #bookTop { padding: 6px 8px !important; font-size: 0 !important; }
+  #bookTop::before { content: "📘"; font-size: 16px; }
+
+  #themeToggle { width: auto !important; }
+}
+
+/* extra-tight phones */
+@media (max-width: 380px){
+  .brand { display: none !important; }
+  #currencySel { max-width: 72px !important; }
+}
 
 </style>
 </head>
