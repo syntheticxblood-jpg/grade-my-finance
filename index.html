@@ -76,7 +76,16 @@ border-bottom:1px solid var(--line);
 .brand{font-weight:900; font-size:22px; color:#062c1b}
 
 /* top-right toolbar */
-.header-right{position:static; margin-left:auto; display:flex; gap:8px; align-items:center}
+/* restore desktop behavior */
+.header-right{
+  position:absolute;   /* <-- put this back */
+  right:12px;
+  top:10px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
 .btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
 background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
 color:var(--text);font-weight:900;cursor:pointer;min-width:140px;transition:transform .15s ease, filter .15s ease; display:inline-flex; align-items:center; justify-content:center; text-align:center}
@@ -246,6 +255,56 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
 .fade-in{animation:fade .28s ease}
 @keyframes fade{from{opacity:.0;transform:translateY(2px)}to{opacity:1;transform:none}}
   /* === RESPONSIVE TOP BAR — ONE LINE ON MOBILE === */
+  /* === RESPONSIVE TOP BAR — ONE LINE ON MOBILE === */
+@media (max-width: 720px) {
+  header{
+    display:flex !important;
+    align-items:center !important;
+    gap:8px !important;
+    padding:6px 8px !important;
+    height:var(--header-h) !important;
+  }
+  .hdr{
+    display:flex !important;
+    align-items:center !important;
+    gap:6px !important;
+    flex:1 1 auto !important;
+    min-width:0 !important;
+  }
+  .header-right{
+    position:static !important;
+    margin-left:auto !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:6px !important;
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+  }
+  .logo{ height:44px !important; }
+  .brand{
+    font-size:16px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+    max-width:48vw !important;
+  }
+  .btn.mini, .header-right select.btn{
+    padding:4px 8px !important;
+    font-size:.9rem !important;
+    min-width:0 !important;
+  }
+  #currencySel{ width:auto !important; max-width:88px !important; }
+  #bookTop{ padding:6px 8px !important; font-size:0 !important; }
+  #bookTop::before{ content:"📘"; font-size:16px; }
+  #themeToggle{ width:auto !important; }
+}
+
+/* ultra-tight phones */
+@media (max-width: 380px){
+  .brand{ display:none !important; }
+  #currencySel{ max-width:72px !important; }
+}
+
 @media (max-width: 720px) {
   header{
     display:flex !important;
