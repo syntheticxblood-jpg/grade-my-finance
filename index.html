@@ -245,6 +245,76 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
 .legend .dot{width:10px;height:10px;border-radius:999px;display:inline-block;border:1px solid rgba(255,255,255,.35)}
 .fade-in{animation:fade .28s ease}
 @keyframes fade{from{opacity:.0;transform:translateY(2px)}to{opacity:1;transform:none}}
+  /* === RESPONSIVE TOP BAR — ONE LINE ON MOBILE === */
+@media (max-width: 720px) {
+  header{
+    display:flex !important;
+    align-items:center;
+    gap:8px;
+    padding:6px 8px;
+    height:var(--header-h);
+  }
+
+  /* logo + brand take the left, can shrink */
+  .hdr{
+    height:auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex:1 1 auto;      /* shrinks first */
+    min-width:0;        /* allow ellipsis */
+  }
+  .logo{ height:44px !important; }
+  .brand{
+    font-size:16px !important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* controls live on the right (no absolute) */
+  .header-right{
+    position:static !important;
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex:0 0 auto;      /* stay compact; no wrap */
+  }
+
+  /* compact buttons/select */
+  .btn.mini,
+  .header-right select.btn{
+    padding:4px 8px !important;
+    font-size:.9rem;
+    min-width:0;
+  }
+
+  /* currency select shouldn’t be wide */
+  #currencySel{
+    width:auto;
+    max-width:88px;
+  }
+
+  /* collapse the “Get the Book” text to just the icon */
+  #bookTop{
+    padding:6px 8px !important;
+    font-size:0 !important;   /* hide text */
+  }
+  #bookTop::before{
+    content:"📘";
+    font-size:16px;
+  }
+
+  #themeToggle{ width:auto; }
+}
+
+/* extra-tight phones */
+@media (max-width: 380px){
+  .brand{ display:none; }
+  #currencySel{ max-width:72px; }
+}
+
 </style>
 </head>
 <body>
