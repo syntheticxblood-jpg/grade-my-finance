@@ -54,6 +54,24 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
 }
 *{box-sizing:border-box} html,body{width:100%}
 body{
+  <!-- Welcome Page -->
+<div id="welcome-page" style="display:none; min-height:100vh; background:#0f172a; color:white; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:2rem;">
+  <img src="grady.png" alt="Grady the Owl" style="width:120px; margin-bottom:1rem;">
+  <h1>Welcome to GradeMyFinance</h1>
+  <p style="max-width:500px; margin:1rem auto;">
+    Get your free financial health grade in seconds. Enter your email below to start and we’ll send you updates & tips.
+  </p>
+
+  <form action="https://formspree.io/f/yourFormID" method="POST" style="margin:1rem 0;">
+    <input type="email" name="email" placeholder="Enter your email" required style="padding:0.5rem; width:250px; border-radius:8px; border:none; margin-right:0.5rem;">
+    <button type="submit" style="padding:0.5rem 1rem; background:#22c55e; color:white; border:none; border-radius:8px; cursor:pointer;">Subscribe</button>
+  </form>
+
+  <button onclick="continueToCalculator()" style="margin-top:1rem; padding:0.5rem 1rem; background:#3b82f6; color:white; border:none; border-radius:8px; cursor:pointer;">
+    Continue to Calculator →
+  </button>
+</div>
+
 margin:0; padding-top:var(--header-h); overflow-x:hidden;
 background:
 radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
@@ -1404,6 +1422,27 @@ bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[
 if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 }, interval);
 }
+  <script>
+  // Show welcome page only on first visit<div id="main-calculator">
+<div id="main-calculator">
+  <!-- your whole current calculator/report card HTML -->
+</div>
+
+</div>
+
+  const hasVisited = localStorage.getItem("visitedGMF");
+  if (!hasVisited) {
+    document.getElementById("welcome-page").style.display = "flex";
+    document.getElementById("main-calculator").style.display = "none"; // hide your calculator container
+  }
+
+  function continueToCalculator() {
+    document.getElementById("welcome-page").style.display = "none";
+    document.getElementById("main-calculator").style.display = "block";
+    localStorage.setItem("visitedGMF", "true");
+  }
+</script>
+
 
 })(); // end IIFE
 </script>
