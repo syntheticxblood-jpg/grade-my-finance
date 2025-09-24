@@ -6,7 +6,7 @@
 <title>Grade My Finance | Free Financial Grade Calculator</title>
 <meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and ways to improve. No sign-up required.">
 <meta name="theme-color" content="#0f172a">
-<metau name="robots" content="index,follow">
+<meta name="robots" content="index,follow">
 <link rel="canonical" href="https://grademyfinance.com/">
 
 <!-- Icons -->
@@ -44,8 +44,9 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
 </script>
 
 <style>
-
-  
+/* ===========================
+   Report Card Modal Fix
+=========================== */
 #reportModal {
   position: fixed;
   top: 0;
@@ -56,122 +57,78 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
   z-index: 9999;
   display: none;
   flex-direction: column;
+  max-height: 90vh;      /* never taller than 90% of viewport */
+  overflow-y: auto;      /* enable scroll if too tall */
 }
 
 #reportModal .sheet {
   flex: 1;
   max-height: 100%;
-  overflow-y: auto;   /* makes the whole card scrollable */
+  overflow-y: auto;      /* make sure inner content scrolls */
   padding: 16px;
   box-sizing: border-box;
 }
 
-/* Header fix */
 .sheet-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;    /* wrap on small screens */
+  flex-wrap: wrap;       /* wrap on small screens */
   gap: 8px;
   margin-bottom: 12px;
 }
-
 .sheet-header h2 {
   font-size: 20px;
   margin: 0;
 }
-  #reportModal {
-  max-height: 90vh;     /* modal never taller than 90% of screen */
-  overflow-y: auto;     /* scroll vertically if content is too big */
-}
 
-.sheet {
-  max-height: 100%;
-  overflow-y: auto;     /* make sure inner content scrolls */
-}
-:root{
---bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
---accent:#22d3ee; --accent2:#a78bfa; --g1:#16a34a; --g2:#34d399; --header-h:96px; --shadow:0 14px 40px rgba(0,0,0,.35);
+/* ===========================
+   Global Variables & Layout
+=========================== */
+:root {
+  --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
+  --accent:#22d3ee; --accent2:#a78bfa; --g1:#16a34a; --g2:#34d399; --header-h:96px; --shadow:0 14px 40px rgba(0,0,0,.35);
 }
 @media (max-width:720px){ :root{ --header-h:74px } }
 :root[data-theme="light"]{
---bg:#f7fafc; --panel:#ffffff; --card:#ffffff; --text:#0b1226; --muted:#4b5563; --line:rgba(15,23,42,.12);
+  --bg:#f7fafc; --panel:#ffffff; --card:#ffffff; --text:#0b1226; --muted:#4b5563; --line:rgba(15,23,42,.12);
 }
-*{box-sizing:border-box} html,body{width:100%}
-body{
-  <!-- Welcome Page -->
-<img src="grady-owl-10324.png" alt="Grady the Owl" style="width:120px; margin-bottom:1rem;">
-  <h1>Welcome to GradeMyFinance</h1>
-  <p style="max-width:500px; margin:1rem auto;">
-    Get your free financial health grade in seconds. Enter your email below to start and we’ll send you updates & tips.
-  </p>
 
-  <form action="https://formspree.io/f/yourFormID" method="POST" style="margin:1rem 0;">
-    <input type="email" name="email" placeholder="Enter your email" required style="padding:0.5rem; width:250px; border-radius:8px; border:none; margin-right:0.5rem;">
-    <button type="submit" style="padding:0.5rem 1rem; background:#22c55e; color:white; border:none; border-radius:8px; cursor:pointer;">Subscribe</button>
-  </form>
+*{ box-sizing:border-box }
+html,body{ width:100%; height:100%; }
 
-  <button onclick="continueToCalculator()" style="margin-top:1rem; padding:0.5rem 1rem; background:#3b82f6; color:white; border:none; border-radius:8px; cursor:pointer;">
-    Continue to Calculator →
-  </button>
-</div>
-
-margin:0; padding-top:var(--header-h); overflow-x:hidden;
-background:
-radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
-radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
-var(--bg);
-color:var(--text); font-family:Inter,system-ui,Segoe UI,Roboto,Arial; line-height:1.35;
+body {
+  margin:0;
+  padding-top:var(--header-h);
+  overflow-x:hidden;
+  background:
+    radial-gradient(900px 460px at -10% -10%, rgba(34,211,238,.18), transparent 50%),
+    radial-gradient(900px 460px at 120% -10%, rgba(167,139,250,.15), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+  line-height:1.35;
 }
-.container{max-width:1100px;margin:0 auto;padding:0 16px}
 
-/* Header */
-header{
-position:fixed; left:0; right:0; top:0; z-index:20; height:var(--header-h);
-display:grid; place-items:center;
-background:linear-gradient(90deg,var(--accent),var(--accent2));
-border-bottom:1px solid var(--line);
+.container{ max-width:1100px; margin:0 auto; padding:0 16px }
+
+/* ===========================
+   Header
+=========================== */
+header {
+  position:fixed;
+  left:0; right:0; top:0;
+  z-index:20;
+  height:var(--header-h);
+  display:grid;
+  place-items:center;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-bottom:1px solid var(--line);
 }
 .hdr{height:100%; display:flex; align-items:center; gap:12px; position:relative}
 .logo{height:72px}
 @media (max-width:720px){ .logo{height:58px} }
 .brand{font-weight:900; font-size:22px; color:#062c1b}
-
-/* top-right toolbar */
-/* restore desktop behavior */
-.header-right{
-  position:absolute;   /* <-- put this back */
-  right:12px;
-  top:10px;
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-.btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
-background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-color:var(--text);font-weight:900;cursor:pointer;min-width:140px;transition:transform .15s ease, filter .15s ease; display:inline-flex; align-items:center; justify-content:center; text-align:center}
-.btn:hover{filter:brightness(1.06)} .btn:active{transform:translateY(1px)}
-.btn.primary{background:linear-gradient(90deg,var(--g1),var(--g2));border-color:transparent;color:#062c1b}
-.btn.mini{min-width:0;padding:6px 10px;font-weight:800}
-select.btn{appearance:none} .btn:focus{outline:3px solid rgba(34,211,238,.35)}
-
-/* Hero */
-.hero{ padding:14px 0 4px; }
-.hero-grid{
-display:grid;
-grid-template-columns:minmax(0,1fr) 340px;
-gap:16px; align-items:start
-}
-@media (max-width:980px){ .hero-grid{ grid-template-columns:1fr } }
-.hero-left{ display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center }
-.hero-card{ width:min(760px,92vw);
-background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(--shadow);
-}
-.hero-title{margin:0 0 6px;font-size:30px;font-weight:900}
-.hero-tag{margin:0 0 8px;color:var(--muted)}
-.hero-cta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 
 /* Right column (book + proof) */
 .social-proof{ position:sticky; top:calc(var(--header-h) + 12px); min-width:0 }
