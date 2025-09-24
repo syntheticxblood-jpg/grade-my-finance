@@ -185,10 +185,23 @@ border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; pla
 @keyframes popIn{0%{transform:scale(.9);opacity:.0}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
 .sheet-header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
 .xbtn{background:#19223d;border:1px solid var(--line); color:#e2e8f0; border-radius:10px; padding:8px 12px; cursor:pointer}
+.rc-mascot {
+  background: none !important;
+  border: none !important;
+  width: auto !important;
+  height: auto !important;
+  box-shadow: none !important;
+  display: flex; 
+  align-items: center;
+}
 
-.rc-top{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px}
-.rc-mascot{width:54px; height:54px; border-radius:14px; background:linear-gradient(180deg,#eafff3,#c8ffe3); border:2px solid #86EFAC; display:grid; place-items:center; box-shadow:0 8px 20px rgba(0,0,0,.25)}
-.rc-mascot.party{animation:wiggle .8s ease 2}
+.rc-grady {
+  width: 120px;   /* try 120px first, increase to 150px if you want him to really fill the gap */
+  height: auto;
+  display: block;
+  animation: floatCard 3s ease-in-out infinite;
+}
+
 @keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(6deg)}}
 .rc-title{font-weight:900; font-size:22px}
 .rc-meta{color:#9fb0c7; font-size:14px}
@@ -576,12 +589,10 @@ href="https://grademyfinance.gumroad.com/l/zlwid">📘 Buy the Book</a>
 <div class="rc-top">
 <div class="rc-mascot" id="rcMascot" aria-hidden="true">
 <img
-src="grady-owl-10324.png"
-srcset="grady-owl-4k.png 4096w, grady-owl-10324.png 10324w"
-sizes="38px"
-alt=""
-style="width:38px;height:38px;object-fit:contain;border-radius:10px;">
-</div>
+  src="grady-owl-10324.png"
+  alt="Grady the Owl"
+  class="rc-grady">
+
 <div class="rc-titlewrap">
 <div id="rcTitle" class="rc-title">Your Report Card</div>
 <div id="rcMeta" class="rc-meta">—</div>
