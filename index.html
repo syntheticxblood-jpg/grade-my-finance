@@ -462,6 +462,69 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
   max-height: 90%;
 }
 
+  /* --- Report Modal Overlay --- */
+#reportModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* darken background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#reportModal .sheet {
+  background: var(--panel, #0b1226); /* fallback dark panel */
+  border-radius: 12px;
+  max-width: 800px;
+  width: 90%;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 90%;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+/* --- Report Modal Header Layout --- */
+.rc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.rc-mascot img {
+  max-width: 90px;
+  height: auto;
+}
+
+.rc-titlewrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.rc-grade {
+  flex-shrink: 0; /* keep grade box from squishing others */
+}
+
+/* --- Mobile stacking --- */
+@media (max-width: 600px) {
+  .rc-top {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  .rc-titlewrap {
+    order: 2;
+  }
+  .rc-grade {
+    order: 3;
+  }
+}
+
 
 </style>
 </head>
