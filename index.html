@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+  // If the user hasn't seen the welcome page yet → redirect them
+  if (localStorage.getItem("seenWelcome") !== "yes") {
+    window.location.href = "welcome.html";
+  }
+</script>
+
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance | Free Financial Grade Calculator</title>
