@@ -400,7 +400,43 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
 </style>
 </head>
 <body>
+<!-- Welcome Screen -->
+<div id="welcome-page" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;">
+  
+  <img 
+    src="grady-owl-10324.png" 
+    alt="Grady the Owl" 
+    style="width:180px;height:auto;margin-bottom:20px;">
 
+  <h1>Welcome to Grade My Finance</h1>
+  <p style="max-width:420px;margin:10px auto;font-size:18px;line-height:1.4;">
+    Get your free financial grade in seconds. Enter your email to join the list and start!
+  </p>
+
+  <!-- Email capture form -->
+  <form id="welcomeSub" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
+    <input 
+      type="email" 
+      name="email" 
+      placeholder="Enter your email" 
+      required
+      style="flex:1 1 220px;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:16px;">
+    <button 
+      type="submit" 
+      class="btn primary" 
+      style="padding:12px 20px;font-size:16px;border:none;border-radius:6px;cursor:pointer;">
+      Join
+    </button>
+    <input type="hidden" name="_subject" value="New GradeMyFinance Signup">
+  </form>
+
+  <button 
+    id="continueBtn" 
+    class="btn primary" 
+    style="margin-top:20px;padding:12px 20px;font-size:16px;border:none;border-radius:6px;cursor:pointer;">
+    Continue without Email
+  </button>
+</div>
 <noscript>
 <div style="background:#fee2e2;color:#7f1d1d;padding:10px;text-align:center">
 JavaScript is required to calculate your report card. Please enable it in your browser.
@@ -456,16 +492,16 @@ JavaScript is required to calculate your report card. Please enable it in your b
 </div>
 
 <div class="mascot" aria-label="Grady the Owl">
-<img
-class="grady-logo"
-src="grady-owl-1024.png"
-srcset="grady-owl-4k.png 4096w, grady-owl-1024.png 1024w"
-sizes="(max-width: 980px) 220px, 260px"
-alt="Grady the Owl holding an A+ report card"
-fetchpriority="high"
-loading="eager">
-<div class="floatA" aria-hidden="true">A+</div>
+  <img
+    class="grady-logo"
+    src="grady-owl-10324.png"
+    sizes="(max-width: 980px) 220px, 260px"
+    alt="Grady the Owl holding an A+ report card"
+    fetchpriority="high"
+    loading="eager">
+  <div class="floatA" aria-hidden="true">A+</div>
 </div>
+
 </div>
 
 <!-- Right column: Book promo + social proof -->
@@ -570,8 +606,8 @@ href="https://grademyfinance.gumroad.com/l/zlwid">📘 Buy the Book</a>
 <div class="rc-top">
 <div class="rc-mascot" id="rcMascot" aria-hidden="true">
 <img
-src="grady-owl-1024.png"
-srcset="grady-owl-4k.png 4096w, grady-owl-1024.png 1024w"
+src="grady-owl-10324.png"
+srcset="grady-owl-4k.png 4096w, grady-owl-10324.png 10324w"
 sizes="38px"
 alt=""
 style="width:38px;height:38px;object-fit:contain;border-radius:10px;">
@@ -1407,8 +1443,35 @@ if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 
 })(); // end IIFE
 </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+  const welcomePage = document.getElementById("welcome-page");
+  const mainApp = document.getElementById("calculator"); // update if your calculator div uses a different id
+  const continueBtn = document.getElementById("continueBtn");
+
+  if (welcomePage && mainApp) {
+    mainApp.style.display = "none"; // hide calculator initially
+
+    continueBtn.addEventListener("click", () => {
+      welcomePage.style.display = "none";
+      mainApp.style.display = "block";
+      localStorage.setItem("seenWelcome", "yes"); // remember choice
+    });
+
+    if (localStorage.getItem("seenWelcome") === "yes") {
+      welcomePage.style.display = "none";
+      mainApp.style.display = "block";
+    }
+  }
+});
+</script>
 </body>
 </html>
+
+
+
+
+
 
 
 
