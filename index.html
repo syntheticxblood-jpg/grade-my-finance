@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+  if (localStorage.getItem("seenWelcome") !== "yes") {
+    window.location.href = "welcome.html";
+  }
+</script>
+
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance | Free Financial Grade Calculator</title>
@@ -401,7 +407,6 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
 </head>
 <body>
 <!-- Welcome Screen -->
-<div id="welcome-page" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;">
   
   <img 
     src="grady-owl-10324.png" 
@@ -1444,10 +1449,7 @@ if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 })(); // end IIFE
 </script>
   <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const welcomePage = document.getElementById("welcome-page");
-  const mainApp = document.getElementById("calculator"); // update if your calculator div uses a different id
-  const continueBtn = document.getElementById("continueBtn");
+
 
   if (welcomePage && mainApp) {
     mainApp.style.display = "none"; // hide calculator initially
