@@ -45,6 +45,41 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
 
 <style>
 
+  
+#reportModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+}
+
+#reportModal .sheet {
+  flex: 1;
+  max-height: 100%;
+  overflow-y: auto;   /* makes the whole card scrollable */
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Header fix */
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;    /* wrap on small screens */
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.sheet-header h2 {
+  font-size: 20px;
+  margin: 0;
+}
   #reportModal {
   max-height: 90vh;     /* modal never taller than 90% of screen */
   overflow-y: auto;     /* scroll vertically if content is too big */
