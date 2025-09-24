@@ -406,34 +406,7 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
 </style>
 </head>
 <body>
-<!-- Welcome Screen -->
-  
-  <img 
-    src="grady-owl-10324.png" 
-    alt="Grady the Owl" 
-    style="width:180px;height:auto;margin-bottom:20px;">
 
-  <h1>Welcome to Grade My Finance</h1>
-  <p style="max-width:420px;margin:10px auto;font-size:18px;line-height:1.4;">
-    Get your free financial grade in seconds. Enter your email to join the list and start!
-  </p>
-
-  <!-- Email capture form -->
-  <form id="welcomeSub" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
-    <input 
-      type="email" 
-      name="email" 
-      placeholder="Enter your email" 
-      required
-      style="flex:1 1 220px;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:16px;">
-    <button 
-      type="submit" 
-      class="btn primary" 
-      style="padding:12px 20px;font-size:16px;border:none;border-radius:6px;cursor:pointer;">
-      Join
-    </button>
-    <input type="hidden" name="_subject" value="New GradeMyFinance Signup">
-  </form>
 
   <button 
     id="continueBtn" 
@@ -1451,18 +1424,6 @@ if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
   <script>
 
 
-  if (welcomePage && mainApp) {
-    mainApp.style.display = "none"; // hide calculator initially
-
-    continueBtn.addEventListener("click", () => {
-      welcomePage.style.display = "none";
-      mainApp.style.display = "block";
-      localStorage.setItem("seenWelcome", "yes"); // remember choice
-    });
-
-    if (localStorage.getItem("seenWelcome") === "yes") {
-      welcomePage.style.display = "none";
-      mainApp.style.display = "block";
     }
   }
 });
