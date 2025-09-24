@@ -415,34 +415,29 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
   .brand { display: none !important; }
   #currencySel { max-width: 72px !important; }
 }
-
-  /* === Report Modal top row layout === */
+/* Report modal layout fix */
 .rc-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  margin-bottom: 16px; /* adds breathing room */
+}
+
+.rc-mascot img {
+  max-width: 90px;
+  height: auto;
 }
 
 .rc-titlewrap {
-  flex: 1 1 auto;
-  min-width: 0;
+  flex: 1;
+  min-width: 0; /* prevent overflow */
 }
 
-/* Optional: mobile stacking */
-@media (max-width: 600px) {
-  .rc-top {
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-  }
-  .rc-titlewrap {
-    order: 2;
-  }
-  .rc-grade {
-    order: 3;
-  }
+.rc-grade {
+  flex-shrink: 0; /* don’t let grade box squish mascot or text */
 }
+
 
 
 </style>
