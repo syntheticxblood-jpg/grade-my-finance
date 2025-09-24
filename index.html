@@ -1497,26 +1497,7 @@ bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[
 if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 }, interval);
 }
-  <script>
-  // Show welcome page only on first visit<div id="main-calculator">
-<div id="main-calculator">
-  <!-- your whole current calculator/report card HTML -->
-</div>
 
-</div>
-
-  const hasVisited = localStorage.getItem("visitedGMF");
-  if (!hasVisited) {
-    document.getElementById("welcome-page").style.display = "flex";
-    document.getElementById("main-calculator").style.display = "none"; // hide your calculator container
-  }
-
-  function continueToCalculator() {
-    document.getElementById("welcome-page").style.display = "none";
-    document.getElementById("main-calculator").style.display = "block";
-    localStorage.setItem("visitedGMF", "true");
-  }
-</script>
 
 
 })(); // end IIFE
