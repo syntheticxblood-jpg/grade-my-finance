@@ -44,6 +44,16 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
 </script>
 
 <style>
+
+  #reportModal {
+  max-height: 90vh;     /* modal never taller than 90% of screen */
+  overflow-y: auto;     /* scroll vertically if content is too big */
+}
+
+.sheet {
+  max-height: 100%;
+  overflow-y: auto;     /* make sure inner content scrolls */
+}
 :root{
 --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
 --accent:#22d3ee; --accent2:#a78bfa; --g1:#16a34a; --g2:#34d399; --header-h:96px; --shadow:0 14px 40px rgba(0,0,0,.35);
