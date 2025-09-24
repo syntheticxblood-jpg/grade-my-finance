@@ -438,6 +438,29 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
   flex-shrink: 0; /* don’t let grade box squish mascot or text */
 }
 
+/* --- Report Modal Fix --- */
+#reportModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* dark overlay behind modal */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* stays on top */
+}
+
+#reportModal .sheet {
+  background: var(--panel, #0b1226); /* fallback dark panel */
+  border-radius: 12px;
+  max-width: 800px;
+  width: 90%;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 90%;
+}
 
 
 </style>
