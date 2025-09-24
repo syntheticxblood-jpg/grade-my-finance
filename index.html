@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-  if (localStorage.getItem("seenWelcome") !== "yes") {
-    window.location.href = "welcome.html";
-  }
-</script>
-
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Grade My Finance | Free Financial Grade Calculator</title>
@@ -50,7 +44,6 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
 </script>
 
 <style>
- 
 :root{
 --bg:#0f172a; --panel:#0b1226; --card:#0b1226; --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.22);
 --accent:#22d3ee; --accent2:#a78bfa; --g1:#16a34a; --g2:#34d399; --header-h:96px; --shadow:0 14px 40px rgba(0,0,0,.35);
@@ -186,25 +179,10 @@ border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; pla
 @keyframes popIn{0%{transform:scale(.9);opacity:.0}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
 .sheet-header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
 .xbtn{background:#19223d;border:1px solid var(--line); color:#e2e8f0; border-radius:10px; padding:8px 12px; cursor:pointer}
-.rc-mascot {
-  flex: 0 0 auto;    
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none !important;
-  border: none !important;
-  box-shadow: none !important;
-  width: auto !important;
-  height: auto !important;
-}
 
-.rc-grady {
-  width: 90px;   /* adjust up to 120px if you want him bigger */
-  height: auto;
-  display: block;
-  animation: floatCard 3s ease-in-out infinite;
-}
-
+.rc-top{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px}
+.rc-mascot{width:54px; height:54px; border-radius:14px; background:linear-gradient(180deg,#eafff3,#c8ffe3); border:2px solid #86EFAC; display:grid; place-items:center; box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.rc-mascot.party{animation:wiggle .8s ease 2}
 @keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(6deg)}}
 .rc-title{font-weight:900; font-size:22px}
 .rc-meta{color:#9fb0c7; font-size:14px}
@@ -266,7 +244,12 @@ svg, img { display:block; max-width:100%; height:auto; }
 
 /* Print */
 @media print{
-
+body{background:#fff}
+header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important}
+#reportModal{position:static!important;display:block!important;background:#fff!important}
+.sheet{max-height:none!important;box-shadow:none!important;border:none!important}
+}
+.small{font-size:12px;color:#9fb0c7}
 .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .legend .dot{width:10px;height:10px;border-radius:999px;display:inline-block;border:1px solid rgba(255,255,255,.35)}
 .fade-in{animation:fade .28s ease}
@@ -411,99 +394,48 @@ svg, img { display:block; max-width:100%; height:auto; }
   .brand { display: none !important; }
   #currencySel { max-width: 72px !important; }
 }
-/* Report modal layout fix */
-.rc-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 16px; /* adds breathing room */
-}
 
-.rc-mascot img {
-  max-width: 90px;
-  height: auto;
-}
-
-.rc-titlewrap {
-  flex: 1;
-  min-width: 0; /* prevent overflow */
-}
-
-.rc-grade {
-  flex-shrink: 0; /* don’t let grade box squish mascot or text */
-}
-
-
-/* Report Modal Overlay */
-#reportModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(15, 23, 42, 0.95); /* dark overlay */
-  display: none; /* hidden until opened */
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-/* Inner modal "card" */
-#reportModal .sheet {
-  background: var(--panel);
-  border-radius: 20px;
-  max-width: 900px;
-  width: 95%;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 24px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
-}
   
-/* --- Report Modal Header Layout --- */
-.rc-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.rc-mascot img {
-  max-width: 90px;
-  height: auto;
-}
-
-.rc-titlewrap {
-  flex: 1;
-  min-width: 0;
-}
-
-.rc-grade {
-  flex-shrink: 0; /* keep grade box from squishing others */
-}
-
-/* --- Mobile stacking --- */
-@media (max-width: 600px) {
-  .rc-top {
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-  }
-  .rc-titlewrap {
-    order: 2;
-  }
-  .rc-grade {
-    order: 3;
-  }
-}
-
 
 </style>
 </head>
 <body>
+<!-- Welcome Screen -->
+<div id="welcome-page" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;">
+  
+  <img 
+    src="grady-owl-10324.png" 
+    alt="Grady the Owl" 
+    style="width:180px;height:auto;margin-bottom:20px;">
 
+  <h1>Welcome to Grade My Finance</h1>
+  <p style="max-width:420px;margin:10px auto;font-size:18px;line-height:1.4;">
+    Get your free financial grade in seconds. Enter your email to join the list and start!
+  </p>
+
+  <!-- Email capture form -->
+  <form id="welcomeSub" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
+    <input 
+      type="email" 
+      name="email" 
+      placeholder="Enter your email" 
+      required
+      style="flex:1 1 220px;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:16px;">
+    <button 
+      type="submit" 
+      class="btn primary" 
+      style="padding:12px 20px;font-size:16px;border:none;border-radius:6px;cursor:pointer;">
+      Join
+    </button>
+    <input type="hidden" name="_subject" value="New GradeMyFinance Signup">
+  </form>
+
+  <button 
+    id="continueBtn" 
+    class="btn primary" 
+    style="margin-top:20px;padding:12px 20px;font-size:16px;border:none;border-radius:6px;cursor:pointer;">
+    Continue without Email
+  </button>
 </div>
 <noscript>
 <div style="background:#fee2e2;color:#7f1d1d;padding:10px;text-align:center">
@@ -560,13 +492,14 @@ JavaScript is required to calculate your report card. Please enable it in your b
 </div>
 
 <div class="mascot" aria-label="Grady the Owl">
-<img 
-  class="grady-logo"
-  src="grady-owl-10324.png"
-  alt="Grady the Owl holding an A+ report card"
-  fetchpriority="high"
-  loading="eager"
-  style="width:450px; height:auto; margin-bottom:30px;">
+  <img
+    class="grady-logo"
+    src="grady-owl-10324.png"
+    sizes="(max-width: 980px) 220px, 260px"
+    alt="Grady the Owl holding an A+ report card"
+    fetchpriority="high"
+    loading="eager">
+  <div class="floatA" aria-hidden="true">A+</div>
 </div>
 
 </div>
@@ -669,23 +602,22 @@ href="https://grademyfinance.gumroad.com/l/zlwid">📘 Buy the Book</a>
 <!-- Report Modal -->
 <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rcTitle">
 <div class="sheet">
+<div class="sheet-header">
 <div class="rc-top">
-  <div class="rc-mascot" id="rcMascot" aria-hidden="true">
-    <img
-      src="grady-owl-10324.png"
-      alt="Grady the Owl"
-      class="rc-grady">
-  </div>
-
-  <div class="rc-titlewrap">
-    <div id="rcTitle" class="rc-title">Your Report Card</div>
-    <div id="rcMeta" class="rc-meta">—</div>
-  </div>
-
-  <div id="rcGrade" class="rc-grade">A</div>
+<div class="rc-mascot" id="rcMascot" aria-hidden="true">
+<img
+src="grady-owl-10324.png"
+srcset="grady-owl-4k.png 4096w, grady-owl-10324.png 10324w"
+sizes="38px"
+alt=""
+style="width:38px;height:38px;object-fit:contain;border-radius:10px;">
 </div>
-
-
+<div class="rc-titlewrap">
+<div id="rcTitle" class="rc-title">Your Report Card</div>
+<div id="rcMeta" class="rc-meta">—</div>
+</div>
+<div id="rcGrade" class="rc-grade">A</div>
+</div>
 <button class="xbtn" id="closeReport" type="button" aria-label="Close report">Close</button>
 </div>
 
@@ -1508,26 +1440,40 @@ bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[
 if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 }, interval);
 }
-  // Open report
-function openReport() {
-  document.getElementById("reportModal").style.display = "flex";
-}
-
-// Close report
-function closeReport() {
-  document.getElementById("reportModal").style.display = "none";
-}
-
-// Example: attach to button
-document.getElementById("closeReport").addEventListener("click", closeReport);
-
 
 })(); // end IIFE
 </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+  const welcomePage = document.getElementById("welcome-page");
+  const mainApp = document.getElementById("calculator"); // update if your calculator div uses a different id
+  const continueBtn = document.getElementById("continueBtn");
 
+  if (welcomePage && mainApp) {
+    mainApp.style.display = "none"; // hide calculator initially
+
+    continueBtn.addEventListener("click", () => {
+      welcomePage.style.display = "none";
+      mainApp.style.display = "block";
+      localStorage.setItem("seenWelcome", "yes"); // remember choice
+    });
+
+    if (localStorage.getItem("seenWelcome") === "yes") {
+      welcomePage.style.display = "none";
+      mainApp.style.display = "block";
+    }
+  }
+});
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
