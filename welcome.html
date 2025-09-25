@@ -46,7 +46,7 @@
   <h1>Welcome to Grade My Finance</h1>
   <p>Get your free financial grade in seconds. Enter your email to join the list and start!</p>
 
-  <form id="emailForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST"
+  <form id="emailForm" action="https://formspree.io/f/xvgblayy" method="POST"
         style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
     <input type="email" name="email" placeholder="Enter your email" required
            style="flex:1 1 220px;padding:12px;border-radius:8px;border:1px solid #ccc;font-size:16px;">
@@ -57,7 +57,7 @@
   <button onclick="skipSession()" class="btn secondary" style="margin-top:10px;">Don’t show again (this session)</button>
 
   <script>
-    // ✅ FIXED: only redirect if user already skipped or submitted email
+    // ✅ redirect skip logic
     if (sessionStorage.getItem('skipWelcomeSession') === 'true' ||
         localStorage.getItem('submittedEmail') === 'true') {
       window.location.replace('index.html');
@@ -73,29 +73,33 @@
       setTimeout(() => window.location.href = 'index.html', 100);
     }
 
-    // Handle email submission: permanently mark email submitted
+    // ✅ Fixed email submission with FormData
     const emailForm = document.getElementById('emailForm');
     emailForm.addEventListener('submit', function(e){
       e.preventDefault();
       const emailInput = emailForm.querySelector('input[name="email"]');
       const email = emailInput.value.trim();
-      if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Enter a valid email."); return; }
+      if(!/^\S+@\S+\.\S+$/.test(email)){
+        alert("Enter a valid email.");
+        return;
+      }
 
-      // Mark permanent submission
       localStorage.setItem('submittedEmail','true');
 
       fetch(emailForm.action, {
-        method:'POST',
-        headers:{'Accept':'application/json','Content-Type':'application/json'},
-        body: JSON.stringify({email: email, source: 'grademyfinance.com'})
-      }).then(res=>{
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(emailForm)   // ✅ FormData instead of JSON
+      })
+      .then(res=>{
         if(res.ok){
           alert("Thanks! Redirecting to main page...");
           window.location.href = 'index.html';
         } else {
           alert("Submission failed. Try again.");
         }
-      }).catch(()=>{
+      })
+      .catch(()=>{
         alert("Network error. Try again.");
       });
     });
