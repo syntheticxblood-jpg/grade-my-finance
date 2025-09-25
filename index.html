@@ -11,22 +11,24 @@
 
   <style>
     /* Hide page initially to prevent flicker */
-    html, body { visibility: hidden; background: #0f172a; margin:0; }
+    html, body { visibility: hidden; background: #0f172a; }
   </style>
 
   <script>
-    (function() {
-      let skipWelcome = false;
-      try { skipWelcome = localStorage.getItem('skipWelcome') === 'true'; } catch(e){}
+    document.addEventListener('DOMContentLoaded', () => {
+      let hasSubmittedEmail = false;
+      try {
+        hasSubmittedEmail = localStorage.getItem('submittedEmail') === 'true';
+      } catch(e){}
 
-      if (!skipWelcome) {
-        // Redirect to welcome page immediately
+      if (!hasSubmittedEmail) {
+        // Always redirect to welcome.html until email is submitted
         window.location.replace('welcome.html');
       } else {
-        // Show main page content immediately
+        // Show main page
         document.documentElement.style.visibility = 'visible';
       }
-    })();
+    });
   </script>
 </head>
 
