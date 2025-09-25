@@ -313,7 +313,7 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
     min-width: 0 !important;
   }
   #currencySel { width: auto !important; max-width: 88px !important; }
-  #bookTop { padding: 6px 8px !important; }
+
   #bookTop::before { content: "📘"; font-size: 16px; }
   #themeToggle { width: auto !important; }
 }
@@ -352,6 +352,58 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
     display: none;
   }
 }
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: var(--header-h, 60px);
+  background: #0f172a;
+}
+
+.hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand {
+  font-weight: 900;
+  font-size: 20px;
+  color: #fff;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#bookTop {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(90deg,#16a34a,#34d399);
+  border: none;
+  border-radius: 20px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+
+#themeToggle {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #1e293b;
+  color: #f8fafc;
+  border: none;
+  cursor: pointer;
+}
+
+
 </style>
   <button 
 
@@ -367,29 +419,48 @@ JavaScript is required to calculate your report card. Please enable it in your b
 <canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:150;"></canvas>
 
 <header>
-<div class="hdr">
-<!-- Logo -->
-<svg class="logo" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
-<defs>
-<radialGradient id="gSphere" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#b9f4d1"/><stop offset=".55" stop-color="#34d399"/><stop offset="1" stop-color="#128a3f"/></radialGradient>
-<linearGradient id="paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e8ffe9"/></linearGradient>
-</defs>
-<g transform="translate(20,14)">
-<circle cx="40" cy="45" r="38" fill="url(#gSphere)"/>
-<circle cx="40" cy="45" r="38" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
-<text x="40" y="58" text-anchor="middle" font-size="44" font-weight="1000" fill="#072b19" stroke="#eafff3" stroke-width="1.6" paint-order="stroke">G</text>
-</g>
-<g transform="translate(110,10) rotate(-9)">
-<rect width="70" height="94" rx="12" fill="url(#paper)" stroke="#86EFAC" stroke-width="2"/>
-<g stroke="#10B981" stroke-width="2"><line x1="12" y1="28" x2="58" y2="28"/><line x1="12" y1="42" x2="58" y2="42"/><line x1="12" y1="56" x2="58" y2="56"/></g>
-<text x="35" y="76" text-anchor="middle" font-size="24" font-weight="900" fill="#ef4444">A+</text>
-</g>
-</svg>
-<div class="brand">Grade My Finance</div>
-</div>
+<header>
+  <div class="hdr">
+    <!-- Logo -->
+    <svg class="logo" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
+      <defs>
+        <radialGradient id="gSphere" cx="50%" cy="40%" r="70%">
+          <stop offset="0" stop-color="#b9f4d1"/>
+          <stop offset=".55" stop-color="#34d399"/>
+          <stop offset="1" stop-color="#128a3f"/>
+        </radialGradient>
+        <linearGradient id="paper" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#ffffff"/>
+          <stop offset="1" stop-color="#e8ffe9"/>
+        </linearGradient>
+      </defs>
+      <g transform="translate(20,14)">
+        <circle cx="40" cy="45" r="38" fill="url(#gSphere)"/>
+        <circle cx="40" cy="45" r="38" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+        <text x="40" y="58" text-anchor="middle" font-size="44" font-weight="1000" fill="#072b19" stroke="#eafff3" stroke-width="1.6" paint-order="stroke">G</text>
+      </g>
+      <g transform="translate(110,10) rotate(-9)">
+        <rect width="70" height="94" rx="12" fill="url(#paper)" stroke="#86EFAC" stroke-width="2"/>
+        <g stroke="#10B981" stroke-width="2">
+          <line x1="12" y1="28" x2="58" y2="28"/>
+          <line x1="12" y1="42" x2="58" y2="42"/>
+          <line x1="12" y1="56" x2="58" y2="56"/>
+        </g>
+        <text x="35" y="76" text-anchor="middle" font-size="24" font-weight="900" fill="#ef4444">A+</text>
+      </g>
+    </svg>
 
-<!-- Top-right toolbar -->
-<div class="header-right">
+    <!-- Brand -->
+    <div class="brand">Grade My Finance</div>
+  </div>
+
+  <!-- Top-right toolbar -->
+  <div class="header-right">
+    <button id="themeToggle">🌙/☀️</button>
+    <button id="bookTop"><span>Get the Book</span></button>
+  </div>
+</header>
+
 <select id="currencySel" class="btn mini" aria-label="Currency">
 <option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option><option>AUD</option>
 </select>
