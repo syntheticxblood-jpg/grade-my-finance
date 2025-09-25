@@ -9,57 +9,31 @@
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://grademyfinance.com/">
 
-  <script>
-    (function() {
-      const skipSession = sessionStorage.getItem('skipWelcomeSession') === 'true';
-      const submittedEmail = localStorage.getItem('submittedEmail') === 'true';
+  <!-- Icons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-      // Only redirect first-time visitors
-      if (!skipSession && !submittedEmail) {
-        // Use href instead of replace so mobile doesn't thrash the history stack
-        window.location.href = 'welcome.html';
-      }
-      // no need to hide/reveal the page, just let it render
-    })();
+  <!-- Open Graph -->
+  <meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
+  <meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it. No sign-up.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://grademyfinance.com/">
+  <meta property="og:image" content="https://grademyfinance.com/og-image.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Grade My Finance | Free Financial Grade Calculator">
+  <meta name="twitter:description" content="Get your money grade in seconds — plus a simple plan to raise it.">
+  <meta name="twitter:image" content="https://grademyfinance.com/og-image.png">
+
+  <script>
+    // No forced redirects here.
+    // Welcome is optional; set localStorage.setItem('skipWelcome','true') in welcome.html when dismissed/submitted.
   </script>
 </head>
+<body>
 
-
-  <script>
-    // 2. Only redirect to welcome.html if user hasn't skipped
-    (function(){
-      const skip = localStorage.getItem("skipWelcome") === "true";
-      if (!skip) {
-        window.location.replace("welcome.html");
-      } else {
-        // Show the page immediately if skipped
-        document.addEventListener("DOMContentLoaded", function(){
-          document.body.style.visibility = 'visible';
-        });
-      }
-    })();
-  </script>
-</head>
-
-
-
-
-
-<!-- Icons -->
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-<!-- OG/Twitter -->
-<meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
-<meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it. No sign-up.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://grademyfinance.com/">
-<meta property="og:image" content="https://grademyfinance.com/og-image.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Grade My Finance | Free Financial Grade Calculator">
-<meta name="twitter:description" content="Get your money grade in seconds — plus a simple plan to raise it.">
-<meta name="twitter:image" content="https://grademyfinance.com/og-image.png">
 
 <!-- Perf preconnects -->
 <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
