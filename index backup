@@ -1,13 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Grade My Finance | Free Financial Grade Calculator</title>
-<meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and ways to improve. No sign-up required.">
-<meta name="theme-color" content="#0f172a">
-<meta name="robots" content="index,follow">
-<link rel="canonical" href="https://grademyfinance.com/">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grade My Finance | Free Financial Grade Calculator</title>
+  <meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and ways to improve. No sign-up required.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://grademyfinance.com/">
+
+  <style>
+    /* 1. Hide page initially to prevent flicker */
+    html, body { visibility: hidden; background: #0f172a; }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let skipWelcome = false;
+      try { skipWelcome = localStorage.getItem('skipWelcome') === 'true'; } catch(e){}
+
+      if (!skipWelcome) {
+        // Redirect to welcome.html
+        window.location.replace('welcome.html');
+      } else {
+        // Show main page
+        document.documentElement.style.visibility = 'visible';
+      }
+    });
+  </script>
+</head>
+
+  <script>
+    // 2. Only redirect to welcome.html if user hasn't skipped
+    (function(){
+      const skip = localStorage.getItem("skipWelcome") === "true";
+      if (!skip) {
+        window.location.replace("welcome.html");
+      } else {
+        // Show the page immediately if skipped
+        document.addEventListener("DOMContentLoaded", function(){
+          document.body.style.visibility = 'visible';
+        });
+      }
+    })();
+  </script>
+</head>
+
+
+
+
 
 <!-- Icons -->
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -72,19 +113,18 @@ border-bottom:1px solid var(--line);
 }
 .hdr{height:100%; display:flex; align-items:center; gap:12px; position:relative}
 .logo{height:72px}
-@media (max-width:720px){ .logo{height:58px} }
+
 .brand{font-weight:900; font-size:22px; color:#062c1b}
 
 /* top-right toolbar */
 /* restore desktop behavior */
-.header-right{
-  position:absolute;   /* <-- put this back */
-  right:12px;
-  top:10px;
-  display:flex;
-  gap:8px;
-  align-items:center;
+.header-right {
+  margin-left: auto;        /* push actions to the right */
+  display: flex;
+  align-items: center;      /* vertically center items */
+  gap: 12px;                /* spacing between toggle + button */
 }
+
 
 .btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);
 background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
@@ -160,8 +200,22 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac;
 border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)
 }
-.grady-logo{ width:260px; height:auto; animation:floatCard 3s ease-in-out infinite; }
-@media (max-width:980px){ .grady-logo{ width:220px } }
+.grady-logo {
+  width: 480px;           /* make him big on desktop */
+  max-width: 90%;         /* responsive so he shrinks on small screens */
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  animation: floatCard 3s ease-in-out infinite;
+}
+
+@media (max-width: 980px) {
+  .grady-logo { width: 320px; }
+}
+
+@media (max-width: 600px) {
+  .grady-logo { width: 240px; }
+}
 
 /* Overlay & loader */
 .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:80}
@@ -254,7 +308,7 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
 .legend .dot{width:10px;height:10px;border-radius:999px;display:inline-block;border:1px solid rgba(255,255,255,.35)}
 .fade-in{animation:fade .28s ease}
 @keyframes fade{from{opacity:.0;transform:translateY(2px)}to{opacity:1;transform:none}}
-  /* === RESPONSIVE TOP BAR — ONE LINE ON MOBILE === */
+/* === Responsive Top Bar (mobile) === */
 @media (max-width: 720px) {
   header {
     display: flex !important;
@@ -287,196 +341,158 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
     text-overflow: ellipsis !important;
     max-width: 48vw !important;
   }
-  .btn.mini, .header-right select.btn {
+  .btn.mini,
+  .header-right select.btn {
     padding: 4px 8px !important;
     font-size: .9rem !important;
     min-width: 0 !important;
   }
   #currencySel { width: auto !important; max-width: 88px !important; }
-  #bookTop { padding: 6px 8px !important; font-size: 0 !important; }
+
   #bookTop::before { content: "📘"; font-size: 16px; }
   #themeToggle { width: auto !important; }
 }
 
-/* extra-tight phones */
-@media (max-width: 380px){
+/* Extra-tight phones */
+@media (max-width: 380px) {
   .brand { display: none !important; }
   #currencySel { max-width: 72px !important; }
 }
 
- /* === RESPONSIVE TOP BAR — ONE LINE ON MOBILE === */
-@media (max-width: 720px) {
-  header {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    padding: 6px 8px !important;
-    height: var(--header-h) !important;
-  }
-  .hdr {
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-  }
-  .header-right {
-    position: static !important;
-    margin-left: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    flex: 0 0 auto !important;
-    white-space: nowrap !important;
-  }
-  .logo { height: 44px !important; }
-  .brand {
-    font-size: 16px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    max-width: 48vw !important;
-  }
-  .btn.mini, .header-right select.btn {
-    padding: 4px 8px !important;
-    font-size: .9rem !important;
-    min-width: 0 !important;
-  }
-  #currencySel { width: auto !important; max-width: 88px !important; }
-  #bookTop { padding: 6px 8px !important; font-size: 0 !important; }
-  #bookTop::before { content: "📘"; font-size: 16px; }
-  #themeToggle { width: auto !important; }
-}
-/* === RESPONSIVE TOP BAR — ONE LINE ON MOBILE === */
-@media (max-width: 720px) {
-  header {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    padding: 6px 8px !important;
-    height: var(--header-h) !important;
-  }
-  .hdr {
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-  }
-  .header-right {
-    position: static !important;
-    margin-left: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    flex: 0 0 auto !important;
-    white-space: nowrap !important;
-  }
-  .logo { height: 44px !important; }
-  .brand {
-    font-size: 16px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    max-width: 48vw !important;
-  }
-  .btn.mini, .header-right select.btn {
-    padding: 4px 8px !important;
-    font-size: .9rem !important;
-    min-width: 0 !important;
-  }
-  #currencySel { width: auto !important; max-width: 88px !important; }
-  #bookTop { padding: 6px 8px !important; font-size: 0 !important; }
-  #boo
-
-/* extra-tight phones */
-@media (max-width: 380px){
-  .brand { display: none !important; }
-  #currencySel { max-width: 72px !important; }
+/* === Top bar icon + text alignment (desktop & mobile) === */
+.header-right .btn,
+#bookTop,
+#themeToggle {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 6px 10px !important;
+  font-size: 14px !important;
+  line-height: 1.2;
 }
 
-  
+#bookTop::before {
+  content: "📘";
+  font-size: 16px;
+}
+
+#themeToggle {
+  font-size: 16px !important;
+}
+
+/* Icon-only on very small screens */
+@media (max-width: 480px) {
+  #bookTop span,
+  #themeToggle span {
+    display: none;
+  }
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: var(--header-h, 60px);
+  background: #0f172a;
+}
+
+.hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand {
+  font-weight: 900;
+  font-size: 20px;
+  color: #fff;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#bookTop {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(90deg,#16a34a,#34d399);
+  border: none;
+  border-radius: 20px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+
+#themeToggle {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #1e293b;
+  color: #f8fafc;
+  border: none;
+  cursor: pointer;
+}
+
 
 </style>
-</head>
-<body>
-<!-- Welcome Screen -->
-<div id="welcome-page" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;">
-  
-  <img 
-    src="grady-owl-10324.png" 
-    alt="Grady the Owl" 
-    style="width:180px;height:auto;margin-bottom:20px;">
 
-  <h1>Welcome to Grade My Finance</h1>
-  <p style="max-width:420px;margin:10px auto;font-size:18px;line-height:1.4;">
-    Get your free financial grade in seconds. Enter your email to join the list and start!
-  </p>
-
-  <!-- Email capture form -->
-  <form id="welcomeSub" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
-    <input 
-      type="email" 
-      name="email" 
-      placeholder="Enter your email" 
-      required
-      style="flex:1 1 220px;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:16px;">
-    <button 
-      type="submit" 
-      class="btn primary" 
-      style="padding:12px 20px;font-size:16px;border:none;border-radius:6px;cursor:pointer;">
-      Join
-    </button>
-    <input type="hidden" name="_subject" value="New GradeMyFinance Signup">
-  </form>
-
-  <button 
-    id="continueBtn" 
-    class="btn primary" 
-    style="margin-top:20px;padding:12px 20px;font-size:16px;border:none;border-radius:6px;cursor:pointer;">
-    Continue without Email
-  </button>
-</div>
 <noscript>
-<div style="background:#fee2e2;color:#7f1d1d;padding:10px;text-align:center">
-JavaScript is required to calculate your report card. Please enable it in your browser.
-</div>
+  <div style="background:#fee2e2;color:#7f1d1d;padding:10px;text-align:center">
+    JavaScript is required to calculate your report card. Please enable it in your browser.
+  </div>
 </noscript>
+
 
 <!-- Confetti canvas -->
 <canvas id="confetti" style="position:fixed; inset:0; pointer-events:none; z-index:150;"></canvas>
-
 <header>
-<div class="hdr">
-<!-- Logo -->
-<svg class="logo" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
-<defs>
-<radialGradient id="gSphere" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#b9f4d1"/><stop offset=".55" stop-color="#34d399"/><stop offset="1" stop-color="#128a3f"/></radialGradient>
-<linearGradient id="paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e8ffe9"/></linearGradient>
-</defs>
-<g transform="translate(20,14)">
-<circle cx="40" cy="45" r="38" fill="url(#gSphere)"/>
-<circle cx="40" cy="45" r="38" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
-<text x="40" y="58" text-anchor="middle" font-size="44" font-weight="1000" fill="#072b19" stroke="#eafff3" stroke-width="1.6" paint-order="stroke">G</text>
-</g>
-<g transform="translate(110,10) rotate(-9)">
-<rect width="70" height="94" rx="12" fill="url(#paper)" stroke="#86EFAC" stroke-width="2"/>
-<g stroke="#10B981" stroke-width="2"><line x1="12" y1="28" x2="58" y2="28"/><line x1="12" y1="42" x2="58" y2="42"/><line x1="12" y1="56" x2="58" y2="56"/></g>
-<text x="35" y="76" text-anchor="middle" font-size="24" font-weight="900" fill="#ef4444">A+</text>
-</g>
-</svg>
-<div class="brand">Grade My Finance</div>
-</div>
+  <div class="hdr">
+    <!-- Logo -->
+    <svg class="logo" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg" aria-label="GMF logo">
+      <defs>
+        <radialGradient id="gSphere" cx="50%" cy="40%" r="70%">
+          <stop offset="0" stop-color="#b9f4d1"/>
+          <stop offset=".55" stop-color="#34d399"/>
+          <stop offset="1" stop-color="#128a3f"/>
+        </radialGradient>
+        <linearGradient id="paper" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#ffffff"/>
+          <stop offset="1" stop-color="#e8ffe9"/>
+        </linearGradient>
+      </defs>
+      <g transform="translate(20,14)">
+        <circle cx="40" cy="45" r="38" fill="url(#gSphere)"/>
+        <circle cx="40" cy="45" r="38" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+        <text x="40" y="58" text-anchor="middle" font-size="44" font-weight="1000" fill="#072b19" stroke="#eafff3" stroke-width="1.6" paint-order="stroke">G</text>
+      </g>
+      <g transform="translate(110,10) rotate(-9)">
+        <rect width="70" height="94" rx="12" fill="url(#paper)" stroke="#86EFAC" stroke-width="2"/>
+        <g stroke="#10B981" stroke-width="2">
+          <line x1="12" y1="28" x2="58" y2="28"/>
+          <line x1="12" y1="42" x2="58" y2="42"/>
+          <line x1="12" y1="56" x2="58" y2="56"/>
+        </g>
+        <text x="35" y="76" text-anchor="middle" font-size="24" font-weight="900" fill="#ef4444">A+</text>
+      </g>
+    </svg>
 
-<!-- Top-right toolbar -->
-<div class="header-right">
-<select id="currencySel" class="btn mini" aria-label="Currency">
-<option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option><option>AUD</option>
-</select>
-<button id="themeToggle" class="btn mini" type="button" aria-label="Toggle theme">🌙/☀️</button>
-<a id="bookTop" class="btn mini primary" href="https://grademyfinance.gumroad.com/l/zlwid" target="_blank" rel="noopener">📘 Get the Book</a>
-</div>
+    <!-- Brand -->
+    <div class="brand">Grade My Finance</div>
+  </div>
+
+  <!-- Top-right toolbar -->
+  <div class="header-right">
+    <button id="themeToggle">🌙/☀️</button>
+    <button id="bookTop"><span>Get the Book</span></button>
+  </div>
 </header>
+
+
 
 <section class="container hero" aria-label="Hero">
 <div class="hero-grid">
@@ -495,7 +511,7 @@ JavaScript is required to calculate your report card. Please enable it in your b
   <img
     class="grady-logo"
     src="grady-owl-10324.png"
-    sizes="(max-width: 980px) 220px, 260px"
+    sizes="(max-width: 980px) 400px, 600px"
     alt="Grady the Owl holding an A+ report card"
     fetchpriority="high"
     loading="eager">
@@ -783,6 +799,12 @@ Thanks! Check your inbox for a confirmation.
 
 <script>
 "use strict";
+  function money(n) {
+  if (!isFinite(n)) return "—";
+  // default currency — you can replace USD dynamically later
+  return new Intl.NumberFormat(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(Math.round(n));
+}
+
 (function(){
 
 function $(id){ return document.getElementById(id); }
@@ -821,10 +843,19 @@ var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next;
 localStorage.setItem("gmf_theme", next||"dark"); __track('toggle_theme', {theme: next||'dark'});
 });
 
-var CURRENCY=localStorage.getItem("gmf_curr")||"USD";
-var curSel=$("currencySel"); curSel.value=CURRENCY;
-curSel.addEventListener("change", function(){ CURRENCY=curSel.value; localStorage.setItem("gmf_curr",CURRENCY); updateHints(); __track('change_currency',{currency:CURRENCY}); });
-function money(n){ return isFinite(n)? new Intl.NumberFormat(undefined,{style:"currency",currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)) : "—"; }
+var CURRENCY = localStorage.getItem("gmf_curr") || "USD";
+var curSel = document.getElementById("currencySel");
+
+if (curSel) {
+  curSel.value = CURRENCY;
+  curSel.addEventListener("change", function() {
+    CURRENCY = curSel.value;
+    localStorage.setItem("gmf_curr", CURRENCY);
+    updateHints();
+    __track('change_currency', {currency: CURRENCY});
+  });
+}
+
 
 /* ===== Inputs & hygiene + autosave ===== */
 var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","mortgage","student","auto","cc"];
@@ -1443,30 +1474,24 @@ if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 
 })(); // end IIFE
 </script>
-  <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const welcomePage = document.getElementById("welcome-page");
-  const mainApp = document.getElementById("calculator"); // update if your calculator div uses a different id
-  const continueBtn = document.getElementById("continueBtn");
 
-  if (welcomePage && mainApp) {
-    mainApp.style.display = "none"; // hide calculator initially
-
-    continueBtn.addEventListener("click", () => {
-      welcomePage.style.display = "none";
-      mainApp.style.display = "block";
-      localStorage.setItem("seenWelcome", "yes"); // remember choice
-    });
-
-    if (localStorage.getItem("seenWelcome") === "yes") {
-      welcomePage.style.display = "none";
-      mainApp.style.display = "block";
-    }
-  }
-});
-</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
