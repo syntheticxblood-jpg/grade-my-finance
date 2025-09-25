@@ -57,7 +57,7 @@
   <button onclick="skipSession()" class="btn secondary" style="margin-top:10px;">Don’t show again (this session)</button>
 
   <script>
-    // If user already skipped in this session, go straight to index
+    // Always redirect to main if session flag is set (temporary skip)
     if (sessionStorage.getItem('skipWelcomeSession') === 'true') {
       window.location.href = 'index.html';
     }
@@ -101,3 +101,4 @@
   </script>
 </body>
 </html>
+
