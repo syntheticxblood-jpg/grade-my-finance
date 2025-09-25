@@ -753,11 +753,6 @@ Thanks! Check your inbox for a confirmation.
 <div class="mobile-cta" id="mobileCta">
 <button id="gradeBtnSticky" class="btn primary" type="button">Get My Report Card</button>
 </div>
-function money(n) {
-  if (!isFinite(n)) return "—";
-  // default currency — you can replace USD dynamically later
-  return new Intl.NumberFormat(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(Math.round(n));
-}
 
 <footer>
 <div class="fwrap">
@@ -768,6 +763,12 @@ function money(n) {
 
 <script>
 "use strict";
+  function money(n) {
+  if (!isFinite(n)) return "—";
+  // default currency — you can replace USD dynamically later
+  return new Intl.NumberFormat(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(Math.round(n));
+}
+
 (function(){
 
 function $(id){ return document.getElementById(id); }
