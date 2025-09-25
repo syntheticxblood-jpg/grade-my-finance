@@ -1363,28 +1363,7 @@ if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 
 })(); // end IIFE
 </script>
-  <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const welcomePage = document.getElementById("welcome-page");
-  const mainApp = document.getElementById("calculator"); // update if your calculator div uses a different id
-  const continueBtn = document.getElementById("continueBtn");
 
-  if (welcomePage && mainApp) {
-    mainApp.style.display = "none"; // hide calculator initially
-
-    continueBtn.addEventListener("click", () => {
-      welcomePage.style.display = "none";
-      mainApp.style.display = "block";
-      localStorage.setItem("seenWelcome", "yes"); // remember choice
-    });
-
-    if (localStorage.getItem("seenWelcome") === "yes") {
-      welcomePage.style.display = "none";
-      mainApp.style.display = "block";
-    }
-  }
-});
-</script>
 </body>
 </html>
 
