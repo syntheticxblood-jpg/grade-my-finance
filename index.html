@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    // Redirect to welcome page immediately to prevent flicker
-    window.location.replace("welcome.html");
-  </script>
-
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Grade My Finance | Free Financial Grade Calculator</title>
@@ -13,7 +8,21 @@
   <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://grademyfinance.com/">
+
+  <script>
+    // Hide content immediately to prevent flicker
+    document.documentElement.style.display = 'none';
+
+    // Redirect to welcome.html only if user didn't disable it
+    if (localStorage.getItem("skipWelcome") !== "true") {
+      window.location.replace("welcome.html");
+    } else {
+      // Show the page immediately if skipping welcome
+      document.documentElement.style.display = '';
+    }
+  </script>
 </head>
+
 
 <!-- Icons -->
 <link rel="icon" href="/favicon.ico" sizes="any">
