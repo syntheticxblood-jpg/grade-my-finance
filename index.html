@@ -9,19 +9,21 @@
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://grademyfinance.com/">
 
-  <script>
-    // Hide content immediately to prevent flicker
-    document.documentElement.style.display = 'none';
+  <!-- Prevent flicker -->
+  <style>html{display:none !important;}</style>
 
-    // Redirect to welcome.html only if user didn't disable it
+  <script>
+    // Immediate check to either show page or redirect
     if (localStorage.getItem("skipWelcome") !== "true") {
+      // redirect to welcome
       window.location.replace("welcome.html");
     } else {
-      // Show the page immediately if skipping welcome
+      // show index
       document.documentElement.style.display = '';
     }
   </script>
 </head>
+
 
 
 <!-- Icons -->
