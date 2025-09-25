@@ -1,4 +1,5 @@
-
+<!DOCTYPE html>
+<html lang="en">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -181,7 +182,9 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 /* Mascot (Grady) */
 .mascot{display:grid;place-items:center;position:relative; margin-top:2px}
 @keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
-
+.floatA{position:absolute; right:8px; bottom:0; transform:translate(20%,30%);
+background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac;
+border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)
 }
 .grady-logo {
   width: 480px;           /* make him big on desktop */
@@ -498,7 +501,7 @@ header {
     alt="Grady the Owl holding an A+ report card"
     fetchpriority="high"
     loading="eager">
-  
+  <div class="floatA" aria-hidden="true">A+</div>
 </div>
 
 </div>
@@ -778,106 +781,6 @@ Thanks! Check your inbox for a confirmation.
 <div class="fcontact"><span class="pill">Contact</span> <a class="pill" href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></div>
 <div class="fnote">© 2025 Grade My Finance — educational use only (not financial advice).</div>
 </div>
-  <!-- FAQ Section -->
-<section class="container" style="max-width:900px; margin:40px auto; padding:18px; background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)">
-  <h2 style="margin:0 0 12px; font-size:22px">Frequently Asked Questions</h2>
-
-  <div class="card" style="margin-bottom:10px">
-    <details>
-      <summary style="cursor:pointer;font-weight:700">What is Grade My Finance?</summary>
-      <p style="color:#cbd5e1; margin-top:6px">
-        Grade My Finance is a free calculator that gives you a quick financial health grade based on your income, expenses, assets, and debts. No sign-up required.
-      </p>
-    </details>
-  </div>
-
-  <div class="card" style="margin-bottom:10px">
-    <details>
-      <summary style="cursor:pointer;font-weight:700">Is it really free?</summary>
-      <p style="color:#cbd5e1; margin-top:6px">
-        Yes. The calculator runs directly in your browser for free. You can get your financial grade in seconds without creating an account.
-      </p>
-    </details>
-  </div>
-
-  <div class="card" style="margin-bottom:10px">
-    <details>
-      <summary style="cursor:pointer;font-weight:700">Do you store my financial data?</summary>
-      <p style="color:#cbd5e1; margin-top:6px">
-        No. Your numbers never leave your device. Everything is calculated locally in your browser. If you save, it’s only stored in your browser’s local storage.
-      </p>
-    </details>
-  </div>
-
-  <div class="card" style="margin-bottom:10px">
-    <details>
-      <summary style="cursor:pointer;font-weight:700">What does the grade mean?</summary>
-      <p style="color:#cbd5e1; margin-top:6px">
-        Your grade reflects how your finances compare to simple benchmarks: savings rate, emergency fund size, debt load, age-based net worth, and income relative to the median.
-      </p>
-    </details>
-  </div>
-
-  <div class="card">
-    <details>
-      <summary style="cursor:pointer;font-weight:700">Is this financial advice?</summary>
-      <p style="color:#cbd5e1; margin-top:6px">
-        No. Grade My Finance is educational only. It gives you context and simple goals but it’s not personalized financial advice.
-      </p>
-    </details>
-  </div>
-</section>
-
-<!-- FAQ Schema Markup -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What is Grade My Finance?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Grade My Finance is a free calculator that gives you a quick financial health grade based on your income, expenses, assets, and debts. No sign-up required."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is it really free?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. The calculator runs directly in your browser for free. You can get your financial grade in seconds without creating an account."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you store my financial data?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. Your numbers never leave your device. Everything is calculated locally in your browser. If you save, it’s only stored in your browser’s local storage."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What does the grade mean?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Your grade reflects how your finances compare to simple benchmarks: savings rate, emergency fund size, debt load, age-based net worth, and income relative to the median."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is this financial advice?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. Grade My Finance is educational only. It gives you context and simple goals but it’s not personalized financial advice."
-      }
-    }
-  ]
-}
-</script>
-
 </footer>
 
 <script>
@@ -1016,47 +919,35 @@ function categoryScores(v){
   var sDebt = clamp(1 - v.dtiNonMort/0.50, 0, 1);   // under 50% baseline is strong
   var sAgeNW= Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
   var sInc  = v.incomeScore;
-
-  // Adjusted weights
-  var weighted;
-  if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) {
-    weighted = 100; // Full credit if FI
-  } else {
-    weighted = (
-      sSave * 0.15 +
-      sEF   * 0.10 +
-      sDebt * 0.05 +
-      sAgeNW* 0.40 +
-      sInc  * 0.30
-    ) * 100;
-  }
-
-  // Overall score + letter
-  var rawScore = Math.round(weighted*10)/10;
-  var letter   = overallLetter(rawScore);
-
-  // Apply floor: if age-based NW ≥ 75th percentile, don’t drop below C
-  if (sAgeNW >= 0.75 && rawScore < 70) {
-    letter = "C";
-    rawScore = Math.max(rawScore, 70);
-  }
-
-  return {
-    s: { sSave, sEF, sDebt, sAgeNW, sInc },
-    components: [
-  { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home", letter:letterFrom01(sSave), tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(Math.max(0, v.income*0.25 - (v.income - v.expenses)))+"/mo" : "" },
-  { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months", letter:letterFrom01(sEF), tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
-  { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add ~"+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt load." },
-  { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(clamp(v.nwProgress,0,1)*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+" to target." : "On track or ahead." },
-  { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: v.annualIncome < 70000*1.15 ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
-],
-    ],
-    overall: {
-      score: rawScore,
-      letter: letter
-    }
-  };
+// Adjusted weights with retirement override
+var weighted;
+if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) {
+  weighted = 100; // Full credit overall if financially independent
+} else {
+  weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.40 + sInc*0.30) * 100;
 }
+
+return {
+  s: {sSave, sEF, sDebt, sAgeNW, sInc},
+  components: [
+    { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home", letter:letterFrom01(sSave), tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(Math.max(0, v.income*0.25 - (v.income - v.expenses)))+"/mo" : "" },
+    { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months", letter:letterFrom01(sEF), tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
+    { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add ~"+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt load." },
+    { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(clamp(v.nwProgress,0,1)*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+" to target." : "On track or ahead." },
+    { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: v.annualIncome < 70000*1.15 ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
+  ],
+  overall: {
+    score: (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate)
+      ? 100
+      : Math.round(weighted*10)/10,
+    letter: (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate)
+      ? "A+ (Financially Independent 🎉)"
+      : overallLetter(Math.round(weighted*10)/10)
+  }
+};
+
+}
+
 
 /* ===== Path ===== */
 function nextLetterTarget(score){
@@ -1465,9 +1356,8 @@ e.preventDefault();
 var email=subFormRC.querySelector("input[name='email']").value.trim();
 if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
 fetch(subFormRC.action, {
-  method: "POST",
-  headers: { "Accept": "application/json" },
-  body: new FormData(subFormRC)
+method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+body:JSON.stringify({email:email,source:"grademyfinance.com/reportcard"})
 })
 .then(function(res){
 if(res.ok){ __track('subscribe_success',{placement:'report_card'}); alert("Thanks for subscribing! Check your inbox for confirmation."); subFormRC.reset(); }
@@ -1601,6 +1491,89 @@ if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
