@@ -164,8 +164,22 @@ input:focus{outline:none;border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,2
 background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; border:2px solid #86efac;
 border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; place-items:center; box-shadow:0 10px 20px rgba(0,0,0,.45)
 }
-.grady-logo{ width:260px; height:auto; animation:floatCard 3s ease-in-out infinite; }
-@media (max-width:980px){ .grady-logo{ width:220px } }
+.grady-logo {
+  width: 480px;           /* make him big on desktop */
+  max-width: 90%;         /* responsive so he shrinks on small screens */
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  animation: floatCard 3s ease-in-out infinite;
+}
+
+@media (max-width: 980px) {
+  .grady-logo { width: 320px; }
+}
+
+@media (max-width: 600px) {
+  .grady-logo { width: 240px; }
+}
 
 /* Overlay & loader */
 .overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:80}
