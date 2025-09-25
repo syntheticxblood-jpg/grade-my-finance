@@ -1,24 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- 1. Prevent flash by hiding page immediately -->
-  <style>
-    html { display: none !important; background: #0f172a; }
-  </style>
-
-  <script>
-    // 2. Check if user wants to skip welcome
-    const skip = localStorage.getItem("skipWelcome") === "true";
-
-    if (!skip) {
-      // Redirect to welcome page
-      window.location.replace("welcome.html");
-    } else {
-      // Show the page immediately for users who skipped
-      document.documentElement.style.display = '';
-    }
-  </script>
-
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Grade My Finance | Free Financial Grade Calculator</title>
@@ -26,7 +8,28 @@
   <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://grademyfinance.com/">
+
+  <style>
+    /* 1. Hide content initially to prevent flash */
+    body { visibility: hidden; background: #0f172a; }
+  </style>
+
+  <script>
+    // 2. Only redirect to welcome.html if user hasn't skipped
+    (function(){
+      const skip = localStorage.getItem("skipWelcome") === "true";
+      if (!skip) {
+        window.location.replace("welcome.html");
+      } else {
+        // Show the page immediately if skipped
+        document.addEventListener("DOMContentLoaded", function(){
+          document.body.style.visibility = 'visible';
+        });
+      }
+    })();
+  </script>
 </head>
+
 
 
 
