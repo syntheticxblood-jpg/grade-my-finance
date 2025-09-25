@@ -57,7 +57,9 @@
   <button onclick="skipSession()" class="btn secondary" style="margin-top:10px;">Don’t show again (this session)</button>
 
   <script>
-    // If already skipped for this session, bounce straight to index
+    // ✅ FIXED: only redirect if user already skipped or submitted email
+    if (sessionStorage.getItem('skipWelcomeSession') === 'true' ||
+        localStorage.getItem('submittedEmail') === 'true') {
       window.location.replace('index.html');
     }
 
