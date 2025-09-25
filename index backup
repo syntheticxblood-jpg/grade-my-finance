@@ -922,7 +922,6 @@ if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) {
   weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.40 + sInc*0.30) * 100;
 }
 
-
   return {
     s:{sSave,sEF,sDebt,sAgeNW,sInc},
 components: (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) ? [
@@ -941,10 +940,11 @@ components: (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) ? 
 
 overall: {
   score: Math.round(weighted*10)/10,
-  letter: (weighted === 100 && (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate))
+  letter: (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate)
     ? "A+ (Financially Independent 🎉)"
     : overallLetter(Math.round(weighted*10)/10)
 }
+
   };
 }
 
