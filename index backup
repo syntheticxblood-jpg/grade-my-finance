@@ -914,14 +914,14 @@ function categoryScores(v){
   var sDebt = clamp(1 - v.dtiNonMort/0.50, 0, 1);   // under 50% baseline is strong
   var sAgeNW= Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
   var sInc  = v.incomeScore;
-// Adjusted weights: Income 30%, NW 40%, Savings 15%, EF 10%, Debt 5%
-// Retirement override: if financially independent, give full credit
+// Adjusted weights with retirement override
 var weighted;
 if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) {
-  weighted = 100; // Full credit overall
+  weighted = 100; // Full credit overall if financially independent
 } else {
   weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.40 + sInc*0.30) * 100;
 }
+
 
   return {
     s:{sSave,sEF,sDebt,sAgeNW,sInc},
