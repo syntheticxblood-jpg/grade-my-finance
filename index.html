@@ -9,31 +9,26 @@
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://grademyfinance.com/">
 
-  <style>
-    /* Hide page immediately to prevent flash/flicker */
-    html { visibility: hidden !important; }
-  </style>
+<style>html{visibility:hidden}</style>
+<script>
+(function() {
+  function reveal(){ document.documentElement.style.visibility='visible'; }
 
-  <script>
-    // Run immediately before the page is parsed
-    (function() {
-      try {
-        const skipSession = sessionStorage.getItem('skipWelcomeSession') === 'true';
-        const submittedEmail = localStorage.getItem('submittedEmail') === 'true';
+  try {
+    const skipSession = sessionStorage.getItem('skipWelcomeSession') === 'true';
+    const submittedEmail = localStorage.getItem('submittedEmail') === 'true';
 
-        if (!skipSession && !submittedEmail) {
-          // Redirect instantly to welcome screen
-          window.location.replace('welcome.html');
-        } else {
-          // Reveal page only after checks
-          document.documentElement.style.visibility = 'visible';
-        }
-      } catch(e) {
-        document.documentElement.style.visibility = 'visible';
-        console.error(e);
-      }
-    })();
-  </script>
+    if (!skipSession && !submittedEmail) {
+      window.location.replace('welcome.html');
+    } else {
+      reveal();
+    }
+  } catch(e) {
+    reveal();
+  }
+})();
+</script>
+
 </head>
 
   <script>
