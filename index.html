@@ -9,27 +9,21 @@
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://grademyfinance.com/">
 
-<style>html{visibility:hidden}</style>
-<script>
-(function() {
-  function reveal(){ document.documentElement.style.visibility='visible'; }
+  <script>
+    (function() {
+      const skipSession = sessionStorage.getItem('skipWelcomeSession') === 'true';
+      const submittedEmail = localStorage.getItem('submittedEmail') === 'true';
 
-  try {
-    const skipSession = sessionStorage.getItem('skipWelcomeSession') === 'true';
-    const submittedEmail = localStorage.getItem('submittedEmail') === 'true';
-
-    // Only redirect to welcome if neither flag is set
-    if (!skipSession && !submittedEmail) {
-      window.location.replace('welcome.html');
-    } else {
-      reveal();
-    }
-  } catch(e) {
-    reveal();
-  }
-})();
-</script>
+      // Only redirect first-time visitors
+      if (!skipSession && !submittedEmail) {
+        // Use href instead of replace so mobile doesn't thrash the history stack
+        window.location.href = 'welcome.html';
+      }
+      // no need to hide/reveal the page, just let it render
+    })();
+  </script>
 </head>
+
 
   <script>
     // 2. Only redirect to welcome.html if user hasn't skipped
