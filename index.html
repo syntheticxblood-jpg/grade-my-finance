@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -9,6 +11,21 @@
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://grademyfinance.com/">
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      try {
+        const hasSeen = localStorage.getItem("skipWelcome") === "true";
+        if (!hasSeen) {
+          // mark so they don’t get looped
+          localStorage.setItem("skipWelcome", "true");
+          window.location.href = "welcome.html";
+        }
+      } catch (e) {
+        console.warn("Welcome redirect check failed:", e);
+      }
+    });
+  </script>
+</head>
   <!-- Icons -->
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
