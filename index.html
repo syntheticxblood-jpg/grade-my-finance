@@ -18,7 +18,7 @@
     const skipSession = sessionStorage.getItem('skipWelcomeSession') === 'true';
     const submittedEmail = localStorage.getItem('submittedEmail') === 'true';
 
-    // Only send to welcome if user has NOT skipped this session AND not submitted email
+    // Only redirect to welcome if neither flag is set
     if (!skipSession && !submittedEmail) {
       window.location.replace('welcome.html');
     } else {
@@ -29,8 +29,6 @@
   }
 })();
 </script>
-
-
 </head>
 
   <script>
