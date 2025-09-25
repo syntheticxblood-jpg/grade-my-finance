@@ -872,11 +872,18 @@ var denomSav=Math.max(v.income, v.expenses, 2000);
 v.saveRate=denomSav>0 ? Math.max(0, v.income - v.expenses)/denomSav : 0;
 v.efMonths=v.expenses>0 ? v.cash/v.expenses : 0;
 v.nonMortDebt=v.student+v.auto+v.cc;
-v.dtiNonMort = v.baseline>0 ? v.nonMortDebt/v.baseline : 1;
-v.nwTargetMultiple = targetNW(v.age||30);
+// Net worth target (age curve × baseline spending)
+v.nwTargetMultiple = targetNW(v.age || 30);
 v.nwTargetAmount = v.nwTargetMultiple * v.baseline;
-v.nwProgress = v.nwTargetAmount>0 ? v.net/v.nwTargetAmount : 0;
-var ratio = v.annualIncome / 70000;
+
+// Retirement sufficiency check (safe if >= $3M or covers baseline at 7% withdrawal)
+var retirementSafe = 3000000;   // $3M goal
+var withdrawalRate = 0.07;
+
+if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) {
+  v.nwProgress = 1;   // full credit — financially independent
+} else {
+}
 v.incomeScore = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2), 0, 1);
 v.incomeLetter = incomeLetterFromRatio(ratio);
 return v;
