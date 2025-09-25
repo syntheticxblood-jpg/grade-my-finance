@@ -785,6 +785,8 @@ Thanks! Check your inbox for a confirmation.
 
 <script>
 "use strict";
+  var retirementSafe = 3000000;   // $3M goal
+var withdrawalRate = 0.07;
   function money(n) {
   if (!isFinite(n)) return "—";
   // default currency — you can replace USD dynamically later
@@ -878,8 +880,7 @@ v.nwTargetMultiple = targetNW(v.age || 30);
 v.nwTargetAmount = v.nwTargetMultiple * v.baseline;
 
 // Retirement sufficiency check (safe if >= $3M or covers baseline at 7% withdrawal)
-var retirementSafe = 3000000;   // $3M goal
-var withdrawalRate = 0.07;
+
 
 if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) {
   v.nwProgress = 1;   // full credit — financially independent
