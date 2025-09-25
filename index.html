@@ -10,9 +10,25 @@
   <link rel="canonical" href="https://grademyfinance.com/">
 
   <style>
-    /* 1. Hide content initially to prevent flash */
-    body { visibility: hidden; background: #0f172a; }
+    /* 1. Hide page initially to prevent flicker */
+    html, body { visibility: hidden; background: #0f172a; }
   </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let skipWelcome = false;
+      try { skipWelcome = localStorage.getItem('skipWelcome') === 'true'; } catch(e){}
+
+      if (!skipWelcome) {
+        // Redirect to welcome.html
+        window.location.replace('welcome.html');
+      } else {
+        // Show main page
+        document.documentElement.style.visibility = 'visible';
+      }
+    });
+  </script>
+</head>
 
   <script>
     // 2. Only redirect to welcome.html if user hasn't skipped
