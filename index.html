@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- 1. Prevent flash by hiding page immediately -->
+  <style>
+    html { display: none !important; background: #0f172a; }
+  </style>
+
+  <script>
+    // 2. Check if user wants to skip welcome
+    const skip = localStorage.getItem("skipWelcome") === "true";
+
+    if (!skip) {
+      // Redirect to welcome page
+      window.location.replace("welcome.html");
+    } else {
+      // Show the page immediately for users who skipped
+      document.documentElement.style.display = '';
+    }
+  </script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Grade My Finance | Free Financial Grade Calculator</title>
@@ -8,21 +26,8 @@
   <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://grademyfinance.com/">
-
-  <!-- Prevent flicker -->
-  <style>html{display:none !important;}</style>
-
-  <script>
-    // Immediate check to either show page or redirect
-    if (localStorage.getItem("skipWelcome") !== "true") {
-      // redirect to welcome
-      window.location.replace("welcome.html");
-    } else {
-      // show index
-      document.documentElement.style.display = '';
-    }
-  </script>
 </head>
+
 
 
 
