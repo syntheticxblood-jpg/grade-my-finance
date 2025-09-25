@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
 <script>
-  localStorage.setItem("seenWelcome", "yes"); // optional tracking
-  window.location.href = "welcome.html";
+  // Only redirect to welcome.html if the user hasn't completed it yet
+  if (!localStorage.getItem("seenWelcome")) {
+    window.location.href = "welcome.html";
+  }
+</script>
+
 
 </script>
 <meta charset="utf-8" />
