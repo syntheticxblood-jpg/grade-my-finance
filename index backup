@@ -883,7 +883,10 @@ var withdrawalRate = 0.07;
 if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) {
   v.nwProgress = 1;   // full credit — financially independent
 } else {
+  // regular progress calculation
+  v.nwProgress = v.nwTargetAmount > 0 ? v.net / v.nwTargetAmount : 0;
 }
+
 v.incomeScore = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2), 0, 1);
 v.incomeLetter = incomeLetterFromRatio(ratio);
 return v;
