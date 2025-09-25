@@ -6,23 +6,18 @@
   <title>Grade My Finance | Free Financial Grade Calculator</title>
   <meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and ways to improve. No sign-up required.">
   <meta name="theme-color" content="#0f172a">
-  <meta name="robots" content="index,follow">
-  <link rel="canonical" href="https://grademyfinance.com/">
 
   <style>
-    /* Hide page initially to prevent flicker */
     html, body { visibility: hidden; background: #0f172a; }
   </style>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      let hasSubmittedEmail = false;
-      try {
-        hasSubmittedEmail = localStorage.getItem('submittedEmail') === 'true';
-      } catch(e){}
+      let emailSubmitted = false;
+      try { emailSubmitted = localStorage.getItem('submittedEmail') === 'true'; } catch(e){}
 
-      if (!hasSubmittedEmail) {
-        // Always redirect to welcome.html until email is submitted
+      // Only redirect to welcome if email not submitted
+      if (!emailSubmitted) {
         window.location.replace('welcome.html');
       } else {
         // Show main page
@@ -31,6 +26,7 @@
     });
   </script>
 </head>
+
 
   <script>
     // 2. Only redirect to welcome.html if user hasn't skipped
