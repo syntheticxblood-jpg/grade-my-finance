@@ -2,14 +2,8 @@
 <html lang="en">
 <head>
   <script>
-    // Only redirect if user hasn't disabled welcome
-    if (!localStorage.getItem('disableWelcome')) {
-      // Hide page immediately to prevent flicker
-      document.documentElement.style.display = 'none';
-      // Redirect to welcome page
-      window.location.replace('welcome.html');
-    }
-    // Otherwise page stays visible automatically
+    // Redirect to welcome page immediately to prevent flicker
+    window.location.replace("welcome.html");
   </script>
 
   <meta charset="utf-8" />
