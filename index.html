@@ -1017,31 +1017,47 @@ function categoryScores(v){
   var sDebt = clamp(1 - v.dtiNonMort/0.50, 0, 1);   // under 50% baseline is strong
   var sAgeNW= Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
   var sInc  = v.incomeScore;
-// Adjusted weights with retirement override
-var weighted;
-if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) {
-  weighted = 100; // Full credit overall if financially independent
-} else {
-  weighted = (sSave*0.15 + sEF*0.10 + sDebt*0.05 + sAgeNW*0.40 + sInc*0.30) * 100;
-}
 
-return {
-  s: {sSave, sEF, sDebt, sAgeNW, sInc},
-  components: [
-    { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home", letter:letterFrom01(sSave), tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(Math.max(0, v.income*0.25 - (v.income - v.expenses)))+"/mo" : "" },
-    { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months", letter:letterFrom01(sEF), tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
-    { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add ~"+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt load." },
-    { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(clamp(v.nwProgress,0,1)*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+" to target." : "On track or ahead." },
-    { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: v.annualIncome < 70000*1.15 ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
-  ],
-  overall: {
-    score: (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate)
-      ? 100
-      : Math.round(weighted*10)/10,
-    letter: (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate)
-      ? "A+ (Financially Independent 🎉)"
-      : overallLetter(Math.round(weighted*10)/10)
+  // Adjusted weights — Age-based NW counts more, EF/Savings can't tank entire score
+  var weighted;
+  if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) {
+    weighted = 100; // Full credit if FI
+  } else {
+    weighted = (
+      sSave * 0.10 +   // lower weight
+      sEF   * 0.10 +
+      sDebt * 0.05 +
+      sAgeNW* 0.55 +   // bigger weight
+      sInc  * 0.20
+    ) * 100;
   }
+
+  // Apply floor: if age-based NW ≥ 75th percentile, min grade = C
+  var rawScore = (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate)
+    ? 100
+    : Math.round(weighted*10)/10;
+
+  var letter = overallLetter(rawScore);
+  if (sAgeNW >= 0.75 && rawScore < 70) {
+    letter = "C"; 
+    rawScore = Math.max(rawScore, 70);
+  }
+
+  return {
+    s: {sSave, sEF, sDebt, sAgeNW, sInc},
+    components: [
+      { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home", letter:letterFrom01(sSave), tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(Math.max(0, v.income*0.25 - (v.income - v.expenses)))+"/mo" : "" },
+      { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months", letter:letterFrom01(sEF), tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
+      { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add ~"+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt load." },
+      { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(clamp(v.nwProgress,0,1)*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+" to target." : "On track or ahead." },
+      { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: v.annualIncome < 70000*1.15 ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
+    ],
+    overall: {
+      score: rawScore,
+      letter: letter
+    }
+  };
+}
 };
 
 }
