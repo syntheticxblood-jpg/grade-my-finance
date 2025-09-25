@@ -57,7 +57,7 @@
   <button onclick="skipSession()" class="btn secondary" style="margin-top:10px;">Don’t show again (this session)</button>
 
   <script>
-    // ✅ redirect skip logic
+    // ✅ Redirect skip logic
     if (sessionStorage.getItem('skipWelcomeSession') === 'true' ||
         localStorage.getItem('submittedEmail') === 'true') {
       window.location.replace('index.html');
@@ -89,7 +89,7 @@
       fetch(emailForm.action, {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
-        body: new FormData(emailForm)   // ✅ FormData instead of JSON
+        body: new FormData(emailForm)   // ✅ this is the key change
       })
       .then(res=>{
         if(res.ok){
