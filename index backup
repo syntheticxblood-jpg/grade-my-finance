@@ -932,7 +932,12 @@ if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) {
       { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(v.nwProgress*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+". Invest steadily." : "You're ahead — nice!" },
       { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: (v.annualIncome < 70000*1.15) ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
     ],
-    overall: { score: Math.round(weighted*10)/10, letter: overallLetter(Math.round(weighted*10)/10) }
+overall: {
+  score: Math.round(weighted*10)/10,
+  letter: (weighted === 100 && (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate))
+    ? "A+ (Financially Independent 🎉)"
+    : overallLetter(Math.round(weighted*10)/10)
+}
   };
 }
 
