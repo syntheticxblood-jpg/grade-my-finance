@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -9,62 +11,46 @@
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://grademyfinance.com/">
 
-  <style>
-    /* 1. Hide page initially to prevent flicker */
-    html, body { visibility: hidden; background: #0f172a; }
-  </style>
-
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      let skipWelcome = false;
-      try { skipWelcome = localStorage.getItem('skipWelcome') === 'true'; } catch(e){}
-
-      if (!skipWelcome) {
-        // Redirect to welcome.html
-        window.location.replace('welcome.html');
-      } else {
-        // Show main page
-        document.documentElement.style.visibility = 'visible';
+    document.addEventListener("DOMContentLoaded", function () {
+      try {
+        const hasSeen = localStorage.getItem("skipWelcome") === "true";
+        if (!hasSeen) {
+          // mark so they don’t get looped
+          localStorage.setItem("skipWelcome", "true");
+          window.location.href = "welcome.html";
+        }
+      } catch (e) {
+        console.warn("Welcome redirect check failed:", e);
       }
     });
   </script>
 </head>
+  <!-- Icons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
+  <meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it. No sign-up.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://grademyfinance.com/">
+  <meta property="og:image" content="https://grademyfinance.com/og-image.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Grade My Finance | Free Financial Grade Calculator">
+  <meta name="twitter:description" content="Get your money grade in seconds — plus a simple plan to raise it.">
+  <meta name="twitter:image" content="https://grademyfinance.com/og-image.png">
 
   <script>
-    // 2. Only redirect to welcome.html if user hasn't skipped
-    (function(){
-      const skip = localStorage.getItem("skipWelcome") === "true";
-      if (!skip) {
-        window.location.replace("welcome.html");
-      } else {
-        // Show the page immediately if skipped
-        document.addEventListener("DOMContentLoaded", function(){
-          document.body.style.visibility = 'visible';
-        });
-      }
-    })();
+    // No forced redirects here.
+    // Welcome is optional; set localStorage.setItem('skipWelcome','true') in welcome.html when dismissed/submitted.
   </script>
 </head>
+<body>
 
-
-
-
-
-<!-- Icons -->
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-<!-- OG/Twitter -->
-<meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
-<meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it. No sign-up.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://grademyfinance.com/">
-<meta property="og:image" content="https://grademyfinance.com/og-image.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Grade My Finance | Free Financial Grade Calculator">
-<meta name="twitter:description" content="Get your money grade in seconds — plus a simple plan to raise it.">
-<meta name="twitter:image" content="https://grademyfinance.com/og-image.png">
 
 <!-- Perf preconnects -->
 <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
@@ -1477,6 +1463,18 @@ if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
