@@ -57,19 +57,19 @@
   <button onclick="skipSession()" class="btn secondary" style="margin-top:10px;">Don’t show again (this session)</button>
 
   <script>
-    // Always redirect to main if session flag is set (temporary skip)
+    // Auto-forward if the session flag is already set
     if (sessionStorage.getItem('skipWelcomeSession') === 'true') {
       window.location.href = 'index.html';
     }
 
     function continueSession() {
       sessionStorage.setItem('skipWelcomeSession', 'true');
-      window.location.href = 'index.html';
+      setTimeout(()=>window.location.href = 'index.html', 50);
     }
 
     function skipSession() {
       sessionStorage.setItem('skipWelcomeSession', 'true');
-      window.location.href = 'index.html';
+      setTimeout(()=>window.location.href = 'index.html', 50);
     }
 
     // Handle email submission: permanently mark email submitted
