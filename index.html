@@ -272,7 +272,8 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
 .legend .dot{width:10px;height:10px;border-radius:999px;display:inline-block;border:1px solid rgba(255,255,255,.35)}
 .fade-in{animation:fade .28s ease}
 @keyframes fade{from{opacity:.0;transform:translateY(2px)}to{opacity:1;transform:none}}
-  /* === RESPONSIVE TOP BAR — ONE LINE ON MOBILE === */
+<style>
+/* === Responsive Top Bar (mobile) === */
 @media (max-width: 720px) {
   header {
     display: flex !important;
@@ -305,150 +306,53 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
     text-overflow: ellipsis !important;
     max-width: 48vw !important;
   }
-  .btn.mini, .header-right select.btn {
+  .btn.mini,
+  .header-right select.btn {
     padding: 4px 8px !important;
     font-size: .9rem !important;
     min-width: 0 !important;
   }
   #currencySel { width: auto !important; max-width: 88px !important; }
-  #bookTop { padding: 6px 8px !important; font-size: 0 !important; }
+  #bookTop { padding: 6px 8px !important; }
   #bookTop::before { content: "📘"; font-size: 16px; }
   #themeToggle { width: auto !important; }
 }
 
-/* extra-tight phones */
-@media (max-width: 380px){
+/* Extra-tight phones */
+@media (max-width: 380px) {
   .brand { display: none !important; }
   #currencySel { max-width: 72px !important; }
 }
 
- /* === RESPONSIVE TOP BAR — ONE LINE ON MOBILE === */
-@media (max-width: 720px) {
-  header {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    padding: 6px 8px !important;
-    height: var(--header-h) !important;
-  }
-  .hdr {
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-  }
-  .header-right {
-    position: static !important;
-    margin-left: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    flex: 0 0 auto !important;
-    white-space: nowrap !important;
-  }
-  .logo { height: 44px !important; }
-  .brand {
-    font-size: 16px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    max-width: 48vw !important;
-  }
-  .btn.mini, .header-right select.btn {
-    padding: 4px 8px !important;
-    font-size: .9rem !important;
-    min-width: 0 !important;
-  }
-  #currencySel { width: auto !important; max-width: 88px !important; }
-  #bookTop { padding: 6px 8px !important; font-size: 0 !important; }
-  #bookTop::before { content: "📘"; font-size: 16px; }
-  #themeToggle { width: auto !important; }
-}
-/* === RESPONSIVE TOP BAR — ONE LINE ON MOBILE === */
-@media (max-width: 720px) {
-  header {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    padding: 6px 8px !important;
-    height: var(--header-h) !important;
-  }
-  .hdr {
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-  }
-  .header-right {
-    position: static !important;
-    margin-left: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    flex: 0 0 auto !important;
-    white-space: nowrap !important;
-  }
-  .logo { height: 44px !important; }
-  .brand {
-    font-size: 16px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    max-width: 48vw !important;
-  }
-  .btn.mini, .header-right select.btn {
-    padding: 4px 8px !important;
-    font-size: .9rem !important;
-    min-width: 0 !important;
-  }
-  #currencySel { width: auto !important; max-width: 88px !important; }
-
-  #boo
-
-/* extra-tight phones */
-@media (max-width: 380px){
-  .brand { display: none !important; }
-  #currencySel { max-width: 72px !important; }
+/* === Top bar icon + text alignment (desktop & mobile) === */
+.header-right .btn,
+#bookTop,
+#themeToggle {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 6px 10px !important;
+  font-size: 14px !important;
+  line-height: 1.2;
 }
 
-  <head>
-  ...
-  <style>
-    /* === Your existing CSS === */
-    
-    /* === My new clean top bar styles === */
-    .header-right .btn,
-    #bookTop,
-    #themeToggle {
-      display: flex !important;
-      align-items: center !important;
-      gap: 4px !important;
-      padding: 6px 10px !important;
-      font-size: 14px !important;
-      line-height: 1.2;
-    }
+#bookTop::before {
+  content: "📘";
+  font-size: 16px;
+}
 
-    #bookTop::before {
-      content: "📘";
-      font-size: 16px;
-    }
+#themeToggle {
+  font-size: 16px !important;
+}
 
-    #themeToggle {
-      font-size: 16px !important;
-    }
-
-    @media (max-width: 480px) {
-      #bookTop span,
-      #themeToggle span {
-        display: none;
-      }
-    }
-
+/* Icon-only on very small screens */
+@media (max-width: 480px) {
+  #bookTop span,
+  #themeToggle span {
+    display: none;
+  }
+}
 </style>
-</head>
-<body>
 
 
   <button 
