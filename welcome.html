@@ -39,20 +39,14 @@
     .btn:hover { filter: brightness(1.05); }
     .btn:active { transform: scale(.97); }
 
-    /* Secondary button style */
     .btn.secondary {
       background: #475569;
       color: #f8fafc;
     }
 
-    /* Animations */
     @keyframes float {0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
     @keyframes fadeInUp {from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-    .grady {
-      width: 200px;
-      animation: float 3.5s ease-in-out infinite;
-      margin-bottom: 18px;
-    }
+    .grady { width: 200px; animation: float 3.5s ease-in-out infinite; margin-bottom: 18px; }
     .fade { animation: fadeInUp .8s ease forwards; }
     .delay1 { animation-delay: .3s }
     .delay2 { animation-delay: .6s }
@@ -63,7 +57,7 @@
   <h1 class="fade delay1">Welcome to Grade My Finance</h1>
   <p class="fade delay2">Get your free financial grade in seconds. Enter your email to join the list and start!</p>
 
-  <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="fade delay2" 
+  <form id="emailForm" class="fade delay2" 
         style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
     <input type="email" name="email" placeholder="Enter your email" required 
            style="flex:1 1 220px;padding:12px;border-radius:8px;border:1px solid #ccc;font-size:16px;">
@@ -74,18 +68,39 @@
   <button onclick="disableWelcome()" class="btn secondary fade delay2" style="margin-top:10px;">Don’t show again</button>
 
   <script>
-    // Auto-skip if user chose "Don't show again"
-    if (localStorage.getItem("skipWelcome") === "true") {
-      window.location.href = "index.html";
-    }
+    // Email submission sets skip for future visits
+    document.getElementById('emailForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const email = this.querySelector('input[name="email"]').value.trim();
+      if(!email) return alert("Please enter a valid email.");
 
-    function continueApp(){
+      try {
+        localStorage.setItem('submittedEmail', 'true'); // Only this disables welcome in future
+      } catch(e){}
+
+      // Optional: send email to Formspree or server
+      fetch(this.action, {
+        method: 'POST',
+        headers: {"Accept":"application/json","Content-Type":"application/json"},
+        body: JSON.stringify({email: email, source:"grademyfinance.com"})
+      }).catch(()=>{ /* ignore errors */ });
+
       window.location.href = "index.html";
+    });
+
+    // Always show welcome until email submitted
+    function continueApp(){
+      window.location.href = "index.html"; // no flag set
     }
 
     function disableWelcome(){
-      localStorage.setItem("skipWelcome", "true");
+      // Just skips for this session, not permanent
       window.location.href = "index.html";
+    }
+
+    // Auto-skip if email already submitted
+    if (localStorage.getItem('submittedEmail') === 'true') {
+      window.location.href = 'index.html';
     }
   </script>
 </body>
