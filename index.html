@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <script>
-  if (localStorage.getItem("seenWelcome") !== "yes") {
-    window.location.href = "welcome.html";
-  }
+  localStorage.setItem("seenWelcome", "yes"); // optional tracking
+  window.location.href = "welcome.html";
+
 </script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
