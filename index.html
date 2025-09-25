@@ -872,6 +872,7 @@ var denomSav=Math.max(v.income, v.expenses, 2000);
 v.saveRate=denomSav>0 ? Math.max(0, v.income - v.expenses)/denomSav : 0;
 v.efMonths=v.expenses>0 ? v.cash/v.expenses : 0;
 v.nonMortDebt=v.student+v.auto+v.cc;
+v.dtiNonMort = v.baseline > 0 ? v.nonMortDebt / v.baseline : 0;
 // Net worth target (age curve × baseline spending)
 v.nwTargetMultiple = targetNW(v.age || 30);
 v.nwTargetAmount = v.nwTargetMultiple * v.baseline;
