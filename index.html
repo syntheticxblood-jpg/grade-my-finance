@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-  // Always redirect to welcome.html immediately (no flicker)
-  window.location.replace("welcome.html");
-</script>
+  <script>
+    // Hide page immediately to prevent flicker
+    document.documentElement.style.display = 'none';
+    // Redirect to welcome page
+    window.location.replace("welcome.html");
+  </script>
 
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Grade My Finance | Free Financial Grade Calculator</title>
-<meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and ways to improve. No sign-up required.">
-<meta name="theme-color" content="#0f172a">
-<meta name="robots" content="index,follow">
-<link rel="canonical" href="https://grademyfinance.com/">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grade My Finance | Free Financial Grade Calculator</title>
+  <meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and ways to improve. No sign-up required.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://grademyfinance.com/">
+</head>
 
 <!-- Icons -->
 <link rel="icon" href="/favicon.ico" sizes="any">
