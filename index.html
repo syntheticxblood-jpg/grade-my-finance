@@ -1454,8 +1454,9 @@ e.preventDefault();
 var email=subFormRC.querySelector("input[name='email']").value.trim();
 if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
 fetch(subFormRC.action, {
-method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
-body:JSON.stringify({email:email,source:"grademyfinance.com/reportcard"})
+  method: "POST",
+  headers: { "Accept": "application/json" },
+  body: new FormData(subFormRC)
 })
 .then(function(res){
 if(res.ok){ __track('subscribe_success',{placement:'report_card'}); alert("Thanks for subscribing! Check your inbox for confirmation."); subFormRC.reset(); }
