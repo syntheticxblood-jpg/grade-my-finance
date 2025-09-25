@@ -801,10 +801,19 @@ var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next;
 localStorage.setItem("gmf_theme", next||"dark"); __track('toggle_theme', {theme: next||'dark'});
 });
 
-var CURRENCY=localStorage.getItem("gmf_curr")||"USD";
-var curSel=$("currencySel"); curSel.value=CURRENCY;
-curSel.addEventListener("change", function(){ CURRENCY=curSel.value; localStorage.setItem("gmf_curr",CURRENCY); updateHints(); __track('change_currency',{currency:CURRENCY}); });
-function money(n){ return isFinite(n)? new Intl.NumberFormat(undefined,{style:"currency",currency:CURRENCY,maximumFractionDigits:0}).format(Math.round(n)) : "—"; }
+var CURRENCY = localStorage.getItem("gmf_curr") || "USD";
+var curSel = document.getElementById("currencySel");
+
+if (curSel) {
+  curSel.value = CURRENCY;
+  curSel.addEventListener("change", function() {
+    CURRENCY = curSel.value;
+    localStorage.setItem("gmf_curr", CURRENCY);
+    updateHints();
+    __track('change_currency', {currency: CURRENCY});
+  });
+}
+
 
 /* ===== Inputs & hygiene + autosave ===== */
 var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","mortgage","student","auto","cc"];
