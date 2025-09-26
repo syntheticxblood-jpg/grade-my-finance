@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,29 +24,25 @@
       }
     });
   </script>
-</head>
-  <!-- Icons -->
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
-  <meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it. No sign-up.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://grademyfinance.com/">
-  <meta property="og:image" content="https://grademyfinance.com/og-image.png">
+<!-- Icons -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Grade My Finance | Free Financial Grade Calculator">
-  <meta name="twitter:description" content="Get your money grade in seconds — plus a simple plan to raise it.">
-  <meta name="twitter:image" content="https://grademyfinance.com/og-image.png">
+<!-- Open Graph -->
+<meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
+<meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it. No sign-up.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://grademyfinance.com/">
+<meta property="og:image" content="https://grademyfinance.com/og-image.png">
 
-  <script>
-    // No forced redirects here.
-    // Welcome is optional; set localStorage.setItem('skipWelcome','true') in welcome.html when dismissed/submitted.
-  </script>
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grade My Finance | Free Financial Grade Calculator">
+<meta name="twitter:description" content="Get your money grade in seconds — plus a simple plan to raise it.">
+<meta name="twitter:image" content="https://grademyfinance.com/og-image.png">
+
 </head>
 <body>
 
@@ -522,7 +517,7 @@ href="https://grademyfinance.gumroad.com/l/zlwid">📘 Buy the Book</a>
 
 <div class="proof-card">
 <div class="proof-metric">
-<div class="big">1,000+</div>
+<div class="big">10,000+</div>
 <div>report cards graded</div>
 </div>
 <div class="small">Since launch. Educational only — not financial advice.</div>
@@ -1491,6 +1486,290 @@ if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
