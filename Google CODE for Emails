@@ -1,0 +1,183 @@
+// =============================
+// 1. SIGNUP HANDLER (runs on form POST)
+// =============================
+function doPost(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+    var email = (e.parameter.email || "").trim();
+
+    if (email && email.includes("@")) {
+      sheet.appendRow([email, new Date(), "welcome"]); // log email + date + stage
+
+      var subject = "Welcome to Grade My Finance! A+";
+      var htmlBody = `
+        <div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:auto;
+                    padding:20px;background:#f9f9f9;border-radius:12px;border:1px solid #e5e7eb;">
+          <div style="text-align:center;">
+            <img src="https://syntheticxblood-jpg.github.io/grade-my-finance/grady-owl-10324.png"
+                 alt="Grady the Owl" width="100" style="margin-bottom:16px;" />
+            <h1 style="color:#0f172a;margin-bottom:8px;">Welcome!</h1>
+            <p style="font-size:18px;color:#475569;margin-top:0;">
+              Grady the Owl is pumped you joined ⭐
+            </p>
+          </div>
+          <p style="font-size:15px;color:#334155;">
+            You’re now part of <b>Grade My Finance</b>. Here’s what to expect:
+          </p>
+          <ul style="font-size:15px;color:#334155;line-height:1.6;">
+            <li>✅ Weekly money tips made simple</li>
+            <li>✅ Tools to track and improve your financial grade</li>
+            <li>✅ Updates from Grady (he’s got wisdom to share!)</li>
+          </ul>
+          <div style="text-align:center;margin:28px 0;">
+            <a href="https://grademyfinance.com"
+               style="background:#22c55e;color:#fff;text-decoration:none;padding:14px 24px;
+                      border-radius:8px;font-size:16px;font-weight:bold;display:inline-block;">
+              Check Your Grade Now
+            </a>
+          </div>
+          <p style="font-size:14px;color:#64748b;text-align:center;">
+            You’re receiving this because you subscribed at 
+            <a href="https://grademyfinance.com" style="color:#06b6d4;text-decoration:none;">
+              grademyfinance.com
+            </a>.
+            <br/>Unsubscribe anytime by replying to this email.
+          </p>
+        </div>
+      `;
+
+      // Welcome email
+      GmailApp.sendEmail(email, subject, "Welcome to Grade My Finance! Thanks for signing up.", {
+        htmlBody: htmlBody
+      });
+
+      // Admin notification
+      GmailApp.sendEmail("grademyfinance@gmail.com",
+        "📥 New Signup on Grade My Finance",
+        "New signup: " + email + " at " + new Date());
+    }
+
+    return ContentService.createTextOutput("OK");
+  } catch (err) {
+    return ContentService.createTextOutput("Error: " + err.message);
+  }
+}
+
+// =============================
+// 2. FOLLOW-UP EMAIL (Tues & Thurs to ALL subs)
+// =============================
+function buildFollowupEmailHtml() {
+  return `
+    <div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:auto;
+                padding:20px;background:#ffffff;border-radius:12px;border:1px solid #e5e7eb;">
+      <div style="text-align:center;">
+        <img src="https://syntheticxblood-jpg.github.io/grade-my-finance/grady-owl-10324.png"
+             alt="Grady the Owl" width="100" style="margin-bottom:16px;" />
+        <h1 style="color:#0f172a;margin-bottom:8px;">Have you checked your grade lately?</h1>
+        <p style="font-size:17px;color:#475569;margin-top:0;">
+          Grady the Owl says it’s time to see how you’re doing. 🚀
+        </p>
+      </div>
+      <p style="font-size:15px;color:#334155;">
+        Staying on top of your finances only takes a few seconds — but the impact lasts a lifetime.
+      </p>
+      <div style="text-align:center;margin:28px 0;">
+        <a href="https://grademyfinance.com"
+           style="background:#22c55e;color:#fff;text-decoration:none;padding:14px 24px;
+                  border-radius:8px;font-size:16px;font-weight:bold;display:inline-block;">
+          Check Your Grade Again
+        </a>
+      </div>
+      <p style="font-size:14px;color:#64748b;text-align:center;">
+        You’re receiving this because you subscribed at 
+        <a href="https://grademyfinance.com" style="color:#06b6d4;text-decoration:none;">
+          grademyfinance.com
+        </a>.
+        <br/>Unsubscribe anytime by replying to this email.
+      </p>
+    </div>
+  `;
+}
+
+function sendFollowUpToAll() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+
+  var values = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+  var emails = values
+    .map(r => (r[0] || "").toString().trim().toLowerCase())
+    .filter(x => x && /\S+@\S+\.\S+/.test(x));
+
+  var uniq = Array.from(new Set(emails)); // de-dupe
+
+  var subject = "Have you checked your grade lately?";
+  var htmlBody = buildFollowupEmailHtml();
+
+  uniq.forEach(addr => {
+    try {
+      GmailApp.sendEmail(addr, subject, "Quick reminder to check your financial grade!", {
+        htmlBody: htmlBody
+      });
+    } catch (err) {
+      Logger.log("Follow-up failed for " + addr + ": " + err);
+    }
+  });
+
+  // optional: mark timestamp
+  sheet.getRange(1, 4).setValue("Last Follow-up Sent");
+  sheet.getRange(2, 4).setValue(new Date());
+}
+
+// =============================
+// 3. RESEND WELCOME (manual backfill)
+// =============================
+function resendWelcome() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+  var lastRow = sheet.getLastRow();
+  var data = sheet.getRange(2, 1, lastRow - 1, 3).getValues();
+
+  var subject = "Welcome to Grade My Finance! A+";
+  var htmlBody = "..." // reuse the same welcome HTML from doPost
+
+  for (var i = 0; i < data.length; i++) {
+    var email = (data[i][0] || "").trim();
+    var stage = (data[i][2] || "").trim();
+
+    if (email.includes("@") && !stage) {
+      GmailApp.sendEmail(email, subject, "Welcome to Grade My Finance! Thanks for signing up.", {
+        htmlBody: htmlBody
+      });
+      sheet.getRange(i + 2, 2).setValue(new Date());
+      sheet.getRange(i + 2, 3).setValue("welcome");
+    }
+  }
+}
+
+// =============================
+// 4. TRIGGERS (install once)
+// =============================
+function setupRecurringFollowups() {
+  removeFollowupTriggers_();
+
+  ScriptApp.newTrigger('sendFollowUpToAll')
+    .timeBased()
+    .onWeekDay(ScriptApp.WeekDay.TUESDAY)
+    .atHour(10)
+    .create();
+
+  ScriptApp.newTrigger('sendFollowUpToAll')
+    .timeBased()
+    .onWeekDay(ScriptApp.WeekDay.THURSDAY)
+    .atHour(10)
+    .create();
+}
+
+function removeFollowupTriggers_() {
+  var all = ScriptApp.getProjectTriggers();
+  all.forEach(t => {
+    if (t.getHandlerFunction && t.getHandlerFunction() === 'sendFollowUpToAll') {
+      ScriptApp.deleteTrigger(t);
+    }
+  });
+}
