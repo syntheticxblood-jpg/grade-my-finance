@@ -1,4 +1,5 @@
-
+<!DOCTYPE html>
+<html lang="en">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +25,7 @@
       }
     });
   </script>
+</head>
   <!-- Icons -->
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -139,15 +141,8 @@ border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(-
 .social-proof{ position:sticky; top:calc(var(--header-h) + 12px); min-width:0 }
 .social-proof > *{min-width:0}
 .proof-card{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow); margin-bottom:10px }
-.proof-metric .big {
-  font-size: 28px;
-  font-weight: 900;
-  background: linear-gradient(90deg, var(--g1), var(--g2)); /* green gradient */
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.proof-metric .big{ font-size:26px; brc-grade.good90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent }
+.proof-metric{ display:flex; align-items:center; gap:10px; font-weight:900 }
+.proof-metric .big{ font-size:26px; background:linear-gradient(90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent }
 .review{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start }
 .avatar{ width:36px; height:36px; border-radius:999px; background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; font-weight:900; display:grid; place-items:center }
 .stars{ color:#fbbf24; letter-spacing:1px } .quote{ color: var(--muted); font-size:14px }
@@ -231,16 +226,8 @@ border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; pla
 @keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(6deg)}}
 .rc-title{font-weight:900; font-size:22px}
 .rc-meta{color:#9fb0c7; font-size:14px}
-.rc-grade {
-  font-size:40px;     /* was 56px */
-  font-weight:900;    /* still bold but less extreme */
-  padding:4px 10px;   /* was 6px 16px */
-}
-.rc-grade.good {
-  color:#062c1b;
-  background:linear-gradient(180deg,#34d399,#16a34a); /* green gradient */
-  border-color:#86efac;
-}
+.rc-grade{font-size:56px;font-weight:1000; border-radius:16px; padding:6px 16px; border:2px solid transparent; transform-origin:center}
+.rc-grade.good{color:#062c1b; background:linear-gradient(180deg,#34d399,#16a34a); border-color:#86efac}
 .rc-grade.mid{color:#062c1b; background:linear-gradient(180deg,#facc15,#f59e0b); border-color:#fde68a}
 .rc-grade.bad{color:#fff; background:#ef4444; border-color:#fecaca}
 .rc-grade.pop{animation:gradePop .6s cubic-bezier(.2,1,.2,1)}
@@ -359,6 +346,16 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
 }
 
 /* === Top bar icon + text alignment (desktop & mobile) === */
+.header-right .btn,
+#bookTop,
+#themeToggle {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 6px 10px !important;
+  font-size: 14px !important;
+  line-height: 1.2;
+}
 
 #bookTop::before {
   content: "📘";
@@ -375,6 +372,7 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
   #themeToggle span {
     display: none;
   }
+}
 
 header {
   display: flex;
@@ -403,28 +401,30 @@ header {
   gap: 10px;
 }
 
-
-/* ...all your other CSS... */
-
-.grade-status {
-  margin-top: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #22c55e; /* clean green */
-  background: rgba(34,197,94,0.15);
-  padding: 2px 10px;
-  border-radius: 999px;
-  display: inline-block;
-
-  /* 👇 fade in */
-  opacity: 0;
-  animation: fadeIn 0.6s ease forwards;
+#bookTop {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(90deg,#16a34a,#34d399);
+  border: none;
+  border-radius: 20px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
+#themeToggle {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #1e293b;
+  color: #f8fafc;
+  border: none;
+  cursor: pointer;
 }
+
+
 </style>
 
 <noscript>
@@ -501,6 +501,7 @@ header {
     alt="Grady the Owl holding an A+ report card"
     fetchpriority="high"
     loading="eager">
+  <div class="floatA" aria-hidden="true">A+</div>
 </div>
 
 </div>
@@ -780,86 +781,6 @@ Thanks! Check your inbox for a confirmation.
 <div class="fcontact"><span class="pill">Contact</span> <a class="pill" href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></div>
 <div class="fnote">© 2025 Grade My Finance — educational use only (not financial advice).</div>
 </div>
-  <!-- FAQ Section -->
-<section class="container" style="max-width:900px; margin:30px auto; padding:18px; background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)">
-  <h2 style="margin:0 0 12px; font-size:24px; font-weight:900">Frequently Asked Questions</h2>
-  
-  <div class="card" style="margin-bottom:12px; padding:12px;">
-    <h3 style="margin:0 0 6px; font-size:18px;">What is Grade My Finance?</h3>
-    <p style="margin:0; color:#cbd5e1;">Grade My Finance is a free calculator that gives you a quick financial health grade based on your income, expenses, assets, and debts. No sign-up required.</p>
-  </div>
-
-  <div class="card" style="margin-bottom:12px; padding:12px;">
-    <h3 style="margin:0 0 6px; font-size:18px;">Is it really free?</h3>
-    <p style="margin:0; color:#cbd5e1;">Yes. The calculator runs directly in your browser for free. You can get your financial grade in seconds without creating an account.</p>
-  </div>
-
-  <div class="card" style="margin-bottom:12px; padding:12px;">
-    <h3 style="margin:0 0 6px; font-size:18px;">Do you store my financial data?</h3>
-    <p style="margin:0; color:#cbd5e1;">No. Your numbers never leave your device. Everything is calculated locally in your browser. If you save results, they stay only on your device (local storage).</p>
-  </div>
-
-  <div class="card" style="margin-bottom:12px; padding:12px;">
-    <h3 style="margin:0 0 6px; font-size:18px;">How accurate are the grades?</h3>
-    <p style="margin:0; color:#cbd5e1;">The grades use common financial benchmarks like savings rate, emergency fund size, debt levels, and age-based net worth multiples. They’re meant as educational guidelines, not personalized financial advice.</p>
-  </div>
-
-  <div class="card" style="margin-bottom:12px; padding:12px;">
-    <h3 style="margin:0 0 6px; font-size:18px;">Can I improve my grade?</h3>
-    <p style="margin:0; color:#cbd5e1;">Yes! The report card suggests clear next steps (like boosting your savings rate, building an emergency fund, or paying down debt) so you can move toward a higher grade.</p>
-  </div>
-</section>
-
-<!-- FAQ Schema Markup -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What is Grade My Finance?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Grade My Finance is a free calculator that gives you a quick financial health grade based on your income, expenses, assets, and debts. No sign-up required."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is it really free?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. The calculator runs directly in your browser for free. You can get your financial grade in seconds without creating an account."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you store my financial data?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. Your numbers never leave your device. Everything is calculated locally in your browser. If you save results, they stay only on your device (local storage)."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How accurate are the grades?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The grades use common financial benchmarks like savings rate, emergency fund size, debt levels, and age-based net worth multiples. They’re meant as educational guidelines, not personalized financial advice."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I improve my grade?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes! The report card suggests clear next steps (like boosting your savings rate, building an emergency fund, or paying down debt) so you can move toward a higher grade."
-      }
-    }
-  ]
-}
-</script>
-
 </footer>
 
 <script>
@@ -1020,12 +941,9 @@ return {
       ? 100
       : Math.round(weighted*10)/10,
     letter: (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate)
-  ? "A+"
-  : overallLetter(Math.round(weighted*10)/10),
-
-status: (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate)
-  ? "Financially Independent 🎉"
-  : ""
+      ? "A+ (Financially Independent 🎉)"
+      : overallLetter(Math.round(weighted*10)/10)
+  }
 };
 
 }
@@ -1223,22 +1141,9 @@ var modal=$("reportModal");
 window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score }; // keep for share/projection deltas
 
 rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
-rcGrade.textContent = cats.overall.letter;
-// Add status badge under grade if it exists
-let rcStatus = document.getElementById("rcStatus");
-if (!rcStatus) {
-  rcStatus = document.createElement("div");
-  rcStatus.id = "rcStatus";
-  rcStatus.className = "grade-status";
-  rcGrade.parentNode.appendChild(rcStatus);
-}
-rcStatus.textContent = cats.overall.status || "";  
-let baseLetter = cats.overall.letter.split(" ")[0]; // <-- only take "A+" or "B"
+rcGrade.textContent=cats.overall.letter;
+rcGrade.className="rc-grade "+( ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?"good": (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?"mid":"bad"));
 
-rcGrade.className = "rc-grade " + (
-  ["A+","A","A-","B+","B","B-"].indexOf(baseLetter) > -1 ? "good" :
-  ["C+","C","C-"].indexOf(baseLetter) > -1 ? "mid" : "bad"
-);
 rcRows.innerHTML="";
 cats.components.forEach(function(c){
 var row=document.createElement("div");
@@ -1580,38 +1485,101 @@ bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[
 if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 }, interval);
 }
-/* ===== Header buttons ===== */
-// BookTop (📘) — open Gumroad link
-var bookTopBtn = document.getElementById("bookTop");
-if (bookTopBtn) {
-  bookTopBtn.addEventListener("click", function () {
-    window.open("https://grademyfinance.gumroad.com/l/zlwid", "_blank");
-  });
-}
-// ===== Demo + Grade buttons =====
-var demoBtn = document.getElementById("demoBtn");
-if (demoBtn) {
-  demoBtn.addEventListener("click", randomDemo);
-}
 
-var gradeBtn = document.getElementById("gradeBtn");
-if (gradeBtn) {
-  gradeBtn.addEventListener("click", gradeNow);
-}
-  var gradeBtnTop = document.getElementById("gradeBtnTop");
-if (gradeBtnTop) {
-  gradeBtnTop.addEventListener("click", gradeNow);
-}
-
-var gradeBtnSticky = document.getElementById("gradeBtnSticky");
-if (gradeBtnSticky) {
-  gradeBtnSticky.addEventListener("click", gradeNow);
-}
 })(); // end IIFE
 </script>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
