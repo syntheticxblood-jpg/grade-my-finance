@@ -1229,10 +1229,14 @@ var modal=$("reportModal");
 window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score }; // keep for share/projection deltas
 
 rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
-rcGrade.textContent=cats.overall.letter;
+rcGrade.textContent = cats.overall.letter;
+let baseLetter = cats.overall.letter.split(" ")[0]; // <-- only take "A+" or "B"
+
 rcGrade.className = "rc-grade " + (
-  ["A+","A","A-","B+","B","B-"].indexOf(cats.overall.letter) > -1 ? "good" :
-  ["C+","C","C-"].indexOf(cats.overall.letter) > -1 ? "mid" : "bad"
+  ["A+","A","A-","B+","B","B-"].indexOf(baseLetter) > -1 ? "good" :
+  ["C+","C","C-"].indexOf(baseLetter) > -1 ? "mid" : "bad"
+);
+
 );
 rcRows.innerHTML="";
 cats.components.forEach(function(c){
