@@ -1230,8 +1230,10 @@ window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score 
 
 rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
 rcGrade.textContent=cats.overall.letter;
-rcGrade.className="rc-grade "+( ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?"good": (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?"mid":"bad"));
-
+rcGrade.className = "rc-grade " + (
+  ["A+","A","A-","B+","B","B-"].indexOf(cats.overall.letter) > -1 ? "good" :
+  ["C+","C","C-"].indexOf(cats.overall.letter) > -1 ? "mid" : "bad"
+);
 rcRows.innerHTML="";
 cats.components.forEach(function(c){
 var row=document.createElement("div");
