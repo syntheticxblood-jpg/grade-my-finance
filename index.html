@@ -1391,26 +1391,34 @@ updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())
 /* ===== Subscribe (footer) ===== */
 var subForm=$("subForm"), subEmail=$("subEmail"), toast=$("toast");
 if(subForm){
-subForm.addEventListener("submit", function(e){
-e.preventDefault();
-var email=subEmail.value.trim();
-if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
-fetch(subForm.action, {
-method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
-body:JSON.stringify({email:email,source:"grademyfinance.com"})
-})
-.then(function(res){
-if(res.ok){
-toast.textContent="Thanks! Check your inbox for a confirmation.";
-toast.style.display="block"; setTimeout(function(){toast.style.display="none"},2800);
-subEmail.value=""; __track('subscribe_success',{placement:'footer'});
-} else if(res.status===404){
-alert("Form not found — verify your Formspree form ID."); __track('subscribe_error',{placement:'footer',code:404});
-} else { alert("Signup failed. Please try again later."); __track('subscribe_error',{placement:'footer',code:res.status}); }
-})
-.catch(function(){ alert("Network error. Please try again later."); __track('subscribe_error',{placement:'footer',code:'network'}); });
-});
+  subForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var email=subEmail.value.trim();
+    if(!/^\S+@\S+\.\S+$/.test(email)){
+      alert("Please enter a valid email.");
+      return;
+    }
+
+    fetch(subForm.action, {
+      method:"POST",
+      body:new FormData(subForm)
+    })
+    .then(function(res){
+      if(res.ok){
+        toast.textContent="Thanks! Check your inbox for a confirmation.";
+        toast.style.display="block";
+        setTimeout(function(){toast.style.display="none"},2800);
+        subEmail.value="";
+      } else {
+        alert("Signup failed. Please try again later.");
+      }
+    })
+    .catch(function(){
+      alert("Network error. Please try again later.");
+    });
+  });
 }
+
 
 /* ===== Subscribe (Report Card inline) ===== */
 var subFormRC=$("subFormRC");
