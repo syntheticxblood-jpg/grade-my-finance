@@ -10,20 +10,21 @@
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://grademyfinance.com/">
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      try {
-        const hasSeen = localStorage.getItem("skipWelcome") === "true";
-        if (!hasSeen) {
-          // mark so they don’t get looped
-          localStorage.setItem("skipWelcome", "true");
-          window.location.href = "welcome.html";
-        }
-      } catch (e) {
-        console.warn("Welcome redirect check failed:", e);
-      }
-    });
-  </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  try {
+    const hasEmail = localStorage.getItem("submittedEmail") === "true";
+    const skipSession = sessionStorage.getItem("skipWelcomeSession") === "true";
+
+    if (!hasEmail && !skipSession) {
+      window.location.href = "welcome.html";
+    }
+  } catch (e) {
+    console.warn("Welcome redirect check failed:", e);
+  }
+});
+</script>
+
 
 <!-- Icons -->
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -889,7 +890,7 @@ return (["A+","A","A-","B+"].indexOf(l)>-1)?"badge good":((["B","B-","C+","C","C
 
 /* ===== Theme & currency ===== */
 var root=document.documentElement;
-var savedTheme=localStorage.getItem("gmf_theme"); if(savedTheme==="light") root.dataset.theme="light";
+var savedTheme=localem("gmf_theme"); if(savedTheme==="light") root.dataset.theme="light";
 $("themeToggle").addEventListener("click", function(){
 var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next;
 localStorage.setItem("gmf_theme", next||"dark"); __track('toggle_theme', {theme: next||'dark'});
