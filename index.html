@@ -1589,17 +1589,15 @@ if (bookTopBtn) {
   });
 }
 // ===== Demo + Grade buttons =====
-document.addEventListener("DOMContentLoaded", function () {
-  var demoBtn = document.getElementById("demoBtn");
-  if (demoBtn) {
-    demoBtn.addEventListener("click", fillDemo);
-  }
+var demoBtn = document.getElementById("demoBtn");
+if (demoBtn) {
+  demoBtn.addEventListener("click", randomDemo);
+}
 
-  var gradeBtn = document.getElementById("gradeBtn");
-  if (gradeBtn) {
-    gradeBtn.addEventListener("click", openReport);
-  }
-});
+var gradeBtn = document.getElementById("gradeBtn");
+if (gradeBtn) {
+  gradeBtn.addEventListener("click", gradeNow);
+}
 })(); // end IIFE
 </script>
 
