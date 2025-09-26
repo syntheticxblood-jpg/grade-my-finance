@@ -139,7 +139,14 @@ border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(-
 .social-proof{ position:sticky; top:calc(var(--header-h) + 12px); min-width:0 }
 .social-proof > *{min-width:0}
 .proof-card{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow); margin-bottom:10px }
-.proof-metric{ display:flex; align-items:center; gap:10px; font-weight:900 }
+.proof-metric .big {
+  font-size: 28px;
+  font-weight: 900;
+  background: linear-gradient(90deg, var(--g1), var(--g2)); /* green gradient */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 .proof-metric .big{ font-size:26px; brc-grade.good90deg,var(--g1),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent }
 .review{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start }
 .avatar{ width:36px; height:36px; border-radius:999px; background:linear-gradient(180deg,#34d399,#16a34a); color:#062c1b; font-weight:900; display:grid; place-items:center }
