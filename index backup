@@ -496,7 +496,7 @@ header {
     alt="Grady the Owl holding an A+ report card"
     fetchpriority="high"
     loading="eager">
-  <div class="floatA" aria-hidden="true">A+</div>
+
 </div>
 
 </div>
@@ -703,10 +703,13 @@ href="https://grademyfinance.gumroad.com/l/zlwid">📘 Buy the Book</a>
 <p>1–2 emails/month. Actionable, no fluff. Unsubscribe anytime.</p>
 </div>
 </div>
-<form id="subFormRC" class="sub-row" action="https://formspree.io/f/xvgblayy" method="POST" novalidate>
-<input type="email" name="email" placeholder="you@example.com" required>
-<button type="submit" class="btn primary" style="min-width:140px">Subscribe</button>
+<form id="subFormRC" class="sub-row" 
+      action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec" 
+      method="POST" novalidate>
+  <input type="email" name="email" placeholder="you@example.com" required>
+  <button type="submit" class="btn primary" style="min-width:140px">Subscribe</button>
 </form>
+
 </div>
 
 <div class="rc-actions" style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap">
@@ -736,12 +739,16 @@ href="https://grademyfinance.gumroad.com/l/zlwid">📘 Buy the Book</a>
 <section class="container" style="max-width:900px; margin:30px auto; padding:18px;background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)">
 <h3 style="margin:0 0 6px; font-size:20px">Get simple money tips & updates</h3>
 <p style="margin:6px 0 12px; color:#9fb0c7">No spam, unsubscribe anytime.</p>
-<form id="subForm" style="display:flex; gap:10px; flex-wrap:wrap" action="https://formspree.io/f/xvgblayy" method="POST">
-<input type="email" name="email" id="subEmail" placeholder="you@example.com" required style="flex:1 1 280px; padding:12px; border-radius:12px; border:1px solid var(--line); background:#0b1226; color:#e2e8f0;">
-<input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
-<input type="hidden" name="_subject" value="New Grade My Finance subscriber" />
-<button type="submit" class="btn primary">Subscribe</button>
+<form id="subForm" style="display:flex; gap:12px; flex-wrap:wrap" 
+      action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec" 
+      method="POST">
+  <input type="email" name="email" id="subEmail" placeholder="you@example.com" required 
+         style="flex:1 1 280px; padding:12px; border-radius:12px; border:1px solid var(--line); 
+                background:#0f172a; color:#e2e8f0;">
+  <input type="hidden" name="_subject" value="New Grade My Finance subscriber" />
+  <button type="submit" class="btn primary">Subscribe</button>
 </form>
+
 </section>
 
 <!-- 📘 Mid-page book banner -->
@@ -770,6 +777,68 @@ Thanks! Check your inbox for a confirmation.
 <div class="mobile-cta" id="mobileCta">
 <button id="gradeBtnSticky" class="btn primary" type="button">Get My Report Card</button>
 </div>
+<!-- === FAQ & Disclaimer Section === -->
+<section class="container" style="max-width:900px; margin:40px auto; padding:18px; background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)">
+  <h3 style="margin:0 0 12px; font-size:22px">FAQ & Disclaimer</h3>
+
+  <details style="margin-bottom:10px">
+    <summary style="cursor:pointer;font-weight:900">Do you store my financial data?</summary>
+    <p style="margin-top:6px; color:#cbd5e1; font-size:14px">
+      No. All calculations run locally in your browser. Your numbers are never sent to our servers. 
+      If you save progress, it’s stored only on your own device (local storage).
+    </p>
+  </details>
+
+  <details style="margin-bottom:10px">
+    <summary style="cursor:pointer;font-weight:900">Is this financial advice?</summary>
+    <p style="margin-top:6px; color:#cbd5e1; font-size:14px">
+      No. Grade My Finance is for educational purposes only and is not a substitute for professional financial advice. 
+      Always do your own research or consult a licensed advisor.
+    </p>
+  </details>
+
+  <details style="margin-bottom:10px">
+    <summary style="cursor:pointer;font-weight:900">How is my grade calculated?</summary>
+    <p style="margin-top:6px; color:#cbd5e1; font-size:14px">
+      We use weighted factors such as savings rate, emergency fund size, age-based net worth, debt levels, and income strength. 
+      Scores are benchmarks, not guarantees.
+    </p>
+  </details>
+</section>
+
+<!-- FAQ Schema Markup for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do you store my financial data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All calculations run locally in your browser. Your numbers are never sent to our servers. If you save progress, it’s stored only on your own device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this financial advice?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Grade My Finance is for educational purposes only and is not a substitute for professional financial advice."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is my grade calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We use weighted factors such as savings rate, emergency fund size, age-based net worth, debt levels, and income strength. Scores are benchmarks, not guarantees."
+      }
+    }
+  ]
+}
+</script>
 
 <footer>
 <div class="fwrap">
@@ -1322,26 +1391,34 @@ updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())
 /* ===== Subscribe (footer) ===== */
 var subForm=$("subForm"), subEmail=$("subEmail"), toast=$("toast");
 if(subForm){
-subForm.addEventListener("submit", function(e){
-e.preventDefault();
-var email=subEmail.value.trim();
-if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
-fetch(subForm.action, {
-method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
-body:JSON.stringify({email:email,source:"grademyfinance.com"})
-})
-.then(function(res){
-if(res.ok){
-toast.textContent="Thanks! Check your inbox for a confirmation.";
-toast.style.display="block"; setTimeout(function(){toast.style.display="none"},2800);
-subEmail.value=""; __track('subscribe_success',{placement:'footer'});
-} else if(res.status===404){
-alert("Form not found — verify your Formspree form ID."); __track('subscribe_error',{placement:'footer',code:404});
-} else { alert("Signup failed. Please try again later."); __track('subscribe_error',{placement:'footer',code:res.status}); }
-})
-.catch(function(){ alert("Network error. Please try again later."); __track('subscribe_error',{placement:'footer',code:'network'}); });
-});
+  subForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var email=subEmail.value.trim();
+    if(!/^\S+@\S+\.\S+$/.test(email)){
+      alert("Please enter a valid email.");
+      return;
+    }
+
+    fetch(subForm.action, {
+      method:"POST",
+      body:new FormData(subForm)
+    })
+    .then(function(res){
+      if(res.ok){
+        toast.textContent="Thanks! Check your inbox for a confirmation.";
+        toast.style.display="block";
+        setTimeout(function(){toast.style.display="none"},2800);
+        subEmail.value="";
+      } else {
+        alert("Signup failed. Please try again later.");
+      }
+    })
+    .catch(function(){
+      alert("Network error. Please try again later.");
+    });
+  });
 }
+
 
 /* ===== Subscribe (Report Card inline) ===== */
 var subFormRC=$("subFormRC");
@@ -1486,6 +1563,290 @@ if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
