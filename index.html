@@ -1588,7 +1588,18 @@ if (bookTopBtn) {
     window.open("https://grademyfinance.gumroad.com/l/zlwid", "_blank");
   });
 }
+// ===== Demo + Grade buttons =====
+document.addEventListener("DOMContentLoaded", function () {
+  var demoBtn = document.getElementById("demoBtn");
+  if (demoBtn) {
+    demoBtn.addEventListener("click", fillDemo);
+  }
 
+  var gradeBtn = document.getElementById("gradeBtn");
+  if (gradeBtn) {
+    gradeBtn.addEventListener("click", openReport);
+  }
+});
 })(); // end IIFE
 </script>
 
