@@ -770,6 +770,68 @@ Thanks! Check your inbox for a confirmation.
 <div class="mobile-cta" id="mobileCta">
 <button id="gradeBtnSticky" class="btn primary" type="button">Get My Report Card</button>
 </div>
+<!-- === FAQ & Disclaimer Section === -->
+<section class="container" style="max-width:900px; margin:40px auto; padding:18px; background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)">
+  <h3 style="margin:0 0 12px; font-size:22px">FAQ & Disclaimer</h3>
+
+  <details style="margin-bottom:10px">
+    <summary style="cursor:pointer;font-weight:900">Do you store my financial data?</summary>
+    <p style="margin-top:6px; color:#cbd5e1; font-size:14px">
+      No. All calculations run locally in your browser. Your numbers are never sent to our servers. 
+      If you save progress, it’s stored only on your own device (local storage).
+    </p>
+  </details>
+
+  <details style="margin-bottom:10px">
+    <summary style="cursor:pointer;font-weight:900">Is this financial advice?</summary>
+    <p style="margin-top:6px; color:#cbd5e1; font-size:14px">
+      No. Grade My Finance is for educational purposes only and is not a substitute for professional financial advice. 
+      Always do your own research or consult a licensed advisor.
+    </p>
+  </details>
+
+  <details style="margin-bottom:10px">
+    <summary style="cursor:pointer;font-weight:900">How is my grade calculated?</summary>
+    <p style="margin-top:6px; color:#cbd5e1; font-size:14px">
+      We use weighted factors such as savings rate, emergency fund size, age-based net worth, debt levels, and income strength. 
+      Scores are benchmarks, not guarantees.
+    </p>
+  </details>
+</section>
+
+<!-- FAQ Schema Markup for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do you store my financial data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All calculations run locally in your browser. Your numbers are never sent to our servers. If you save progress, it’s stored only on your own device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this financial advice?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Grade My Finance is for educational purposes only and is not a substitute for professional financial advice."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is my grade calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We use weighted factors such as savings rate, emergency fund size, age-based net worth, debt levels, and income strength. Scores are benchmarks, not guarantees."
+      }
+    }
+  ]
+}
+</script>
 
 <footer>
 <div class="fwrap">
