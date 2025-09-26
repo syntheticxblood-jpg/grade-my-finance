@@ -14,16 +14,18 @@
 document.addEventListener("DOMContentLoaded", function () {
   try {
     const hasEmail = localStorage.getItem("submittedEmail") === "true";
-    const skipSession = sessionStorage.getItem("skipWelcomeSession") === "true";
+    const skipped = sessionStorage.getItem("skipWelcomeSession") === "true";
 
-    if (!hasEmail && !skipSession) {
-      window.location.href = "welcome.html";
+    // Only redirect if they haven't signed up or skipped this session
+    if (!hasEmail && !skipped) {
+      window.location.replace("welcome.html");
     }
   } catch (e) {
-    console.warn("Welcome redirect check failed:", e);
+    console.warn("Redirect check failed:", e);
   }
 });
 </script>
+
 
 
 <!-- Icons -->
