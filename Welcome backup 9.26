@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Welcome | Grade My Finance</title>
+  <meta name="theme-color" content="#0f172a">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at 20% 30%, rgba(34,211,238,.15), transparent 60%),
+                  radial-gradient(circle at 80% 20%, rgba(167,139,250,.15), transparent 60%),
+                  #0f172a;
+      color: #e2e8f0;
+      font-family: Inter, sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+    h1 { font-size: 2.2rem; margin: 0 0 12px; font-weight: 900; }
+    p { max-width: 420px; margin: 0 auto 18px; font-size: 18px; line-height: 1.4; }
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg,#16a34a,#34d399);
+      color: #062c1b;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 16px;
+      transition: transform .2s ease, filter .2s ease;
+    }
+    .btn:hover { filter: brightness(1.05); }
+    .btn:active { transform: scale(.97); }
+    .btn.secondary { background: #475569; color: #f8fafc; }
+    @keyframes float {0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+    .grady { width: 200px; animation: float 3.5s ease-in-out infinite; margin-bottom: 18px; }
+  </style>
+</head>
+<body>
+  <img src="grady-owl-10324.png" alt="Grady the Owl" class="grady">
+  <h1>Welcome to Grade My Finance</h1>
+  <p>Get your free financial grade in seconds. Enter your email to join the list and start!</p>
+
+ <form id="emailForm" 
+      action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec" 
+      method="POST"
+      style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
+  <input type="email" name="email" placeholder="Enter your email" required
+         style="flex:1 1 220px;padding:12px;border-radius:8px;border:1px solid #ccc;font-size:16px;">
+  <button type="submit" class="btn">Join</button>
+</form>
+
+  </form>
+
+  <button onclick="continueSession()" class="btn" style="margin-top:20px;">Continue without Email</button>
+  <button onclick="skipSession()" class="btn secondary" style="margin-top:10px;">Don’t show again (this session)</button>
+
+  <script>
+    // ✅ Redirect skip logic
+    if (sessionStorage.getItem('skipWelcomeSession') === 'true' ||
+        localStorage.getItem('submittedEmail') === 'true') {
+      window.location.replace('index.html');
+    }
+
+    function continueSession() {
+      sessionStorage.setItem('skipWelcomeSession', 'true');
+      setTimeout(() => window.location.href = 'index.html', 100);
+    }
+
+    function skipSession() {
+      sessionStorage.setItem('skipWelcomeSession', 'true');
+      setTimeout(() => window.location.href = 'index.html', 100);
+    }
+
+    // ✅ Fixed email submission with FormData
+    const emailForm = document.getElementById('emailForm');
+    emailForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      const emailInput = emailForm.querySelector('input[name="email"]');
+      const email = emailInput.value.trim();
+      if(!/^\S+@\S+\.\S+$/.test(email)){
+        alert("Enter a valid email.");
+        return;
+      }
+
+      localStorage.setItem('submittedEmail','true');
+
+      fetch(emailForm.action, {
+        method: 'POST',
+        body: new FormData(emailForm)
+      })
+      .then(res=>{
+        if(res.ok){
+          alert("Thanks! Redirecting to main page...");
+          window.location.href = 'index.html';
+        } else {
+          alert("Submission failed. Try again.");
+        }
+      })
+      .catch(()=>{
+        alert("Network error. Try again.");
+      });
+    });
+  </script>
+</body>
+</html>
