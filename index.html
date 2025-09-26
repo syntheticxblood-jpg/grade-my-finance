@@ -1580,6 +1580,14 @@ bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[
 if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 }, interval);
 }
+/* ===== Header buttons ===== */
+// BookTop (📘) — open Gumroad link
+var bookTopBtn = document.getElementById("bookTop");
+if (bookTopBtn) {
+  bookTopBtn.addEventListener("click", function () {
+    window.open("https://grademyfinance.gumroad.com/l/zlwid", "_blank");
+  });
+}
 
 })(); // end IIFE
 </script>
