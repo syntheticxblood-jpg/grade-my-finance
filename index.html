@@ -226,7 +226,11 @@ border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; pla
 @keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(6deg)}}
 .rc-title{font-weight:900; font-size:22px}
 .rc-meta{color:#9fb0c7; font-size:14px}
-.rc-grade{font-size:56px;font-weight:1000; border-radius:16px; padding:6px 16px; border:2px solid transparent; transform-origin:center}
+.rc-grade {
+  font-size:32px;     /* was 56px */
+  font-weight:900;    /* still bold but less extreme */
+  padding:4px 10px;   /* was 6px 16px */
+}
 .rc-grade.good{color:#062c1b; background:linear-gradient(180deg,#34d399,#16a34a); border-color:#86efac}
 .rc-grade.mid{color:#062c1b; background:linear-gradient(180deg,#facc15,#f59e0b); border-color:#fde68a}
 .rc-grade.bad{color:#fff; background:#ef4444; border-color:#fecaca}
