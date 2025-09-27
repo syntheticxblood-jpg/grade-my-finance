@@ -146,14 +146,19 @@ border:1px solid var(--line); border-radius:22px; padding:18px; box-shadow:var(-
 .stars{ color:#fbbf24; letter-spacing:1px } .quote{ color: var(--muted); font-size:14px }
 
 /* 📘 Book card */
-.book-card{
-display:grid;
-grid-template-columns:86px minmax(0,1fr);
-column-gap:12px; row-gap:8px;
-align-items:start;
-background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-border:1px solid var(--line); border-radius:16px; padding:12px; box-shadow:var(--shadow); margin-bottom:10px;
+.book-card {
+  display: grid;
+  grid-template-columns: 86px 1fr; /* cover on left, content on right */
+  column-gap: 16px;
+  align-items: start;
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
 }
+
 .book-cover{
 width:86px; height:110px; border-radius:10px;
 border:2px solid #86efac; overflow:hidden; display:grid; place-items:center; background:#eafff3;
@@ -564,17 +569,18 @@ header {
   <div class="hero-right">
     <aside class="social-proof" aria-label="Book & reviews">
       <div class="book-card">
-        <div class="book-cover">
-          <img src="book-cover.png" alt="Grade My Finance — The Guide" loading="lazy">
-        </div>
-        <h3>📘 Grade My Finance — The Guide</h3>
-        <p>Learn how to take control of your money and boost your financial grade with simple, actionable steps.</p>
-        <a href="https://grademyfinance.gumroad.com/l/zlwid" class="btn primary" target="_blank" rel="noopener">
-          Buy on Gumroad
-        </a>
-        <p class="reviews">⭐⭐⭐⭐⭐ “Super helpful — made money simple again.”</p>
-      </div>
-    </aside>
+  <div class="book-cover">
+    <img src="book-cover.png" alt="Grade My Finance — The Guide" loading="lazy">
+  </div>
+  <div class="book-info">
+    <h3 class="book-title">📘 Grade My Finance — The Guide</h3>
+    <p class="book-desc">
+      Learn how to take control of your money and boost your financial grade with simple, actionable steps.
+    </p>
+    <a href="https://grademyfinance.gumroad.com/l/zlwid" class="btn primary" target="_blank" rel="noopener">
+      Buy on Gumroad
+    </a>
+    <p class="reviews">⭐⭐⭐⭐⭐ “Super helpful — made money simple again.”</p>
   </div>
 
 </div> <!-- closes hero-row -->
