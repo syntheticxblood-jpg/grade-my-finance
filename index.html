@@ -421,6 +421,51 @@ header {
   border: none;
   cursor: pointer;
 }
+/* Flex row to align Grady + Book */
+.hero-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap; /* stack on small screens */
+  margin-top: 20px;
+}
+
+.hero-left {
+  text-align: center;
+}
+
+.hero-right {
+  max-width: 300px;
+}
+
+/* Bubble styling */
+#gradyTipBubble {
+  display: inline-block;
+  position: relative;
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: #2a2e3a;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  max-width: 300px;
+  font-size: 15px;
+  color: var(--text);
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+/* Bubble tail */
+#gradyTipBubble::after {
+  content: "";
+  position: absolute;
+  bottom: -10px; /* how far the tail sits down */
+  left: 40px;    /* adjust horizontally so it “points” to Grady */
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: #2a2e3a transparent transparent transparent;
+}
 
 
 </style>
@@ -491,33 +536,37 @@ header {
 </div>
 </div>
 
-<div class="mascot" aria-label="Grady the Owl">
-  <img
-    class="grady-logo"
-    src="grady-owl-10324.png"
-    sizes="(max-width: 980px) 400px, 600px"
-    alt="Grady the Owl holding an A+ report card"
-    fetchpriority="high"
-    loading="eager">
+<!-- Hero Row -->
+<div class="hero-row">
 
-    <!-- Finance tip bubble -->
-  <div id="gradyTipBubble" style="
-    margin-top:12px;
-    padding:10px 14px;
-    background:rgba(255,255,255,0.08);
-    border:1px solid var(--line);
-    border-radius:14px;
-    max-width:320px;
-    font-size:15px;
-    color:var(--text);
-    text-align:center;
-    cursor:pointer;
-    box-shadow:var(--shadow);
-  ">
-    🦉 Click me for a finance tip!
+  <!-- Left: Grady + Bubble -->
+  <div class="hero-left">
+    <div class="mascot" aria-label="Grady the Owl">
+      <img class="grady-logo" src="grady-owl-10324.png" alt="Grady the Owl">
+      <div id="gradyTipBubble">🦉 Click me for a finance tip!</div>
+    </div>
   </div>
 
+<!-- Right: Book -->
+<div class="hero-right">
+  <aside class="social-proof" aria-label="Book & reviews">
+    <div class="book-card">
+      <div class="book-cover">
+        <img src="book-cover.png" alt="Grade My Finance — The Guide" loading="lazy">
+      </div>
+      <h3>📘 Grade My Finance — The Guide</h3>
+      <p>Learn how to take control of your money and boost your financial grade with simple, actionable steps. 
+         This guide gives you the exact roadmap to level up your finances.</p>
+      <a href="https://grademyfinance.gumroad.com/l/zlwid" class="btn primary" target="_blank" rel="noopener">
+        Buy on Gumroad
+      </a>
+      <p class="reviews">⭐⭐⭐⭐⭐ “Super helpful — made money simple again.”</p>
+    </div>
+  </aside>
 </div>
+
+
+</div> <!-- closes hero-row -->
 
 <!-- Right column: Book promo + social proof -->
 <aside class="social-proof" aria-label="Book & reviews">
