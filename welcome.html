@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Welcome | Grade My Finance</title>
   <meta name="theme-color" content="#0f172a">
+
+  <!-- ✅ Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514"
+       crossorigin="anonymous"></script>
+
   <style>
     body {
       margin: 0;
@@ -57,6 +62,19 @@
   <button onclick="continueSession()" class="btn" style="margin-top:20px;">Continue without Email</button>
   <button onclick="skipSession()" class="btn secondary" style="margin-top:10px;">Don’t show again (this session)</button>
 
+  <!-- ✅ AdSense Banner -->
+  <div style="margin-top:20px;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-3638344211698514"
+         data-ad-slot="8441697102"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
   <script>
     function continueSession() {
       sessionStorage.setItem('skipWelcomeSession', 'true');
@@ -68,7 +86,7 @@
       setTimeout(() => window.location.href = 'index.html', 100);
     }
 
-    // ✅ Fixed email submission with FormData
+    // ✅ Email submission with FormData
     const emailForm = document.getElementById('emailForm');
     emailForm.addEventListener('submit', function(e){
       e.preventDefault();
