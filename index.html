@@ -325,12 +325,13 @@ header,.hero,.shell,.mobile-cta,footer,#confetti,#overlay{display:none!important
     text-overflow: ellipsis !important;
     max-width: 48vw !important;
   }
-  .btn.mini,
-  .header-right select.btn {
-    padding: 4px 8px !important;
-    font-size: .9rem !important;
-    min-width: 0 !important;
-  }
+ .btn.mini { 
+  font-size: 0.9rem; 
+  padding: 8px 12px; 
+  background: none; 
+  border: 1px solid var(--line); 
+}
+
   #currencySel { width: auto !important; max-width: 88px !important; }
 
   #bookTop::before { content: "📘"; font-size: 16px; }
@@ -485,10 +486,13 @@ header {
 <h1 class="hero-title">Get your free money grade in seconds</h1>
 <p class="hero-tag">No sign-up. Plug in numbers → get a score. Simple and effective.</p>
 <div class="hero-cta">
-<button class="btn" id="demoBtn" type="button">Try Demo</button>
-<button class="btn primary" id="gradeBtnTop" type="button">Get My Report Card</button>
-<button class="btn" id="copyLink" type="button">Copy share link</button>
+  <button class="btn mini" id="demoBtn" type="button">Try Demo</button>
+  <button class="btn primary" id="gradeBtnTop" type="button">Get My Report Card</button>
 </div>
+<p class="small" style="margin-top:8px; color:var(--muted)">
+  <button class="btn mini" id="copyLink" type="button">Copy share link</button>
+</p>
+
 </div>
 
 <div class="mascot" aria-label="Grady the Owl">
@@ -505,11 +509,17 @@ header {
 </div>
 
 <!-- Right column: Book promo + social proof -->
-<aside class="social-proof" aria-label="Book & reviews">
-<div class="book-card">
-<div class="book-cover">
-<img src="book-cover.png" alt="Grade My Finance — The Guide" loading="lazy">
-</div>
+<!-- Social proof -->
+<aside class="social-proof" aria-label="Reviews & book">
+  <div class="proof-card">…10,000+ graded…</div>
+  <div class="proof-card review">…</div>
+  <div class="proof-card review">…</div>
+  <div class="proof-card review">…</div>
+
+  <!-- book card goes here LAST -->
+  <div class="book-card">…</div>
+</aside>
+
 <div>
 <h4 class="book-title">Grade My Finance — The Guide</h4>
 <p class="book-desc">A quick, practical playbook to boost your score: savings, debt, emergency fund, and net worth milestones.</p>
