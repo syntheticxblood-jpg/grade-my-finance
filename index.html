@@ -460,8 +460,11 @@ header {
   color: var(--text);
   cursor: pointer;
   box-shadow: var(--shadow);
-  max-width: 240px;
-  text-align: left;
+  max-width: 300px;   /* wider so text doesn’t wrap every word */
+  white-space: nowrap; /* force it to stay in one line */
+  text-align: center;  /* looks cleaner for short phrases */
+}
+
 }
 
 #gradyTipBubble::after {
