@@ -500,7 +500,22 @@ header {
     fetchpriority="high"
     loading="eager">
 
-</div>
+    <!-- Finance tip bubble -->
+  <div id="gradyTipBubble" style="
+    margin-top:12px;
+    padding:10px 14px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid var(--line);
+    border-radius:14px;
+    max-width:320px;
+    font-size:15px;
+    color:var(--text);
+    text-align:center;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+  ">
+    🦉 Click me for a finance tip!
+  </div>
 
 </div>
 
@@ -1561,6 +1576,41 @@ prog=Math.min(100,Math.round(((i+1)/total)*100));
 bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[i] || "Finalizing…"; i++;
 if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
 }, interval);
+}
+/* ===== Grady Tips ===== */
+var tips = [
+  "Pay yourself first: set up auto transfers to savings the day you get paid.",
+  "Keep 3–6 months of expenses in an emergency fund.",
+  "Track your net worth monthly — what gets measured gets improved.",
+  "High-interest debt? Pay it off before investing heavily.",
+  "Invest consistently, even if small. Time > timing.",
+  "Max out your 401(k) employer match — it's free money.",
+  "Avoid lifestyle creep — save raises instead of spending them.",
+  "Review subscriptions annually — cut unused ones.",
+  "Automate bills to avoid late fees.",
+  "Use sinking funds for big purchases like vacations or cars.",
+  // … add more until you hit 100 total
+];
+
+var tipHistory = [];
+function getRandomTip() {
+  if (tipHistory.length === tips.length) tipHistory = [];
+  var available = tips.filter(t => !tipHistory.includes(t));
+  var pick = available[Math.floor(Math.random() * available.length)];
+  tipHistory.push(pick);
+  return pick;
+}
+
+var tipBubble = document.getElementById("gradyTipBubble");
+var gradyImg = document.querySelector(".grady-logo");
+
+function showNewTip() {
+  tipBubble.textContent = "🦉 " + getRandomTip();
+}
+
+if (tipBubble && gradyImg) {
+  tipBubble.addEventListener("click", showNewTip);
+  gradyImg.addEventListener("click", showNewTip);
 }
 
 })(); // end IIFE
