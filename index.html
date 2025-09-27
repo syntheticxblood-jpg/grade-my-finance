@@ -442,33 +442,39 @@ header {
 }
 
 /* Bubble to the side of Grady */
+/* Grady + bubble side by side */
+.grady-wrap {
+  display: flex;
+  align-items: center; /* keeps owl + bubble vertically aligned */
+  gap: 12px; /* space between owl and bubble */
+  justify-content: center; /* center inside left column */
+}
+
 #gradyTipBubble {
-  display: inline-block;
   position: relative;
-  margin-left: 20px;  /* push it to the right of Grady */
   padding: 12px 16px;
   background: #2a2e3a;
   border: 1px solid var(--line);
   border-radius: 14px;
-  max-width: 300px;
   font-size: 15px;
   color: var(--text);
-  text-align: center;
   cursor: pointer;
   box-shadow: var(--shadow);
-  vertical-align: middle;
+  max-width: 240px;
+  text-align: left;
 }
 
 #gradyTipBubble::after {
   content: "";
   position: absolute;
+  left: -10px; /* tail on left side */
   top: 50%;
-  left: -10px; /* tail on the left pointing to Grady */
   transform: translateY(-50%);
   border-width: 10px 10px 10px 0;
   border-style: solid;
   border-color: transparent #2a2e3a transparent transparent;
 }
+
 
 
 </style>
@@ -542,13 +548,14 @@ header {
 <!-- Hero Row -->
 <div class="hero-row">
 
-  <!-- Left: Grady + Bubble -->
-  <div class="hero-left">
-    <div class="mascot" aria-label="Grady the Owl">
-      <img class="grady-logo" src="grady-owl-10324.png" alt="Grady the Owl">
-      <div id="gradyTipBubble">🦉 Click me for a finance tip!</div>
-    </div>
+ <!-- Left: Grady + Bubble -->
+<div class="hero-left">
+  <div class="grady-wrap">
+    <img class="grady-logo" src="grady-owl-10324.png" alt="Grady the Owl">
+    <div id="gradyTipBubble">🦉 Click me for a finance tip!</div>
   </div>
+</div>
+
 
   <!-- Right: Book -->
   <div class="hero-right">
