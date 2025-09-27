@@ -429,26 +429,27 @@ header {
 /* Flex row to align Grady + Book */
 .hero-row {
   display: flex;
-  justify-content: space-between; /* pushes left + right apart */
+  justify-content: center;   /* centers overall row */
   align-items: flex-start;
-  gap: 40px;
-  flex-wrap: wrap; /* stack on mobile */
+  gap: 60px;                 /* more breathing room between Grady + book */
+  flex-wrap: wrap;
   margin-top: 20px;
 }
 
 .hero-left {
   flex: 1;
   display: flex;
-  justify-content: flex-start; /* Grady + bubble on left */
+  justify-content: center;   /* centers Grady itself */
 }
 
 .hero-right {
   flex: 1;
-  max-width: 420px;  /* keeps book + reviews in a nice box */
+  max-width: 420px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* everything left aligned inside */
+  align-items: flex-start;
 }
+
 
 
 /* Bubble to the side of Grady */
@@ -561,45 +562,41 @@ header {
 <!-- Hero Row -->
 <div class="hero-row">
 
- <!-- Left: Grady + Bubble -->
-<div class="hero-left">
-  <div class="grady-wrap">
-    <img class="grady-logo" src="grady-owl-10324.png" alt="Grady the Owl">
-    <div id="gradyTipBubble">🦉 Click me for a finance tip!</div>
-  </div>
-</div>
-
-
-  <!-- Right: Book + Proof -->
-<div class="hero-right">
-  <aside class="social-proof" aria-label="Book & reviews">
-    <div class="book-card">
-      <div class="book-cover">
-        <img src="book-cover.png" alt="Grade My Finance — The Guide" loading="lazy">
-      </div>
-      <div class="book-info">
-        <h3 class="book-title">📘 Grade My Finance — The Guide</h3>
-        <p class="book-desc">
-          Learn how to take control of your money and boost your financial grade with simple, actionable steps.
-        </p>
-        <a href="https://grademyfinance.gumroad.com/l/zlwid" class="btn primary" target="_blank" rel="noopener">
-          Buy on Gumroad
-        </a>
-        <p class="reviews">⭐⭐⭐⭐⭐ “Super helpful — made money simple again.”</p>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Proof card now inside hero-right -->
-  <div class="proof-card">
-    <div class="proof-metric">
-      <div class="big">10,000+</div>
-      <div>report cards graded</div>
+  <!-- Left: Grady -->
+  <div class="hero-left">
+    <div class="grady-wrap">
+      <img class="grady-logo" src="grady-owl-10324.png" alt="Grady the Owl">
+      <div id="gradyTipBubble">🦉 Click me for a finance tip!</div>
     </div>
   </div>
-</div> <!-- closes hero-right -->
 
-</div>
+  <!-- Right: Book + Reviews -->
+  <div class="hero-right">
+    <aside class="social-proof" aria-label="Book & reviews">
+      <div class="book-card">
+        <div class="book-cover">
+          <img src="book-cover.png" alt="Grade My Finance — The Guide" loading="lazy">
+        </div>
+        <div class="book-info">
+          <h3 class="book-title">📘 Grade My Finance — The Guide</h3>
+          <p class="book-desc">
+            Learn how to take control of your money and boost your financial grade with simple, actionable steps.
+          </p>
+          <a href="https://grademyfinance.gumroad.com/l/zlwid" class="btn primary" target="_blank" rel="noopener">
+            Buy on Gumroad
+          </a>
+          <p class="reviews">⭐⭐⭐⭐⭐ “Super helpful — made money simple again.”</p>
+        </div>
+      </div>
+    </aside>
+
+    <div class="proof-card">
+      <div class="proof-metric">
+        <div class="big">10,000+</div>
+        <div>report cards graded</div>
+      </div>
+    </div>
+  </div>
 
 </div>
 <div class="small">Since launch. Educational only — not financial advice.</div>
