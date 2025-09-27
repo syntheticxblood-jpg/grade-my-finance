@@ -1552,15 +1552,26 @@ __track('apply_projection');
 /* ===== Loader sequence ===== */
 var overlay=$("overlay"), bar=$("barFill"), pct=$("pct"), loadMsg=$("loadMsg");
 function runWithLoader(fnDone){
-var steps=["Checking savings rate…","Measuring emergency fund runway…","Comparing net worth vs age…","Weighing debt load…","Factoring income strength…"];
-var i=0, prog=0, total=steps.length+2, interval=1200/total;
-overlay.classList.add("show"); bar.style.width="0%"; pct.textContent="0%"; loadMsg.textContent="Crunching numbers…";
-var t=setInterval(function(){
-prog=Math.min(100,Math.round(((i+1)/total)*100));
-bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[i] || "Finalizing…"; i++;
-if(i>=total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
-}, interval);
+  var steps=["Checking savings rate…","Measuring emergency fund runway…","Comparing net worth vs age…","Weighing debt load…","Factoring income strength…"];
+  var i=0, prog=0, total=steps.length+2, interval=4200/total; // extended to ~4s total
+  overlay.classList.add("show"); 
+  bar.style.width="0%"; 
+  pct.textContent="0%"; 
+  loadMsg.textContent="Crunching numbers…";
+  var t=setInterval(function(){
+    prog=Math.min(100,Math.round(((i+1)/total)*100));
+    bar.style.width=prog+"%"; 
+    pct.textContent=prog+"%"; 
+    loadMsg.textContent=steps[i] || "Finalizing…"; 
+    i++;
+    if(i==total){ 
+      clearInterval(t); 
+      overlay.classList.remove("show"); 
+      fnDone(); 
+    }
+  }, interval);
 }
+
 
 })(); // end IIFE
 </script>
