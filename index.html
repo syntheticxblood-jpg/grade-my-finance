@@ -1250,12 +1250,12 @@ pie(pieLiabs, [
 }
 
 function openReport(v, cats) {
-  var rcRows = $("#rcRows"),
-      rcGrade = $("#rcGrade"),
-      rcMeta = $("#rcMeta"),
+  var rcRows   = $("#rcRows"),
+      rcGrade  = $("#rcGrade"),
+      rcMeta   = $("#rcMeta"),
       rcMascot = $("#rcMascot"),
       pathList = $("#pathList");
-  var modal = $("#reportModal");
+  var modal    = $("#reportModal");
 
   window.__lastOverall = { 
     letter: cats.overall.letter, 
@@ -1275,17 +1275,18 @@ function openReport(v, cats) {
   // Badge styling + confetti
   if (cats.overall.letter.includes("Financially Independent")) {
     rcGrade.className = "rc-grade fi";
-    startConfetti(); // 🎉 trigger for FI
+    confettiBurst(); // ✅ FIXED (use the existing confettiBurst)
   } else if (["A+","A","A-","B+"].indexOf(cats.overall.letter) > -1) {
     rcGrade.className = "rc-grade good";
-    if (cats.overall.letter === "A+") startConfetti(); // 🎉 trigger for normal A+
+    if (cats.overall.letter === "A+") confettiBurst(); // ✅ only for perfect A+
   } else if (["B","B-","C+","C","C-"].indexOf(cats.overall.letter) > -1) {
     rcGrade.className = "rc-grade mid";
   } else {
     rcGrade.className = "rc-grade bad";
   }
-}
 
+  // (rest of your report rendering code continues here…)
+}
 
 rcRows.innerHTML="";
 cats.components.forEach(function(c){
