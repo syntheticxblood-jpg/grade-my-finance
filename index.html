@@ -230,6 +230,16 @@ border-radius:999px; font-weight:900; width:56px; height:56px; display:grid; pla
 .rc-grade.bad{color:#fff; background:#ef4444; border-color:#fecaca}
 .rc-grade.pop{animation:gradePop .6s cubic-bezier(.2,1,.2,1)}
 @keyframes gradePop{0%{transform:scale(.85)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+/* Responsive fix for grade text on smaller screens */
+@media (max-width: 600px) {
+  .rc-grade {
+    font-size: 32px;      /* shrink font on phones */
+    padding: 8px 12px;    /* adjust padding */
+    line-height: 1.2;     /* tighter line height */
+    word-break: break-word;
+    text-align: center;
+  }
+}
 
 /* grid areas inside modal */
 .rc-sections{display:grid; grid-template-columns:1.2fr 1fr; gap:12px; margin-top:12px}
