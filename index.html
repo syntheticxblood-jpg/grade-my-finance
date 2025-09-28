@@ -1261,14 +1261,14 @@ function openReport(v, cats) {
     score: cats.overall.score 
   };
 
-  // Meta details
+  // Always show numeric score + details
   rcMeta.textContent =
     "Overall " + cats.overall.score.toFixed(1) + "/100 • " +
     "Net worth " + money(v.net) + " • " +
     "Assets " + money(v.assets) + " • " +
     "Liabilities " + money(v.liabs);
 
-  // Grade badge
+  // Badge text + styling
   rcGrade.textContent = cats.overall.letter;
   if (cats.overall.letter.includes("Financially Independent")) {
     rcGrade.className = "rc-grade fi";
@@ -1282,56 +1282,80 @@ function openReport(v, cats) {
     rcGrade.className = "rc-grade bad";
   }
 
-  // Rows
-  rcRows.innerHTML = "";
+  // Component rows
+  rcRows.innerHTML="";
   cats.components.forEach(function(c){
     var row=document.createElement("div");
     row.className="rc-row fade-in";
     row.innerHTML =
-      '<div><div>'+c.key+'</div><div>'+c.sub+'</div></div>'+
-      '<div><div>'+c.val+'</div><div>'+c.tip+'</div></div>'+
-      '<div><span class="'+badgeClass(c.letter)+'">'+c.letter+'</span></div>';
+      '<div class="rc-cell"><div class="label">'+c.key+'</div>'+
+      '<div class="sub" style="color:#9fb0c7;font-size:12px">'+c.sub+'</div></div>'+
+      '<div class="rc-cell detail-col"><div class="detail" style="font-weight:900;color:#e2e8f0">'+c.val+
+      '</div><div class="tip" style="color:#cbd5e1;font-size:13px">'+c.tip+'</div></div>'+
+      '<div class="rc-cell"><span class="'+badgeClass(c.letter)+'">'+c.letter+'</span></div>';
     rcRows.appendChild(row);
   });
 
   // Weakest link
-  var weakWrap = $("#weakWrap");
-  weakWrap.innerHTML = "";
-  hbars(weakWrap, cats.weaknesses);
+  var items = [
+    {label:"Savings", score:cats.s.sSave},
+    {label:"Emergency Fund", score:cats.s.sEF},
+    {label:"Debt", score:cats.s.sDebt},
+    {label:"Age-based NW", score:cats.s.sAgeNW},
+    {label:"Income", score:cats.s.sInc},
+  ];
+  var minIdx=0; for(var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
+  items = items.map((it,idx)=>{ it.isWeak = (idx===minIdx); return it; });
+  hbars(weakWrap, items);
 
   // Benchmarks
-  var benchWrap = $("#benchWrap");
-  benchWrap.innerHTML = "";
-  hbars(benchWrap, cats.benchmarks);
+  benchRows.innerHTML='';
+  estimatePercentiles(v,cats).forEach(function(t){
+    var row=el('div');
+    row.style.display='grid'; row.style.gridTemplateColumns='1fr auto';
+    var label=el('div'); label.innerHTML='<strong>'+t.label+'</strong> — <span style="color:#9fb0c7">'+t.expl+'</span>';
+    var chip=el('div'); chip.className='badge'; chip.textContent=t.value+'th %ile';
+    row.append(label,chip); benchRows.appendChild(row);
+  });
 
   // Charts
   drawCharts(v);
 
-  // Path
-  var actions = buildPath(v,cats);
-  pathList.innerHTML = "";
-  actions.forEach(function(a){
+  // Path to higher grade
+  pathList.innerHTML="";
+  buildPath(v,cats).forEach(function(a){
     var li=document.createElement("li");
-    li.textContent = a;
+    li.innerHTML = a.txt + ' <span class="pts">≈ +' + a.pts + ' pts</span>';
     pathList.appendChild(li);
   });
 
   // History + sparkline
   var hist=getHistory();
-  sparkline($("#spark"), hist.map(h=>h.score).concat([cats.overall.score]));
+  var trendArr=hist.map(h=>h.score).concat([cats.overall.score]).slice(-12);
+  sparkline(spark, trendArr);
+  if(hist.length){
+    var last=hist[hist.length-1];
+    var diff=Math.round((cats.overall.score - last.score)*10)/10;
+    var arrow= diff>0?'↑':(diff<0?'↓':'→');
+    var color= diff>0?'#86efac':(diff<0?'#fecaca':'#9fb0c7');
+    compareText.innerHTML = 'Since last check: <span style="font-weight:900;color:'+color+'">'+arrow+' '+(diff>0?'+':'')+diff+'</span> pts';
+  } else {
+    compareText.textContent = 'First run saved on this device.';
+  }
+
+  // Save entry
   saveHistory({ ts: Date.now(), score: cats.overall.score });
 
-  // Show modal + animations
+  // Open modal + animations
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
   rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
 
-  // Track event
-  track("view_report",{letter: cats.overall.letter, score: cats.overall.score});
-
-  // Projections
+  // Track + projections
+  __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
   initProjections(v, cats);
-} // <== function closed here
+} // ✅ closes properly
+
 
 $("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
 $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
