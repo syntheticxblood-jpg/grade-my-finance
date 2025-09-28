@@ -1660,53 +1660,6 @@ if (i == total) {
 
 })(); // end IIFE
 </script>
-<script>
-"use strict";
-
-(function(){
-
-function $(id){ return document.getElementById(id); }
-
-/* === Safe addEvent === */
-function onClick(id, fn){
-  var el = $(id);
-  if(el) el.addEventListener("click", fn);
-}
-
-/* === Core actions === */
-function gradeNow(){
-  runWithLoader(function(){ 
-    var v = values(); 
-    var cats = categoryScores(v); 
-    openReport(v,cats); 
-  });
-}
-
-function runWithLoader(fnDone){
-  var overlay=$("overlay"), bar=$("barFill"), pct=$("pct"), loadMsg=$("loadMsg");
-  var steps=["Checking savings rate…","Measuring emergency fund runway…","Comparing net worth vs age…","Weighing debt load…","Factoring income strength…"];
-  var i=0, prog=0, total=steps.length+2, interval=4200/total;
-  overlay.classList.add("show");
-  bar.style.width="0%"; pct.textContent="0%"; loadMsg.textContent="Crunching numbers…";
-  var t=setInterval(function(){
-    prog=Math.min(100,Math.round(((i+1)/total)*100));
-    bar.style.width=prog+"%"; 
-    pct.textContent=prog+"%"; 
-    loadMsg.textContent=steps[i]||"Finalizing…"; 
-    i++;
-    if(i==total){ clearInterval(t); overlay.classList.remove("show"); fnDone(); }
-  }, interval);
-}
-
-/* === Hook buttons safely === */
-onClick("gradeBtnTop", gradeNow);
-onClick("gradeBtn", gradeNow);
-onClick("gradeBtnSticky", gradeNow);
-onClick("demoBtn", randomDemo);
-onClick("closeReport", ()=> $("reportModal").classList.remove("show"));
-
-})(); 
-</script>
 
 </body>
 </html>
