@@ -1637,12 +1637,20 @@ function runWithLoader(fnDone){
     pct.textContent=prog+"%"; 
     loadMsg.textContent=steps[i] || "Finalizing…"; 
     i++;
- if (i == total) { 
-  clearInterval(t); 
-  overlay.classList.remove("show"); 
-  // Wait a frame so overlay hides before modal opens
-  setTimeout(fnDone, 200);  
+if (i == total) {
+  clearInterval(t);
+  overlay.classList.remove("show");
+
+  // 🔥 Force the report to open after loader finishes
+  setTimeout(function () {
+    try {
+      fnDone(); // openReport gets called here
+    } catch (err) {
+      console.error("Report open failed:", err);
+    }
+  }, 300); // wait 0.3s for overlay transition
 }
+
 
 }
 
