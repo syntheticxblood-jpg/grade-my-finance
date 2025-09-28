@@ -1212,7 +1212,20 @@ window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score 
 
 rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
 rcGrade.textContent=cats.overall.letter;
-rcGrade.className="rc-grade "+( ["A+","A","A-","B+"].indexOf(cats.overall.letter)>-1?"good": (["B","B-","C+","C","C-"].indexOf(cats.overall.letter)>-1?"mid":"bad"));
+// Clean the letter so extras like "(Financially Independent 🎉)" don’t break the grade match
+var letterClean = cats.overall.letter.split(" ")[0];
+
+rcGrade.className = "rc-grade " + (
+  ["A+","A","A-","B+"].includes(letterClean) ? "good" :
+  (["B","B-","C+","C","C-"].includes(letterClean) ? "mid" : "bad")
+);
+
+// 🎉 Trigger confetti if A+
+if (letterClean === "A+") {
+  confettiBurst(); // use your built-in canvas confetti
+}
+
+
 
 rcRows.innerHTML="";
 cats.components.forEach(function(c){
