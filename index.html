@@ -1256,9 +1256,9 @@ function openReport(v, cats) {
       pathList = $("#pathList");
   var modal    = $("#reportModal");
 
-  window.__lastOverall = { 
-    letter: cats.overall.letter, 
-    score: cats.overall.score 
+  window.__lastOverall = {
+    letter: cats.overall.letter,
+    score: cats.overall.score
   };
 
   // Always show numeric score + details
@@ -1283,10 +1283,10 @@ function openReport(v, cats) {
   }
 
   // Component rows
-  rcRows.innerHTML="";
+  rcRows.innerHTML = "";
   cats.components.forEach(function(c){
-    var row=document.createElement("div");
-    row.className="rc-row fade-in";
+    var row = document.createElement("div");
+    row.className = "rc-row fade-in";
     row.innerHTML =
       '<div class="rc-cell"><div class="label">'+c.key+'</div>'+
       '<div class="sub" style="color:#9fb0c7;font-size:12px">'+c.sub+'</div></div>'+
@@ -1302,18 +1302,20 @@ function openReport(v, cats) {
     {label:"Emergency Fund", score:cats.s.sEF},
     {label:"Debt", score:cats.s.sDebt},
     {label:"Age-based NW", score:cats.s.sAgeNW},
-    {label:"Income", score:cats.s.sInc},
+    {label:"Income", score:cats.s.sInc}
   ];
-  var minIdx=0; for(var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
+  var minIdx = 0;
+  for (var i=1;i<items.length;i++){ if(items[i].score < items[minIdx].score) minIdx=i; }
   items = items.map((it,idx)=>{ it.isWeak = (idx===minIdx); return it; });
   hbars(weakWrap, items);
 
   // Benchmarks
-  benchRows.innerHTML='';
+  benchRows.innerHTML = '';
   estimatePercentiles(v,cats).forEach(function(t){
     var row=el('div');
     row.style.display='grid'; row.style.gridTemplateColumns='1fr auto';
-    var label=el('div'); label.innerHTML='<strong>'+t.label+'</strong> — <span style="color:#9fb0c7">'+t.expl+'</span>';
+    var label=el('div'); 
+    label.innerHTML='<strong>'+t.label+'</strong> — <span style="color:#9fb0c7">'+t.expl+'</span>';
     var chip=el('div'); chip.className='badge'; chip.textContent=t.value+'th %ile';
     row.append(label,chip); benchRows.appendChild(row);
   });
@@ -1322,22 +1324,22 @@ function openReport(v, cats) {
   drawCharts(v);
 
   // Path to higher grade
-  pathList.innerHTML="";
+  pathList.innerHTML = "";
   buildPath(v,cats).forEach(function(a){
-    var li=document.createElement("li");
+    var li = document.createElement("li");
     li.innerHTML = a.txt + ' <span class="pts">≈ +' + a.pts + ' pts</span>';
     pathList.appendChild(li);
   });
 
   // History + sparkline
-  var hist=getHistory();
-  var trendArr=hist.map(h=>h.score).concat([cats.overall.score]).slice(-12);
+  var hist = getHistory();
+  var trendArr = hist.map(h=>h.score).concat([cats.overall.score]).slice(-12);
   sparkline(spark, trendArr);
   if(hist.length){
-    var last=hist[hist.length-1];
-    var diff=Math.round((cats.overall.score - last.score)*10)/10;
-    var arrow= diff>0?'↑':(diff<0?'↓':'→');
-    var color= diff>0?'#86efac':(diff<0?'#fecaca':'#9fb0c7');
+    var last = hist[hist.length-1];
+    var diff = Math.round((cats.overall.score - last.score)*10)/10;
+    var arrow = diff>0?'↑':(diff<0?'↓':'→');
+    var color = diff>0?'#86efac':(diff<0?'#fecaca':'#9fb0c7');
     compareText.innerHTML = 'Since last check: <span style="font-weight:900;color:'+color+'">'+arrow+' '+(diff>0?'+':'')+diff+'</span> pts';
   } else {
     compareText.textContent = 'First run saved on this device.';
@@ -1346,15 +1348,16 @@ function openReport(v, cats) {
   // Save entry
   saveHistory({ ts: Date.now(), score: cats.overall.score });
 
-  // Open modal + animations
+  // ✅ Open modal + animations
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
   rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
 
-  // Track + projections
   __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
+
+  // Projections
   initProjections(v, cats);
-} // ✅ closes properly
+} // function closes here
 
 
 $("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
