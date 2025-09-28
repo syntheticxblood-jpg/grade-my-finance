@@ -1637,11 +1637,12 @@ function runWithLoader(fnDone){
     pct.textContent=prog+"%"; 
     loadMsg.textContent=steps[i] || "Finalizing…"; 
     i++;
-    if(i==total){ 
-      clearInterval(t); 
-      overlay.classList.remove("show"); 
-      fnDone(); 
-    }
+   if (i == total) { 
+  clearInterval(t); 
+  overlay.classList.remove("show"); 
+  setTimeout(fnDone, 100); // force modal open after overlay hides
+}
+
   }, interval);
 }
 
