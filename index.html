@@ -1287,19 +1287,6 @@ function openReport(v, cats) {
 }
 
 
-
-// Check for FI special case
-if (cats.overall.letter.includes("Financially Independent")) {
-  rcGrade.className = "rc-grade fi";
-} else if (["A+","A","A-","B+"].indexOf(cats.overall.letter) > -1) {
-  rcGrade.className = "rc-grade good";
-} else if (["B","B-","C+","C","C-"].indexOf(cats.overall.letter) > -1) {
-  rcGrade.className = "rc-grade mid";
-} else {
-  rcGrade.className = "rc-grade bad";
-}
-
-
 rcRows.innerHTML="";
 cats.components.forEach(function(c){
 var row=document.createElement("div");
