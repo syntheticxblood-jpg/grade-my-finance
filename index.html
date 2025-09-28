@@ -1267,7 +1267,8 @@ function openReport(v, cats) {
     "Net worth " + money(v.net) + " • " +
     "Assets " + money(v.assets) + " • " +
     "Liabilities " + money(v.liabs);
-
+modal.classList.add("show");
+}
   // Grade badge
   rcGrade.textContent = cats.overall.letter;
   if (cats.overall.letter.includes("Financially Independent")) {
