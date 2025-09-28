@@ -1256,12 +1256,13 @@ function openReport(v, cats) {
       pathList = $("#pathList");
   var modal    = $("#reportModal");
 
-  window.__lastOverall = {
-    letter: cats.overall.letter,
-    score: cats.overall.score
+  // Save last run for comparisons
+  window.__lastOverall = { 
+    letter: cats.overall.letter, 
+    score: cats.overall.score 
   };
 
-  // Always show numeric score + details
+  // Show numeric score + summary
   rcMeta.textContent =
     "Overall " + cats.overall.score.toFixed(1) + "/100 • " +
     "Net worth " + money(v.net) + " • " +
@@ -1290,8 +1291,8 @@ function openReport(v, cats) {
     row.innerHTML =
       '<div class="rc-cell"><div class="label">'+c.key+'</div>'+
       '<div class="sub" style="color:#9fb0c7;font-size:12px">'+c.sub+'</div></div>'+
-      '<div class="rc-cell detail-col"><div class="detail" style="font-weight:900;color:#e2e8f0">'+c.val+
-      '</div><div class="tip" style="color:#cbd5e1;font-size:13px">'+c.tip+'</div></div>'+
+      '<div class="rc-cell detail-col"><div class="detail" style="font-weight:900;color:#e2e8f0">'+c.val+'</div>'+
+      '<div class="tip" style="color:#cbd5e1;font-size:13px">'+c.tip+'</div></div>'+
       '<div class="rc-cell"><span class="'+badgeClass(c.letter)+'">'+c.letter+'</span></div>';
     rcRows.appendChild(row);
   });
@@ -1304,13 +1305,13 @@ function openReport(v, cats) {
     {label:"Age-based NW", score:cats.s.sAgeNW},
     {label:"Income", score:cats.s.sInc}
   ];
-  var minIdx = 0;
-  for (var i=1;i<items.length;i++){ if(items[i].score < items[minIdx].score) minIdx=i; }
-  items = items.map((it,idx)=>{ it.isWeak = (idx===minIdx); return it; });
+  var minIdx=0;
+  for (var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
+  items = items.map((it,idx)=>{ it.isWeak=(idx===minIdx); return it; });
   hbars(weakWrap, items);
 
   // Benchmarks
-  benchRows.innerHTML = '';
+  benchRows.innerHTML='';
   estimatePercentiles(v,cats).forEach(function(t){
     var row=el('div');
     row.style.display='grid'; row.style.gridTemplateColumns='1fr auto';
@@ -1324,22 +1325,22 @@ function openReport(v, cats) {
   drawCharts(v);
 
   // Path to higher grade
-  pathList.innerHTML = "";
+  pathList.innerHTML="";
   buildPath(v,cats).forEach(function(a){
-    var li = document.createElement("li");
+    var li=document.createElement("li");
     li.innerHTML = a.txt + ' <span class="pts">≈ +' + a.pts + ' pts</span>';
     pathList.appendChild(li);
   });
 
   // History + sparkline
-  var hist = getHistory();
-  var trendArr = hist.map(h=>h.score).concat([cats.overall.score]).slice(-12);
+  var hist=getHistory();
+  var trendArr=hist.map(h=>h.score).concat([cats.overall.score]).slice(-12);
   sparkline(spark, trendArr);
   if(hist.length){
-    var last = hist[hist.length-1];
-    var diff = Math.round((cats.overall.score - last.score)*10)/10;
-    var arrow = diff>0?'↑':(diff<0?'↓':'→');
-    var color = diff>0?'#86efac':(diff<0?'#fecaca':'#9fb0c7');
+    var last=hist[hist.length-1];
+    var diff=Math.round((cats.overall.score - last.score)*10)/10;
+    var arrow= diff>0?'↑':(diff<0?'↓':'→');
+    var color= diff>0?'#86efac':(diff<0?'#fecaca':'#9fb0c7');
     compareText.innerHTML = 'Since last check: <span style="font-weight:900;color:'+color+'">'+arrow+' '+(diff>0?'+':'')+diff+'</span> pts';
   } else {
     compareText.textContent = 'First run saved on this device.';
@@ -1348,17 +1349,20 @@ function openReport(v, cats) {
   // Save entry
   saveHistory({ ts: Date.now(), score: cats.overall.score });
 
-  // ✅ Open modal + animations
+  // Open modal + animations
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
   rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
 
+  if(["A+","A","A-","B+","B","B-"].indexOf(cats.overall.letter)>-1){
+    confettiBurst(320);
+  }
+
   __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
 
-  // Projections
+  // Initialize projections
   initProjections(v, cats);
-} // function closes here
-
+}
 
 $("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
 $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
