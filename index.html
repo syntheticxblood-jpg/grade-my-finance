@@ -1256,38 +1256,34 @@ function openReport(v, cats) {
       pathList = $("#pathList");
   var modal    = $("#reportModal");
 
-  // Save last run for comparisons
-  window.__lastOverall = { 
-    letter: cats.overall.letter, 
-    score: cats.overall.score 
-  };
+  window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score };
 
-  // Show numeric score + summary
+  // Meta
   rcMeta.textContent =
     "Overall " + cats.overall.score.toFixed(1) + "/100 • " +
     "Net worth " + money(v.net) + " • " +
     "Assets " + money(v.assets) + " • " +
     "Liabilities " + money(v.liabs);
 
-  // Badge text + styling
+  // Grade badge
   rcGrade.textContent = cats.overall.letter;
   if (cats.overall.letter.includes("Financially Independent")) {
     rcGrade.className = "rc-grade fi";
     confettiBurst();
   } else if (["A+","A","A-","B+"].includes(cats.overall.letter)) {
     rcGrade.className = "rc-grade good";
-    if (cats.overall.letter === "A+") confettiBurst();
+    if (cats.overall.letter==="A+") confettiBurst();
   } else if (["B","B-","C+","C","C-"].includes(cats.overall.letter)) {
     rcGrade.className = "rc-grade mid";
   } else {
     rcGrade.className = "rc-grade bad";
   }
 
-  // Component rows
-  rcRows.innerHTML = "";
+  // 🔥 Component rows (keep inside function!)
+  rcRows.innerHTML="";
   cats.components.forEach(function(c){
-    var row = document.createElement("div");
-    row.className = "rc-row fade-in";
+    var row=document.createElement("div");
+    row.className="rc-row fade-in";
     row.innerHTML =
       '<div class="rc-cell"><div class="label">'+c.key+'</div>'+
       '<div class="sub" style="color:#9fb0c7;font-size:12px">'+c.sub+'</div></div>'+
@@ -1298,71 +1294,33 @@ function openReport(v, cats) {
   });
 
   // Weakest link
-  var items = [
-    {label:"Savings", score:cats.s.sSave},
-    {label:"Emergency Fund", score:cats.s.sEF},
-    {label:"Debt", score:cats.s.sDebt},
-    {label:"Age-based NW", score:cats.s.sAgeNW},
-    {label:"Income", score:cats.s.sInc}
-  ];
-  var minIdx=0;
-  for (var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
-  items = items.map((it,idx)=>{ it.isWeak=(idx===minIdx); return it; });
-  hbars(weakWrap, items);
+  var items=[ … ]; hbars(weakWrap, items);
 
   // Benchmarks
-  benchRows.innerHTML='';
-  estimatePercentiles(v,cats).forEach(function(t){
-    var row=el('div');
-    row.style.display='grid'; row.style.gridTemplateColumns='1fr auto';
-    var label=el('div'); 
-    label.innerHTML='<strong>'+t.label+'</strong> — <span style="color:#9fb0c7">'+t.expl+'</span>';
-    var chip=el('div'); chip.className='badge'; chip.textContent=t.value+'th %ile';
-    row.append(label,chip); benchRows.appendChild(row);
-  });
+  benchRows.innerHTML=""; estimatePercentiles(v,cats).forEach(…);
 
   // Charts
   drawCharts(v);
 
-  // Path to higher grade
-  pathList.innerHTML="";
-  buildPath(v,cats).forEach(function(a){
-    var li=document.createElement("li");
-    li.innerHTML = a.txt + ' <span class="pts">≈ +' + a.pts + ' pts</span>';
-    pathList.appendChild(li);
-  });
+  // Path
+  pathList.innerHTML=""; buildPath(v,cats).forEach(…);
 
   // History + sparkline
-  var hist=getHistory();
-  var trendArr=hist.map(h=>h.score).concat([cats.overall.score]).slice(-12);
-  sparkline(spark, trendArr);
-  if(hist.length){
-    var last=hist[hist.length-1];
-    var diff=Math.round((cats.overall.score - last.score)*10)/10;
-    var arrow= diff>0?'↑':(diff<0?'↓':'→');
-    var color= diff>0?'#86efac':(diff<0?'#fecaca':'#9fb0c7');
-    compareText.innerHTML = 'Since last check: <span style="font-weight:900;color:'+color+'">'+arrow+' '+(diff>0?'+':'')+diff+'</span> pts';
-  } else {
-    compareText.textContent = 'First run saved on this device.';
-  }
+  var hist=getHistory(); sparkline(spark, hist.map(h=>h.score).concat([cats.overall.score]).slice(-12));
+  …
 
-  // Save entry
+  // Save history
   saveHistory({ ts: Date.now(), score: cats.overall.score });
 
-  // Open modal + animations
+  // Show modal + animations
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
   rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
 
-  if(["A+","A","A-","B+","B","B-"].indexOf(cats.overall.letter)>-1){
-    confettiBurst(320);
-  }
-
   __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
-
-  // Initialize projections
   initProjections(v, cats);
 }
+
 
 $("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
 $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
