@@ -1249,22 +1249,43 @@ pie(pieLiabs, [
 ], legendLiabs);
 }
 
-function openReport(v,cats){
-var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), rcMascot=$("rcMascot"), pathList=$("pathList");
-var modal=$("reportModal");
-window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score }; // keep for share/projection deltas
+function openReport(v, cats) {
+  var rcRows = $("#rcRows"),
+      rcGrade = $("#rcGrade"),
+      rcMeta = $("#rcMeta"),
+      rcMascot = $("#rcMascot"),
+      pathList = $("#pathList");
+  var modal = $("#reportModal");
 
-rcGrade.textContent = cats.overall.letter;
+  window.__lastOverall = { 
+    letter: cats.overall.letter, 
+    score: cats.overall.score 
+  }; // keep for share/projection deltas
 
-if (cats.overall.letter.includes("Financially Independent")) {
-  rcGrade.className = "rc-grade fi";
-} else if (["A+","A","A-","B+"].indexOf(cats.overall.letter) > -1) {
-  rcGrade.className = "rc-grade good";
-} else if (["B","B-","C+","C","C-"].indexOf(cats.overall.letter) > -1) {
-  rcGrade.className = "rc-grade mid";
-} else {
-  rcGrade.className = "rc-grade bad";
+  // Always show numeric score + details
+  rcMeta.textContent =
+    "Overall " + cats.overall.score.toFixed(1) + "/100 • " +
+    "Net worth " + money(v.net) + " • " +
+    "Assets " + money(v.assets) + " • " +
+    "Liabilities " + money(v.liabs);
+
+  // Badge text (letter, FI label, etc.)
+  rcGrade.textContent = cats.overall.letter;
+
+  // Badge styling + confetti
+  if (cats.overall.letter.includes("Financially Independent")) {
+    rcGrade.className = "rc-grade fi";
+    startConfetti(); // 🎉 trigger for FI
+  } else if (["A+","A","A-","B+"].indexOf(cats.overall.letter) > -1) {
+    rcGrade.className = "rc-grade good";
+    if (cats.overall.letter === "A+") startConfetti(); // 🎉 trigger for normal A+
+  } else if (["B","B-","C+","C","C-"].indexOf(cats.overall.letter) > -1) {
+    rcGrade.className = "rc-grade mid";
+  } else {
+    rcGrade.className = "rc-grade bad";
+  }
 }
+
 
 
 // Check for FI special case
