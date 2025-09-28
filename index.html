@@ -1221,7 +1221,12 @@ var modal=$("reportModal");
 window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score }; // keep for share/projection deltas
 
 rcMeta.textContent="Overall "+cats.overall.score.toFixed(1)+"/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
-rcGrade.textContent=cats.overall.letter;
+if (cats.overall.letter.startsWith("A+")) {
+  rcGrade.innerHTML = "A+ 🎉";  // keep just A+ and emoji
+} else {
+  rcGrade.textContent = cats.overall.letter;
+}
+
 // Clean the letter so extras like "(Financially Independent 🎉)" don’t break the grade match
 var letterClean = cats.overall.letter.split(" ")[0];
 
