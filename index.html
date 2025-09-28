@@ -1256,9 +1256,12 @@ function openReport(v, cats) {
       pathList = $("#pathList");
   var modal    = $("#reportModal");
 
-  window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score };
+  window.__lastOverall = { 
+    letter: cats.overall.letter, 
+    score: cats.overall.score 
+  };
 
-  // Meta
+  // Meta line
   rcMeta.textContent =
     "Overall " + cats.overall.score.toFixed(1) + "/100 • " +
     "Net worth " + money(v.net) + " • " +
@@ -1272,14 +1275,14 @@ function openReport(v, cats) {
     confettiBurst();
   } else if (["A+","A","A-","B+"].includes(cats.overall.letter)) {
     rcGrade.className = "rc-grade good";
-    if (cats.overall.letter==="A+") confettiBurst();
+    if (cats.overall.letter === "A+") confettiBurst();
   } else if (["B","B-","C+","C","C-"].includes(cats.overall.letter)) {
     rcGrade.className = "rc-grade mid";
   } else {
     rcGrade.className = "rc-grade bad";
   }
 
-  // 🔥 Component rows (keep inside function!)
+  // 🔥 Component rows
   rcRows.innerHTML="";
   cats.components.forEach(function(c){
     var row=document.createElement("div");
@@ -1294,30 +1297,38 @@ function openReport(v, cats) {
   });
 
   // Weakest link
-  var items=[ … ]; hbars(weakWrap, items);
+  var items=[ … ]; // same as your existing weakest-link block
+  hbars(weakWrap, items);
 
   // Benchmarks
-  benchRows.innerHTML=""; estimatePercentiles(v,cats).forEach(…);
+  benchRows.innerHTML="";
+  estimatePercentiles(v,cats).forEach(function(t){ … });
 
   // Charts
   drawCharts(v);
 
-  // Path
-  pathList.innerHTML=""; buildPath(v,cats).forEach(…);
+  // Path to higher grade
+  pathList.innerHTML="";
+  buildPath(v,cats).forEach(function(a){ … });
 
   // History + sparkline
-  var hist=getHistory(); sparkline(spark, hist.map(h=>h.score).concat([cats.overall.score]).slice(-12));
+  var hist=getHistory();
+  var trendArr=hist.map(h=>h.score).concat([cats.overall.score]).slice(-12);
+  sparkline(spark, trendArr);
   …
 
   // Save history
   saveHistory({ ts: Date.now(), score: cats.overall.score });
 
-  // Show modal + animations
+  // 🎉 Show modal
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
   rcMascot.classList.remove("party"); void rcMascot.offsetWidth; rcMascot.classList.add("party");
 
+  if(["A+","A","A-","B+","B","B-"].includes(cats.overall.letter)){ confettiBurst(320); }
   __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
+
+  // Init projections
   initProjections(v, cats);
 }
 
