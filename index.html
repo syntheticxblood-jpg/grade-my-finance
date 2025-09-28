@@ -892,7 +892,9 @@ return (["A+","A","A-","B+"].indexOf(l)>-1)?"badge good":((["B","B-","C+","C","C
 
 /* ===== Theme & currency ===== */
 var root=document.documentElement;
-var savedTheme=localem("gmf_theme"); if(savedTheme==="light") root.dataset.theme="light";
+var savedTheme = localStorage.getItem("gmf_theme");
+if (savedTheme === "light") root.dataset.theme = "light";
+
 $("themeToggle").addEventListener("click", function(){
 var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next;
 localStorage.setItem("gmf_theme", next||"dark"); __track('toggle_theme', {theme: next||'dark'});
