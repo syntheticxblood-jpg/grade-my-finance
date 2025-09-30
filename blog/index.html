@@ -81,7 +81,7 @@
       text-align: center;
       color: var(--muted);
       font-style: italic;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
     h2 {
       font-size: 20px;
@@ -132,8 +132,29 @@
       color: var(--muted);
     }
     .ad-block {
-      margin: 24px 0;
+      margin: 20px 0;
       text-align: center;
+    }
+    /* ✅ Grady Intro Card */
+    .grady-intro {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--panel);
+      padding: 16px;
+      border-radius: 12px;
+      border-left: 4px solid #22c55e;
+      margin: 20px 0 30px;
+    }
+    .grady-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+    .grady-intro p {
+      margin: 0;
+      font-style: italic;
+      color: var(--muted);
     }
   </style>
 </head>
@@ -146,7 +167,14 @@
     <h1><span>📚</span> Grade My Finance Blog</h1>
     <p class="subtitle">Quick tips & guides by Grady the Owl 🦉</p>
 
-    <!-- ✅ Ad slot under heading -->
+    <!-- ✅ Grady Intro Card -->
+    <div class="grady-intro">
+      <img src="grady-owl-1024.png" alt="Grady the Owl" class="grady-img">
+      <p>“Welcome! 🦉 I’m Grady, here to give you quick tips to boost your money grade. 
+         Dive into the posts below to get smarter with your finances.”</p>
+    </div>
+
+    <!-- ✅ Ad slot under intro -->
     <div class="ad-block">
       <ins class="adsbygoogle"
            style="display:block"
@@ -208,3 +236,4 @@
   </script>
 </body>
 </html>
+
