@@ -36,7 +36,7 @@
     <h1>Why an Emergency Fund is Your Financial Safety Net</h1>
 
     <div class="author-box">
-      <img src="assets/grady-owl.png" alt="Grady the Owl" class="author-img">
+      <img src="grady-owl-1024.png" alt="Grady the Owl" class="author-img">
       <p class="author">By <strong>Grady the Owl 🦉</strong></p>
     </div>
 
@@ -46,7 +46,7 @@
     <p>Most experts recommend at least <strong>3 to 6 months of living expenses</strong>. Start small: even $500 can stop you from relying on high-interest credit cards.</p>
 
     <div class="grady-quote">
-      <img src="assets/grady-owl.png" alt="Grady says" class="author-img">
+      <img src="grady-owl-1024.png" alt="Grady says" class="author-img">
       <p>“Don’t wait for the storm to hit before buying an umbrella.”</p>
     </div>
 
@@ -68,12 +68,16 @@
   </div>
   <footer>© 2025 Grade My Finance. All rights reserved.</footer>
   <script>
-    const toggle=document.getElementById('themeToggle');const currentTheme=localStorage.getItem('theme')||'light';
+    const toggle=document.getElementById('themeToggle');
+    const currentTheme=localStorage.getItem('theme')||'light';
     document.documentElement.setAttribute('data-theme',currentTheme);
     toggle.textContent=currentTheme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';
-    toggle.addEventListener('click',()=>{const theme=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
-      document.documentElement.setAttribute('data-theme',theme);localStorage.setItem('theme',theme);
-      toggle.textContent=theme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';});
+    toggle.addEventListener('click',()=>{
+      const theme=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      document.documentElement.setAttribute('data-theme',theme);
+      localStorage.setItem('theme',theme);
+      toggle.textContent=theme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';
+    });
   </script>
 </body>
 </html>
