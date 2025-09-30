@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The 50/30/20 Rule Explained: A Simple Budget That Works | Grade My Finance</title>
+  <meta name="description" content="Learn how the 50/30/20 rule can simplify your budget. Balance needs, wants, and savings to take control of your money.">
+  <link rel="canonical" href="https://grademyfinance.com/blog/50-30-20-rule.html">
+  <style>
+    :root { --bg:#fff; --text:#0f172a; --muted:#64748b; --link:#2563eb; --card:#f9fafb; }
+    [data-theme="dark"] { --bg:#0f172a; --text:#e2e8f0; --muted:#94a3b8; --link:#60a5fa; --card:#1e293b; }
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+    header{padding:14px 20px;border-bottom:1px solid #e5e7eb;background:var(--card);display:flex;justify-content:space-between;align-items:center;}
+    nav a{margin-right:16px;text-decoration:none;color:var(--link);font-weight:500;}
+    .container{max-width:750px;margin:40px auto;padding:0 16px;}
+    h1{font-size:2rem;margin-bottom:10px;}
+    .author{color:var(--muted);font-style:italic;margin-bottom:24px;}
+    h2{margin-top:28px;margin-bottom:10px;font-size:1.25rem;}
+    footer{margin-top:40px;padding:20px;font-size:.9rem;text-align:center;color:var(--muted);border-top:1px solid #e5e7eb;}
+    .theme-toggle{cursor:pointer;padding:6px 10px;border-radius:8px;font-size:.9rem;border:1px solid #cbd5e1;background:var(--bg);color:var(--text);}
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="../index.html">🏠 Calculator</a>
+      <a href="index.html">📝 Blog</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+  </header>
+  <div class="container">
+    <h1>The 50/30/20 Rule Explained: A Simple Budget That Works</h1>
+    <p class="author">By <strong>Grady the Owl 🦉</strong></p>
+
+    <p>Budgeting doesn’t have to be complicated. The <strong>50/30/20 rule</strong> is one of the simplest ways to take control of your money without spreadsheets or stress.</p>
+
+    <h2>What is the 50/30/20 Rule?</h2>
+    <p>It’s a framework for spending your income:</p>
+    <ul>
+      <li><strong>50%</strong> on needs (housing, food, transportation, insurance)</li>
+      <li><strong>30%</strong> on wants (entertainment, travel, eating out)</li>
+      <li><strong>20%</strong> on savings and debt repayment</li>
+    </ul>
+
+    <h2>Why It Works</h2>
+    <p>The simplicity makes it powerful. Instead of guessing, you get clear limits on spending and saving.</p>
+
+    <h2>How to Start</h2>
+    <p>1. Calculate your after-tax income.<br>
+       2. Multiply by 0.5, 0.3, and 0.2 to get your categories.<br>
+       3. Track your spending for one month and see how close you are.</p>
+
+    <p><strong>👉 Ready to check if you’re on track?</strong> Use the <a href="../index.html">Grade My Finance calculator</a> to see how your budget scores.</p>
+
+    <p>👉 Related: <a href="emergency-fund.html">Why an Emergency Fund is Your Financial Safety Net</a></p>
+  </div>
+  <footer>© 2025 Grade My Finance. All rights reserved.</footer>
+  <script>
+    const toggle=document.getElementById('themeToggle');const currentTheme=localStorage.getItem('theme')||'light';
+    document.documentElement.setAttribute('data-theme',currentTheme);
+    toggle.textContent=currentTheme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';
+    toggle.addEventListener('click',()=>{const theme=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      document.documentElement.setAttribute('data-theme',theme);localStorage.setItem('theme',theme);
+      toggle.textContent=theme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';});
+  </script>
+</body>
+</html>
