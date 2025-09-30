@@ -3,24 +3,96 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Blog | Grade My Finance</title>
-  <meta name="description" content="Read financial tips and guides from Grady the Owl on Grade My Finance.">
-  <link rel="stylesheet" href="../style.css">
+  <title>Grade My Finance Blog</title>
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --panel: #ffffff;
+      --text: #111827;
+      --accent: #2563eb;
+      --muted: #6b7280;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px;
+      text-align: center;
+    }
+    header a {
+      text-decoration: none;
+      font-size: 14px;
+      color: var(--accent);
+    }
+    main {
+      max-width: 720px;
+      margin: 32px auto;
+      padding: 0 16px;
+    }
+    h1 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+    h1 span {
+      font-size: 28px;
+    }
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 32px;
+    }
+    h2 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      background: var(--panel);
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      padding: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    li:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    li a {
+      text-decoration: none;
+      color: var(--accent);
+      font-size: 18px;
+      font-weight: 500;
+    }
+  </style>
 </head>
 <body>
-  <header style="padding:16px;text-align:center">
-    <a href="../index.html"><strong>🏠 Back to Calculator</strong></a>
+  <header>
+    <a href="index.html">🏠 Back to Calculator</a>
   </header>
-
-  <main style="max-width:700px;margin:auto;padding:20px;line-height:1.6">
-    <h1>📚 Grade My Finance Blog</h1>
-    <p><em>Quick tips & guides by Grady the Owl 🦉</em></p>
-
+  <main>
+    <h1><span>📚</span> Grade My Finance Blog</h1>
+    <p class="subtitle">Quick tips & guides by Grady the Owl 🦉</p>
     <h2>Latest Posts</h2>
     <ul>
-      <li><a href="financial-health-5-minutes.html">
-        How to Check Your Financial Health in 5 Minutes
-      </a></li>
+      <li>
+        <a href="post1.html">How to Check Your Financial Health in 5 Minutes</a>
+      </li>
     </ul>
   </main>
 </body>
