@@ -29,6 +29,7 @@
       text-decoration: none;
       font-size: 14px;
       color: var(--accent);
+      font-weight: 500;
     }
     main {
       max-width: 720px;
@@ -60,12 +61,13 @@
       list-style: none;
       padding: 0;
       margin: 0;
+      display: grid;
+      gap: 16px;
     }
     li {
       background: var(--panel);
       border: 1px solid #e5e7eb;
       border-radius: 12px;
-      margin-bottom: 16px;
       padding: 20px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
@@ -77,13 +79,18 @@
       text-decoration: none;
       color: var(--accent);
       font-size: 18px;
-      font-weight: 500;
+      font-weight: 600;
+    }
+    li p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
   <header>
-    <a href="index.html">🏠 Back to Calculator</a>
+    <a href="../index.html">🏠 Back to Calculator</a>
   </header>
   <main>
     <h1><span>📚</span> Grade My Finance Blog</h1>
@@ -91,7 +98,20 @@
     <h2>Latest Posts</h2>
     <ul>
       <li>
-        <a href="post1.html">How to Check Your Financial Health in 5 Minutes</a>
+        <a href="financial-health-5-minutes.html">How to Check Your Financial Health in 5 Minutes</a>
+        <p>A quick 3-step checkup to spot where your money stands today.</p>
+      </li>
+      <li>
+        <a href="50-30-20-rule.html">The 50/30/20 Rule Explained: A Simple Budget That Works</a>
+        <p>A timeless budgeting framework that balances needs, wants, and savings.</p>
+      </li>
+      <li>
+        <a href="emergency-fund.html">Why an Emergency Fund is Your Financial Safety Net</a>
+        <p>Build a cushion that protects you from life’s surprises and stress.</p>
+      </li>
+      <li>
+        <a href="retirement-by-age.html">How Much Should You Be Saving for Retirement by Age?</a>
+        <p>Check your progress with simple benchmarks for each decade of life.</p>
       </li>
     </ul>
   </main>
