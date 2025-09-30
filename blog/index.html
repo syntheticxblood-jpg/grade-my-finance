@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Grade My Finance Blog | Money Tips & Guides</title>
-  <meta name="description" content="Quick money tips & guides by Grady the Owl. Learn how to improve your financial health, budget smarter, and reach your goals.">
+  <title>Grade My Finance Blog | Personal Finance Tips & Guides</title>
+  <meta name="description" content="Read quick tips and guides by Grady the Owl 🦉. Learn budgeting, saving, and investing strategies in just minutes.">
+  <link rel="canonical" href="https://grademyfinance.com/blog/index.html">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://grademyfinance.com/blog/">
 
-  <!-- ✅ GA4 Tracking -->
+  <!-- ✅ GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -17,7 +17,7 @@
     gtag('config', 'G-H6223HYVS6');
   </script>
 
-  <!-- ✅ Google AdSense Auto Ads -->
+  <!-- ✅ Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514"
      crossorigin="anonymous"></script>
 
@@ -48,7 +48,6 @@
       background: var(--panel);
       border-bottom: 1px solid #e5e7eb;
       padding: 12px 16px;
-      text-align: center;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -77,9 +76,6 @@
       gap: 8px;
       font-size: 28px;
       margin-bottom: 6px;
-    }
-    h1 span {
-      font-size: 28px;
     }
     .subtitle {
       text-align: center;
@@ -135,6 +131,10 @@
       font-size: 12px;
       color: var(--muted);
     }
+    .ad-block {
+      margin: 24px 0;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -146,16 +146,16 @@
     <h1><span>📚</span> Grade My Finance Blog</h1>
     <p class="subtitle">Quick tips & guides by Grady the Owl 🦉</p>
 
-    <!-- Optional ad placement under title -->
-    <ins class="adsbygoogle"
-         style="display:block; text-align:center; margin:20px 0;"
-         data-ad-client="ca-pub-3638344211698514"
-         data-ad-slot="1234567890"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <!-- ✅ Ad slot under heading -->
+    <div class="ad-block">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-3638344211698514"
+           data-ad-slot="1122334455"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
 
     <h2>Latest Posts</h2>
     <ul>
@@ -181,16 +181,16 @@
       </li>
     </ul>
 
-    <!-- Optional ad placement at bottom -->
-    <ins class="adsbygoogle"
-         style="display:block; text-align:center; margin:30px 0;"
-         data-ad-client="ca-pub-3638344211698514"
-         data-ad-slot="9876543210"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <!-- ✅ Ad slot at bottom -->
+    <div class="ad-block">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-3638344211698514"
+           data-ad-slot="5566778899"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
   </main>
   <script>
     const toggleBtn = document.getElementById("themeToggle");
@@ -203,7 +203,6 @@
       const current = localStorage.getItem("theme") || "light";
       setTheme(current === "light" ? "dark" : "light");
     });
-    // Load stored preference
     const saved = localStorage.getItem("theme") || "light";
     setTheme(saved);
   </script>
