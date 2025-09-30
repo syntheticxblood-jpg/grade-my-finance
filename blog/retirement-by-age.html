@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How Much Should You Be Saving for Retirement by Age? | Grade My Finance</title>
+  <meta name="description" content="Check if you're on track for retirement with simple age-based savings benchmarks. See how much you should have saved in your 20s, 30s, 40s, and beyond.">
+  <link rel="canonical" href="https://grademyfinance.com/blog/retirement-by-age.html">
+  <style>
+    :root { --bg:#fff; --text:#0f172a; --muted:#64748b; --link:#2563eb; --card:#f9fafb; }
+    [data-theme="dark"] { --bg:#0f172a; --text:#e2e8f0; --muted:#94a3b8; --link:#60a5fa; --card:#1e293b; }
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+    header{padding:14px 20px;border-bottom:1px solid #e5e7eb;background:var(--card);display:flex;justify-content:space-between;align-items:center;}
+    nav a{margin-right:16px;text-decoration:none;color:var(--link);font-weight:500;}
+    .container{max-width:750px;margin:40px auto;padding:0 16px;}
+    h1{font-size:2rem;margin-bottom:10px;}
+    .author-box{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+    .author-img{width:48px;height:48px;border-radius:50%;background:#f1f5f9;padding:4px;}
+    .author{color:var(--muted);}
+    h2{margin-top:28px;margin-bottom:10px;font-size:1.25rem;}
+    .grady-quote{display:flex;align-items:center;gap:10px;background:var(--card);padding:12px;border-left:4px solid #22c55e;border-radius:8px;margin:20px 0;}
+    .grady-quote p{margin:0;font-style:italic;}
+    ul{margin:0 0 20px 20px;}
+    footer{margin-top:40px;padding:20px;font-size:.9rem;text-align:center;color:var(--muted);border-top:1px solid #e5e7eb;}
+    .theme-toggle{cursor:pointer;padding:6px 10px;border-radius:8px;font-size:.9rem;border:1px solid #cbd5e1;background:var(--bg);color:var(--text);}
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="../index.html">🏠 Calculator</a>
+      <a href="index.html">📝 Blog</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+  </header>
+  <div class="container">
+    <h1>How Much Should You Be Saving for Retirement by Age?</h1>
+
+    <div class="author-box">
+      <img src="grady-owl-1024.png" alt="Grady the Owl" class="author-img">
+      <p class="author">By <strong>Grady the Owl 🦉</strong></p>
+    </div>
+
+    <p>Retirement may feel far away, but the earlier you start saving, the easier the journey. Use these simple benchmarks to check if you’re on track.</p>
+
+    <h2>Benchmarks by Age</h2>
+    <ul>
+      <li><strong>20s:</strong> Aim to save at least <strong>1x your annual salary</strong> by age 30.</li>
+      <li><strong>30s:</strong> Grow to around <strong>2–3x your salary</strong> by age 40.</li>
+      <li><strong>40s:</strong> Target <strong>4–6x your salary</strong> by age 50.</li>
+      <li><strong>50s:</strong> Build toward <strong>8–10x your salary</strong> by age 60.</li>
+      <li><strong>60s:</strong> Ideally have <strong>10–12x your salary</strong> before retirement.</li>
+    </ul>
+
+    <div class="grady-quote">
+      <img src="grady-owl-1024.png" alt="Grady says" class="author-img">
+      <p>“The best time to start was yesterday. The second-best time is today.”</p>
+    </div>
+
+    <h2>Tips to Stay on Track</h2>
+    <p>
+      ✅ Contribute to your 401(k) or IRA.<br>
+      ✅ Increase contributions when you get raises.<br>
+      ✅ Don’t cash out retirement accounts early.<br>
+      ✅ Use catch-up contributions after age 50.
+    </p>
+
+    <p><strong>👉 Want to see if your retirement savings are on pace?</strong> Use the <a href="../index.html">Grade My Finance calculator</a> to check your grade instantly.</p>
+
+    <p>👉 Related: <a href="emergency-fund.html">Why an Emergency Fund is Your Financial Safety Net</a></p>
+  </div>
+  <footer>© 2025 Grade My Finance. All rights reserved.</footer>
+  <script>
+    const toggle=document.getElementById('themeToggle');
+    const currentTheme=localStorage.getItem('theme')||'light';
+    document.documentElement.setAttribute('data-theme',currentTheme);
+    toggle.textContent=currentTheme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';
+    toggle.addEventListener('click',()=>{
+      const theme=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+      document.documentElement.setAttribute('data-theme',theme);
+      localStorage.setItem('theme',theme);
+      toggle.textContent=theme==='dark'?'☀️ Light Mode':'🌙 Dark Mode';
+    });
+  </script>
+</body>
+</html>
