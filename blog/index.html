@@ -12,26 +12,44 @@
       --accent: #2563eb;
       --muted: #6b7280;
     }
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --text: #f3f4f6;
+      --accent: #3b82f6;
+      --muted: #9ca3af;
+    }
     body {
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
     }
     header {
       background: var(--panel);
       border-bottom: 1px solid #e5e7eb;
-      padding: 16px;
+      padding: 12px 16px;
       text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     header a {
       text-decoration: none;
       font-size: 14px;
       color: var(--accent);
     }
+    .theme-toggle {
+      cursor: pointer;
+      font-size: 14px;
+      background: none;
+      border: none;
+      color: var(--accent);
+    }
     main {
-      max-width: 720px;
+      max-width: 900px;
       margin: 32px auto;
       padding: 0 16px;
     }
@@ -54,41 +72,58 @@
     }
     h2 {
       font-size: 20px;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
     ul {
       list-style: none;
       padding: 0;
       margin: 0;
+      display: grid;
+      gap: 16px;
+    }
+    @media (min-width: 768px) {
+      ul {
+        grid-template-columns: 1fr 1fr;
+      }
     }
     li {
       background: var(--panel);
       border: 1px solid #e5e7eb;
       border-radius: 12px;
-      margin-bottom: 16px;
       padding: 20px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
     li:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
     }
     li a {
       text-decoration: none;
       color: var(--accent);
       font-size: 18px;
       font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     li p {
-      margin: 6px 0 0;
+      margin: 0;
       color: var(--muted);
       font-size: 14px;
+    }
+    .meta {
+      font-size: 12px;
+      color: var(--muted);
     }
   </style>
 </head>
 <body>
   <header>
     <a href="../index.html">🏠 Back to Calculator</a>
+    <button class="theme-toggle" id="themeToggle">🌙 Dark</button>
   </header>
   <main>
     <h1><span>📚</span> Grade My Finance Blog</h1>
@@ -96,23 +131,41 @@
     <h2>Latest Posts</h2>
     <ul>
       <li>
-        <a href="financial-health-5-minutes.html">How to Check Your Financial Health in 5 Minutes</a>
+        <a href="financial-health-5-minutes.html">🩺 How to Check Your Financial Health in 5 Minutes</a>
         <p>A quick 3-step checkup to spot where your money stands today.</p>
+        <span class="meta">Sep 2025 · 3 min read</span>
       </li>
       <li>
-        <a href="50-30-20-rule.html">The 50/30/20 Rule Explained: A Simple Budget That Works</a>
+        <a href="50-30-20-rule.html">📊 The 50/30/20 Rule Explained: A Simple Budget That Works</a>
         <p>A timeless budgeting framework that balances needs, wants, and savings.</p>
+        <span class="meta">Sep 2025 · 4 min read</span>
       </li>
       <li>
-        <a href="emergency-fund.html">Why an Emergency Fund is Your Financial Safety Net</a>
+        <a href="emergency-fund.html">⚡ Why an Emergency Fund is Your Financial Safety Net</a>
         <p>Build a cushion that protects you from life’s surprises and stress.</p>
+        <span class="meta">Sep 2025 · 5 min read</span>
       </li>
       <li>
-        <a href="retirement-by-age.html">How Much Should You Be Saving for Retirement by Age?</a>
+        <a href="retirement-by-age.html">🎓 How Much Should You Be Saving for Retirement by Age?</a>
         <p>Check your progress with simple benchmarks for each decade of life.</p>
+        <span class="meta">Sep 2025 · 6 min read</span>
       </li>
     </ul>
   </main>
+  <script>
+    const toggleBtn = document.getElementById("themeToggle");
+    function setTheme(mode) {
+      document.documentElement.setAttribute("data-theme", mode);
+      localStorage.setItem("theme", mode);
+      toggleBtn.textContent = mode === "dark" ? "☀️ Light" : "🌙 Dark";
+    }
+    toggleBtn.addEventListener("click", () => {
+      const current = localStorage.getItem("theme") || "light";
+      setTheme(current === "light" ? "dark" : "light");
+    });
+    // Load stored preference
+    const saved = localStorage.getItem("theme") || "light";
+    setTheme(saved);
+  </script>
 </body>
 </html>
-
