@@ -52,15 +52,27 @@
       font-size: 2rem;
       margin-bottom: 10px;
     }
-    .author {
-      color: var(--muted);
-      font-style: italic;
-      margin-bottom: 24px;
-    }
     h2 {
       margin-top: 28px;
       margin-bottom: 10px;
       font-size: 1.25rem;
+    }
+    .author-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .author-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      padding: 4px;
+    }
+    .author {
+      color: var(--muted);
+      font-style: italic;
     }
     .danger {
       display: inline-flex;
@@ -102,7 +114,11 @@
 
   <div class="container">
     <h1>How to Check Your Financial Health in 5 Minutes</h1>
-    <p class="author">By <strong>Grady the Owl 🦉</strong></p>
+
+    <div class="author-box">
+      <img src="grady-owl-1024.png" alt="Grady the Owl" class="author-img">
+      <p class="author">By <strong>Grady the Owl 🦉</strong></p>
+    </div>
 
     <p>Ever wondered if your money is in good shape? With a quick check, you can spot where you stand financially without spending hours digging through spreadsheets.</p>
 
@@ -139,4 +155,5 @@
   </script>
 </body>
 </html>
+
 
