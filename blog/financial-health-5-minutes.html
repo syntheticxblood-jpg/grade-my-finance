@@ -1,20 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>How to Check Your Financial Health in 5 Minutes | Grade My Finance</title>
-  <meta name="description" content="Learn how to measure your financial health in 5 minutes with this simple guide from Grady the Owl.">
-  <link rel="stylesheet" href="../style.css"> <!-- reuse your main CSS -->
+  <meta name="description" content="Check your financial health in just 5 minutes with simple steps from Grady the Owl. Learn how to calculate net worth, savings rate, and get your free money grade.">
+  <link rel="canonical" href="https://grademyfinance.com/blog/financial-health-5-minutes.html">
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --link: #2563eb;
+      --card: #f9fafb;
+    }
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --link: #60a5fa;
+      --card: #1e293b;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      padding: 14px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      background: var(--card);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      margin-right: 16px;
+      text-decoration: none;
+      color: var(--link);
+      font-weight: 500;
+    }
+    .container {
+      max-width: 750px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .author {
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+    h2 {
+      margin-top: 28px;
+      margin-bottom: 10px;
+      font-size: 1.25rem;
+    }
+    .danger {
+      display: inline-flex;
+      align-items: center;
+      background: #fee2e2;
+      color: #b91c1c;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-left: 6px;
+    }
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      font-size: 0.9rem;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid #e5e7eb;
+    }
+    .theme-toggle {
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      border: 1px solid #cbd5e1;
+      background: var(--bg);
+      color: var(--text);
+    }
+  </style>
 </head>
 <body>
-  <header style="padding:16px;text-align:center">
-    <a href="../index.html"><strong>🏠 Back to Calculator</strong></a>
+  <header>
+    <nav>
+      <a href="../index.html">🏠 Calculator</a>
+      <a href="index.html">📝 Blog</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
   </header>
 
-  <main style="max-width:700px;margin:auto;padding:20px;line-height:1.6">
+  <div class="container">
     <h1>How to Check Your Financial Health in 5 Minutes</h1>
-    <p><em>By Grady the Owl 🦉</em></p>
+    <p class="author">By <strong>Grady the Owl 🦉</strong></p>
 
     <p>Ever wondered if your money is in good shape? With a quick check, you can spot where you stand financially without spending hours digging through spreadsheets.</p>
 
@@ -22,12 +110,33 @@
     <p>Add up your assets (cash, savings, investments, home) and subtract your debts (credit cards, student loans, car). That’s your net worth.</p>
 
     <h2>2. Check Your Savings Rate</h2>
-    <p>Are you saving at least 15% of your income? If not, Grady says: 🟥 Danger zone!</p>
+    <p>Are you saving at least 15% of your income? If not, Grady says:
+      <span class="danger">⚠ Danger Zone</span>
+    </p>
 
     <h2>3. Grade Yourself</h2>
     <p>Instead of guessing, plug your numbers into <a href="../index.html">Grade My Finance</a> and get your free report card in seconds.</p>
 
     <p><strong>👉 Ready to see your grade?</strong> <a href="../index.html">Click here to try the calculator</a>.</p>
-  </main>
+  </div>
+
+  <footer>
+    © 2025 Grade My Finance. All rights reserved.
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    toggle.textContent = currentTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+
+    toggle.addEventListener('click', () => {
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggle.textContent = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    });
+  </script>
 </body>
 </html>
+
