@@ -138,11 +138,26 @@ nav.primary a:hover{ color:var(--text) }
   background: radial-gradient(600px 300px at 20% 0%, rgba(201,162,39,.14), transparent 60%);
   pointer-events:none;
 }
+.aurora{ position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none }
+.aurora span{ position:absolute; border-radius:50%; filter:blur(60px); opacity:.55 }
+.aurora .a1{ width:420px; height:420px; top:-140px; left:8%; background:radial-gradient(circle, rgba(201,162,39,.45), transparent 70%); animation:auroraDrift1 16s ease-in-out infinite }
+.aurora .a2{ width:360px; height:360px; top:-60px; right:6%; background:radial-gradient(circle, rgba(52,211,153,.28), transparent 70%); animation:auroraDrift2 19s ease-in-out infinite }
+.aurora .a3{ width:300px; height:300px; bottom:-160px; left:38%; background:radial-gradient(circle, rgba(228,194,78,.30), transparent 70%); animation:auroraDrift3 22s ease-in-out infinite }
+@keyframes auroraDrift1{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(60px,40px) scale(1.15) } }
+@keyframes auroraDrift2{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(-50px,30px) scale(1.1) } }
+@keyframes auroraDrift3{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(30px,-40px) scale(1.2) } }
+@media (prefers-reduced-motion: reduce){ .aurora span{ animation:none } }
 .hero-grid{ position:relative; z-index:1; display:grid; grid-template-columns: 1.05fr .95fr; gap:56px; align-items:center }
 @media (max-width:980px){ .hero-grid{ grid-template-columns:1fr; text-align:center } .hero-cta{ justify-content:center } .hero-proof{ justify-content:center } }
 .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; color:var(--gold-bright); background:var(--gold-soft); border:1px solid rgba(201,162,39,.35); padding:6px 12px; border-radius:999px; margin-bottom:20px }
 .hero h1{ font-size:clamp(34px,4.6vw,54px); line-height:1.06; font-weight:700 }
-.hero h1 em{ font-style:normal; color:var(--gold-bright) }
+.hero h1 em{
+  font-style:normal; background:linear-gradient(90deg, var(--gold-bright), #fff6d8, var(--gold), var(--gold-bright));
+  background-size:300% 100%; -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation:gradeShimmer 6s ease-in-out infinite;
+}
+@keyframes gradeShimmer{ 0%{ background-position:0% 50% } 50%{ background-position:100% 50% } 100%{ background-position:0% 50% } }
+@media (prefers-reduced-motion: reduce){ .hero h1 em{ animation:none; color:var(--gold-bright); background:none } }
 .hero p.lede{ margin:18px 0 26px; font-size:17px; color:var(--muted); max-width:520px }
 @media (max-width:980px){ .hero p.lede{ margin-left:auto;margin-right:auto } }
 .hero-cta{ display:flex; gap:12px; flex-wrap:wrap }
@@ -173,14 +188,17 @@ nav.primary a:hover{ color:var(--text) }
 @media (prefers-reduced-motion: reduce){ .seal::after{ animation:none } }
 
 /* mock report preview */
-.mock{ position:relative }
+.mock{ position:relative; perspective:1000px }
 .mock-card{
   background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow);
   padding:22px; transform:rotate(1.4deg); max-width:400px; margin:0 auto;
   animation:mockFloat 6s ease-in-out infinite;
+  transform-style:preserve-3d; transition:transform .15s ease-out, box-shadow .3s ease;
+  will-change:transform;
 }
 @keyframes mockFloat{ 0%,100%{ transform:rotate(1.4deg) translateY(0) } 50%{ transform:rotate(1.4deg) translateY(-8px) } }
 @media (prefers-reduced-motion: reduce){ .mock-card{ animation:none } }
+.mock-card.tilting{ transition:box-shadow .3s ease }
 .mock-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px }
 .mock-label{ font-size:12px; color:var(--muted); font-family:var(--font-mono) }
 .mock-grade{ font-family:var(--font-mono); font-weight:700; font-size:34px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; padding:2px 14px; border-radius:10px; line-height:1.2 }
@@ -433,6 +451,7 @@ body.is-pro .ad-slot{ display:none !important }
 </header>
 
 <section class="hero" id="top">
+  <div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
   <div class="container hero-grid">
     <div class="hero-copy">
       <span class="eyebrow hero-in" style="--d:0s">FREE · NO SIGN-UP · RUNS IN YOUR BROWSER</span>
@@ -1837,7 +1856,33 @@ $("compareFriend").addEventListener("click", function(){
   targets.forEach(function(t){ io.observe(t); });
 })();
 
-/* ================= LIVE GRADE COUNTER ================= */
+/* ================= 3D TILT ON HERO MOCK CARD ================= */
+(function setupMockTilt(){
+  var mockWrap = document.querySelector('.mock');
+  var card = document.querySelector('.mock-card');
+  if(!mockWrap || !card) return;
+  var canHover = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!canHover || reducedMotion) return;
+
+  var maxTilt = 10; // degrees
+
+  mockWrap.addEventListener('mouseenter', function(){
+    card.style.animationPlayState = 'paused';
+  });
+  mockWrap.addEventListener('mousemove', function(e){
+    var rect = mockWrap.getBoundingClientRect();
+    var relX = (e.clientX - rect.left) / rect.width;
+    var relY = (e.clientY - rect.top) / rect.height;
+    var rotateY = (relX - 0.5) * maxTilt * 2;
+    var rotateX = (0.5 - relY) * maxTilt * 2;
+    card.style.transform = 'rotate(1.4deg) rotateX('+rotateX.toFixed(2)+'deg) rotateY('+rotateY.toFixed(2)+'deg) scale(1.02)';
+  });
+  mockWrap.addEventListener('mouseleave', function(){
+    card.style.transform = 'rotate(1.4deg)';
+    card.style.animationPlayState = 'running';
+  });
+})();
 // Paste the URL of your OWN Apps Script deployment here (see setup steps —
 // this is a separate, dedicated endpoint from your email-capture one).
 // Leave blank and the site quietly falls back to a neutral label instead of
