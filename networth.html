@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Net Worth by Age Calculator | Grade My Finance</title>
+<meta name="description" content="See what net worth is typical for your age, then calculate your own in seconds. Free, no sign-up, and it runs entirely in your browser.">
+<meta name="theme-color" content="#0A0B0E">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://grademyfinance.com/net-worth-by-age.html">
+<meta property="og:title" content="Net Worth by Age Calculator | Grade My Finance">
+<meta property="og:description" content="See what net worth is typical for your age, then calculate your own in seconds. Free, no sign-up.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://grademyfinance.com/net-worth-by-age.html">
+<meta property="og:image" content="https://grademyfinance.com/og-image.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){ dataLayer.push(arguments); }
+gtag('js', new Date());
+gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true });
+</script>
+<style>
+:root{
+  --bg:#0A0B0E; --bg-2:#0E1015; --surface:#14161C; --surface-2:#1B1E26;
+  --line:rgba(255,255,255,.09); --text:#F2F3F5; --muted:#8B92A0; --muted-2:#5D636F;
+  --gold:#C9A227; --gold-soft:rgba(201,162,39,.14); --gold-bright:#E4C24E;
+  --radius:14px; --radius-lg:20px; --shadow:0 20px 50px rgba(0,0,0,.45);
+  --font-display:'Space Grotesk',sans-serif; --font-body:'Inter',sans-serif; --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box}
+body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.6; -webkit-font-smoothing:antialiased; }
+h1,h2,h3{ font-family:var(--font-display); letter-spacing:-.01em; margin:0 0 .5em }
+.mono{ font-family:var(--font-mono) }
+.container{ max-width:760px; margin:0 auto; padding:0 22px }
+a{ color:var(--gold-bright) }
+header.site{ border-bottom:1px solid var(--line); background:rgba(10,11,14,.8); backdrop-filter:blur(10px); position:sticky; top:0; z-index:10 }
+.hdr-row{ max-width:760px; margin:0 auto; padding:16px 22px; display:flex; align-items:center; gap:10px }
+.seal{ width:32px; height:32px; border-radius:8px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; flex:none }
+.seal span{ font-family:var(--font-mono); font-weight:700; font-size:11px; color:#1a1300 }
+.wordmark{ font-weight:700; font-size:15.5px; color:var(--text); text-decoration:none }
+.hdr-row a.wordmark{ display:flex; align-items:center; gap:10px }
+.btn{ margin-left:auto; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:700; padding:9px 16px; border-radius:9px; text-decoration:none; font-size:13.5px; white-space:nowrap }
+main{ padding:48px 0 70px }
+.eyebrow{ font-family:var(--font-mono); font-size:12px; color:var(--gold-bright); letter-spacing:.06em; text-transform:uppercase }
+h1{ font-size:clamp(26px,4vw,38px); margin-top:10px }
+p.lede{ color:var(--muted); font-size:16.5px; margin-top:14px }
+.prose p, .prose li{ font-size:15.5px; color:#D6D9DE }
+.prose h2{ font-size:21px; margin-top:38px }
+.prose h3{ font-size:17px; margin-top:26px }
+table{ width:100%; border-collapse:collapse; margin:18px 0; font-size:14px }
+th,td{ text-align:left; padding:10px 12px; border-bottom:1px solid var(--line) }
+th{ color:var(--muted); font-weight:600; font-size:12.5px; text-transform:uppercase; letter-spacing:.03em }
+td.mono{ font-weight:600 }
+.cta-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px; margin:32px 0; box-shadow:var(--shadow) }
+.cta-card h3{ margin-top:0; font-size:19px }
+.cta-card p{ color:var(--muted); font-size:14.5px }
+.cta-btn{ display:inline-block; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:700; padding:12px 20px; border-radius:10px; text-decoration:none; margin-top:6px }
+.faq-item{ border-top:1px solid var(--line); padding:16px 0 }
+.faq-item summary{ cursor:pointer; font-weight:600; font-size:15px; list-style:none; }
+.faq-item summary::-webkit-details-marker{ display:none }
+.faq-item p{ color:var(--muted); font-size:14.5px; margin-top:8px }
+.related{ margin-top:40px; padding-top:24px; border-top:1px solid var(--line) }
+.related a{ display:block; margin:6px 0; font-size:14.5px }
+footer.site{ border-top:1px solid var(--line); padding:26px 0; text-align:center; color:var(--muted-2); font-size:12.5px }
+footer.site a{ color:var(--muted) }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="hdr-row">
+    <a class="wordmark" href="/index.html"><span class="seal"><span>A+</span></span>Grade My Finance</a>
+    <a class="btn" href="/index.html#grade">Get My Free Grade</a>
+  </div>
+</header>
+
+<main class="container">
+  <span class="eyebrow">Net Worth</span>
+  <h1>Net Worth by Age: What's Typical, and How Do You Compare?</h1>
+  <p class="lede">A quick way to see whether your net worth is ahead, behind, or on track for your age — plus a free calculator that gives you an exact answer for your situation in under a minute.</p>
+
+  <div class="prose">
+    <h2>What counts as net worth?</h2>
+    <p>Net worth is simply everything you own minus everything you owe: <strong>Assets − Liabilities = Net Worth</strong>. Assets include cash savings, retirement accounts, brokerage/stock holdings, HSA balances, your home's value, and vehicles. Liabilities include your mortgage balance, student loans, auto loans, and credit card debt.</p>
+    <p>It's a snapshot, not a grade on its own — someone with a lower net worth but no debt and strong savings habits can be in a healthier position than someone with a higher net worth built entirely on a house they're deeply leveraged into.</p>
+
+    <h2>Net worth benchmarks by age</h2>
+    <p>A common way to think about this is as a multiple of your annual spending — how many years of your current lifestyle your net worth could theoretically cover. Here's the baseline this site's calculator uses internally:</p>
+    <table>
+      <thead><tr><th>Age</th><th>Target net worth (× annual spending)</th></tr></thead>
+      <tbody>
+        <tr><td>25</td><td class="mono">0.2×</td></tr>
+        <tr><td>30</td><td class="mono">0.5×</td></tr>
+        <tr><td>35</td><td class="mono">1.0×</td></tr>
+        <tr><td>40</td><td class="mono">1.5×</td></tr>
+        <tr><td>45</td><td class="mono">2.5×</td></tr>
+        <tr><td>50</td><td class="mono">3.5×</td></tr>
+        <tr><td>55</td><td class="mono">5.0×</td></tr>
+        <tr><td>60</td><td class="mono">6.5×</td></tr>
+      </tbody>
+    </table>
+    <p>For example, if you're 35 and spend $50,000/year, a net worth around $50,000 would put you roughly "on track" by this benchmark. These are rough targets meant for context, not a strict pass/fail line — actual healthy ranges vary a lot by location, career stage, and family situation.</p>
+
+    <h2>Why age-based benchmarks are imperfect (and what to look at instead)</h2>
+    <p>Age-based net worth targets ignore a lot: income trajectory, whether you carry high-interest debt, how much of your net worth is illiquid home equity versus investable assets, and whether you're supporting a family. A 28-year-old with no debt and steady savings habits might be in better shape long-term than a 45-year-old with a high net worth but a shaky savings rate and mounting credit card balances.</p>
+    <p>That's why net worth alone is a limited signal. A fuller picture also looks at your <strong>savings rate</strong>, <strong>emergency fund</strong>, <strong>debt load</strong>, and <strong>income relative to typical earnings</strong> — which is exactly what a full financial grade weighs together.</p>
+  </div>
+
+  <div class="cta-card">
+    <h3>See your actual net worth grade in under a minute</h3>
+    <p>Enter your income, expenses, assets, and debts — get a full letter grade, your age-based net worth standing, and a specific plan to close any gap. No sign-up, nothing sent to a server.</p>
+    <a class="cta-btn" href="/index.html?utm_source=grademyfinance&utm_medium=landing_page&utm_campaign=net_worth_by_age#grade">Calculate My Net Worth Grade →</a>
+  </div>
+
+  <div class="prose">
+    <h2>Frequently asked questions</h2>
+    <details class="faq-item" open>
+      <summary>What is a good net worth for my age?</summary>
+      <p>There's no single "good" number — it depends heavily on your income, cost of living, and life stage. The table above gives a rough multiple-of-spending benchmark, but a strong savings rate and low debt often matter more than hitting a specific dollar figure.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Does net worth include my home?</summary>
+      <p>Yes, typically your home's current value counts as an asset, and any remaining mortgage balance counts as a liability — so home equity (value minus what you owe) is what actually contributes to net worth, not the full home value.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What if my net worth is negative?</summary>
+      <p>A negative net worth (common for people with student loans or a mortgage larger than their other assets) isn't unusual, especially earlier in life. What matters more is the trend — is it improving over time as you pay down debt and build savings?</p>
+    </details>
+  </div>
+
+  <div class="related">
+    <strong style="font-size:13px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em">Related</strong>
+    <a href="/emergency-fund-calculator.html">Emergency Fund Calculator: How Many Months Do You Need?</a>
+    <a href="/am-i-financially-healthy.html">Am I Financially Healthy? A 5-Factor Free Check</a>
+    <a href="/blog/index.html">More from the blog</a>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="container">© 2026 Grade My Finance — educational use only, not financial advice. <a href="/index.html">Home</a></div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is a good net worth for my age?", "acceptedAnswer": { "@type": "Answer", "text": "There's no single good number — it depends on income, cost of living, and life stage. A rough benchmark is net worth as a multiple of annual spending, but savings rate and debt levels often matter more than hitting a specific figure." } },
+    { "@type": "Question", "name": "Does net worth include my home?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — your home's value counts as an asset and your mortgage balance counts as a liability, so home equity is what contributes to net worth, not the full home value." } },
+    { "@type": "Question", "name": "What if my net worth is negative?", "acceptedAnswer": { "@type": "Answer", "text": "A negative net worth is common, especially earlier in life with student loans or a large mortgage. The trend over time matters more than the snapshot." } }
+  ]
+}
+</script>
+</body>
+</html>
