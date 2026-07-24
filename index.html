@@ -420,7 +420,7 @@ body.is-pro .ad-slot{ display:none !important }
         <button class="btn ghost" id="demoBtn" type="button">See a sample report</button>
       </div>
       <div class="hero-proof">
-        <span><b>10,000+</b> report cards graded</span>
+        <span><b id="liveGradeCountHero">10,000+</b> report cards graded</span>
         <span><b>100%</b> private — nothing sent to a server</span>
       </div>
     </div>
@@ -450,7 +450,7 @@ body.is-pro .ad-slot{ display:none !important }
 
 <div class="stats">
   <div class="container stats-row">
-    <div class="stat"><div class="num mono">10,000+</div><div class="cap">report cards graded</div></div>
+    <div class="stat"><div class="num mono" id="liveGradeCountStrip">10,000+</div><div class="cap">report cards graded</div></div>
     <div class="stat"><div class="num mono">&lt; 60s</div><div class="cap">average time to your grade</div></div>
     <div class="stat"><div class="num mono">0</div><div class="cap">numbers stored on our servers</div></div>
   </div>
@@ -1199,6 +1199,7 @@ function openReport(v,cats){
   }
 
   saveHistory({ ts: Date.now(), score: cats.overall.score });
+  logGradeCompletion(cats.overall.letter.split(" ")[0], cats.overall.score);
 
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
@@ -1488,6 +1489,47 @@ $("compareFriend").addEventListener("click", function(){
   }, { threshold: 0.12 });
   targets.forEach(function(t){ io.observe(t); });
 })();
+
+/* ================= LIVE GRADE COUNTER ================= */
+// Paste the URL of your OWN Apps Script deployment here (see setup steps —
+// this is a separate, dedicated endpoint from your email-capture one).
+// Leave blank and the site quietly falls back to a neutral label instead of
+// showing a fake number.
+var GRADE_COUNT_ENDPOINT = "";
+
+function formatCount(n){
+  if(n>=1000) return (Math.floor(n/100)*100).toLocaleString()+"+";
+  return String(n);
+}
+function logGradeCompletion(letter, score){
+  if(!GRADE_COUNT_ENDPOINT) return;
+  try{
+    fetch(GRADE_COUNT_ENDPOINT, {
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"}, // avoids a CORS preflight against Apps Script
+      body: JSON.stringify({ letter: letter, score: score, ts: Date.now() })
+    }).catch(function(){});
+  }catch(e){}
+}
+function loadGradeCount(){
+  var heroEl=$("liveGradeCountHero"), stripEl=$("liveGradeCountStrip");
+  if(!GRADE_COUNT_ENDPOINT){
+    if(heroEl) heroEl.textContent = "Growing daily";
+    if(stripEl) stripEl.textContent = "—";
+    return;
+  }
+  fetch(GRADE_COUNT_ENDPOINT, { method:"GET" })
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      if(data && typeof data.count === "number"){
+        var formatted = formatCount(data.count);
+        if(heroEl) heroEl.textContent = formatted;
+        if(stripEl) stripEl.textContent = formatted;
+      }
+    })
+    .catch(function(){ /* leave the static fallback in the HTML if this fails */ });
+}
+loadGradeCount();
 
 /* init pro-gated UI on load */
 document.body.classList.toggle("is-pro", localStorage.getItem("gmf_pro")==="true");
