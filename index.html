@@ -292,13 +292,6 @@ section.block{ padding:76px 0 }
 .stars{ color:var(--gold-bright); font-size:13px; letter-spacing:1px }
 .t-card p{ color:var(--muted); font-size:14px; margin:0 }
 
-/* Book CTA */
-.book-banner{ display:grid; grid-template-columns:96px 1fr auto; gap:20px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px }
-@media (max-width:700px){ .book-banner{ grid-template-columns:1fr; text-align:center } .book-banner .cover{ margin:0 auto } }
-.cover{ width:96px; height:124px; border-radius:8px; overflow:hidden; border:1px solid var(--line) }
-.cover img{ width:100%; height:100%; object-fit:cover }
-.book-banner ul{ margin:10px 0 0; padding-left:18px; color:var(--muted); font-size:13.5px }
-
 /* FAQ */
 .faq-item{ border-top:1px solid var(--line); padding:18px 0 }
 .faq-item summary{ cursor:pointer; font-weight:600; font-size:15px; list-style:none; display:flex; justify-content:space-between; align-items:center }
@@ -409,7 +402,6 @@ body.is-pro .ad-slot{ display:none !important }
     </nav>
     <div class="hdr-right">
       <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">◐</button>
-      <a class="btn sm" id="bookTop" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/zlwid">The Guide</a>
       <a class="btn sm pro-only-hide" id="upgradeBtnTop" href="#pricing">Upgrade to Pro</a>
       <span class="btn sm pro-only-show" id="proPill" style="display:none">★ Pro</span>
       <button class="btn gold sm" id="gradeBtnTop" type="button">Get My Grade</button>
@@ -663,7 +655,6 @@ body.is-pro .ad-slot{ display:none !important }
       <button class="btn sm" id="compareFriend" type="button">Compare with a friend</button>
       <button class="btn sm" id="shareReport" type="button">Share</button>
       <button class="btn sm" id="printReport" type="button">Print / save as PDF</button>
-      <a class="btn sm" id="bookRC" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/zlwid">The Guide</a>
       <button class="btn gold sm" id="calcAgain" type="button">Recalculate</button>
     </div>
     <canvas id="shareCanvas" width="1080" height="1080" style="display:none"></canvas>
@@ -739,23 +730,6 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="t-card"><div class="t-top"><div class="avatar">AL</div><div class="stars">★★★★★</div></div><p>Made my budget click. The tips felt doable and I loved the grade reveal.</p></div>
       <div class="t-card"><div class="t-top"><div class="avatar">JR</div><div class="stars">★★★★★</div></div><p>Helped me set a target emergency fund and pay down cards faster.</p></div>
       <div class="t-card"><div class="t-top"><div class="avatar">SM</div><div class="stars">★★★★☆</div></div><p>Clear next steps — I printed the report for my fridge.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="block" style="padding-top:0">
-  <div class="container">
-    <div class="book-banner">
-      <div class="cover"><img src="book-cover.png" alt="Grade My Finance — The Guide book cover" loading="lazy"></div>
-      <div>
-        <h3 style="font-size:19px">Turn your grade into a plan — get the book</h3>
-        <ul>
-          <li>Step-by-step actions for savings, debt, and emergency fund</li>
-          <li>Age-based net worth targets with examples</li>
-          <li>Printable checklists + quick wins</li>
-        </ul>
-      </div>
-      <a id="bookMid" class="btn gold" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/zlwid">Buy the book</a>
     </div>
   </div>
 </section>
@@ -850,8 +824,7 @@ body.is-pro .ad-slot{ display:none !important }
   "@type": "Organization",
   "name": "Grade My Finance",
   "url": "https://grademyfinance.com/",
-  "email": "grademyfinance@gmail.com",
-  "sameAs": ["https://grademyfinance.gumroad.com/l/zlwid"]
+  "email": "grademyfinance@gmail.com"
 }
 </script>
 
@@ -864,7 +837,6 @@ body.is-pro .ad-slot{ display:none !important }
         <a href="emergency-fund-calculator.html">Emergency Fund Calculator</a>
         <a href="am-i-financially-healthy.html">Am I Financially Healthy?</a>
         <a href="blog/index.html">Blog</a>
-        <a href="https://grademyfinance.gumroad.com/l/zlwid" target="_blank" rel="noopener">The Guide</a>
         <a href="mailto:grademyfinance@gmail.com">Contact</a>
       </div>
     </div>
@@ -1752,10 +1724,6 @@ var progressFill = $("progressFill");
 function fakeProgress(){ progressFill.style.width="100%"; setTimeout(function(){ progressFill.style.width="0%"; }, 1600); }
 ["gradeBtnTop","gradeBtnHero","gradeBtn","gradeBtnSticky"].forEach(function(id){
   var b=$(id); if(b) b.addEventListener("click", fakeProgress);
-});
-
-['bookTop','bookMid','bookRC'].forEach(function(id){
-  var elx=$(id); if(elx) elx.addEventListener('click', function(){ __track('click_book_cta', {placement: id}); });
 });
 
 var projExp=$("projExp"), projDebt=$("projDebt"), projExpVal=$("projExpVal"), projDebtVal=$("projDebtVal"), projBadge=$("projBadge"), projText=$("projText"), applyBtn=$("applyProjection");
