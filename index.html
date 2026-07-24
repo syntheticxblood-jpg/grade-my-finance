@@ -380,6 +380,7 @@ body.is-pro .ad-slot{ display:none !important }
 .compare-vs .who{ text-align:center }
 .compare-vs .who .g{ font-family:var(--font-mono); font-weight:700; font-size:22px }
 .compare-vs .x{ color:var(--muted-2); font-family:var(--font-mono) }
+@media (max-width:640px){ #nwpMilestones{ grid-template-columns:repeat(2,1fr) !important } }
 
 </style>
 </head>
@@ -584,6 +585,23 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
     </div>
 
+    <div class="card" style="margin-top:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <span class="section-label" style="margin:0">Net worth projection <span class="pro-badge">★ PRO</span></span>
+        <span id="nwpCaption" class="small">—</span>
+      </div>
+      <div class="pro-lock">🔒 See where you're headed — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
+      <div class="pro-gated" id="nwpBox">
+        <label style="display:grid;gap:6px;margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span>Assumed annual return</span><strong class="mono" id="nwpRateVal">7.0%</strong></div>
+          <input id="nwpRate" type="range" min="3" max="10" step="0.5" value="7" aria-label="Assumed annual return">
+        </label>
+        <svg id="nwpChart" width="100%" height="200" viewBox="0 0 640 200" preserveAspectRatio="none" role="img" aria-label="Net worth projection chart"></svg>
+        <div id="nwpMilestones" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px"></div>
+        <div class="small" style="margin-top:8px">Assumes you keep investing your current monthly surplus (income minus expenses) at this return, compounded annually. Doesn't account for inflation, market swings, or life changes — an estimate, not a promise.</div>
+      </div>
+    </div>
+
     <div class="path">
       <h4>Path to a higher grade</h4>
       <ol id="pathList"></ol>
@@ -685,6 +703,7 @@ body.is-pro .ad-slot{ display:none !important }
         <ul>
           <li>Everything in Free</li>
           <li><b>All 3 personalized action steps</b>, not just the top one</li>
+          <li><b>Net worth projection</b> — see where you're headed in 5/10/20/30 years</li>
           <li><b>Full trend history</b> across every check-in</li>
           <li><b>Save & name multiple</b> what-if scenarios</li>
           <li><b>Ad-free</b> — no banner ads, ever</li>
@@ -1115,6 +1134,75 @@ function drawCharts(v){
   ], legendLiabs);
 }
 
+/* ================= NET WORTH PROJECTION (Pro) ================= */
+function projectNetWorth(startNet, monthlyContribution, annualRatePct, years){
+  var r = annualRatePct/100/12; // monthly rate
+  var points = [];
+  var balance = startNet;
+  points.push(balance);
+  for(var y=1;y<=years;y++){
+    for(var m=0;m<12;m++){
+      balance = balance*(1+r) + monthlyContribution;
+    }
+    points.push(balance);
+  }
+  return points; // yearly balances, index 0 = today, index N = year N
+}
+function drawProjectionLine(svgEl, points, milestoneYears){
+  var w=640, h=200, padL=54, padR=14, padT=14, padB=26;
+  var innerW=w-padL-padR, innerH=h-padT-padB;
+  var minV=Math.min.apply(null, points.concat([0])), maxV=Math.max.apply(null, points);
+  if(maxV===minV) maxV=minV+1;
+  function x(i){ return padL + (i/(points.length-1))*innerW; }
+  function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
+  var html='';
+  // zero line if range crosses zero
+  if(minV<0 && maxV>0){
+    var zy=y(0);
+    html+='<line x1="'+padL+'" y1="'+zy+'" x2="'+(w-padR)+'" y2="'+zy+'" stroke="rgba(255,255,255,.18)" stroke-dasharray="3 5"/>';
+  }
+  // gridlines + y labels (min, mid, max)
+  [minV, (minV+maxV)/2, maxV].forEach(function(gv){
+    var gy=y(gv);
+    html+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.06)"/>';
+    html+='<text x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
+  });
+  // area fill
+  var pathD=''; for(var i=0;i<points.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(points[i]); }
+  var areaD = pathD + ' L ' + x(points.length-1) + ' ' + y(minV) + ' L ' + x(0) + ' ' + y(minV) + ' Z';
+  html += '<path d="'+areaD+'" fill="rgba(201,162,39,.12)"></path>';
+  html += '<path d="'+pathD+'" fill="none" stroke="#C9A227" stroke-width="2.5"></path>';
+  // milestone dots + year labels
+  (milestoneYears||[]).forEach(function(yr){
+    if(yr>=points.length) return;
+    var cx=x(yr), cy=y(points[yr]);
+    html += '<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>';
+    html += '<text x="'+cx+'" y="'+(h-6)+'" text-anchor="middle" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>Yr '+yr+'</text>';
+  });
+  setHTML(svgEl, html);
+}
+function renderNetWorthProjection(v){
+  var box=$("nwpBox"), rateEl=$("nwpRate"), rateVal=$("nwpRateVal"), chart=$("nwpChart"), caption=$("nwpCaption"), milestonesEl=$("nwpMilestones");
+  if(!box) return;
+  if(!document.body.classList.contains("is-pro")){ caption.textContent='Locked'; return; }
+  var monthlyContribution = Math.max(0, v.income - v.expenses);
+  function update(){
+    var rate = +rateEl.value;
+    rateVal.textContent = rate.toFixed(1)+"%";
+    var points = projectNetWorth(v.net, monthlyContribution, rate, 30);
+    drawProjectionLine(chart, points, [5,10,20,30]);
+    caption.textContent = "Contributing "+money(monthlyContribution)+"/mo";
+    milestonesEl.innerHTML='';
+    [5,10,20,30].forEach(function(yr){
+      var card=el('div',{className:'card', style:'padding:10px;text-align:center'});
+      card.innerHTML='<div class="small">In '+yr+' yrs</div><div class="mono" style="font-weight:700;font-size:15px;color:var(--gold-bright)">'+money(points[yr])+'</div>';
+      milestonesEl.appendChild(card);
+    });
+  }
+  rateEl.oninput = update;
+  update();
+}
+
 function openReport(v,cats){
   var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), pathList=$("pathList");
   var modal=$("reportModal");
@@ -1162,6 +1250,7 @@ function openReport(v,cats){
   });
 
   drawCharts(v);
+  renderNetWorthProjection(v);
 
   var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; }})();
   pathList.innerHTML="";
