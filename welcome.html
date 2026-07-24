@@ -4,13 +4,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Welcome | Grade My Finance</title>
-  <meta name="theme-color" content="#0f172a">
+  <meta name="theme-color" content="#0A0B0E">
 
-  <!-- ✅ Google AdSense -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@600&display=swap" rel="stylesheet">
+
+  <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3638344211698514"
        crossorigin="anonymous"></script>
 
-  <!-- ✅ Google Analytics (GA4) -->
+  <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -20,59 +24,76 @@
   </script>
 
   <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: radial-gradient(circle at 20% 30%, rgba(34,211,238,.15), transparent 60%),
-                  radial-gradient(circle at 80% 20%, rgba(167,139,250,.15), transparent 60%),
-                  #0f172a;
-      color: #e2e8f0;
-      font-family: Inter, sans-serif;
-      text-align: center;
+    :root{
+      --bg:#0A0B0E; --surface:#14161C; --line:rgba(255,255,255,.09);
+      --text:#F2F3F5; --muted:#8B92A0;
+      --gold:#C9A227; --gold-soft:rgba(201,162,39,.14); --gold-bright:#E4C24E;
+      --shadow:0 20px 50px rgba(0,0,0,.45);
+      --font-display:'Space Grotesk',system-ui,sans-serif;
+      --font-body:'Inter',system-ui,sans-serif;
+      --font-mono:'IBM Plex Mono',monospace;
     }
-    h1 { font-size: 2.2rem; margin: 0 0 12px; font-weight: 900; }
-    p { max-width: 420px; margin: 0 auto 18px; font-size: 18px; line-height: 1.4; }
-    .btn {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(90deg,#16a34a,#34d399);
-      color: #062c1b;
-      font-weight: 900;
-      cursor: pointer;
-      font-size: 16px;
-      transition: transform .2s ease, filter .2s ease;
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; display:flex; flex-direction:column;
+      justify-content:center; align-items:center; padding:24px;
+      background:
+        radial-gradient(700px 360px at 15% 0%, rgba(201,162,39,.14), transparent 60%),
+        var(--bg);
+      color:var(--text); font-family:var(--font-body); text-align:center;
     }
-    .btn:hover { filter: brightness(1.05); }
-    .btn:active { transform: scale(.97); }
-    .btn.secondary { background: #475569; color: #f8fafc; }
-    @keyframes float {0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-    .grady { width: 200px; animation: float 3.5s ease-in-out infinite; margin-bottom: 18px; }
+    .card{
+      width:100%; max-width:460px; background:var(--surface); border:1px solid var(--line);
+      border-radius:20px; padding:40px 32px; box-shadow:var(--shadow);
+    }
+    .seal{
+      width:56px; height:56px; border-radius:14px; margin:0 auto 22px;
+      background:linear-gradient(155deg,var(--gold-bright),var(--gold));
+      display:grid; place-items:center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 8px 20px rgba(201,162,39,.28);
+    }
+    .seal span{ font-family:var(--font-mono); font-weight:700; font-size:18px; color:#1a1300 }
+    h1{ font-family:var(--font-display); font-size:1.7rem; margin:0 0 10px; letter-spacing:-.01em }
+    p.lede{ max-width:360px; margin:0 auto 26px; font-size:15.5px; line-height:1.5; color:var(--muted) }
+    form{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:14px }
+    input[type="email"]{
+      flex:1 1 220px; padding:13px 14px; border-radius:10px; border:1px solid var(--line);
+      background:#0E1015; color:var(--text); font-family:var(--font-mono); font-size:14.5px;
+    }
+    input[type="email"]:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-soft) }
+    .btn{
+      appearance:none; border:1px solid var(--line); font-family:var(--font-body); font-weight:600;
+      font-size:14.5px; padding:12px 20px; border-radius:10px; cursor:pointer; width:100%;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .btn:hover{ filter:brightness(1.08) }
+    .btn:active{ transform:translateY(1px) }
+    .btn.gold{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700 }
+    .btn.ghost{ background:transparent; color:var(--text); margin-top:10px }
+    .btn.text{ background:transparent; color:var(--muted); border-color:transparent; margin-top:2px; font-size:13px; padding:8px }
+    .foot-note{ margin-top:22px; font-size:12px; color:#5D636F }
   </style>
 </head>
 <body>
-  <img src="grady-owl-10324.png" alt="Grady the Owl" class="grady">
-  <h1>Welcome to Grade My Finance</h1>
-  <p>Get your free financial grade in seconds. Enter your email to join the list and start!</p>
+  <div class="card">
+    <div class="seal"><span>A+</span></div>
+    <h1>Welcome to Grade My Finance</h1>
+    <p class="lede">Get your free financial grade in seconds. Enter your email to stay in the loop, or jump straight in.</p>
 
-  <form id="emailForm" 
-        action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec" 
-        method="POST"
-        style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
-    <input type="email" name="email" placeholder="Enter your email" required
-           style="flex:1 1 220px;padding:12px;border-radius:8px;border:1px solid #ccc;font-size:16px;">
-    <button type="submit" class="btn">Join</button>
-  </form>
+    <form id="emailForm"
+          action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
+          method="POST">
+      <input type="email" name="email" placeholder="you@example.com" required>
+      <button type="submit" class="btn gold" style="width:auto">Join</button>
+    </form>
 
-  <button onclick="continueSession()" class="btn" style="margin-top:20px;">Continue without Email</button>
-  <button onclick="skipSession()" class="btn secondary" style="margin-top:10px;">Don’t show again (this session)</button>
+    <button onclick="continueSession()" class="btn ghost" style="border:1px solid var(--line)">Continue without email</button>
+    <button onclick="skipSession()" class="btn text">Don't show again this session</button>
 
-  <!-- ✅ AdSense Banner -->
-  <div style="margin-top:20px;">
+    <div class="foot-note">No spam. Unsubscribe anytime. Calculations run locally in your browser.</div>
+  </div>
+
+  <div style="margin-top:20px;max-width:460px;width:100%;">
     <ins class="adsbygoogle"
          style="display:block"
          data-ad-client="ca-pub-3638344211698514"
@@ -89,13 +110,11 @@
       sessionStorage.setItem('skipWelcomeSession', 'true');
       setTimeout(() => window.location.href = 'index.html', 100);
     }
-
     function skipSession() {
       sessionStorage.setItem('skipWelcomeSession', 'true');
       setTimeout(() => window.location.href = 'index.html', 100);
     }
 
-    // ✅ Email submission with FormData
     const emailForm = document.getElementById('emailForm');
     emailForm.addEventListener('submit', function(e){
       e.preventDefault();
@@ -105,16 +124,10 @@
         alert("Enter a valid email.");
         return;
       }
-
-      localStorage.setItem('submittedEmail','true'); // don’t show again after signup
-
-      fetch(emailForm.action, {
-        method: 'POST',
-        body: new FormData(emailForm)
-      })
+      localStorage.setItem('submittedEmail','true');
+      fetch(emailForm.action, { method: 'POST', body: new FormData(emailForm) })
       .then(res=>{
         if(res.ok){
-          alert("Thanks! Redirecting to main page...");
           window.location.href = 'index.html';
         } else {
           alert("Submission failed. Try again.");
@@ -126,6 +139,8 @@
     });
   </script>
 </body>
+</html>
+
 </html>
 
 
