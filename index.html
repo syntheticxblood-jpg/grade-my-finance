@@ -666,6 +666,7 @@ body.is-pro .ad-slot{ display:none !important }
         <summary style="cursor:pointer;font-weight:700;font-size:14px">Methodology, assumptions & privacy</summary>
         <div style="margin-top:10px;color:var(--muted);font-size:13.5px;display:grid;gap:6px">
           <div>• Weighting: Income Strength (25%), Savings Rate (20%), Non-mortgage Debt (20%), Age-based Net Worth (20%), Emergency Fund (15%).</div>
+          <div>• Within the debt factor, credit card balances count most heavily, auto loans moderately, and student loans lightest — reflecting typical interest rates and repayment flexibility, not a judgment on any specific loan.</div>
           <div>• Targets: savings rate ≈ 25% of take-home; emergency fund ≈ 6 months; age-based net worth uses a baseline of your annual spend (or $30k minimum).</div>
           <div>• Benchmarks and percentiles are rough estimates for context, not strict comparisons.</div>
           <div>• Privacy: calculations run in your browser. We don't store your numbers on our servers. If you save progress, it's saved only to your device (local storage).</div>
@@ -816,7 +817,7 @@ body.is-pro .ad-slot{ display:none !important }
   "mainEntity": [
     { "@type": "Question", "name": "Do you store my financial data?", "acceptedAnswer": { "@type": "Answer", "text": "No. All calculations run locally in your browser. Your numbers are never sent to our servers. If you save progress, it's stored only on your own device." } },
     { "@type": "Question", "name": "Is this financial advice?", "acceptedAnswer": { "@type": "Answer", "text": "No. Grade My Finance is for educational purposes only and is not a substitute for professional financial advice." } },
-    { "@type": "Question", "name": "How is my grade calculated?", "acceptedAnswer": { "@type": "Answer", "text": "We use weighted factors: income strength (25%), savings rate (20%), non-mortgage debt (20%), age-based net worth (20%), and emergency fund (15%). Scores are benchmarks, not guarantees." } }
+    { "@type": "Question", "name": "How is my grade calculated?", "acceptedAnswer": { "@type": "Answer", "text": "We use weighted factors: income strength (25%), savings rate (20%), non-mortgage debt (20%), age-based net worth (20%), and emergency fund (15%). Within the debt factor, credit cards count most heavily, auto loans moderately, and student loans lightest. Scores are benchmarks, not guarantees." } }
   ]
 }
 </script>
@@ -943,7 +944,13 @@ function deriveFrom(raw){
   var efDenom = Math.max(v.expenses, v.income*0.3, 500);
   v.efMonths = v.cash/efDenom;
   v.nonMortDebt=v.student+v.auto+v.cc;
-  v.dtiNonMort = v.baseline > 0 ? v.nonMortDebt / v.baseline : 0;
+  v.dtiNonMort = v.baseline > 0 ? v.nonMortDebt / v.baseline : 0; // raw, for display
+  // Scoring uses a weighted version: credit cards are the debt that actually
+  // hurts financial health most (high interest, revolving); auto loans are
+  // moderate; student loans are weighted lightest since they're typically
+  // fixed-rate and often treated as more "expected" at this life stage.
+  v.debtWeighted = v.cc*1.5 + v.auto*1.0 + v.student*0.5;
+  v.dtiWeighted = v.baseline > 0 ? v.debtWeighted / v.baseline : 0;
   v.nwTargetMultiple = targetNW(v.age || 30);
   v.nwTargetAmount = v.nwTargetMultiple * v.baseline;
   if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) v.nwProgress = 1;
@@ -977,7 +984,7 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
 function categoryScores(v){
   var sSave = map01(v.saveRate, 0, 0.25);
   var sEF   = map01(v.efMonths, 0, 6);
-  var sDebt = clamp(1 - v.dtiNonMort/0.50, 0, 1);
+  var sDebt = clamp(1 - v.dtiWeighted/0.60, 0, 1);
   var sAgeNW= Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
   var sInc  = v.incomeScore;
   var weighted;
@@ -1020,11 +1027,16 @@ function buildPath(v,cats){
     var efNeed = Math.max(0, v.expenses*6 - v.cash);
     push("Build emergency fund to 6 months (save ~"+money(Math.round(efNeed/6))+"/mo for 6 months).", dEF);
   }
-  if(v.dtiNonMort > 0.25){
-    var sDebtNow = clamp(1 - v.dtiNonMort/0.50,0,1), sDebtGoal = clamp(1 - 0.25/0.50,0,1);
+  if(v.dtiWeighted > 0.30){
+    var sDebtNow = clamp(1 - v.dtiWeighted/0.60,0,1), sDebtGoal = clamp(1 - 0.30/0.60,0,1);
     var dDebt=(sDebtGoal - sDebtNow)*0.20*100;
-    var targetDebt = Math.round(v.baseline*0.25), paydown = Math.max(0, v.nonMortDebt - targetDebt);
-    push("Pay down non-mortgage debt below 25% of baseline (reduce about "+money(paydown)+", e.g., "+money(Math.round(v.baseline*0.05))+"/mo).", dDebt);
+    var targetWeighted = Math.round(v.baseline*0.30), weightedPaydown = Math.max(0, v.debtWeighted - targetWeighted);
+    // Recommend paying down whichever counts most against the score first: cards, then auto, then student.
+    var debtTip;
+    if(v.cc > 0) debtTip = "Pay down credit cards first (they weigh heaviest on this score) — reduce about "+money(Math.min(v.cc, Math.round(weightedPaydown/1.5)))+".";
+    else if(v.auto > 0) debtTip = "Pay down your auto loan — reduce about "+money(Math.min(v.auto, weightedPaydown))+".";
+    else debtTip = "Chip away at student loans — reduce about "+money(Math.round(weightedPaydown/0.5))+" (weighted lightly, but still adds up).";
+    push(debtTip, dDebt);
   }
   if(v.nwProgress < 1){
     var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
