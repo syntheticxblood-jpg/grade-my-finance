@@ -149,6 +149,29 @@ nav.primary a:hover{ color:var(--text) }
 .hero-proof{ margin-top:22px; display:flex; gap:18px; align-items:center; flex-wrap:wrap; font-size:13px; color:var(--muted-2) }
 .hero-proof b{ color:var(--text); font-family:var(--font-mono) }
 
+/* ---------- Welcome entrance animations ---------- */
+.hero-in{
+  opacity:0; transform:translateY(22px);
+  animation:heroRise .8s cubic-bezier(.16,1,.3,1) forwards;
+  animation-delay:var(--d,0s);
+}
+@keyframes heroRise{ to{ opacity:1; transform:none } }
+.hero-in-mock{ opacity:0; transform:translateY(18px) scale(.96); animation:heroPop 1s cubic-bezier(.16,1,.3,1) forwards; animation-delay:.3s }
+@keyframes heroPop{ to{ opacity:1; transform:none } }
+@media (prefers-reduced-motion: reduce){
+  .hero-in, .hero-in-mock{ animation:none; opacity:1; transform:none }
+}
+
+/* one-time shimmer sweep across the logo seal on load */
+.seal{ position:relative; overflow:hidden }
+.seal::after{
+  content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+  background:linear-gradient(75deg, transparent, rgba(255,255,255,.55), transparent);
+  animation:sealShimmer 1.6s ease-in-out .9s 1;
+}
+@keyframes sealShimmer{ 0%{ left:-60% } 100%{ left:140% } }
+@media (prefers-reduced-motion: reduce){ .seal::after{ animation:none } }
+
 /* mock report preview */
 .mock{ position:relative }
 .mock-card{
@@ -412,19 +435,19 @@ body.is-pro .ad-slot{ display:none !important }
 <section class="hero" id="top">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <span class="eyebrow">FREE · NO SIGN-UP · RUNS IN YOUR BROWSER</span>
-      <h1>Know your financial <em>grade</em> in under 60 seconds.</h1>
-      <p class="lede">Enter your income, expenses, and assets. Get a clear letter grade, a breakdown of what's helping and hurting, and a specific path to raise it.</p>
-      <div class="hero-cta">
+      <span class="eyebrow hero-in" style="--d:0s">FREE · NO SIGN-UP · RUNS IN YOUR BROWSER</span>
+      <h1 class="hero-in" style="--d:.12s">Know your financial <em>grade</em> in under 60 seconds.</h1>
+      <p class="lede hero-in" style="--d:.24s">Enter your income, expenses, and assets. Get a clear letter grade, a breakdown of what's helping and hurting, and a specific path to raise it.</p>
+      <div class="hero-cta hero-in" style="--d:.36s">
         <button class="btn gold" id="gradeBtnHero" type="button">Get My Report Card</button>
         <button class="btn ghost" id="demoBtn" type="button">See a sample report</button>
       </div>
-      <div class="hero-proof">
+      <div class="hero-proof hero-in" style="--d:.46s">
         <span><b id="liveGradeCountHero">10,000+</b> report cards graded</span>
         <span><b>100%</b> private — nothing sent to a server</span>
       </div>
     </div>
-    <div class="mock" aria-hidden="true">
+    <div class="mock hero-in-mock" aria-hidden="true">
       <div class="mock-float f1">Savings rate <b style="color:var(--good)">↑ 22%</b></div>
       <div class="mock-card">
         <div class="mock-top">
@@ -601,6 +624,28 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
     </div>
 
+    <div class="card" style="margin-top:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <span class="section-label" style="margin:0">Debt payoff planner <span class="pro-badge">★ PRO</span></span>
+        <span id="dppCaption" class="small">—</span>
+      </div>
+      <div class="pro-lock">🔒 See exactly when you'll be debt-free — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
+      <div class="pro-gated" id="dppBox">
+        <div class="segmented" style="margin-bottom:14px">
+          <button id="dppAvalanche" type="button">Avalanche</button>
+          <button id="dppSnowball" type="button">Snowball</button>
+        </div>
+        <label style="display:grid;gap:6px;margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span>Extra monthly payment (beyond minimums)</span><strong class="mono" id="dppExtraVal">$0</strong></div>
+          <input id="dppExtra" type="range" min="0" max="1000" step="25" value="0" aria-label="Extra monthly debt payment">
+        </label>
+        <div id="dppSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px"></div>
+        <div id="dppTimeline" style="display:grid;gap:8px"></div>
+        <div id="dppNoDebt" class="small" style="display:none;padding:16px;text-align:center">No non-mortgage debt entered — nothing to plan here. 🎉</div>
+        <div class="small" style="margin-top:10px">Assumes typical average rates since we don't collect your actual ones — credit cards ~24%, auto loans ~7%, student loans ~6%. A simplified estimate to compare strategies, not an exact payoff date. Mortgage isn't included.</div>
+      </div>
+    </div>
+
     <div class="path">
       <h4>Path to a higher grade</h4>
       <ol id="pathList"></ol>
@@ -703,6 +748,7 @@ body.is-pro .ad-slot{ display:none !important }
           <li>Everything in Free</li>
           <li><b>All 3 personalized action steps</b>, not just the top one</li>
           <li><b>Net worth projection</b> — see where you're headed in 5/10/20/30 years</li>
+          <li><b>Debt payoff planner</b> — avalanche vs. snowball, with your actual numbers</li>
           <li><b>Full trend history</b> across every check-in</li>
           <li><b>Save & name multiple</b> what-if scenarios</li>
           <li><b>Ad-free</b> — no banner ads, ever</li>
@@ -1220,6 +1266,134 @@ function renderNetWorthProjection(v){
   update();
 }
 
+/* ================= DEBT PAYOFF PLANNER (Pro) ================= */
+var DEBT_ASSUMED_RATES = { cc: 24, auto: 7, student: 6 }; // typical average annual rates — we don't collect real ones
+
+function simulateDebtPayoff(debtList, extraMonthly, order){
+  var d = debtList.map(function(x){ return { key:x.key, label:x.label, balance:x.balance, rate:x.rate, paidMonth:null }; });
+  var totalInterest = 0, month = 0, maxMonths = 600;
+  while(d.some(function(x){ return x.balance > 0.5; }) && month < maxMonths){
+    month++;
+    // accrue interest
+    d.forEach(function(x){ if(x.balance>0){ var interest = x.balance*(x.rate/100/12); totalInterest += interest; x.balance += interest; } });
+    // minimum payments (approximate: 2% of balance or $25, whichever is greater)
+    d.forEach(function(x){
+      if(x.balance<=0) return;
+      var minPay = Math.min(Math.max(x.balance*0.02, 25), x.balance);
+      x.balance -= minPay;
+    });
+    // extra payment cascades through the chosen strategy's order
+    var remaining = extraMonthly;
+    for(var i=0; i<order.length && remaining>0.01; i++){
+      var debt = d[order[i]];
+      if(debt.balance<=0) continue;
+      var pay = Math.min(remaining, debt.balance);
+      debt.balance -= pay;
+      remaining -= pay;
+    }
+    d.forEach(function(x){
+      if(x.balance<=0.5 && x.paidMonth===null) x.paidMonth = month;
+    });
+  }
+  return {
+    months: month,
+    totalInterest: totalInterest,
+    hitCap: month>=maxMonths,
+    timeline: d.filter(function(x){ return x.paidMonth!==null; }).sort(function(a,b){ return a.paidMonth-b.paidMonth; })
+  };
+}
+
+function renderDebtPayoffPlanner(v){
+  var box=$("dppBox"), noDebtEl=$("dppNoDebt"), caption=$("dppCaption");
+  var extraEl=$("dppExtra"), extraVal=$("dppExtraVal");
+  var summaryEl=$("dppSummary"), timelineEl=$("dppTimeline");
+  var avalancheBtn=$("dppAvalanche"), snowballBtn=$("dppSnowball");
+  if(!box) return;
+  if(!document.body.classList.contains("is-pro")){ caption.textContent='Locked'; return; }
+
+  var rawDebts = [
+    { key:'cc', label:'Credit cards', balance:v.cc, rate:DEBT_ASSUMED_RATES.cc },
+    { key:'auto', label:'Auto loan', balance:v.auto, rate:DEBT_ASSUMED_RATES.auto },
+    { key:'student', label:'Student loans', balance:v.student, rate:DEBT_ASSUMED_RATES.student }
+  ].filter(function(x){ return x.balance > 0; });
+
+  if(rawDebts.length===0){
+    box.style.display='none';
+    noDebtEl.style.display='block';
+    caption.textContent='Debt-free';
+    return;
+  }
+  box.style.display=''; noDebtEl.style.display='none';
+
+  var strategy = 'avalanche';
+  var monthlySurplus = Math.max(0, v.income - v.expenses);
+  extraEl.max = String(Math.max(200, Math.min(2000, Math.round(monthlySurplus))));
+
+  function getOrder(){
+    var indices = rawDebts.map(function(_,i){ return i; });
+    if(strategy==='avalanche') indices.sort(function(a,b){ return rawDebts[b].rate - rawDebts[a].rate; });
+    else indices.sort(function(a,b){ return rawDebts[a].balance - rawDebts[b].balance; });
+    return indices;
+  }
+
+  function fmtMonths(m){
+    var yrs = Math.floor(m/12), mo = m%12;
+    if(yrs===0) return mo+" mo";
+    if(mo===0) return yrs+" yr";
+    return yrs+"y "+mo+"mo";
+  }
+
+  function update(){
+    var extra = +extraEl.value;
+    extraVal.textContent = money(extra);
+    var order = getOrder();
+
+    var result = simulateDebtPayoff(rawDebts, extra, order);
+    var baseline = simulateDebtPayoff(rawDebts, 0, order); // minimum-payments-only comparison
+    var interestSaved = Math.max(0, baseline.totalInterest - result.totalInterest);
+    var monthsSaved = Math.max(0, baseline.months - result.months);
+
+    caption.textContent = fmtMonths(result.months)+" to debt-free";
+
+    summaryEl.innerHTML='';
+    [
+      { label:'Debt-free in', val: fmtMonths(result.months) },
+      { label:'Total interest paid', val: money(result.totalInterest) },
+      { label:'Interest saved vs. min. only', val: money(interestSaved) }
+    ].forEach(function(s){
+      var card=el('div',{className:'card', style:'padding:10px;text-align:center'});
+      card.innerHTML='<div class="small">'+s.label+'</div><div class="mono" style="font-weight:700;font-size:15px;color:var(--gold-bright)">'+s.val+'</div>';
+      summaryEl.appendChild(card);
+    });
+
+    timelineEl.innerHTML='';
+    result.timeline.forEach(function(t, idx){
+      var row=el('div',{className:'card', style:'padding:10px 12px;display:flex;justify-content:space-between;align-items:center'});
+      row.innerHTML='<div><b style="font-size:13px">'+(idx+1)+'. '+t.label+'</b></div><div class="mono small">paid off in '+fmtMonths(t.paidMonth)+'</div>';
+      timelineEl.appendChild(row);
+    });
+
+    if(result.hitCap){
+      var warn=el('div',{className:'small'}); warn.style.color='var(--bad)';
+      warn.textContent = 'At this payment level, payoff would take 50+ years — try increasing the extra monthly payment.';
+      timelineEl.appendChild(warn);
+    }
+
+    if(monthsSaved>0 && extra>0){
+      var savedNote=el('div',{className:'small', style:'margin-top:4px;color:var(--good)'});
+      savedNote.textContent = '↑ '+fmtMonths(monthsSaved)+' faster than paying minimums only.';
+      timelineEl.appendChild(savedNote);
+    }
+  }
+
+  avalancheBtn.classList.add('active'); snowballBtn.classList.remove('active');
+  avalancheBtn.onclick = function(){ strategy='avalanche'; avalancheBtn.classList.add('active'); snowballBtn.classList.remove('active'); update(); __track('debt_payoff_strategy',{strategy:'avalanche'}); };
+  snowballBtn.onclick = function(){ strategy='snowball'; snowballBtn.classList.add('active'); avalancheBtn.classList.remove('active'); update(); __track('debt_payoff_strategy',{strategy:'snowball'}); };
+  extraEl.oninput = update;
+  extraEl.value = 0;
+  update();
+}
+
 function openReport(v,cats){
   var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), pathList=$("pathList");
   var modal=$("reportModal");
@@ -1280,6 +1454,7 @@ function openReport(v,cats){
 
   drawCharts(v);
   renderNetWorthProjection(v);
+  renderDebtPayoffPlanner(v);
 
   var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; }})();
   pathList.innerHTML="";
@@ -1335,7 +1510,11 @@ function gradeNow(){
   runWithLoader(function(){ var v=values(); var cats=categoryScores(v); openReport(v,cats); });
 }
 $("gradeBtnTop").addEventListener("click", function(){ __track('click_get_report_card',{location:'hdr'}); gradeNow(); });
-$("gradeBtnHero").addEventListener("click", function(){ __track('click_get_report_card',{location:'hero'}); gradeNow(); });
+$("gradeBtnHero").addEventListener("click", function(){
+  __track('click_scroll_to_calculator',{location:'hero'});
+  document.getElementById("grade").scrollIntoView({ behavior:"smooth", block:"start" });
+  setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 500);
+});
 $("gradeBtn").addEventListener("click", gradeNow);
 $("gradeBtnSticky").addEventListener("click", function(){ __track('click_get_report_card',{location:'sticky'}); gradeNow(); });
 
@@ -1509,6 +1688,7 @@ if(saveScenarioBtn){
 /* ================= DOWNLOADABLE GRADE IMAGE ================= */
 $("downloadImage").addEventListener("click", function(){
   if(!window.__lastOverall){ alert("Run a calculation first."); return; }
+  try {
   var canvas=$("shareCanvas"), ctx=canvas.getContext("2d");
   var w=canvas.width, h=canvas.height;
   var letterClean = window.__lastOverall.letter.split(" ")[0];
@@ -1546,11 +1726,60 @@ $("downloadImage").addEventListener("click", function(){
   ctx.fillStyle="#8B92A0"; ctx.font="500 30px Inter, sans-serif";
   ctx.fillText("Get your free grade at grademyfinance.com", w/2, 960);
 
-  var link=document.createElement("a");
-  link.download="my-financial-grade.png";
-  link.href=canvas.toDataURL("image/png");
-  link.click();
-  __track('download_grade_image', {letter: letterClean});
+  canvas.toBlob(function(blob){
+    if(!blob){ alert("Couldn't generate the image. Try again."); return; }
+    var file = new File([blob], "my-financial-grade.png", { type: "image/png" });
+    var isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+    if(navigator.canShare && navigator.canShare({ files: [file] })){
+      // Best path: native share sheet with a real "Save Image" option.
+      navigator.share({
+        files: [file],
+        title: "My Grade My Finance report card",
+        text: "Check out my financial grade from Grade My Finance"
+      }).then(function(){
+        __track('download_grade_image', {letter: letterClean, method: 'share'});
+      }).catch(function(err){
+        if(!(err && err.name === "AbortError")){
+          toastMsg("Couldn't share the image. Try again, or take a screenshot of your report.");
+        }
+      });
+    } else if(isTouchDevice){
+      // Phones whose browser can't share files (older Safari, some Android
+      // browsers, in-app browsers) — a plain download link silently fails here.
+      // Opening the image in a new tab lets people long-press → Save Image,
+      // which works far more reliably across mobile browsers.
+      var dataUrl = canvas.toDataURL("image/png");
+      var win = window.open();
+      if(win){
+        win.document.write(
+          '<html><head><title>Your Grade My Finance report card</title></head>' +
+          '<body style="margin:0;background:#0A0B0E;display:flex;align-items:center;justify-content:center;min-height:100vh">' +
+          '<img src="'+dataUrl+'" style="max-width:100%;height:auto;display:block" alt="Your financial grade card">' +
+          '</body></html>'
+        );
+        toastMsg("Long-press the image and choose \u201cSave Image\u201d to download it.");
+        __track('download_grade_image', {letter: letterClean, method: 'new_tab'});
+      } else {
+        toastMsg("Please allow pop-ups to save your grade card, then try again.");
+      }
+    } else {
+      // Desktop fallback — regular download works reliably here.
+      var url = URL.createObjectURL(blob);
+      var link=document.createElement("a");
+      link.download="my-financial-grade.png";
+      link.href=url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+      __track('download_grade_image', {letter: letterClean, method: 'anchor'});
+    }
+  }, "image/png");
+  } catch(err) {
+    console.error("Download grade card failed:", err);
+    toastMsg("Something went wrong generating your grade card. Please try again.");
+  }
 });
 function roundRect(ctx,x,y,width,height,r){
   ctx.beginPath();
@@ -1597,7 +1826,7 @@ $("compareFriend").addEventListener("click", function(){
 
 /* ================= SCROLL REVEAL (immersive motion) ================= */
 (function setupReveal(){
-  var targets = document.querySelectorAll('.block, .hero-grid');
+  var targets = document.querySelectorAll('.block');
   targets.forEach(function(t){ t.classList.add('reveal'); });
   if(!('IntersectionObserver' in window)){ targets.forEach(function(t){ t.classList.add('in'); }); return; }
   var io = new IntersectionObserver(function(entries){
@@ -1722,7 +1951,7 @@ $("shareReport").addEventListener("click", function(){
 
 var progressFill = $("progressFill");
 function fakeProgress(){ progressFill.style.width="100%"; setTimeout(function(){ progressFill.style.width="0%"; }, 1600); }
-["gradeBtnTop","gradeBtnHero","gradeBtn","gradeBtnSticky"].forEach(function(id){
+["gradeBtnTop","gradeBtn","gradeBtnSticky"].forEach(function(id){
   var b=$(id); if(b) b.addEventListener("click", fakeProgress);
 });
 
