@@ -386,6 +386,15 @@ section.block{ padding:76px 0 }
 .subscribe-inline input[type="email"]{ flex:1 1 240px; padding:11px 13px; border-radius:10px; border:1px solid var(--line); background:var(--bg-2); color:var(--text); font-family:var(--font-mono); font-size:13.5px }
 
 .rc-actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:18px; flex-wrap:wrap }
+.achv-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr)); gap:10px }
+.achv-badge{ display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; padding:10px 4px; border-radius:10px; cursor:default; transition:transform .15s ease }
+.achv-badge:hover{ transform:translateY(-2px) }
+.achv-icon{ width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:21px; position:relative }
+.achv-badge.unlocked .achv-icon{ background:radial-gradient(circle at 34% 28%, var(--gold-bright), var(--gold) 78%); box-shadow:0 3px 8px rgba(0,0,0,.25), inset 0 1px 2px rgba(255,255,255,.4) }
+.achv-badge.locked .achv-icon{ background:var(--surface-2); opacity:.55; filter:grayscale(1) }
+.achv-label{ font-size:10.5px; font-weight:700; color:var(--text); line-height:1.2 }
+.achv-badge.locked .achv-label{ color:var(--muted-2) }
+.achv-new{ position:absolute; top:-4px; right:-4px; background:var(--bad); color:#fff; font-size:8px; font-weight:800; border-radius:99px; padding:2px 5px; line-height:1 }
 .sheet input[type="range"]{ accent-color: var(--gold); }
 .sheet input[type="text"]{ background:var(--bg-2); color:var(--text); border-color:var(--line) }
 
@@ -684,6 +693,11 @@ body.is-pro .ad-slot{ display:none !important }
     </div>
 
     <div id="milestoneBanner" class="compare-banner" style="display:none;margin-bottom:14px"></div>
+
+    <div class="card" style="margin-bottom:14px">
+      <span class="section-label" style="margin:0 0 12px">Achievements</span>
+      <div id="achievementsGrid" class="achv-grid"></div>
+    </div>
 
     <div class="rc-sections">
       <div class="card" style="display:grid;gap:12px">
@@ -1333,11 +1347,9 @@ function computeImprovementStreak(hist, currentScore){
   return streak;
 }
 
-function renderMilestoneBanner(cats, hist){
+function renderMilestoneBanner(cats, checkin, streak){
   var el = $("milestoneBanner");
   if(!el) return;
-  var checkin = recordCheckin(cats.overall.score);
-  var streak = computeImprovementStreak(hist, cats.overall.score);
   var msg = null;
 
   if(checkin.isNewBest && checkin.hadPriorBest){
@@ -1400,6 +1412,64 @@ function sparkleBurst(){
     if(frame < maxFrames){ requestAnimationFrame(tick); }
     else { ctx.clearRect(0,0,canvas.width,canvas.height); canvas.style.display = "none"; }
   })();
+}
+
+/* ================= ACHIEVEMENT BADGES ================= */
+// Ratchet storage: once unlocked, an achievement stays unlocked forever.
+// Checked fresh against the CURRENT calculation each time — this can't
+// retroactively detect past states we didn't store, but it catches every
+// achievement from this point forward accurately.
+var ACHIEVEMENTS_KEY = 'gmf_achievements';
+var TIER_A = ["A+","A","A-"];
+var TIER_B_OR_BETTER = ["A+","A","A-","B+","B","B-"];
+
+var ACHIEVEMENTS = [
+  { id:'first_checkin', icon:'👋', label:'First Check-In', desc:'Completed your first grade.', check:function(ctx){ return ctx.checkin.count >= 1; } },
+  { id:'checkin_3', icon:'🌱', label:'Getting Started', desc:'3 check-ins on this device.', check:function(ctx){ return ctx.checkin.count >= 3; } },
+  { id:'checkin_10', icon:'📈', label:'Dedicated', desc:'10 check-ins on this device.', check:function(ctx){ return ctx.checkin.count >= 10; } },
+  { id:'checkin_25', icon:'⭐', label:'Veteran', desc:'25 check-ins on this device.', check:function(ctx){ return ctx.checkin.count >= 25; } },
+  { id:'checkin_100', icon:'💯', label:'Century Club', desc:'100 check-ins on this device.', check:function(ctx){ return ctx.checkin.count >= 100; } },
+  { id:'first_b', icon:'🎓', label:'First B or Better', desc:'Reached a B- or higher.', check:function(ctx){ return TIER_B_OR_BETTER.indexOf(ctx.letterClean) > -1; } },
+  { id:'first_a', icon:'🏅', label:'First A', desc:'Reached an A- or higher.', check:function(ctx){ return TIER_A.indexOf(ctx.letterClean) > -1; } },
+  { id:'perfect_grade', icon:'👑', label:'Perfect Score', desc:'Reached an A+.', check:function(ctx){ return ctx.letterClean === 'A+'; } },
+  { id:'personal_best', icon:'🏆', label:'Personal Best', desc:'Beat your own previous best score.', check:function(ctx){ return ctx.checkin.isNewBest && ctx.checkin.hadPriorBest; } },
+  { id:'improvement_streak', icon:'🔥', label:'On a Roll', desc:'3+ check-ins in a row with an improving score.', check:function(ctx){ return ctx.streak >= 3; } },
+  { id:'debt_free', icon:'🎉', label:'Debt Free', desc:'No credit card, auto, or student loan debt.', check:function(ctx){ return ctx.v.cc===0 && ctx.v.auto===0 && ctx.v.student===0; } },
+  { id:'fully_funded', icon:'🛟', label:'Fully Funded', desc:'6+ months in your emergency fund.', check:function(ctx){ return ctx.v.efMonths >= 6; } },
+  { id:'super_saver', icon:'💰', label:'Super Saver', desc:'Hit a 25%+ savings rate.', check:function(ctx){ return ctx.v.saveRate >= 0.25; } },
+  { id:'pro_member', icon:'✨', label:'Pro Member', desc:'Upgraded to Pro.', check:function(ctx){ return ctx.isPro; } }
+];
+
+function getUnlockedAchievements(){ try{ return JSON.parse(localStorage.getItem(ACHIEVEMENTS_KEY)||'{}'); }catch(_){ return {}; } }
+
+function renderAchievements(v, cats, checkin, streak){
+  var grid = $("achievementsGrid");
+  if(!grid) return;
+  var letterClean = cats.overall.letter.split(" ")[0];
+  var ctx = { v:v, cats:cats, checkin:checkin, streak:streak, letterClean:letterClean, isPro:document.body.classList.contains("is-pro") };
+
+  var unlocked = getUnlockedAchievements();
+  var newlyUnlocked = [];
+  ACHIEVEMENTS.forEach(function(a){
+    if(!unlocked[a.id] && a.check(ctx)){
+      unlocked[a.id] = { at: Date.now() };
+      newlyUnlocked.push(a.id);
+    }
+  });
+  if(newlyUnlocked.length){ localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(unlocked)); }
+
+  grid.innerHTML = '';
+  ACHIEVEMENTS.forEach(function(a){
+    var isUnlocked = !!unlocked[a.id];
+    var isNew = newlyUnlocked.indexOf(a.id) > -1;
+    var badge = el('div',{ className:'achv-badge '+(isUnlocked?'unlocked':'locked'), title:a.desc });
+    badge.innerHTML =
+      '<div class="achv-icon">'+(isUnlocked?a.icon:'🔒')+(isNew?'<span class="achv-new">NEW</span>':'')+'</div>'+
+      '<div class="achv-label">'+a.label+'</div>';
+    grid.appendChild(badge);
+  });
+
+  if(newlyUnlocked.length){ __track('achievement_unlocked', { ids: newlyUnlocked.join(',') }); }
 }
 
 var compareText=$("compareText"), spark=$("spark"), benchRows=$("benchRows"), weakWrap=$("weakWrap");
@@ -1728,7 +1798,10 @@ function openReport(v,cats){
 
   saveHistory({ ts: Date.now(), score: cats.overall.score });
   logGradeCompletion(cats.overall.letter.split(" ")[0], cats.overall.score);
-  renderMilestoneBanner(cats, hist);
+  var checkinResult = recordCheckin(cats.overall.score);
+  var streakCount = computeImprovementStreak(hist, cats.overall.score);
+  renderMilestoneBanner(cats, checkinResult, streakCount);
+  renderAchievements(v, cats, checkinResult, streakCount);
 
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
