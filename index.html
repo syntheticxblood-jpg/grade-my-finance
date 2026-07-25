@@ -343,8 +343,19 @@ section.block{ padding:76px 0 }
 .rc-grade.good{ background:radial-gradient(circle at 34% 28%, #5da177, #1f4a34 78%); color:#f3ede0 }
 .rc-grade.mid{ background:radial-gradient(circle at 34% 28%, #c89a3d, #7a5a1a 78%); color:#2b1d0e }
 .rc-grade.bad{ background:radial-gradient(circle at 34% 28%, #b04b4b, #5c1f1f 78%); color:#f3ede0 }
-.rc-grade.pop{ animation:gradePop .5s cubic-bezier(.2,1,.2,1) }
-@keyframes gradePop{ 0%{ transform:rotate(-5deg) scale(.85) } 60%{ transform:rotate(-5deg) scale(1.1) } 100%{ transform:rotate(-5deg) scale(1) } }
+.rc-grade.pop{ animation:stampPress .55s cubic-bezier(.3,1.4,.4,1) }
+@keyframes stampPress{
+  0%{ transform:rotate(-5deg) scale(2.2) translateY(-60px); opacity:0 }
+  55%{ transform:rotate(-5deg) scale(.92) translateY(0); opacity:1 }
+  75%{ transform:rotate(-5deg) scale(1.06) }
+  100%{ transform:rotate(-5deg) scale(1) }
+}
+.ink-ripple{
+  position:absolute; border-radius:50%; border:2px solid var(--gold-bright); pointer-events:none;
+  animation:inkRipple .6s ease-out forwards; z-index:3;
+}
+@keyframes inkRipple{ 0%{ opacity:.7; transform:scale(.3) } 100%{ opacity:0; transform:scale(2.6) } }
+@media (prefers-reduced-motion: reduce){ .rc-grade.pop{ animation:none } .ink-ripple{ display:none } }
 
 .rc-sections{ display:grid; grid-template-columns:1.2fr 1fr; gap:14px; margin-top:14px }
 @media (max-width:900px){ .rc-sections{ grid-template-columns:1fr } }
@@ -568,6 +579,36 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 </section>
 
+<section class="block" id="demo-slider">
+  <div class="container" style="max-width:760px">
+    <div class="block-head center">
+      <span class="kicker">See the difference</span>
+      <h2>Small changes compound into a very different grade</h2>
+      <p>Drag the slider — this is an illustrative example to show how the factors interact, not your actual data.</p>
+    </div>
+    <div class="calc-wrap" style="max-width:520px;margin:0 auto">
+      <input id="demoSlider" type="range" min="0" max="100" value="20" style="width:100%" aria-label="Illustrative progress slider">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px">
+        <span>Struggling</span><span>Thriving</span>
+      </div>
+      <div class="mock-card" style="margin:22px auto 0;max-width:420px;animation:none;transform:none">
+        <div class="mock-top">
+          <div>
+            <div class="mock-label">ILLUSTRATIVE EXAMPLE</div>
+            <div id="demoScoreText" style="font-weight:700;font-size:15px;margin-top:4px">Overall score 40.0</div>
+          </div>
+          <div id="demoGrade" class="mock-grade">F</div>
+        </div>
+        <div class="mock-row"><span>Savings rate</span><b id="demoSaveRate">2%</b></div>
+        <div class="mock-bar"><div id="demoSaveBar" style="width:8%"></div></div>
+        <div class="mock-row"><span>Emergency fund</span><b id="demoEF">0.3 mo</b></div>
+        <div class="mock-bar"><div id="demoEFBar" style="width:5%"></div></div>
+        <div class="mock-row"><span>Net worth</span><b id="demoNW">-$8,000</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="block" id="features" style="background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
   <div class="container">
     <div class="block-head center">
@@ -781,9 +822,11 @@ body.is-pro .ad-slot{ display:none !important }
       <button class="btn sm" id="compareFriend" type="button">Compare with a friend</button>
       <button class="btn sm" id="shareReport" type="button">Share</button>
       <button class="btn sm" id="printReport" type="button">Print / save as PDF</button>
+      <button class="btn gold sm pro-only-show" id="downloadCertBtn" type="button">🏅 Download Certificate</button>
       <button class="btn gold sm" id="calcAgain" type="button">Recalculate</button>
     </div>
     <canvas id="shareCanvas" width="1080" height="1080" style="display:none"></canvas>
+    <canvas id="sparkleCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:150;display:none"></canvas>
 
     <div class="card" style="margin-top:16px">
       <details>
@@ -830,6 +873,7 @@ body.is-pro .ad-slot{ display:none !important }
           <li><b>All 3 personalized action steps</b>, not just the top one</li>
           <li><b>Net worth projection</b> — see where you're headed in 5/10/20/30 years</li>
           <li><b>Debt payoff planner</b> — avalanche vs. snowball, with your actual numbers</li>
+          <li><b>Downloadable Certificate PDF</b> — a formal, printable version of your grade</li>
           <li><b>Full trend history</b> across every check-in</li>
           <li><b>Save & name multiple</b> what-if scenarios</li>
           <li><b>Ad-free</b> — no banner ads, ever</li>
@@ -987,6 +1031,20 @@ function money(n){
 function $(id){ return document.getElementById(id); }
 function qs(sel){ return document.querySelector(sel); }
 function el(tag, attrs){ var n=document.createElement(tag); if(attrs) Object.assign(n, attrs); return n; }
+function spawnInkRipple(targetEl){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  setTimeout(function(){
+    var parent = targetEl.parentElement;
+    if(!parent) return;
+    var ring = el('div',{className:'ink-ripple'});
+    var size = targetEl.offsetWidth;
+    ring.style.width = size+'px'; ring.style.height = size+'px';
+    ring.style.left = targetEl.offsetLeft+'px'; ring.style.top = targetEl.offsetTop+'px';
+    parent.style.position = parent.style.position || 'relative';
+    parent.appendChild(ring);
+    setTimeout(function(){ ring.remove(); }, 650);
+  }, 290); // timed to the stamp's impact point in the animation
+}
 
 var NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
 function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
@@ -1295,9 +1353,53 @@ function renderMilestoneBanner(cats, hist){
   if(msg){
     el.style.display = 'flex';
     el.innerHTML = '<div>'+msg+'</div>';
+    if(checkin.isNewBest && checkin.hadPriorBest){ sparkleBurst(); }
   } else {
     el.style.display = 'none';
   }
+}
+
+/* ================= SCOPED SPARKLE BURST (personal bests only) ================= */
+function sparkleBurst(){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var canvas = $("sparkleCanvas");
+  if(!canvas) return;
+  var ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  canvas.style.display = "block";
+
+  var particles = [];
+  var n = 60;
+  for(var i=0;i<n;i++){
+    particles.push({
+      x: canvas.width/2 + (Math.random()-0.5)*260,
+      y: canvas.height*0.55 + (Math.random()-0.5)*140,
+      vx: (Math.random()-0.5)*1.4,
+      vy: -0.6 - Math.random()*1.8,
+      r: 1.5 + Math.random()*2.5,
+      life: 0,
+      maxLife: 60 + Math.random()*40,
+      hue: Math.random() > 0.5 ? '228,194,78' : '201,162,39'
+    });
+  }
+
+  var frame = 0, maxFrames = 110;
+  (function tick(){
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(function(p){
+      p.x += p.vx; p.y += p.vy; p.life++;
+      var t = p.life / p.maxLife;
+      var alpha = Math.max(0, 1 - t);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * (1 - t*0.4), 0, Math.PI*2);
+      ctx.fillStyle = 'rgba('+p.hue+','+alpha.toFixed(2)+')';
+      ctx.shadowBlur = 8; ctx.shadowColor = 'rgba('+p.hue+',0.8)';
+      ctx.fill();
+    });
+    if(frame < maxFrames){ requestAnimationFrame(tick); }
+    else { ctx.clearRect(0,0,canvas.width,canvas.height); canvas.style.display = "none"; }
+  })();
 }
 
 var compareText=$("compareText"), spark=$("spark"), benchRows=$("benchRows"), weakWrap=$("weakWrap");
@@ -1530,6 +1632,7 @@ function openReport(v,cats){
   var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), pathList=$("pathList");
   var modal=$("reportModal");
   window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score };
+  window.__lastFullReport = { v: v, cats: cats };
 
   (function animateScoreReveal(){
     var target = cats.overall.score, startTime = null, duration = 900;
@@ -1629,6 +1732,7 @@ function openReport(v,cats){
 
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
+  spawnInkRipple(rcGrade);
   __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
 
   initProjections(v, cats);
@@ -1636,6 +1740,71 @@ function openReport(v,cats){
 
 $("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
 $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
+
+var downloadCertBtn = $("downloadCertBtn");
+if(downloadCertBtn){
+  downloadCertBtn.addEventListener("click", function(){
+    if(!isProUser()){ toastMsg("The printable certificate is a Pro feature."); return; }
+    if(!window.__lastFullReport){ alert("Run a calculation first."); return; }
+    var v = window.__lastFullReport.v, cats = window.__lastFullReport.cats;
+    var letterClean = cats.overall.letter.split(" ")[0];
+    var isGood = ["A+","A","A-","B+"].indexOf(letterClean)>-1;
+    var isMid = ["B","B-","C+","C","C-"].indexOf(letterClean)>-1;
+    var sealColor = isGood ? "#2f6b47" : (isMid ? "#8a6a1f" : "#8a2f2f");
+    var topAction = "";
+    try{
+      var actions = buildPath(v, cats);
+      if(actions && actions[0]) topAction = actions[0].txt;
+    }catch(e){}
+    var dateStr = new Date().toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' });
+
+    var win = window.open("", "_blank");
+    if(!win){ toastMsg("Please allow pop-ups to download your certificate."); return; }
+    win.document.write(
+      '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Grade My Finance Certificate</title>'+
+      '<link rel="preconnect" href="https://fonts.googleapis.com">'+
+      '<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">'+
+      '<style>'+
+      'body{font-family:Georgia,serif;margin:0;padding:60px;background:#fff;color:#2b1d0e;}'+
+      '.frame{border:3px double '+sealColor+';padding:50px;text-align:center;max-width:680px;margin:0 auto;position:relative}'+
+      '.frame::before,.frame::after{content:"❦";position:absolute;top:14px;font-size:20px;color:'+sealColor+'}'+
+      '.frame::before{left:18px}.frame::after{right:18px}'+
+      'h1{font-family:"Playfair Display",serif;font-size:30px;margin:0 0 6px;color:#2b1d0e}'+
+      '.sub{color:#6b5a3e;font-size:14px;margin-bottom:28px}'+
+      '.seal{width:120px;height:120px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;'+
+        'background:radial-gradient(circle at 34% 28%,'+sealColor+',#2b1d0e 120%);color:#fff;font-family:"Playfair Display",serif;'+
+        'font-weight:800;font-size:42px;box-shadow:0 6px 16px rgba(0,0,0,.3)}'+
+      '.score{font-family:"IBM Plex Mono",monospace;font-size:16px;color:#6b5a3e;margin-bottom:24px}'+
+      '.stats{display:flex;justify-content:center;gap:36px;margin:24px 0;font-family:"IBM Plex Mono",monospace;font-size:13px;color:#6b5a3e}'+
+      '.stats b{display:block;color:#2b1d0e;font-size:15px;margin-bottom:3px}'+
+      '.action{margin:26px auto 0;max-width:480px;font-size:14px;color:#2b1d0e;font-style:italic;border-top:1px dashed '+sealColor+';padding-top:18px}'+
+      '.sig{font-family:"Playfair Display",serif;font-style:italic;color:'+sealColor+';margin-top:30px;font-size:16px}'+
+      '.date{color:#8a7658;font-size:12px;margin-top:6px}'+
+      '.disclaimer{color:#a8987a;font-size:10px;margin-top:30px;max-width:520px;margin-left:auto;margin-right:auto}'+
+      '@media print{ body{padding:20px} }'+
+      '</style></head><body>'+
+      '<div class="frame">'+
+        '<div class="seal">'+letterClean+'</div>'+
+        '<h1>Certificate of Financial Standing</h1>'+
+        '<div class="sub">Awarded by Grade My Finance</div>'+
+        '<div class="score">Overall Score: '+cats.overall.score.toFixed(1)+' / 100</div>'+
+        '<div class="stats">'+
+          '<div><b>'+money(v.net)+'</b>Net Worth</div>'+
+          '<div><b>'+Math.round(v.saveRate*100)+'%</b>Savings Rate</div>'+
+          '<div><b>'+v.efMonths.toFixed(1)+' mo</b>Emergency Fund</div>'+
+        '</div>'+
+        (topAction ? '<div class="action">Top opportunity: '+topAction+'</div>' : '')+
+        '<div class="sig">— Grade My Finance —</div>'+
+        '<div class="date">'+dateStr+'</div>'+
+      '</div>'+
+      '<div class="disclaimer">Educational estimate only, not financial advice. Calculations run entirely in your browser. grademyfinance.com</div>'+
+      '</body></html>'
+    );
+    win.document.close();
+    __track('download_certificate_pdf', {letter: letterClean});
+    setTimeout(function(){ win.focus(); win.print(); }, 400);
+  });
+}
 $("calcAgain").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
 
 function gradeNow(){
@@ -1968,6 +2137,46 @@ $("compareFriend").addEventListener("click", function(){
     });
   }, { threshold: 0.12 });
   targets.forEach(function(t){ io.observe(t); });
+})();
+
+/* ================= BEFORE/AFTER DEMO SLIDER (homepage) ================= */
+(function setupDemoSlider(){
+  var slider=$("demoSlider");
+  if(!slider) return;
+  var scoreEl=$("demoScoreText"), gradeEl=$("demoGrade"), saveEl=$("demoSaveRate"), saveBar=$("demoSaveBar");
+  var efEl=$("demoEF"), efBar=$("demoEFBar"), nwEl=$("demoNW");
+
+  var ANCHORS = {
+    score:  [35, 98],
+    save:   [2, 32],
+    ef:     [0.3, 9],
+    nw:     [-8000, 420000]
+  };
+  function lerp(a,b,t){ return a + (b-a)*t; }
+
+  function update(){
+    var t = (+slider.value)/100;
+    var score = lerp(ANCHORS.score[0], ANCHORS.score[1], t);
+    var save = lerp(ANCHORS.save[0], ANCHORS.save[1], t);
+    var ef = lerp(ANCHORS.ef[0], ANCHORS.ef[1], t);
+    var nw = lerp(ANCHORS.nw[0], ANCHORS.nw[1], t);
+    var letter = overallLetter(Math.round(score));
+
+    scoreEl.textContent = "Overall score "+score.toFixed(1);
+    gradeEl.textContent = letter;
+    gradeEl.style.background = (["A+","A","A-","B+"].indexOf(letter)>-1)
+      ? 'linear-gradient(155deg,var(--good),var(--good-2))'
+      : (["B","B-","C+","C","C-"].indexOf(letter)>-1 ? 'linear-gradient(155deg,var(--gold-bright),var(--gold))' : 'var(--bad)');
+    gradeEl.style.color = (["A+","A","A-","B+","B","B-","C+","C","C-"].indexOf(letter)>-1) ? '#0d1608' : '#fff';
+
+    saveEl.textContent = Math.round(save)+"%";
+    saveBar.style.width = Math.min(100, (save/32)*100)+"%";
+    efEl.textContent = ef.toFixed(1)+" mo";
+    efBar.style.width = Math.min(100, (ef/9)*100)+"%";
+    nwEl.textContent = money(nw);
+  }
+  slider.addEventListener('input', update);
+  update();
 })();
 
 /* ================= 3D TILT ON HERO MOCK CARD ================= */
