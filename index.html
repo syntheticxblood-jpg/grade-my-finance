@@ -514,6 +514,7 @@ body.is-pro .ad-slot{ display:none !important }
       <a href="#guides">Free tools</a>
       <a href="#pricing">Pricing</a>
       <a href="#grade">Calculator</a>
+      <a href="dashboard.html">Dashboard</a>
       <a href="blog/index.html">Blog</a>
     </nav>
     <div class="hdr-right">
@@ -1796,7 +1797,7 @@ function openReport(v,cats){
     compareText.textContent = 'First run saved on this device.';
   }
 
-  saveHistory({ ts: Date.now(), score: cats.overall.score });
+  saveHistory({ ts: Date.now(), score: cats.overall.score, net: v.net });
   logGradeCompletion(cats.overall.letter.split(" ")[0], cats.overall.score);
   var checkinResult = recordCheckin(cats.overall.score);
   var streakCount = computeImprovementStreak(hist, cats.overall.score);
