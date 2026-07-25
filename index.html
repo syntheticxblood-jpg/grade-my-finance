@@ -515,9 +515,13 @@ body.is-pro .ad-slot{ display:none !important }
       <a href="#pricing">Pricing</a>
       <a href="#grade">Calculator</a>
       <a href="dashboard.html">Dashboard</a>
+      <a href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">Community</a>
       <a href="blog/index.html">Blog</a>
     </nav>
     <div class="hdr-right">
+      <a class="icon-btn" href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener" aria-label="Join our Discord" title="Join our Discord" style="color:#5865F2">
+        <svg width="20" height="20" viewBox="0 0 127.14 96.36" fill="currentColor" aria-hidden="true"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+      </a>
       <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">◐</button>
       <a class="btn sm pro-only-hide" id="upgradeBtnTop" href="#pricing">Upgrade to Pro</a>
       <span class="btn sm pro-only-show" id="proPill" style="display:none">★ Pro</span>
@@ -653,11 +657,13 @@ body.is-pro .ad-slot{ display:none !important }
     <div class="field"><label for="brokerage">Brokerage / stocks</label><input id="brokerage" type="number" value="0" min="0" inputmode="decimal"></div>
     <div class="field"><label for="hsa">HSA</label><input id="hsa" type="number" value="0" min="0" inputmode="decimal"></div>
     <div class="field"><label for="cash">Cash savings</label><input id="cash" type="number" value="0" min="0" inputmode="decimal"></div>
+    <div class="field"><label for="crypto">Crypto & other investments</label><input id="crypto" type="number" value="0" min="0" inputmode="decimal"></div>
     <div class="field"><label for="car">Car value</label><input id="car" type="number" value="0" min="0" inputmode="decimal"></div>
     <div class="field" id="mortCard"><label for="mortgage">Mortgage balance</label><input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="liabHint">Total liabilities: —</div></div>
     <div class="field"><label for="student">Student loans</label><input id="student" type="number" value="0" min="0" inputmode="decimal"></div>
     <div class="field"><label for="auto">Auto loans</label><input id="auto" type="number" value="0" min="0" inputmode="decimal"></div>
     <div class="field"><label for="cc">Credit cards (balance)</label><input id="cc" type="number" value="0" min="0" inputmode="decimal"></div>
+    <div class="field"><label for="otherDebt">Personal loans / other debt</label><input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"></div>
   </div>
   <div class="progress"><div id="progressFill"></div></div>
   <div class="calc-actions">
@@ -832,6 +838,16 @@ body.is-pro .ad-slot{ display:none !important }
       </form>
     </div>
 
+    <div class="subscribe-inline" style="margin-top:12px">
+      <div class="sub-row">
+        <div>
+          <h4>💬 Got a grade worth sharing?</h4>
+          <p>Post it in our Discord — swap tips, compare progress, no judgment.</p>
+        </div>
+        <a class="btn gold sm" href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener" style="margin-left:auto">Join Discord</a>
+      </div>
+    </div>
+
     <div class="rc-actions">
       <button class="btn sm" id="downloadImage" type="button">📥 Download grade card</button>
       <button class="btn sm" id="compareFriend" type="button">Compare with a friend</button>
@@ -848,7 +864,8 @@ body.is-pro .ad-slot{ display:none !important }
         <summary style="cursor:pointer;font-weight:700;font-size:14px">Methodology, assumptions & privacy</summary>
         <div style="margin-top:10px;color:var(--muted);font-size:13.5px;display:grid;gap:6px">
           <div>• Weighting: Income Strength (25%), Savings Rate (20%), Non-mortgage Debt (20%), Age-based Net Worth (20%), Emergency Fund (15%).</div>
-          <div>• Within the debt factor, credit card balances count most heavily, auto loans moderately, and student loans lightest — reflecting typical interest rates and repayment flexibility, not a judgment on any specific loan.</div>
+          <div>• Within the debt factor, credit card balances count most heavily, personal loans/other debt moderately-high, auto loans moderately, and student loans lightest — reflecting typical interest rates and repayment flexibility, not a judgment on any specific loan.</div>
+          <div>• Crypto and other investments count as assets alongside retirement, brokerage, and cash.</div>
           <div>• Targets: savings rate ≈ 25% of take-home; emergency fund ≈ 6 months; age-based net worth uses a baseline of your annual spend (or $30k minimum).</div>
           <div>• Benchmarks and percentiles are rough estimates for context, not strict comparisons.</div>
           <div>• Privacy: calculations run in your browser. We don't store your numbers on our servers. If you save progress, it's saved only to your device (local storage).</div>
@@ -916,6 +933,23 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="t-card"><div class="t-top"><div class="avatar">AL</div><div class="stars">★★★★★</div></div><p>Made my budget click. The tips felt doable and I loved the grade reveal.</p></div>
       <div class="t-card"><div class="t-top"><div class="avatar">JR</div><div class="stars">★★★★★</div></div><p>Helped me set a target emergency fund and pay down cards faster.</p></div>
       <div class="t-card"><div class="t-top"><div class="avatar">SM</div><div class="stars">★★★★☆</div></div><p>Clear next steps — I printed the report for my fridge.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" style="padding-top:0">
+  <div class="container" style="max-width:820px">
+    <div class="card" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between;padding:26px">
+      <div style="display:flex;align-items:center;gap:16px">
+        <div style="width:48px;height:48px;border-radius:12px;background:#5865F2;display:grid;place-items:center;flex:none">
+          <svg width="26" height="26" viewBox="0 0 127.14 96.36" fill="#fff" aria-hidden="true"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+        </div>
+        <div>
+          <h3 style="font-size:19px">Join the community</h3>
+          <p style="margin:6px 0 0;color:var(--muted);font-size:14.5px">Share your grade, swap tips, and talk through what you're working on with others doing the same thing.</p>
+        </div>
+      </div>
+      <a class="btn gold" href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">Join on Discord</a>
     </div>
   </div>
 </section>
@@ -1023,6 +1057,7 @@ body.is-pro .ad-slot{ display:none !important }
         <a href="emergency-fund-calculator.html">Emergency Fund Calculator</a>
         <a href="am-i-financially-healthy.html">Am I Financially Healthy?</a>
         <a href="blog/index.html">Blog</a>
+        <a href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">Discord Community</a>
         <a href="mailto:grademyfinance@gmail.com">Contact</a>
       </div>
     </div>
@@ -1092,7 +1127,7 @@ $("themeToggle").addEventListener("click", function(){
   localStorage.setItem("gmf_theme", next||"dark"); __track('toggle_theme', {theme: next||'dark'});
 });
 
-var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","mortgage","student","auto","cc"];
+var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","crypto","mortgage","student","auto","cc","otherDebt"];
 var els={}; ids.forEach(function(id){ els[id]=$(id); });
 function val(id){ var e=els[id]; return e && e.value!=="" ? Number(e.value) : 0; }
 ids.forEach(function(id){
@@ -1110,8 +1145,8 @@ try{
 function deriveFrom(raw){
   var v={};
   ids.forEach(function(id){ v[id] = raw[id] || 0; });
-  v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash;
-  v.liabs=v.mortgage+v.student+v.auto+v.cc;
+  v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash+v.crypto;
+  v.liabs=v.mortgage+v.student+v.auto+v.cc+v.otherDebt;
   v.net=v.assets-v.liabs;
   v.annualIncome=v.income*12;
   v.annualSpend=v.expenses*12;
@@ -1122,13 +1157,14 @@ function deriveFrom(raw){
   // so a high earner with real savings doesn't get zeroed out on this factor.
   var efDenom = Math.max(v.expenses, v.income*0.3, 500);
   v.efMonths = v.cash/efDenom;
-  v.nonMortDebt=v.student+v.auto+v.cc;
+  v.nonMortDebt=v.student+v.auto+v.cc+v.otherDebt;
   v.dtiNonMort = v.baseline > 0 ? v.nonMortDebt / v.baseline : 0; // raw, for display
   // Scoring uses a weighted version: credit cards are the debt that actually
-  // hurts financial health most (high interest, revolving); auto loans are
-  // moderate; student loans are weighted lightest since they're typically
-  // fixed-rate and often treated as more "expected" at this life stage.
-  v.debtWeighted = v.cc*1.5 + v.auto*1.0 + v.student*0.5;
+  // hurts financial health most (high interest, revolving); personal loans/
+  // other debt are moderate-high; auto loans are moderate; student loans are
+  // weighted lightest since they're typically fixed-rate and often treated
+  // as more "expected" at this life stage.
+  v.debtWeighted = v.cc*1.5 + v.otherDebt*1.2 + v.auto*1.0 + v.student*0.5;
   v.dtiWeighted = v.baseline > 0 ? v.debtWeighted / v.baseline : 0;
   v.nwTargetMultiple = targetNW(v.age || 30);
   v.nwTargetAmount = v.nwTargetMultiple * v.baseline;
@@ -1213,6 +1249,7 @@ function buildPath(v,cats){
     // Recommend paying down whichever counts most against the score first: cards, then auto, then student.
     var debtTip;
     if(v.cc > 0) debtTip = "Pay down credit cards first (they weigh heaviest on this score) — reduce about "+money(Math.min(v.cc, Math.round(weightedPaydown/1.5)))+".";
+    else if(v.otherDebt > 0) debtTip = "Pay down personal loans / other debt — reduce about "+money(Math.min(v.otherDebt, Math.round(weightedPaydown/1.2)))+".";
     else if(v.auto > 0) debtTip = "Pay down your auto loan — reduce about "+money(Math.min(v.auto, weightedPaydown))+".";
     else debtTip = "Chip away at student loans — reduce about "+money(Math.round(weightedPaydown/0.5))+" (weighted lightly, but still adds up).";
     push(debtTip, dDebt);
@@ -1435,7 +1472,7 @@ var ACHIEVEMENTS = [
   { id:'perfect_grade', icon:'👑', label:'Perfect Score', desc:'Reached an A+.', check:function(ctx){ return ctx.letterClean === 'A+'; } },
   { id:'personal_best', icon:'🏆', label:'Personal Best', desc:'Beat your own previous best score.', check:function(ctx){ return ctx.checkin.isNewBest && ctx.checkin.hadPriorBest; } },
   { id:'improvement_streak', icon:'🔥', label:'On a Roll', desc:'3+ check-ins in a row with an improving score.', check:function(ctx){ return ctx.streak >= 3; } },
-  { id:'debt_free', icon:'🎉', label:'Debt Free', desc:'No credit card, auto, or student loan debt.', check:function(ctx){ return ctx.v.cc===0 && ctx.v.auto===0 && ctx.v.student===0; } },
+  { id:'debt_free', icon:'🎉', label:'Debt Free', desc:'No credit card, auto, student loan, or other debt.', check:function(ctx){ return ctx.v.cc===0 && ctx.v.auto===0 && ctx.v.student===0 && ctx.v.otherDebt===0; } },
   { id:'fully_funded', icon:'🛟', label:'Fully Funded', desc:'6+ months in your emergency fund.', check:function(ctx){ return ctx.v.efMonths >= 6; } },
   { id:'super_saver', icon:'💰', label:'Super Saver', desc:'Hit a 25%+ savings rate.', check:function(ctx){ return ctx.v.saveRate >= 0.25; } },
   { id:'pro_member', icon:'✨', label:'Pro Member', desc:'Upgraded to Pro.', check:function(ctx){ return ctx.isPro; } }
@@ -1491,6 +1528,7 @@ function drawCharts(v){
     {v:v.retire,    label:'Retirement',color:'#34d399'},
     {v:v.brokerage, label:'Brokerage', color:'#16A34A'},
     {v:v.cash,      label:'Cash',      color:'#E4C24E'},
+    {v:v.crypto,    label:'Crypto/Other', color:'#a78bfa'},
     {v:v.hsa,       label:'HSA',       color:'#8B92A0'},
     {v:v.car,       label:'Car',       color:'#5D636F'}
   ], legendAssets);
@@ -1498,7 +1536,8 @@ function drawCharts(v){
     {v:v.mortgage, label:'Mortgage', color:'#f16565'},
     {v:v.student,  label:'Student',  color:'#fb7185'},
     {v:v.auto,     label:'Auto',     color:'#fca5a5'},
-    {v:v.cc,       label:'Cards',    color:'#fecaca'}
+    {v:v.cc,       label:'Cards',    color:'#fecaca'},
+    {v:v.otherDebt,label:'Other',    color:'#fda4af'}
   ], legendLiabs);
 }
 
@@ -1572,7 +1611,7 @@ function renderNetWorthProjection(v){
 }
 
 /* ================= DEBT PAYOFF PLANNER (Pro) ================= */
-var DEBT_ASSUMED_RATES = { cc: 24, auto: 7, student: 6 }; // typical average annual rates — we don't collect real ones
+var DEBT_ASSUMED_RATES = { cc: 24, otherDebt: 12, auto: 7, student: 6 }; // typical average annual rates — we don't collect real ones
 
 function simulateDebtPayoff(debtList, extraMonthly, order){
   var d = debtList.map(function(x){ return { key:x.key, label:x.label, balance:x.balance, rate:x.rate, paidMonth:null }; });
@@ -1618,6 +1657,7 @@ function renderDebtPayoffPlanner(v){
 
   var rawDebts = [
     { key:'cc', label:'Credit cards', balance:v.cc, rate:DEBT_ASSUMED_RATES.cc },
+    { key:'otherDebt', label:'Personal loans / other', balance:v.otherDebt, rate:DEBT_ASSUMED_RATES.otherDebt },
     { key:'auto', label:'Auto loan', balance:v.auto, rate:DEBT_ASSUMED_RATES.auto },
     { key:'student', label:'Student loans', balance:v.student, rate:DEBT_ASSUMED_RATES.student }
   ].filter(function(x){ return x.balance > 0; });
@@ -1901,34 +1941,34 @@ function randomDemo(){
   var scenario = pickWeighted([
     { w:0.40, v:"starter_renter" }, { w:0.25, v:"stressed_debt" }, { w:0.25, v:"balanced_owner" }, { w:0.10, v:"ahead_owner" }
   ]);
-  var d={age:0,income:0,expenses:0,home:0,retire:0,brokerage:0,car:0,hsa:0,cash:0,mortgage:0,student:0,auto:0,cc:0};
+  var d={age:0,income:0,expenses:0,home:0,retire:0,brokerage:0,car:0,hsa:0,cash:0,crypto:0,mortgage:0,student:0,auto:0,cc:0,otherDebt:0};
   if(scenario==="starter_renter"){
     setHousing("renter");
     d.age = r(20,35); d.income = r(1600,3800); d.expenses = r(Math.floor(d.income*0.70), Math.floor(d.income*1.10));
     d.home=0; d.mortgage=0;
-    d.cash = r(50,2000); d.retire = r(0,3000); d.brokerage = r(0,1200); d.hsa = r(0,500); d.car = r(0,8000);
-    d.student = r(0,30000); d.auto = r(0,12000); d.cc = r(500,5000);
+    d.cash = r(50,2000); d.retire = r(0,3000); d.brokerage = r(0,1200); d.hsa = r(0,500); d.car = r(0,8000); d.crypto = r(0,1500);
+    d.student = r(0,30000); d.auto = r(0,12000); d.cc = r(500,5000); d.otherDebt = r(0,2000);
   }else if(scenario==="stressed_debt"){
     setHousing("renter");
     d.age = r(24,45); d.income = r(2200,6000); d.expenses = r(Math.floor(d.income*0.85), Math.floor(d.income*1.10));
     d.home=0; d.mortgage=0;
-    d.cash = r(0,1500); d.retire = r(0,12000); d.brokerage = r(0,5000); d.hsa = r(0,1000); d.car = r(2000,20000);
-    d.student = r(10000,50000); d.auto = r(5000,28000); d.cc = r(1500,9000);
+    d.cash = r(0,1500); d.retire = r(0,12000); d.brokerage = r(0,5000); d.hsa = r(0,1000); d.car = r(2000,20000); d.crypto = r(0,1000);
+    d.student = r(10000,50000); d.auto = r(5000,28000); d.cc = r(1500,9000); d.otherDebt = r(0,8000);
   }else if(scenario==="balanced_owner"){
     setHousing("owner");
     d.age = r(28,55); d.income = r(4000,9000); d.expenses = r(Math.floor(d.income*0.60), Math.floor(d.income*0.80));
     d.home = r(180000,600000); var ltv = r(60,90)/100; d.mortgage = Math.max(0, Math.floor(d.home*ltv) - r(0,20000));
-    d.cash = r(1000,15000); d.retire = r(20000,120000); d.brokerage = r(5000,60000); d.hsa = r(0,4000); d.car = r(3000,20000);
-    d.student = r(0,25000); d.auto = r(0,15000); d.cc = r(0,4000);
+    d.cash = r(1000,15000); d.retire = r(20000,120000); d.brokerage = r(5000,60000); d.hsa = r(0,4000); d.car = r(3000,20000); d.crypto = r(0,10000);
+    d.student = r(0,25000); d.auto = r(0,15000); d.cc = r(0,4000); d.otherDebt = r(0,3000);
   }else{
     setHousing("owner");
     d.age = r(30,60); d.income = r(8000,15000); d.expenses = r(Math.floor(d.income*0.55), Math.floor(d.income*0.75));
     d.home = r(350000,1200000); var ltv2 = r(30,70)/100; d.mortgage = Math.max(0, Math.floor(d.home*ltv2) - r(0,50000));
-    d.cash = r(5000,60000); d.retire = r(100000,400000); d.brokerage = r(60000,250000); d.hsa = r(0,8000); d.car = r(5000,40000);
-    d.student = r(0,15000); d.auto = r(0,15000); d.cc = r(0,3000);
+    d.cash = r(5000,60000); d.retire = r(100000,400000); d.brokerage = r(60000,250000); d.hsa = r(0,8000); d.car = r(5000,40000); d.crypto = r(0,30000);
+    d.student = r(0,15000); d.auto = r(0,15000); d.cc = r(0,3000); d.otherDebt = 0;
   }
-  var assets = d.home + d.retire + d.brokerage + d.car + d.hsa + d.cash;
-  var liabs = d.mortgage + d.student + d.auto + d.cc;
+  var assets = d.home + d.retire + d.brokerage + d.car + d.hsa + d.cash + d.crypto;
+  var liabs = d.mortgage + d.student + d.auto + d.cc + d.otherDebt;
   if((scenario==="starter_renter" || scenario==="stressed_debt") && assets - liabs >= 0){
     var pushNeg = (assets - liabs) + r(500,4000); d.cc += pushNeg;
   }
@@ -2414,7 +2454,7 @@ function initProjections(vBase, catsBase){
     var pay = +projDebt.value;
     raw.expenses = Math.max(0, raw.expenses - Math.round(expCut));
     var left=pay;
-    var order=['cc','auto','student'];
+    var order=['cc','otherDebt','auto','student'];
     for(var i=0;i<order.length;i++){
       var key=order[i]; var cur=raw[key]; var dec=Math.min(cur,left);
       raw[key]=cur-dec; left-=dec; if(left<=0) break;
