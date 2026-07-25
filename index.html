@@ -25,6 +25,11 @@ document.addEventListener("DOMContentLoaded", function () {
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Grade My Finance">
+<meta name="mobile-web-app-capable" content="yes">
 
 <meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
 <meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it. No sign-up.">
@@ -38,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&family=Playfair+Display:wght@600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 
 <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
 <link rel="preconnect" href="https://googletagmanager.com" crossorigin>
@@ -275,53 +280,103 @@ section.block{ padding:76px 0 }
 .bar{ height:10px; border-radius:99px; overflow:hidden; border:1px solid var(--line); background:var(--bg-2) }
 .bar .fill{ height:100%; width:0; background:linear-gradient(90deg,var(--gold),var(--gold-bright)); transition:width .25s ease }
 
-/* ---------- Report modal ---------- */
+/* ---------- Report modal — premium certificate treatment ---------- */
 .modal{ position:fixed; inset:0; display:none; z-index:100; background:rgba(6,7,9,.68) }
 .modal.show{ display:grid; place-items:center }
-.sheet{ width:min(960px,95vw); max-height:90vh; overflow:auto; background:var(--bg-2); border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow); padding:26px; margin:10px }
+.sheet{
+  width:min(960px,95vw); max-height:90vh; overflow:auto; margin:10px; padding:34px;
+  border-radius:18px; position:relative;
+  /* local palette override — cascades to every var(--text)/var(--muted)/var(--surface)/
+     var(--line)/var(--gold)* used by cards, badges, rows, etc. inside this modal only */
+  --bg-2:#f7edd8; --surface:#fbf3e2; --surface-2:#f1e3c4;
+  --line: rgba(90,63,20,.22); --text:#2b1d0e; --muted:#6b5a3e; --muted-2:#8a7658;
+  --gold:#8a6a1f; --gold-bright:#a9822a; --gold-soft: rgba(138,106,31,.14);
+  --font-mono:'IBM Plex Mono',monospace;
+  background:
+    repeating-linear-gradient(45deg, rgba(138,106,31,.035) 0 2px, transparent 2px 14px),
+    repeating-linear-gradient(-45deg, rgba(138,106,31,.035) 0 2px, transparent 2px 14px),
+    radial-gradient(120% 140% at 15% 0%, rgba(255,255,255,.5), transparent 55%),
+    radial-gradient(90% 120% at 100% 100%, rgba(120,90,40,.08), transparent 60%),
+    var(--bg-2);
+  border:3px double var(--gold-bright);
+  box-shadow: 0 24px 60px rgba(0,0,0,.5), inset 0 0 0 8px rgba(255,255,255,.35), inset 0 0 40px rgba(120,90,30,.10);
+  color:var(--text);
+  overflow-x:hidden;
+}
+.sheet::after{
+  content:""; position:absolute; top:0; left:-70%; width:45%; height:100%; pointer-events:none; z-index:5;
+  background:linear-gradient(80deg, transparent, rgba(255,255,255,.7), transparent);
+  animation: sheetShimmer 1.3s ease-in-out .2s 1;
+}
+@keyframes sheetShimmer{ 0%{ left:-70% } 100%{ left:150% } }
+@media (prefers-reduced-motion: reduce){ .sheet::after{ animation:none; display:none } }
+.corner-flourish{ position:absolute; font-size:22px; color:var(--gold-bright); opacity:.75; z-index:2; pointer-events:none; font-family:'Playfair Display',serif }
+.corner-flourish.tl{ top:10px; left:14px }
+.corner-flourish.tr{ top:10px; right:14px; transform:scaleX(-1) }
+.corner-flourish.bl{ bottom:10px; left:14px; transform:scaleY(-1) }
+.corner-flourish.br{ bottom:10px; right:14px; transform:scale(-1,-1) }
 .modal.show .sheet{ animation:popIn .35s cubic-bezier(.2,1,.2,1) }
 @keyframes popIn{ 0%{ transform:scale(.96); opacity:0 } 100%{ transform:scale(1); opacity:1 } }
-.sheet-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:16px }
+.sheet-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:18px }
 .xbtn{ background:var(--surface); border:1px solid var(--line); color:var(--text); border-radius:9px; padding:8px 12px; cursor:pointer; font-size:13px }
 .rc-top{ display:flex; align-items:center; gap:16px }
-.rc-title{ font-weight:700; font-size:20px }
-.rc-meta{ color:var(--muted); font-size:13px; font-family:var(--font-mono); margin-top:4px }
-.rc-grade{ margin-left:auto; font-family:var(--font-mono); font-size:44px; font-weight:700; border-radius:14px; padding:6px 20px; }
-.rc-grade.good{ color:#0d1608; background:linear-gradient(155deg,var(--good),var(--good-2)) }
-.rc-grade.mid{ color:#1a1300; background:linear-gradient(155deg,var(--gold-bright),var(--gold)) }
-.rc-grade.bad{ color:#fff; background:var(--bad) }
+.rc-title{ font-family:'Playfair Display',serif; font-weight:800; font-size:24px; letter-spacing:.01em }
+.rc-meta{ color:var(--muted); font-size:13px; font-family:var(--font-mono); margin-top:5px }
+.rc-signature{ font-family:'Dancing Script',cursive; font-size:18px; color:var(--gold); margin-top:8px; opacity:.85 }
+.rc-grade{
+  margin-left:auto; position:relative; font-family:'Playfair Display',serif; font-weight:800; font-size:36px;
+  width:98px; height:98px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  transform:rotate(-5deg); flex:none;
+  box-shadow: 0 4px 0 rgba(0,0,0,.2), 0 14px 20px rgba(0,0,0,.4), inset 0 2px 5px rgba(255,255,255,.3), inset 0 -4px 8px rgba(0,0,0,.3);
+  border:2px solid rgba(255,255,255,.3);
+}
+.rc-grade::before{
+  content:""; position:absolute; inset:-15px; border-radius:50%; z-index:-1;
+  background: repeating-conic-gradient(from 0deg, rgba(138,106,31,.4) 0deg 7deg, transparent 7deg 18deg);
+}
+.rc-grade::after{
+  content:""; position:absolute; top:82%; left:50%; width:34px; height:46px; z-index:-2;
+  background:inherit; transform:translateX(-50%);
+  clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 50% 82%, 0% 100%);
+  filter:brightness(.85);
+}
+.rc-grade.good{ background:radial-gradient(circle at 34% 28%, #5da177, #1f4a34 78%); color:#f3ede0 }
+.rc-grade.mid{ background:radial-gradient(circle at 34% 28%, #c89a3d, #7a5a1a 78%); color:#2b1d0e }
+.rc-grade.bad{ background:radial-gradient(circle at 34% 28%, #b04b4b, #5c1f1f 78%); color:#f3ede0 }
 .rc-grade.pop{ animation:gradePop .5s cubic-bezier(.2,1,.2,1) }
-@keyframes gradePop{ 0%{ transform:scale(.85) } 60%{ transform:scale(1.08) } 100%{ transform:scale(1) } }
+@keyframes gradePop{ 0%{ transform:rotate(-5deg) scale(.85) } 60%{ transform:rotate(-5deg) scale(1.1) } 100%{ transform:rotate(-5deg) scale(1) } }
 
 .rc-sections{ display:grid; grid-template-columns:1.2fr 1fr; gap:14px; margin-top:14px }
 @media (max-width:900px){ .rc-sections{ grid-template-columns:1fr } }
-.card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px }
-.section-label{ font-size:12.5px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.04em; display:block; margin-bottom:10px }
-.rc-head{ display:grid; grid-template-columns:1.2fr 1fr auto; gap:8px; color:var(--muted-2); font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; margin-top:16px }
+.sheet .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px; box-shadow:0 1px 0 rgba(255,255,255,.4) inset }
+.sheet .section-label{ font-family:'Playfair Display',serif; font-size:14px; color:var(--gold); font-weight:700; text-transform:none; letter-spacing:.02em; font-style:italic; display:block; margin-bottom:10px }
+.rc-head{ display:grid; grid-template-columns:1.2fr 1fr auto; gap:8px; color:var(--muted-2); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-top:18px; border-bottom:1px dashed var(--line); padding-bottom:8px }
 .rc-rows{ display:grid; gap:8px; margin-top:8px }
-.rc-row{ display:grid; grid-template-columns:1.2fr 1fr auto; gap:10px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:11px; padding:12px }
-.rc-row .label{ font-weight:600; font-size:13.5px }
+.rc-row{ display:grid; grid-template-columns:1.2fr 1fr auto; gap:10px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:12px }
+.rc-row .label{ font-weight:700; font-size:13.5px; font-family:'Playfair Display',serif }
 .rc-row .sub{ color:var(--muted-2); font-size:11.5px; margin-top:2px }
 .rc-row .detail{ font-family:var(--font-mono); font-weight:600; font-size:13px }
-.rc-row .tip{ color:var(--muted); font-size:12px; margin-top:2px }
+.rc-row .tip{ color:var(--muted); font-size:12px; margin-top:2px; font-style:italic }
 .badge{ font-weight:700; border:1px solid var(--line); border-radius:9px; padding:6px 11px; text-align:center; font-family:var(--font-mono); font-size:13px }
-.badge.good{ color:#0d1608; background:linear-gradient(155deg,var(--good),var(--good-2)) }
+.badge.good{ color:#0d1608; background:linear-gradient(155deg,#5da177,#2f6b47) }
 .badge.mid{ color:#1a1300; background:linear-gradient(155deg,var(--gold-bright),var(--gold)) }
-.badge.bad{ color:#fff; background:var(--bad) }
+.badge.bad{ color:#fff; background:#a34141 }
 
-.path{ margin-top:18px; border-top:1px solid var(--line); padding-top:16px }
-.path h4{ margin:0 0 10px; font-size:16px }
+.path{ margin-top:20px; border-top:1px dashed var(--line); padding-top:16px }
+.path h4{ margin:0 0 10px; font-size:18px; font-family:'Playfair Display',serif; font-style:italic; color:var(--gold) }
 .path ol{ margin:0; padding-left:20px }
 .path li{ margin:8px 0; color:var(--text); font-size:14px }
-.path .pts{ font-weight:700; color:var(--gold-bright); font-family:var(--font-mono) }
+.path .pts{ font-weight:700; color:var(--gold); font-family:var(--font-mono) }
 
-.subscribe-inline{ margin-top:20px; padding:18px; border-radius:var(--radius); background:var(--gold-soft); border:1px solid rgba(201,162,39,.35) }
+.subscribe-inline{ margin-top:20px; padding:18px; border-radius:var(--radius); background:var(--gold-soft); border:1px solid rgba(138,106,31,.35) }
 .subscribe-inline .sub-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center }
-.subscribe-inline h4{ margin:0; font-size:16px }
+.subscribe-inline h4{ margin:0; font-size:16px; font-family:'Playfair Display',serif }
 .subscribe-inline p{ margin:5px 0 10px; color:var(--muted); font-size:13px }
 .subscribe-inline input[type="email"]{ flex:1 1 240px; padding:11px 13px; border-radius:10px; border:1px solid var(--line); background:var(--bg-2); color:var(--text); font-family:var(--font-mono); font-size:13.5px }
 
 .rc-actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:18px; flex-wrap:wrap }
+.sheet input[type="range"]{ accent-color: var(--gold); }
+.sheet input[type="text"]{ background:var(--bg-2); color:var(--text); border-color:var(--line) }
 
 /* Testimonials */
 .testi{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px }
@@ -571,16 +626,23 @@ body.is-pro .ad-slot{ display:none !important }
 
 <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rcTitle">
   <div class="sheet">
+    <span class="corner-flourish tl" aria-hidden="true">❦</span>
+    <span class="corner-flourish tr" aria-hidden="true">❦</span>
+    <span class="corner-flourish bl" aria-hidden="true">❦</span>
+    <span class="corner-flourish br" aria-hidden="true">❦</span>
     <div class="sheet-header">
       <div class="rc-top" style="width:100%">
         <div>
           <div id="rcTitle" class="rc-title">Your report card</div>
           <div id="rcMeta" class="rc-meta">—</div>
+          <div class="rc-signature">— certified by Grade My Finance —</div>
         </div>
         <div id="rcGrade" class="rc-grade">A</div>
       </div>
       <button class="xbtn" id="closeReport" type="button" aria-label="Close report">Close</button>
     </div>
+
+    <div id="milestoneBanner" class="compare-banner" style="display:none;margin-bottom:14px"></div>
 
     <div class="rc-sections">
       <div class="card" style="display:grid;gap:12px">
@@ -1187,6 +1249,57 @@ function saveHistory(entry){
 }
 function getHistory(){ try{ return JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]'); }catch(_){ return []; } }
 
+/* ================= STREAKS & MILESTONES ================= */
+// Uses an all-time counter and best-score record, separate from the
+// trend-chart history (which is capped at the last 10 entries) — so
+// "this is your 15th check-in" stays accurate even after the chart trims.
+var CHECKIN_COUNT_KEY = 'gmf_checkin_count';
+var BEST_SCORE_KEY = 'gmf_best_score';
+var MILESTONE_COUNTS = [3,5,10,25,50,100,250];
+
+function recordCheckin(score){
+  var count = parseInt(localStorage.getItem(CHECKIN_COUNT_KEY)||'0',10) + 1;
+  var prevBest = parseFloat(localStorage.getItem(BEST_SCORE_KEY)||'-1');
+  localStorage.setItem(CHECKIN_COUNT_KEY, String(count));
+  var isNewBest = score > prevBest;
+  if(isNewBest) localStorage.setItem(BEST_SCORE_KEY, String(score));
+  return { count:count, isNewBest:isNewBest, hadPriorBest: prevBest >= 0 };
+}
+
+function computeImprovementStreak(hist, currentScore){
+  var scores = hist.map(function(h){ return h.score; }).concat([currentScore]);
+  var streak = 1;
+  for(var i=scores.length-1; i>0; i--){
+    if(scores[i] > scores[i-1]) streak++; else break;
+  }
+  return streak;
+}
+
+function renderMilestoneBanner(cats, hist){
+  var el = $("milestoneBanner");
+  if(!el) return;
+  var checkin = recordCheckin(cats.overall.score);
+  var streak = computeImprovementStreak(hist, cats.overall.score);
+  var msg = null;
+
+  if(checkin.isNewBest && checkin.hadPriorBest){
+    msg = '🏆 New personal best — '+cats.overall.letter.split(" ")[0]+' is the highest grade you\'ve recorded here.';
+  } else if(streak >= 3){
+    msg = '🔥 '+streak+' check-ins in a row with an improving score. Keep it up.';
+  } else if(MILESTONE_COUNTS.indexOf(checkin.count) > -1){
+    msg = '🎉 This is your '+checkin.count+'th check-in on this device. Thanks for coming back.';
+  } else if(checkin.count === 1){
+    msg = '👋 This is your first grade here. Come back anytime to see how it changes.';
+  }
+
+  if(msg){
+    el.style.display = 'flex';
+    el.innerHTML = '<div>'+msg+'</div>';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
 var compareText=$("compareText"), spark=$("spark"), benchRows=$("benchRows"), weakWrap=$("weakWrap");
 var barAL=$("barAL"), pieAssets=$("pieAssets"), pieLiabs=$("pieLiabs"), legendAssets=$("legendAssets"), legendLiabs=$("legendLiabs"), barALCaption=$("barALCaption"), barALLegend=$("barALLegend");
 
@@ -1512,6 +1625,7 @@ function openReport(v,cats){
 
   saveHistory({ ts: Date.now(), score: cats.overall.score });
   logGradeCompletion(cats.overall.letter.split(" ")[0], cats.overall.score);
+  renderMilestoneBanner(cats, hist);
 
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
@@ -2068,6 +2182,13 @@ function runWithLoader(fnDone){
 }
 
 })();
+</script>
+<script>
+if("serviceWorker" in navigator){
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("/sw.js").catch(function(err){ console.warn("Service worker registration failed:", err); });
+  });
+}
 </script>
 </body>
 </html>
