@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Your Dashboard | Grade My Finance</title>
+<meta name="description" content="Track your financial grade over time, saved scenarios, achievements, and personal goals — a Pro feature on Grade My Finance.">
+<meta name="theme-color" content="#0A0B0E">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://grademyfinance.com/dashboard.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){ dataLayer.push(arguments); }
+gtag('js', new Date());
+gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true });
+</script>
+<style>
+:root{
+  --bg:#0A0B0E; --bg-2:#0E1015; --surface:#14161C; --surface-2:#1B1E26;
+  --line: rgba(255,255,255,.09); --text:#F2F3F5; --muted:#8B92A0; --muted-2:#5D636F;
+  --gold:#C9A227; --gold-soft: rgba(201,162,39,.14); --gold-bright:#E4C24E;
+  --good:#34D399; --good-2:#16A34A; --mid:#F5B94D; --bad:#F16565;
+  --radius:14px; --radius-lg:20px; --shadow: 0 20px 50px rgba(0,0,0,.45); --header-h:76px;
+  --font-display:'Space Grotesk',system-ui,sans-serif; --font-body:'Inter',system-ui,sans-serif; --font-mono:'IBM Plex Mono',monospace;
+}
+:root[data-theme="light"]{
+  --bg:#F7F6F3; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#F1EFEA;
+  --line: rgba(10,11,14,.10); --text:#14161C; --muted:#5B616C; --muted-2:#8B92A0;
+  --shadow: 0 20px 44px rgba(20,20,20,.08);
+}
+*{box-sizing:border-box}
+body{ margin:0; padding-top:var(--header-h); background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.5 }
+h1,h2,h3{ font-family:var(--font-display); margin:0; letter-spacing:-.01em }
+.mono{ font-family:var(--font-mono) }
+.container{ max-width:1000px; margin:0 auto; padding:0 24px }
+a{ color:inherit }
+header.site{ position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:50; background:rgba(10,11,14,.72); backdrop-filter:blur(14px); border-bottom:1px solid var(--line) }
+:root[data-theme="light"] header.site{ background:rgba(247,246,243,.78) }
+.hdr-row{ height:100%; display:flex; align-items:center; gap:14px }
+.brandmark{ display:flex; align-items:center; gap:10px; text-decoration:none }
+.seal{ width:38px; height:38px; border-radius:10px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; flex:none }
+.seal span{ font-family:var(--font-mono); font-weight:700; font-size:13px; color:#1a1300 }
+.wordmark{ font-weight:700; font-size:17px }
+.hdr-right{ margin-left:auto; display:flex; align-items:center; gap:10px }
+.btn{ appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--text); font-family:var(--font-body); font-weight:600; font-size:14px; padding:11px 18px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none }
+.btn.gold{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700 }
+.btn.sm{ padding:8px 13px; font-size:13px }
+.icon-btn{ width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--text); cursor:pointer; display:grid; place-items:center; font-size:15px }
+main{ padding:44px 0 80px }
+.page-head{ margin-bottom:30px }
+.page-head h1{ font-size:clamp(26px,4vw,36px) }
+.page-head p{ color:var(--muted); margin-top:8px }
+.card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow) }
+.grid-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px }
+@media (max-width:700px){ .grid-stats{ grid-template-columns:1fr } }
+.stat-num{ font-family:var(--font-mono); font-weight:700; font-size:24px; color:var(--gold-bright) }
+.stat-cap{ font-size:13px; color:var(--muted); margin-top:4px }
+.section{ margin-bottom:26px }
+.section-label{ font-size:12.5px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.04em; display:block; margin-bottom:12px }
+.achv-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr)); gap:10px }
+.achv-badge{ display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; padding:10px 4px; border-radius:10px }
+.achv-icon{ width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:21px }
+.achv-badge.unlocked .achv-icon{ background:radial-gradient(circle at 34% 28%, var(--gold-bright), var(--gold) 78%); box-shadow:0 3px 8px rgba(0,0,0,.25) }
+.achv-badge.locked .achv-icon{ background:var(--surface-2); opacity:.5; filter:grayscale(1) }
+.achv-label{ font-size:10.5px; font-weight:700 }
+.achv-badge.locked .achv-label{ color:var(--muted-2) }
+.scenario-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 12px; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; margin-bottom:8px }
+.goal-form{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:16px }
+.goal-form label{ font-size:12.5px; color:var(--muted); font-weight:600; display:block; margin-bottom:6px }
+.goal-form select, .goal-form input{ border:1px solid var(--line); border-radius:10px; padding:10px 12px; background:var(--bg-2); color:var(--text); font-family:var(--font-mono); font-size:14px }
+.progress-bar{ height:14px; background:var(--surface-2); border-radius:99px; overflow:hidden; border:1px solid var(--line) }
+.progress-bar > div{ height:100%; background:linear-gradient(90deg,var(--good-2),var(--good)); transition:width .5s ease }
+.locked-wrap{ text-align:center; padding:60px 20px; max-width:480px; margin:60px auto 0 }
+.locked-wrap .seal-big{ width:80px; height:80px; border-radius:20px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; margin:0 auto 20px; font-family:var(--font-mono); font-weight:700; font-size:28px; color:#1a1300 }
+.locked-wrap ul{ text-align:left; color:var(--muted); font-size:14.5px; margin:18px 0; padding-left:20px; display:inline-block }
+.empty-note{ color:var(--muted); font-size:13.5px; padding:14px; text-align:center }
+footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:30px 0; text-align:center; color:var(--muted-2); font-size:12.5px }
+</style>
+</head>
+<body>
+<script>try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.dataset.theme="light"; } }catch(e){}</script>
+
+<header class="site">
+  <div class="container hdr-row">
+    <a class="brandmark" href="index.html"><span class="seal"><span>A+</span></span><span class="wordmark">Grade My Finance</span></a>
+    <div class="hdr-right">
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">◐</button>
+      <a class="btn sm" href="index.html#grade">Run a new calculation</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div id="lockedState" style="display:none">
+    <div class="locked-wrap card">
+      <div class="seal-big">A+</div>
+      <h1 style="font-size:22px">Your Personal Dashboard is a Pro feature</h1>
+      <p style="color:var(--muted);margin-top:10px">See everything in one place: your full trend over time, saved what-if scenarios, achievement badges, and progress toward a personal goal.</p>
+      <ul>
+        <li>Full check-in history and trend chart</li>
+        <li>Personal goal tracking (score or net worth)</li>
+        <li>All your saved what-if scenarios</li>
+        <li>Your achievement badge collection</li>
+      </ul>
+      <div style="margin-top:20px">
+        <a class="btn gold" href="index.html#pricing">Upgrade to Pro</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="dashboardContent" style="display:none">
+    <div class="page-head">
+      <h1>Your Progress</h1>
+      <p id="pageSubtitle">—</p>
+    </div>
+
+    <div class="grid-stats">
+      <div class="card" style="text-align:center"><div class="stat-num mono" id="statCheckins">—</div><div class="stat-cap">total check-ins</div></div>
+      <div class="card" style="text-align:center"><div class="stat-num mono" id="statBest">—</div><div class="stat-cap">best score recorded</div></div>
+      <div class="card" style="text-align:center"><div class="stat-num mono" id="statTrend">—</div><div class="stat-cap">since your first check-in</div></div>
+    </div>
+
+    <div class="section card">
+      <span class="section-label" style="margin:0 0 12px">Score trend</span>
+      <svg id="trendChart" width="100%" height="160" viewBox="0 0 640 160" preserveAspectRatio="none" role="img" aria-label="Score trend over time"></svg>
+      <div class="empty-note" id="trendEmptyNote" style="display:none">No check-ins recorded yet on this device.</div>
+    </div>
+
+    <div class="section card">
+      <span class="section-label">Personal goal</span>
+      <div class="goal-form">
+        <div>
+          <label for="goalType">Goal type</label>
+          <select id="goalType">
+            <option value="score">Overall score</option>
+            <option value="networth">Net worth</option>
+          </select>
+        </div>
+        <div>
+          <label for="goalTarget">Target</label>
+          <input id="goalTarget" type="number" min="0" placeholder="e.g. 90">
+        </div>
+        <button class="btn gold sm" id="saveGoalBtn" type="button">Save goal</button>
+      </div>
+      <div id="goalProgress"></div>
+    </div>
+
+    <div class="section card">
+      <span class="section-label">Achievements</span>
+      <div id="achievementsGrid" class="achv-grid"></div>
+    </div>
+
+    <div class="section card">
+      <span class="section-label">Saved what-if scenarios</span>
+      <div id="scenarioList"></div>
+      <div class="empty-note" id="scenarioEmptyNote" style="display:none">No saved scenarios yet — save one from inside a report card.</div>
+    </div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="container">© 2026 Grade My Finance — educational use only, not financial advice. <a href="index.html">Home</a></div>
+</footer>
+
+<script>
+"use strict";
+function $(id){ return document.getElementById(id); }
+function el(tag, attrs){ var n=document.createElement(tag); if(attrs) Object.assign(n, attrs); return n; }
+function money(n){
+  if (!isFinite(n)) return "—";
+  return new Intl.NumberFormat(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 }).format(Math.round(n));
+}
+
+var root = document.documentElement;
+$("themeToggle").addEventListener("click", function(){
+  var next = root.dataset.theme === "light" ? "" : "light";
+  root.dataset.theme = next;
+  localStorage.setItem("gmf_theme", next || "dark");
+});
+
+// Same badge metadata as the main calculator's report card — this page only
+// displays unlock state already recorded, it doesn't re-check conditions.
+var ACHIEVEMENTS = [
+  { id:'first_checkin', icon:'👋', label:'First Check-In' },
+  { id:'checkin_3', icon:'🌱', label:'Getting Started' },
+  { id:'checkin_10', icon:'📈', label:'Dedicated' },
+  { id:'checkin_25', icon:'⭐', label:'Veteran' },
+  { id:'checkin_100', icon:'💯', label:'Century Club' },
+  { id:'first_b', icon:'🎓', label:'First B or Better' },
+  { id:'first_a', icon:'🏅', label:'First A' },
+  { id:'perfect_grade', icon:'👑', label:'Perfect Score' },
+  { id:'personal_best', icon:'🏆', label:'Personal Best' },
+  { id:'improvement_streak', icon:'🔥', label:'On a Roll' },
+  { id:'debt_free', icon:'🎉', label:'Debt Free' },
+  { id:'fully_funded', icon:'🛟', label:'Fully Funded' },
+  { id:'super_saver', icon:'💰', label:'Super Saver' },
+  { id:'pro_member', icon:'✨', label:'Pro Member' }
+];
+
+function getHistory(){ try{ return JSON.parse(localStorage.getItem('gmf_history_v2')||'[]'); }catch(_){ return []; } }
+function getAchievements(){ try{ return JSON.parse(localStorage.getItem('gmf_achievements')||'{}'); }catch(_){ return {}; } }
+function getScenarios(){ try{ return JSON.parse(localStorage.getItem('gmf_scenarios')||'[]'); }catch(_){ return []; } }
+function getGoal(){ try{ return JSON.parse(localStorage.getItem('gmf_goal')||'null'); }catch(_){ return null; } }
+
+function drawTrendChart(svgEl, points){
+  var w=640, h=160, padL=54, padR=14, padT=14, padB=14;
+  var innerW=w-padL-padR, innerH=h-padT-padB;
+  if(!points.length){ svgEl.innerHTML=''; return; }
+  var minV=Math.min.apply(null, points), maxV=Math.max.apply(null, points);
+  if(maxV===minV){ maxV=minV+1; }
+  function x(i){ return points.length===1 ? padL+innerW/2 : padL + (i/(points.length-1))*innerW; }
+  function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
+  var html='';
+  [minV, (minV+maxV)/2, maxV].forEach(function(gv){
+    var gy=y(gv);
+    html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.08)"/>';
+    html += '<text x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+gv.toFixed(0)+'</text>';
+  });
+  var pathD=''; for(var i=0;i<points.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(points[i]); }
+  html += '<path d="'+pathD+'" fill="none" stroke="#C9A227" stroke-width="2.5"></path>';
+  points.forEach(function(p,i){ html += '<circle cx="'+x(i)+'" cy="'+y(p)+'" r="3.5" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>'; });
+  svgEl.innerHTML = html;
+}
+
+function renderGoalProgress(){
+  var goal = getGoal();
+  var hist = getHistory();
+  var box = $("goalProgress");
+  if(!goal){
+    box.innerHTML = '<div class="empty-note">No goal set yet — pick a type and target above.</div>';
+    return;
+  }
+  var latestWithNet = null;
+  for(var i=hist.length-1;i>=0;i--){ if(typeof hist[i].net === 'number'){ latestWithNet = hist[i]; break; } }
+  var latest = hist.length ? hist[hist.length-1] : null;
+
+  var current, label, formatFn;
+  if(goal.type === 'score'){
+    current = latest ? latest.score : null;
+    label = 'score';
+    formatFn = function(n){ return n.toFixed(1); };
+  } else {
+    current = latestWithNet ? latestWithNet.net : null;
+    label = 'net worth';
+    formatFn = money;
+  }
+
+  if(current === null){
+    box.innerHTML = '<div class="empty-note">Run a new calculation to start tracking progress toward this goal.</div>';
+    return;
+  }
+  var pct = Math.max(0, Math.min(100, (current/goal.target)*100));
+  var reached = current >= goal.target;
+  box.innerHTML =
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13.5px">'+
+      '<span>Current '+label+': <b class="mono">'+formatFn(current)+'</b></span>'+
+      '<span>Target: <b class="mono">'+formatFn(goal.target)+'</b></span>'+
+    '</div>'+
+    '<div class="progress-bar"><div style="width:'+pct.toFixed(0)+'%"></div></div>'+
+    (reached ? '<div style="margin-top:10px;color:var(--good);font-weight:700;font-size:13.5px">🎉 Goal reached!</div>' : '');
+}
+
+$("saveGoalBtn").addEventListener("click", function(){
+  var type = $("goalType").value;
+  var target = parseFloat($("goalTarget").value);
+  if(!target || target <= 0){ alert("Enter a valid target first."); return; }
+  localStorage.setItem('gmf_goal', JSON.stringify({ type:type, target:target, setAt:Date.now() }));
+  renderGoalProgress();
+});
+
+function renderScenarios(){
+  var list = $("scenarioList"), emptyNote = $("scenarioEmptyNote");
+  var scenarios = getScenarios();
+  list.innerHTML = '';
+  if(!scenarios.length){ emptyNote.style.display='block'; return; }
+  emptyNote.style.display='none';
+  scenarios.forEach(function(s, idx){
+    var row = el('div',{className:'scenario-row'});
+    row.innerHTML = '<div><b style="font-size:13.5px">'+s.name+'</b><div class="mono" style="font-size:12px;color:var(--muted)">Cut '+money(s.expCut)+'/mo · paid off '+money(s.debtPay)+' → <span style="color:var(--gold-bright);font-weight:700">'+s.letter+'</span></div></div>';
+    var del = el('button',{className:'btn sm', type:'button'}); del.textContent='Remove';
+    del.addEventListener('click', function(){
+      var arr = getScenarios(); arr.splice(idx,1);
+      localStorage.setItem('gmf_scenarios', JSON.stringify(arr));
+      renderScenarios();
+    });
+    row.appendChild(del);
+    list.appendChild(row);
+  });
+}
+
+function renderAchievements(){
+  var grid = $("achievementsGrid");
+  var unlocked = getAchievements();
+  grid.innerHTML = '';
+  ACHIEVEMENTS.forEach(function(a){
+    var isUnlocked = !!unlocked[a.id];
+    var badge = el('div',{ className:'achv-badge '+(isUnlocked?'unlocked':'locked') });
+    badge.innerHTML = '<div class="achv-icon">'+(isUnlocked?a.icon:'🔒')+'</div><div class="achv-label">'+a.label+'</div>';
+    grid.appendChild(badge);
+  });
+}
+
+function init(){
+  var isPro = localStorage.getItem('gmf_pro') === 'true';
+  if(!isPro){
+    $("lockedState").style.display = 'block';
+    return;
+  }
+  $("dashboardContent").style.display = 'block';
+
+  var count = parseInt(localStorage.getItem('gmf_checkin_count')||'0',10);
+  var best = parseFloat(localStorage.getItem('gmf_best_score')||'0');
+  var hist = getHistory();
+
+  $("statCheckins").textContent = count;
+  $("statBest").textContent = best ? best.toFixed(1) : '—';
+  $("pageSubtitle").textContent = count ? ("You've checked in "+count+" time"+(count===1?'':'s')+" on this device.") : "Run your first calculation to start tracking.";
+
+  if(hist.length >= 2){
+    var diff = Math.round((hist[hist.length-1].score - hist[0].score)*10)/10;
+    var arrow = diff > 0 ? '↑' : (diff < 0 ? '↓' : '→');
+    $("statTrend").textContent = arrow+' '+(diff>0?'+':'')+diff+' pts';
+  } else {
+    $("statTrend").textContent = '—';
+  }
+
+  if(hist.length){
+    $("trendEmptyNote").style.display = 'none';
+    drawTrendChart($("trendChart"), hist.map(function(h){ return h.score; }));
+  } else {
+    $("trendEmptyNote").style.display = 'block';
+  }
+
+  var goal = getGoal();
+  if(goal){ $("goalType").value = goal.type; $("goalTarget").value = goal.target; }
+  renderGoalProgress();
+  renderAchievements();
+  renderScenarios();
+}
+
+init();
+</script>
+</body>
+</html>
