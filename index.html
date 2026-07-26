@@ -874,6 +874,7 @@ body.is-pro .ad-slot{ display:none !important }
 
     <div class="rc-actions">
       <button class="btn sm" id="downloadImage" type="button">📥 Download grade card</button>
+      <button class="btn sm" id="downloadStoryImage" type="button">📱 Download for Stories</button>
       <button class="btn sm" id="compareFriend" type="button">Compare with a friend</button>
       <button class="btn sm" id="shareReport" type="button">Share</button>
       <button class="btn sm" id="printReport" type="button">Print / save as PDF</button>
@@ -2180,10 +2181,58 @@ if(saveScenarioBtn){
 }
 
 /* ================= DOWNLOADABLE GRADE IMAGE ================= */
+function saveCanvasAsImage(canvas, filename, shareTitle, shareText, trackLabel){
+  canvas.toBlob(function(blob){
+    if(!blob){ alert("Couldn't generate the image. Try again."); return; }
+    var file = new File([blob], filename, { type: "image/png" });
+    var isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+    if(navigator.canShare && navigator.canShare({ files: [file] })){
+      navigator.share({
+        files: [file],
+        title: shareTitle,
+        text: shareText
+      }).then(function(){
+        __track('download_grade_image', {method: 'share', variant: trackLabel});
+      }).catch(function(err){
+        if(!(err && err.name === "AbortError")){
+          toastMsg("Couldn't share the image. Try again, or take a screenshot of your report.");
+        }
+      });
+    } else if(isTouchDevice){
+      var dataUrl = canvas.toDataURL("image/png");
+      var win = window.open();
+      if(win){
+        win.document.write(
+          '<html><head><title>Your Grade My Finance report card</title></head>' +
+          '<body style="margin:0;background:#0A0B0E;display:flex;align-items:center;justify-content:center;min-height:100vh">' +
+          '<img src="'+dataUrl+'" style="max-width:100%;height:auto;display:block" alt="Your financial grade card">' +
+          '</body></html>'
+        );
+        toastMsg("Long-press the image and choose \u201cSave Image\u201d to download it.");
+        __track('download_grade_image', {method: 'new_tab', variant: trackLabel});
+      } else {
+        toastMsg("Please allow pop-ups to save your grade card, then try again.");
+      }
+    } else {
+      var url = URL.createObjectURL(blob);
+      var link=document.createElement("a");
+      link.download=filename;
+      link.href=url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+      __track('download_grade_image', {method: 'anchor', variant: trackLabel});
+    }
+  }, "image/png");
+}
+
 $("downloadImage").addEventListener("click", function(){
   if(!window.__lastOverall){ alert("Run a calculation first."); return; }
   try {
   var canvas=$("shareCanvas"), ctx=canvas.getContext("2d");
+  canvas.width = 1080; canvas.height = 1080;
   var w=canvas.width, h=canvas.height;
   var letterClean = window.__lastOverall.letter.split(" ")[0];
   var isGood = ["A+","A","A-","B+"].indexOf(letterClean)>-1;
@@ -2220,59 +2269,71 @@ $("downloadImage").addEventListener("click", function(){
   ctx.fillStyle="#8B92A0"; ctx.font="500 30px Inter, sans-serif";
   ctx.fillText("Get your free grade at grademyfinance.com", w/2, 960);
 
-  canvas.toBlob(function(blob){
-    if(!blob){ alert("Couldn't generate the image. Try again."); return; }
-    var file = new File([blob], "my-financial-grade.png", { type: "image/png" });
-    var isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-
-    if(navigator.canShare && navigator.canShare({ files: [file] })){
-      // Best path: native share sheet with a real "Save Image" option.
-      navigator.share({
-        files: [file],
-        title: "My Grade My Finance report card",
-        text: "Check out my financial grade from Grade My Finance"
-      }).then(function(){
-        __track('download_grade_image', {letter: letterClean, method: 'share'});
-      }).catch(function(err){
-        if(!(err && err.name === "AbortError")){
-          toastMsg("Couldn't share the image. Try again, or take a screenshot of your report.");
-        }
-      });
-    } else if(isTouchDevice){
-      // Phones whose browser can't share files (older Safari, some Android
-      // browsers, in-app browsers) — a plain download link silently fails here.
-      // Opening the image in a new tab lets people long-press → Save Image,
-      // which works far more reliably across mobile browsers.
-      var dataUrl = canvas.toDataURL("image/png");
-      var win = window.open();
-      if(win){
-        win.document.write(
-          '<html><head><title>Your Grade My Finance report card</title></head>' +
-          '<body style="margin:0;background:#0A0B0E;display:flex;align-items:center;justify-content:center;min-height:100vh">' +
-          '<img src="'+dataUrl+'" style="max-width:100%;height:auto;display:block" alt="Your financial grade card">' +
-          '</body></html>'
-        );
-        toastMsg("Long-press the image and choose \u201cSave Image\u201d to download it.");
-        __track('download_grade_image', {letter: letterClean, method: 'new_tab'});
-      } else {
-        toastMsg("Please allow pop-ups to save your grade card, then try again.");
-      }
-    } else {
-      // Desktop fallback — regular download works reliably here.
-      var url = URL.createObjectURL(blob);
-      var link=document.createElement("a");
-      link.download="my-financial-grade.png";
-      link.href=url;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
-      __track('download_grade_image', {letter: letterClean, method: 'anchor'});
-    }
-  }, "image/png");
+  saveCanvasAsImage(canvas, "my-financial-grade.png", "My Grade My Finance report card", "Check out my financial grade from Grade My Finance", "square");
   } catch(err) {
     console.error("Download grade card failed:", err);
     toastMsg("Something went wrong generating your grade card. Please try again.");
+  }
+});
+
+$("downloadStoryImage").addEventListener("click", function(){
+  if(!window.__lastOverall){ alert("Run a calculation first."); return; }
+  try {
+  var canvas=$("shareCanvas"), ctx=canvas.getContext("2d");
+  canvas.width = 1080; canvas.height = 1920;
+  var w=canvas.width, h=canvas.height;
+  var letterClean = window.__lastOverall.letter.split(" ")[0];
+  var isGood = ["A+","A","A-","B+"].indexOf(letterClean)>-1;
+  var isMid = ["B","B-","C+","C","C-"].indexOf(letterClean)>-1;
+  var gradeColor = isGood ? "#34D399" : (isMid ? "#E4C24E" : "#F16565");
+
+  var bgGrad = ctx.createLinearGradient(0,0,0,h);
+  bgGrad.addColorStop(0,"#0A0B0E"); bgGrad.addColorStop(1,"#14161C");
+  ctx.fillStyle=bgGrad; ctx.fillRect(0,0,w,h);
+
+  // Keep all content inside the safe zone — Stories apps overlay their own
+  // UI (profile info up top, reply bar + stickers at the bottom), so text
+  // placed too close to either edge often gets covered.
+  var safeTop = 260, safeBottom = 1660;
+
+  // seal, top of safe zone
+  ctx.save();
+  var sealGrad=ctx.createLinearGradient(w/2-70,safeTop,w/2+70,safeTop+140);
+  sealGrad.addColorStop(0,"#E4C24E"); sealGrad.addColorStop(1,"#C9A227");
+  ctx.fillStyle=sealGrad;
+  roundRect(ctx, w/2-70, safeTop, 140, 140, 30); ctx.fill();
+  ctx.fillStyle="#1a1300"; ctx.font="700 52px 'IBM Plex Mono', monospace"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("A+", w/2, safeTop+72);
+  ctx.restore();
+
+  ctx.textAlign="center";
+  ctx.fillStyle="#8B92A0"; ctx.font="600 34px Inter, sans-serif";
+  ctx.fillText("GRADE MY FINANCE", w/2, safeTop+200);
+
+  ctx.fillStyle=gradeColor;
+  ctx.font="700 460px 'IBM Plex Mono', monospace";
+  ctx.textBaseline="middle";
+  ctx.fillText(letterClean, w/2, safeTop+660);
+
+  ctx.fillStyle="#F2F3F5"; ctx.font="600 52px Inter, sans-serif";
+  ctx.fillText("Overall score "+window.__lastOverall.score.toFixed(1)+" / 100", w/2, safeTop+960);
+
+  ctx.fillStyle="#8B92A0"; ctx.font="500 38px Inter, sans-serif";
+  ctx.fillText("Think you can beat it?", w/2, safeTop+1060);
+
+  // CTA block near the bottom of the safe zone
+  ctx.fillStyle="#C9A227";
+  roundRect(ctx, w/2-260, safeBottom-140, 520, 100, 20); ctx.fill();
+  ctx.fillStyle="#1a1300"; ctx.font="700 40px Inter, sans-serif";
+  ctx.fillText("Get your free grade", w/2, safeBottom-90);
+
+  ctx.fillStyle="#8B92A0"; ctx.font="500 34px 'IBM Plex Mono', monospace";
+  ctx.fillText("grademyfinance.com", w/2, safeBottom-10);
+
+  saveCanvasAsImage(canvas, "my-financial-grade-story.png", "My Grade My Finance report card", "Think you can beat my financial grade?", "story");
+  } catch(err) {
+    console.error("Download story image failed:", err);
+    toastMsg("Something went wrong generating your story image. Please try again.");
   }
 });
 function roundRect(ctx,x,y,width,height,r){
