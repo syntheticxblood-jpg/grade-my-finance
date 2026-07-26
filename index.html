@@ -123,6 +123,36 @@ nav.primary a{ font-size:14px; color:var(--muted); text-decoration:none; font-we
 nav.primary a:hover{ color:var(--text) }
 .hdr-right{ margin-left:auto; display:flex; align-items:center; gap:10px }
 .icon-btn{ width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--text); cursor:pointer; display:grid; place-items:center; font-size:15px }
+
+/* ---------- Settings dropdown ---------- */
+.settings-wrap{ position:relative }
+.settings-menu{
+  display:none; position:absolute; top:calc(100% + 8px); right:0; min-width:220px;
+  background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow);
+  padding:8px; z-index:60;
+}
+.settings-menu.open{ display:block }
+.settings-item{
+  display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px;
+  font-size:13.5px; color:var(--text); text-decoration:none; width:100%; box-sizing:border-box;
+  background:transparent; border:none; cursor:pointer; font-family:var(--font-body); text-align:left;
+}
+.settings-item:hover{ background:var(--surface-2) }
+.settings-item select{
+  flex:1; border:1px solid var(--line); border-radius:7px; padding:6px 8px; background:var(--bg-2);
+  color:var(--text); font-family:var(--font-mono); font-size:12.5px; cursor:pointer;
+}
+
+/* ---------- Pro CTA — visually distinct from the primary gold "Get My Grade" button ---------- */
+.pro-cta{
+  background:transparent; border:1.5px solid var(--gold); color:var(--gold-bright); font-weight:700;
+}
+.pro-cta:hover{ background:var(--gold-soft) }
+.pro-star{ color:var(--gold-bright) }
+.pro-badge-filled{
+  background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:800;
+  border-color:transparent; letter-spacing:.02em;
+}
 .btn{
   appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--text);
   font-family:var(--font-body); font-weight:600; font-size:14px; padding:11px 18px; border-radius:10px;
@@ -519,31 +549,43 @@ body.is-pro .ad-slot{ display:none !important }
     <nav class="primary">
       <a href="#how">How it works</a>
       <a href="#guides">Free tools</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#grade">Calculator</a>
-      <a href="dashboard.html">Dashboard</a>
       <a href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">Community</a>
       <a href="blog/index.html">Blog</a>
     </nav>
     <div class="hdr-right">
-      <a class="icon-btn" href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener" aria-label="Join our Discord" title="Join our Discord" style="color:#5865F2">
-        <svg width="20" height="20" viewBox="0 0 127.14 96.36" fill="currentColor" aria-hidden="true"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
-      </a>
-      <select id="currencySelect" class="icon-btn" style="width:auto;padding:0 8px;font-size:12px;font-family:var(--font-mono)" aria-label="Display currency">
-        <option value="USD">USD $</option>
-        <option value="EUR">EUR €</option>
-        <option value="GBP">GBP £</option>
-        <option value="CAD">CAD $</option>
-        <option value="AUD">AUD $</option>
-        <option value="INR">INR ₹</option>
-        <option value="JPY">JPY ¥</option>
-        <option value="BRL">BRL R$</option>
-        <option value="MXN">MXN $</option>
-        <option value="ZAR">ZAR R</option>
-      </select>
-      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">◐</button>
-      <a class="btn sm pro-only-hide" id="upgradeBtnTop" href="#pricing">Upgrade to Pro</a>
-      <span class="btn sm pro-only-show" id="proPill" style="display:none">★ Pro</span>
+      <div class="settings-wrap">
+        <button class="icon-btn" id="settingsBtn" aria-label="More options" aria-expanded="false">⋯</button>
+        <div class="settings-menu" id="settingsMenu">
+          <a class="settings-item" href="dashboard.html">
+            <span>📊</span> Dashboard
+          </a>
+          <a class="settings-item" href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">
+            <span style="color:#5865F2">
+              <svg width="16" height="16" viewBox="0 0 127.14 96.36" fill="currentColor" aria-hidden="true"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+            </span> Discord
+          </a>
+          <div class="settings-item" style="cursor:default">
+            <span>🌐</span>
+            <select id="currencySelect" aria-label="Display currency">
+              <option value="USD">USD $</option>
+              <option value="EUR">EUR €</option>
+              <option value="GBP">GBP £</option>
+              <option value="CAD">CAD $</option>
+              <option value="AUD">AUD $</option>
+              <option value="INR">INR ₹</option>
+              <option value="JPY">JPY ¥</option>
+              <option value="BRL">BRL R$</option>
+              <option value="MXN">MXN $</option>
+              <option value="ZAR">ZAR R</option>
+            </select>
+          </div>
+          <button class="settings-item" id="themeToggle" type="button">
+            <span>◐</span> Toggle theme
+          </button>
+        </div>
+      </div>
+      <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing"><span class="pro-star">★</span> Upgrade to Pro</a>
+      <span class="btn sm pro-badge-filled pro-only-show" id="proPill" style="display:none">★ PRO</span>
       <button class="btn gold sm" id="gradeBtnTop" type="button">Get My Grade</button>
     </div>
   </div>
@@ -1202,6 +1244,23 @@ $("themeToggle").addEventListener("click", function(){
   var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next;
   localStorage.setItem("gmf_theme", next||"dark"); __track('toggle_theme', {theme: next||'dark'});
 });
+
+var settingsBtn = $("settingsBtn"), settingsMenu = $("settingsMenu");
+if(settingsBtn && settingsMenu){
+  settingsBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var isOpen = settingsMenu.classList.toggle("open");
+    settingsBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+  document.addEventListener("click", function(e){
+    if(!settingsMenu.contains(e.target) && e.target !== settingsBtn){
+      settingsMenu.classList.remove("open");
+      settingsBtn.setAttribute("aria-expanded", "false");
+    }
+  });
+  // Don't close the menu when interacting with the currency dropdown inside it
+  settingsMenu.addEventListener("click", function(e){ e.stopPropagation(); });
+}
 
 var currencySelect = $("currencySelect");
 if(currencySelect){
