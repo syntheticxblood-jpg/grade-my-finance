@@ -789,6 +789,23 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
     </div>
 
+    <div class="card" style="margin-top:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <span class="section-label" style="margin:0">Retirement readiness <span class="pro-badge">★ PRO</span></span>
+        <span id="rrCaption" class="small">—</span>
+      </div>
+      <div class="pro-lock">🔒 See if your 401k/IRA alone is on track — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
+      <div class="pro-gated" id="rrBox">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span class="small">Retirement balance vs. target for your age</span>
+          <strong class="mono" id="rrPct">—</strong>
+        </div>
+        <div class="progress" style="margin-top:0"><div id="rrBar" style="width:0%"></div></div>
+        <div id="rrSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px"></div>
+        <div class="small" style="margin-top:10px">Benchmark: common salary-multiple milestones (roughly 1× income by 30, 3× by 40, 6× by 50, 10× by 67). This looks at your retirement accounts specifically — separate from the broader net-worth-for-age score above, which also includes home equity, cash, and other assets.</div>
+      </div>
+    </div>
+
     <div class="path">
       <h4>Path to a higher grade</h4>
       <ol id="pathList"></ol>
@@ -906,6 +923,7 @@ body.is-pro .ad-slot{ display:none !important }
           <li><b>Net worth projection</b> — see where you're headed in 5/10/20/30 years</li>
           <li><b>Debt payoff planner</b> — avalanche vs. snowball, with your actual numbers</li>
           <li><b>Downloadable Certificate PDF</b> — a formal, printable version of your grade</li>
+          <li><b>Retirement readiness check</b> — your 401k/IRA vs. common salary-multiple benchmarks</li>
           <li><b>Full trend history</b> across every check-in</li>
           <li><b>Save & name multiple</b> what-if scenarios</li>
           <li><b>Ad-free</b> — no banner ads, ever</li>
@@ -1739,6 +1757,49 @@ function renderDebtPayoffPlanner(v){
   update();
 }
 
+/* ================= RETIREMENT READINESS CHECK (Pro) ================= */
+// Common salary-multiple benchmarks (roughly matching Fidelity-style
+// milestones): how many times your annual income you'd typically want
+// saved specifically in retirement accounts by a given age.
+var RETIRE_MULTIPLE_CURVE = [[25,0.5],[30,1],[35,2],[40,3],[45,4],[50,6],[55,7],[60,8],[67,10]];
+function targetRetireMultiple(age){
+  if(age<=RETIRE_MULTIPLE_CURVE[0][0]) return RETIRE_MULTIPLE_CURVE[0][1];
+  if(age>=RETIRE_MULTIPLE_CURVE[RETIRE_MULTIPLE_CURVE.length-1][0]) return RETIRE_MULTIPLE_CURVE[RETIRE_MULTIPLE_CURVE.length-1][1];
+  for(var i=1;i<RETIRE_MULTIPLE_CURVE.length;i++){
+    var a0=RETIRE_MULTIPLE_CURVE[i-1][0], t0=RETIRE_MULTIPLE_CURVE[i-1][1], a1=RETIRE_MULTIPLE_CURVE[i][0], t1=RETIRE_MULTIPLE_CURVE[i][1];
+    if(age<=a1){ var t=(age-a0)/(a1-a0); return t0+(t1-t0)*t; }
+  }
+  return RETIRE_MULTIPLE_CURVE[RETIRE_MULTIPLE_CURVE.length-1][1];
+}
+function renderRetirementReadiness(v){
+  var box=$("rrBox"), caption=$("rrCaption"), pctEl=$("rrPct"), bar=$("rrBar"), summaryEl=$("rrSummary");
+  if(!box) return;
+  if(!document.body.classList.contains("is-pro")){ caption.textContent='Locked'; return; }
+
+  var age = v.age || 30;
+  var multiple = targetRetireMultiple(age);
+  var targetAmount = multiple * v.annualIncome;
+  var progress = targetAmount > 0 ? v.retire / targetAmount : (v.retire > 0 ? 1 : 0);
+  var pct = Math.round(clamp(progress, 0, 2) * 100); // allow showing up to 200% if way ahead
+
+  caption.textContent = pct+"% of benchmark";
+  pctEl.textContent = pct+"%";
+  bar.style.width = Math.min(100, pct)+"%";
+  bar.style.background = progress>=1 ? 'linear-gradient(90deg,var(--good-2),var(--good))' : (progress>=0.6 ? 'linear-gradient(90deg,var(--gold),var(--gold-bright))' : 'linear-gradient(90deg,#a34141,var(--bad))');
+
+  summaryEl.innerHTML = '';
+  var gap = Math.max(0, targetAmount - v.retire);
+  [
+    { label:'Your balance', val: money(v.retire) },
+    { label:'Benchmark for age '+age, val: multiple.toFixed(1)+'× income ('+money(targetAmount)+')' },
+    { label: progress>=1 ? 'Ahead by' : 'Gap to close', val: progress>=1 ? money(v.retire-targetAmount) : money(gap) }
+  ].forEach(function(s){
+    var card=el('div',{className:'card', style:'padding:10px;text-align:center'});
+    card.innerHTML='<div class="small">'+s.label+'</div><div class="mono" style="font-weight:700;font-size:14px;color:var(--gold-bright)">'+s.val+'</div>';
+    summaryEl.appendChild(card);
+  });
+}
+
 function openReport(v,cats){
   var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), pathList=$("pathList");
   var modal=$("reportModal");
@@ -1801,6 +1862,7 @@ function openReport(v,cats){
   drawCharts(v);
   renderNetWorthProjection(v);
   renderDebtPayoffPlanner(v);
+  renderRetirementReadiness(v);
 
   var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; }})();
   pathList.innerHTML="";
