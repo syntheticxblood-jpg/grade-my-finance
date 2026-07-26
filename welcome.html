@@ -34,27 +34,58 @@
       --font-mono:'IBM Plex Mono',monospace;
     }
     *{box-sizing:border-box}
+    html{ overflow-x:hidden }
     body{
       margin:0; min-height:100vh; display:flex; flex-direction:column;
       justify-content:center; align-items:center; padding:24px;
-      background:
-        radial-gradient(700px 360px at 15% 0%, rgba(201,162,39,.14), transparent 60%),
-        var(--bg);
+      background:var(--bg);
       color:var(--text); font-family:var(--font-body); text-align:center;
+      position:relative; overflow-x:hidden;
     }
+
+    .aurora{ position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none }
+    .aurora span{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.5 }
+    .aurora .a1{ width:460px; height:460px; top:-160px; left:6%; background:radial-gradient(circle, rgba(201,162,39,.45), transparent 70%); animation:auroraDrift1 16s ease-in-out infinite }
+    .aurora .a2{ width:380px; height:380px; bottom:-140px; right:4%; background:radial-gradient(circle, rgba(52,211,153,.25), transparent 70%); animation:auroraDrift2 19s ease-in-out infinite }
+    .aurora .a3{ width:320px; height:320px; top:40%; left:60%; background:radial-gradient(circle, rgba(228,194,78,.28), transparent 70%); animation:auroraDrift3 22s ease-in-out infinite }
+    @keyframes auroraDrift1{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(50px,40px) scale(1.15) } }
+    @keyframes auroraDrift2{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(-40px,-30px) scale(1.1) } }
+    @keyframes auroraDrift3{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(-30px,40px) scale(1.2) } }
+    @media (prefers-reduced-motion: reduce){ .aurora span{ animation:none } }
+
+    .lines{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.5 }
+
+    .rise{ opacity:0; transform:translateY(18px); animation:riseIn .7s cubic-bezier(.16,1,.3,1) forwards; animation-delay:var(--d,0s) }
+    @keyframes riseIn{ to{ opacity:1; transform:none } }
+    @media (prefers-reduced-motion: reduce){ .rise{ animation:none; opacity:1; transform:none } }
+
     .card{
+      position:relative; z-index:1;
       width:100%; max-width:460px; background:var(--surface); border:1px solid var(--line);
       border-radius:20px; padding:40px 32px; box-shadow:var(--shadow);
     }
     .seal{
+      position:relative; overflow:hidden;
       width:56px; height:56px; border-radius:14px; margin:0 auto 22px;
       background:linear-gradient(155deg,var(--gold-bright),var(--gold));
       display:grid; place-items:center;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 8px 20px rgba(201,162,39,.28);
     }
+    .seal::after{
+      content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+      background:linear-gradient(75deg, transparent, rgba(255,255,255,.6), transparent);
+      animation:sealShimmer 1.6s ease-in-out .7s 1;
+    }
+    @keyframes sealShimmer{ 0%{ left:-60% } 100%{ left:140% } }
+    @media (prefers-reduced-motion: reduce){ .seal::after{ animation:none } }
     .seal span{ font-family:var(--font-mono); font-weight:700; font-size:18px; color:#1a1300 }
     h1{ font-family:var(--font-display); font-size:1.7rem; margin:0 0 10px; letter-spacing:-.01em }
-    p.lede{ max-width:360px; margin:0 auto 26px; font-size:15.5px; line-height:1.5; color:var(--muted) }
+    p.lede{ max-width:360px; margin:0 auto 20px; font-size:15.5px; line-height:1.5; color:var(--muted) }
+    .live-stat{
+      display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:12px;
+      color:var(--gold-bright); background:var(--gold-soft); border:1px solid rgba(201,162,39,.35);
+      padding:6px 12px; border-radius:999px; margin-bottom:22px;
+    }
     form{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:14px }
     input[type="email"]{
       flex:1 1 220px; padding:13px 14px; border-radius:10px; border:1px solid var(--line);
@@ -75,10 +106,18 @@
   </style>
 </head>
 <body>
-  <div class="card">
+  <div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+  <svg class="lines" aria-hidden="true" width="100%" height="100%" viewBox="0 0 800 800" preserveAspectRatio="none">
+    <polyline points="0,700 150,650 300,560 450,440 600,320 800,200" fill="none" stroke="#C9A227" stroke-width="2" opacity="0.35"/>
+    <circle cx="300" cy="560" r="4" fill="#E4C24E" opacity="0.6"/>
+    <circle cx="600" cy="320" r="4" fill="#E4C24E" opacity="0.6"/>
+  </svg>
+
+  <div class="card rise" style="--d:0s">
     <div class="seal"><span>A+</span></div>
     <h1>Welcome to Grade My Finance</h1>
     <p class="lede">Get your free financial grade in seconds. Enter your email to stay in the loop, or jump straight in.</p>
+    <div class="live-stat" id="liveStat">Loading live stats…</div>
 
     <form id="emailForm"
           action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
@@ -96,7 +135,7 @@
     </div>
   </div>
 
-  <div style="margin-top:20px;max-width:460px;width:100%;">
+  <div class="rise" style="margin-top:20px;max-width:460px;width:100%;--d:.2s">
     <ins class="adsbygoogle"
          style="display:block"
          data-ad-client="ca-pub-3638344211698514"
@@ -140,6 +179,28 @@
         alert("Network error. Try again.");
       });
     });
+
+    // Real live stat, same endpoint the main site uses — no fabricated numbers.
+    // Falls back to a neutral label if it can't load, same honesty pattern as the homepage.
+    var GRADE_COUNT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzhWnRJ-FRSKAiT4YEfN5uw9Z8J_rDN6uMH616llc4sNYRUomeZPfjsoi0M3SNK7nHF/exec";
+    function formatCount(n){
+      if(n>=1000) return (Math.floor(n/100)*100).toLocaleString()+"+";
+      return String(n);
+    }
+    fetch(GRADE_COUNT_ENDPOINT, { method:"GET" })
+      .then(function(res){ return res.json(); })
+      .then(function(data){
+        var el = document.getElementById("liveStat");
+        if(data && typeof data.count === "number"){
+          el.textContent = formatCount(data.count) + " report cards graded so far";
+        } else {
+          el.textContent = "Free, private, and growing every day";
+        }
+      })
+      .catch(function(){
+        var el = document.getElementById("liveStat");
+        el.textContent = "Free, private, and growing every day";
+      });
   </script>
 </body>
 </html>
