@@ -380,6 +380,13 @@ section.block{ padding:76px 0 }
 .path .pts{ font-weight:700; color:var(--gold); font-family:var(--font-mono) }
 
 .subscribe-inline{ margin-top:20px; padding:18px; border-radius:var(--radius); background:var(--gold-soft); border:1px solid rgba(138,106,31,.35) }
+.subscribe-inline.pulse{ animation:subPulse 1.6s ease-out .5s 1; }
+@keyframes subPulse{
+  0%{ box-shadow:0 0 0 0 rgba(201,162,39,.5) }
+  60%{ box-shadow:0 0 0 14px rgba(201,162,39,0) }
+  100%{ box-shadow:0 0 0 0 rgba(201,162,39,0) }
+}
+@media (prefers-reduced-motion: reduce){ .subscribe-inline.pulse{ animation:none } }
 .subscribe-inline .sub-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center }
 .subscribe-inline h4{ margin:0; font-size:16px; font-family:'Playfair Display',serif }
 .subscribe-inline p{ margin:5px 0 10px; color:var(--muted); font-size:13px }
@@ -706,6 +713,21 @@ body.is-pro .ad-slot{ display:none !important }
       <div id="achievementsGrid" class="achv-grid"></div>
     </div>
 
+    <div class="subscribe-inline pulse" id="subscribeInlineRC">
+      <div class="sub-row" style="margin-bottom:8px">
+        <div>
+          <h4 id="subHeadline">Get tips to raise your grade</h4>
+          <p id="subSubtext">1–2 emails a month. Actionable, no fluff. Unsubscribe anytime.</p>
+        </div>
+      </div>
+      <form id="subFormRC" class="sub-row"
+        action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
+        method="POST" novalidate>
+        <input type="email" name="email" placeholder="you@example.com" required>
+        <button type="submit" class="btn gold sm">Subscribe</button>
+      </form>
+    </div>
+
     <div class="rc-sections">
       <div class="card" style="display:grid;gap:12px">
         <div id="compareBlock" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
@@ -838,21 +860,6 @@ body.is-pro .ad-slot{ display:none !important }
           <div id="scenarioList" style="display:grid;gap:8px;margin-top:10px"></div>
         </div>
       </div>
-    </div>
-
-    <div class="subscribe-inline" id="subscribeInlineRC">
-      <div class="sub-row" style="margin-bottom:8px">
-        <div>
-          <h4>Get tips to raise your grade</h4>
-          <p>1–2 emails a month. Actionable, no fluff. Unsubscribe anytime.</p>
-        </div>
-      </div>
-      <form id="subFormRC" class="sub-row"
-        action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
-        method="POST" novalidate>
-        <input type="email" name="email" placeholder="you@example.com" required>
-        <button type="submit" class="btn gold sm">Subscribe</button>
-      </form>
     </div>
 
     <div class="subscribe-inline" style="margin-top:12px">
@@ -1849,6 +1856,15 @@ function openReport(v,cats){
   var minIdx=0; for(var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
   items = items.map(function(it,idx){ it.isWeak = (idx===minIdx); return it; });
   hbars(weakWrap, items);
+
+  (function personalizeSubscribe(){
+    var headline=$("subHeadline"), subtext=$("subSubtext"), box=$("subscribeInlineRC");
+    if(!headline || !subtext) return;
+    var weak = items[minIdx];
+    headline.textContent = "Your weakest link is "+weak.label+" — want monthly nudges until it's fixed?";
+    subtext.textContent = "1–2 emails a month, tailored to your report. Unsubscribe anytime.";
+    if(box){ box.classList.remove('pulse'); void box.offsetWidth; box.classList.add('pulse'); }
+  })();
 
   benchRows.innerHTML='';
   var b=estimatePercentiles(v,cats);
