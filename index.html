@@ -66,9 +66,9 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
   --radius:14px; --radius-lg:20px;
   --shadow: 0 20px 50px rgba(0,0,0,.45);
   --header-h:76px;
-  --font-display:'Space Grotesk',system-ui,sans-serif;
-  --font-body:'Inter',system-ui,sans-serif;
-  --font-mono:'IBM Plex Mono',monospace;
+  --font-display:'Space Grotesk',system-ui,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji';
+  --font-body:'Inter',system-ui,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji';
+  --font-mono:'IBM Plex Mono',monospace,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji';
 }
 :root[data-theme="light"]{
   --bg:#F7F6F3; --bg-2:#FFFFFF;
@@ -402,7 +402,7 @@ section.block{ padding:76px 0 }
 }
 @media (prefers-reduced-motion: reduce){ .subscribe-inline.pulse{ animation:none } }
 .subscribe-inline .sub-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center }
-.subscribe-inline h4{ margin:0; font-size:16px; font-family:'Playfair Display',serif }
+.subscribe-inline h4{ margin:0; font-size:16px; line-height:1.6; font-family:'Playfair Display',serif,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji' }
 .subscribe-inline p{ margin:5px 0 10px; color:var(--muted); font-size:13px }
 .subscribe-inline input[type="email"]{ flex:1 1 240px; padding:11px 13px; border-radius:10px; border:1px solid var(--line); background:var(--bg-2); color:var(--text); font-family:var(--font-mono); font-size:13.5px }
 
@@ -502,7 +502,7 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 .plan.free ul li.locked{ color:var(--muted-2) }
 
 .pro-badge{ display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:10.5px; font-weight:700; color:#1a1300; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); padding:3px 8px; border-radius:6px; letter-spacing:.03em; vertical-align:middle }
-.pro-lock{ display:flex; align-items:center; justify-content:center; gap:8px; padding:16px; border:1px dashed var(--line); border-radius:10px; color:var(--muted); font-size:13px; text-align:center }
+.pro-lock{ display:flex; align-items:center; justify-content:center; gap:8px; padding:16px; border:1px dashed var(--line); border-radius:10px; color:var(--muted); font-size:13px; text-align:center; line-height:1.8 }
 .pro-only-show{ display:none }
 body.is-pro .pro-only-hide{ display:none !important }
 body.is-pro .pro-only-show{ display:inline-flex !important }
