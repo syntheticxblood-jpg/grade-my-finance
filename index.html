@@ -458,8 +458,9 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 @keyframes fade{ from{ opacity:0; transform:translateY(3px) } to{ opacity:1; transform:none } }
 
 @media print{
+  *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; color-adjust:exact !important; }
   body{ background:#fff; color:#000 }
-  header.site,.hero,.stats,.mobile-cta,footer.site,#overlay,section.block{ display:none !important }
+  header.site,.hero,.stats,.mobile-cta,footer.site,#overlay,section.block,#cookieNotice{ display:none !important }
   #reportModal{ position:static !important; display:block !important; background:#fff !important }
   .sheet{ max-height:none !important; box-shadow:none !important; border:none !important }
 }
