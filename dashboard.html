@@ -97,6 +97,18 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:3
 </header>
 
 <main class="container">
+  <div class="section card">
+    <span class="section-label">Take your progress with you</span>
+    <p style="color:var(--muted);font-size:13.5px;margin:0 0 14px">
+      Your history, achievements, scenarios, and goal all live only in this browser. Click below to copy a link —
+      open that same link on your other device or browser, and everything comes back automatically. Same idea as
+      the "Copy share link" button on the calculator. Free for everyone, not a Pro feature.
+    </p>
+    <button class="btn gold sm" id="copyBackupLinkBtn" type="button">📋 Copy My Backup Link</button>
+    <div class="small" id="backupStatus" style="margin-top:10px;color:var(--muted)"></div>
+  </div>
+  </div>
+
   <div id="lockedState" style="display:none">
     <div class="locked-wrap card">
       <div class="seal-big">A+</div>
@@ -305,6 +317,64 @@ function renderAchievements(){
     grid.appendChild(badge);
   });
 }
+
+/* ================= BACKUP & RESTORE (copy-link style, like "Copy share link") ================= */
+var BACKUP_KEYS = [
+  'gmf_pro','gmf_theme','gmf_currency','gmf_housing','gmf_autosave',
+  'gmf_history_v2','gmf_checkin_count','gmf_best_score','gmf_achievements',
+  'gmf_scenarios','gmf_goal'
+];
+
+function buildBackupLink(){
+  var data = {};
+  BACKUP_KEYS.forEach(function(k){
+    var v = localStorage.getItem(k);
+    if(v !== null) data[k] = v;
+  });
+  var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  return location.origin + location.pathname + "?restore=" + encodeURIComponent(encoded);
+}
+
+function copyBackupLink(){
+  var status = document.getElementById('backupStatus');
+  var link = buildBackupLink();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(link).then(function(){
+      if(status) status.textContent = "Copied! Open this same link on your other device to bring everything back.";
+    }).catch(function(){
+      if(status) status.textContent = "Couldn't copy automatically — link: " + link;
+    });
+  } else {
+    prompt("Copy this link:", link);
+  }
+}
+
+function restoreFromUrlIfPresent(){
+  var params = new URLSearchParams(location.search);
+  var encoded = params.get("restore");
+  if(!encoded) return;
+  try{
+    var data = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(encoded)))));
+    var restoredCount = 0;
+    Object.keys(data).forEach(function(k){
+      if(BACKUP_KEYS.indexOf(k) > -1){
+        localStorage.setItem(k, data[k]);
+        restoredCount++;
+      }
+    });
+    // Clean the URL so refreshing doesn't re-restore repeatedly
+    history.replaceState(null, "", location.origin + location.pathname);
+    if(restoredCount > 0){
+      alert("Restored " + restoredCount + " item(s) from your backup link.");
+    }
+  }catch(err){
+    alert("That backup link doesn't look valid.");
+  }
+}
+restoreFromUrlIfPresent();
+
+var copyBackupLinkBtn = document.getElementById('copyBackupLinkBtn');
+if(copyBackupLinkBtn) copyBackupLinkBtn.addEventListener('click', copyBackupLink);
 
 function init(){
   var isPro = localStorage.getItem('gmf_pro') === 'true';
