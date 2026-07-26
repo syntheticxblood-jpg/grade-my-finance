@@ -529,6 +529,18 @@ body.is-pro .ad-slot{ display:none !important }
       <a class="icon-btn" href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener" aria-label="Join our Discord" title="Join our Discord" style="color:#5865F2">
         <svg width="20" height="20" viewBox="0 0 127.14 96.36" fill="currentColor" aria-hidden="true"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
       </a>
+      <select id="currencySelect" class="icon-btn" style="width:auto;padding:0 8px;font-size:12px;font-family:var(--font-mono)" aria-label="Display currency">
+        <option value="USD">USD $</option>
+        <option value="EUR">EUR €</option>
+        <option value="GBP">GBP £</option>
+        <option value="CAD">CAD $</option>
+        <option value="AUD">AUD $</option>
+        <option value="INR">INR ₹</option>
+        <option value="JPY">JPY ¥</option>
+        <option value="BRL">BRL R$</option>
+        <option value="MXN">MXN $</option>
+        <option value="ZAR">ZAR R</option>
+      </select>
       <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">◐</button>
       <a class="btn sm pro-only-hide" id="upgradeBtnTop" href="#pricing">Upgrade to Pro</a>
       <span class="btn sm pro-only-show" id="proPill" style="display:none">★ Pro</span>
@@ -549,7 +561,7 @@ body.is-pro .ad-slot{ display:none !important }
         <button class="btn ghost" id="demoBtn" type="button">See a sample report</button>
       </div>
       <div class="hero-proof hero-in" style="--d:.46s">
-        <span><b id="liveGradeCountHero">10,000+</b> report cards graded</span>
+        <span><b id="liveGradeCountHero">—</b> report cards graded</span>
         <span><b>100%</b> private — nothing sent to a server</span>
       </div>
     </div>
@@ -579,7 +591,7 @@ body.is-pro .ad-slot{ display:none !important }
 
 <div class="stats">
   <div class="container stats-row">
-    <div class="stat"><div class="num mono" id="liveGradeCountStrip">10,000+</div><div class="cap">report cards graded</div></div>
+    <div class="stat"><div class="num mono" id="liveGradeCountStrip">—</div><div class="cap">report cards graded</div></div>
     <div class="stat"><div class="num mono">&lt; 60s</div><div class="cap">average time to your grade</div></div>
     <div class="stat"><div class="num mono">0</div><div class="cap">numbers stored on our servers</div></div>
   </div>
@@ -660,7 +672,7 @@ body.is-pro .ad-slot{ display:none !important }
     <div class="field"><label for="expenses">Monthly expenses</label><input id="expenses" type="number" value="0" min="0" inputmode="decimal"></div>
     <div class="field"><label for="age">Age</label><input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"></div>
     <div class="field" id="homeCard"><label for="home">Home value</label><input id="home" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="assetsHint">Total assets: —</div></div>
-    <div class="field"><label for="retire">Retirement (401k/IRA)</label><input id="retire" type="number" value="0" min="0" inputmode="decimal"></div>
+    <div class="field"><label for="retire">Retirement accounts (401k, IRA, pension, RRSP, super, etc.)</label><input id="retire" type="number" value="0" min="0" inputmode="decimal"></div>
     <div class="field"><label for="brokerage">Brokerage / stocks</label><input id="brokerage" type="number" value="0" min="0" inputmode="decimal"></div>
     <div class="field"><label for="hsa">HSA</label><input id="hsa" type="number" value="0" min="0" inputmode="decimal"></div>
     <div class="field"><label for="cash">Cash savings</label><input id="cash" type="number" value="0" min="0" inputmode="decimal"></div>
@@ -894,6 +906,7 @@ body.is-pro .ad-slot{ display:none !important }
           <div>• Targets: savings rate ≈ 25% of take-home; emergency fund ≈ 6 months; age-based net worth uses a baseline of your annual spend (or $30k minimum).</div>
           <div>• Benchmarks and percentiles are rough estimates for context, not strict comparisons.</div>
           <div>• Privacy: calculations run in your browser. We don't store your numbers on our servers. If you save progress, it's saved only to your device (local storage).</div>
+          <div>• Currency: the selector converts displayed amounts using live exchange rates, but the underlying benchmarks (median income, net worth targets) are calibrated to the US — your grade doesn't adjust for cost-of-living differences in other countries.</div>
         </div>
       </details>
     </div>
@@ -1098,9 +1111,46 @@ body.is-pro .ad-slot{ display:none !important }
 "use strict";
 var retirementSafe = 3000000;
 var withdrawalRate = 0.07;
+
+/* ================= CURRENCY DISPLAY (conversion only — all scoring math stays in USD) ================= */
+// Honest limitation: this converts the NUMBERS shown, but the underlying
+// benchmarks (median income, net worth targets, etc.) are calibrated to the
+// US economy and don't adjust for cost-of-living differences elsewhere.
+var CURRENT_CURRENCY = localStorage.getItem("gmf_currency") || "USD";
+var CURRENT_RATE = 1;
+var RATE_CACHE_KEY = "gmf_fx_rate_" + CURRENT_CURRENCY;
+
+function loadExchangeRate(code, cb){
+  if(code === "USD"){ CURRENT_RATE = 1; if(cb) cb(); return; }
+  var cacheKey = "gmf_fx_rate_" + code;
+  try{
+    var cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
+    if(cached && (Date.now() - cached.at) < 24*60*60*1000){
+      CURRENT_RATE = cached.rate;
+      if(cb) cb();
+      return;
+    }
+  }catch(e){}
+  fetch("https://api.frankfurter.app/latest?from=USD&to="+code)
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      if(data && data.rates && data.rates[code]){
+        CURRENT_RATE = data.rates[code];
+        localStorage.setItem(cacheKey, JSON.stringify({ rate: CURRENT_RATE, at: Date.now() }));
+      }
+      if(cb) cb();
+    })
+    .catch(function(){ CURRENT_RATE = 1; if(cb) cb(); });
+}
+
 function money(n){
   if (!isFinite(n)) return "—";
-  return new Intl.NumberFormat(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 }).format(Math.round(n));
+  var converted = n * CURRENT_RATE;
+  try{
+    return new Intl.NumberFormat(undefined, { style:"currency", currency:CURRENT_CURRENCY, maximumFractionDigits:0 }).format(Math.round(converted));
+  }catch(e){
+    return new Intl.NumberFormat(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 }).format(Math.round(n));
+  }
 }
 
 (function(){
@@ -1152,6 +1202,25 @@ $("themeToggle").addEventListener("click", function(){
   var next=root.dataset.theme==="light"?"":"light"; root.dataset.theme=next;
   localStorage.setItem("gmf_theme", next||"dark"); __track('toggle_theme', {theme: next||'dark'});
 });
+
+var currencySelect = $("currencySelect");
+if(currencySelect){
+  currencySelect.value = CURRENT_CURRENCY;
+  loadExchangeRate(CURRENT_CURRENCY); // load on page load in case it's not USD
+  currencySelect.addEventListener("change", function(){
+    var code = currencySelect.value;
+    localStorage.setItem("gmf_currency", code);
+    CURRENT_CURRENCY = code;
+    loadExchangeRate(code, function(){
+      __track('change_currency', {currency: code});
+      if(window.__lastFullReport){
+        toastMsg("Currency updated — click \u201cRecalculate\u201d to see amounts in "+code+".");
+      } else {
+        toastMsg("Currency set to "+code+".");
+      }
+    });
+  });
+}
 
 var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","crypto","mortgage","student","auto","cc","otherDebt"];
 var els={}; ids.forEach(function(id){ els[id]=$(id); });
@@ -1998,7 +2067,7 @@ if(downloadCertBtn){
     setTimeout(function(){ win.focus(); win.print(); }, 400);
   });
 }
-$("calcAgain").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
+$("calcAgain").addEventListener("click",function(){ $("reportModal").classList.remove("show"); gradeNow(); });
 
 function gradeNow(){
   __track('click_get_report_card', {location: 'main'});
