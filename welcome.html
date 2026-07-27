@@ -83,6 +83,16 @@
       padding:6px 12px; border-radius:999px; margin-bottom:22px;
     }
     form{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:14px }
+    .survey{ margin-bottom:18px; text-align:left }
+    .survey-label{ font-size:12.5px; color:var(--muted); margin-bottom:9px; font-weight:600 }
+    .survey-options{ display:flex; flex-wrap:wrap; gap:7px }
+    .survey-pill{
+      appearance:none; border:1px solid var(--line); background:#0E1015; color:var(--muted);
+      font-family:var(--font-body); font-size:12.5px; padding:7px 12px; border-radius:999px; cursor:pointer;
+      transition:border-color .12s ease, color .12s ease, background .12s ease;
+    }
+    .survey-pill:hover{ border-color:var(--gold) }
+    .survey-pill.selected{ background:var(--gold-soft); border-color:var(--gold); color:var(--gold-bright); font-weight:700 }
     input[type="email"]{
       flex:1 1 220px; padding:13px 14px; border-radius:10px; border:1px solid var(--line);
       background:#0E1015; color:var(--text); font-family:var(--font-mono); font-size:14.5px;
@@ -115,9 +125,24 @@
     <p class="lede">Get your free financial grade in seconds. Enter your email to stay in the loop, or jump straight in.</p>
     <div class="live-stat" id="liveStat">Loading live stats…</div>
 
+    <div class="survey">
+      <div class="survey-label">How did you find us?</div>
+      <div class="survey-options" id="surveyOptions">
+        <button type="button" class="survey-pill" data-source="google">Google / Search</button>
+        <button type="button" class="survey-pill" data-source="reddit">Reddit</button>
+        <button type="button" class="survey-pill" data-source="twitter">Twitter / X</button>
+        <button type="button" class="survey-pill" data-source="discord">Discord</button>
+        <button type="button" class="survey-pill" data-source="facebook">Facebook</button>
+        <button type="button" class="survey-pill" data-source="friend">A friend</button>
+        <button type="button" class="survey-pill" data-source="other">Other</button>
+      </div>
+      <div id="surveyError" style="display:none;color:var(--bad,#F16565);font-size:12.5px;margin-top:8px">Please pick one before continuing.</div>
+    </div>
+
     <form id="emailForm"
           action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
           method="POST">
+      <input type="hidden" name="source" id="sourceField" value="">
       <input type="email" name="email" placeholder="you@example.com" required>
       <button type="submit" class="btn gold" style="width:auto">Join</button>
     </form>
@@ -132,18 +157,47 @@
   </div>
 
   <script>
+    var selectedSource = null;
+
+    function requireSourceSelection(){
+      if(selectedSource) return true;
+      var err = document.getElementById('surveyError');
+      if(err) err.style.display = 'block';
+      var surveyEl = document.querySelector('.survey');
+      if(surveyEl) surveyEl.scrollIntoView({ behavior:'smooth', block:'center' });
+      return false;
+    }
+
     function continueSession() {
+      if(!requireSourceSelection()) return;
       sessionStorage.setItem('skipWelcomeSession', 'true');
       setTimeout(() => window.location.href = 'index.html', 100);
     }
     function skipSession() {
+      if(!requireSourceSelection()) return;
       sessionStorage.setItem('skipWelcomeSession', 'true');
       setTimeout(() => window.location.href = 'index.html', 100);
     }
 
+    // Referral source survey — now required before continuing any path
+    // (email signup, continue without email, or dismiss). Still just one
+    // tap, with an "Other" catch-all, so the friction stays minimal.
+    document.querySelectorAll('.survey-pill').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        document.querySelectorAll('.survey-pill').forEach(function(b){ b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        selectedSource = btn.dataset.source;
+        document.getElementById('sourceField').value = selectedSource;
+        var err = document.getElementById('surveyError');
+        if(err) err.style.display = 'none';
+        try{ gtag('event', 'referral_source', { source: selectedSource }); }catch(e){}
+      });
+    });
+
     const emailForm = document.getElementById('emailForm');
     emailForm.addEventListener('submit', function(e){
       e.preventDefault();
+      if(!requireSourceSelection()) return;
       const emailInput = emailForm.querySelector('input[name="email"]');
       const email = emailInput.value.trim();
       if(!/^\S+@\S+\.\S+$/.test(email)){
