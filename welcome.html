@@ -182,6 +182,10 @@
     // Referral source survey — now required before continuing any path
     // (email signup, continue without email, or dismiss). Still just one
     // tap, with an "Other" catch-all, so the friction stays minimal.
+    // Paste your deployed referral-source-logger.gs URL here once set up.
+    // Leave blank to skip this and rely on the GA4 event only.
+    var REFERRAL_LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbxcSRjFWC09iR23hbF9wTrLbvxzTebe9IHf-P_EWmevCMxbRTOvc1D50DxM7K5W2pJV/exec";
+
     document.querySelectorAll('.survey-pill').forEach(function(btn){
       btn.addEventListener('click', function(){
         document.querySelectorAll('.survey-pill').forEach(function(b){ b.classList.remove('selected'); });
@@ -191,6 +195,13 @@
         var err = document.getElementById('surveyError');
         if(err) err.style.display = 'none';
         try{ gtag('event', 'referral_source', { source: selectedSource }); }catch(e){}
+        if(REFERRAL_LOG_ENDPOINT){
+          fetch(REFERRAL_LOG_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ source: selectedSource })
+          }).catch(function(){}); // fire-and-forget, never blocks the user
+        }
       });
     });
 
