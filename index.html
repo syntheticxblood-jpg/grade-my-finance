@@ -448,6 +448,34 @@ section.block{ padding:76px 0 }
 .achv-badge.locked .achv-label{ color:var(--muted-2) }
 .achv-new{ position:absolute; top:-4px; right:-4px; background:var(--bad); color:#fff; font-size:8px; font-weight:800; border-radius:99px; padding:2px 5px; line-height:1 }
 .sheet input[type="range"]{ accent-color: var(--gold); }
+
+/* Demo slider (before/after homepage demo) — fully custom styled so its
+   JS-driven color (red→gold→green based on position) actually shows,
+   instead of the browser's native track rendering overriding it. Scoped
+   by ID so it doesn't affect any other slider on the site. */
+#demoSlider{
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 8px; border-radius: 999px; outline: none; cursor: pointer;
+  background: var(--surface-2); /* fallback before JS sets the real gradient */
+}
+#demoSlider::-webkit-slider-thumb{
+  -webkit-appearance: none; appearance: none;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; border: 2px solid rgba(0,0,0,.2); box-shadow: 0 1px 4px rgba(0,0,0,.35);
+  cursor: pointer;
+}
+#demoSlider::-moz-range-thumb{
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; border: 2px solid rgba(0,0,0,.2); box-shadow: 0 1px 4px rgba(0,0,0,.35);
+  cursor: pointer;
+}
+#demoSlider::-moz-range-track{
+  height: 8px; border-radius: 999px; background: transparent;
+}
+#demoSlider::-moz-range-progress{
+  height: 8px; border-radius: 999px 0 0 999px;
+  background: var(--demo-track-color, var(--gold));
+}
 .sheet input[type="text"]{ background:var(--bg-2); color:var(--text); border-color:var(--line) }
 
 /* Testimonials */
@@ -931,7 +959,7 @@ body.is-pro .ad-slot{ display:none !important }
           <div id="projText" class="small" style="font-weight:700">Adjust sliders to preview your new grade.</div>
           <button id="applyProjection" class="btn sm" type="button">Apply to inputs</button>
         </div>
-        <div class="small" id="projNotes">Preview updates live. Click "Recalculate" after applying to see the full updated report.</div>
+        <div class="small" id="projNotes">Preview updates live. Clicking "Apply to inputs" recalculates your full report immediately.</div>
         <div class="pro-lock">🔒 Save & name multiple scenarios — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
         <div class="pro-gated" id="scenarioBox">
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -1011,23 +1039,23 @@ body.is-pro .ad-slot{ display:none !important }
         <div class="price">$2.99<span> one-time</span></div>
         <ul>
           <li>Everything in Free</li>
-          <li><b>All 3 personalized action steps</b>, not just the top one</li>
+          <li><b>All 3 personalized action steps</b> — not just the top one</li>
           <li><b>Net worth projection</b> — see where you're headed in 5/10/20/30 years</li>
           <li><b>Debt payoff planner</b> — avalanche vs. snowball, with your actual numbers</li>
           <li><b>Downloadable Certificate PDF</b> — a formal, printable version of your grade</li>
           <li><b>Retirement readiness check</b> — your 401k/IRA vs. common salary-multiple benchmarks</li>
-          <li><b>Full trend history</b> across every check-in</li>
-          <li><b>Save & name multiple</b> what-if scenarios</li>
+          <li><b>Full trend history</b> — across every check-in</li>
+          <li><b>Save & name multiple</b> — what-if scenarios</li>
           <li><b>Ad-free</b> — no banner ads, ever</li>
           <li>Early access to new tools</li>
         </ul>
         <a class="btn gold pro-only-hide" id="upgradeBtnPricing" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/cfkstk">Upgrade to Pro</a>
         <span class="btn pro-only-show" style="display:none;background:var(--gold-soft);color:var(--gold-bright);border-color:rgba(201,162,39,.4)">You're on Pro ✓</span>
-        <div class="license-row">
+        <div class="license-row pro-only-hide">
           <input type="text" id="licenseInput" placeholder="Have a Pro license key? Paste it here" aria-label="Pro license key">
           <button class="btn sm" id="licenseSubmit" type="button">Activate</button>
         </div>
-        <div class="license-status" id="licenseStatus"></div>
+        <div class="license-status pro-only-hide" id="licenseStatus"></div>
       </div>
     </div>
   </div>
@@ -1258,6 +1286,15 @@ function spawnInkRipple(targetEl){
 
 var NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
 function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
+// Rounds a dollar figure to a sensible precision based on magnitude — used
+// for "rough estimate" figures so we don't display false precision like
+// "$59,568" right next to a disclaimer calling it a rough estimate.
+function roundNice(n){
+  if(n < 1000) return Math.round(n/10)*10;
+  if(n < 10000) return Math.round(n/100)*100;
+  if(n < 100000) return Math.round(n/500)*500;
+  return Math.round(n/1000)*1000;
+}
 function map01(x,a,b){ return clamp((x-a)/(b-a),0,1); }
 function targetNW(age){
   if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
@@ -1453,12 +1490,12 @@ function buildPath(v,cats){
   if(v.saveRate < 0.25){
     var dSave=(1 - map01(v.saveRate,0,0.25))*0.20*100;
     var need = Math.max(0, v.income*0.25 - (v.income - v.expenses));
-    push("Boost savings to 25% (set aside about "+money(need)+"/mo).", dSave);
+    push("Boost savings to 25% (set aside about "+money(roundNice(need))+"/mo).", dSave);
   }
   if(v.efMonths < 6){
     var dEF=(1 - map01(v.efMonths,0,6))*0.15*100;
     var efNeed = Math.max(0, v.expenses*6 - v.cash);
-    push("Build emergency fund to 6 months (save ~"+money(Math.round(efNeed/6))+"/mo for 6 months).", dEF);
+    push("Build emergency fund to 6 months (save ~"+money(roundNice(efNeed/6))+"/mo for 6 months).", dEF);
   }
   if(v.dtiWeighted > 0.30){
     var sDebtNow = clamp(1 - v.dtiWeighted/0.60,0,1), sDebtGoal = clamp(1 - 0.30/0.60,0,1);
@@ -1466,17 +1503,17 @@ function buildPath(v,cats){
     var targetWeighted = Math.round(v.baseline*0.30), weightedPaydown = Math.max(0, v.debtWeighted - targetWeighted);
     // Recommend paying down whichever counts most against the score first: cards, then auto, then student.
     var debtTip;
-    if(v.cc > 0) debtTip = "Pay down credit cards first (they weigh heaviest on this score) — reduce about "+money(Math.min(v.cc, Math.round(weightedPaydown/1.5)))+".";
-    else if(v.otherDebt > 0) debtTip = "Pay down personal loans / other debt — reduce about "+money(Math.min(v.otherDebt, Math.round(weightedPaydown/1.2)))+".";
-    else if(v.auto > 0) debtTip = "Pay down your auto loan — reduce about "+money(Math.min(v.auto, weightedPaydown))+".";
-    else debtTip = "Chip away at student loans — reduce about "+money(Math.round(weightedPaydown/0.5))+" (weighted lightly, but still adds up).";
+    if(v.cc > 0) debtTip = "Pay down credit cards first (they weigh heaviest on this score) — reduce about "+money(roundNice(Math.min(v.cc, weightedPaydown/1.5)))+".";
+    else if(v.otherDebt > 0) debtTip = "Pay down personal loans / other debt — reduce about "+money(roundNice(Math.min(v.otherDebt, weightedPaydown/1.2)))+".";
+    else if(v.auto > 0) debtTip = "Pay down your auto loan — reduce about "+money(roundNice(Math.min(v.auto, weightedPaydown)))+".";
+    else debtTip = "Chip away at student loans — reduce about "+money(roundNice(weightedPaydown/0.5))+" (weighted lightly, but still adds up).";
     push(debtTip, dDebt);
   }
   if(v.nwProgress < 1){
     var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
     var dAge=(sAgeGoal - sAgeNow)*0.20*100;
     var gap = Math.max(0, v.nwTargetAmount - v.net);
-    push("Close the age-based net worth gap (~"+money(gap)+"). Consider investing ~"+money(Math.round(gap/36))+"/mo for ~36 months.", dAge);
+    push("Close the age-based net worth gap (~"+money(roundNice(gap))+"). Consider investing ~"+money(roundNice(gap/36))+"/mo for ~36 months.", dAge);
   }
   var ratio = v.annualIncome/incomeBenchmark(v.age||30);
   if(ratio < 1.15){
@@ -1484,7 +1521,7 @@ function buildPath(v,cats){
     var sIncGoal = clamp(0.5 + 0.5*Math.tanh((1.15-1)*1.2),0,1);
     var dInc=(sIncGoal - sIncNow)*0.25*100;
     var targetAnnual = Math.round(incomeBenchmark(v.age||30)*1.15), delta = Math.max(0, targetAnnual - v.annualIncome);
-    push("Grow income toward "+money(targetAnnual)+"/yr (≈ "+money(Math.round(delta/12))+"/mo via raise or side income).", dInc);
+    push("Grow income toward "+money(roundNice(targetAnnual))+"/yr (≈ "+money(roundNice(delta/12))+"/mo via raise or side income).", dInc);
   }
   items.sort(function(a,b){ return b.pts - a.pts; });
   return items.slice(0,3);
@@ -1774,7 +1811,7 @@ function projectNetWorth(startNet, monthlyContribution, annualRatePct, years){
   return points; // yearly balances, index 0 = today, index N = year N
 }
 function drawProjectionLine(svgEl, points, milestoneYears){
-  var w=640, h=200, padL=54, padR=14, padT=14, padB=26;
+  var w=640, h=200, padL=54, padR=32, padT=14, padB=26;
   var innerW=w-padL-padR, innerH=h-padT-padB;
   var minV=Math.min.apply(null, points.concat([0])), maxV=Math.max.apply(null, points);
   if(maxV===minV) maxV=minV+1;
@@ -1911,6 +1948,14 @@ function renderDebtPayoffPlanner(v){
     extraVal.textContent = money(extra);
     var order = getOrder();
 
+    // Check if the OTHER strategy would produce the same order — happens when
+    // one debt has both the highest rate and smallest balance. Not a bug when
+    // this happens, just worth explaining so it doesn't look broken.
+    var altIndices = rawDebts.map(function(_,i){ return i; });
+    if(strategy==='avalanche') altIndices.sort(function(a,b){ return rawDebts[a].balance - rawDebts[b].balance; });
+    else altIndices.sort(function(a,b){ return rawDebts[b].rate - rawDebts[a].rate; });
+    var sameOrderAsOtherStrategy = JSON.stringify(order) === JSON.stringify(altIndices);
+
     var result = simulateDebtPayoff(rawDebts, extra, order);
     var baseline = simulateDebtPayoff(rawDebts, 0, order); // minimum-payments-only comparison
     var interestSaved = Math.max(0, baseline.totalInterest - result.totalInterest);
@@ -1928,6 +1973,12 @@ function renderDebtPayoffPlanner(v){
       card.innerHTML='<div class="small">'+s.label+'</div><div class="mono" style="font-weight:700;font-size:15px;color:var(--gold-bright)">'+s.val+'</div>';
       summaryEl.appendChild(card);
     });
+
+    if(sameOrderAsOtherStrategy && rawDebts.length > 1){
+      var sameNote=el('div',{className:'small', style:'margin-bottom:8px;color:var(--muted)'});
+      sameNote.textContent = 'ℹ️ For your specific debts, avalanche and snowball pick the same order this time (one debt happens to have both the highest rate and the smallest balance) — that won\'t always be the case, but it is here.';
+      timelineEl.parentNode.insertBefore(sameNote, timelineEl);
+    }
 
     timelineEl.innerHTML='';
     result.timeline.forEach(function(t, idx){
@@ -2674,6 +2725,16 @@ $("compareFriend").addEventListener("click", function(){
     nw:     [-8000, 420000]
   };
   function lerp(a,b,t){ return a + (b-a)*t; }
+  function barColorFor(t){
+    if(t < 0.34) return 'var(--bad)';
+    if(t < 0.67) return 'linear-gradient(90deg,var(--gold),var(--gold-bright))';
+    return 'linear-gradient(90deg,var(--good-2),var(--good))';
+  }
+  function solidColorFor(t){
+    if(t < 0.34) return 'var(--bad)';
+    if(t < 0.67) return 'var(--gold-bright)';
+    return 'var(--good)';
+  }
 
   function update(){
     var t = (+slider.value)/100;
@@ -2692,9 +2753,13 @@ $("compareFriend").addEventListener("click", function(){
 
     saveEl.textContent = Math.round(save)+"%";
     saveBar.style.width = Math.min(100, (save/32)*100)+"%";
+    saveBar.style.background = barColorFor(t);
     efEl.textContent = ef.toFixed(1)+" mo";
     efBar.style.width = Math.min(100, (ef/9)*100)+"%";
+    efBar.style.background = barColorFor(t);
     nwEl.textContent = money(nw);
+    slider.style.background = 'linear-gradient(to right, '+solidColorFor(t)+' '+(t*100)+'%, var(--surface-2) '+(t*100)+'%)';
+    slider.style.setProperty('--demo-track-color', solidColorFor(t));
   }
   slider.addEventListener('input', update);
   update();
@@ -2906,8 +2971,8 @@ function initProjections(vBase, catsBase){
     els.auto.value = Math.round(vApplied.auto);
     els.student.value = Math.round(vApplied.student);
     updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw()));
-    toastMsg("Projection applied. Click \u201cRecalculate\u201d to see the updated report.");
     __track('apply_projection');
+    gradeNow(); // auto-recalculates immediately — no second click needed
   };
 }
 
