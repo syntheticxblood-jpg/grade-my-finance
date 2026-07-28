@@ -1000,7 +1000,7 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
       <div class="plan highlight">
         <h3>Pro <span class="pro-badge">★ PRO</span></h3>
-        <div class="price">$4.99<span> /month</span></div>
+        <div class="price">$2.99<span> one-time</span></div>
         <ul>
           <li>Everything in Free</li>
           <li><b>All 3 personalized action steps</b>, not just the top one</li>
@@ -1013,7 +1013,7 @@ body.is-pro .ad-slot{ display:none !important }
           <li><b>Ad-free</b> — no banner ads, ever</li>
           <li>Early access to new tools</li>
         </ul>
-        <a class="btn gold pro-only-hide" id="upgradeBtnPricing" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/mdygpj">Upgrade to Pro</a>
+        <a class="btn gold pro-only-hide" id="upgradeBtnPricing" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/cfkstk">Upgrade to Pro</a>
         <span class="btn pro-only-show" style="display:none;background:var(--gold-soft);color:var(--gold-bright);border-color:rgba(201,162,39,.4)">You're on Pro ✓</span>
         <div class="license-row">
           <input type="text" id="licenseInput" placeholder="Have a Pro license key? Paste it here" aria-label="Pro license key">
@@ -1136,7 +1136,7 @@ body.is-pro .ad-slot{ display:none !important }
   "description": "Free financial health grade calculator. Enter income, expenses, and assets to get a letter grade and a personalized plan to improve it.",
   "offers": [
     { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD" },
-    { "@type": "Offer", "name": "Pro", "price": "4.99", "priceCurrency": "USD", "billingIncrement": "P1M" }
+    { "@type": "Offer", "name": "Pro", "price": "2.99", "priceCurrency": "USD" }
   ]
 }
 </script>
@@ -2318,7 +2318,7 @@ function tryGumroadVerify(key){
   fetch("https://api.gumroad.com/v2/licenses/verify", {
     method:"POST",
     headers:{"Content-Type":"application/x-www-form-urlencoded"},
-    body:"product_permalink=mdygpj&license_key="+encodeURIComponent(key)
+    body:"product_permalink=cfkstk&license_key="+encodeURIComponent(key)
   }).then(function(res){ return res.json().catch(function(){ return {success:false}; }); })
     .then(function(data){
       if(data && data.success){
