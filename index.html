@@ -967,6 +967,8 @@ body.is-pro .ad-slot{ display:none !important }
           <div>• Within the debt factor, credit card balances count most heavily, personal loans/other debt moderately-high, auto loans moderately, and student loans lightest — reflecting typical interest rates and repayment flexibility, not a judgment on any specific loan.</div>
           <div>• Crypto and other investments count as assets alongside retirement, brokerage, and cash.</div>
           <div>• Targets: savings rate ≈ 25% of take-home; emergency fund ≈ 6 months; age-based net worth uses a baseline of your annual spend (or $30k minimum).</div>
+          <div>• Income is compared against a typical benchmark for your age (roughly $38k at 22 up to $80k by 55+), not one flat number for everyone.</div>
+          <div>• Negative net worth doesn't automatically zero out — it's fairly common at younger ages (student loans, no home equity yet), so this factor gives some credit for "typical for this age" vs. treating any negative number identically.</div>
           <div>• Benchmarks and percentiles are rough estimates for context, not strict comparisons.</div>
           <div>• Privacy: your income, expenses, assets, and debts are entered and calculated entirely in your browser and never transmitted anywhere. Your inputs are saved automatically to your own device's local storage (not sent to us) so they're there next time you visit. When you complete a grade, we log only your letter grade and numeric score (no financial details) to power the public "report cards graded" counter. See our <a href="privacy-policy.html" style="color:var(--gold-bright)">Privacy Policy</a> for full details.</div>
           <div>• Currency: the selector converts displayed amounts using live exchange rates, but the underlying benchmarks (median income, net worth targets) are calibrated to the US — your grade doesn't adjust for cost-of-living differences in other countries.</div>
@@ -1258,6 +1260,28 @@ function targetNW(age){
   }
   return NW_CURVE[NW_CURVE.length-1][1];
 }
+// Income benchmark now scales with age (replacing a flat $70k for everyone) —
+// a 22-year-old is compared against typical early-career income, not the
+// same number used for someone at their peak earning years.
+var INCOME_BENCHMARK_CURVE=[[22,38000],[25,45000],[30,55000],[35,65000],[40,72000],[45,76000],[50,78000],[55,80000],[60,80000]];
+function incomeBenchmark(age){
+  if(age<=INCOME_BENCHMARK_CURVE[0][0]) return INCOME_BENCHMARK_CURVE[0][1];
+  if(age>=INCOME_BENCHMARK_CURVE[INCOME_BENCHMARK_CURVE.length-1][0]) return INCOME_BENCHMARK_CURVE[INCOME_BENCHMARK_CURVE.length-1][1];
+  for(var i=1;i<INCOME_BENCHMARK_CURVE.length;i++){
+    var a0=INCOME_BENCHMARK_CURVE[i-1][0], b0=INCOME_BENCHMARK_CURVE[i-1][1], a1=INCOME_BENCHMARK_CURVE[i][0], b1=INCOME_BENCHMARK_CURVE[i][1];
+    if(age<=a1){ var t=(age-a0)/(a1-a0); return b0+(b1-b0)*t; }
+  }
+  return INCOME_BENCHMARK_CURVE[INCOME_BENCHMARK_CURVE.length-1][1];
+}
+// Graduated credit for negative net worth, instead of a flat zero. Any
+// positive progress toward the age-based target behaves exactly as before
+// (unchanged) — this only affects the negative case, giving a small amount
+// of differentiation between "slightly underwater, typical for this age"
+// and "deeply negative," rather than treating them identically.
+function ageNWScore(nwProgress){
+  if(nwProgress >= 0) return Math.pow(clamp(nwProgress,0,1.0),0.85);
+  return clamp(0.15 * (1 - clamp(-nwProgress,0,3)/3), 0, 0.15);
+}
 function overallLetter(s){
   return s>=97?"A+":s>=93?"A":s>=90?"A-":s>=87?"B+":s>=83?"B":s>=80?"B-":s>=77?"C+":s>=73?"C":s>=70?"C-":s>=67?"D+":s>=63?"D":s>=60?"D-":"F";
 }
@@ -1356,7 +1380,7 @@ function deriveFrom(raw){
   v.nwTargetAmount = v.nwTargetMultiple * v.baseline;
   if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) v.nwProgress = 1;
   else v.nwProgress = v.nwTargetAmount > 0 ? v.net / v.nwTargetAmount : 0;
-  var ratio = v.annualIncome / 70000;
+  var ratio = v.annualIncome / incomeBenchmark(v.age || 30);
   v.incomeScore = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2), 0, 1);
   v.incomeLetter = incomeLetterFromRatio(ratio);
   return v;
@@ -1386,7 +1410,7 @@ function categoryScores(v){
   var sSave = map01(v.saveRate, 0, 0.25);
   var sEF   = map01(v.efMonths, 0, 6);
   var sDebt = clamp(1 - v.dtiWeighted/0.60, 0, 1);
-  var sAgeNW= Math.pow(clamp(v.nwProgress, 0, 1.0), 0.85);
+  var sAgeNW= ageNWScore(v.nwProgress);
   var sInc  = v.incomeScore;
   var weighted;
   if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) weighted = 100;
@@ -1399,7 +1423,7 @@ function categoryScores(v){
       { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months", letter:letterFrom01(sEF), tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
       { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add ~"+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt load." },
       { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(clamp(v.nwProgress,0,1)*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+" to target." : "On track or ahead." },
-      { key:"Income strength", sub:"vs median", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: v.annualIncome < 70000*1.15 ? "Plan skill/raise to reach "+money(Math.round(70000*1.15))+"+." : "Automate investing + match." }
+      { key:"Income strength", sub:"vs age-adjusted benchmark", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: v.annualIncome < incomeBenchmark(v.age||30)*1.15 ? "Plan skill/raise to reach "+money(Math.round(incomeBenchmark(v.age||30)*1.15))+"+." : "Automate investing + match." }
     ],
     overall: {
       score: (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) ? 100 : Math.round(weighted*10)/10,
@@ -1446,12 +1470,12 @@ function buildPath(v,cats){
     var gap = Math.max(0, v.nwTargetAmount - v.net);
     push("Close the age-based net worth gap (~"+money(gap)+"). Consider investing ~"+money(Math.round(gap/36))+"/mo for ~36 months.", dAge);
   }
-  var ratio = v.annualIncome/70000;
+  var ratio = v.annualIncome/incomeBenchmark(v.age||30);
   if(ratio < 1.15){
     var sIncNow = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2),0,1);
     var sIncGoal = clamp(0.5 + 0.5*Math.tanh((1.15-1)*1.2),0,1);
     var dInc=(sIncGoal - sIncNow)*0.25*100;
-    var targetAnnual = Math.round(70000*1.15), delta = Math.max(0, targetAnnual - v.annualIncome);
+    var targetAnnual = Math.round(incomeBenchmark(v.age||30)*1.15), delta = Math.max(0, targetAnnual - v.annualIncome);
     push("Grow income toward "+money(targetAnnual)+"/yr (≈ "+money(Math.round(delta/12))+"/mo via raise or side income).", dInc);
   }
   items.sort(function(a,b){ return b.pts - a.pts; });
@@ -1526,12 +1550,12 @@ function sparkline(svgEl, arr){
 }
 
 function estimatePercentiles(v, cats){
-  var incomeRatio = v.annualIncome/70000;
+  var incomeRatio = v.annualIncome/incomeBenchmark(v.age||30);
   var incomePct = Math.round(clamp(50 + (incomeRatio-1)*35*100/100, 5, 95));
   var efPct     = Math.round(clamp(v.efMonths/6,0,1)*90);
   var nwPct     = Math.round(clamp(v.nwProgress,0,1)*90);
   return [
-    {label:'Income', value: incomePct, expl: v.annualIncome? money(v.annualIncome)+'/yr vs median proxy' : '—'},
+    {label:'Income', value: incomePct, expl: v.annualIncome? money(v.annualIncome)+'/yr vs age-adjusted proxy' : '—'},
     {label:'Emergency fund', value: efPct, expl: v.efMonths.toFixed(1)+' mo runway (goal 6)'},
     {label:'Age-based net worth', value: nwPct, expl: Math.round(v.nwProgress*100)+'% of target ('+v.nwTargetMultiple.toFixed(2)+'× baseline)'}
   ];
