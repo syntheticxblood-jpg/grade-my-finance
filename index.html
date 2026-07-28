@@ -905,10 +905,12 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
       <div class="pro-lock">🔒 See exactly when you'll be debt-free — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
       <div class="pro-gated" id="dppBox">
-        <div class="segmented" style="margin-bottom:14px">
+        <div class="segmented" style="margin-bottom:8px">
           <button id="dppAvalanche" type="button">Avalanche</button>
           <button id="dppSnowball" type="button">Snowball</button>
         </div>
+        <div id="dppStrategyExplainer" class="small" style="margin-bottom:14px;color:var(--muted)"></div>
+        <div id="dppSameOrderNote" class="small" style="display:none;margin-bottom:10px;color:var(--muted)"></div>
         <label style="display:grid;gap:6px;margin-bottom:12px">
           <div style="display:flex;justify-content:space-between;align-items:center"><span>Extra monthly payment (beyond minimums)</span><strong class="mono" id="dppExtraVal">$0</strong></div>
           <input id="dppExtra" type="range" min="0" max="1000" step="25" value="0" aria-label="Extra monthly debt payment">
@@ -1948,6 +1950,16 @@ function renderDebtPayoffPlanner(v){
     extraVal.textContent = money(extra);
     var order = getOrder();
 
+    // Always-visible explainer of what each strategy actually means —
+    // shown every time, regardless of whether this user's specific debts
+    // happen to produce the same order under both.
+    var explainerEl = document.getElementById('dppStrategyExplainer');
+    if(explainerEl){
+      explainerEl.innerHTML = strategy==='avalanche'
+        ? '<strong>Avalanche:</strong> pay minimums on everything, then throw extra money at whichever debt has the <em>highest interest rate</em> first — minimizes total interest paid.'
+        : '<strong>Snowball:</strong> pay minimums on everything, then throw extra money at whichever debt has the <em>smallest balance</em> first — quick wins to help you stick with it.';
+    }
+
     // Check if the OTHER strategy would produce the same order — happens when
     // one debt has both the highest rate and smallest balance. Not a bug when
     // this happens, just worth explaining so it doesn't look broken.
@@ -1955,6 +1967,18 @@ function renderDebtPayoffPlanner(v){
     if(strategy==='avalanche') altIndices.sort(function(a,b){ return rawDebts[a].balance - rawDebts[b].balance; });
     else altIndices.sort(function(a,b){ return rawDebts[b].rate - rawDebts[a].rate; });
     var sameOrderAsOtherStrategy = JSON.stringify(order) === JSON.stringify(altIndices);
+
+    // Update the ONE stable note element — fixes the earlier bug where a new
+    // note got appended on every single update() call, stacking up endlessly.
+    var sameNoteEl = document.getElementById('dppSameOrderNote');
+    if(sameNoteEl){
+      if(sameOrderAsOtherStrategy && rawDebts.length > 1){
+        sameNoteEl.style.display = 'block';
+        sameNoteEl.textContent = 'ℹ️ For your specific debts, avalanche and snowball pick the same order right now (one debt happens to have both the highest rate and the smallest balance) — that won\'t always be true, but it is here.';
+      } else {
+        sameNoteEl.style.display = 'none';
+      }
+    }
 
     var result = simulateDebtPayoff(rawDebts, extra, order);
     var baseline = simulateDebtPayoff(rawDebts, 0, order); // minimum-payments-only comparison
@@ -1973,12 +1997,6 @@ function renderDebtPayoffPlanner(v){
       card.innerHTML='<div class="small">'+s.label+'</div><div class="mono" style="font-weight:700;font-size:15px;color:var(--gold-bright)">'+s.val+'</div>';
       summaryEl.appendChild(card);
     });
-
-    if(sameOrderAsOtherStrategy && rawDebts.length > 1){
-      var sameNote=el('div',{className:'small', style:'margin-bottom:8px;color:var(--muted)'});
-      sameNote.textContent = 'ℹ️ For your specific debts, avalanche and snowball pick the same order this time (one debt happens to have both the highest rate and the smallest balance) — that won\'t always be the case, but it is here.';
-      timelineEl.parentNode.insertBefore(sameNote, timelineEl);
-    }
 
     timelineEl.innerHTML='';
     result.timeline.forEach(function(t, idx){
