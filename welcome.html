@@ -125,7 +125,7 @@
     <p class="lede">Get your free financial grade in seconds. Enter your email to stay in the loop, or jump straight in.</p>
     <div class="live-stat" id="liveStat">Loading live stats…</div>
 
-    <div class="survey">
+    <div class="survey" id="surveyBlock">
       <div class="survey-label">How did you find us?</div>
       <div class="survey-options" id="surveyOptions">
         <button type="button" class="survey-pill" data-source="google">Google / Search</button>
@@ -157,7 +157,18 @@
   </div>
 
   <script>
-    var selectedSource = null;
+    // Remembered permanently (localStorage, not sessionStorage) — once someone
+    // has answered this on a given device/browser, it never asks again, even
+    // across new sessions or browser restarts.
+    var ALREADY_ANSWERED_KEY = 'gmf_source_answered';
+    var selectedSource = localStorage.getItem(ALREADY_ANSWERED_KEY) || null;
+
+    if(selectedSource){
+      // Already answered on a previous visit — hide the survey entirely
+      // instead of asking again.
+      var existingSurvey = document.getElementById('surveyBlock');
+      if(existingSurvey) existingSurvey.style.display = 'none';
+    }
 
     function requireSourceSelection(){
       if(selectedSource) return true;
@@ -179,9 +190,8 @@
       setTimeout(() => window.location.href = 'index.html', 100);
     }
 
-    // Referral source survey — now required before continuing any path
-    // (email signup, continue without email, or dismiss). Still just one
-    // tap, with an "Other" catch-all, so the friction stays minimal.
+    // Referral source survey — required once per device, then remembered
+    // permanently. Still just one tap, with an "Other" catch-all.
     // Paste your deployed referral-source-logger.gs URL here once set up.
     // Leave blank to skip this and rely on the GA4 event only.
     var REFERRAL_LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbxcSRjFWC09iR23hbF9wTrLbvxzTebe9IHf-P_EWmevCMxbRTOvc1D50DxM7K5W2pJV/exec";
@@ -191,6 +201,7 @@
         document.querySelectorAll('.survey-pill').forEach(function(b){ b.classList.remove('selected'); });
         btn.classList.add('selected');
         selectedSource = btn.dataset.source;
+        localStorage.setItem(ALREADY_ANSWERED_KEY, selectedSource); // remembered permanently
         document.getElementById('sourceField').value = selectedSource;
         var err = document.getElementById('surveyError');
         if(err) err.style.display = 'none';
