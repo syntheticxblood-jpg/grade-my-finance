@@ -1039,6 +1039,7 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="plan highlight">
         <h3>Pro <span class="pro-badge">★ PRO</span></h3>
         <div class="price">$2.99<span> one-time</span></div>
+        <div class="small" style="margin-bottom:12px;color:var(--muted)">Less than a coffee. Yours forever, no subscription.</div>
         <ul>
           <li>Everything in Free</li>
           <li><b>All 3 personalized action steps</b> — not just the top one</li>
@@ -1501,7 +1502,18 @@ function buildPath(v,cats){
     var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
     var dAge=(sAgeGoal - sAgeNow)*0.20*100;
     var gap = Math.max(0, v.nwTargetAmount - v.net);
-    push("Close the age-based net worth gap (~"+money(roundNice(gap))+"). Consider investing ~"+money(roundNice(gap/36))+"/mo for ~36 months.", dAge);
+    // Never suggest more than half of someone's actual monthly surplus — a
+    // fixed "36 months" framing broke down badly for lower incomes, once
+    // suggesting someone invest more per month than they even earn. Cap the
+    // suggestion to what's realistic, and be honest about how long that
+    // actually takes instead of pretending 36 months always works.
+    var surplus = Math.max(0, v.income - v.expenses);
+    var realisticMonthly = Math.min(gap/36, Math.max(surplus*0.5, 25));
+    var monthsNeeded = realisticMonthly > 0 ? Math.ceil(gap/realisticMonthly) : null;
+    var timeframeText = !monthsNeeded ? "a pace that fits your budget"
+      : monthsNeeded<=60 ? "~"+monthsNeeded+" months"
+      : "~"+Math.round(monthsNeeded/12)+" years";
+    push("Close the age-based net worth gap (~"+money(roundNice(gap))+"). Consider investing ~"+money(roundNice(realisticMonthly))+"/mo — "+timeframeText+" at that pace.", dAge);
   }
   var ratio = v.annualIncome/incomeBenchmark(v.age||30);
   if(ratio < 1.15){
@@ -1751,6 +1763,10 @@ function renderAchievements(v, cats, checkin, streak){
   });
 
   if(newlyUnlocked.length){ __track('achievement_unlocked', { ids: newlyUnlocked.join(',') }); }
+  return newlyUnlocked.map(function(id){
+    var match = ACHIEVEMENTS.filter(function(a){ return a.id===id; })[0];
+    return match ? match.label : id;
+  });
 }
 
 var compareText=$("compareText"), spark=$("spark"), benchRows=$("benchRows"), weakWrap=$("weakWrap");
@@ -2055,6 +2071,22 @@ function renderRetirementReadiness(v){
   });
 }
 
+function personalizeSubscribe(weak, newlyUnlocked){
+  var headline=$("subHeadline"), subtext=$("subSubtext"), box=$("subscribeInlineRC");
+  if(!headline || !subtext) return;
+
+  if(newlyUnlocked && newlyUnlocked.length){
+    // Lead with the genuine win — a better moment to ask than "here's what's wrong"
+    headline.textContent = "🎉 You just unlocked \""+newlyUnlocked[0]+"\" — want us to email you when you hit milestones like this?";
+    subtext.textContent = "1–2 emails a month. Unsubscribe anytime.";
+  } else {
+    headline.textContent = "Your weakest link is "+weak.label+" — want monthly nudges until it's fixed?";
+    subtext.textContent = "1–2 emails a month, tailored to your report. Unsubscribe anytime.";
+  }
+
+  if(box){ box.classList.remove('pulse'); void box.offsetWidth; box.classList.add('pulse'); }
+}
+
 function openReport(v,cats){
   var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), pathList=$("pathList");
   var modal=$("reportModal");
@@ -2104,15 +2136,7 @@ function openReport(v,cats){
   var minIdx=0; for(var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
   items = items.map(function(it,idx){ it.isWeak = (idx===minIdx); return it; });
   hbars(weakWrap, items);
-
-  (function personalizeSubscribe(){
-    var headline=$("subHeadline"), subtext=$("subSubtext"), box=$("subscribeInlineRC");
-    if(!headline || !subtext) return;
-    var weak = items[minIdx];
-    headline.textContent = "Your weakest link is "+weak.label+" — want monthly nudges until it's fixed?";
-    subtext.textContent = "1–2 emails a month, tailored to your report. Unsubscribe anytime.";
-    if(box){ box.classList.remove('pulse'); void box.offsetWidth; box.classList.add('pulse'); }
-  })();
+  var weakLinkForSubscribe = items[minIdx];
 
   benchRows.innerHTML='';
   var b=estimatePercentiles(v,cats);
@@ -2168,7 +2192,8 @@ function openReport(v,cats){
   var checkinResult = recordCheckin(cats.overall.score);
   var streakCount = computeImprovementStreak(hist, cats.overall.score);
   renderMilestoneBanner(cats, checkinResult, streakCount);
-  renderAchievements(v, cats, checkinResult, streakCount);
+  var newlyUnlockedAchievements = renderAchievements(v, cats, checkinResult, streakCount);
+  personalizeSubscribe(weakLinkForSubscribe, newlyUnlockedAchievements);
 
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
@@ -2552,7 +2577,7 @@ function saveCanvasAsImage(canvas, filename, shareTitle, shareText, trackLabel){
 }
 
 $("downloadImage").addEventListener("click", function(){
-  if(!window.__lastOverall){ alert("Run a calculation first."); return; }
+  if(!window.__lastOverall || !window.__lastFullReport){ alert("Run a calculation first."); return; }
   try {
   var canvas=$("shareCanvas"), ctx=canvas.getContext("2d");
   canvas.width = 1080; canvas.height = 1080;
@@ -2562,34 +2587,69 @@ $("downloadImage").addEventListener("click", function(){
   var isMid = ["B","B-","C+","C","C-"].indexOf(letterClean)>-1;
   var gradeColor = isGood ? "#34D399" : (isMid ? "#E4C24E" : "#F16565");
 
+  var rv = window.__lastFullReport.v, rcats = window.__lastFullReport.cats;
+
   var bgGrad = ctx.createLinearGradient(0,0,w,h);
   bgGrad.addColorStop(0,"#0A0B0E"); bgGrad.addColorStop(1,"#14161C");
   ctx.fillStyle=bgGrad; ctx.fillRect(0,0,w,h);
 
   // seal
   ctx.save();
-  var sealGrad=ctx.createLinearGradient(60,60,180,180);
+  var sealGrad=ctx.createLinearGradient(60,50,150,140);
   sealGrad.addColorStop(0,"#E4C24E"); sealGrad.addColorStop(1,"#C9A227");
   ctx.fillStyle=sealGrad;
-  roundRect(ctx,60,60,90,90,20); ctx.fill();
-  ctx.fillStyle="#1a1300"; ctx.font="700 32px 'IBM Plex Mono', monospace"; ctx.textAlign="center"; ctx.textBaseline="middle";
-  ctx.fillText("A+", 105, 108);
+  roundRect(ctx,60,50,80,80,18); ctx.fill();
+  ctx.fillStyle="#1a1300"; ctx.font="700 28px 'IBM Plex Mono', monospace"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("A+", 100, 90);
   ctx.restore();
 
-  ctx.fillStyle="#8B92A0"; ctx.font="600 26px Inter, sans-serif"; ctx.textAlign="left";
-  ctx.fillText("GRADE MY FINANCE", 175, 90);
-  ctx.fillStyle="#F2F3F5"; ctx.font="700 30px 'Space Grotesk', sans-serif";
-  ctx.fillText("My Financial Report Card", 175, 128);
+  ctx.fillStyle="#8B92A0"; ctx.font="600 24px Inter, sans-serif"; ctx.textAlign="left";
+  ctx.fillText("GRADE MY FINANCE", 160, 78);
+  ctx.fillStyle="#F2F3F5"; ctx.font="700 28px 'Space Grotesk', sans-serif";
+  ctx.fillText("My Financial Report Card", 160, 110);
 
+  // Big grade letter — still the dominant visual, just resized slightly to make room for real stats
   ctx.textAlign="center";
   ctx.fillStyle=gradeColor;
-  ctx.font="700 340px 'IBM Plex Mono', monospace";
-  ctx.fillText(letterClean, w/2, 560);
+  ctx.font="700 260px 'IBM Plex Mono', monospace";
+  ctx.fillText(letterClean, w/2, 420);
 
-  ctx.fillStyle="#F2F3F5"; ctx.font="600 40px Inter, sans-serif";
-  ctx.fillText("Overall score "+window.__lastOverall.score.toFixed(1)+" / 100", w/2, 760);
+  ctx.fillStyle="#F2F3F5"; ctx.font="600 36px Inter, sans-serif";
+  ctx.fillText("Overall score "+window.__lastOverall.score.toFixed(1)+" / 100", w/2, 570);
 
+  // Real stat row — net worth, savings rate, emergency fund
+  var stats = [
+    { label:"NET WORTH", val: money(rv.net) },
+    { label:"SAVINGS RATE", val: Math.round(rv.saveRate*100)+"%" },
+    { label:"EMERGENCY FUND", val: rv.efMonths.toFixed(1)+" mo" }
+  ];
+  var chipW = 300, chipGap = 30, totalW = stats.length*chipW + (stats.length-1)*chipGap;
+  var startX = (w-totalW)/2;
+  stats.forEach(function(s, i){
+    var x0 = startX + i*(chipW+chipGap);
+    ctx.fillStyle = "rgba(255,255,255,.06)";
+    roundRect(ctx, x0, 630, chipW, 130, 16); ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,.12)"; ctx.lineWidth=1.5;
+    roundRect(ctx, x0, 630, chipW, 130, 16); ctx.stroke();
+    ctx.fillStyle="#8B92A0"; ctx.font="600 20px 'IBM Plex Mono', monospace"; ctx.textAlign="center";
+    ctx.fillText(s.label, x0+chipW/2, 675);
+    ctx.fillStyle="#E4C24E"; ctx.font="700 34px 'IBM Plex Mono', monospace";
+    ctx.fillText(s.val, x0+chipW/2, 725);
+  });
+
+  // Weakest link callout — genuine info, not just the grade
+  var catScores = [
+    { label:"Savings", score:rcats.s.sSave },
+    { label:"Emergency fund", score:rcats.s.sEF },
+    { label:"Debt", score:rcats.s.sDebt },
+    { label:"Net worth", score:rcats.s.sAgeNW },
+    { label:"Income", score:rcats.s.sInc }
+  ];
+  var weakestCat = catScores.reduce(function(a,b){ return b.score<a.score ? b : a; });
   ctx.fillStyle="#8B92A0"; ctx.font="500 30px Inter, sans-serif";
+  ctx.fillText("Weakest link: "+weakestCat.label, w/2, 830);
+
+  ctx.fillStyle="#F2F3F5"; ctx.font="600 32px Inter, sans-serif";
   ctx.fillText("Get your free grade at grademyfinance.com", w/2, 960);
 
   saveCanvasAsImage(canvas, "my-financial-grade.png", "My Grade My Finance report card", "Check out my financial grade from Grade My Finance", "square");
