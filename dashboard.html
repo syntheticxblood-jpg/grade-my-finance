@@ -71,8 +71,9 @@ main::before{
 .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow); position:relative; transition:border-color .15s ease }
 .card.hoverable:hover{ border-color:rgba(201,162,39,.3) }
 
-.grid-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px }
-@media (max-width:700px){ .grid-stats{ grid-template-columns:1fr } }
+.grid-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px }
+@media (max-width:900px){ .grid-stats{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:480px){ .grid-stats{ grid-template-columns:1fr } }
 .stat-card{ display:flex; align-items:center; gap:14px; text-align:left !important }
 .stat-icon{ width:44px; height:44px; border-radius:12px; display:grid; place-items:center; font-size:19px; flex:none }
 .stat-icon.gold{ background:var(--gold-soft); color:var(--gold-bright) }
@@ -178,6 +179,7 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:3
       <div class="card hoverable stat-card"><div class="stat-icon gold">✓</div><div><div class="stat-num mono" id="statCheckins">—</div><div class="stat-cap">total check-ins</div></div></div>
       <div class="card hoverable stat-card"><div class="stat-icon green">★</div><div><div class="stat-num mono" id="statBest">—</div><div class="stat-cap">best score recorded</div></div></div>
       <div class="card hoverable stat-card"><div class="stat-icon blue">↗</div><div><div class="stat-num mono" id="statTrend">—</div><div class="stat-cap">since your first check-in</div></div></div>
+      <div class="card hoverable stat-card"><div class="stat-icon gold">🔥</div><div><div class="stat-num mono" id="statStreak">—</div><div class="stat-cap">check-in streak</div></div></div>
     </div>
 
     <div class="dash-grid-2">
@@ -185,12 +187,17 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:3
         <span class="section-label"><span class="si">📈</span>Score trend</span>
         <svg id="trendChart" width="100%" height="160" viewBox="0 0 640 160" preserveAspectRatio="none" role="img" aria-label="Score trend over time"></svg>
         <div class="empty-note" id="trendEmptyNote" style="display:none">No check-ins recorded yet on this device.</div>
+        <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
+          <div style="font-size:12px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">History (tap × to remove an entry)</div>
+          <div id="scoreHistoryList" style="display:grid;gap:6px"></div>
+        </div>
       </div>
 
       <div class="section card hoverable">
         <span class="section-label"><span class="si">$</span>Net worth tracker</span>
         <svg id="netWorthChart" width="100%" height="160" viewBox="0 0 640 160" preserveAspectRatio="none" role="img" aria-label="Net worth over time"></svg>
         <div class="empty-note" id="netWorthEmptyNote" style="display:none">No check-ins recorded yet on this device.</div>
+        <div id="netWorthSummary" style="display:none;margin-top:10px;font-size:13px;color:var(--muted)"></div>
         <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
           <div style="font-size:12px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">History (tap × to remove an entry)</div>
           <div id="netWorthHistoryList" style="display:grid;gap:6px"></div>
@@ -237,7 +244,10 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:3
         open that same link on your other device or browser, and everything comes back automatically. Free for
         everyone, not a Pro feature.
       </p>
-      <button class="btn sm" id="copyBackupLinkBtn" type="button">📋 Copy My Backup Link</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn sm" id="copyBackupLinkBtn" type="button">📋 Copy My Backup Link</button>
+        <button class="btn sm" id="exportCsvBtn" type="button">⬇ Export History as CSV</button>
+      </div>
       <div class="small" id="backupStatus" style="margin-top:10px;color:var(--muted)"></div>
     </div>
   </div>
@@ -349,7 +359,93 @@ function renderNetWorthTracker(){
     });
     listEl.appendChild(row);
   });
+
+  renderNetWorthSummary(entriesWithNet);
 }
+
+/* ================= NET WORTH SUMMARY (total change since first entry) ================= */
+function renderNetWorthSummary(entriesWithNet){
+  var el = $("netWorthSummary");
+  if(!el) return;
+  if(entriesWithNet.length < 2){ el.style.display = 'none'; return; }
+
+  var first = entriesWithNet[0].net, last = entriesWithNet[entriesWithNet.length-1].net;
+  var change = last - first;
+  var pct = first !== 0 ? (change/Math.abs(first))*100 : null;
+  var arrow = change > 0 ? '↑' : (change < 0 ? '↓' : '→');
+  var color = change > 0 ? 'var(--good)' : (change < 0 ? 'var(--bad)' : 'var(--muted)');
+
+  el.style.display = 'block';
+  el.innerHTML = 'Since your first tracked entry: <strong style="color:'+color+'">'+arrow+' '+money(Math.abs(change))+
+    (pct!==null ? ' ('+(change>=0?'+':'')+pct.toFixed(1)+'%)' : '')+'</strong>';
+}
+
+/* ================= SCORE HISTORY LIST (mirrors net worth history, fixes empty space, adds delete) ================= */
+function renderScoreHistory(){
+  var hist = getHistory();
+  var listEl = $("scoreHistoryList");
+  if(!listEl) return;
+
+  listEl.innerHTML = '';
+  if(!hist.length){
+    listEl.innerHTML = '<div class="empty-note">No score history yet — it\'s recorded automatically each time you check in.</div>';
+    return;
+  }
+
+  hist.map(function(h, originalIndex){ return { ts:h.ts, score:h.score, originalIndex:originalIndex }; })
+    .slice().reverse().forEach(function(entry){
+      var row = document.createElement('div');
+      row.className = 'nw-history-row';
+      var dateStr = new Date(entry.ts).toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
+      row.innerHTML =
+        '<span class="nw-date">'+dateStr+'</span>' +
+        '<span class="nw-value">'+entry.score.toFixed(1)+'</span>' +
+        '<button class="nw-delete-btn" type="button" aria-label="Delete this entry" title="Delete this entry">×</button>';
+      row.querySelector('.nw-delete-btn').addEventListener('click', function(){
+        deleteHistoryEntry(entry.originalIndex);
+      });
+      listEl.appendChild(row);
+    });
+}
+
+/* ================= CURRENT STREAK (reuses the same logic as the main site, computed live from history) ================= */
+function computeCurrentStreak(hist){
+  if(!hist.length) return 0;
+  var scores = hist.map(function(h){ return h.score; });
+  var streak = 1;
+  for(var i=scores.length-1; i>0; i--){
+    if(scores[i] > scores[i-1]) streak++; else break;
+  }
+  return streak;
+}
+
+/* ================= CSV EXPORT ================= */
+function exportHistoryAsCsv(){
+  var hist = getHistory();
+  if(!hist.length){ alert("No history to export yet."); return; }
+
+  var rows = [["Date", "Score", "Net Worth"]];
+  hist.forEach(function(h){
+    var dateStr = new Date(h.ts).toISOString().split('T')[0];
+    rows.push([dateStr, h.score.toFixed(1), (typeof h.net==='number' ? h.net : '')]);
+  });
+
+  var csv = rows.map(function(r){
+    return r.map(function(cell){
+      var s = String(cell);
+      return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s;
+    }).join(',');
+  }).join('\n');
+
+  var blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'grademyfinance-history.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
+}
+var exportCsvBtn = document.getElementById('exportCsvBtn');
+if(exportCsvBtn) exportCsvBtn.addEventListener('click', exportHistoryAsCsv);
 
 function deleteHistoryEntry(index){
   if(!confirm("Remove this entry from your history? This can't be undone.")) return;
@@ -359,6 +455,7 @@ function deleteHistoryEntry(index){
   // Re-render everything that depends on history, so the score trend chart
   // and stats stay consistent with the net worth tracker after a deletion.
   renderNetWorthTracker();
+  renderScoreHistory();
   if(hist.length){
     $("trendEmptyNote").style.display = 'none';
     drawTrendChart($("trendChart"), hist.map(function(h){ return h.score; }));
@@ -373,6 +470,8 @@ function deleteHistoryEntry(index){
   } else {
     $("statTrend").textContent = '—';
   }
+  var streakEl = $("statStreak");
+  if(streakEl) streakEl.textContent = hist.length ? computeCurrentStreak(hist) : '—';
 }
 
 function renderGoalProgress(){
@@ -537,6 +636,8 @@ function init(){
     $("statTrend").textContent = '—';
   }
 
+  $("statStreak").textContent = hist.length ? computeCurrentStreak(hist) : '—';
+
   if(hist.length){
     $("trendEmptyNote").style.display = 'none';
     drawTrendChart($("trendChart"), hist.map(function(h){ return h.score; }));
@@ -544,6 +645,7 @@ function init(){
     $("trendEmptyNote").style.display = 'block';
   }
 
+  renderScoreHistory();
   renderNetWorthTracker();
 
   var goal = getGoal();
