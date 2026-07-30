@@ -104,6 +104,8 @@ header.site{
 .wordmark{ font-weight:700; font-size:17px; letter-spacing:-.01em }
 nav.primary{ display:flex; align-items:center; gap:26px; margin-left:24px }
 nav.primary a{ font-size:14px; color:var(--muted); text-decoration:none; font-weight:500 }
+.nav-dashboard-link{ display:inline-flex; align-items:center; gap:5px }
+.nav-lock-badge{ font-size:11px; opacity:.75 }
 nav.primary a:hover{ color:var(--text) }
 .hdr-right{ margin-left:auto; display:flex; align-items:center; gap:10px }
 .icon-btn{ width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--text); cursor:pointer; display:grid; place-items:center; font-size:15px }
@@ -623,6 +625,10 @@ body.is-pro .ad-slot{ display:none !important }
     <nav class="primary">
       <a href="#how">How it works</a>
       <a href="#guides">Free tools</a>
+      <a href="dashboard.html" class="nav-dashboard-link">
+        Dashboard
+        <span class="nav-lock-badge pro-only-hide" title="Requires Pro">🔒</span>
+      </a>
       <a href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">Community</a>
       <a href="blog/index.html">Blog</a>
     </nav>
@@ -630,9 +636,6 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="settings-wrap">
         <button class="icon-btn" id="settingsBtn" aria-label="More options" aria-expanded="false">⋯</button>
         <div class="settings-menu" id="settingsMenu">
-          <a class="settings-item" href="dashboard.html">
-            <span>📊</span> Dashboard
-          </a>
           <a class="settings-item" href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">
             <span style="color:#5865F2">
               <svg width="16" height="16" viewBox="0 0 127.14 96.36" fill="currentColor" aria-hidden="true"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
