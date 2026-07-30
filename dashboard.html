@@ -80,6 +80,19 @@ main{ padding:44px 0 80px }
 .locked-wrap .seal-big{ width:80px; height:80px; border-radius:20px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; margin:0 auto 20px; font-family:var(--font-mono); font-weight:700; font-size:28px; color:#1a1300 }
 .locked-wrap ul{ text-align:left; color:var(--muted); font-size:14.5px; margin:18px 0; padding-left:20px; display:inline-block }
 .empty-note{ color:var(--muted); font-size:13.5px; padding:14px; text-align:center }
+.nw-history-row{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  background:var(--surface-2); border:1px solid var(--line); border-radius:8px;
+  padding:10px 12px; font-size:13.5px;
+}
+.nw-history-row .nw-date{ color:var(--muted); font-family:var(--font-mono,'IBM Plex Mono',monospace); font-size:12.5px }
+.nw-history-row .nw-value{ font-weight:700; color:var(--gold-bright); font-family:var(--font-mono,'IBM Plex Mono',monospace) }
+.nw-delete-btn{
+  appearance:none; border:1px solid var(--line); background:transparent; color:var(--muted);
+  width:24px; height:24px; border-radius:6px; cursor:pointer; font-size:14px; line-height:1;
+  display:grid; place-items:center; flex:none; transition:color .12s ease, border-color .12s ease;
+}
+.nw-delete-btn:hover{ color:#F16565; border-color:#F16565 }
 footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:30px 0; text-align:center; color:var(--muted-2); font-size:12.5px }
 </style>
 </head>
@@ -142,6 +155,16 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:3
       <span class="section-label" style="margin:0 0 12px">Score trend</span>
       <svg id="trendChart" width="100%" height="160" viewBox="0 0 640 160" preserveAspectRatio="none" role="img" aria-label="Score trend over time"></svg>
       <div class="empty-note" id="trendEmptyNote" style="display:none">No check-ins recorded yet on this device.</div>
+    </div>
+
+    <div class="section card">
+      <span class="section-label" style="margin:0 0 12px">Net worth tracker</span>
+      <svg id="netWorthChart" width="100%" height="160" viewBox="0 0 640 160" preserveAspectRatio="none" role="img" aria-label="Net worth over time"></svg>
+      <div class="empty-note" id="netWorthEmptyNote" style="display:none">No check-ins recorded yet on this device.</div>
+      <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
+        <div style="font-size:12px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">History (tap × to remove an entry, e.g. if entered by mistake)</div>
+        <div id="netWorthHistoryList" style="display:grid;gap:6px"></div>
+      </div>
     </div>
 
     <div class="section card">
@@ -238,6 +261,74 @@ function drawTrendChart(svgEl, points){
   html += '<path d="'+pathD+'" fill="none" stroke="#C9A227" stroke-width="2.5"></path>';
   points.forEach(function(p,i){ html += '<circle cx="'+x(i)+'" cy="'+y(p)+'" r="3.5" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>'; });
   svgEl.innerHTML = html;
+}
+
+/* ================= NET WORTH TRACKER ================= */
+// Reuses the same drawTrendChart function (it's generic — just takes an
+// array of numbers), fed net worth values instead of scores. Each history
+// entry can be individually deleted (e.g. to fix a mistaken entry), which
+// updates both the chart and the underlying stored history together.
+function renderNetWorthTracker(){
+  var hist = getHistory();
+  var chartEl = $("netWorthChart"), emptyEl = $("netWorthEmptyNote"), listEl = $("netWorthHistoryList");
+  if(!chartEl || !listEl) return;
+
+  var entriesWithNet = hist
+    .map(function(h, originalIndex){ return { ts:h.ts, net:h.net, score:h.score, originalIndex:originalIndex }; })
+    .filter(function(h){ return typeof h.net === 'number' && !isNaN(h.net); });
+
+  if(entriesWithNet.length){
+    emptyEl.style.display = 'none';
+    drawTrendChart(chartEl, entriesWithNet.map(function(h){ return h.net; }));
+  } else {
+    emptyEl.style.display = 'block';
+    chartEl.innerHTML = '';
+  }
+
+  listEl.innerHTML = '';
+  if(!entriesWithNet.length){
+    listEl.innerHTML = '<div class="empty-note">No net worth history yet — it\'s recorded automatically each time you check in.</div>';
+    return;
+  }
+
+  // Most recent first, easier to scan
+  entriesWithNet.slice().reverse().forEach(function(entry){
+    var row = document.createElement('div');
+    row.className = 'nw-history-row';
+    var dateStr = new Date(entry.ts).toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
+    row.innerHTML =
+      '<span class="nw-date">'+dateStr+'</span>' +
+      '<span class="nw-value">'+money(entry.net)+'</span>' +
+      '<button class="nw-delete-btn" type="button" aria-label="Delete this entry" title="Delete this entry">×</button>';
+    row.querySelector('.nw-delete-btn').addEventListener('click', function(){
+      deleteHistoryEntry(entry.originalIndex);
+    });
+    listEl.appendChild(row);
+  });
+}
+
+function deleteHistoryEntry(index){
+  if(!confirm("Remove this entry from your history? This can't be undone.")) return;
+  var hist = getHistory();
+  hist.splice(index, 1);
+  localStorage.setItem('gmf_history_v2', JSON.stringify(hist));
+  // Re-render everything that depends on history, so the score trend chart
+  // and stats stay consistent with the net worth tracker after a deletion.
+  renderNetWorthTracker();
+  if(hist.length){
+    $("trendEmptyNote").style.display = 'none';
+    drawTrendChart($("trendChart"), hist.map(function(h){ return h.score; }));
+  } else {
+    $("trendEmptyNote").style.display = 'block';
+    $("trendChart").innerHTML = '';
+  }
+  if(hist.length >= 2){
+    var diff = Math.round((hist[hist.length-1].score - hist[0].score)*10)/10;
+    var arrow = diff > 0 ? '↑' : (diff < 0 ? '↓' : '→');
+    $("statTrend").textContent = arrow+' '+(diff>0?'+':'')+diff+' pts';
+  } else {
+    $("statTrend").textContent = '—';
+  }
 }
 
 function renderGoalProgress(){
@@ -406,6 +497,8 @@ function init(){
   } else {
     $("trendEmptyNote").style.display = 'block';
   }
+
+  renderNetWorthTracker();
 
   var goal = getGoal();
   if(goal){ $("goalType").value = goal.type; $("goalTarget").value = goal.target; }
