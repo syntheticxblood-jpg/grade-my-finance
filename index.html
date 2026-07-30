@@ -774,7 +774,7 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="feature"><div class="fi">🔒</div><h4>Private by design</h4><p>All calculations run in your browser. Nothing is sent to a server.</p></div>
       <div class="feature"><div class="fi">Σ</div><h4>Open methodology</h4><p>We publish the exact weighting behind your grade — no black box.</p></div>
       <div class="feature"><div class="fi">→</div><h4>Actionable path</h4><p>Specific next steps with dollar targets, ranked by point impact.</p></div>
-      <div class="feature"><div class="fi">%</div><h4>Benchmarks</h4><p>See roughly where you stand vs. estimated percentiles for your situation.</p></div>
+      <div class="feature"><div class="fi">%</div><h4>Benchmarks</h4><p>See roughly how you compare to others your age.</p></div>
     </div>
   </div>
 </section>
@@ -842,26 +842,6 @@ body.is-pro .ad-slot{ display:none !important }
 
     <div id="milestoneBanner" class="compare-banner" style="display:none;margin-bottom:14px"></div>
 
-    <div class="card" style="margin-bottom:14px">
-      <span class="section-label" style="margin:0 0 12px">Achievements</span>
-      <div id="achievementsGrid" class="achv-grid"></div>
-    </div>
-
-    <div class="subscribe-inline pulse" id="subscribeInlineRC">
-      <div class="sub-row" style="margin-bottom:8px">
-        <div>
-          <h4 id="subHeadline">Get tips to raise your grade</h4>
-          <p id="subSubtext">1–2 emails a month. Actionable, no fluff. Unsubscribe anytime.</p>
-        </div>
-      </div>
-      <form id="subFormRC" class="sub-row"
-        action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
-        method="POST" novalidate>
-        <input type="email" name="email" placeholder="you@example.com" required>
-        <button type="submit" class="btn gold sm">Subscribe</button>
-      </form>
-    </div>
-
     <div class="rc-sections">
       <div class="card" style="display:grid;gap:12px">
         <div id="compareBlock" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
@@ -870,7 +850,7 @@ body.is-pro .ad-slot{ display:none !important }
           <svg id="spark" width="180" height="32" aria-hidden="true"></svg>
         </div>
         <div id="benchWrap" style="display:grid;gap:8px">
-          <span class="section-label">Benchmarks & percentiles (est.)</span>
+          <span class="section-label">How you compare to others your age (estimated)</span>
           <div id="benchRows" style="display:grid;gap:8px"></div>
         </div>
       </div>
@@ -905,6 +885,26 @@ body.is-pro .ad-slot{ display:none !important }
           <div class="legend" id="legendLiabs"></div>
         </div>
       </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <span class="section-label" style="margin:0 0 12px">Achievements</span>
+      <div id="achievementsGrid" class="achv-grid"></div>
+    </div>
+
+    <div class="subscribe-inline pulse" id="subscribeInlineRC">
+      <div class="sub-row" style="margin-bottom:8px">
+        <div>
+          <h4 id="subHeadline">Get tips to raise your grade</h4>
+          <p id="subSubtext">1–2 emails a month. Actionable, no fluff. Unsubscribe anytime.</p>
+        </div>
+      </div>
+      <form id="subFormRC" class="sub-row"
+        action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
+        method="POST" novalidate>
+        <input type="email" name="email" placeholder="you@example.com" required>
+        <button type="submit" class="btn gold sm">Subscribe</button>
+      </form>
     </div>
 
     <div class="card" style="margin-top:12px">
@@ -1031,7 +1031,7 @@ body.is-pro .ad-slot{ display:none !important }
           <div>• Targets: savings rate ≈ 25% of take-home; emergency fund ≈ 6 months; age-based net worth uses a baseline of your annual spend (or $30k minimum).</div>
           <div>• Income is compared against a typical benchmark for your age (roughly $38k at 22 up to $80k by 55+), not one flat number for everyone.</div>
           <div>• Negative net worth doesn't automatically zero out — it's fairly common at younger ages (student loans, no home equity yet), so this factor gives some credit for "typical for this age" vs. treating any negative number identically.</div>
-          <div>• Benchmarks and percentiles are rough estimates for context, not strict comparisons.</div>
+          <div>• The "how you compare" numbers are rough estimates for context, not exact data.</div>
           <div>• Privacy: your income, expenses, assets, and debts are entered and calculated entirely in your browser and never transmitted anywhere. Your inputs are saved automatically to your own device's local storage (not sent to us) so they're there next time you visit. When you complete a grade, we log only your letter grade and numeric score (no financial details) to power the public "report cards graded" counter. See our <a href="privacy-policy.html" style="color:var(--gold-bright)">Privacy Policy</a> for full details.</div>
           <div>• Currency: the selector converts displayed amounts using live exchange rates, but the underlying benchmarks (median income, net worth targets) are calibrated to the US — your grade doesn't adjust for cost-of-living differences in other countries.</div>
         </div>
@@ -1601,12 +1601,19 @@ function hbars(container, items){
   container.innerHTML='';
   items.forEach(function(it){
     var row=el('div'); row.style.display='grid'; row.style.gridTemplateColumns='120px 1fr 52px'; row.style.alignItems='center'; row.style.gap='8px';
-    var lab=el('div'); lab.textContent=it.label; lab.style.color='var(--text)'; lab.style.fontSize='13px'; lab.style.fontWeight='700';
+    var lab=el('div');
+    lab.innerHTML = it.label + (it.isWeak ? ' <span style="color:var(--bad);font-size:11px;font-weight:800">▾ WEAKEST</span>' : '');
+    lab.style.color='var(--text)'; lab.style.fontSize='13px'; lab.style.fontWeight='700';
     var bar=el('div'); bar.style.height='10px'; bar.style.borderRadius='999px'; bar.style.border='1px solid var(--line)'; bar.style.background='var(--surface-2)'; bar.style.overflow='hidden';
+    if(it.isWeak) bar.style.boxShadow='0 0 0 2px rgba(241,101,101,.4)';
     var fill=el('div'); fill.style.height='100%'; fill.style.width=Math.round(it.score*100)+'%';
-    fill.style.background = it.isWeak ? 'var(--bad)' : 'linear-gradient(90deg,var(--good-2),var(--good))';
+    // Color reflects each category's own actual quality — not just whether
+    // it happens to be the single worst of the five. A mediocre score no
+    // longer shows green purely because something else is slightly worse.
+    fill.style.background = it.score < 0.34 ? 'var(--bad)' : (it.score < 0.67 ? 'linear-gradient(90deg,var(--gold),var(--gold-bright))' : 'linear-gradient(90deg,var(--good-2),var(--good))');
     bar.appendChild(fill);
-    var pct=el('div'); pct.className='mono'; pct.textContent=Math.round(it.score*100)+'%'; pct.style.textAlign='right'; pct.style.fontWeight='700'; pct.style.color=it.isWeak?'var(--bad)':'var(--muted)';
+    var pct=el('div'); pct.className='mono'; pct.textContent=Math.round(it.score*100)+'%'; pct.style.textAlign='right'; pct.style.fontWeight='700';
+    pct.style.color = it.score < 0.34 ? 'var(--bad)' : (it.score < 0.67 ? 'var(--gold-bright)' : 'var(--muted)');
     row.append(lab,bar,pct);
     container.appendChild(row);
   });
@@ -1627,9 +1634,9 @@ function estimatePercentiles(v, cats){
   var efPct     = Math.round(clamp(v.efMonths/6,0,1)*90);
   var nwPct     = Math.round(clamp(v.nwProgress,0,1)*90);
   return [
-    {label:'Income', value: incomePct, expl: v.annualIncome? money(v.annualIncome)+'/yr vs age-adjusted proxy' : '—'},
-    {label:'Emergency fund', value: efPct, expl: v.efMonths.toFixed(1)+' mo runway (goal 6)'},
-    {label:'Age-based net worth', value: nwPct, expl: Math.round(v.nwProgress*100)+'% of target ('+v.nwTargetMultiple.toFixed(2)+'× baseline)'}
+    {label:'Income', value: incomePct, expl: money(v.annualIncome)+'/yr for your age'},
+    {label:'Emergency fund', value: efPct, expl: v.efMonths.toFixed(1)+' months of expenses saved (aim for 6)'},
+    {label:'Net worth', value: nwPct, expl: v.nwProgress>=1 ? 'Ahead of where most people your age are' : 'Building toward where most people your age are'}
   ];
 }
 
@@ -2208,7 +2215,7 @@ function openReport(v,cats){
   b.forEach(function(t){
     var row=el('div'); row.style.display='grid'; row.style.gridTemplateColumns='1fr auto'; row.style.alignItems='center';
     var label=el('div'); label.innerHTML='<strong>'+t.label+'</strong> — <span style="color:var(--muted)">'+t.expl+'</span>';
-    var chip=el('div'); chip.className='badge'; chip.textContent=t.value+'th %ile';
+    var chip=el('div'); chip.className='badge'; chip.textContent='Better than '+t.value+'%';
     row.append(label,chip); benchRows.appendChild(row);
   });
 
@@ -3109,7 +3116,7 @@ function initProjections(vBase, catsBase){
 var overlay=$("overlay"), bar=$("barFill"), pct=$("pct"), loadMsg=$("loadMsg");
 function runWithLoader(fnDone){
   var steps=["Checking savings rate…","Measuring emergency fund runway…","Comparing net worth vs age…","Weighing debt load…","Factoring income strength…"];
-  var i=0, total=steps.length+2, interval=1000/total;
+  var i=0, total=steps.length+2, interval=2000/total;
   overlay.classList.add("show"); bar.style.width="0%"; pct.textContent="0%"; loadMsg.textContent="Crunching numbers…";
   var t=setInterval(function(){
     var prog=Math.min(100,Math.round(((i+1)/total)*100));
