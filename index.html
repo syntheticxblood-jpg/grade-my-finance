@@ -649,9 +649,6 @@ body.is-pro .ad-slot{ display:none !important }
           <a class="settings-item" href="https://youtube.com/@aarongrades1" target="_blank" rel="noopener">
             <span style="color:#FF0000">▶</span> YouTube
           </a>
-          <a class="settings-item" href="https://x.com/aarongrades1" target="_blank" rel="noopener">
-            <span>𝕏</span> Twitter / X
-          </a>
           <div class="settings-item" style="cursor:default">
             <span>🌐</span>
             <select id="currencySelect" aria-label="Display currency">
@@ -945,6 +942,7 @@ body.is-pro .ad-slot{ display:none !important }
         </div>
         <div id="dppStrategyExplainer" class="small" style="margin-bottom:14px;color:var(--muted)"></div>
         <div id="dppSameOrderNote" class="small" style="display:none;margin-bottom:10px;color:var(--muted)"></div>
+        <div id="dppRatesWrap" style="display:grid;gap:8px;margin-bottom:14px"></div>
         <label style="display:grid;gap:6px;margin-bottom:12px">
           <div style="display:flex;justify-content:space-between;align-items:center"><span>Extra monthly payment (beyond minimums)</span><strong class="mono" id="dppExtraVal">$0</strong></div>
           <input id="dppExtra" type="range" min="0" max="1000" step="25" value="0" aria-label="Extra monthly debt payment">
@@ -952,7 +950,7 @@ body.is-pro .ad-slot{ display:none !important }
         <div id="dppSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px"></div>
         <div id="dppTimeline" style="display:grid;gap:8px"></div>
         <div id="dppNoDebt" class="small" style="display:none;padding:16px;text-align:center">No non-mortgage debt entered — nothing to plan here. 🎉</div>
-        <div class="small" style="margin-top:10px">Assumes typical average rates since we don't collect your actual ones — credit cards ~24%, auto loans ~7%, student loans ~6%. A simplified estimate to compare strategies, not an exact payoff date. Mortgage isn't included.</div>
+        <div class="small" style="margin-top:10px">Rates default to typical averages (credit cards ~24%, auto loans ~7%, student loans ~6%) — edit them above with your real rates for a more accurate comparison. A simplified estimate either way, not an exact payoff date. Mortgage isn't included.</div>
       </div>
     </div>
 
@@ -1221,7 +1219,6 @@ body.is-pro .ad-slot{ display:none !important }
         <a href="blog/index.html">Blog</a>
         <a href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">Discord Community</a>
         <a href="https://youtube.com/@aarongrades1" target="_blank" rel="noopener">YouTube</a>
-        <a href="https://x.com/aarongrades1" target="_blank" rel="noopener">X / Twitter</a>
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="mailto:grademyfinance@gmail.com">Contact</a>
       </div>
@@ -2010,6 +2007,33 @@ function renderDebtPayoffPlanner(v){
   var monthlySurplus = Math.max(0, v.income - v.expenses);
   extraEl.max = String(Math.max(200, Math.min(2000, Math.round(monthlySurplus))));
 
+  // Editable rate inputs — default to typical averages, but let people enter
+  // their own real rates for a more accurate comparison between strategies.
+  var ratesWrap = $("dppRatesWrap");
+  if(ratesWrap){
+    ratesWrap.innerHTML = '<div class="small" style="color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em;font-size:11px">Interest rates (edit with your real rates)</div>';
+    rawDebts.forEach(function(debt, idx){
+      var row = el('div', { style:'display:flex;justify-content:space-between;align-items:center;gap:10px' });
+      var label = el('span', { className:'small' });
+      label.textContent = debt.label;
+      var inputWrap = el('div', { style:'display:flex;align-items:center;gap:4px' });
+      var input = document.createElement('input');
+      input.type = 'number'; input.min = '0'; input.max = '50'; input.step = '0.1';
+      input.value = debt.rate;
+      input.style.cssText = 'width:70px;padding:6px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:inherit;font-size:13px;text-align:right';
+      input.setAttribute('aria-label', debt.label + ' interest rate');
+      var pct = el('span', { className:'small' }); pct.textContent = '%';
+      input.addEventListener('input', function(){
+        var val = parseFloat(input.value);
+        rawDebts[idx].rate = isNaN(val) ? 0 : Math.max(0, val);
+        update();
+      });
+      inputWrap.append(input, pct);
+      row.append(label, inputWrap);
+      ratesWrap.appendChild(row);
+    });
+  }
+
   function getOrder(){
     var indices = rawDebts.map(function(_,i){ return i; });
     if(strategy==='avalanche') indices.sort(function(a,b){ return rawDebts[b].rate - rawDebts[a].rate; });
@@ -2142,8 +2166,8 @@ function renderRetirementReadiness(v){
     { label:'Benchmark for age '+age, val: multiple.toFixed(1)+'× income ('+money(targetAmount)+')' },
     { label: progress>=1 ? 'Ahead by' : 'Gap to close', val: progress>=1 ? money(v.retire-targetAmount) : money(gap) }
   ].forEach(function(s){
-    var card=el('div',{className:'card', style:'padding:10px;text-align:center'});
-    card.innerHTML='<div class="small">'+s.label+'</div><div class="mono" style="font-weight:700;font-size:14px;color:var(--gold-bright)">'+s.val+'</div>';
+    var card=el('div',{className:'card', style:'padding:10px;text-align:center;min-width:0;overflow:hidden'});
+    card.innerHTML='<div class="small">'+s.label+'</div><div class="mono" style="font-weight:700;font-size:14px;color:var(--gold-bright);overflow-wrap:break-word;word-break:break-word">'+s.val+'</div>';
     summaryEl.appendChild(card);
   });
 }
