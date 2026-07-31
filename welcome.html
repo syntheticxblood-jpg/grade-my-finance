@@ -129,12 +129,17 @@
       <div class="survey-label">How did you find us?</div>
       <div class="survey-options" id="surveyOptions">
         <button type="button" class="survey-pill" data-source="google">Google / Search</button>
+        <button type="button" class="survey-pill" data-source="youtube">YouTube</button>
         <button type="button" class="survey-pill" data-source="reddit">Reddit</button>
         <button type="button" class="survey-pill" data-source="twitter">Twitter / X</button>
         <button type="button" class="survey-pill" data-source="discord">Discord</button>
         <button type="button" class="survey-pill" data-source="facebook">Facebook</button>
         <button type="button" class="survey-pill" data-source="friend">A friend</button>
         <button type="button" class="survey-pill" data-source="other">Other</button>
+      </div>
+      <div id="otherDetailWrap" style="display:none;margin-top:10px">
+        <input type="text" id="otherDetailInput" placeholder="Where, if you don't mind sharing (optional)" maxlength="120"
+          style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:inherit;font-size:13.5px">
       </div>
       <div id="surveyError" style="display:none;color:var(--bad,#F16565);font-size:12.5px;margin-top:8px">Please pick one before continuing.</div>
     </div>
@@ -143,6 +148,7 @@
           action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
           method="POST">
       <input type="hidden" name="source" id="sourceField" value="">
+      <input type="hidden" name="sourceDetail" id="sourceDetailField" value="">
       <input type="email" name="email" placeholder="you@example.com" required>
       <button type="submit" class="btn gold" style="width:auto">Join</button>
     </form>
@@ -203,18 +209,45 @@
         selectedSource = btn.dataset.source;
         localStorage.setItem(ALREADY_ANSWERED_KEY, selectedSource); // remembered permanently
         document.getElementById('sourceField').value = selectedSource;
+
+        // Only "Other" shows the optional free-text field — never required,
+        // just an easy way to add detail if someone wants to.
+        var otherWrap = document.getElementById('otherDetailWrap');
+        if(otherWrap) otherWrap.style.display = (selectedSource === 'other') ? 'block' : 'none';
+
         var err = document.getElementById('surveyError');
         if(err) err.style.display = 'none';
-        try{ gtag('event', 'referral_source', { source: selectedSource }); }catch(e){}
-        if(REFERRAL_LOG_ENDPOINT){
-          fetch(REFERRAL_LOG_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify({ source: selectedSource })
-          }).catch(function(){}); // fire-and-forget, never blocks the user
-        }
+        sendReferralPing(selectedSource);
       });
     });
+
+    var otherDetailInput = document.getElementById('otherDetailInput');
+    if(otherDetailInput){
+      otherDetailInput.addEventListener('input', function(){
+        var detailField = document.getElementById('sourceDetailField');
+        if(detailField) detailField.value = otherDetailInput.value;
+      });
+      // Re-send the ping with the detail included once someone finishes typing,
+      // debounced so it doesn't fire on every keystroke.
+      var detailDebounce;
+      otherDetailInput.addEventListener('input', function(){
+        clearTimeout(detailDebounce);
+        detailDebounce = setTimeout(function(){
+          sendReferralPing('other', otherDetailInput.value.trim());
+        }, 800);
+      });
+    }
+
+    function sendReferralPing(source, detail){
+      try{ gtag('event', 'referral_source', { source: source, detail: detail || undefined }); }catch(e){}
+      if(REFERRAL_LOG_ENDPOINT){
+        fetch(REFERRAL_LOG_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ source: source, detail: detail || "" })
+        }).catch(function(){}); // fire-and-forget, never blocks the user
+      }
+    }
 
     const emailForm = document.getElementById('emailForm');
     emailForm.addEventListener('submit', function(e){
