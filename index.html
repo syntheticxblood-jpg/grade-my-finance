@@ -2174,6 +2174,23 @@ function renderRetirementReadiness(v){
   });
 }
 
+// Fired right after someone downloads their grade image, story image, or
+// certificate — people are more receptive to "want a copy of this?" right
+// after they've gotten something of real value, not before.
+var __downloadNudgeShown = false;
+function nudgeSubscribeAfterDownload(){
+  var headline=$("subHeadline"), subtext=$("subSubtext"), box=$("subscribeInlineRC"), btn=$("subBtnRC");
+  if(!headline || !subtext || !box) return;
+  headline.textContent = "📧 Want a copy of that emailed to you too, in case you lose the file?";
+  subtext.textContent = "We'll send it once, plus 1–2 tips a month after that if you'd like. Unsubscribe anytime.";
+  if(btn) btn.textContent = "Email It To Me";
+  box.classList.remove('pulse'); void box.offsetWidth; box.classList.add('pulse');
+  if(!__downloadNudgeShown){
+    __downloadNudgeShown = true;
+    setTimeout(function(){ box.scrollIntoView({ behavior:"smooth", block:"center" }); }, 250);
+  }
+}
+
 function personalizeSubscribe(weak, newlyUnlocked, checkin){
   var headline=$("subHeadline"), subtext=$("subSubtext"), box=$("subscribeInlineRC"), btn=$("subBtnRC");
   if(!headline || !subtext) return;
@@ -2189,6 +2206,13 @@ function personalizeSubscribe(weak, newlyUnlocked, checkin){
     headline.textContent = "📧 Want this exact report card emailed to you, so it's not just stuck on this device?";
     subtext.textContent = "We'll send today's grade, plus 1–2 tips a month after that. Unsubscribe anytime.";
     if(btn) btn.textContent = "Email My Report";
+  } else if(checkin && checkin.count > 1){
+    // Returning visitor, no fresh achievement this time: fold in the same
+    // weakest-link personalization as before, but anchor it to the fact
+    // they're back at all — a stronger hook than a generic monthly-tips ask.
+    headline.textContent = "This is check-in #"+checkin.count+" — want an email the moment your "+weak.label.toLowerCase()+" actually improves?";
+    subtext.textContent = "One email when something actually moves. No fixed schedule, unsubscribe anytime.";
+    if(btn) btn.textContent = "Notify Me";
   } else {
     headline.textContent = "Your weakest link is "+weak.label+" — want monthly nudges until it's fixed?";
     subtext.textContent = "1–2 emails a month, tailored to your report. Unsubscribe anytime.";
@@ -2385,6 +2409,7 @@ if(downloadCertBtn){
     __track('download_certificate_pdf', {letter: letterClean});
     localStorage.setItem('gmf_cert_downloaded', 'true');
     setTimeout(function(){ win.focus(); win.print(); }, 400);
+    nudgeSubscribeAfterDownload();
   });
 }
 $("calcAgain").addEventListener("click",function(){ $("reportModal").classList.remove("show"); gradeNow(); });
@@ -2770,6 +2795,7 @@ $("downloadImage").addEventListener("click", function(){
   ctx.fillText("Get your free grade at grademyfinance.com", w/2, 960);
 
   saveCanvasAsImage(canvas, "my-financial-grade.png", "My Grade My Finance report card", "Check out my financial grade from Grade My Finance", "square");
+  nudgeSubscribeAfterDownload();
   } catch(err) {
     console.error("Download grade card failed:", err);
     toastMsg("Something went wrong generating your grade card. Please try again.");
@@ -2831,6 +2857,7 @@ $("downloadStoryImage").addEventListener("click", function(){
   ctx.fillText("grademyfinance.com", w/2, safeBottom-10);
 
   saveCanvasAsImage(canvas, "my-financial-grade-story.png", "My Grade My Finance report card", "Think you can beat my financial grade?", "story");
+  nudgeSubscribeAfterDownload();
   } catch(err) {
     console.error("Download story image failed:", err);
     toastMsg("Something went wrong generating your story image. Please try again.");
@@ -2873,8 +2900,30 @@ $("compareFriend").addEventListener("click", function(){
       '<div class="compare-banner">'+
         '<div>A friend got a <b style="color:var(--gold-bright)">'+friend.l+'</b> ('+friend.s.toFixed(1)+'/100) on Grade My Finance. Think you can beat it?</div>'+
         '<button class="btn gold sm" id="beatFriendBtn" type="button">Get my grade</button>'+
+      '</div>'+
+      '<div class="compare-banner" style="margin-top:10px;background:var(--surface);border-color:var(--line)">'+
+        '<div style="font-size:13px;color:var(--muted)">📧 Want us to email you if you beat their grade?</div>'+
+        '<form id="compareCaptureForm" style="display:flex;gap:8px;flex-wrap:wrap;flex:1 1 240px;justify-content:flex-end">'+
+          '<input type="email" name="email" placeholder="you@example.com" required style="flex:1 1 180px;padding:9px 11px;border-radius:8px;border:1px solid var(--line);background:var(--bg-2);color:var(--text);font-family:var(--font-mono);font-size:13px">'+
+          '<button type="submit" class="btn sm" style="flex:none">Notify Me</button>'+
+        '</form>'+
       '</div>';
     $("beatFriendBtn").addEventListener("click", gradeNow);
+    var compareCaptureForm = $("compareCaptureForm");
+    if(compareCaptureForm){
+      compareCaptureForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        var email = compareCaptureForm.querySelector("input[name='email']").value.trim();
+        if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
+        fetch("https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec", {
+          method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+          body:JSON.stringify({ email:email, source:"grademyfinance.com/comparebanner", friendGrade: friend.l, friendScore: friend.s })
+        }).then(function(res){
+          if(res.ok){ __track('subscribe_success',{placement:'compare_banner'}); toastMsg("Thanks! Check your inbox for a confirmation."); compareCaptureForm.reset(); }
+          else { __track('subscribe_error',{placement:'compare_banner',code:res.status}); alert("Signup failed. Please try again later."); }
+        }).catch(function(){ __track('subscribe_error',{placement:'compare_banner',code:'network'}); alert("Network error. Please try again later."); });
+      });
+    }
     __track('compare_view_incoming');
   }catch(e){}
 })();
