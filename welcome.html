@@ -108,6 +108,12 @@
     .btn.gold{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700 }
     .btn.ghost{ background:transparent; color:var(--text); margin-top:10px }
     .btn.text{ background:transparent; color:var(--muted); border-color:transparent; margin-top:2px; font-size:13px; padding:8px }
+    .skip-link{
+      display:block; width:100%; margin-top:16px; background:none; border:none; padding:6px;
+      color:var(--muted); font-family:var(--font-body); font-size:13.5px; text-decoration:underline;
+      text-underline-offset:3px; cursor:pointer; text-align:center;
+    }
+    .skip-link:hover{ color:var(--text) }
     .foot-note{ margin-top:22px; font-size:12px; color:#5D636F }
 
     /* ---------- Minimal top bar (brand + advisors link only) ---------- */
@@ -143,7 +149,7 @@
   <div class="card rise" style="--d:.08s">
     <div class="seal"><span>A+</span></div>
     <h1>Welcome to Grade My Finance</h1>
-    <p class="lede">Get your free financial grade in seconds. Enter your email to stay in the loop, or jump straight in.</p>
+    <p class="lede">Get your free financial grade in seconds. Add your email and we'll send you today's grade to keep — plus the occasional tip if you want to raise it.</p>
     <div class="live-stat" id="liveStat">Loading live stats…</div>
 
     <div class="survey" id="surveyBlock">
@@ -167,15 +173,14 @@
 
     <form id="emailForm"
           action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
-          method="POST">
+          method="POST" style="flex-direction:column">
       <input type="hidden" name="source" id="sourceField" value="">
       <input type="hidden" name="sourceDetail" id="sourceDetailField" value="">
-      <input type="email" name="email" placeholder="you@example.com" required>
-      <button type="submit" class="btn gold" style="width:auto">Join</button>
+      <input type="email" name="email" placeholder="you@example.com" required style="width:100%">
+      <button type="submit" class="btn gold" style="width:100%;margin-top:10px">Get My Grade + Email Me a Copy</button>
     </form>
 
-    <button onclick="continueSession()" class="btn ghost" style="border:1px solid var(--line)">Continue without email</button>
-    <button onclick="skipSession()" class="btn text">Don't show again this session</button>
+    <button onclick="continueSession()" class="skip-link">Continue without email</button>
 
     <div class="foot-note">No spam. Unsubscribe anytime. Calculations run locally in your browser. <a href="privacy-policy.html" style="color:var(--muted)">Privacy Policy</a></div>
     <div class="foot-note" style="margin-top:10px">
@@ -207,11 +212,6 @@
     }
 
     function continueSession() {
-      if(!requireSourceSelection()) return;
-      sessionStorage.setItem('skipWelcomeSession', 'true');
-      setTimeout(() => window.location.href = 'index.html', 100);
-    }
-    function skipSession() {
       if(!requireSourceSelection()) return;
       sessionStorage.setItem('skipWelcomeSession', 'true');
       setTimeout(() => window.location.href = 'index.html', 100);
