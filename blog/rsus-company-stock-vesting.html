@@ -50,6 +50,13 @@ p.lede{color:var(--muted);font-size:16.5px;margin-top:14px}
 .related a{display:block;margin:6px 0;font-size:14.5px}
 footer.site{border-top:1px solid var(--line);padding:26px 0;text-align:center;color:var(--muted-2);font-size:12.5px}
 footer.site a{color:var(--muted)}
+
+.blog-subscribe{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:20px; margin:28px 0 }
+.blog-subscribe h3{ margin:0 0 4px; font-size:16px }
+.blog-subscribe p{ color:var(--muted); font-size:13px; margin:0 0 12px }
+.blog-subscribe form{ display:flex; gap:8px; flex-wrap:wrap }
+.blog-subscribe input[type="email"]{ flex:1 1 200px; padding:10px 12px; border-radius:8px; border:1px solid var(--line); background:var(--bg); color:var(--text); font-family:var(--font-mono); font-size:13px }
+.blog-subscribe button{ flex:none; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:700; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-size:13px }
 </style>
 </head>
 <body>
@@ -74,9 +81,37 @@ footer.site a{color:var(--muted)}
 <details class="faq-item" open><summary>Do I owe taxes even if I don't sell?</summary><p>Yes. The vesting event itself is what creates the taxable income, based on the share price on that date — selling or holding afterward doesn't change what you owe from vesting, though selling later can trigger additional capital gains or losses on top of that.</p></details>
 <details class="faq-item"><summary>What's a reasonable amount of company stock to hold?</summary><p>There's no universal number, but a common rule of thumb is keeping any single stock position, including employer stock, to a modest share of your total portfolio — reflecting the added concentration risk of it being tied to your own paycheck.</p></details>
 </div>
+<div class="blog-subscribe">
+  <h3>Get 1-2 money tips a month</h3>
+  <p>No fluff, no spam, unsubscribe anytime.</p>
+  <form id="blogSubForm" data-post="rsus-company-stock-vesting">
+    <input type="email" name="email" placeholder="you@example.com" required>
+    <button type="submit">Subscribe</button>
+  </form>
+</div>
 <div class="related"><strong style="font-size:13px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em">Related</strong><a href="/blog/signs-you-need-a-financial-advisor.html">5 Signs You're Ready to Work With a Financial Advisor</a><a href="/blog/tax-brackets-explained.html">Tax Brackets Explained</a><a href="/blog/index.html">More from the blog</a></div>
 </main>
 <footer class="site"><div class="container">© 2026 Grade My Finance — educational use only, not financial advice. <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/index.html">Home</a></div></footer>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I owe taxes even if I don't sell?","acceptedAnswer":{"@type":"Answer","text":"Yes. The vesting event itself creates taxable income based on the share price on that date, regardless of whether you sell."}},{"@type":"Question","name":"What's a reasonable amount of company stock to hold?","acceptedAnswer":{"@type":"Answer","text":"There's no universal number, but a common rule of thumb is keeping any single stock position to a modest share of your total portfolio."}}]}</script>
+<script>
+(function(){
+  var f = document.getElementById('blogSubForm');
+  if(!f) return;
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var email = f.querySelector('input[name="email"]').value.trim();
+    if(!/^\S+@\S+\.\S+$/.test(email)){ alert('Please enter a valid email.'); return; }
+    var btn = f.querySelector('button');
+    var orig = btn.textContent; btn.textContent = 'Sending...'; btn.disabled = true;
+    fetch('https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec', {
+      method:'POST', headers:{'Accept':'application/json','Content-Type':'application/json'},
+      body: JSON.stringify({ email:email, source:'grademyfinance.com/blog/'+(f.dataset.post||'unknown') })
+    }).then(function(res){
+      if(res.ok){ btn.textContent = 'Subscribed ✓'; f.reset(); }
+      else { btn.textContent = orig; btn.disabled = false; alert('Signup failed. Please try again later.'); }
+    }).catch(function(){ btn.textContent = orig; btn.disabled = false; alert('Network error. Please try again later.'); });
+  });
+})();
+</script>
 </body>
 </html>
