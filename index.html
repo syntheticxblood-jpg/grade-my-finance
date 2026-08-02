@@ -633,6 +633,7 @@ body.is-pro .ad-slot{ display:none !important }
       </a>
       <a href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">Community</a>
       <a href="blog/index.html">Blog</a>
+      <a href="for-advisors.html">For Advisors</a>
     </nav>
     <div class="hdr-right">
       <div class="settings-wrap">
@@ -661,6 +662,9 @@ body.is-pro .ad-slot{ display:none !important }
               <option value="ZAR">ZAR R</option>
             </select>
           </div>
+          <a class="settings-item" href="for-advisors.html">
+            <span>💼</span> For Advisors
+          </a>
           <button class="settings-item" id="themeToggle" type="button">
             <span>◐</span> Toggle theme
           </button>
@@ -668,7 +672,6 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
       <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing"><span class="pro-star">★</span> Upgrade to Pro</a>
       <span class="btn sm pro-badge-filled pro-only-show" id="proPill" style="display:none">★ PRO</span>
-      <button class="btn gold sm" id="gradeBtnTop" type="button">Get My Grade</button>
     </div>
   </div>
 </header>
@@ -2378,7 +2381,7 @@ function gradeNow(){
   __track('click_get_report_card', {location: 'main'});
   runWithLoader(function(){ var v=values(); var cats=categoryScores(v); openReport(v,cats); });
 }
-$("gradeBtnTop").addEventListener("click", function(){ __track('click_get_report_card',{location:'hdr'}); gradeNow(); });
+if($("gradeBtnTop")) $("gradeBtnTop").addEventListener("click", function(){ __track('click_get_report_card',{location:'hdr'}); gradeNow(); });
 $("gradeBtnHero").addEventListener("click", function(){
   __track('click_scroll_to_calculator',{location:'hero'});
   document.getElementById("grade").scrollIntoView({ behavior:"smooth", block:"start" });
