@@ -21,9 +21,44 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://grademyfinance.com/for-advisors.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://grademyfinance.com/blog/index.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://grademyfinance.com/blog/do-you-need-life-insurance.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://grademyfinance.com/blog/rsus-company-stock-vesting.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://grademyfinance.com/blog/negotiate-lower-credit-card-rate.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://grademyfinance.com/blog/signs-you-need-a-financial-advisor.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://grademyfinance.com/blog/what-does-my-financial-grade-mean.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://grademyfinance.com/blog/numbers-that-predict-your-grade.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://grademyfinance.com/blog/financial-health-5-minutes.html</loc>
