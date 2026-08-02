@@ -61,6 +61,16 @@ header.site{ position:sticky; top:0; z-index:50; background:rgba(10,11,14,.82); 
 .btn:active{ transform:translateY(1px) }
 .btn.gold{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300 }
 .btn.outline{ background:transparent; border:1.5px solid var(--line); color:var(--text) }
+@media (max-width:680px){
+  .hdr-row{ gap:8px }
+  .container{ padding:0 16px }
+  .seal{ width:32px; height:32px }
+  .wordmark{ font-size:13.5px }
+  .wordmark small{ font-size:9px }
+  .hdr-right{ gap:8px }
+  .hdr-right a.ghost{ display:none }
+  .hdr-right .btn{ padding:9px 13px; font-size:12.5px; white-space:nowrap }
+}
 
 /* ---------- Hero ---------- */
 .hero{ position:relative; padding:88px 0 60px; overflow:hidden }
