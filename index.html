@@ -907,8 +907,10 @@ body.is-pro .ad-slot{ display:none !important }
       <form id="subFormRC" class="sub-row"
         action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
         method="POST" novalidate>
+        <input type="hidden" name="reportGrade" id="subReportGrade" value="">
+        <input type="hidden" name="reportScore" id="subReportScore" value="">
         <input type="email" name="email" placeholder="you@example.com" required>
-        <button type="submit" class="btn gold sm">Subscribe</button>
+        <button type="submit" class="btn gold sm" id="subBtnRC">Subscribe</button>
       </form>
     </div>
 
@@ -2172,17 +2174,25 @@ function renderRetirementReadiness(v){
   });
 }
 
-function personalizeSubscribe(weak, newlyUnlocked){
-  var headline=$("subHeadline"), subtext=$("subSubtext"), box=$("subscribeInlineRC");
+function personalizeSubscribe(weak, newlyUnlocked, checkin){
+  var headline=$("subHeadline"), subtext=$("subSubtext"), box=$("subscribeInlineRC"), btn=$("subBtnRC");
   if(!headline || !subtext) return;
 
   if(newlyUnlocked && newlyUnlocked.length){
     // Lead with the genuine win — a better moment to ask than "here's what's wrong"
     headline.textContent = "🎉 You just unlocked \""+newlyUnlocked[0]+"\" — want us to email you when you hit milestones like this?";
     subtext.textContent = "1–2 emails a month. Unsubscribe anytime.";
+    if(btn) btn.textContent = "Subscribe";
+  } else if(checkin && checkin.count === 1){
+    // First-time visitor: the single most concrete, self-interested reason
+    // to hand over an email isn't "get tips" — it's "don't lose this number."
+    headline.textContent = "📧 Want this exact report card emailed to you, so it's not just stuck on this device?";
+    subtext.textContent = "We'll send today's grade, plus 1–2 tips a month after that. Unsubscribe anytime.";
+    if(btn) btn.textContent = "Email My Report";
   } else {
     headline.textContent = "Your weakest link is "+weak.label+" — want monthly nudges until it's fixed?";
     subtext.textContent = "1–2 emails a month, tailored to your report. Unsubscribe anytime.";
+    if(btn) btn.textContent = "Subscribe";
   }
 
   if(box){ box.classList.remove('pulse'); void box.offsetWidth; box.classList.add('pulse'); }
@@ -2297,7 +2307,9 @@ function openReport(v,cats){
   var streakCount = computeImprovementStreak(hist, cats.overall.score);
   renderMilestoneBanner(cats, checkinResult, streakCount);
   var newlyUnlockedAchievements = renderAchievements(v, cats, checkinResult, streakCount);
-  personalizeSubscribe(weakLinkForSubscribe, newlyUnlockedAchievements);
+  personalizeSubscribe(weakLinkForSubscribe, newlyUnlockedAchievements, checkinResult);
+  if($("subReportGrade")) $("subReportGrade").value = cats.overall.letter;
+  if($("subReportScore")) $("subReportScore").value = cats.overall.score;
 
   modal.classList.add("show");
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
@@ -3051,12 +3063,18 @@ if(subFormRC){
     e.preventDefault();
     var email=subFormRC.querySelector("input[name='email']").value.trim();
     if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
+    var gradeEl=$("subReportGrade"), scoreEl=$("subReportScore");
     fetch(subFormRC.action, {
       method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
-      body:JSON.stringify({email:email,source:"grademyfinance.com/reportcard"})
+      body:JSON.stringify({
+        email:email,
+        source:"grademyfinance.com/reportcard",
+        reportGrade: gradeEl ? gradeEl.value : "",
+        reportScore: scoreEl ? scoreEl.value : ""
+      })
     })
     .then(function(res){
-      if(res.ok){ __track('subscribe_success',{placement:'report_card'}); toastMsg("Thanks for subscribing!"); subFormRC.reset(); }
+      if(res.ok){ __track('subscribe_success',{placement:'report_card'}); toastMsg("Thanks! Check your inbox for a confirmation."); subFormRC.reset(); }
       else { __track('subscribe_error',{placement:'report_card',code:res.status}); alert("Signup failed. Please try again later."); }
     })
     .catch(function(){ __track('subscribe_error',{placement:'report_card',code:'network'}); alert("Network error. Please try again later."); });
