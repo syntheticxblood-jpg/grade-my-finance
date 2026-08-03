@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&family=Playfair+Display:wght@600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&family=Playfair+Display:wght@600;700;800&family=Dancing+Script:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
 
 <link rel="preconnect" href="https://googletagmanager.com" crossorigin>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
@@ -172,6 +172,16 @@ nav.primary a:hover{ color:var(--text) }
 @media (prefers-reduced-motion: reduce){ .aurora span{ animation:none } }
 .hero-grid{ position:relative; z-index:1; display:grid; grid-template-columns: 1.05fr .95fr; gap:56px; align-items:center }
 @media (max-width:980px){ .hero-grid{ grid-template-columns:1fr; text-align:center } .hero-cta{ justify-content:center } .hero-proof{ justify-content:center } }
+.live-counter-badge{
+  display:inline-flex; align-items:center; gap:9px; margin-bottom:16px;
+  background:var(--surface); border:1px solid var(--line); border-radius:999px;
+  padding:9px 16px 9px 13px; box-shadow:var(--shadow);
+}
+.lcb-dot{ width:8px; height:8px; border-radius:50%; background:var(--good); flex:none; animation:lcbPulse 2s ease-in-out infinite }
+@keyframes lcbPulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(52,211,153,.5) } 50%{ box-shadow:0 0 0 5px rgba(52,211,153,0) } }
+@media (prefers-reduced-motion: reduce){ .lcb-dot{ animation:none } }
+.lcb-count{ font-family:var(--font-mono); font-weight:700; font-size:16px; color:var(--gold-bright) }
+.lcb-label{ font-size:12.5px; color:var(--muted) }
 .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; color:var(--gold-bright); background:var(--gold-soft); border:1px solid rgba(201,162,39,.35); padding:6px 12px; border-radius:999px; margin-bottom:20px }
 .hero h1{ font-size:clamp(34px,4.6vw,54px); line-height:1.06; font-weight:700 }
 .hero h1 em{
@@ -229,29 +239,17 @@ nav.primary a:hover{ color:var(--text) }
 /* Mini wax-seal for the hero preview — mirrors the real report card's
    signature grade reveal, so the hero actually previews what's coming. */
 .mock-grade-seal{
-  position:relative; width:64px; height:64px; border-radius:50%; flex:none;
+  position:relative; width:56px; height:56px; border-radius:14px; flex:none;
   display:flex; align-items:center; justify-content:center;
-  font-family:var(--font-mono); font-weight:800; font-size:22px; color:#0d1608;
-  background:radial-gradient(circle at 34% 28%, var(--good), var(--good-2) 78%);
-  box-shadow:0 3px 0 rgba(0,0,0,.2), 0 8px 14px rgba(0,0,0,.35), inset 0 1px 3px rgba(255,255,255,.3), inset 0 -3px 5px rgba(0,0,0,.25);
-  transform:rotate(-5deg);
-}
-.mock-grade-seal::before{
-  content:""; position:absolute; inset:-9px; border-radius:50%; z-index:-1;
-  background:repeating-conic-gradient(from 0deg, rgba(201,162,39,.35) 0deg 8deg, transparent 8deg 20deg);
-}
-.mock-grade-seal::after{
-  content:""; position:absolute; top:80%; left:50%; width:20px; height:26px; z-index:-2;
-  background:inherit; transform:translateX(-50%);
-  clip-path:polygon(15% 0%, 85% 0%, 100% 100%, 50% 82%, 0% 100%);
-  filter:brightness(.85);
+  font-family:var(--font-mono); font-weight:700; font-size:20px; color:var(--good);
+  border:2px solid var(--good); background:rgba(52,211,153,.08);
 }
 .mock-grade-seal .shimmer{
-  position:absolute; inset:0; border-radius:50%; overflow:hidden; pointer-events:none;
+  position:absolute; inset:0; border-radius:14px; overflow:hidden; pointer-events:none;
 }
 .mock-grade-seal .shimmer::after{
   content:""; position:absolute; top:0; left:-70%; width:45%; height:100%;
-  background:linear-gradient(75deg, transparent, rgba(255,255,255,.6), transparent);
+  background:linear-gradient(75deg, transparent, rgba(255,255,255,.3), transparent);
   animation:sealShimmerLoop 3.2s ease-in-out infinite;
 }
 @keyframes sealShimmerLoop{ 0%{ left:-70% } 45%{ left:150% } 100%{ left:150% } }
@@ -264,6 +262,29 @@ nav.primary a:hover{ color:var(--text) }
 .mock-float.f1{ top:-38px; right:8%; transform:rotate(-4deg) }
 .mock-float.f2{ bottom:6%; left:-6%; transform:rotate(3deg) }
 @media (max-width:980px){ .mock-float{ display:none } }
+
+.mock-stat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px }
+.mock-stat{ display:flex; flex-direction:column; gap:3px; background:var(--bg-2); border:1px solid var(--line); border-radius:10px; padding:10px 12px }
+.mock-stat .ms-label{ font-size:10.5px; color:var(--muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.03em }
+.mock-stat .ms-val{ font-weight:700; font-size:14px; font-family:var(--font-mono) }
+.mock-divider{ height:1px; background:var(--line); margin:16px 0 12px }
+.mock-breakdown-label{ font-size:11px; color:var(--muted-2); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.04em; margin-bottom:10px }
+
+/* ---------- Trust section ---------- */
+.trust-section{ padding:64px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--bg-2) }
+.trust-inner{ max-width:880px; margin:0 auto }
+.trust-copy{ text-align:center; margin-bottom:36px }
+.trust-copy h2{ font-size:clamp(24px,3vw,32px); margin-top:6px }
+.trust-copy p{ color:var(--muted); font-size:15px; max-width:560px; margin:12px auto 0 }
+.trust-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px }
+@media (max-width:720px){ .trust-grid{ grid-template-columns:1fr } }
+.trust-item{ display:flex; gap:14px; align-items:flex-start }
+.trust-check{ width:26px; height:26px; border-radius:50%; background:var(--gold-soft); color:var(--gold-bright); display:grid; place-items:center; font-weight:700; font-size:13px; flex:none; margin-top:2px }
+.trust-item b{ display:block; font-size:14.5px; margin-bottom:4px }
+.trust-item span{ color:var(--muted); font-size:13.5px; line-height:1.55 }
+.trust-links{ display:flex; justify-content:center; gap:22px; margin-top:36px; padding-top:24px; border-top:1px solid var(--line); font-size:13px }
+.trust-links a{ color:var(--muted); text-decoration:none }
+.trust-links a:hover{ color:var(--text) }
 
 /* ---------- Stat strip ---------- */
 .stats{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--bg-2) }
@@ -321,6 +342,33 @@ section.block{ padding:76px 0 }
 .progress>div{ height:100%; width:0%; background:linear-gradient(90deg,var(--good-2),var(--good)); transition:width .5s ease }
 .calc-actions{ display:flex; justify-content:space-between; gap:10px; margin-top:22px; flex-wrap:wrap }
 
+/* ---------- Guided multi-step wizard ---------- */
+.stepper-head{ margin-bottom:26px }
+.stepper-progress{ height:4px; background:var(--surface-2); border-radius:99px; overflow:hidden; margin-bottom:16px }
+.stepper-progress-fill{ height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-bright)); transition:width .4s cubic-bezier(.2,.8,.2,1) }
+.stepper-labels{ display:flex; gap:22px; flex-wrap:wrap }
+.step-label{ font-size:12.5px; color:var(--muted-2); font-weight:600; display:flex; align-items:center; gap:6px; transition:color .2s ease }
+.step-label b{ font-family:var(--font-mono); font-weight:700; color:var(--muted-2); transition:color .2s ease }
+.step-label.active{ color:var(--text) }
+.step-label.active b{ color:var(--gold-bright) }
+.step-label.done b{ color:var(--good) }
+.calc-step{ display:none; animation:stepFadeIn .35s ease; position:relative }
+.step-icon{
+  position:absolute; top:2px; right:6px; width:84px; height:84px; opacity:.4;
+  pointer-events:none; animation:stepIconFloat 4.5s ease-in-out infinite;
+}
+@keyframes stepIconFloat{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-7px) } }
+@media (prefers-reduced-motion: reduce){ .step-icon{ animation:none } }
+@media (max-width:820px){ .step-icon{ display:none } }
+/* Steps 3 and 4 pack enough fields to fill the whole width, so there's no
+   safe empty space left for a decorative icon without it sitting over a
+   real field — simplest fix is to only show it on the two lighter steps. */
+.calc-step[data-step="3"] .step-icon, .calc-step[data-step="4"] .step-icon{ display:none }
+.calc-step.active{ display:block }
+@keyframes stepFadeIn{ from{ opacity:0; transform:translateY(6px) } to{ opacity:1; transform:none } }
+.step-actions{ display:flex; justify-content:space-between; align-items:center; margin-top:24px }
+@media (max-width:640px){ .stepper-labels{ gap:14px } .step-label span{ display:none } .step-label b{ font-size:13px } }
+
 /* Overlay loader */
 .overlay{ position:fixed; inset:0; display:none; place-items:center; background:rgba(6,7,9,.6); backdrop-filter:blur(3px); z-index:80 }
 .overlay.show{ display:grid }
@@ -329,88 +377,162 @@ section.block{ padding:76px 0 }
 .bar{ height:10px; border-radius:99px; overflow:hidden; border:1px solid var(--line); background:var(--bg-2) }
 .bar .fill{ height:100%; width:0; background:linear-gradient(90deg,var(--gold),var(--gold-bright)); transition:width .25s ease }
 
-/* ---------- Report modal — premium certificate treatment ---------- */
+/* ---------- Report modal — modern dashboard treatment ---------- */
 .modal{ position:fixed; inset:0; display:none; z-index:100; background:rgba(6,7,9,.68) }
 .modal.show{ display:grid; place-items:center }
 .sheet{
-  width:min(960px,95vw); max-height:90vh; overflow:auto; margin:10px; padding:34px;
-  border-radius:18px; position:relative;
-  /* Dark/gold palette matching the rest of the site — cascades to every
-     var(--text)/var(--muted)/var(--surface)/var(--line)/var(--gold)* used
-     by cards, badges, rows, etc. inside this modal only */
-  --bg-2:#14161C; --surface:#1B1E26; --surface-2:#20232E;
-  --line: rgba(255,255,255,.10); --text:#F2F3F5; --muted:#8B92A0; --muted-2:#5D636F;
-  --gold:#C9A227; --gold-bright:#E4C24E; --gold-soft: rgba(201,162,39,.14);
-  --font-mono:'IBM Plex Mono',monospace;
+  width:min(980px,95vw); max-height:90vh; overflow:auto; margin:10px; padding:36px;
+  border-radius:20px; position:relative;
+  /* Modern dark-panel palette, scoped to this modal only — cascades to
+     every var(--text)/var(--muted)/var(--surface)/var(--line)/var(--gold)*
+     used by cards, badges, rows, etc. inside here without touching the
+     rest of the (still gold/certificate-adjacent) site. */
+  --bg-2:#0E1116; --surface:#171C24; --surface-2:#1E2530;
+  --line: #2A313D; --text:#E9ECF1; --muted:#8B93A3; --muted-2:#5D636F;
+  --gold:#E8B34A; --gold-bright:#F0C168; --gold-soft: rgba(232,179,74,.14);
+  --good:#4FC28A; --good-2:#3AA173; --bad:#D97757; --mid:#5B8DEF;
+  --font-mono:'IBM Plex Mono',monospace; --font-serif:'Fraunces',serif;
   background:
-    repeating-linear-gradient(45deg, rgba(201,162,39,.03) 0 2px, transparent 2px 14px),
-    repeating-linear-gradient(-45deg, rgba(201,162,39,.03) 0 2px, transparent 2px 14px),
-    radial-gradient(120% 140% at 15% 0%, rgba(201,162,39,.09), transparent 55%),
-    radial-gradient(90% 120% at 100% 100%, rgba(52,211,153,.05), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 12% -8%, rgba(232,179,74,.09), transparent 60%),
+    radial-gradient(ellipse 600px 400px at 100% 8%, rgba(91,141,239,.07), transparent 60%),
     var(--bg-2);
-  border:3px double var(--gold-bright);
-  box-shadow: 0 24px 60px rgba(0,0,0,.6), inset 0 0 0 6px rgba(201,162,39,.12), inset 0 0 40px rgba(201,162,39,.06);
+  border:1px solid var(--line);
+  box-shadow: 0 24px 60px rgba(0,0,0,.6);
   color:var(--text);
   overflow-x:hidden;
 }
-.sheet::after{
-  content:""; position:absolute; top:0; left:-70%; width:45%; height:100%; pointer-events:none; z-index:5;
-  background:linear-gradient(80deg, transparent, rgba(228,194,78,.35), transparent);
-  animation: sheetShimmer 1.3s ease-in-out .2s 1;
-}
-@keyframes sheetShimmer{ 0%{ left:-70% } 100%{ left:150% } }
-@media (prefers-reduced-motion: reduce){ .sheet::after{ animation:none; display:none } }
-.corner-flourish{ position:absolute; font-size:22px; color:var(--gold-bright); opacity:.75; z-index:2; pointer-events:none; font-family:'Playfair Display',serif }
-.corner-flourish.tl{ top:10px; left:14px }
-.corner-flourish.tr{ top:10px; right:14px; transform:scaleX(-1) }
-.corner-flourish.bl{ bottom:10px; left:14px; transform:scaleY(-1) }
-.corner-flourish.br{ bottom:10px; right:14px; transform:scale(-1,-1) }
 .modal.show .sheet{ animation:popIn .35s cubic-bezier(.2,1,.2,1) }
 @keyframes popIn{ 0%{ transform:scale(.96); opacity:0 } 100%{ transform:scale(1); opacity:1 } }
 .sheet-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:18px }
 .xbtn{ background:var(--surface); border:1px solid var(--line); color:var(--text); border-radius:9px; padding:8px 12px; cursor:pointer; font-size:13px }
-.rc-top{ display:flex; align-items:center; gap:16px }
-.rc-title{ font-family:'Playfair Display',serif; font-weight:800; font-size:24px; letter-spacing:.01em }
+
+/* Hero: grade stamp + greeting + streak, replacing the old wax-seal/certificate header */
+.rc-hero{
+  display:grid; grid-template-columns:150px 1fr; gap:26px; align-items:center;
+  background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:26px; width:100%;
+}
+@media (max-width:640px){ .rc-hero{ grid-template-columns:1fr; text-align:center } }
+.rc-title{ font-family:var(--font-serif); font-weight:700; font-size:15px; color:var(--muted); letter-spacing:.03em; text-transform:uppercase }
 .rc-meta{ color:var(--muted); font-size:13px; font-family:var(--font-mono); margin-top:5px }
-.rc-signature{ font-family:'Dancing Script',cursive; font-size:18px; color:var(--gold); margin-top:8px; opacity:.85 }
 .rc-grade{
-  margin-left:auto; position:relative; font-family:'Playfair Display',serif; font-weight:800; font-size:36px;
-  width:98px; height:98px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-  transform:rotate(-5deg); flex:none;
-  box-shadow: 0 4px 0 rgba(0,0,0,.2), 0 14px 20px rgba(0,0,0,.4), inset 0 2px 5px rgba(255,255,255,.3), inset 0 -4px 8px rgba(0,0,0,.3);
-  border:2px solid rgba(255,255,255,.3);
+  position:relative; font-family:var(--font-serif); font-weight:700; font-size:72px; line-height:1;
+  width:100%; height:130px; border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  flex:none; border:2px solid var(--gold); background:repeating-linear-gradient(135deg, var(--gold-soft) 0 2px, transparent 2px 14px);
 }
-.rc-grade::before{
-  content:""; position:absolute; inset:-15px; border-radius:50%; z-index:-1;
-  background: repeating-conic-gradient(from 0deg, rgba(138,106,31,.4) 0deg 7deg, transparent 7deg 18deg);
-}
-.rc-grade::after{
-  content:""; position:absolute; top:82%; left:50%; width:34px; height:46px; z-index:-2;
-  background:inherit; transform:translateX(-50%);
-  clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 50% 82%, 0% 100%);
-  filter:brightness(.85);
-}
-.rc-grade.good{ background:radial-gradient(circle at 34% 28%, #5da177, #1f4a34 78%); color:#f3ede0 }
-.rc-grade.mid{ background:radial-gradient(circle at 34% 28%, #c89a3d, #7a5a1a 78%); color:#2b1d0e }
-.rc-grade.bad{ background:radial-gradient(circle at 34% 28%, #b04b4b, #5c1f1f 78%); color:#f3ede0 }
-.rc-grade.pop{ animation:stampPress .55s cubic-bezier(.3,1.4,.4,1) }
-@keyframes stampPress{
-  0%{ transform:rotate(-5deg) scale(2.2) translateY(-60px); opacity:0 }
-  55%{ transform:rotate(-5deg) scale(.92) translateY(0); opacity:1 }
-  75%{ transform:rotate(-5deg) scale(1.06) }
-  100%{ transform:rotate(-5deg) scale(1) }
-}
+.rc-grade .rc-grade-label{ font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:6px }
+.rc-grade.good{ color:var(--good); border-color:var(--good); background:repeating-linear-gradient(135deg, rgba(79,194,138,.10) 0 2px, transparent 2px 14px); text-shadow:0 0 30px rgba(79,194,138,.3) }
+.rc-grade.mid{ color:var(--gold-bright); text-shadow:0 0 30px rgba(232,179,74,.3) }
+.rc-grade.bad{ color:var(--bad); border-color:var(--bad); background:repeating-linear-gradient(135deg, rgba(225,91,91,.10) 0 2px, transparent 2px 14px); text-shadow:0 0 30px rgba(225,91,91,.3) }
+.rc-grade.pop{ animation:stampPress .5s cubic-bezier(.3,1.2,.4,1) }
+@keyframes stampPress{ 0%{ transform:scale(.7); opacity:0 } 60%{ transform:scale(1.06); opacity:1 } 100%{ transform:scale(1) } }
 .ink-ripple{
-  position:absolute; border-radius:50%; border:2px solid var(--gold-bright); pointer-events:none;
+  position:absolute; border-radius:16px; border:2px solid var(--gold-bright); pointer-events:none;
   animation:inkRipple .6s ease-out forwards; z-index:3;
 }
-@keyframes inkRipple{ 0%{ opacity:.7; transform:scale(.3) } 100%{ opacity:0; transform:scale(2.6) } }
+@keyframes inkRipple{ 0%{ opacity:.7; transform:scale(.9) } 100%{ opacity:0; transform:scale(1.15) } }
 @media (prefers-reduced-motion: reduce){ .rc-grade.pop{ animation:none } .ink-ripple{ display:none } }
+.rc-hero-right h2{ font-family:var(--font-serif); font-weight:600; font-size:22px; margin:0 0 6px }
+.rc-hero-right p{ color:var(--muted); font-size:13.5px; margin:0; max-width:480px }
+.rc-streak{
+  display:inline-flex; align-items:center; gap:8px; margin-top:12px;
+  background:var(--surface-2); border:1px solid var(--line); padding:7px 13px; border-radius:100px;
+  font-size:12.5px; font-family:var(--font-mono); color:var(--muted);
+}
+.rc-streak .dot{ width:7px; height:7px; border-radius:50%; background:var(--good); box-shadow:0 0 8px var(--good); flex:none }
+
+/* Factor cards — 5 at-a-glance mini cards replacing the old bars-only view */
+.factor-cards{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin:16px 0 }
+@media (max-width:480px){ .factor-cards{ grid-template-columns:1fr } }
+.factor-card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:9px }
+.factor-card .fc-top{ display:flex; align-items:center; justify-content:space-between }
+.factor-card .fc-icon{ width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px }
+.factor-card .fc-grade{ font-family:var(--font-serif); font-weight:700; font-size:18px }
+.factor-card .fc-name{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em }
+.factor-card .fc-bar-track{ height:6px; border-radius:4px; background:var(--surface-2); overflow:hidden }
+.factor-card .fc-bar-fill{ height:100%; border-radius:4px }
+.factor-card .fc-tip{ font-size:11.5px; color:var(--muted); line-height:1.4; margin-top:2px }
+.fc-good .fc-icon{ background:rgba(79,194,138,.15); color:var(--good) }
+.fc-mid .fc-icon{ background:rgba(232,179,74,.15); color:var(--gold-bright) }
+.fc-bad .fc-icon{ background:rgba(225,91,91,.15); color:var(--bad) }
+
+/* Flow panel — tabbed real-data Sankey-style diagrams */
+.flow-panel{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:6px 24px 22px; margin:16px 0 }
+.flow-tabs{ display:flex; gap:4px; border-bottom:1px solid var(--line); margin:0 -24px 18px; padding:0 24px; overflow-x:auto }
+.flow-tab{
+  background:none; border:none; cursor:pointer; white-space:nowrap;
+  color:var(--muted); font-family:var(--font-body); font-size:13px; font-weight:600;
+  padding:14px 4px; margin-right:22px; border-bottom:2px solid transparent;
+  transition:color .15s ease, border-color .15s ease; position:relative; top:1px;
+  display:flex; align-items:center; gap:6px;
+}
+.flow-tab:hover{ color:var(--text) }
+.flow-tab.active{ color:var(--text); border-bottom-color:var(--gold) }
+.flow-tab .lock-tag{ font-size:9px; background:var(--gold-soft); color:var(--gold-bright); padding:2px 6px; border-radius:99px; font-family:var(--font-mono); font-weight:700 }
+.flow-view{ display:none }
+.flow-view.active{ display:block; animation:flowFadeIn .25s ease }
+@keyframes flowFadeIn{ from{ opacity:0; transform:translateY(4px) } to{ opacity:1; transform:none } }
+.flow-header{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:6px }
+.flow-header h3{ font-family:var(--font-serif); font-weight:600; font-size:16px; margin:0 }
+.flow-header .flow-sub{ font-size:11px; color:var(--muted); font-family:var(--font-mono) }
+.flow-legend{ display:flex; gap:16px; margin:12px 0 0; flex-wrap:wrap }
+.flow-legend-item{ display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted) }
+.flow-legend-swatch{ width:9px; height:9px; border-radius:2px; flex:none }
+.flow-lock{ display:flex; align-items:center; justify-content:center; gap:8px; padding:40px 16px; text-align:center; color:var(--muted); font-size:13px }
 
 .rc-sections{ display:grid; grid-template-columns:1.2fr 1fr; gap:14px; margin-top:14px }
 @media (max-width:900px){ .rc-sections{ grid-template-columns:1fr } }
-.sheet .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px; box-shadow:0 1px 0 rgba(255,255,255,.4) inset }
-.sheet .section-label{ font-family:'Playfair Display',serif; font-size:14px; color:var(--gold); font-weight:700; text-transform:none; letter-spacing:.02em; font-style:italic; display:block; margin-bottom:10px }
+.sheet .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px }
+.sheet .section-label{ font-family:var(--font-serif); font-size:13px; color:var(--gold-bright); font-weight:600; text-transform:none; letter-spacing:.01em; display:block; margin-bottom:10px }
+
+/* Financial snapshot — the "10 second scan" row of real numbers */
+.snapshot-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:16px 0 }
+@media (max-width:820px){ .snapshot-grid{ grid-template-columns:repeat(3,1fr) } }
+@media (max-width:520px){ .snapshot-grid{ grid-template-columns:repeat(2,1fr) } }
+.snapshot-item{ display:flex; flex-direction:column; gap:4px; padding:2px 0 }
+.snap-label{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-family:var(--font-mono) }
+.snap-val{ font-family:var(--font-serif); font-weight:600; font-size:18px; color:var(--text) }
+
+/* What went into your grade — human-language explanations, not a wall of bars */
+.explain-section{ margin:22px 0 }
+.explain-list{ display:grid; gap:14px }
+.explain-item{ display:flex; gap:12px; align-items:flex-start; padding-left:2px }
+.explain-item .ei-dot{ width:7px; height:7px; border-radius:50%; margin-top:7px; flex:none }
+.explain-item b{ display:block; font-size:14px; margin-bottom:2px }
+.explain-item span{ color:var(--muted); font-size:13.5px; line-height:1.5 }
+
+/* Compact methodology explainer */
+.methodology-compact{ margin:18px 0; padding:14px 16px; border:1px solid var(--line); border-radius:12px; background:var(--surface) }
+.methodology-compact summary{ cursor:pointer; font-weight:600; font-size:13.5px; color:var(--text) }
+.methodology-compact p{ margin:10px 0 0; color:var(--muted); font-size:13px; line-height:1.6 }
+.methodology-compact b{ color:var(--text) }
+
+.report-section{ margin:26px 0; padding-top:22px; border-top:1px solid var(--line) }
+
+/* Biggest opportunities — qualitative, weakest factors explained plainly */
+.opportunities-list{ display:grid; gap:16px }
+.opportunity-item{ display:flex; gap:14px }
+.opportunity-item .op-num{ font-family:var(--font-mono); font-size:12px; color:var(--muted-2); flex:none; padding-top:2px; width:20px }
+.opportunity-item b{ display:block; font-size:14.5px; margin-bottom:3px }
+.opportunity-item span{ color:var(--muted); font-size:13.5px; line-height:1.5 }
+
+/* Next moves — actionable, with a genuine blurred preview for Pro-locked items */
+.moves-list{ list-style:none; margin:0; padding:0; display:grid; gap:12px; counter-reset:move }
+.moves-list li{ display:flex; gap:14px; align-items:flex-start; counter-increment:move; position:relative }
+.moves-list li::before{
+  content:counter(move,decimal-leading-zero); font-family:var(--font-mono); font-size:12px; color:var(--gold-bright);
+  flex:none; width:22px; padding-top:1px;
+}
+.moves-list .pts{ color:var(--gold-bright); font-family:var(--font-mono); font-weight:600; font-size:12.5px }
+.moves-locked{ position:relative; margin-top:4px }
+.moves-locked-blur{ filter:blur(5px); pointer-events:none; user-select:none; opacity:.7 }
+.moves-locked-overlay{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center;
+  background:linear-gradient(180deg, transparent, var(--surface) 65%);
+}
+.moves-locked-overlay a{
+  background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:700;
+  font-size:12.5px; padding:9px 16px; border-radius:9px; text-decoration:none;
+}
 .rc-head{ display:grid; grid-template-columns:1.2fr 1fr auto; gap:8px; color:var(--muted-2); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-top:18px; border-bottom:1px dashed var(--line); padding-bottom:8px }
 .rc-rows{ display:grid; gap:8px; margin-top:8px }
 .rc-row{ display:grid; grid-template-columns:1.2fr 1fr auto; gap:10px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:12px }
@@ -680,28 +802,41 @@ body.is-pro .ad-slot{ display:none !important }
   <div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
   <div class="container hero-grid">
     <div class="hero-copy">
-      <span class="eyebrow hero-in" style="--d:0s">FREE · NO SIGN-UP · RUNS IN YOUR BROWSER</span>
-      <h1 class="hero-in" style="--d:.12s">Know your financial <em>grade</em> in under 60 seconds.</h1>
-      <p class="lede hero-in" style="--d:.24s">Enter your income, expenses, and assets. Get a clear letter grade, a breakdown of what's helping and hurting, and a specific path to raise it.</p>
+      <div class="live-counter-badge hero-in" style="--d:0s">
+        <span class="lcb-dot"></span>
+        <span class="lcb-count" id="liveGradeCountHero">—</span>
+        <span class="lcb-label" id="liveGradeCountHeroLabel">report cards graded</span>
+      </div>
+      <span class="eyebrow hero-in" style="--d:.08s">FREE · NO SIGN-UP · RUNS IN YOUR BROWSER</span>
+      <h1 class="hero-in" style="--d:.16s">How healthy is your <em>financial life</em>?</h1>
+      <p class="lede hero-in" style="--d:.26s">Grade My Finance analyzes your income, spending, savings, debt, and net worth to show you exactly where you stand — and what to do next.</p>
       <div class="hero-cta hero-in" style="--d:.36s">
-        <button class="btn gold" id="gradeBtnHero" type="button">Get My Report Card</button>
-        <button class="btn ghost" id="demoBtn" type="button">See a sample report</button>
+        <button class="btn gold" id="gradeBtnHero" type="button">Get My Financial Grade</button>
+        <button class="btn ghost" id="demoBtn" type="button">See How It Works</button>
       </div>
       <div class="hero-proof hero-in" style="--d:.46s">
-        <span><b id="liveGradeCountHero">—</b> report cards graded</span>
         <span><b>Private by design</b> — your inputs never leave your browser</span>
       </div>
     </div>
     <div class="mock hero-in-mock" aria-hidden="true">
-      <div class="mock-float f1">Savings rate <b style="color:var(--good)">↑ 22%</b></div>
       <div class="mock-card">
         <div class="mock-top">
           <div>
-            <div class="mock-label">YOUR REPORT CARD</div>
-            <div style="font-weight:700;font-size:15px;margin-top:4px">Overall score 88.4</div>
+            <div class="mock-label">FINANCIAL HEALTH</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:4px">
+              <span style="font-family:var(--font-mono);font-weight:700;font-size:28px;color:var(--good)">A-</span>
+              <span style="font-size:13px;color:var(--muted)">87 / 100</span>
+            </div>
           </div>
-          <div class="mock-grade-seal">B+<span class="shimmer"></span></div>
+          <div class="mock-grade-seal">A-<span class="shimmer"></span></div>
         </div>
+        <div class="mock-stat-grid">
+          <div class="mock-stat"><span class="ms-label">Net Worth</span><span class="ms-val">$184,320</span></div>
+          <div class="mock-stat"><span class="ms-label">Savings Rate</span><span class="ms-val">18.4%</span></div>
+          <div class="mock-stat"><span class="ms-label">Debt-to-Income</span><span class="ms-val">14%</span></div>
+        </div>
+        <div class="mock-divider"></div>
+        <div class="mock-breakdown-label">What went into this grade</div>
         <div class="mock-row"><span>Emergency fund</span><b>4.2 / 6 mo</b></div>
         <div class="mock-bar"><div style="width:70%"></div></div>
         <div class="mock-row"><span>Age-based net worth</span><b>81% of target</b></div>
@@ -709,7 +844,41 @@ body.is-pro .ad-slot{ display:none !important }
         <div class="mock-row"><span>Non-mortgage debt</span><b>12% of baseline</b></div>
         <div class="mock-bar"><div style="width:88%"></div></div>
       </div>
-      <div class="mock-float f2">Weakest link: <b style="color:var(--gold-bright)">Emergency fund</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="trust-section" aria-label="Privacy and trust">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-copy">
+        <span class="kicker">Privacy</span>
+        <h2>Your finances are yours.</h2>
+        <p>Grade My Finance is designed to give you useful financial insight without making the experience complicated — or asking you to hand over anything you don't need to.</p>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <div class="trust-check">✓</div>
+          <div><b>Calculated on your device</b><span>Your income, expenses, assets, and debts are entered and calculated entirely in your browser. We never receive or see your actual financial figures.</span></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-check">✓</div>
+          <div><b>No bank connection, ever</b><span>Nothing to log into, no account aggregation, no read access to any financial institution. You type numbers in; that's the entire integration.</span></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-check">✓</div>
+          <div><b>Only your grade is ever logged</b><span>When you complete a report, we log your letter grade and numeric score — never your income, balances, or any input — to power the public "report cards graded" counter.</span></div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-check">✓</div>
+          <div><b>Standard, IP-anonymized analytics</b><span>We use Google Analytics with IP anonymization to understand site usage, the same way most websites do. It has no access to anything you type into the calculator.</span></div>
+        </div>
+      </div>
+      <div class="trust-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="privacy-policy.html">Terms</a>
+        <a href="mailto:grademyfinance@gmail.com">Contact</a>
+      </div>
     </div>
   </div>
 </section>
@@ -787,34 +956,68 @@ body.is-pro .ad-slot{ display:none !important }
 <div class="container" style="margin-top:64px">
 <main>
 <section id="grade" class="calc-wrap" aria-label="Calculator">
-  <div class="field-row">
-    <div class="segmented" role="group" aria-label="Housing">
-      <button id="modeOwner" type="button">Owner</button>
-      <button id="modeRenter" type="button">Renter</button>
+  <div class="stepper-head">
+    <div class="stepper-progress"><div class="stepper-progress-fill" id="stepperFill" style="width:25%"></div></div>
+    <div class="stepper-labels">
+      <span class="step-label active" data-step-label="1"><b>01</b> <span>About You</span></span>
+      <span class="step-label" data-step-label="2"><b>02</b> <span>Spending</span></span>
+      <span class="step-label" data-step-label="3"><b>03</b> <span>Assets</span></span>
+      <span class="step-label" data-step-label="4"><b>04</b> <span>Debt</span></span>
     </div>
-    <button class="btn sm" id="copyLink" type="button" title="This link contains your actual entered numbers, encoded in the URL — only share it with people you trust.">Copy share link 🔒</button>
   </div>
-  <div class="inputs">
-    <div class="field"><label for="income">Monthly income (after-tax)</label><input id="income" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field"><label for="expenses">Monthly expenses</label><input id="expenses" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field"><label for="age">Age</label><input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"></div>
-    <div class="field" id="homeCard"><label for="home">Home value</label><input id="home" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="assetsHint">Total assets: —</div></div>
-    <div class="field"><label for="retire">Retirement accounts (401k, IRA, pension, RRSP, super, etc.)</label><input id="retire" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field"><label for="brokerage">Brokerage / stocks</label><input id="brokerage" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field"><label for="hsa">HSA</label><input id="hsa" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field"><label for="cash">Cash savings</label><input id="cash" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field"><label for="crypto">Crypto & other investments</label><input id="crypto" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field"><label for="car">Car value</label><input id="car" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field" id="mortCard"><label for="mortgage">Mortgage balance</label><input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="liabHint">Total liabilities: —</div></div>
-    <div class="field"><label for="student">Student loans</label><input id="student" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field"><label for="auto">Auto loans</label><input id="auto" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field"><label for="cc">Credit cards (balance)</label><input id="cc" type="number" value="0" min="0" inputmode="decimal"></div>
-    <div class="field"><label for="otherDebt">Personal loans / other debt</label><input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"></div>
+
+  <div class="calc-step active" data-step="1">
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="36" r="15" fill="none" stroke="var(--gold)" stroke-width="2.5"/><path d="M22 84 Q22 58 50 58 Q78 58 78 84" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <div class="inputs">
+      <div class="field"><label for="age">Age</label><input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"></div>
+      <div class="field"><label for="income">Monthly household income (after-tax)</label><input id="income" type="number" value="0" min="0" inputmode="decimal"></div>
+    </div>
+    <div class="step-actions"><span></span><button class="btn gold" type="button" data-next>Continue →</button></div>
   </div>
-  <div class="progress"><div id="progressFill"></div></div>
-  <div class="calc-actions">
-    <button class="btn" id="resetBtn" type="button">Reset</button>
-    <button class="btn gold" id="gradeBtn" type="button">Get My Report Card</button>
+
+  <div class="calc-step" data-step="2">
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="32" width="72" height="46" rx="9" fill="none" stroke="var(--gold)" stroke-width="2.5"/><path d="M14 47 h72" stroke="var(--gold)" stroke-width="2.5"/><circle cx="68" cy="60" r="5.5" fill="var(--gold)"/></svg>
+    <div class="inputs">
+      <div class="field"><label for="expenses">Monthly expenses (total)</label><input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined. One number keeps this quick; we compare it against your income either way.</div></div>
+    </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step" data-step="3">
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="18" y="56" width="15" height="28" rx="3" fill="none" stroke="var(--gold)" stroke-width="2.5"/><rect x="42" y="40" width="15" height="44" rx="3" fill="none" stroke="var(--gold)" stroke-width="2.5"/><rect x="66" y="20" width="15" height="64" rx="3" fill="none" stroke="var(--gold)" stroke-width="2.5"/></svg>
+    <div class="field-row">
+      <div class="segmented" role="group" aria-label="Housing">
+        <button id="modeOwner" type="button">Owner</button>
+        <button id="modeRenter" type="button">Renter</button>
+      </div>
+    </div>
+    <div class="inputs">
+      <div class="field" id="homeCard"><label for="home">Home value</label><input id="home" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="assetsHint">Total assets: —</div></div>
+      <div class="field"><label for="retire">Retirement accounts (401k, IRA, pension, RRSP, super, etc.)</label><input id="retire" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="brokerage">Brokerage / stocks</label><input id="brokerage" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="hsa">HSA</label><input id="hsa" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="cash">Cash savings</label><input id="cash" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="crypto">Crypto & other investments</label><input id="crypto" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="car">Car value</label><input id="car" type="number" value="0" min="0" inputmode="decimal"></div>
+    </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step" data-step="4">
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="30" width="72" height="48" rx="9" fill="none" stroke="var(--gold)" stroke-width="2.5"/><path d="M14 44 h72" stroke="var(--gold)" stroke-width="2.5"/><rect x="24" y="59" width="26" height="6.5" rx="3.25" fill="var(--gold)"/></svg>
+    <div class="inputs">
+      <div class="field" id="mortCard"><label for="mortgage">Mortgage balance</label><input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="liabHint">Total liabilities: —</div></div>
+      <div class="field"><label for="student">Student loans</label><input id="student" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="auto">Auto loans</label><input id="auto" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="cc">Credit cards (balance)</label><input id="cc" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="otherDebt">Personal loans / other debt</label><input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"></div>
+    </div>
+    <div class="progress"><div id="progressFill"></div></div>
+    <div class="calc-actions">
+      <button class="btn" id="resetBtn" type="button">Reset</button>
+      <button class="btn gold" id="gradeBtn" type="button">Get My Financial Grade</button>
+    </div>
+    <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
   </div>
 </section>
 </main>
@@ -829,23 +1032,28 @@ body.is-pro .ad-slot{ display:none !important }
 
 <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rcTitle">
   <div class="sheet">
-    <span class="corner-flourish tl" aria-hidden="true">❦</span>
-    <span class="corner-flourish tr" aria-hidden="true">❦</span>
-    <span class="corner-flourish bl" aria-hidden="true">❦</span>
-    <span class="corner-flourish br" aria-hidden="true">❦</span>
     <div class="sheet-header">
-      <div class="rc-top" style="width:100%">
-        <div>
+      <div class="rc-hero" style="width:100%">
+        <div id="rcGrade" class="rc-grade"><span id="rcGradeLetter">A</span><span class="rc-grade-label">Financial Grade</span></div>
+        <div class="rc-hero-right">
           <div id="rcTitle" class="rc-title">Your report card</div>
-          <div id="rcMeta" class="rc-meta">—</div>
-          <div class="rc-signature">— certified by Grade My Finance —</div>
+          <h2 id="rcHeroHeadline">Nice work.</h2>
+          <p id="rcMeta" class="rc-meta">—</p>
+          <div class="rc-streak" id="rcStreak" style="display:none"><span class="dot"></span> <span id="rcStreakText">—</span></div>
         </div>
-        <div id="rcGrade" class="rc-grade">A</div>
       </div>
       <button class="xbtn" id="closeReport" type="button" aria-label="Close report">Close</button>
     </div>
 
     <div id="milestoneBanner" class="compare-banner" style="display:none;margin-bottom:14px"></div>
+
+    <div class="snapshot-grid" id="snapshotGrid">
+      <div class="snapshot-item"><span class="snap-label">Net Worth</span><span class="snap-val" id="snapNetWorth">—</span></div>
+      <div class="snapshot-item"><span class="snap-label">Annual Income</span><span class="snap-val" id="snapIncome">—</span></div>
+      <div class="snapshot-item"><span class="snap-label">Monthly Expenses</span><span class="snap-val" id="snapExpenses">—</span></div>
+      <div class="snapshot-item"><span class="snap-label">Total Debt</span><span class="snap-val" id="snapDebt">—</span></div>
+      <div class="snapshot-item"><span class="snap-label">Savings Rate</span><span class="snap-val" id="snapSavingsRate">—</span></div>
+    </div>
 
     <div class="rc-sections">
       <div class="card" style="display:grid;gap:12px">
@@ -860,34 +1068,56 @@ body.is-pro .ad-slot{ display:none !important }
         </div>
       </div>
       <div class="card">
-        <span class="section-label">Weakest link</span>
-        <div id="weakWrap" style="display:grid;gap:8px"></div>
+        <span class="section-label">What drove your score</span>
+        <div id="weakWrap"></div>
       </div>
     </div>
+
+    <div class="explain-section" id="explainSection">
+      <span class="section-label">What went into your grade</span>
+      <div id="explainList" class="explain-list"></div>
+    </div>
+
+    <details class="methodology-compact">
+      <summary>How is my grade calculated?</summary>
+      <p>Your grade weighs five aspects of your financial position and compares them against age-adjusted benchmarks: <b>Income Strength (25%)</b>, <b>Savings Rate (20%)</b>, <b>Non-mortgage Debt (20%)</b>, <b>Age-based Net Worth (20%)</b>, and <b>Emergency Fund (15%)</b>. Full assumptions and privacy details are further down this report.</p>
+    </details>
 
     <div class="weakest-link-pill" id="weakestLinkPill">Weakest link: <b id="weakestLinkPillText">—</b></div>
     <div class="rc-head"><div>Category</div><div>Details</div><div>Grade</div></div>
     <div class="rc-rows" id="rcRows"></div>
 
-    <div class="rc-sections" style="margin-top:12px">
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span class="section-label" style="margin:0">Assets vs liabilities</span>
-          <span id="barALCaption" class="small">—</span>
-        </div>
-        <svg id="barAL" width="100%" height="140" viewBox="0 0 520 140" preserveAspectRatio="none" role="img" aria-label="Assets vs liabilities chart"></svg>
-        <div class="legend" id="barALLegend"></div>
+    <div class="flow-panel">
+      <div class="flow-tabs" id="flowTabs">
+        <button class="flow-tab active" data-view="flowAssets">Assets Flow</button>
+        <button class="flow-tab" data-view="flowLiabs">Liabilities Flow</button>
+        <button class="flow-tab" data-view="flowIncome">Income &amp; Savings</button>
+        <button class="flow-tab" data-view="flowGrowth">Net Worth Trend <span class="lock-tag pro-only-hide">PRO</span></button>
       </div>
-      <div class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div>
-          <span class="section-label">Assets mix</span>
-          <svg id="pieAssets" width="100%" height="160" viewBox="0 0 160 160" role="img" aria-label="Assets pie"></svg>
-          <div class="legend" id="legendAssets"></div>
-        </div>
-        <div>
-          <span class="section-label">Liabilities mix</span>
-          <svg id="pieLiabs" width="100%" height="160" viewBox="0 0 160 160" role="img" aria-label="Liabilities pie"></svg>
-          <div class="legend" id="legendLiabs"></div>
+
+      <div class="flow-view active" id="flowAssets">
+        <div class="flow-header"><h3>Assets Flow</h3><div class="flow-sub" id="flowAssetsSub">—</div></div>
+        <svg id="flowAssetsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Assets flow diagram"></svg>
+        <div class="flow-legend" id="flowAssetsLegend"></div>
+      </div>
+
+      <div class="flow-view" id="flowLiabs">
+        <div class="flow-header"><h3>Liabilities Flow</h3><div class="flow-sub" id="flowLiabsSub">—</div></div>
+        <svg id="flowLiabsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Liabilities flow diagram"></svg>
+        <div class="flow-legend" id="flowLiabsLegend"></div>
+      </div>
+
+      <div class="flow-view" id="flowIncome">
+        <div class="flow-header"><h3>Income &amp; Savings Flow</h3><div class="flow-sub" id="flowIncomeSub">—</div></div>
+        <svg id="flowIncomeSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Income and savings flow diagram"></svg>
+        <div class="flow-legend" id="flowIncomeLegend"></div>
+      </div>
+
+      <div class="flow-view" id="flowGrowth">
+        <div class="flow-header"><h3>Net Worth Trend</h3><div class="flow-sub pro-only-hide">Pro feature</div><div class="flow-sub pro-only-show" style="display:none" id="flowGrowthSub">—</div></div>
+        <div class="flow-lock pro-only-hide">🔒 See your projected net worth over the next 30 years — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
+        <div class="pro-only-show" style="display:none">
+          <svg id="flowGrowthSvg" width="100%" height="280" viewBox="0 0 900 280" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth trend chart"></svg>
         </div>
       </div>
     </div>
@@ -973,9 +1203,14 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
     </div>
 
-    <div class="path">
-      <h4>Path to a higher grade</h4>
-      <ol id="pathList"></ol>
+    <div class="report-section">
+      <span class="section-label">Your biggest opportunities</span>
+      <div id="opportunitiesList" class="opportunities-list"></div>
+    </div>
+
+    <div class="report-section">
+      <span class="section-label">Your next moves</span>
+      <ol id="pathList" class="moves-list"></ol>
       <div class="small">Est. point gains are approximate based on our weighting.</div>
     </div>
 
@@ -1022,6 +1257,7 @@ body.is-pro .ad-slot{ display:none !important }
       <button class="btn sm" id="downloadStoryImage" type="button">📱 Download for Stories</button>
       <button class="btn sm" id="compareFriend" type="button">Compare with a friend</button>
       <button class="btn sm" id="shareReport" type="button">Share</button>
+      <button class="btn sm" id="copyLink" type="button" title="This link contains your actual entered numbers, encoded in the URL — only share it with people you trust.">Copy share link 🔒</button>
       <button class="btn sm" id="printReport" type="button">Print / save as PDF</button>
       <button class="btn gold sm pro-only-show" id="downloadCertBtn" type="button">🏅 Download Certificate</button>
       <button class="btn gold sm" id="calcAgain" type="button">Recalculate</button>
@@ -1072,8 +1308,8 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
       <div class="plan highlight">
         <h3>Pro <span class="pro-badge">★ PRO</span></h3>
-        <div class="price">$7.99<span> one-time</span></div>
-        <div class="small" style="margin-bottom:12px;color:var(--muted)">One-time payment. Yours forever — no subscription, ever.</div>
+        <div class="price">$7.99<span> /mo</span></div>
+        <div class="small" style="margin-bottom:12px;color:var(--muted)">Billed monthly. Cancel anytime.</div>
         <ul>
           <li>Everything in Free</li>
           <li><b>All 3 personalized action steps</b> — not just the top one</li>
@@ -1087,7 +1323,7 @@ body.is-pro .ad-slot{ display:none !important }
           <li><b>4 exclusive achievement badges</b> — only Pro members can unlock these</li>
           <li>Early access to new tools</li>
         </ul>
-        <a class="btn gold pro-only-hide" id="upgradeBtnPricing" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/cfkstk">Upgrade to Pro</a>
+        <a class="btn gold pro-only-hide" id="upgradeBtnPricing" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pszwz">Upgrade to Pro</a>
         <span class="btn pro-only-show" style="display:none;background:var(--gold-soft);color:var(--gold-bright);border-color:rgba(201,162,39,.4)">You're on Pro ✓</span>
         <div class="license-row pro-only-hide">
           <input type="text" id="licenseInput" placeholder="Have a Pro license key? Paste it here" aria-label="Pro license key">
@@ -1196,7 +1432,7 @@ body.is-pro .ad-slot{ display:none !important }
   "description": "Free financial health grade calculator. Enter income, expenses, and assets to get a letter grade and a personalized plan to improve it.",
   "offers": [
     { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD" },
-    { "@type": "Offer", "name": "Pro", "price": "7.99", "priceCurrency": "USD" }
+    { "@type": "Offer", "name": "Pro", "price": "7.99", "priceCurrency": "USD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "7.99", "priceCurrency": "USD", "billingDuration": "P1M" } }
   ]
 }
 </script>
@@ -1475,6 +1711,59 @@ $("modeOwner").addEventListener("click", function(){ setHousing("owner"); __trac
 $("modeRenter").addEventListener("click", function(){ setHousing("renter"); __track('select_housing',{mode:'renter'}); });
 setHousing(localStorage.getItem("gmf_housing")||"owner");
 
+/* ================= MULTI-STEP CALCULATOR WIZARD ================= */
+(function setupStepper(){
+  var steps = document.querySelectorAll(".calc-step");
+  var labels = document.querySelectorAll(".step-label");
+  var fill = $("stepperFill");
+  if(!steps.length) return;
+  var total = steps.length;
+  var current = 1;
+
+  function show(stepNum){
+    current = Math.max(1, Math.min(total, stepNum));
+    steps.forEach(function(s){ s.classList.toggle("active", +s.dataset.step === current); });
+    labels.forEach(function(l){
+      var n = +l.dataset.stepLabel;
+      l.classList.toggle("active", n === current);
+      l.classList.toggle("done", n < current);
+    });
+    if(fill) fill.style.width = Math.round((current/total)*100)+"%";
+    // Scroll the calculator into a comfortable view on step change, but not
+    // on first load — avoids yanking the page on initial render.
+    if(stepNum !== 1 || current !== 1){
+      var grade = $("grade");
+      if(grade) grade.scrollIntoView({ behavior:"smooth", block:"start" });
+    }
+    __track('calculator_step_view', {step: current});
+  }
+
+  steps.forEach(function(stepEl){
+    stepEl.querySelectorAll("[data-next]").forEach(function(btn){
+      btn.addEventListener("click", function(){ show(current+1); });
+    });
+    stepEl.querySelectorAll("[data-prev]").forEach(function(btn){
+      btn.addEventListener("click", function(){ show(current-1); });
+    });
+  });
+
+  labels.forEach(function(l){
+    l.style.cursor = "pointer";
+    l.addEventListener("click", function(){
+      var n = +l.dataset.stepLabel;
+      if(n <= current) show(n); // only allow jumping back, not skipping ahead unfilled steps
+    });
+  });
+
+  // If a share-link hash hydrates the form with real values, or someone
+  // hits "See a sample report", jump straight to the last step so they see
+  // everything already filled in rather than re-clicking through 1-2-3.
+  window.__stepperJumpToEnd = function(){ show(total); };
+  window.__stepperReset = function(){ show(1); };
+
+  show(1);
+})();
+
 function categoryScores(v){
   var sSave = map01(v.saveRate, 0, 0.25);
   var sEF   = map01(v.efMonths, 0, 6);
@@ -1488,7 +1777,7 @@ function categoryScores(v){
   return {
     s: {sSave, sEF, sDebt, sAgeNW, sInc},
     components: [
-      { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home", letter:letterFrom01(sSave), tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(Math.max(0, v.income*0.25 - (v.income - v.expenses)))+"/mo" : "" },
+      { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home", letter:letterFrom01(sSave), tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(Math.max(0, v.income*0.25 - (v.income - v.expenses)))+"/mo" : "Keeping pace with your income — nice work." },
       { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months", letter:letterFrom01(sEF), tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
       { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add ~"+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt load." },
       { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(clamp(v.nwProgress,0,1)*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+" to target." : "On track or ahead." },
@@ -1605,25 +1894,21 @@ function pie(svgEl, parts, legendEl){
     });
   }
 }
+var FACTOR_ICONS = { "Savings":"💰", "Emergency fund":"🛟", "Debt":"🏦", "Age-based NW":"📈", "Income":"💼" };
 function hbars(container, items){
   container.innerHTML='';
+  container.classList.add('factor-cards');
   items.forEach(function(it){
-    var row=el('div'); row.style.display='grid'; row.style.gridTemplateColumns='120px 1fr 52px'; row.style.alignItems='center'; row.style.gap='8px';
-    var lab=el('div');
-    lab.innerHTML = it.label + (it.isWeak ? ' <span style="color:var(--bad);font-size:11px;font-weight:800">▾ WEAKEST</span>' : '');
-    lab.style.color='var(--text)'; lab.style.fontSize='13px'; lab.style.fontWeight='700';
-    var bar=el('div'); bar.style.height='10px'; bar.style.borderRadius='999px'; bar.style.border='1px solid var(--line)'; bar.style.background='var(--surface-2)'; bar.style.overflow='hidden';
-    if(it.isWeak) bar.style.boxShadow='0 0 0 2px rgba(241,101,101,.4)';
-    var fill=el('div'); fill.style.height='100%'; fill.style.width=Math.round(it.score*100)+'%';
-    // Color reflects each category's own actual quality — not just whether
-    // it happens to be the single worst of the five. A mediocre score no
-    // longer shows green purely because something else is slightly worse.
-    fill.style.background = it.score < 0.34 ? 'var(--bad)' : (it.score < 0.67 ? 'linear-gradient(90deg,var(--gold),var(--gold-bright))' : 'linear-gradient(90deg,var(--good-2),var(--good))');
-    bar.appendChild(fill);
-    var pct=el('div'); pct.className='mono'; pct.textContent=Math.round(it.score*100)+'%'; pct.style.textAlign='right'; pct.style.fontWeight='700';
-    pct.style.color = it.score < 0.34 ? 'var(--bad)' : (it.score < 0.67 ? 'var(--gold-bright)' : 'var(--muted)');
-    row.append(lab,bar,pct);
-    container.appendChild(row);
+    var tier = it.score < 0.34 ? 'bad' : (it.score < 0.67 ? 'mid' : 'good');
+    var fillColor = tier==='bad' ? 'var(--bad)' : (tier==='mid' ? 'linear-gradient(90deg,var(--gold),var(--gold-bright))' : 'linear-gradient(90deg,var(--good-2),var(--good))');
+    var card = el('div', { className:'factor-card fc-'+tier });
+    var displayLetter = it.letter || letterFrom01(it.score);
+    card.innerHTML =
+      '<div class="fc-top"><div class="fc-icon">'+(FACTOR_ICONS[it.label]||'📊')+'</div><div class="fc-grade">'+displayLetter+'</div></div>'+
+      '<div class="fc-name">'+it.label+(it.isWeak ? ' <span style="color:var(--bad)">· weakest</span>' : '')+'</div>'+
+      '<div class="fc-bar-track"><div class="fc-bar-fill" style="width:'+Math.round(it.score*100)+'%;background:'+fillColor+'"></div></div>'+
+      (it.tip ? '<div class="fc-tip">'+it.tip+'</div>' : '');
+    container.appendChild(card);
   });
 }
 function sparkline(svgEl, arr){
@@ -1847,35 +2132,151 @@ function renderAchievements(v, cats, checkin, streak){
 }
 
 var compareText=$("compareText"), spark=$("spark"), benchRows=$("benchRows"), weakWrap=$("weakWrap");
-var barAL=$("barAL"), pieAssets=$("pieAssets"), pieLiabs=$("pieLiabs"), legendAssets=$("legendAssets"), legendLiabs=$("legendLiabs"), barALCaption=$("barALCaption"), barALLegend=$("barALLegend");
-
-function drawCharts(v){
-  barCompare(barAL, 'Assets', v.assets, 'Liabilities', v.liabs);
-  barALCaption.textContent = money(v.assets) + " vs " + money(v.liabs);
-  barALLegend.innerHTML='';
-  [['#34d399','Assets'],['#f16565','Liabilities']].forEach(function(entry){
-    var item=el('div',{className:'small', style:'display:flex;align-items:center;gap:6px'});
-    var dot=el('span',{className:'dot'}); dot.style.background=entry[0]; item.appendChild(dot);
-    item.appendChild(document.createTextNode(entry[1]));
-    barALLegend.appendChild(item);
+/* ================= FLOW DIAGRAMS (Monarch-style, real data only) =================
+   Every number drawn here comes directly from what the user actually entered —
+   no invented categories like "groceries" or "dining out" that this product
+   doesn't collect. A single source ribbons out to whichever real categories
+   the person actually has a nonzero balance in. */
+function renderFlowRibbons(svgEl, sourceLabel, sourceAmount, destinations){
+  if(!svgEl) return;
+  if(!destinations.length){
+    svgEl.setAttribute("viewBox", "0 0 900 340");
+    svgEl.setAttribute("height", "300");
+    setHTML(svgEl, '<text x="450" y="170" fill="var(--muted)" font-size="13" text-anchor="middle">Nothing to show here yet</text>');
+    return;
+  }
+  var minLabelGap = 42; // enough vertical room for a two-line label so adjacent ones never collide
+  var contentHeight = Math.max(300, destinations.length*minLabelGap + 80);
+  var top = 40, bottom = contentHeight - 40, bandH = bottom - top;
+  var total = destinations.reduce(function(a,b){ return a+b.amount; }, 0) || 1;
+  var cum = 0;
+  var bands = destinations.map(function(d){
+    var h = Math.max(8, (d.amount/total)*bandH);
+    var bandY = top + cum + h/2;
+    cum += h;
+    return { d:d, bandY:bandY, h:h };
   });
-  pie(pieAssets, [
-    {v:v.home,      label:'Home',      color:'#C9A227'},
-    {v:v.retire,    label:'Retirement',color:'#34d399'},
-    {v:v.brokerage, label:'Brokerage', color:'#16A34A'},
-    {v:v.cash,      label:'Cash',      color:'#E4C24E'},
-    {v:v.crypto,    label:'Crypto/Other', color:'#a78bfa'},
-    {v:v.hsa,       label:'HSA',       color:'#8B92A0'},
-    {v:v.car,       label:'Car',       color:'#5D636F'}
-  ], legendAssets);
-  pie(pieLiabs, [
-    {v:v.mortgage, label:'Mortgage', color:'#f16565'},
-    {v:v.student,  label:'Student',  color:'#fb7185'},
-    {v:v.auto,     label:'Auto',     color:'#fca5a5'},
-    {v:v.cc,       label:'Cards',    color:'#fecaca'},
-    {v:v.otherDebt,label:'Other',    color:'#fda4af'}
-  ], legendLiabs);
+  // Labels get their own minimum-spaced positions (independent of the thin
+  // proportional bands) so small categories never overlap each other —
+  // this is what was actually breaking when many small categories existed.
+  var labelYs = [], prevY = -Infinity;
+  bands.forEach(function(b){
+    var y = Math.max(b.bandY, prevY + minLabelGap);
+    labelYs.push(y);
+    prevY = y;
+  });
+  // If the minimum-gap stack doesn't fit the available height, rescale
+  // proportionally into the safe range rather than shifting everything
+  // uniformly — a uniform shift can push the very first label (often the
+  // largest, most important category) off the top of the chart entirely.
+  var padTop = top + 14, padBottom = bottom - 14;
+  if(labelYs[labelYs.length-1] > padBottom || labelYs[0] < padTop){
+    var firstY = labelYs[0], lastY = labelYs[labelYs.length-1];
+    var span = (lastY - firstY) || 1;
+    labelYs = labelYs.map(function(y){ return padTop + (y-firstY) * (padBottom-padTop)/span; });
+  }
+
+  var startX=40, midX=460, endX=860, html='';
+  bands.forEach(function(b){
+    var path = 'M'+startX+',170 C'+midX+',170 '+midX+','+b.bandY.toFixed(1)+' '+endX+','+b.bandY.toFixed(1);
+    html += '<path d="'+path+'" fill="none" stroke="'+b.d.color+'" stroke-opacity="0.38" stroke-width="'+b.h.toFixed(1)+'"/>';
+  });
+  bands.forEach(function(b, i){
+    var labelY = labelYs[i], pct = Math.round((b.d.amount/total)*100);
+    if(Math.abs(labelY - b.bandY) > 4){
+      html += '<line x1="'+endX+'" y1="'+b.bandY.toFixed(1)+'" x2="790" y2="'+labelY.toFixed(1)+'" stroke="var(--line)" stroke-width="1"/>';
+    }
+    html += '<text x="775" y="'+(labelY-9).toFixed(1)+'" fill="var(--text)" font-size="13" font-weight="600" text-anchor="end">'+b.d.label+'</text>';
+    html += '<text x="775" y="'+(labelY+10).toFixed(1)+'" fill="var(--muted)" font-size="11" text-anchor="end">'+money(b.d.amount)+' · '+pct+'%</text>';
+  });
+  html += '<text x="45" y="162" fill="var(--text)" font-size="13" font-weight="600">'+sourceLabel+'</text>';
+  html += '<text x="45" y="180" fill="var(--muted)" font-size="11">'+money(sourceAmount)+'</text>';
+
+  svgEl.setAttribute("viewBox", "0 0 900 "+contentHeight);
+  svgEl.setAttribute("height", Math.min(460, contentHeight));
+  setHTML(svgEl, html);
 }
+function renderFlowLegend(container, items){
+  if(!container) return;
+  container.innerHTML='';
+  items.forEach(function(d){
+    var item=el('div',{className:'flow-legend-item'});
+    var dot=el('span',{className:'flow-legend-swatch'}); dot.style.background=d.color;
+    item.appendChild(dot); item.appendChild(document.createTextNode(d.label));
+    container.appendChild(item);
+  });
+}
+function renderAssetsFlow(v){
+  var svgEl=$("flowAssetsSvg"); if(!svgEl) return;
+  var dests = [
+    {label:'Home', amount:v.home, color:'#E8B34A'},
+    {label:'Retirement', amount:v.retire, color:'#4FC28A'},
+    {label:'Brokerage', amount:v.brokerage, color:'#5B8DEF'},
+    {label:'Cash', amount:v.cash, color:'#45C4D6'},
+    {label:'Crypto / Other', amount:v.crypto, color:'#A78BFA'},
+    {label:'HSA', amount:v.hsa, color:'#F0866B'},
+    {label:'Car', amount:v.car, color:'#8B93A3'}
+  ].filter(function(d){ return d.amount>0; });
+  if($("flowAssetsSub")) $("flowAssetsSub").textContent = dests.length ? (dests.length+" categories · "+money(v.assets)+" total") : "No assets entered yet";
+  renderFlowRibbons(svgEl, 'Total Assets', v.assets, dests);
+  renderFlowLegend($("flowAssetsLegend"), dests);
+}
+function renderLiabilitiesFlow(v){
+  var svgEl=$("flowLiabsSvg"); if(!svgEl) return;
+  var dests = [
+    {label:'Mortgage', amount:v.mortgage, color:'#E15B5B'},
+    {label:'Student loans', amount:v.student, color:'#5B8DEF'},
+    {label:'Auto loan', amount:v.auto, color:'#E8B34A'},
+    {label:'Credit cards', amount:v.cc, color:'#A78BFA'},
+    {label:'Personal / other', amount:v.otherDebt, color:'#45C4D6'}
+  ].filter(function(d){ return d.amount>0; });
+  if($("flowLiabsSub")) $("flowLiabsSub").textContent = dests.length ? (dests.length+" categories · "+money(v.liabs)+" total") : "Debt-free — nothing to show here 🎉";
+  renderFlowRibbons(svgEl, 'Total Debt', v.liabs, dests);
+  renderFlowLegend($("flowLiabsLegend"), dests);
+}
+function renderIncomeSavingsFlow(v){
+  var svgEl=$("flowIncomeSvg"); if(!svgEl) return;
+  var surplus = Math.max(0, v.income - v.expenses);
+  var overspend = Math.max(0, v.expenses - v.income);
+  var dests = [
+    {label:'Expenses', amount:Math.min(v.expenses, v.income), color:'#E15B5B'},
+    {label:'Savings surplus', amount:surplus, color:'#4FC28A'}
+  ];
+  if(overspend > 0) dests.push({label:'Shortfall (over income)', amount:overspend, color:'#A78BFA'});
+  dests = dests.filter(function(d){ return d.amount>0; });
+  if($("flowIncomeSub")) $("flowIncomeSub").textContent = money(v.income)+"/mo income";
+  renderFlowRibbons(svgEl, 'Monthly Income', v.income, dests);
+  renderFlowLegend($("flowIncomeLegend"), dests);
+}
+function renderNetWorthTrendTab(v){
+  var svgEl=$("flowGrowthSvg"); if(!svgEl || !document.body.classList.contains("is-pro")) return;
+  var monthlyContribution = Math.max(0, v.income - v.expenses);
+  var points = projectNetWorth(v.net, monthlyContribution, 7, 30);
+  drawProjectionLine(svgEl, points, [5,10,20,30]);
+  if($("flowGrowthSub")) $("flowGrowthSub").textContent = "Assuming "+money(monthlyContribution)+"/mo invested at 7%";
+}
+function drawCharts(v){
+  renderAssetsFlow(v);
+  renderLiabilitiesFlow(v);
+  renderIncomeSavingsFlow(v);
+  renderNetWorthTrendTab(v);
+}
+(function setupFlowTabs(){
+  var tabs = document.querySelectorAll(".flow-tab");
+  var views = document.querySelectorAll(".flow-view");
+  if(!tabs.length) return;
+  tabs.forEach(function(tab){
+    tab.addEventListener("click", function(){
+      tabs.forEach(function(t){ t.classList.remove("active"); });
+      views.forEach(function(v){ v.classList.remove("active"); });
+      tab.classList.add("active");
+      var target = document.getElementById(tab.dataset.view);
+      if(target) target.classList.add("active");
+      __track('flow_tab_view', {tab: tab.dataset.view});
+    });
+  });
+})();
+
 
 /* ================= NET WORTH PROJECTION (Pro) ================= */
 function projectNetWorth(startNet, monthlyContribution, annualRatePct, years){
@@ -2242,7 +2643,8 @@ function openReport(v,cats){
     }
     requestAnimationFrame(step);
   })();
-  rcGrade.textContent = cats.overall.letter.split(" ")[0];
+  var rcGradeLetter=$("rcGradeLetter");
+  if(rcGradeLetter) rcGradeLetter.textContent = cats.overall.letter.split(" ")[0];
   var letterClean = cats.overall.letter.split(" ")[0];
   rcGrade.className = "rc-grade " + (
     ["A+","A","A-","B+"].includes(letterClean) ? "good" :
@@ -2264,11 +2666,11 @@ function openReport(v,cats){
   });
 
   var items = [
-    {label:"Savings", score:cats.s.sSave},
-    {label:"Emergency fund", score:cats.s.sEF},
-    {label:"Debt", score:cats.s.sDebt},
-    {label:"Age-based NW", score:cats.s.sAgeNW},
-    {label:"Income", score:cats.s.sInc},
+    {label:"Savings", score:cats.s.sSave, letter:cats.components[0].letter, tip:cats.components[0].tip},
+    {label:"Emergency fund", score:cats.s.sEF, letter:cats.components[1].letter, tip:cats.components[1].tip},
+    {label:"Debt", score:cats.s.sDebt, letter:cats.components[2].letter, tip:cats.components[2].tip},
+    {label:"Age-based NW", score:cats.s.sAgeNW, letter:cats.components[3].letter, tip:cats.components[3].tip},
+    {label:"Income", score:cats.s.sInc, letter:cats.components[4].letter, tip:cats.components[4].tip},
   ];
   var minIdx=0; for(var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
   items = items.map(function(it,idx){ it.isWeak = (idx===minIdx); return it; });
@@ -2291,21 +2693,76 @@ function openReport(v,cats){
   renderDebtPayoffPlanner(v);
   renderRetirementReadiness(v);
 
+  (function renderSnapshot(){
+    if($("snapNetWorth")) $("snapNetWorth").textContent = money(v.net);
+    if($("snapIncome")) $("snapIncome").textContent = money(v.annualIncome);
+    if($("snapExpenses")) $("snapExpenses").textContent = money(v.expenses);
+    if($("snapDebt")) $("snapDebt").textContent = money(v.liabs);
+    if($("snapSavingsRate")) $("snapSavingsRate").textContent = Math.round(v.saveRate*100)+"%";
+  })();
+
+  (function renderExplainAndOpportunities(){
+    var explainList = $("explainList"), oppList = $("opportunitiesList");
+    if(!explainList && !oppList) return;
+    var factorScores = { "Savings rate":cats.s.sSave, "Emergency fund":cats.s.sEF, "Debt load (non-mort.)":cats.s.sDebt, "Age-based net worth":cats.s.sAgeNW, "Income strength":cats.s.sInc };
+    var headlines = {
+      "Savings rate": { good:"Strong savings rate", mid:"Decent savings rate", bad:"Low savings rate" },
+      "Emergency fund": { good:"Solid emergency fund", mid:"Building emergency fund", bad:"Thin emergency fund" },
+      "Debt load (non-mort.)": { good:"Manageable debt", mid:"Moderate debt load", bad:"High-interest debt load" },
+      "Age-based net worth": { good:"Healthy net worth", mid:"Net worth on pace", bad:"Net worth behind pace" },
+      "Income strength": { good:"Strong income", mid:"Solid income", bad:"Income below benchmark" }
+    };
+    if(explainList){
+      explainList.innerHTML = "";
+      cats.components.forEach(function(c){
+        var s = factorScores[c.key];
+        var tier = s < 0.34 ? "bad" : (s < 0.67 ? "mid" : "good");
+        var h = (headlines[c.key] && headlines[c.key][tier]) || c.key;
+        var item = el("div", { className:"explain-item" });
+        item.innerHTML = '<span class="ei-dot" style="background:'+(tier==='good'?'var(--good)':tier==='mid'?'var(--mid)':'var(--bad)')+'"></span><div><b>'+h+'</b><span>'+c.tip+'</span></div>';
+        explainList.appendChild(item);
+      });
+    }
+    if(oppList){
+      oppList.innerHTML = "";
+      var ranked = cats.components.map(function(c){ return { key:c.key, tip:c.tip, score:factorScores[c.key] }; })
+        .sort(function(a,b){ return a.score - b.score; }).slice(0,3);
+      var oppHeadlines = {
+        "Savings rate":"Build your savings rate", "Emergency fund":"Build your emergency fund",
+        "Debt load (non-mort.)":"Reduce high-interest debt", "Age-based net worth":"Grow your net worth",
+        "Income strength":"Grow your income"
+      };
+      ranked.forEach(function(r, i){
+        var item = el("div", { className:"opportunity-item" });
+        item.innerHTML = '<div class="op-num">0'+(i+1)+'</div><div><b>'+(oppHeadlines[r.key]||r.key)+'</b><span>'+r.tip+'</span></div>';
+        oppList.appendChild(item);
+      });
+    }
+  })();
+
   var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; }})();
   pathList.innerHTML="";
   var isPro = document.body.classList.contains("is-pro");
   var visibleActions = isPro ? actions : actions.slice(0,1);
+  if(actions.length === 0){
+    var emptyLi = document.createElement("li");
+    emptyLi.style.listStyle = "none"; emptyLi.style.marginLeft = "-22px";
+    emptyLi.innerHTML = '<div class="small" style="color:var(--muted)">Every factor is already performing well — there\'s no single obvious next step right now. Keep doing what you\'re doing, and check back as your numbers change.</div>';
+    pathList.appendChild(emptyLi);
+  }
   visibleActions.forEach(function(a){
     var li=document.createElement("li");
     li.innerHTML = a.txt + ' <span class="pts">≈ +' + a.pts + ' pts</span>';
     pathList.appendChild(li);
   });
-  var lockedCount = actions.length - visibleActions.length;
-  if(lockedCount > 0){
+  var lockedActions = isPro ? [] : actions.slice(1);
+  if(lockedActions.length > 0){
     var lockLi = document.createElement("li");
-    lockLi.style.listStyle = "none";
-    lockLi.style.marginLeft = "-20px";
-    lockLi.innerHTML = '<div class="pro-lock">🔒 '+lockedCount+' more personalized step'+(lockedCount>1?'s':'')+' — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>';
+    lockLi.style.listStyle = "none"; lockLi.style.marginLeft = "-22px"; lockLi.className = "moves-locked";
+    var blurredHtml = lockedActions.map(function(a){ return '<li>'+a.txt+' <span class="pts">≈ +'+a.pts+' pts</span></li>'; }).join("");
+    lockLi.innerHTML =
+      '<ol class="moves-list moves-locked-blur" style="margin:0">'+blurredHtml+'</ol>'+
+      '<div class="moves-locked-overlay"><a href="#pricing">🔒 Unlock your complete action plan</a></div>';
     pathList.appendChild(lockLi);
   }
 
@@ -2331,6 +2788,31 @@ function openReport(v,cats){
   var checkinResult = recordCheckin(cats.overall.score);
   var streakCount = computeImprovementStreak(hist, cats.overall.score);
   renderMilestoneBanner(cats, checkinResult, streakCount);
+
+  (function renderHeroGreeting(){
+    var headlineEl = $("rcHeroHeadline"), streakEl = $("rcStreak"), streakTextEl = $("rcStreakText");
+    if(headlineEl){
+      var letterClean2 = cats.overall.letter.split(" ")[0];
+      var greeting;
+      if(checkinResult.isNewBest && checkinResult.hadPriorBest) greeting = "New personal best.";
+      else if(["A+","A","A-"].indexOf(letterClean2) > -1) greeting = "You're in excellent financial shape.";
+      else if(["B+","B","B-"].indexOf(letterClean2) > -1) greeting = "You're in strong financial shape.";
+      else if(["C+","C","C-"].indexOf(letterClean2) > -1) greeting = "You're in okay shape, with real room to grow.";
+      else greeting = "Here's where you stand — and a clear path forward.";
+      headlineEl.textContent = greeting;
+    }
+    if(streakEl && streakTextEl){
+      if(streakCount >= 2){
+        streakTextEl.textContent = streakCount+"-check-in improvement streak";
+        streakEl.style.display = "inline-flex";
+      } else if(checkinResult.count >= 2){
+        streakTextEl.textContent = "Check-in #"+checkinResult.count+" on this device";
+        streakEl.style.display = "inline-flex";
+      } else {
+        streakEl.style.display = "none";
+      }
+    }
+  })();
   var newlyUnlockedAchievements = renderAchievements(v, cats, checkinResult, streakCount);
   personalizeSubscribe(weakLinkForSubscribe, newlyUnlockedAchievements, checkinResult);
   if($("subReportGrade")) $("subReportGrade").value = cats.overall.letter;
@@ -2468,13 +2950,19 @@ function randomDemo(){
   }
   Object.keys(d).forEach(function(id){ var elx=document.getElementById(id); if(elx) elx.value=d[id]; });
   updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw()));
+  if(window.__stepperJumpToEnd) window.__stepperJumpToEnd();
   gradeNow();
 }
-$("demoBtn").addEventListener("click", randomDemo);
+$("demoBtn").addEventListener("click", function(){
+  __track('click_see_how_it_works');
+  var howSection = $("how");
+  if(howSection) howSection.scrollIntoView({ behavior:"smooth", block:"start" });
+});
 
 $("resetBtn").addEventListener("click", function(){
   ids.forEach(function(id){ if(els[id]) els[id].value = (id==="age") ? 30 : 0; });
   updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); __track('reset_inputs');
+  if(window.__stepperReset) window.__stepperReset();
 });
 
 function utmSuffix(medium, campaign){
@@ -2498,6 +2986,7 @@ try{
     var obj=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
     Object.keys(obj).forEach(function(id){ if(els[id]) els[id].value=obj[id]; });
     updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw()));
+    if(window.__stepperJumpToEnd) window.__stepperJumpToEnd();
     // Strip the hash immediately, BEFORE the pageview fires, so the encoded
     // financial data never appears in Analytics' page_location.
     history.replaceState(null, "", location.origin + location.pathname + location.search);
@@ -2573,7 +3062,7 @@ function tryGumroadVerify(key){
   fetch("https://api.gumroad.com/v2/licenses/verify", {
     method:"POST",
     headers:{"Content-Type":"application/x-www-form-urlencoded"},
-    body:"product_permalink=cfkstk&license_key="+encodeURIComponent(key)
+    body:"product_permalink=pszwz&license_key="+encodeURIComponent(key)
   }).then(function(res){ return res.json().catch(function(){ return {success:false}; }); })
     .then(function(data){
       if(data && data.success){
@@ -3058,21 +3547,37 @@ function animateCountUp(el, target, formatFn, duration){
   requestAnimationFrame(step);
 }
 function loadGradeCount(){
-  var heroEl=$("liveGradeCountHero"), stripEl=$("liveGradeCountStrip");
-  if(!GRADE_COUNT_ENDPOINT){
+  var heroEl=$("liveGradeCountHero"), stripEl=$("liveGradeCountStrip"), heroLabelEl=$("liveGradeCountHeroLabel");
+  function showFallback(){
     if(heroEl) heroEl.textContent = "Growing daily";
+    if(heroLabelEl) heroLabelEl.style.display = "none";
     if(stripEl) stripEl.textContent = "—";
-    return;
   }
-  fetch(GRADE_COUNT_ENDPOINT, { method:"GET" })
-    .then(function(res){ return res.json(); })
+  if(!GRADE_COUNT_ENDPOINT){ showFallback(); return; }
+  var controller = (typeof AbortController !== "undefined") ? new AbortController() : null;
+  var timeoutId = controller ? setTimeout(function(){ controller.abort(); }, 6000) : null;
+  fetch(GRADE_COUNT_ENDPOINT, { method:"GET", signal: controller ? controller.signal : undefined })
+    .then(function(res){
+      if(timeoutId) clearTimeout(timeoutId);
+      if(!res.ok) throw new Error("bad status");
+      return res.json();
+    })
     .then(function(data){
       if(data && typeof data.count === "number"){
         if(heroEl) animateCountUp(heroEl, data.count, formatCount);
         if(stripEl) animateCountUp(stripEl, data.count, formatCount);
+        if(heroLabelEl) heroLabelEl.style.display = "";
+      } else {
+        throw new Error("malformed response");
       }
     })
-    .catch(function(){ /* leave the static fallback in the HTML if this fails */ });
+    .catch(function(){
+      // Endpoint failed, timed out, or returned something unexpected —
+      // show honest fallback copy instead of leaving a bare "—" forever,
+      // or awkwardly gluing "Growing daily" onto "report cards graded".
+      if(timeoutId) clearTimeout(timeoutId);
+      showFallback();
+    });
 }
 loadGradeCount();
 
@@ -3193,8 +3698,8 @@ function initProjections(vBase, catsBase){
 
     drawCharts(vSim);
     var items = [
-      {label:"Savings", score:cats.s.sSave}, {label:"Emergency fund", score:cats.s.sEF},
-      {label:"Debt", score:cats.s.sDebt}, {label:"Age-based NW", score:cats.s.sAgeNW}, {label:"Income", score:cats.s.sInc},
+      {label:"Savings", score:cats.s.sSave, letter:cats.components[0].letter, tip:cats.components[0].tip}, {label:"Emergency fund", score:cats.s.sEF, letter:cats.components[1].letter, tip:cats.components[1].tip},
+      {label:"Debt", score:cats.s.sDebt, letter:cats.components[2].letter, tip:cats.components[2].tip}, {label:"Age-based NW", score:cats.s.sAgeNW, letter:cats.components[3].letter, tip:cats.components[3].tip}, {label:"Income", score:cats.s.sInc, letter:cats.components[4].letter, tip:cats.components[4].tip},
     ];
     var minIdx=0; for(var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
     items = items.map(function(it,idx){ it.isWeak = (idx===minIdx); return it; });
