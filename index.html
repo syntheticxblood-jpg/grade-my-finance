@@ -323,7 +323,20 @@ section.block{ padding:76px 0 }
 .feature p{ font-size:13.5px; color:var(--muted); margin:0 }
 
 /* ---------- Calculator ---------- */
-.calc-wrap{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:28px; box-shadow:var(--shadow) }
+.calc-wrap{
+  --calc-accent:#2DD4BF; --calc-accent-bright:#5EEAD4; --calc-accent-soft:rgba(45,212,191,.14);
+  position:relative; background:linear-gradient(180deg,var(--surface-2),var(--surface));
+  border:1px solid var(--line); border-radius:20px; padding:32px;
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(45,212,191,.08);
+  overflow:hidden;
+}
+.calc-wrap::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--calc-accent), var(--gold-bright), var(--calc-accent));
+  background-size:200% 100%; animation:calcAccentSweep 6s ease-in-out infinite;
+}
+@keyframes calcAccentSweep{ 0%,100%{ background-position:0% 0 } 50%{ background-position:100% 0 } }
+@media (prefers-reduced-motion: reduce){ .calc-wrap::before{ animation:none } }
 .segmented{ display:inline-flex; border:1px solid var(--line); border-radius:10px; padding:4px; background:var(--surface-2) }
 .segmented button{ appearance:none; border:none; background:transparent; color:var(--muted); font-family:var(--font-body); font-weight:600; font-size:13.5px; padding:8px 16px; border-radius:7px; cursor:pointer }
 .segmented button.active{ background:var(--surface); color:var(--text); box-shadow:0 1px 0 rgba(0,0,0,.2) }
@@ -333,25 +346,42 @@ section.block{ padding:76px 0 }
 @media (max-width:560px){ .inputs{ grid-template-columns:1fr } }
 .field label{ display:block; font-size:12.5px; color:var(--muted); margin-bottom:7px; font-weight:600 }
 .field input{
-  width:100%; border:1px solid var(--line); border-radius:10px; padding:12px 13px; background:var(--bg-2);
-  color:var(--text); font-family:var(--font-mono); font-size:14.5px;
+  width:100%; border:1.5px solid var(--line); border-radius:10px; padding:13px 14px; background:var(--bg-2);
+  color:var(--text); font-family:var(--font-mono); font-size:15px; transition:border-color .15s ease, box-shadow .15s ease;
 }
-.field input:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-soft) }
+.field input:focus{ outline:none; border-color:var(--calc-accent); box-shadow:0 0 0 3px var(--calc-accent-soft) }
+.field input:hover:not(:focus){ border-color:var(--muted-2) }
 .hint{ font-size:12px; color:var(--muted-2); margin-top:6px; font-family:var(--font-mono) }
 .progress{ height:8px; background:var(--surface-2); border-radius:99px; overflow:hidden; margin-top:20px }
 .progress>div{ height:100%; width:0%; background:linear-gradient(90deg,var(--good-2),var(--good)); transition:width .5s ease }
 .calc-actions{ display:flex; justify-content:space-between; gap:10px; margin-top:22px; flex-wrap:wrap }
 
 /* ---------- Guided multi-step wizard ---------- */
-.stepper-head{ margin-bottom:26px }
-.stepper-progress{ height:4px; background:var(--surface-2); border-radius:99px; overflow:hidden; margin-bottom:16px }
-.stepper-progress-fill{ height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-bright)); transition:width .4s cubic-bezier(.2,.8,.2,1) }
-.stepper-labels{ display:flex; gap:22px; flex-wrap:wrap }
-.step-label{ font-size:12.5px; color:var(--muted-2); font-weight:600; display:flex; align-items:center; gap:6px; transition:color .2s ease }
-.step-label b{ font-family:var(--font-mono); font-weight:700; color:var(--muted-2); transition:color .2s ease }
-.step-label.active{ color:var(--text) }
-.step-label.active b{ color:var(--gold-bright) }
-.step-label.done b{ color:var(--good) }
+.calc-eyebrow-row{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:22px }
+.calc-eyebrow-row .calc-eyebrow{
+  display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:.07em;
+  color:var(--calc-accent-bright); background:var(--calc-accent-soft); border:1px solid rgba(45,212,191,.35);
+  padding:6px 12px; border-radius:999px; text-transform:uppercase;
+}
+.calc-eyebrow-row h2{ font-size:20px; margin:0; width:100% }
+.stepper-head{ margin-bottom:30px }
+.stepper-progress{ height:6px; background:var(--surface-2); border-radius:99px; overflow:hidden; margin-bottom:20px }
+.stepper-progress-fill{ height:100%; background:linear-gradient(90deg,var(--calc-accent),var(--calc-accent-bright)); transition:width .4s cubic-bezier(.2,.8,.2,1); box-shadow:0 0 12px rgba(45,212,191,.5) }
+.stepper-labels{ display:flex; gap:10px; flex-wrap:wrap }
+.step-label{
+  font-size:12.5px; color:var(--muted-2); font-weight:600; display:flex; align-items:center; gap:7px;
+  padding:8px 14px 8px 8px; border-radius:99px; border:1.5px solid var(--line); background:var(--bg-2);
+  transition:color .2s ease, border-color .2s ease, background .2s ease;
+}
+.step-label b{
+  font-family:var(--font-mono); font-weight:700; color:var(--muted-2); width:22px; height:22px; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center; font-size:11px; background:var(--surface-2);
+  transition:color .2s ease, background .2s ease;
+}
+.step-label.active{ color:var(--text); border-color:var(--calc-accent); background:var(--calc-accent-soft) }
+.step-label.active b{ color:#0a1a18; background:var(--calc-accent) }
+.step-label.done{ border-color:rgba(79,194,138,.4) }
+.step-label.done b{ color:#0d1608; background:var(--good) }
 .calc-step{ display:none; animation:stepFadeIn .35s ease; position:relative }
 .step-icon{
   position:absolute; top:2px; right:6px; width:84px; height:84px; opacity:.4;
@@ -956,6 +986,10 @@ body.is-pro .ad-slot{ display:none !important }
 <div class="container" style="margin-top:64px">
 <main>
 <section id="grade" class="calc-wrap" aria-label="Calculator">
+  <div class="calc-eyebrow-row">
+    <span class="calc-eyebrow">✏️ Enter your numbers</span>
+    <h2>Get your financial grade</h2>
+  </div>
   <div class="stepper-head">
     <div class="stepper-progress"><div class="stepper-progress-fill" id="stepperFill" style="width:25%"></div></div>
     <div class="stepper-labels">
@@ -967,7 +1001,7 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 
   <div class="calc-step active" data-step="1">
-    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="36" r="15" fill="none" stroke="var(--gold)" stroke-width="2.5"/><path d="M22 84 Q22 58 50 58 Q78 58 78 84" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="36" r="15" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><path d="M22 84 Q22 58 50 58 Q78 58 78 84" fill="none" stroke="var(--calc-accent)" stroke-width="2.5" stroke-linecap="round"/></svg>
     <div class="inputs">
       <div class="field"><label for="age">Age</label><input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"></div>
       <div class="field"><label for="income">Monthly household income (after-tax)</label><input id="income" type="number" value="0" min="0" inputmode="decimal"></div>
@@ -976,7 +1010,7 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 
   <div class="calc-step" data-step="2">
-    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="32" width="72" height="46" rx="9" fill="none" stroke="var(--gold)" stroke-width="2.5"/><path d="M14 47 h72" stroke="var(--gold)" stroke-width="2.5"/><circle cx="68" cy="60" r="5.5" fill="var(--gold)"/></svg>
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="32" width="72" height="46" rx="9" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><path d="M14 47 h72" stroke="var(--calc-accent)" stroke-width="2.5"/><circle cx="68" cy="60" r="5.5" fill="var(--calc-accent)"/></svg>
     <div class="inputs">
       <div class="field"><label for="expenses">Monthly expenses (total)</label><input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined. One number keeps this quick; we compare it against your income either way.</div></div>
     </div>
@@ -984,7 +1018,7 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 
   <div class="calc-step" data-step="3">
-    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="18" y="56" width="15" height="28" rx="3" fill="none" stroke="var(--gold)" stroke-width="2.5"/><rect x="42" y="40" width="15" height="44" rx="3" fill="none" stroke="var(--gold)" stroke-width="2.5"/><rect x="66" y="20" width="15" height="64" rx="3" fill="none" stroke="var(--gold)" stroke-width="2.5"/></svg>
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="18" y="56" width="15" height="28" rx="3" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><rect x="42" y="40" width="15" height="44" rx="3" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><rect x="66" y="20" width="15" height="64" rx="3" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/></svg>
     <div class="field-row">
       <div class="segmented" role="group" aria-label="Housing">
         <button id="modeOwner" type="button">Owner</button>
@@ -1004,7 +1038,7 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 
   <div class="calc-step" data-step="4">
-    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="30" width="72" height="48" rx="9" fill="none" stroke="var(--gold)" stroke-width="2.5"/><path d="M14 44 h72" stroke="var(--gold)" stroke-width="2.5"/><rect x="24" y="59" width="26" height="6.5" rx="3.25" fill="var(--gold)"/></svg>
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="30" width="72" height="48" rx="9" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><path d="M14 44 h72" stroke="var(--calc-accent)" stroke-width="2.5"/><rect x="24" y="59" width="26" height="6.5" rx="3.25" fill="var(--calc-accent)"/></svg>
     <div class="inputs">
       <div class="field" id="mortCard"><label for="mortgage">Mortgage balance</label><input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="liabHint">Total liabilities: —</div></div>
       <div class="field"><label for="student">Student loans</label><input id="student" type="number" value="0" min="0" inputmode="decimal"></div>
