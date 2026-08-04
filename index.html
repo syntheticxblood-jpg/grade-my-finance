@@ -1116,6 +1116,8 @@ body.is-pro .ad-slot{ display:none !important }
         method="POST" novalidate>
         <input type="hidden" name="reportGrade" id="subReportGrade" value="">
         <input type="hidden" name="reportScore" id="subReportScore" value="">
+        <input type="text" name="website" id="subWebsiteRC" tabindex="-1" autocomplete="off" aria-hidden="true"
+          style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
         <input type="email" name="email" placeholder="you@example.com" required>
         <button type="submit" class="btn gold sm" id="subBtnRC">Subscribe</button>
       </form>
@@ -1341,6 +1343,9 @@ body.is-pro .ad-slot{ display:none !important }
       <input type="email" name="email" id="subEmail" placeholder="you@example.com" required
         style="flex:1 1 240px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--bg-2); color:var(--text); font-family:var(--font-mono)">
       <input type="hidden" name="_subject" value="New Grade My Finance subscriber" />
+      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
+        style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
+      <input type="hidden" name="t" value="">
       <button type="submit" class="btn gold">Subscribe</button>
     </form>
   </div>
@@ -3371,6 +3376,7 @@ $("compareFriend").addEventListener("click", function(){
       '<div class="compare-banner" style="margin-top:10px;background:var(--surface);border-color:var(--line)">'+
         '<div style="font-size:13px;color:var(--muted)">📧 Want us to email you if you beat their grade?</div>'+
         '<form id="compareCaptureForm" style="display:flex;gap:8px;flex-wrap:wrap;flex:1 1 240px;justify-content:flex-end">'+
+          '<input type="text" name="website" id="compareWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0">'+
           '<input type="email" name="email" placeholder="you@example.com" required style="flex:1 1 180px;padding:9px 11px;border-radius:8px;border:1px solid var(--line);background:var(--bg-2);color:var(--text);font-family:var(--font-mono);font-size:13px">'+
           '<button type="submit" class="btn sm" style="flex:none">Notify Me</button>'+
         '</form>'+
@@ -3382,9 +3388,10 @@ $("compareFriend").addEventListener("click", function(){
         e.preventDefault();
         var email = compareCaptureForm.querySelector("input[name='email']").value.trim();
         if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
+        var websiteEl = $("compareWebsite");
         fetch("https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec", {
           method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
-          body:JSON.stringify({ email:email, source:"grademyfinance.com/comparebanner", friendGrade: friend.l, friendScore: friend.s })
+          body:JSON.stringify({ email:email, source:"grademyfinance.com/comparebanner", friendGrade: friend.l, friendScore: friend.s, website: websiteEl ? websiteEl.value : "", t: Date.now() - __gmfPageLoadTime })
         }).then(function(res){
           if(res.ok){ __track('subscribe_success',{placement:'compare_banner'}); toastMsg("Thanks! Check your inbox for a confirmation."); compareCaptureForm.reset(); }
           else { __track('subscribe_error',{placement:'compare_banner',code:res.status}); alert("Signup failed. Please try again later."); }
@@ -3536,20 +3543,24 @@ if(subForm){
   });
 }
 
+var __gmfPageLoadTime = Date.now();
+
 var subFormRC=$("subFormRC");
 if(subFormRC){
   subFormRC.addEventListener("submit", function(e){
     e.preventDefault();
     var email=subFormRC.querySelector("input[name='email']").value.trim();
     if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
-    var gradeEl=$("subReportGrade"), scoreEl=$("subReportScore");
+    var gradeEl=$("subReportGrade"), scoreEl=$("subReportScore"), websiteEl=$("subWebsiteRC");
     fetch(subFormRC.action, {
       method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
       body:JSON.stringify({
         email:email,
         source:"grademyfinance.com/reportcard",
         reportGrade: gradeEl ? gradeEl.value : "",
-        reportScore: scoreEl ? scoreEl.value : ""
+        reportScore: scoreEl ? scoreEl.value : "",
+        website: websiteEl ? websiteEl.value : "",
+        t: Date.now() - __gmfPageLoadTime
       })
     })
     .then(function(res){
