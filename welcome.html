@@ -280,6 +280,12 @@
         alert("Enter a valid email.");
         return;
       }
+      const submitBtn = emailForm.querySelector('button[type="submit"]');
+      if(submitBtn.disabled) return; // already submitting - ignore extra clicks entirely
+      const originalBtnText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Joining...';
+
       localStorage.setItem('submittedEmail','true');
       fetch(emailForm.action, { method: 'POST', body: new FormData(emailForm) })
       .then(res=>{
@@ -287,10 +293,14 @@
           window.location.href = 'index.html';
         } else {
           alert("Submission failed. Try again.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
         }
       })
       .catch(()=>{
         alert("Network error. Try again.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
       });
     });
 
