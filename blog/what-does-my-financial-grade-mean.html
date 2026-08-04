@@ -98,23 +98,25 @@ footer.site a{color:var(--muted)}
     <button type="submit">Subscribe</button>
   </form>
 </div>
-<div class="related"><strong style="font-size:13px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em">Related</strong><a href="/blog/numbers-that-predict-your-grade.html">The 3 Numbers That Predict Your Financial Grade</a><a href="/am-i-financially-healthy.html">Am I Financially Healthy?</a><a href="/blog/index.html">More from the blog</a></div>
+<div class="related"><strong style="font-size:13px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em">Related</strong><span id="autoRelated"></span><a href="/blog/index.html">More from the blog</a></div>
 </main>
 <footer class="site"><div class="container">© 2026 Grade My Finance — educational use only, not financial advice. <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/index.html">Home</a></div></footer>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can two people with the same net worth get different grades?","acceptedAnswer":{"@type":"Answer","text":"Yes. Net worth is compared against an age-adjusted benchmark, not a flat number, and it's only one of five weighted factors."}},{"@type":"Question","name":"Is a lower grade a bad thing?","acceptedAnswer":{"@type":"Answer","text":"Not in the sense of a judgment — think of it more as a snapshot and a to-do list showing the moves that would raise your grade fastest."}}]}</script>
 <script>
 (function(){
+  var __blogPageLoadTime = Date.now();
   var f = document.getElementById('blogSubForm');
   if(!f) return;
   f.addEventListener('submit', function(e){
     e.preventDefault();
     var email = f.querySelector('input[name="email"]').value.trim();
     if(!/^\S+@\S+\.\S+$/.test(email)){ alert('Please enter a valid email.'); return; }
+    var websiteEl = f.querySelector('input[name="website"]');
     var btn = f.querySelector('button');
     var orig = btn.textContent; btn.textContent = 'Sending...'; btn.disabled = true;
     fetch('https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec', {
       method:'POST', headers:{'Accept':'application/json','Content-Type':'application/json'},
-      body: JSON.stringify({ email:email, source:'grademyfinance.com/blog/'+(f.dataset.post||'unknown') })
+      body: JSON.stringify({ email:email, source:'grademyfinance.com/blog/'+(f.dataset.post||'unknown'), website: websiteEl ? websiteEl.value : "", t: Date.now() - __blogPageLoadTime })
     }).then(function(res){
       if(res.ok){ btn.textContent = 'Subscribed ✓'; f.reset(); }
       else { btn.textContent = orig; btn.disabled = false; alert('Signup failed. Please try again later.'); }
@@ -122,5 +124,8 @@ footer.site a{color:var(--muted)}
   });
 })();
 </script>
+<script>var CURRENT_POST_SLUG="what-does-my-financial-grade-mean", CURRENT_POST_CATEGORY="Financial Grade";</script>
+<script src="/blog/posts-manifest.js"></script>
+<script src="/blog/related-posts.js"></script>
 </body>
 </html>
