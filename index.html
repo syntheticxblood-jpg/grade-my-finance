@@ -170,7 +170,8 @@ nav.primary a:hover{ color:var(--text) }
 @keyframes auroraDrift2{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(-50px,30px) scale(1.1) } }
 @keyframes auroraDrift3{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(30px,-40px) scale(1.2) } }
 @media (prefers-reduced-motion: reduce){ .aurora span{ animation:none } }
-.hero-grid{ position:relative; z-index:1; display:grid; grid-template-columns: 1.05fr .95fr; gap:56px; align-items:center }
+.hero-grid{ position:relative; z-index:1; display:grid; grid-template-columns: 1.05fr .95fr; gap:56px; align-items:start }
+.hero-copy{ padding-top:24px }
 @media (max-width:980px){ .hero-grid{ grid-template-columns:1fr; text-align:center } .hero-cta{ justify-content:center } .hero-proof{ justify-content:center } }
 .live-counter-badge{
   display:inline-flex; align-items:center; gap:9px; margin-bottom:16px;
