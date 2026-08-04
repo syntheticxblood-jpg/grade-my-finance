@@ -176,6 +176,9 @@
           method="POST">
       <input type="hidden" name="source" id="sourceField" value="">
       <input type="hidden" name="sourceDetail" id="sourceDetailField" value="">
+      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
+        style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
+      <input type="hidden" name="t" value="">
       <input type="email" name="email" placeholder="you@example.com" required>
       <button type="submit" class="btn gold" style="flex:1 1 100%;margin-top:2px">Get My Grade + Email Me a Copy</button>
     </form>
@@ -325,6 +328,20 @@
         var el = document.getElementById("liveStat");
         el.textContent = "Free, private, and growing every day";
       });
+
+    // Bot defense: stamp how many milliseconds elapsed between page load
+    // and submit. A scripted flood submits in single-digit milliseconds;
+    // a real person takes at least a second or two.
+    (function(){
+      var pageLoadTime = Date.now();
+      document.querySelectorAll('input[name="t"]').forEach(function(el){
+        if(el.form){
+          el.form.addEventListener('submit', function(){
+            el.value = Date.now() - pageLoadTime;
+          });
+        }
+      });
+    })();
   </script>
 </body>
 </html>
