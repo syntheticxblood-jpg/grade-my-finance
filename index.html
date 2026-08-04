@@ -222,6 +222,7 @@ nav.primary a:hover{ color:var(--text) }
 
 /* mock report preview */
 .mock{ position:relative; perspective:1000px }
+.hero-calc-wrap{ position:relative }
 .mock-card{
   background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow);
   padding:22px; transform:rotate(1.4deg); max-width:400px; margin:0 auto;
@@ -821,35 +822,80 @@ body.is-pro .ad-slot{ display:none !important }
         <span><b>Private by design</b> — your inputs never leave your browser</span>
       </div>
     </div>
-    <div class="mock hero-in-mock" aria-hidden="true">
-      <div class="mock-card">
-        <div class="mock-top">
-          <div>
-            <div class="mock-label">FINANCIAL HEALTH</div>
-            <div style="display:flex;align-items:baseline;gap:8px;margin-top:4px">
-              <span style="font-family:var(--font-mono);font-weight:700;font-size:28px;color:var(--good)">A-</span>
-              <span style="font-size:13px;color:var(--muted)">87 / 100</span>
-            </div>
-          </div>
-          <div class="mock-grade-seal">A-<span class="shimmer"></span></div>
-        </div>
-        <div class="mock-stat-grid">
-          <div class="mock-stat"><span class="ms-label">Net Worth</span><span class="ms-val">$184,320</span></div>
-          <div class="mock-stat"><span class="ms-label">Savings Rate</span><span class="ms-val">18.4%</span></div>
-          <div class="mock-stat"><span class="ms-label">Debt-to-Income</span><span class="ms-val">14%</span></div>
-        </div>
-        <div class="mock-divider"></div>
-        <div class="mock-breakdown-label">What went into this grade</div>
-        <div class="mock-row"><span>Emergency fund</span><b>4.2 / 6 mo</b></div>
-        <div class="mock-bar"><div style="width:70%"></div></div>
-        <div class="mock-row"><span>Age-based net worth</span><b>81% of target</b></div>
-        <div class="mock-bar"><div style="width:81%"></div></div>
-        <div class="mock-row"><span>Non-mortgage debt</span><b>12% of baseline</b></div>
-        <div class="mock-bar"><div style="width:88%"></div></div>
+    <div class="hero-calc-wrap hero-in-mock">
+<section id="grade" class="calc-wrap" aria-label="Calculator">
+  <div class="calc-eyebrow-row">
+    <span class="calc-eyebrow">✏️ Enter your numbers</span>
+    <h2>Get your financial grade</h2>
+  </div>
+  <div class="stepper-head">
+    <div class="stepper-progress"><div class="stepper-progress-fill" id="stepperFill" style="width:25%"></div></div>
+    <div class="stepper-labels">
+      <span class="step-label active" data-step-label="1"><b>01</b> <span>About You</span></span>
+      <span class="step-label" data-step-label="2"><b>02</b> <span>Spending</span></span>
+      <span class="step-label" data-step-label="3"><b>03</b> <span>Assets</span></span>
+      <span class="step-label" data-step-label="4"><b>04</b> <span>Debt</span></span>
+    </div>
+  </div>
+
+  <div class="calc-step active" data-step="1">
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="36" r="15" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><path d="M22 84 Q22 58 50 58 Q78 58 78 84" fill="none" stroke="var(--calc-accent)" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <div class="inputs">
+      <div class="field"><label for="age">Age</label><input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"></div>
+      <div class="field"><label for="income">Monthly household income (after-tax)</label><input id="income" type="number" value="0" min="0" inputmode="decimal"></div>
+    </div>
+    <div class="step-actions"><span></span><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step" data-step="2">
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="32" width="72" height="46" rx="9" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><path d="M14 47 h72" stroke="var(--calc-accent)" stroke-width="2.5"/><circle cx="68" cy="60" r="5.5" fill="var(--calc-accent)"/></svg>
+    <div class="inputs">
+      <div class="field"><label for="expenses">Monthly expenses (total)</label><input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined. One number keeps this quick; we compare it against your income either way.</div></div>
+    </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step" data-step="3">
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="18" y="56" width="15" height="28" rx="3" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><rect x="42" y="40" width="15" height="44" rx="3" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><rect x="66" y="20" width="15" height="64" rx="3" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/></svg>
+    <div class="field-row">
+      <div class="segmented" role="group" aria-label="Housing">
+        <button id="modeOwner" type="button">Owner</button>
+        <button id="modeRenter" type="button">Renter</button>
       </div>
+    </div>
+    <div class="inputs">
+      <div class="field" id="homeCard"><label for="home">Home value</label><input id="home" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="assetsHint">Total assets: —</div></div>
+      <div class="field"><label for="retire">Retirement accounts (401k, IRA, pension, RRSP, super, etc.)</label><input id="retire" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="brokerage">Brokerage / stocks</label><input id="brokerage" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="hsa">HSA</label><input id="hsa" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="cash">Cash savings</label><input id="cash" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="crypto">Crypto & other investments</label><input id="crypto" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="car">Car value</label><input id="car" type="number" value="0" min="0" inputmode="decimal"></div>
+    </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step" data-step="4">
+    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="30" width="72" height="48" rx="9" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><path d="M14 44 h72" stroke="var(--calc-accent)" stroke-width="2.5"/><rect x="24" y="59" width="26" height="6.5" rx="3.25" fill="var(--calc-accent)"/></svg>
+    <div class="inputs">
+      <div class="field" id="mortCard"><label for="mortgage">Mortgage balance</label><input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="liabHint">Total liabilities: —</div></div>
+      <div class="field"><label for="student">Student loans</label><input id="student" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="auto">Auto loans</label><input id="auto" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="cc">Credit cards (balance)</label><input id="cc" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="otherDebt">Personal loans / other debt</label><input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"></div>
+    </div>
+    <div class="progress"><div id="progressFill"></div></div>
+    <div class="calc-actions">
+      <button class="btn" id="resetBtn" type="button">Reset</button>
+      <button class="btn gold" id="gradeBtn" type="button">Get My Financial Grade</button>
+    </div>
+    <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
+  </div>
+</section>
     </div>
   </div>
 </section>
+
 
 <section class="trust-section" aria-label="Privacy and trust">
   <div class="container">
@@ -926,79 +972,45 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 </section>
 
-<div class="container" style="margin-top:64px">
-<main>
-<section id="grade" class="calc-wrap" aria-label="Calculator">
-  <div class="calc-eyebrow-row">
-    <span class="calc-eyebrow">✏️ Enter your numbers</span>
-    <h2>Get your financial grade</h2>
-  </div>
-  <div class="stepper-head">
-    <div class="stepper-progress"><div class="stepper-progress-fill" id="stepperFill" style="width:25%"></div></div>
-    <div class="stepper-labels">
-      <span class="step-label active" data-step-label="1"><b>01</b> <span>About You</span></span>
-      <span class="step-label" data-step-label="2"><b>02</b> <span>Spending</span></span>
-      <span class="step-label" data-step-label="3"><b>03</b> <span>Assets</span></span>
-      <span class="step-label" data-step-label="4"><b>04</b> <span>Debt</span></span>
+<section class="block" id="preview">
+  <div class="container">
+    <div class="block-head center">
+      <span class="kicker">See what you get</span>
+      <h2>A real report card, not just a number.</h2>
+      <p>Here's an example of what your grade looks like once you finish the calculator above.</p>
     </div>
-  </div>
-
-  <div class="calc-step active" data-step="1">
-    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="36" r="15" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><path d="M22 84 Q22 58 50 58 Q78 58 78 84" fill="none" stroke="var(--calc-accent)" stroke-width="2.5" stroke-linecap="round"/></svg>
-    <div class="inputs">
-      <div class="field"><label for="age">Age</label><input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"></div>
-      <div class="field"><label for="income">Monthly household income (after-tax)</label><input id="income" type="number" value="0" min="0" inputmode="decimal"></div>
-    </div>
-    <div class="step-actions"><span></span><button class="btn gold" type="button" data-next>Continue →</button></div>
-  </div>
-
-  <div class="calc-step" data-step="2">
-    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="32" width="72" height="46" rx="9" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><path d="M14 47 h72" stroke="var(--calc-accent)" stroke-width="2.5"/><circle cx="68" cy="60" r="5.5" fill="var(--calc-accent)"/></svg>
-    <div class="inputs">
-      <div class="field"><label for="expenses">Monthly expenses (total)</label><input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined. One number keeps this quick; we compare it against your income either way.</div></div>
-    </div>
-    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
-  </div>
-
-  <div class="calc-step" data-step="3">
-    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="18" y="56" width="15" height="28" rx="3" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><rect x="42" y="40" width="15" height="44" rx="3" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><rect x="66" y="20" width="15" height="64" rx="3" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/></svg>
-    <div class="field-row">
-      <div class="segmented" role="group" aria-label="Housing">
-        <button id="modeOwner" type="button">Owner</button>
-        <button id="modeRenter" type="button">Renter</button>
+    <div class="mock" aria-hidden="true" style="margin:0 auto;max-width:420px">
+      <div class="mock-card">
+        <div class="mock-top">
+          <div>
+            <div class="mock-label">FINANCIAL HEALTH <span style="font-family:var(--font-mono);font-size:9px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em">(illustrative example)</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:4px">
+              <span style="font-family:var(--font-mono);font-weight:700;font-size:28px;color:var(--good)">A-</span>
+              <span style="font-size:13px;color:var(--muted)">87 / 100</span>
+            </div>
+          </div>
+          <div class="mock-grade-seal">A-<span class="shimmer"></span></div>
+        </div>
+        <div class="mock-stat-grid">
+          <div class="mock-stat"><span class="ms-label">Net Worth</span><span class="ms-val">$184,320</span></div>
+          <div class="mock-stat"><span class="ms-label">Savings Rate</span><span class="ms-val">18.4%</span></div>
+          <div class="mock-stat"><span class="ms-label">Debt-to-Income</span><span class="ms-val">14%</span></div>
+        </div>
+        <div class="mock-divider"></div>
+        <div class="mock-breakdown-label">What went into this grade</div>
+        <div class="mock-row"><span>Emergency fund</span><b>4.2 / 6 mo</b></div>
+        <div class="mock-bar"><div style="width:70%"></div></div>
+        <div class="mock-row"><span>Age-based net worth</span><b>81% of target</b></div>
+        <div class="mock-bar"><div style="width:81%"></div></div>
+        <div class="mock-row"><span>Non-mortgage debt</span><b>12% of baseline</b></div>
+        <div class="mock-bar"><div style="width:88%"></div></div>
       </div>
     </div>
-    <div class="inputs">
-      <div class="field" id="homeCard"><label for="home">Home value</label><input id="home" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="assetsHint">Total assets: —</div></div>
-      <div class="field"><label for="retire">Retirement accounts (401k, IRA, pension, RRSP, super, etc.)</label><input id="retire" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="brokerage">Brokerage / stocks</label><input id="brokerage" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="hsa">HSA</label><input id="hsa" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="cash">Cash savings</label><input id="cash" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="crypto">Crypto & other investments</label><input id="crypto" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="car">Car value</label><input id="car" type="number" value="0" min="0" inputmode="decimal"></div>
+    <div style="text-align:center;margin-top:32px">
+      <button class="btn gold" id="gradeBtnPreview" type="button">Calculate My Grade →</button>
     </div>
-    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
-  </div>
-
-  <div class="calc-step" data-step="4">
-    <svg class="step-icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="30" width="72" height="48" rx="9" fill="none" stroke="var(--calc-accent)" stroke-width="2.5"/><path d="M14 44 h72" stroke="var(--calc-accent)" stroke-width="2.5"/><rect x="24" y="59" width="26" height="6.5" rx="3.25" fill="var(--calc-accent)"/></svg>
-    <div class="inputs">
-      <div class="field" id="mortCard"><label for="mortgage">Mortgage balance</label><input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="liabHint">Total liabilities: —</div></div>
-      <div class="field"><label for="student">Student loans</label><input id="student" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="auto">Auto loans</label><input id="auto" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="cc">Credit cards (balance)</label><input id="cc" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="otherDebt">Personal loans / other debt</label><input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"></div>
-    </div>
-    <div class="progress"><div id="progressFill"></div></div>
-    <div class="calc-actions">
-      <button class="btn" id="resetBtn" type="button">Reset</button>
-      <button class="btn gold" id="gradeBtn" type="button">Get My Financial Grade</button>
-    </div>
-    <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
   </div>
 </section>
-</main>
-</div>
 
 <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
   <div class="loader">
@@ -2888,6 +2900,12 @@ $("gradeBtnHero").addEventListener("click", function(){
   __track('click_scroll_to_calculator',{location:'hero'});
   document.getElementById("grade").scrollIntoView({ behavior:"smooth", block:"start" });
   setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 500);
+});
+var gradeBtnPreview = $("gradeBtnPreview");
+if(gradeBtnPreview) gradeBtnPreview.addEventListener("click", function(){
+  __track('click_scroll_to_calculator',{location:'result_preview'});
+  document.getElementById("grade").scrollIntoView({ behavior:"smooth", block:"start" });
+  if(window.__stepperReset) window.__stepperReset();
 });
 $("gradeBtn").addEventListener("click", gradeNow);
 $("gradeBtnSticky").addEventListener("click", function(){ __track('click_get_report_card',{location:'sticky'}); gradeNow(); });
