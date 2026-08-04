@@ -343,9 +343,13 @@ section.block{ padding:76px 0 }
 .segmented button.active{ background:var(--surface); color:var(--text); box-shadow:0 1px 0 rgba(0,0,0,.2) }
 .field-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px }
 .inputs{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px }
+/* The calculator now lives inside the hero's ~half-width column rather than
+   a full-width section, so 4 columns leaves each field too narrow for real
+   labels regardless of viewport size — force 2 columns in this context. */
+.hero-calc-wrap .inputs{ grid-template-columns:repeat(2,minmax(0,1fr)) }
 @media (max-width:1020px){ .inputs{ grid-template-columns:repeat(2,minmax(0,1fr)) } }
 @media (max-width:560px){ .inputs{ grid-template-columns:1fr } }
-.field label{ display:block; font-size:12.5px; color:var(--muted); margin-bottom:7px; font-weight:600 }
+.field label{ display:flex; align-items:flex-end; min-height:36px; font-size:12.5px; color:var(--muted); margin-bottom:7px; font-weight:600; line-height:1.3 }
 .field input{
   width:100%; border:1.5px solid var(--line); border-radius:10px; padding:13px 14px; background:var(--bg-2);
   color:var(--text); font-family:var(--font-mono); font-size:15px; transition:border-color .15s ease, box-shadow .15s ease;
@@ -865,7 +869,7 @@ body.is-pro .ad-slot{ display:none !important }
     </div>
     <div class="inputs">
       <div class="field" id="homeCard"><label for="home">Home value</label><input id="home" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="assetsHint">Total assets: —</div></div>
-      <div class="field"><label for="retire">Retirement accounts (401k, IRA, pension, RRSP, super, etc.)</label><input id="retire" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field"><label for="retire">Retirement (401k, IRA, etc.)</label><input id="retire" type="number" value="0" min="0" inputmode="decimal"></div>
       <div class="field"><label for="brokerage">Brokerage / stocks</label><input id="brokerage" type="number" value="0" min="0" inputmode="decimal"></div>
       <div class="field"><label for="hsa">HSA</label><input id="hsa" type="number" value="0" min="0" inputmode="decimal"></div>
       <div class="field"><label for="cash">Cash savings</label><input id="cash" type="number" value="0" min="0" inputmode="decimal"></div>
@@ -1723,12 +1727,6 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
       l.classList.toggle("done", n < current);
     });
     if(fill) fill.style.width = Math.round((current/total)*100)+"%";
-    // Scroll the calculator into a comfortable view on step change, but not
-    // on first load — avoids yanking the page on initial render.
-    if(stepNum !== 1 || current !== 1){
-      var grade = $("grade");
-      if(grade) grade.scrollIntoView({ behavior:"smooth", block:"start" });
-    }
     __track('calculator_step_view', {step: current});
   }
 
