@@ -1,897 +1,956 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Your Dashboard | Grade My Finance</title>
-<meta name="description" content="Track your financial grade over time, saved scenarios, achievements, and personal goals — a Pro feature on Grade My Finance.">
-<meta name="theme-color" content="#0A0B0E">
-<meta name="robots" content="noindex,follow">
-<link rel="canonical" href="https://grademyfinance.com/dashboard.html">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){ dataLayer.push(arguments); }
-gtag('js', new Date());
-gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true });
-</script>
-<style>
-:root{
-  --bg:#0A0B0E; --bg-2:#0E1015; --surface:#14161C; --surface-2:#1B1E26;
-  --line: rgba(255,255,255,.09); --text:#F2F3F5; --muted:#8B92A0; --muted-2:#5D636F;
-  --gold:#C9A227; --gold-soft: rgba(201,162,39,.14); --gold-bright:#E4C24E;
-  --good:#34D399; --good-2:#16A34A; --mid:#F5B94D; --bad:#D97757;
-  --radius:14px; --radius-lg:20px; --shadow: 0 20px 50px rgba(0,0,0,.45); --header-h:76px;
-  --font-display:'Space Grotesk',system-ui,sans-serif; --font-body:'Inter',system-ui,sans-serif;
-  --font-mono:'IBM Plex Mono',monospace; --font-serif:'Fraunces',serif;
-}
-:root[data-theme="light"]{
-  --bg:#F7F6F3; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#F1EFEA;
-  --line: rgba(10,11,14,.10); --text:#14161C; --muted:#5B616C; --muted-2:#8B92A0;
-  --shadow: 0 20px 44px rgba(20,20,20,.08);
-}
-*{box-sizing:border-box}
-html, body{ overflow-x:hidden }
-body{ margin:0; padding-top:var(--header-h); background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.5 }
-h1,h2,h3{ font-family:var(--font-display); margin:0; letter-spacing:-.01em }
-.mono{ font-family:var(--font-mono) }
-.container{ max-width:1080px; margin:0 auto; padding:0 24px }
-a{ color:inherit }
-header.site{ position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:50; background:rgba(10,11,14,.72); backdrop-filter:blur(14px); border-bottom:1px solid var(--line) }
-:root[data-theme="light"] header.site{ background:rgba(247,246,243,.78) }
-.hdr-row{ height:100%; display:flex; align-items:center; gap:14px }
-.brandmark{ display:flex; align-items:center; gap:10px; text-decoration:none }
-.seal{ width:38px; height:38px; border-radius:10px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; flex:none }
-.seal span{ font-family:var(--font-mono); font-weight:700; font-size:13px; color:#1a1300 }
-.wordmark{ font-weight:700; font-size:17px }
-.pro-chip{ display:inline-flex; align-items:center; gap:5px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:800; font-size:11px; letter-spacing:.03em; padding:3px 9px; border-radius:99px; margin-left:2px }
-.hdr-right{ margin-left:auto; display:flex; align-items:center; gap:10px }
-.btn{ appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--text); font-family:var(--font-body); font-weight:600; font-size:14px; padding:11px 18px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; transition:transform .12s ease, border-color .12s ease, filter .12s ease }
-.btn:hover{ filter:brightness(1.08); border-color:rgba(201,162,39,.4) }
-.btn:active{ transform:translateY(1px) }
-.btn.gold{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700 }
-.btn.sm{ padding:8px 13px; font-size:13px }
-.icon-btn{ width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--text); cursor:pointer; display:grid; place-items:center; font-size:15px }
-
-main{ padding:44px 0 80px; position:relative }
-main::before{
-  content:""; position:absolute; top:-40px; right:-120px; width:520px; height:420px; z-index:-1;
-  background:radial-gradient(circle, rgba(201,162,39,.10), transparent 70%); filter:blur(10px); pointer-events:none;
-}
-:root[data-theme="light"] main::before{ opacity:.5 }
-
-.page-head{ margin-bottom:36px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap }
-.page-head h1{ font-family:var(--font-serif); font-weight:600; font-size:clamp(26px,4vw,34px) }
-.page-head p{ color:var(--muted); margin-top:8px; font-size:14.5px }
-
-.card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:26px; box-shadow:var(--shadow); position:relative; transition:border-color .15s ease }
-.card.hoverable:hover{ border-color:rgba(201,162,39,.25) }
-
-/* ---------- Summary stat strip ---------- */
-.stat-strip{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-bottom:28px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow); overflow:hidden }
-@media (max-width:760px){ .stat-strip{ grid-template-columns:repeat(2,1fr) } }
-.stat-cell{ padding:22px 24px; border-right:1px solid var(--line) }
-.stat-cell:last-child{ border-right:none }
-@media (max-width:760px){ .stat-cell:nth-child(2n){ border-right:none } .stat-cell:nth-child(-n+2){ border-bottom:1px solid var(--line) } }
-.stat-cell .stat-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:600 }
-.stat-cell .stat-num{ font-family:var(--font-serif); font-weight:600; font-size:28px; margin-top:6px; color:var(--text) }
-.stat-cell .stat-num.gold{ color:var(--gold-bright) }
-.stat-cell .stat-num.up{ color:var(--good) }
-.stat-cell .stat-num.down{ color:var(--bad) }
-
-/* ---------- Hero sections (score / net worth) ---------- */
-.hero-section{ margin-bottom:24px }
-.hero-top{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:6px }
-.hero-eyebrow{ font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; font-weight:700 }
-.hero-value{ font-family:var(--font-serif); font-weight:600; font-size:clamp(30px,4vw,42px); margin-top:6px; line-height:1.05 }
-.hero-sub{ font-size:13.5px; color:var(--muted); margin-top:8px }
-.hero-sub b{ font-weight:700 }
-.time-filters{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--line); border-radius:9px; padding:3px }
-.time-filters button{
-  appearance:none; border:none; background:transparent; color:var(--muted); font-family:var(--font-mono);
-  font-size:11.5px; font-weight:600; padding:6px 11px; border-radius:6px; cursor:pointer; transition:color .12s ease, background .12s ease;
-}
-.time-filters button.active{ background:var(--surface); color:var(--gold-bright) }
-.chart-wrap{ margin-top:18px }
-.chart-caption{ text-align:center; font-size:12px; color:var(--muted-2); margin-top:6px; font-family:var(--font-mono) }
-
-/* ---------- Compact history list ---------- */
-.history-block{ margin-top:20px; border-top:1px solid var(--line); padding-top:16px }
-.history-block-label{ font-size:11px; color:var(--muted-2); text-transform:uppercase; letter-spacing:.05em; font-weight:700; margin-bottom:10px }
-.history-row{
-  display:flex; align-items:center; justify-content:space-between; gap:10px;
-  padding:10px 4px; border-bottom:1px solid var(--line); font-size:13.5px;
-}
-.history-row:last-child{ border-bottom:none }
-.history-date{ color:var(--muted); font-family:var(--font-mono); font-size:12.5px }
-.history-value{ font-weight:700; color:var(--text); font-family:var(--font-mono); margin-left:auto; margin-right:6px }
-.history-delete{
-  appearance:none; border:none; background:transparent; color:var(--muted-2); width:26px; height:26px;
-  border-radius:7px; cursor:pointer; display:grid; place-items:center; flex:none;
-  opacity:0; transition:opacity .15s ease, color .15s ease, background .15s ease;
-}
-.history-row:hover .history-delete{ opacity:1 }
-.history-delete:hover{ color:var(--bad); background:rgba(217,119,87,.1) }
-/* Touch devices can't hover — keep the delete affordance reachable, just subdued */
-@media (hover:none){ .history-delete{ opacity:.55 } }
-.view-all-btn{
-  appearance:none; border:none; background:none; color:var(--gold-bright); font-family:var(--font-body);
-  font-weight:600; font-size:13px; cursor:pointer; padding:10px 4px 0; display:inline-flex; align-items:center; gap:5px;
-}
-.view-all-btn:hover{ text-decoration:underline }
-.history-full{ display:none }
-.history-full.expanded{ display:block }
-
-.dash-grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:20px }
-@media (max-width:860px){ .dash-grid-2{ grid-template-columns:1fr } }
-
-.section{ margin-bottom:24px }
-.section-label{ font-size:12.5px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-bottom:5px }
-.section-sub{ font-size:13px; color:var(--muted-2); margin-bottom:16px }
-
-/* ---------- Achievements (redesigned, no emoji) ---------- */
-.achv-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:10px }
-.achv-badge{ display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; padding:16px 6px; border-radius:12px; background:var(--surface-2); border:1px solid var(--line); transition:border-color .15s ease, transform .15s ease }
-.achv-badge.unlocked:hover{ transform:translateY(-2px); border-color:rgba(201,162,39,.35) }
-.achv-icon{ width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative }
-.achv-badge.unlocked .achv-icon{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); box-shadow:0 4px 10px rgba(201,162,39,.3) }
-.achv-badge.locked .achv-icon{ background:var(--surface); border:1.5px solid var(--line) }
-.achv-icon svg{ width:16px; height:16px }
-.achv-badge.unlocked .achv-icon svg{ stroke:#1a1300 }
-.achv-badge.locked .achv-icon svg{ stroke:var(--muted-2) }
-.achv-label{ font-size:10.5px; font-weight:700; line-height:1.3 }
-.achv-badge.locked .achv-label{ color:var(--muted-2) }
-.achv-status{ font-size:9px; text-transform:uppercase; letter-spacing:.04em; font-weight:700 }
-.achv-badge.unlocked .achv-status{ color:var(--good) }
-.achv-badge.locked .achv-status{ color:var(--muted-2) }
-
-.scenario-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:14px 16px; background:var(--surface-2); border:1px solid var(--line); border-radius:11px; margin-bottom:9px; transition:border-color .15s ease }
-.scenario-row:hover{ border-color:rgba(201,162,39,.3) }
-
-.goal-form{ display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:18px }
-.goal-form label{ font-size:12.5px; color:var(--muted); font-weight:600; display:block; margin-bottom:6px }
-.goal-form select, .goal-form input{ border:1px solid var(--line); border-radius:10px; padding:11px 13px; background:var(--bg-2); color:var(--text); font-family:var(--font-mono); font-size:14px; transition:border-color .15s ease }
-.goal-form select:focus, .goal-form input:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-soft) }
-
-.progress-bar{ height:12px; background:var(--surface-2); border-radius:99px; overflow:hidden; border:1px solid var(--line) }
-.progress-bar > div{ height:100%; background:linear-gradient(90deg,var(--good-2),var(--good)); transition:width .8s cubic-bezier(.16,1,.3,1) }
-
-.locked-wrap{ text-align:center; padding:60px 20px; max-width:480px; margin:60px auto 0 }
-.locked-wrap .seal-big{ width:80px; height:80px; border-radius:20px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; margin:0 auto 20px; font-family:var(--font-mono); font-weight:700; font-size:28px; color:#1a1300; box-shadow:0 8px 24px rgba(201,162,39,.35) }
-.locked-wrap ul{ text-align:left; color:var(--muted); font-size:14.5px; margin:18px 0; padding-left:20px; display:inline-block }
-
-.empty-note{ color:var(--muted); font-size:13.5px; padding:20px; text-align:center; background:var(--surface-2); border-radius:10px; border:1px dashed var(--line) }
-.empty-note b{ display:block; color:var(--text); font-size:14.5px; margin-bottom:4px }
-
-.utility-section{ margin-top:44px; padding-top:28px; border-top:1px solid var(--line) }
-.utility-section .section-label{ color:var(--muted-2) }
-.sync-checklist{ display:flex; gap:18px; flex-wrap:wrap; margin:14px 0 18px; font-size:13px; color:var(--muted) }
-.sync-checklist span{ display:inline-flex; align-items:center; gap:6px }
-.sync-checklist svg{ width:14px; height:14px; stroke:var(--good); flex:none }
-
-footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:30px 0; text-align:center; color:var(--muted-2); font-size:12.5px }
-</style>
-</head>
-<body>
-<script>try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.dataset.theme="light"; } }catch(e){}</script>
-
-<header class="site">
-  <div class="container hdr-row">
-    <a class="brandmark" href="index.html"><span class="seal"><span>A+</span></span><span class="wordmark">Grade My Finance</span><span class="pro-chip" id="headerProChip" style="display:none">★ PRO</span></a>
-    <div class="hdr-right">
-      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">◐</button>
-      <a class="btn sm" href="index.html#grade">Run a new calculation</a>
-    </div>
-  </div>
-</header>
-
-<main class="container">
-  <div id="lockedState" style="display:none">
-    <div class="locked-wrap card">
-      <div class="seal-big">A+</div>
-      <h1 style="font-size:22px">Your Personal Dashboard is a Pro feature</h1>
-      <p style="color:var(--muted);margin-top:10px">See everything in one place: your full trend over time, saved what-if scenarios, achievement badges, and progress toward a personal goal.</p>
-      <ul>
-        <li>Full check-in history and trend chart</li>
-        <li>Personal goal tracking (score or net worth)</li>
-        <li>All your saved what-if scenarios</li>
-        <li>Your achievement badge collection</li>
-      </ul>
-      <div style="margin-top:20px">
-        <a class="btn gold" href="index.html#pricing">Upgrade to Pro</a>
-      </div>
-    </div>
-  </div>
-
-  <div id="dashboardContent" style="display:none">
-    <div class="page-head">
-      <div>
-        <h1>Your Financial Progress</h1>
-        <p id="pageSubtitle">Your financial journey, tracked over time.</p>
-      </div>
-    </div>
-
-    <div class="stat-strip">
-      <div class="stat-cell"><div class="stat-label">Check-ins</div><div class="stat-num mono" id="statCheckins">—</div></div>
-      <div class="stat-cell"><div class="stat-label">Best score</div><div class="stat-num mono gold" id="statBest">—</div></div>
-      <div class="stat-cell"><div class="stat-label">Score change</div><div class="stat-num mono" id="statTrend">—</div></div>
-      <div class="stat-cell"><div class="stat-label">Streak</div><div class="stat-num mono" id="statStreak">—</div></div>
-    </div>
-
-    <!-- ================= FINANCIAL SCORE (hero) ================= -->
-    <div class="section card hoverable hero-section">
-      <div class="hero-top">
-        <div>
-          <div class="hero-eyebrow">Financial score</div>
-          <div class="hero-value mono" id="scoreHeroValue">—</div>
-          <div class="hero-sub" id="scoreHeroSub">—</div>
-        </div>
-        <div class="time-filters" id="scoreTimeFilters">
-          <button data-range="7" type="button">7D</button>
-          <button data-range="30" type="button">30D</button>
-          <button data-range="90" type="button">3M</button>
-          <button data-range="365" type="button">1Y</button>
-          <button data-range="all" class="active" type="button">ALL</button>
-        </div>
-      </div>
-      <div class="chart-wrap">
-        <svg id="trendChart" width="100%" height="180" viewBox="0 0 640 180" preserveAspectRatio="none" role="img" aria-label="Score trend over time"></svg>
-        <div class="chart-caption" id="trendCaption" style="display:none"></div>
-        <div class="empty-note" id="trendEmptyNote" style="display:none"><b>No check-ins yet</b>Run your first calculation to start tracking your score over time.</div>
-      </div>
-      <div class="history-block">
-        <div class="history-block-label">Recent check-ins</div>
-        <div id="scoreHistoryList"></div>
-        <div id="scoreHistoryFull" class="history-full"></div>
-        <button class="view-all-btn" id="scoreViewAllBtn" type="button" style="display:none">View all history →</button>
-      </div>
-    </div>
-
-    <!-- ================= NET WORTH (hero) ================= -->
-    <div class="section card hoverable hero-section">
-      <div class="hero-top">
-        <div>
-          <div class="hero-eyebrow">Net worth</div>
-          <div class="hero-value mono" id="nwHeroValue">—</div>
-          <div class="hero-sub" id="nwHeroSub">—</div>
-        </div>
-        <div class="time-filters" id="nwTimeFilters">
-          <button data-range="7" type="button">7D</button>
-          <button data-range="30" type="button">30D</button>
-          <button data-range="90" type="button">3M</button>
-          <button data-range="365" type="button">1Y</button>
-          <button data-range="all" class="active" type="button">ALL</button>
-        </div>
-      </div>
-      <div class="chart-wrap">
-        <svg id="netWorthChart" width="100%" height="180" viewBox="0 0 640 180" preserveAspectRatio="none" role="img" aria-label="Net worth over time"></svg>
-        <div class="chart-caption" id="nwCaption" style="display:none"></div>
-        <div class="empty-note" id="netWorthEmptyNote" style="display:none"><b>No net worth history yet</b>It's recorded automatically each time you check in.</div>
-      </div>
-      <div class="history-block">
-        <div class="history-block-label">Recent updates</div>
-        <div id="netWorthHistoryList"></div>
-        <div id="netWorthHistoryFull" class="history-full"></div>
-        <button class="view-all-btn" id="nwViewAllBtn" type="button" style="display:none">View all history →</button>
-      </div>
-    </div>
-
-    <div class="dash-grid-2">
-      <div class="section card hoverable">
-        <span class="section-label">Your goal</span>
-        <div class="goal-form">
-          <div>
-            <label for="goalType">Goal type</label>
-            <select id="goalType">
-              <option value="score">Overall score</option>
-              <option value="networth">Net worth</option>
-            </select>
-          </div>
-          <div>
-            <label for="goalTarget">Target</label>
-            <input id="goalTarget" type="number" min="0" placeholder="e.g. 90">
-          </div>
-          <button class="btn gold sm" id="saveGoalBtn" type="button">Save goal</button>
-        </div>
-        <div id="goalProgress"></div>
-      </div>
-
-      <div class="section card hoverable">
-        <span class="section-label">Saved scenarios</span>
-        <div class="section-sub">See the financial futures you've explored.</div>
-        <div id="scenarioList"></div>
-        <div class="empty-note" id="scenarioEmptyNote" style="display:none"><b>No saved scenarios yet</b>Run a what-if scenario from your financial report and save it to compare later.</div>
-      </div>
-    </div>
-
-    <div class="section card hoverable">
-      <span class="section-label">Achievements</span>
-      <div id="achievementsGrid" class="achv-grid"></div>
-    </div>
-
-    <div class="utility-section">
-      <span class="section-label">Sync your progress</span>
-      <p style="color:var(--muted);font-size:13.5px;margin:10px 0 0">
-        Your financial history currently lives on this device only. Use your transfer link to bring it to another
-        device or browser — nothing is stored on our servers, this just re-encodes what's already saved locally.
-      </p>
-      <div class="sync-checklist">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Financial history</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Goals</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Achievements</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Saved scenarios</span>
-      </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn sm gold" id="copyBackupLinkBtn" type="button">Copy Transfer Link</button>
-        <button class="btn sm" id="exportCsvBtn" type="button">Export History as CSV</button>
-      </div>
-      <div class="small" id="backupStatus" style="margin-top:10px;color:var(--muted);font-size:13px"></div>
-    </div>
-  </div>
-</main>
-
-<footer class="site">
-  <div class="container">© 2026 Grade My Finance — educational use only, not financial advice. <a href="index.html">Home</a></div>
-</footer>
-
-<script>
-"use strict";
-function $(id){ return document.getElementById(id); }
-function el(tag, attrs){ var n=document.createElement(tag); if(attrs) Object.assign(n, attrs); return n; }
-function money(n){
-  if (!isFinite(n)) return "—";
-  return new Intl.NumberFormat(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 }).format(Math.round(n));
-}
-// Compact axis-label formatting so a net worth chart shows "$4.74M" instead
-// of a raw "4739000" — this was the actual bug behind the "bizarre axis
-// labels" complaint (a generic chart function reused a plain toFixed(0)
-// for both scores and dollar amounts).
-function formatCompact(n){
-  var abs = Math.abs(n), sign = n < 0 ? "-" : "";
-  if(abs >= 1000000) return sign+"$"+(abs/1000000).toFixed(2)+"M";
-  if(abs >= 10000) return sign+"$"+Math.round(abs/1000)+"K";
-  return money(n);
-}
-function formatDate(ts){ return new Date(ts).toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' }); }
-
-var root = document.documentElement;
-$("themeToggle").addEventListener("click", function(){
-  var next = root.dataset.theme === "light" ? "" : "light";
-  root.dataset.theme = next;
-  localStorage.setItem("gmf_theme", next || "dark");
-});
-
-// Achievement metadata for display only — unlock state itself is decided
-// and recorded elsewhere (the main report card); this page only reflects
-// what's already been unlocked. Synced to match the full 18-achievement
-// system (the previous version of this page was missing the 4 Pro-only
-// ones below, so a Pro user who'd actually unlocked e.g. "Millionaire Club"
-// would never see it reflected here — not a new achievement, just restoring
-// visibility into unlock state that already existed).
-var ACHIEVEMENTS = [
-  { id:'first_checkin', label:'First Check-In' },
-  { id:'checkin_3', label:'Getting Started' },
-  { id:'checkin_10', label:'Dedicated' },
-  { id:'checkin_25', label:'Veteran' },
-  { id:'checkin_100', label:'Century Club' },
-  { id:'first_b', label:'First B or Better' },
-  { id:'first_a', label:'First A' },
-  { id:'perfect_grade', label:'Perfect Score' },
-  { id:'personal_best', label:'Personal Best' },
-  { id:'improvement_streak', label:'On a Roll' },
-  { id:'debt_free', label:'Debt Free' },
-  { id:'fully_funded', label:'Fully Funded' },
-  { id:'super_saver', label:'Super Saver' },
-  { id:'pro_member', label:'Pro Member' },
-  { id:'goal_crusher', label:'Goal Crusher' },
-  { id:'scenario_strategist', label:'Scenario Strategist' },
-  { id:'certified', label:'Certified' },
-  { id:'millionaire', label:'Millionaire Club' }
-];
-
-function getHistory(){ try{ return JSON.parse(localStorage.getItem('gmf_history_v2')||'[]'); }catch(_){ return []; } }
-function getAchievements(){ try{ return JSON.parse(localStorage.getItem('gmf_achievements')||'{}'); }catch(_){ return {}; } }
-function getScenarios(){ try{ return JSON.parse(localStorage.getItem('gmf_scenarios')||'[]'); }catch(_){ return []; } }
-function getGoal(){ try{ return JSON.parse(localStorage.getItem('gmf_goal')||'null'); }catch(_){ return null; } }
-
-/* ================= CHART RENDERER =================
-   Shared by both Score and Net Worth. Two real fixes vs. the old version:
-   1. Accepts a formatter so axis labels are readable ($4.74M vs 4739000).
-   2. Detects genuinely flat data (every value identical) and draws an
-      intentional flat line with ONE label instead of fabricating a fake
-      +1 range that produced near-duplicate, confusing gridline labels. */
-function drawTrendChart(svgEl, points, opts){
-  opts = opts || {};
-  var formatter = opts.formatter || function(v){ return v.toFixed(0); };
-  var w=640, h=180, padL=64, padR=14, padT=16, padB=16;
-  var innerW=w-padL-padR, innerH=h-padT-padB;
-  if(!points.length){ svgEl.innerHTML=''; return { flat:false }; }
-
-  var minV=Math.min.apply(null, points), maxV=Math.max.apply(null, points);
-  var isFlat = (minV === maxV);
-  var html='';
-
-  if(isFlat){
-    var midY = padT + innerH/2;
-    html += '<line x1="'+padL+'" y1="'+midY+'" x2="'+(w-padR)+'" y2="'+midY+'" stroke="rgba(255,255,255,.08)"/>';
-    html += '<text x="4" y="'+(midY+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+formatter(minV)+'</text>';
-    var pathD = 'M'+padL+','+midY+' L'+(w-padR)+','+midY;
-    html += '<path d="'+pathD+'" fill="none" stroke="#C9A227" stroke-width="2.5"></path>';
-    if(points.length > 1){
-      points.forEach(function(p,i){
-        var x = points.length===1 ? padL+innerW/2 : padL + (i/(points.length-1))*innerW;
-        html += '<circle cx="'+x+'" cy="'+midY+'" r="3.5" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>';
-      });
-    } else {
-      html += '<circle cx="'+(padL+innerW/2)+'" cy="'+midY+'" r="3.5" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>';
-    }
-    svgEl.innerHTML = html;
-    return { flat:true };
-  }
-
-  function x(i){ return points.length===1 ? padL+innerW/2 : padL + (i/(points.length-1))*innerW; }
-  function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
-  [minV, (minV+maxV)/2, maxV].forEach(function(gv){
-    var gy=y(gv);
-    html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.08)"/>';
-    html += '<text x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+formatter(gv)+'</text>';
-  });
-  var pathD=''; for(var i=0;i<points.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(points[i]); }
-  html += '<path d="'+pathD+'" fill="none" stroke="#C9A227" stroke-width="2.5"></path>';
-  points.forEach(function(p,i){ html += '<circle cx="'+x(i)+'" cy="'+y(p)+'" r="3.5" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>'; });
-  svgEl.innerHTML = html;
-  return { flat:false };
-}
-
-/* ================= TIME RANGE FILTERING =================
-   Uses each entry's real stored timestamp — this only filters existing
-   data by date, it never fabricates points that don't already exist. */
-function filterByRange(entries, range, tsKey){
-  tsKey = tsKey || 'ts';
-  if(range === 'all') return entries;
-  var days = parseInt(range, 10);
-  var cutoff = Date.now() - days*24*60*60*1000;
-  var filtered = entries.filter(function(e){ return e[tsKey] >= cutoff; });
-  // If a narrow range happens to exclude everything (e.g. only old
-  // check-ins exist), fall back to showing all data rather than an
-  // empty chart — better than a confusing blank state for a real user.
-  return filtered.length ? filtered : entries;
-}
-
-var scoreRange = 'all', nwRange = 'all';
-
-/* ================= SCORE TREND (hero) ================= */
-function renderScoreHero(){
-  var hist = getHistory();
-  var chartEl = $("trendChart"), emptyEl = $("trendEmptyNote"), captionEl = $("trendCaption");
-  var valueEl = $("scoreHeroValue"), subEl = $("scoreHeroSub");
-
-  if(!hist.length){
-    emptyEl.style.display = 'block'; chartEl.innerHTML = ''; captionEl.style.display = 'none';
-    valueEl.textContent = '—'; subEl.textContent = 'Run your first calculation to begin.';
-    return;
-  }
-  emptyEl.style.display = 'none';
-
-  var filtered = filterByRange(hist, scoreRange, 'ts');
-  var result = drawTrendChart(chartEl, filtered.map(function(h){ return h.score; }));
-  if(result.flat && filtered.length > 1){
-    captionEl.style.display = 'block';
-    captionEl.textContent = 'Your score has remained stable over this period.';
-  } else {
-    captionEl.style.display = 'none';
-  }
-
-  var latest = hist[hist.length-1].score;
-  var best = Math.max.apply(null, hist.map(function(h){ return h.score; }));
-  valueEl.textContent = latest.toFixed(1);
-  subEl.innerHTML = 'Your best: <b class="mono">'+best.toFixed(1)+'</b>';
-}
-
-/* ================= NET WORTH TRACKER (hero) ================= */
-function renderNetWorthHero(){
-  var hist = getHistory();
-  var chartEl = $("netWorthChart"), emptyEl = $("netWorthEmptyNote"), captionEl = $("nwCaption");
-  var valueEl = $("nwHeroValue"), subEl = $("nwHeroSub");
-
-  var entriesWithNet = hist
-    .map(function(h, originalIndex){ return { ts:h.ts, net:h.net, originalIndex:originalIndex }; })
-    .filter(function(h){ return typeof h.net === 'number' && !isNaN(h.net); });
-
-  if(!entriesWithNet.length){
-    emptyEl.style.display = 'block'; chartEl.innerHTML = ''; captionEl.style.display = 'none';
-    valueEl.textContent = '—'; subEl.textContent = 'Recorded automatically each time you check in.';
-    return;
-  }
-  emptyEl.style.display = 'none';
-
-  var filtered = filterByRange(entriesWithNet, nwRange, 'ts');
-  var result = drawTrendChart(chartEl, filtered.map(function(h){ return h.net; }), { formatter: formatCompact });
-  if(result.flat && filtered.length > 1){
-    captionEl.style.display = 'block';
-    captionEl.textContent = 'Your net worth has remained stable over this period.';
-  } else {
-    captionEl.style.display = 'none';
-  }
-
-  var latest = entriesWithNet[entriesWithNet.length-1].net;
-  valueEl.textContent = money(latest);
-
-  if(entriesWithNet.length >= 2){
-    var first = entriesWithNet[0].net, change = latest - first;
-    var pct = first !== 0 ? (change/Math.abs(first))*100 : null;
-    var arrow = change > 0 ? '↑' : (change < 0 ? '↓' : '→');
-    var color = change > 0 ? 'var(--good)' : (change < 0 ? 'var(--bad)' : 'var(--muted)');
-    subEl.innerHTML = 'Since first tracked: <b style="color:'+color+'">'+arrow+' '+money(Math.abs(change))+
-      (pct!==null ? ' ('+(change>=0?'+':'')+pct.toFixed(1)+'%)' : '')+'</b>';
-  } else {
-    subEl.textContent = 'One entry so far — check in again to start a trend.';
-  }
-}
-
-/* ================= COMPACT HISTORY LISTS (recent N + expandable full view) ================= */
-var HISTORY_PREVIEW_COUNT = 5;
-
-function buildHistoryRow(dateStr, valueStr, onDelete){
-  var row = el('div', { className:'history-row' });
-  row.innerHTML =
-    '<span class="history-date">'+dateStr+'</span>' +
-    '<span class="history-value">'+valueStr+'</span>' +
-    '<button class="history-delete" type="button" aria-label="Delete this entry" title="Delete this entry">' +
-      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>' +
-    '</button>';
-  row.querySelector('.history-delete').addEventListener('click', onDelete);
-  return row;
-}
-
-function renderScoreHistory(){
-  var hist = getHistory();
-  var previewEl = $("scoreHistoryList"), fullEl = $("scoreHistoryFull"), viewAllBtn = $("scoreViewAllBtn");
-  if(!previewEl) return;
-
-  previewEl.innerHTML = ''; fullEl.innerHTML = '';
-  if(!hist.length){
-    previewEl.innerHTML = '<div class="empty-note">No score history yet — it\'s recorded automatically each time you check in.</div>';
-    viewAllBtn.style.display = 'none';
-    return;
-  }
-
-  var indexed = hist.map(function(h, originalIndex){ return { ts:h.ts, score:h.score, originalIndex:originalIndex }; }).slice().reverse();
-
-  indexed.slice(0, HISTORY_PREVIEW_COUNT).forEach(function(entry){
-    previewEl.appendChild(buildHistoryRow(formatDate(entry.ts), entry.score.toFixed(1), function(){ deleteHistoryEntry(entry.originalIndex); }));
-  });
-  indexed.forEach(function(entry){
-    fullEl.appendChild(buildHistoryRow(formatDate(entry.ts), entry.score.toFixed(1), function(){ deleteHistoryEntry(entry.originalIndex); }));
-  });
-
-  if(indexed.length > HISTORY_PREVIEW_COUNT){
-    viewAllBtn.style.display = 'inline-flex';
-    viewAllBtn.textContent = fullEl.classList.contains('expanded') ? '↑ Show less' : 'View all history →';
-  } else {
-    viewAllBtn.style.display = 'none';
-  }
-}
-
-function renderNetWorthHistory(){
-  var hist = getHistory();
-  var previewEl = $("netWorthHistoryList"), fullEl = $("netWorthHistoryFull"), viewAllBtn = $("nwViewAllBtn");
-  if(!previewEl) return;
-
-  var entriesWithNet = hist
-    .map(function(h, originalIndex){ return { ts:h.ts, net:h.net, originalIndex:originalIndex }; })
-    .filter(function(h){ return typeof h.net === 'number' && !isNaN(h.net); });
-
-  previewEl.innerHTML = ''; fullEl.innerHTML = '';
-  if(!entriesWithNet.length){
-    previewEl.innerHTML = '<div class="empty-note">No net worth history yet — it\'s recorded automatically each time you check in.</div>';
-    viewAllBtn.style.display = 'none';
-    return;
-  }
-
-  var reversed = entriesWithNet.slice().reverse();
-  reversed.slice(0, HISTORY_PREVIEW_COUNT).forEach(function(entry){
-    previewEl.appendChild(buildHistoryRow(formatDate(entry.ts), money(entry.net), function(){ deleteHistoryEntry(entry.originalIndex); }));
-  });
-  reversed.forEach(function(entry){
-    fullEl.appendChild(buildHistoryRow(formatDate(entry.ts), money(entry.net), function(){ deleteHistoryEntry(entry.originalIndex); }));
-  });
-
-  if(reversed.length > HISTORY_PREVIEW_COUNT){
-    viewAllBtn.style.display = 'inline-flex';
-    viewAllBtn.textContent = fullEl.classList.contains('expanded') ? '↑ Show less' : 'View all history →';
-  } else {
-    viewAllBtn.style.display = 'none';
-  }
-}
-
-$("scoreViewAllBtn").addEventListener('click', function(){
-  var fullEl = $("scoreHistoryFull"), previewEl = $("scoreHistoryList");
-  var expanding = !fullEl.classList.contains('expanded');
-  fullEl.classList.toggle('expanded', expanding);
-  previewEl.style.display = expanding ? 'none' : '';
-  this.textContent = expanding ? '↑ Show less' : 'View all history →';
-});
-$("nwViewAllBtn").addEventListener('click', function(){
-  var fullEl = $("netWorthHistoryFull"), previewEl = $("netWorthHistoryList");
-  var expanding = !fullEl.classList.contains('expanded');
-  fullEl.classList.toggle('expanded', expanding);
-  previewEl.style.display = expanding ? 'none' : '';
-  this.textContent = expanding ? '↑ Show less' : 'View all history →';
-});
-
-/* ================= TIME FILTER BUTTONS ================= */
-function wireTimeFilters(containerId, applyFn, getSet){
-  var container = $(containerId);
-  if(!container) return;
-  container.querySelectorAll('button').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      container.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      getSet(btn.dataset.range);
-      applyFn();
-    });
-  });
-}
-wireTimeFilters('scoreTimeFilters', renderScoreHero, function(v){ scoreRange = v; });
-wireTimeFilters('nwTimeFilters', renderNetWorthHero, function(v){ nwRange = v; });
-
-/* ================= CURRENT STREAK (unchanged logic, reused as-is) ================= */
-function computeCurrentStreak(hist){
-  if(!hist.length) return 0;
-  var scores = hist.map(function(h){ return h.score; });
-  var streak = 1;
-  for(var i=scores.length-1; i>0; i--){
-    if(scores[i] > scores[i-1]) streak++; else break;
-  }
-  return streak;
-}
-
-/* ================= CSV EXPORT (unchanged) ================= */
-function exportHistoryAsCsv(){
-  var hist = getHistory();
-  if(!hist.length){ alert("No history to export yet."); return; }
-  var rows = [["Date", "Score", "Net Worth"]];
-  hist.forEach(function(h){
-    var dateStr = new Date(h.ts).toISOString().split('T')[0];
-    rows.push([dateStr, h.score.toFixed(1), (typeof h.net==='number' ? h.net : '')]);
-  });
-  var csv = rows.map(function(r){
-    return r.map(function(cell){
-      var s = String(cell);
-      return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s;
-    }).join(',');
-  }).join('\n');
-  var blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url; a.download = 'grademyfinance-history.csv';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
-}
-var exportCsvBtn = document.getElementById('exportCsvBtn');
-if(exportCsvBtn) exportCsvBtn.addEventListener('click', exportHistoryAsCsv);
-
-function deleteHistoryEntry(index){
-  if(!confirm("Remove this entry from your history? This can't be undone.")) return;
-  var hist = getHistory();
-  hist.splice(index, 1);
-  localStorage.setItem('gmf_history_v2', JSON.stringify(hist));
-
-  renderScoreHero();
-  renderNetWorthHero();
-  renderScoreHistory();
-  renderNetWorthHistory();
-
-  var statTrendEl = $("statTrend");
-  if(hist.length >= 2){
-    var diff = Math.round((hist[hist.length-1].score - hist[0].score)*10)/10;
-    var arrow = diff > 0 ? '↑' : (diff < 0 ? '↓' : '→');
-    statTrendEl.textContent = arrow+' '+(diff>0?'+':'')+diff+' pts';
-    statTrendEl.className = 'stat-num mono '+(diff>0?'up':(diff<0?'down':''));
-  } else {
-    statTrendEl.textContent = '—'; statTrendEl.className = 'stat-num mono';
-  }
-  var streakEl = $("statStreak");
-  if(streakEl) streakEl.textContent = hist.length ? computeCurrentStreak(hist) : '—';
-}
-
-/* ================= GOAL TRACKER (same logic, redesigned output) ================= */
-function renderGoalProgress(){
-  var goal = getGoal();
-  var hist = getHistory();
-  var box = $("goalProgress");
-  if(!goal){
-    box.innerHTML = '<div class="empty-note"><b>Set a financial goal</b>Choose something you\'re working toward and track your progress here.</div>';
-    return;
-  }
-  var latestWithNet = null;
-  for(var i=hist.length-1;i>=0;i--){ if(typeof hist[i].net === 'number'){ latestWithNet = hist[i]; break; } }
-  var latest = hist.length ? hist[hist.length-1] : null;
-
-  var current, label, formatFn;
-  if(goal.type === 'score'){
-    current = latest ? latest.score : null;
-    label = 'score';
-    formatFn = function(n){ return n.toFixed(1); };
-  } else {
-    current = latestWithNet ? latestWithNet.net : null;
-    label = 'net worth';
-    formatFn = money;
-  }
-
-  if(current === null){
-    box.innerHTML = '<div class="empty-note">Run a new calculation to start tracking progress toward this goal.</div>';
-    return;
-  }
-  var pct = Math.max(0, Math.min(100, (current/goal.target)*100));
-  var reached = current >= goal.target;
-  var remaining = Math.max(0, goal.target - current);
-  box.innerHTML =
-    '<div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13.5px">'+
-      '<span>Current '+label+': <b class="mono">'+formatFn(current)+'</b></span>'+
-      '<span>Target: <b class="mono">'+formatFn(goal.target)+'</b></span>'+
-    '</div>'+
-    '<div class="progress-bar"><div style="width:'+pct.toFixed(0)+'%"></div></div>'+
-    (reached
-      ? '<div style="margin-top:10px;color:var(--good);font-weight:700;font-size:13.5px">Goal reached 🎉</div>'
-      : '<div style="margin-top:10px;color:var(--muted);font-size:12.5px">'+formatFn(remaining)+' remaining</div>');
-}
-
-$("saveGoalBtn").addEventListener("click", function(){
-  var type = $("goalType").value;
-  var target = parseFloat($("goalTarget").value);
-  if(!target || target <= 0){ alert("Enter a valid target first."); return; }
-  localStorage.setItem('gmf_goal', JSON.stringify({ type:type, target:target, setAt:Date.now() }));
-  renderGoalProgress();
-});
-
-/* ================= SAVED SCENARIOS (same logic, redesigned output) ================= */
-function renderScenarios(){
-  var list = $("scenarioList"), emptyNote = $("scenarioEmptyNote");
-  var scenarios = getScenarios();
-  list.innerHTML = '';
-  if(!scenarios.length){ emptyNote.style.display='block'; return; }
-  emptyNote.style.display='none';
-  scenarios.forEach(function(s, idx){
-    var row = el('div',{className:'scenario-row'});
-    row.innerHTML = '<div><b style="font-size:13.5px">'+s.name+'</b><div class="mono" style="font-size:12px;color:var(--muted);margin-top:3px">Cut '+money(s.expCut)+'/mo · paid off '+money(s.debtPay)+' → <span style="color:var(--gold-bright);font-weight:700">'+s.letter+'</span></div></div>';
-    var del = el('button',{className:'btn sm', type:'button'}); del.textContent='Remove';
-    del.addEventListener('click', function(){
-      var arr = getScenarios(); arr.splice(idx,1);
-      localStorage.setItem('gmf_scenarios', JSON.stringify(arr));
-      renderScenarios();
-    });
-    row.appendChild(del);
-    list.appendChild(row);
-  });
-}
-
-/* ================= ACHIEVEMENTS (redesigned: minimalist check/lock glyphs, no emoji) ================= */
-var CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-var LOCK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
-
-function renderAchievements(){
-  var grid = $("achievementsGrid");
-  var unlocked = getAchievements();
-  grid.innerHTML = '';
-  ACHIEVEMENTS.forEach(function(a){
-    var isUnlocked = !!unlocked[a.id];
-    var badge = el('div',{ className:'achv-badge '+(isUnlocked?'unlocked':'locked') });
-    badge.innerHTML =
-      '<div class="achv-icon">'+(isUnlocked?CHECK_SVG:LOCK_SVG)+'</div>'+
-      '<div class="achv-label">'+a.label+'</div>'+
-      '<div class="achv-status">'+(isUnlocked?'Completed':'Locked')+'</div>';
-    grid.appendChild(badge);
-  });
-}
-
-/* ================= BACKUP & RESTORE (unchanged) ================= */
-var BACKUP_KEYS = [
-  'gmf_pro','gmf_theme','gmf_currency','gmf_housing','gmf_autosave',
-  'gmf_history_v2','gmf_checkin_count','gmf_best_score','gmf_achievements',
-  'gmf_scenarios','gmf_goal'
-];
-
-function buildBackupLink(){
-  var data = {};
-  BACKUP_KEYS.forEach(function(k){
-    var v = localStorage.getItem(k);
-    if(v !== null) data[k] = v;
-  });
-  var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-  return location.origin + location.pathname + "?restore=" + encodeURIComponent(encoded);
-}
-
-function copyBackupLink(){
-  var status = document.getElementById('backupStatus');
-  var link = buildBackupLink();
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(link).then(function(){
-      if(status) status.textContent = "Copied! Open this same link on your other device to bring everything back.";
-    }).catch(function(){
-      if(status) status.textContent = "Couldn't copy automatically — link: " + link;
-    });
-  } else {
-    prompt("Copy this link:", link);
-  }
-}
-
-function restoreFromUrlIfPresent(){
-  var params = new URLSearchParams(location.search);
-  var encoded = params.get("restore");
-  if(!encoded) return;
-  try{
-    var data = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(encoded)))));
-    var restoredCount = 0;
-    Object.keys(data).forEach(function(k){
-      if(BACKUP_KEYS.indexOf(k) > -1){
-        localStorage.setItem(k, data[k]);
-        restoredCount++;
-      }
-    });
-    history.replaceState(null, "", location.origin + location.pathname);
-    if(restoredCount > 0){
-      alert("Restored " + restoredCount + " item(s) from your backup link.");
-    }
-  }catch(err){
-    alert("That backup link doesn't look valid.");
-  }
-}
-restoreFromUrlIfPresent();
-
-var copyBackupLinkBtn = document.getElementById('copyBackupLinkBtn');
-if(copyBackupLinkBtn) copyBackupLinkBtn.addEventListener('click', copyBackupLink);
-
-/* ================= INIT ================= */
-function init(){
-  var isPro = localStorage.getItem('gmf_pro') === 'true';
-  if(!isPro){
-    $("lockedState").style.display = 'block';
-    return;
-  }
-  $("dashboardContent").style.display = 'block';
-  var headerChip = $("headerProChip");
-  if(headerChip) headerChip.style.display = 'inline-flex';
-
-  var count = parseInt(localStorage.getItem('gmf_checkin_count')||'0',10);
-  var best = parseFloat(localStorage.getItem('gmf_best_score')||'0');
-  var hist = getHistory();
-
-  $("statCheckins").textContent = count;
-  $("statBest").textContent = best ? best.toFixed(1) : '—';
-  $("pageSubtitle").textContent = count ? ("You've checked in "+count+" time"+(count===1?'':'s')+" on this device.") : "Run your first calculation to start tracking.";
-
-  var statTrendEl = $("statTrend");
-  if(hist.length >= 2){
-    var diff = Math.round((hist[hist.length-1].score - hist[0].score)*10)/10;
-    var arrow = diff > 0 ? '↑' : (diff < 0 ? '↓' : '→');
-    statTrendEl.textContent = arrow+' '+(diff>0?'+':'')+diff+' pts';
-    statTrendEl.className = 'stat-num mono '+(diff>0?'up':(diff<0?'down':''));
-  } else {
-    statTrendEl.textContent = '—';
-  }
-
-  $("statStreak").textContent = hist.length ? computeCurrentStreak(hist) : '—';
-
-  renderScoreHero();
-  renderNetWorthHero();
-  renderScoreHistory();
-  renderNetWorthHistory();
-
-  var goal = getGoal();
-  if(goal){ $("goalType").value = goal.type; $("goalTarget").value = goal.target; }
-  renderGoalProgress();
-  renderAchievements();
-  renderScenarios();
-}
-
-init();
-</script>
-</body>
-</html>
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="en"> -->
+<!-- <head> -->
+<!-- <meta charset="utf-8" /> -->
+<!-- <meta name="viewport" content="width=device-width,initial-scale=1" /> -->
+<!-- <title>Your Dashboard | Grade My Finance</title> -->
+<!-- <meta name="description" content="Track your financial grade over time, saved scenarios, achievements, and personal goals — a Pro feature on Grade My Finance."> -->
+<!-- <meta name="theme-color" content="#0A0B0E"> -->
+<!-- <meta name="robots" content="noindex,follow"> -->
+<!-- <link rel="canonical" href="https://grademyfinance.com/dashboard.html"> -->
+<!-- <link rel="icon" href="/favicon.ico" sizes="any"> -->
+<!-- <link rel="apple-touch-icon" href="/apple-touch-icon.png"> -->
+<!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+<!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+<!-- <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"> -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script> -->
+<!-- <script> -->
+<!-- window.dataLayer = window.dataLayer || []; -->
+<!-- function gtag(){ dataLayer.push(arguments); } -->
+<!-- gtag('js', new Date()); -->
+<!-- gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true }); -->
+<!-- </script> -->
+<!-- <style> -->
+<!-- :root{ -->
+  <!-- --bg:#0A0B0E; --bg-2:#0E1015; --surface:#14161C; --surface-2:#1B1E26; -->
+  <!-- --line: rgba(255,255,255,.09); --text:#F2F3F5; --muted:#8B92A0; --muted-2:#5D636F; -->
+  <!-- --gold:#C9A227; --gold-soft: rgba(201,162,39,.14); --gold-bright:#E4C24E; -->
+  <!-- --good:#34D399; --good-2:#16A34A; --mid:#F5B94D; --bad:#D97757; -->
+  <!-- --radius:14px; --radius-lg:20px; --shadow: 0 20px 50px rgba(0,0,0,.45); --header-h:76px; -->
+  <!-- --font-display:'Space Grotesk',system-ui,sans-serif; --font-body:'Inter',system-ui,sans-serif; -->
+  <!-- --font-mono:'IBM Plex Mono',monospace; --font-serif:'Fraunces',serif; -->
+<!-- } -->
+<!-- :root[data-theme="light"]{ -->
+  <!-- --bg:#F7F6F3; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#F1EFEA; -->
+  <!-- --line: rgba(10,11,14,.10); --text:#14161C; --muted:#5B616C; --muted-2:#8B92A0; -->
+  <!-- --shadow: 0 20px 44px rgba(20,20,20,.08); -->
+<!-- } -->
+<!-- *{box-sizing:border-box} -->
+<!-- html, body{ overflow-x:hidden } -->
+<!-- body{ margin:0; padding-top:var(--header-h); background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.5 } -->
+<!-- h1,h2,h3{ font-family:var(--font-display); margin:0; letter-spacing:-.01em } -->
+<!-- .mono{ font-family:var(--font-mono) } -->
+<!-- .container{ max-width:1080px; margin:0 auto; padding:0 24px } -->
+<!-- a{ color:inherit } -->
+<!-- header.site{ position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:50; background:rgba(10,11,14,.72); backdrop-filter:blur(14px); border-bottom:1px solid var(--line) } -->
+<!-- :root[data-theme="light"] header.site{ background:rgba(247,246,243,.78) } -->
+<!-- .hdr-row{ height:100%; display:flex; align-items:center; gap:14px } -->
+<!-- .brandmark{ display:flex; align-items:center; gap:10px; text-decoration:none } -->
+<!-- .seal{ width:38px; height:38px; border-radius:10px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; flex:none } -->
+<!-- .seal span{ font-family:var(--font-mono); font-weight:700; font-size:13px; color:#1a1300 } -->
+<!-- .wordmark{ font-weight:700; font-size:17px } -->
+<!-- .pro-chip{ display:inline-flex; align-items:center; gap:5px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:800; font-size:11px; letter-spacing:.03em; padding:3px 9px; border-radius:99px; margin-left:2px } -->
+<!-- .hdr-right{ margin-left:auto; display:flex; align-items:center; gap:10px } -->
+<!-- .btn{ appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--text); font-family:var(--font-body); font-weight:600; font-size:14px; padding:11px 18px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; transition:transform .12s ease, border-color .12s ease, filter .12s ease } -->
+<!-- .btn:hover{ filter:brightness(1.08); border-color:rgba(201,162,39,.4) } -->
+<!-- .btn:active{ transform:translateY(1px) } -->
+<!-- .btn.gold{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700 } -->
+<!-- .btn.sm{ padding:8px 13px; font-size:13px } -->
+<!-- .icon-btn{ width:38px; height:38px; border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--text); cursor:pointer; display:grid; place-items:center; font-size:15px } -->
+
+<!-- main{ padding:44px 0 80px; position:relative } -->
+<!-- main::before{ -->
+  <!-- content:""; position:absolute; top:-40px; right:-120px; width:520px; height:420px; z-index:-1; -->
+  <!-- background:radial-gradient(circle, rgba(201,162,39,.10), transparent 70%); filter:blur(10px); pointer-events:none; -->
+<!-- } -->
+<!-- :root[data-theme="light"] main::before{ opacity:.5 } -->
+
+<!-- .page-head{ margin-bottom:24px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap } -->
+<!-- .page-head h1{ font-family:var(--font-serif); font-weight:600; font-size:clamp(26px,4vw,34px) } -->
+<!-- .page-head p{ color:var(--muted); margin-top:8px; font-size:14.5px } -->
+
+<!-- .grade-summary{ display:flex; align-items:center; gap:16px } -->
+<!-- .grade-summary-badge{ -->
+  <!-- width:64px; height:64px; border-radius:16px; display:flex; align-items:center; justify-content:center; -->
+  <!-- font-family:var(--font-serif); font-weight:700; font-size:26px; color:var(--gold-bright); -->
+  <!-- border:2px solid var(--gold); background:var(--gold-soft); flex:none; -->
+<!-- } -->
+<!-- .grade-summary-score{ font-family:var(--font-mono); font-weight:700; font-size:15px } -->
+<!-- .grade-summary-updated{ font-size:12px; color:var(--muted-2); margin-top:2px } -->
+<!-- @media (max-width:640px){ .grade-summary{ width:100%; justify-content:space-between } } -->
+
+<!-- .checkin-nudge{ -->
+  <!-- display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; -->
+  <!-- background:var(--gold-soft); border:1px solid rgba(201,162,39,.3); border-radius:var(--radius); -->
+  <!-- padding:14px 18px; margin-bottom:24px; font-size:13.5px; -->
+<!-- } -->
+
+<!-- .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:26px; box-shadow:var(--shadow); position:relative; transition:border-color .15s ease } -->
+<!-- .card.hoverable:hover{ border-color:rgba(201,162,39,.25) } -->
+
+<!-- /* ---------- Summary stat strip ---------- */ -->
+<!-- .stat-strip{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-bottom:28px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow); overflow:hidden } -->
+<!-- @media (max-width:760px){ .stat-strip{ grid-template-columns:repeat(2,1fr) } } -->
+<!-- .stat-cell{ padding:22px 24px; border-right:1px solid var(--line) } -->
+<!-- .stat-cell:last-child{ border-right:none } -->
+<!-- @media (max-width:760px){ .stat-cell:nth-child(2n){ border-right:none } .stat-cell:nth-child(-n+2){ border-bottom:1px solid var(--line) } } -->
+<!-- .stat-cell .stat-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:600 } -->
+<!-- .stat-cell .stat-num{ font-family:var(--font-serif); font-weight:600; font-size:28px; margin-top:6px; color:var(--text) } -->
+<!-- .stat-cell .stat-num.gold{ color:var(--gold-bright) } -->
+<!-- .stat-cell .stat-num.up{ color:var(--good) } -->
+<!-- .stat-cell .stat-num.down{ color:var(--bad) } -->
+
+<!-- /* ---------- Hero sections (score / net worth) ---------- */ -->
+<!-- .hero-section{ margin-bottom:24px } -->
+<!-- .hero-top{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:6px } -->
+<!-- .hero-eyebrow{ font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; font-weight:700 } -->
+<!-- .hero-value{ font-family:var(--font-serif); font-weight:600; font-size:clamp(30px,4vw,42px); margin-top:6px; line-height:1.05 } -->
+<!-- .hero-sub{ font-size:13.5px; color:var(--muted); margin-top:8px } -->
+<!-- .hero-sub b{ font-weight:700 } -->
+<!-- .time-filters{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--line); border-radius:9px; padding:3px } -->
+<!-- .time-filters button{ -->
+  <!-- appearance:none; border:none; background:transparent; color:var(--muted); font-family:var(--font-mono); -->
+  <!-- font-size:11.5px; font-weight:600; padding:6px 11px; border-radius:6px; cursor:pointer; transition:color .12s ease, background .12s ease; -->
+<!-- } -->
+<!-- .time-filters button.active{ background:var(--surface); color:var(--gold-bright) } -->
+<!-- .chart-wrap{ margin-top:18px } -->
+<!-- .chart-caption{ text-align:center; font-size:12px; color:var(--muted-2); margin-top:6px; font-family:var(--font-mono) } -->
+
+<!-- /* ---------- Compact history list ---------- */ -->
+<!-- .history-block{ margin-top:20px; border-top:1px solid var(--line); padding-top:16px } -->
+<!-- .history-block-label{ font-size:11px; color:var(--muted-2); text-transform:uppercase; letter-spacing:.05em; font-weight:700; margin-bottom:10px } -->
+<!-- .history-row{ -->
+  <!-- display:flex; align-items:center; justify-content:space-between; gap:10px; -->
+  <!-- padding:10px 4px; border-bottom:1px solid var(--line); font-size:13.5px; -->
+<!-- } -->
+<!-- .history-row:last-child{ border-bottom:none } -->
+<!-- .history-date{ color:var(--muted); font-family:var(--font-mono); font-size:12.5px } -->
+<!-- .history-value{ font-weight:700; color:var(--text); font-family:var(--font-mono); margin-left:auto; margin-right:6px } -->
+<!-- .history-delete{ -->
+  <!-- appearance:none; border:none; background:transparent; color:var(--muted-2); width:26px; height:26px; -->
+  <!-- border-radius:7px; cursor:pointer; display:grid; place-items:center; flex:none; -->
+  <!-- opacity:0; transition:opacity .15s ease, color .15s ease, background .15s ease; -->
+<!-- } -->
+<!-- .history-row:hover .history-delete{ opacity:1 } -->
+<!-- .history-delete:hover{ color:var(--bad); background:rgba(217,119,87,.1) } -->
+<!-- /* Touch devices can't hover — keep the delete affordance reachable, just subdued */ -->
+<!-- @media (hover:none){ .history-delete{ opacity:.55 } } -->
+<!-- .view-all-btn{ -->
+  <!-- appearance:none; border:none; background:none; color:var(--gold-bright); font-family:var(--font-body); -->
+  <!-- font-weight:600; font-size:13px; cursor:pointer; padding:10px 4px 0; display:inline-flex; align-items:center; gap:5px; -->
+<!-- } -->
+<!-- .view-all-btn:hover{ text-decoration:underline } -->
+<!-- .history-full{ display:none } -->
+<!-- .history-full.expanded{ display:block } -->
+
+<!-- .dash-grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:20px } -->
+<!-- @media (max-width:860px){ .dash-grid-2{ grid-template-columns:1fr } } -->
+
+<!-- .section{ margin-bottom:24px } -->
+<!-- .section-label{ font-size:12.5px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-bottom:5px } -->
+<!-- .section-sub{ font-size:13px; color:var(--muted-2); margin-bottom:16px } -->
+
+<!-- /* ---------- Achievements (redesigned, no emoji) ---------- */ -->
+<!-- .achv-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:10px } -->
+<!-- .achv-badge{ display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; padding:16px 6px; border-radius:12px; background:var(--surface-2); border:1px solid var(--line); transition:border-color .15s ease, transform .15s ease } -->
+<!-- .achv-badge.unlocked:hover{ transform:translateY(-2px); border-color:rgba(201,162,39,.35) } -->
+<!-- .achv-icon{ width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative } -->
+<!-- .achv-badge.unlocked .achv-icon{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); box-shadow:0 4px 10px rgba(201,162,39,.3) } -->
+<!-- .achv-badge.locked .achv-icon{ background:var(--surface); border:1.5px solid var(--line) } -->
+<!-- .achv-icon svg{ width:16px; height:16px } -->
+<!-- .achv-badge.unlocked .achv-icon svg{ stroke:#1a1300 } -->
+<!-- .achv-badge.locked .achv-icon svg{ stroke:var(--muted-2) } -->
+<!-- .achv-label{ font-size:10.5px; font-weight:700; line-height:1.3 } -->
+<!-- .achv-badge.locked .achv-label{ color:var(--muted-2) } -->
+<!-- .achv-status{ font-size:9px; text-transform:uppercase; letter-spacing:.04em; font-weight:700 } -->
+<!-- .achv-badge.unlocked .achv-status{ color:var(--good) } -->
+<!-- .achv-badge.locked .achv-status{ color:var(--muted-2) } -->
+
+<!-- .scenario-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:14px 16px; background:var(--surface-2); border:1px solid var(--line); border-radius:11px; margin-bottom:9px; transition:border-color .15s ease } -->
+<!-- .scenario-row:hover{ border-color:rgba(201,162,39,.3) } -->
+
+<!-- .goal-form{ display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:18px } -->
+<!-- .goal-form label{ font-size:12.5px; color:var(--muted); font-weight:600; display:block; margin-bottom:6px } -->
+<!-- .goal-form select, .goal-form input{ border:1px solid var(--line); border-radius:10px; padding:11px 13px; background:var(--bg-2); color:var(--text); font-family:var(--font-mono); font-size:14px; transition:border-color .15s ease } -->
+<!-- .goal-form select:focus, .goal-form input:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-soft) } -->
+
+<!-- .progress-bar{ height:12px; background:var(--surface-2); border-radius:99px; overflow:hidden; border:1px solid var(--line) } -->
+<!-- .progress-bar > div{ height:100%; background:linear-gradient(90deg,var(--good-2),var(--good)); transition:width .8s cubic-bezier(.16,1,.3,1) } -->
+
+<!-- .locked-wrap{ text-align:center; padding:60px 20px; max-width:480px; margin:60px auto 0 } -->
+<!-- .locked-wrap .seal-big{ width:80px; height:80px; border-radius:20px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; margin:0 auto 20px; font-family:var(--font-mono); font-weight:700; font-size:28px; color:#1a1300; box-shadow:0 8px 24px rgba(201,162,39,.35) } -->
+<!-- .locked-wrap ul{ text-align:left; color:var(--muted); font-size:14.5px; margin:18px 0; padding-left:20px; display:inline-block } -->
+
+<!-- .empty-note{ color:var(--muted); font-size:13.5px; padding:20px; text-align:center; background:var(--surface-2); border-radius:10px; border:1px dashed var(--line) } -->
+<!-- .empty-note b{ display:block; color:var(--text); font-size:14.5px; margin-bottom:4px } -->
+
+<!-- .utility-section{ margin-top:44px; padding-top:28px; border-top:1px solid var(--line) } -->
+<!-- .utility-section .section-label{ color:var(--muted-2) } -->
+<!-- .sync-checklist{ display:flex; gap:18px; flex-wrap:wrap; margin:14px 0 18px; font-size:13px; color:var(--muted) } -->
+<!-- .sync-checklist span{ display:inline-flex; align-items:center; gap:6px } -->
+<!-- .sync-checklist svg{ width:14px; height:14px; stroke:var(--good); flex:none } -->
+
+<!-- footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:30px 0; text-align:center; color:var(--muted-2); font-size:12.5px } -->
+<!-- </style> -->
+<!-- </head> -->
+<!-- <body> -->
+<!-- <script>try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.dataset.theme="light"; } }catch(e){}</script> -->
+
+<!-- <header class="site"> -->
+  <!-- <div class="container hdr-row"> -->
+    <!-- <a class="brandmark" href="index.html"><span class="seal"><span>A+</span></span><span class="wordmark">Grade My Finance</span><span class="pro-chip" id="headerProChip" style="display:none">★ PRO</span></a> -->
+    <!-- <div class="hdr-right"> -->
+      <!-- <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">◐</button> -->
+      <!-- <a class="btn sm" href="index.html#grade">Run a new calculation</a> -->
+    <!-- </div> -->
+  <!-- </div> -->
+<!-- </header> -->
+
+<!-- <main class="container"> -->
+  <!-- <div id="lockedState" style="display:none"> -->
+    <!-- <div class="locked-wrap card"> -->
+      <!-- <div class="seal-big">A+</div> -->
+      <!-- <h1 style="font-size:22px">Your Personal Dashboard is a Pro feature</h1> -->
+      <!-- <p style="color:var(--muted);margin-top:10px">See everything in one place: your full trend over time, saved what-if scenarios, achievement badges, and progress toward a personal goal.</p> -->
+      <!-- <ul> -->
+        <!-- <li>Full check-in history and trend chart</li> -->
+        <!-- <li>Personal goal tracking (score or net worth)</li> -->
+        <!-- <li>All your saved what-if scenarios</li> -->
+        <!-- <li>Your achievement badge collection</li> -->
+      <!-- </ul> -->
+      <!-- <div style="margin-top:20px"> -->
+        <!-- <a class="btn gold" href="index.html#pricing">Upgrade to Pro</a> -->
+      <!-- </div> -->
+    <!-- </div> -->
+  <!-- </div> -->
+
+  <!-- <div id="dashboardContent" style="display:none"> -->
+    <!-- <div class="page-head"> -->
+      <!-- <div> -->
+        <!-- <h1>Your Financial Progress</h1> -->
+        <!-- <p id="pageSubtitle">Your financial journey, tracked over time.</p> -->
+      <!-- </div> -->
+      <!-- <div class="grade-summary" id="gradeSummary" style="display:none"> -->
+        <!-- <div class="grade-summary-badge" id="gradeSummaryLetter">—</div> -->
+        <!-- <div class="grade-summary-meta"> -->
+          <!-- <div class="grade-summary-score" id="gradeSummaryScore">— / 100</div> -->
+          <!-- <div class="grade-summary-updated" id="gradeSummaryUpdated">—</div> -->
+        <!-- </div> -->
+        <!-- <a class="btn gold" href="index.html#grade">Update My Finances</a> -->
+      <!-- </div> -->
+    <!-- </div> -->
+
+    <!-- <div id="checkinNudge" class="checkin-nudge" style="display:none"> -->
+      <!-- <span id="checkinNudgeText">—</span> -->
+      <!-- <a class="btn sm gold" href="index.html#grade">Update My Finances</a> -->
+    <!-- </div> -->
+
+    <!-- <div class="stat-strip"> -->
+      <!-- <div class="stat-cell"><div class="stat-label">Check-ins</div><div class="stat-num mono" id="statCheckins">—</div></div> -->
+      <!-- <div class="stat-cell"><div class="stat-label">Best score</div><div class="stat-num mono gold" id="statBest">—</div></div> -->
+      <!-- <div class="stat-cell"><div class="stat-label">Score change</div><div class="stat-num mono" id="statTrend">—</div></div> -->
+      <!-- <div class="stat-cell"><div class="stat-label">Streak</div><div class="stat-num mono" id="statStreak">—</div></div> -->
+    <!-- </div> -->
+
+    ================= FINANCIAL SCORE (hero) =================
+    <!-- <div class="section card hoverable hero-section"> -->
+      <!-- <div class="hero-top"> -->
+        <!-- <div> -->
+          <!-- <div class="hero-eyebrow">Financial score</div> -->
+          <!-- <div class="hero-value mono" id="scoreHeroValue">—</div> -->
+          <!-- <div class="hero-sub" id="scoreHeroSub">—</div> -->
+        <!-- </div> -->
+        <!-- <div class="time-filters" id="scoreTimeFilters"> -->
+          <!-- <button data-range="7" type="button">7D</button> -->
+          <!-- <button data-range="30" type="button">30D</button> -->
+          <!-- <button data-range="90" type="button">3M</button> -->
+          <!-- <button data-range="365" type="button">1Y</button> -->
+          <!-- <button data-range="all" class="active" type="button">ALL</button> -->
+        <!-- </div> -->
+      <!-- </div> -->
+      <!-- <div class="chart-wrap"> -->
+        <!-- <svg id="trendChart" width="100%" height="180" viewBox="0 0 640 180" preserveAspectRatio="none" role="img" aria-label="Score trend over time"></svg> -->
+        <!-- <div class="chart-caption" id="trendCaption" style="display:none"></div> -->
+        <!-- <div class="empty-note" id="trendEmptyNote" style="display:none"><b>No check-ins yet</b>Run your first calculation to start tracking your score over time.</div> -->
+      <!-- </div> -->
+      <!-- <div class="history-block"> -->
+        <!-- <div class="history-block-label">Recent check-ins</div> -->
+        <!-- <div id="scoreHistoryList"></div> -->
+        <!-- <div id="scoreHistoryFull" class="history-full"></div> -->
+        <!-- <button class="view-all-btn" id="scoreViewAllBtn" type="button" style="display:none">View all history →</button> -->
+      <!-- </div> -->
+    <!-- </div> -->
+
+    ================= NET WORTH (hero) =================
+    <!-- <div class="section card hoverable hero-section"> -->
+      <!-- <div class="hero-top"> -->
+        <!-- <div> -->
+          <!-- <div class="hero-eyebrow">Net worth</div> -->
+          <!-- <div class="hero-value mono" id="nwHeroValue">—</div> -->
+          <!-- <div class="hero-sub" id="nwHeroSub">—</div> -->
+        <!-- </div> -->
+        <!-- <div class="time-filters" id="nwTimeFilters"> -->
+          <!-- <button data-range="7" type="button">7D</button> -->
+          <!-- <button data-range="30" type="button">30D</button> -->
+          <!-- <button data-range="90" type="button">3M</button> -->
+          <!-- <button data-range="365" type="button">1Y</button> -->
+          <!-- <button data-range="all" class="active" type="button">ALL</button> -->
+        <!-- </div> -->
+      <!-- </div> -->
+      <!-- <div class="chart-wrap"> -->
+        <!-- <svg id="netWorthChart" width="100%" height="180" viewBox="0 0 640 180" preserveAspectRatio="none" role="img" aria-label="Net worth over time"></svg> -->
+        <!-- <div class="chart-caption" id="nwCaption" style="display:none"></div> -->
+        <!-- <div class="empty-note" id="netWorthEmptyNote" style="display:none"><b>No net worth history yet</b>It's recorded automatically each time you check in.</div> -->
+      <!-- </div> -->
+      <!-- <div class="history-block"> -->
+        <!-- <div class="history-block-label">Recent updates</div> -->
+        <!-- <div id="netWorthHistoryList"></div> -->
+        <!-- <div id="netWorthHistoryFull" class="history-full"></div> -->
+        <!-- <button class="view-all-btn" id="nwViewAllBtn" type="button" style="display:none">View all history →</button> -->
+      <!-- </div> -->
+    <!-- </div> -->
+
+    <!-- <div class="dash-grid-2"> -->
+      <!-- <div class="section card hoverable"> -->
+        <!-- <span class="section-label">Your goal</span> -->
+        <!-- <div class="goal-form"> -->
+          <!-- <div> -->
+            <!-- <label for="goalType">Goal type</label> -->
+            <!-- <select id="goalType"> -->
+              <!-- <option value="score">Overall score</option> -->
+              <!-- <option value="networth">Net worth</option> -->
+            <!-- </select> -->
+          <!-- </div> -->
+          <!-- <div> -->
+            <!-- <label for="goalTarget">Target</label> -->
+            <!-- <input id="goalTarget" type="number" min="0" placeholder="e.g. 90"> -->
+          <!-- </div> -->
+          <!-- <button class="btn gold sm" id="saveGoalBtn" type="button">Save goal</button> -->
+        <!-- </div> -->
+        <!-- <div id="goalProgress"></div> -->
+      <!-- </div> -->
+
+      <!-- <div class="section card hoverable"> -->
+        <!-- <span class="section-label">Saved scenarios</span> -->
+        <!-- <div class="section-sub">See the financial futures you've explored.</div> -->
+        <!-- <div id="scenarioList"></div> -->
+        <!-- <div class="empty-note" id="scenarioEmptyNote" style="display:none"><b>No saved scenarios yet</b>Run a what-if scenario from your financial report and save it to compare later.</div> -->
+      <!-- </div> -->
+    <!-- </div> -->
+
+    <!-- <div class="section card hoverable"> -->
+      <!-- <span class="section-label">Achievements</span> -->
+      <!-- <div id="achievementsGrid" class="achv-grid"></div> -->
+    <!-- </div> -->
+
+    <!-- <div class="utility-section"> -->
+      <!-- <span class="section-label">Sync your progress</span> -->
+      <!-- <p style="color:var(--muted);font-size:13.5px;margin:10px 0 0"> -->
+        <!-- Your financial history currently lives on this device only. Use your transfer link to bring it to another -->
+        <!-- device or browser — nothing is stored on our servers, this just re-encodes what's already saved locally. -->
+      <!-- </p> -->
+      <!-- <div class="sync-checklist"> -->
+        <!-- <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Financial history</span> -->
+        <!-- <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Goals</span> -->
+        <!-- <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Achievements</span> -->
+        <!-- <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Saved scenarios</span> -->
+      <!-- </div> -->
+      <!-- <div style="display:flex;gap:10px;flex-wrap:wrap"> -->
+        <!-- <button class="btn sm gold" id="copyBackupLinkBtn" type="button">Copy Transfer Link</button> -->
+        <!-- <button class="btn sm" id="exportCsvBtn" type="button">Export History as CSV</button> -->
+      <!-- </div> -->
+      <!-- <div class="small" id="backupStatus" style="margin-top:10px;color:var(--muted);font-size:13px"></div> -->
+    <!-- </div> -->
+  <!-- </div> -->
+<!-- </main> -->
+
+<!-- <footer class="site"> -->
+  <!-- <div class="container">© 2026 Grade My Finance — educational use only, not financial advice. <a href="index.html">Home</a></div> -->
+<!-- </footer> -->
+
+<!-- <script> -->
+<!-- "use strict"; -->
+<!-- function $(id){ return document.getElementById(id); } -->
+<!-- function el(tag, attrs){ var n=document.createElement(tag); if(attrs) Object.assign(n, attrs); return n; } -->
+<!-- function money(n){ -->
+  <!-- if (!isFinite(n)) return "—"; -->
+  <!-- return new Intl.NumberFormat(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 }).format(Math.round(n)); -->
+<!-- } -->
+<!-- // Compact axis-label formatting so a net worth chart shows "$4.74M" instead -->
+<!-- // of a raw "4739000" — this was the actual bug behind the "bizarre axis -->
+<!-- // labels" complaint (a generic chart function reused a plain toFixed(0) -->
+<!-- // for both scores and dollar amounts). -->
+<!-- function formatCompact(n){ -->
+  <!-- var abs = Math.abs(n), sign = n < 0 ? "-" : ""; -->
+  <!-- if(abs >= 1000000) return sign+"$"+(abs/1000000).toFixed(2)+"M"; -->
+  <!-- if(abs >= 10000) return sign+"$"+Math.round(abs/1000)+"K"; -->
+  <!-- return money(n); -->
+<!-- } -->
+<!-- function formatDate(ts){ return new Date(ts).toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' }); } -->
+
+<!-- var root = document.documentElement; -->
+<!-- $("themeToggle").addEventListener("click", function(){ -->
+  <!-- var next = root.dataset.theme === "light" ? "" : "light"; -->
+  <!-- root.dataset.theme = next; -->
+  <!-- localStorage.setItem("gmf_theme", next || "dark"); -->
+<!-- }); -->
+
+<!-- // Achievement metadata for display only — unlock state itself is decided -->
+<!-- // and recorded elsewhere (the main report card); this page only reflects -->
+<!-- // what's already been unlocked. Synced to match the full 18-achievement -->
+<!-- // system (the previous version of this page was missing the 4 Pro-only -->
+<!-- // ones below, so a Pro user who'd actually unlocked e.g. "Millionaire Club" -->
+<!-- // would never see it reflected here — not a new achievement, just restoring -->
+<!-- // visibility into unlock state that already existed). -->
+<!-- var ACHIEVEMENTS = [ -->
+  <!-- { id:'first_checkin', label:'First Check-In' }, -->
+  <!-- { id:'checkin_3', label:'Getting Started' }, -->
+  <!-- { id:'checkin_10', label:'Dedicated' }, -->
+  <!-- { id:'checkin_25', label:'Veteran' }, -->
+  <!-- { id:'checkin_100', label:'Century Club' }, -->
+  <!-- { id:'first_b', label:'First B or Better' }, -->
+  <!-- { id:'first_a', label:'First A' }, -->
+  <!-- { id:'perfect_grade', label:'Perfect Score' }, -->
+  <!-- { id:'personal_best', label:'Personal Best' }, -->
+  <!-- { id:'improvement_streak', label:'On a Roll' }, -->
+  <!-- { id:'debt_free', label:'Debt Free' }, -->
+  <!-- { id:'fully_funded', label:'Fully Funded' }, -->
+  <!-- { id:'super_saver', label:'Super Saver' }, -->
+  <!-- { id:'pro_member', label:'Pro Member' }, -->
+  <!-- { id:'goal_crusher', label:'Goal Crusher' }, -->
+  <!-- { id:'scenario_strategist', label:'Scenario Strategist' }, -->
+  <!-- { id:'certified', label:'Certified' }, -->
+  <!-- { id:'millionaire', label:'Millionaire Club' } -->
+<!-- ]; -->
+
+<!-- // Pure display mapping, copied exactly from the real scoring engine's -->
+<!-- // letter-grade boundaries (index.html's overallLetter) — this dashboard -->
+<!-- // only ever displays a letter for an already-computed score, it never -->
+<!-- // recomputes or changes the scoring itself. -->
+<!-- function overallLetter(s){ -->
+  <!-- return s>=97?"A+":s>=93?"A":s>=90?"A-":s>=87?"B+":s>=83?"B":s>=80?"B-":s>=77?"C+":s>=73?"C":s>=70?"C-":s>=67?"D+":s>=63?"D":s>=60?"D-":"F"; -->
+<!-- } -->
+
+<!-- function renderGradeSummaryAndNudge(hist){ -->
+  <!-- var summaryEl = $("gradeSummary"), nudgeEl = $("checkinNudge"); -->
+  <!-- if(!hist.length){ summaryEl.style.display = 'none'; nudgeEl.style.display = 'none'; return; } -->
+
+  <!-- var latest = hist[hist.length-1]; -->
+  <!-- summaryEl.style.display = 'flex'; -->
+  <!-- $("gradeSummaryLetter").textContent = overallLetter(Math.round(latest.score)); -->
+  <!-- $("gradeSummaryScore").textContent = latest.score.toFixed(1) + ' / 100'; -->
+  <!-- $("gradeSummaryUpdated").textContent = 'Last updated ' + formatDate(latest.ts); -->
+
+  <!-- var daysSince = Math.floor((Date.now() - latest.ts) / 86400000); -->
+  <!-- if(daysSince >= 14){ -->
+    <!-- nudgeEl.style.display = 'flex'; -->
+    <!-- $("checkinNudgeText").textContent = daysSince === 1 -->
+      <!-- ? "It's been 1 day since your last check-in." -->
+      <!-- : "It's been "+daysSince+" days since your last check-in."; -->
+  <!-- } else { -->
+    <!-- nudgeEl.style.display = 'none'; -->
+  <!-- } -->
+<!-- } -->
+
+<!-- function getHistory(){ try{ return JSON.parse(localStorage.getItem('gmf_history_v2')||'[]'); }catch(_){ return []; } } -->
+<!-- function getAchievements(){ try{ return JSON.parse(localStorage.getItem('gmf_achievements')||'{}'); }catch(_){ return {}; } } -->
+<!-- function getScenarios(){ try{ return JSON.parse(localStorage.getItem('gmf_scenarios')||'[]'); }catch(_){ return []; } } -->
+<!-- function getGoal(){ try{ return JSON.parse(localStorage.getItem('gmf_goal')||'null'); }catch(_){ return null; } } -->
+
+<!-- /* ================= CHART RENDERER ================= -->
+   <!-- Shared by both Score and Net Worth. Two real fixes vs. the old version: -->
+   <!-- 1. Accepts a formatter so axis labels are readable ($4.74M vs 4739000). -->
+   <!-- 2. Detects genuinely flat data (every value identical) and draws an -->
+      <!-- intentional flat line with ONE label instead of fabricating a fake -->
+      <!-- +1 range that produced near-duplicate, confusing gridline labels. */ -->
+<!-- function drawTrendChart(svgEl, points, opts){ -->
+  <!-- opts = opts || {}; -->
+  <!-- var formatter = opts.formatter || function(v){ return v.toFixed(0); }; -->
+  <!-- var w=640, h=180, padL=64, padR=14, padT=16, padB=16; -->
+  <!-- var innerW=w-padL-padR, innerH=h-padT-padB; -->
+  <!-- if(!points.length){ svgEl.innerHTML=''; return { flat:false }; } -->
+
+  <!-- var minV=Math.min.apply(null, points), maxV=Math.max.apply(null, points); -->
+  <!-- var isFlat = (minV === maxV); -->
+  <!-- var html=''; -->
+
+  <!-- if(isFlat){ -->
+    <!-- var midY = padT + innerH/2; -->
+    <!-- html += '<line x1="'+padL+'" y1="'+midY+'" x2="'+(w-padR)+'" y2="'+midY+'" stroke="rgba(255,255,255,.08)"/>'; -->
+    <!-- html += '<text x="4" y="'+(midY+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+formatter(minV)+'</text>'; -->
+    <!-- var pathD = 'M'+padL+','+midY+' L'+(w-padR)+','+midY; -->
+    <!-- html += '<path d="'+pathD+'" fill="none" stroke="#C9A227" stroke-width="2.5"></path>'; -->
+    <!-- if(points.length > 1){ -->
+      <!-- points.forEach(function(p,i){ -->
+        <!-- var x = points.length===1 ? padL+innerW/2 : padL + (i/(points.length-1))*innerW; -->
+        <!-- html += '<circle cx="'+x+'" cy="'+midY+'" r="3.5" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>'; -->
+      <!-- }); -->
+    <!-- } else { -->
+      <!-- html += '<circle cx="'+(padL+innerW/2)+'" cy="'+midY+'" r="3.5" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>'; -->
+    <!-- } -->
+    <!-- svgEl.innerHTML = html; -->
+    <!-- return { flat:true }; -->
+  <!-- } -->
+
+  <!-- function x(i){ return points.length===1 ? padL+innerW/2 : padL + (i/(points.length-1))*innerW; } -->
+  <!-- function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; } -->
+  <!-- [minV, (minV+maxV)/2, maxV].forEach(function(gv){ -->
+    <!-- var gy=y(gv); -->
+    <!-- html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.08)"/>'; -->
+    <!-- html += '<text x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+formatter(gv)+'</text>'; -->
+  <!-- }); -->
+  <!-- var pathD=''; for(var i=0;i<points.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(points[i]); } -->
+  <!-- html += '<path d="'+pathD+'" fill="none" stroke="#C9A227" stroke-width="2.5"></path>'; -->
+  <!-- points.forEach(function(p,i){ html += '<circle cx="'+x(i)+'" cy="'+y(p)+'" r="3.5" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>'; }); -->
+  <!-- svgEl.innerHTML = html; -->
+  <!-- return { flat:false }; -->
+<!-- } -->
+
+<!-- /* ================= TIME RANGE FILTERING ================= -->
+   <!-- Uses each entry's real stored timestamp — this only filters existing -->
+   <!-- data by date, it never fabricates points that don't already exist. */ -->
+<!-- function filterByRange(entries, range, tsKey){ -->
+  <!-- tsKey = tsKey || 'ts'; -->
+  <!-- if(range === 'all') return entries; -->
+  <!-- var days = parseInt(range, 10); -->
+  <!-- var cutoff = Date.now() - days*24*60*60*1000; -->
+  <!-- var filtered = entries.filter(function(e){ return e[tsKey] >= cutoff; }); -->
+  <!-- // If a narrow range happens to exclude everything (e.g. only old -->
+  <!-- // check-ins exist), fall back to showing all data rather than an -->
+  <!-- // empty chart — better than a confusing blank state for a real user. -->
+  <!-- return filtered.length ? filtered : entries; -->
+<!-- } -->
+
+<!-- var scoreRange = 'all', nwRange = 'all'; -->
+
+<!-- /* ================= SCORE TREND (hero) ================= */ -->
+<!-- function renderScoreHero(){ -->
+  <!-- var hist = getHistory(); -->
+  <!-- var chartEl = $("trendChart"), emptyEl = $("trendEmptyNote"), captionEl = $("trendCaption"); -->
+  <!-- var valueEl = $("scoreHeroValue"), subEl = $("scoreHeroSub"); -->
+
+  <!-- if(!hist.length){ -->
+    <!-- emptyEl.style.display = 'block'; chartEl.innerHTML = ''; captionEl.style.display = 'none'; -->
+    <!-- valueEl.textContent = '—'; subEl.textContent = 'Run your first calculation to begin.'; -->
+    <!-- return; -->
+  <!-- } -->
+  <!-- emptyEl.style.display = 'none'; -->
+
+  <!-- var filtered = filterByRange(hist, scoreRange, 'ts'); -->
+  <!-- var result = drawTrendChart(chartEl, filtered.map(function(h){ return h.score; })); -->
+  <!-- if(result.flat && filtered.length > 1){ -->
+    <!-- captionEl.style.display = 'block'; -->
+    <!-- captionEl.textContent = 'Your score has remained stable over this period.'; -->
+  <!-- } else { -->
+    <!-- captionEl.style.display = 'none'; -->
+  <!-- } -->
+
+  <!-- var latest = hist[hist.length-1].score; -->
+  <!-- var best = Math.max.apply(null, hist.map(function(h){ return h.score; })); -->
+  <!-- valueEl.textContent = latest.toFixed(1); -->
+  <!-- subEl.innerHTML = 'Your best: <b class="mono">'+best.toFixed(1)+'</b>'; -->
+<!-- } -->
+
+<!-- /* ================= NET WORTH TRACKER (hero) ================= */ -->
+<!-- function renderNetWorthHero(){ -->
+  <!-- var hist = getHistory(); -->
+  <!-- var chartEl = $("netWorthChart"), emptyEl = $("netWorthEmptyNote"), captionEl = $("nwCaption"); -->
+  <!-- var valueEl = $("nwHeroValue"), subEl = $("nwHeroSub"); -->
+
+  <!-- var entriesWithNet = hist -->
+    <!-- .map(function(h, originalIndex){ return { ts:h.ts, net:h.net, originalIndex:originalIndex }; }) -->
+    <!-- .filter(function(h){ return typeof h.net === 'number' && !isNaN(h.net); }); -->
+
+  <!-- if(!entriesWithNet.length){ -->
+    <!-- emptyEl.style.display = 'block'; chartEl.innerHTML = ''; captionEl.style.display = 'none'; -->
+    <!-- valueEl.textContent = '—'; subEl.textContent = 'Recorded automatically each time you check in.'; -->
+    <!-- return; -->
+  <!-- } -->
+  <!-- emptyEl.style.display = 'none'; -->
+
+  <!-- var filtered = filterByRange(entriesWithNet, nwRange, 'ts'); -->
+  <!-- var result = drawTrendChart(chartEl, filtered.map(function(h){ return h.net; }), { formatter: formatCompact }); -->
+  <!-- if(result.flat && filtered.length > 1){ -->
+    <!-- captionEl.style.display = 'block'; -->
+    <!-- captionEl.textContent = 'Your net worth has remained stable over this period.'; -->
+  <!-- } else { -->
+    <!-- captionEl.style.display = 'none'; -->
+  <!-- } -->
+
+  <!-- var latest = entriesWithNet[entriesWithNet.length-1].net; -->
+  <!-- valueEl.textContent = money(latest); -->
+
+  <!-- if(entriesWithNet.length >= 2){ -->
+    <!-- var first = entriesWithNet[0].net, change = latest - first; -->
+    <!-- var pct = first !== 0 ? (change/Math.abs(first))*100 : null; -->
+    <!-- var arrow = change > 0 ? '↑' : (change < 0 ? '↓' : '→'); -->
+    <!-- var color = change > 0 ? 'var(--good)' : (change < 0 ? 'var(--bad)' : 'var(--muted)'); -->
+    <!-- subEl.innerHTML = 'Since first tracked: <b style="color:'+color+'">'+arrow+' '+money(Math.abs(change))+ -->
+      <!-- (pct!==null ? ' ('+(change>=0?'+':'')+pct.toFixed(1)+'%)' : '')+'</b>'; -->
+  <!-- } else { -->
+    <!-- subEl.textContent = 'One entry so far — check in again to start a trend.'; -->
+  <!-- } -->
+<!-- } -->
+
+<!-- /* ================= COMPACT HISTORY LISTS (recent N + expandable full view) ================= */ -->
+<!-- var HISTORY_PREVIEW_COUNT = 5; -->
+
+<!-- function buildHistoryRow(dateStr, valueStr, onDelete){ -->
+  <!-- var row = el('div', { className:'history-row' }); -->
+  <!-- row.innerHTML = -->
+    <!-- '<span class="history-date">'+dateStr+'</span>' + -->
+    <!-- '<span class="history-value">'+valueStr+'</span>' + -->
+    <!-- '<button class="history-delete" type="button" aria-label="Delete this entry" title="Delete this entry">' + -->
+      <!-- '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>' + -->
+    <!-- '</button>'; -->
+  <!-- row.querySelector('.history-delete').addEventListener('click', onDelete); -->
+  <!-- return row; -->
+<!-- } -->
+
+<!-- function renderScoreHistory(){ -->
+  <!-- var hist = getHistory(); -->
+  <!-- var previewEl = $("scoreHistoryList"), fullEl = $("scoreHistoryFull"), viewAllBtn = $("scoreViewAllBtn"); -->
+  <!-- if(!previewEl) return; -->
+
+  <!-- previewEl.innerHTML = ''; fullEl.innerHTML = ''; -->
+  <!-- if(!hist.length){ -->
+    <!-- previewEl.innerHTML = '<div class="empty-note">No score history yet — it\'s recorded automatically each time you check in.</div>'; -->
+    <!-- viewAllBtn.style.display = 'none'; -->
+    <!-- return; -->
+  <!-- } -->
+
+  <!-- var indexed = hist.map(function(h, originalIndex){ return { ts:h.ts, score:h.score, originalIndex:originalIndex }; }).slice().reverse(); -->
+
+  <!-- indexed.slice(0, HISTORY_PREVIEW_COUNT).forEach(function(entry){ -->
+    <!-- previewEl.appendChild(buildHistoryRow(formatDate(entry.ts), entry.score.toFixed(1), function(){ deleteHistoryEntry(entry.originalIndex); })); -->
+  <!-- }); -->
+  <!-- indexed.forEach(function(entry){ -->
+    <!-- fullEl.appendChild(buildHistoryRow(formatDate(entry.ts), entry.score.toFixed(1), function(){ deleteHistoryEntry(entry.originalIndex); })); -->
+  <!-- }); -->
+
+  <!-- if(indexed.length > HISTORY_PREVIEW_COUNT){ -->
+    <!-- viewAllBtn.style.display = 'inline-flex'; -->
+    <!-- viewAllBtn.textContent = fullEl.classList.contains('expanded') ? '↑ Show less' : 'View all history →'; -->
+  <!-- } else { -->
+    <!-- viewAllBtn.style.display = 'none'; -->
+  <!-- } -->
+<!-- } -->
+
+<!-- function renderNetWorthHistory(){ -->
+  <!-- var hist = getHistory(); -->
+  <!-- var previewEl = $("netWorthHistoryList"), fullEl = $("netWorthHistoryFull"), viewAllBtn = $("nwViewAllBtn"); -->
+  <!-- if(!previewEl) return; -->
+
+  <!-- var entriesWithNet = hist -->
+    <!-- .map(function(h, originalIndex){ return { ts:h.ts, net:h.net, originalIndex:originalIndex }; }) -->
+    <!-- .filter(function(h){ return typeof h.net === 'number' && !isNaN(h.net); }); -->
+
+  <!-- previewEl.innerHTML = ''; fullEl.innerHTML = ''; -->
+  <!-- if(!entriesWithNet.length){ -->
+    <!-- previewEl.innerHTML = '<div class="empty-note">No net worth history yet — it\'s recorded automatically each time you check in.</div>'; -->
+    <!-- viewAllBtn.style.display = 'none'; -->
+    <!-- return; -->
+  <!-- } -->
+
+  <!-- var reversed = entriesWithNet.slice().reverse(); -->
+  <!-- reversed.slice(0, HISTORY_PREVIEW_COUNT).forEach(function(entry){ -->
+    <!-- previewEl.appendChild(buildHistoryRow(formatDate(entry.ts), money(entry.net), function(){ deleteHistoryEntry(entry.originalIndex); })); -->
+  <!-- }); -->
+  <!-- reversed.forEach(function(entry){ -->
+    <!-- fullEl.appendChild(buildHistoryRow(formatDate(entry.ts), money(entry.net), function(){ deleteHistoryEntry(entry.originalIndex); })); -->
+  <!-- }); -->
+
+  <!-- if(reversed.length > HISTORY_PREVIEW_COUNT){ -->
+    <!-- viewAllBtn.style.display = 'inline-flex'; -->
+    <!-- viewAllBtn.textContent = fullEl.classList.contains('expanded') ? '↑ Show less' : 'View all history →'; -->
+  <!-- } else { -->
+    <!-- viewAllBtn.style.display = 'none'; -->
+  <!-- } -->
+<!-- } -->
+
+<!-- $("scoreViewAllBtn").addEventListener('click', function(){ -->
+  <!-- var fullEl = $("scoreHistoryFull"), previewEl = $("scoreHistoryList"); -->
+  <!-- var expanding = !fullEl.classList.contains('expanded'); -->
+  <!-- fullEl.classList.toggle('expanded', expanding); -->
+  <!-- previewEl.style.display = expanding ? 'none' : ''; -->
+  <!-- this.textContent = expanding ? '↑ Show less' : 'View all history →'; -->
+<!-- }); -->
+<!-- $("nwViewAllBtn").addEventListener('click', function(){ -->
+  <!-- var fullEl = $("netWorthHistoryFull"), previewEl = $("netWorthHistoryList"); -->
+  <!-- var expanding = !fullEl.classList.contains('expanded'); -->
+  <!-- fullEl.classList.toggle('expanded', expanding); -->
+  <!-- previewEl.style.display = expanding ? 'none' : ''; -->
+  <!-- this.textContent = expanding ? '↑ Show less' : 'View all history →'; -->
+<!-- }); -->
+
+<!-- /* ================= TIME FILTER BUTTONS ================= */ -->
+<!-- function wireTimeFilters(containerId, applyFn, getSet){ -->
+  <!-- var container = $(containerId); -->
+  <!-- if(!container) return; -->
+  <!-- container.querySelectorAll('button').forEach(function(btn){ -->
+    <!-- btn.addEventListener('click', function(){ -->
+      <!-- container.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); }); -->
+      <!-- btn.classList.add('active'); -->
+      <!-- getSet(btn.dataset.range); -->
+      <!-- applyFn(); -->
+    <!-- }); -->
+  <!-- }); -->
+<!-- } -->
+<!-- wireTimeFilters('scoreTimeFilters', renderScoreHero, function(v){ scoreRange = v; }); -->
+<!-- wireTimeFilters('nwTimeFilters', renderNetWorthHero, function(v){ nwRange = v; }); -->
+
+<!-- /* ================= CURRENT STREAK (unchanged logic, reused as-is) ================= */ -->
+<!-- function computeCurrentStreak(hist){ -->
+  <!-- if(!hist.length) return 0; -->
+  <!-- var scores = hist.map(function(h){ return h.score; }); -->
+  <!-- var streak = 1; -->
+  <!-- for(var i=scores.length-1; i>0; i--){ -->
+    <!-- if(scores[i] > scores[i-1]) streak++; else break; -->
+  <!-- } -->
+  <!-- return streak; -->
+<!-- } -->
+
+<!-- /* ================= CSV EXPORT (unchanged) ================= */ -->
+<!-- function exportHistoryAsCsv(){ -->
+  <!-- var hist = getHistory(); -->
+  <!-- if(!hist.length){ alert("No history to export yet."); return; } -->
+  <!-- var rows = [["Date", "Score", "Net Worth"]]; -->
+  <!-- hist.forEach(function(h){ -->
+    <!-- var dateStr = new Date(h.ts).toISOString().split('T')[0]; -->
+    <!-- rows.push([dateStr, h.score.toFixed(1), (typeof h.net==='number' ? h.net : '')]); -->
+  <!-- }); -->
+  <!-- var csv = rows.map(function(r){ -->
+    <!-- return r.map(function(cell){ -->
+      <!-- var s = String(cell); -->
+      <!-- return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; -->
+    <!-- }).join(','); -->
+  <!-- }).join('\n'); -->
+  <!-- var blob = new Blob([csv], { type:'text/csv;charset=utf-8;' }); -->
+  <!-- var url = URL.createObjectURL(blob); -->
+  <!-- var a = document.createElement('a'); -->
+  <!-- a.href = url; a.download = 'grademyfinance-history.csv'; -->
+  <!-- document.body.appendChild(a); a.click(); document.body.removeChild(a); -->
+  <!-- setTimeout(function(){ URL.revokeObjectURL(url); }, 3000); -->
+<!-- } -->
+<!-- var exportCsvBtn = document.getElementById('exportCsvBtn'); -->
+<!-- if(exportCsvBtn) exportCsvBtn.addEventListener('click', exportHistoryAsCsv); -->
+
+<!-- function deleteHistoryEntry(index){ -->
+  <!-- if(!confirm("Remove this entry from your history? This can't be undone.")) return; -->
+  <!-- var hist = getHistory(); -->
+  <!-- hist.splice(index, 1); -->
+  <!-- localStorage.setItem('gmf_history_v2', JSON.stringify(hist)); -->
+
+  <!-- renderScoreHero(); -->
+  <!-- renderNetWorthHero(); -->
+  <!-- renderScoreHistory(); -->
+  <!-- renderNetWorthHistory(); -->
+
+  <!-- var statTrendEl = $("statTrend"); -->
+  <!-- if(hist.length >= 2){ -->
+    <!-- var diff = Math.round((hist[hist.length-1].score - hist[0].score)*10)/10; -->
+    <!-- var arrow = diff > 0 ? '↑' : (diff < 0 ? '↓' : '→'); -->
+    <!-- statTrendEl.textContent = arrow+' '+(diff>0?'+':'')+diff+' pts'; -->
+    <!-- statTrendEl.className = 'stat-num mono '+(diff>0?'up':(diff<0?'down':'')); -->
+  <!-- } else { -->
+    <!-- statTrendEl.textContent = '—'; statTrendEl.className = 'stat-num mono'; -->
+  <!-- } -->
+  <!-- var streakEl = $("statStreak"); -->
+  <!-- if(streakEl) streakEl.textContent = hist.length ? computeCurrentStreak(hist) : '—'; -->
+<!-- } -->
+
+<!-- /* ================= GOAL TRACKER (same logic, redesigned output) ================= */ -->
+<!-- function renderGoalProgress(){ -->
+  <!-- var goal = getGoal(); -->
+  <!-- var hist = getHistory(); -->
+  <!-- var box = $("goalProgress"); -->
+  <!-- if(!goal){ -->
+    <!-- box.innerHTML = '<div class="empty-note"><b>Set a financial goal</b>Choose something you\'re working toward and track your progress here.</div>'; -->
+    <!-- return; -->
+  <!-- } -->
+  <!-- var latestWithNet = null; -->
+  <!-- for(var i=hist.length-1;i>=0;i--){ if(typeof hist[i].net === 'number'){ latestWithNet = hist[i]; break; } } -->
+  <!-- var latest = hist.length ? hist[hist.length-1] : null; -->
+
+  <!-- var current, label, formatFn; -->
+  <!-- if(goal.type === 'score'){ -->
+    <!-- current = latest ? latest.score : null; -->
+    <!-- label = 'score'; -->
+    <!-- formatFn = function(n){ return n.toFixed(1); }; -->
+  <!-- } else { -->
+    <!-- current = latestWithNet ? latestWithNet.net : null; -->
+    <!-- label = 'net worth'; -->
+    <!-- formatFn = money; -->
+  <!-- } -->
+
+  <!-- if(current === null){ -->
+    <!-- box.innerHTML = '<div class="empty-note">Run a new calculation to start tracking progress toward this goal.</div>'; -->
+    <!-- return; -->
+  <!-- } -->
+  <!-- var pct = Math.max(0, Math.min(100, (current/goal.target)*100)); -->
+  <!-- var reached = current >= goal.target; -->
+  <!-- var remaining = Math.max(0, goal.target - current); -->
+  <!-- box.innerHTML = -->
+    <!-- '<div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13.5px">'+ -->
+      <!-- '<span>Current '+label+': <b class="mono">'+formatFn(current)+'</b></span>'+ -->
+      <!-- '<span>Target: <b class="mono">'+formatFn(goal.target)+'</b></span>'+ -->
+    <!-- '</div>'+ -->
+    <!-- '<div class="progress-bar"><div style="width:'+pct.toFixed(0)+'%"></div></div>'+ -->
+    <!-- (reached -->
+      <!-- ? '<div style="margin-top:10px;color:var(--good);font-weight:700;font-size:13.5px">Goal reached 🎉</div>' -->
+      <!-- : '<div style="margin-top:10px;color:var(--muted);font-size:12.5px">'+formatFn(remaining)+' remaining</div>'); -->
+<!-- } -->
+
+<!-- $("saveGoalBtn").addEventListener("click", function(){ -->
+  <!-- var type = $("goalType").value; -->
+  <!-- var target = parseFloat($("goalTarget").value); -->
+  <!-- if(!target || target <= 0){ alert("Enter a valid target first."); return; } -->
+  <!-- localStorage.setItem('gmf_goal', JSON.stringify({ type:type, target:target, setAt:Date.now() })); -->
+  <!-- renderGoalProgress(); -->
+<!-- }); -->
+
+<!-- /* ================= SAVED SCENARIOS (same logic, redesigned output) ================= */ -->
+<!-- function renderScenarios(){ -->
+  <!-- var list = $("scenarioList"), emptyNote = $("scenarioEmptyNote"); -->
+  <!-- var scenarios = getScenarios(); -->
+  <!-- list.innerHTML = ''; -->
+  <!-- if(!scenarios.length){ emptyNote.style.display='block'; return; } -->
+  <!-- emptyNote.style.display='none'; -->
+  <!-- scenarios.forEach(function(s, idx){ -->
+    <!-- var row = el('div',{className:'scenario-row'}); -->
+    <!-- row.innerHTML = '<div><b style="font-size:13.5px">'+s.name+'</b><div class="mono" style="font-size:12px;color:var(--muted);margin-top:3px">Cut '+money(s.expCut)+'/mo · paid off '+money(s.debtPay)+' → <span style="color:var(--gold-bright);font-weight:700">'+s.letter+'</span></div></div>'; -->
+    <!-- var del = el('button',{className:'btn sm', type:'button'}); del.textContent='Remove'; -->
+    <!-- del.addEventListener('click', function(){ -->
+      <!-- var arr = getScenarios(); arr.splice(idx,1); -->
+      <!-- localStorage.setItem('gmf_scenarios', JSON.stringify(arr)); -->
+      <!-- renderScenarios(); -->
+    <!-- }); -->
+    <!-- row.appendChild(del); -->
+    <!-- list.appendChild(row); -->
+  <!-- }); -->
+<!-- } -->
+
+<!-- /* ================= ACHIEVEMENTS (redesigned: minimalist check/lock glyphs, no emoji) ================= */ -->
+<!-- var CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; -->
+<!-- var LOCK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'; -->
+
+<!-- function renderAchievements(){ -->
+  <!-- var grid = $("achievementsGrid"); -->
+  <!-- var unlocked = getAchievements(); -->
+  <!-- grid.innerHTML = ''; -->
+  <!-- ACHIEVEMENTS.forEach(function(a){ -->
+    <!-- var isUnlocked = !!unlocked[a.id]; -->
+    <!-- var badge = el('div',{ className:'achv-badge '+(isUnlocked?'unlocked':'locked') }); -->
+    <!-- badge.innerHTML = -->
+      <!-- '<div class="achv-icon">'+(isUnlocked?CHECK_SVG:LOCK_SVG)+'</div>'+ -->
+      <!-- '<div class="achv-label">'+a.label+'</div>'+ -->
+      <!-- '<div class="achv-status">'+(isUnlocked?'Completed':'Locked')+'</div>'; -->
+    <!-- grid.appendChild(badge); -->
+  <!-- }); -->
+<!-- } -->
+
+<!-- /* ================= BACKUP & RESTORE (unchanged) ================= */ -->
+<!-- var BACKUP_KEYS = [ -->
+  <!-- 'gmf_pro','gmf_theme','gmf_currency','gmf_housing','gmf_autosave', -->
+  <!-- 'gmf_history_v2','gmf_checkin_count','gmf_best_score','gmf_achievements', -->
+  <!-- 'gmf_scenarios','gmf_goal' -->
+<!-- ]; -->
+
+<!-- function buildBackupLink(){ -->
+  <!-- var data = {}; -->
+  <!-- BACKUP_KEYS.forEach(function(k){ -->
+    <!-- var v = localStorage.getItem(k); -->
+    <!-- if(v !== null) data[k] = v; -->
+  <!-- }); -->
+  <!-- var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data)))); -->
+  <!-- return location.origin + location.pathname + "?restore=" + encodeURIComponent(encoded); -->
+<!-- } -->
+
+<!-- function copyBackupLink(){ -->
+  <!-- var status = document.getElementById('backupStatus'); -->
+  <!-- var link = buildBackupLink(); -->
+  <!-- if(navigator.clipboard && navigator.clipboard.writeText){ -->
+    <!-- navigator.clipboard.writeText(link).then(function(){ -->
+      <!-- if(status) status.textContent = "Copied! Open this same link on your other device to bring everything back."; -->
+    <!-- }).catch(function(){ -->
+      <!-- if(status) status.textContent = "Couldn't copy automatically — link: " + link; -->
+    <!-- }); -->
+  <!-- } else { -->
+    <!-- prompt("Copy this link:", link); -->
+  <!-- } -->
+<!-- } -->
+
+<!-- function restoreFromUrlIfPresent(){ -->
+  <!-- var params = new URLSearchParams(location.search); -->
+  <!-- var encoded = params.get("restore"); -->
+  <!-- if(!encoded) return; -->
+  <!-- try{ -->
+    <!-- var data = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(encoded))))); -->
+    <!-- var restoredCount = 0; -->
+    <!-- Object.keys(data).forEach(function(k){ -->
+      <!-- if(BACKUP_KEYS.indexOf(k) > -1){ -->
+        <!-- localStorage.setItem(k, data[k]); -->
+        <!-- restoredCount++; -->
+      <!-- } -->
+    <!-- }); -->
+    <!-- history.replaceState(null, "", location.origin + location.pathname); -->
+    <!-- if(restoredCount > 0){ -->
+      <!-- alert("Restored " + restoredCount + " item(s) from your backup link."); -->
+    <!-- } -->
+  <!-- }catch(err){ -->
+    <!-- alert("That backup link doesn't look valid."); -->
+  <!-- } -->
+<!-- } -->
+<!-- restoreFromUrlIfPresent(); -->
+
+<!-- var copyBackupLinkBtn = document.getElementById('copyBackupLinkBtn'); -->
+<!-- if(copyBackupLinkBtn) copyBackupLinkBtn.addEventListener('click', copyBackupLink); -->
+
+<!-- /* ================= INIT ================= */ -->
+<!-- function init(){ -->
+  <!-- var isPro = localStorage.getItem('gmf_pro') === 'true'; -->
+  <!-- if(!isPro){ -->
+    <!-- $("lockedState").style.display = 'block'; -->
+    <!-- return; -->
+  <!-- } -->
+  <!-- $("dashboardContent").style.display = 'block'; -->
+  <!-- var headerChip = $("headerProChip"); -->
+  <!-- if(headerChip) headerChip.style.display = 'inline-flex'; -->
+
+  <!-- var count = parseInt(localStorage.getItem('gmf_checkin_count')||'0',10); -->
+  <!-- var best = parseFloat(localStorage.getItem('gmf_best_score')||'0'); -->
+  <!-- var hist = getHistory(); -->
+
+  <!-- $("statCheckins").textContent = count; -->
+  <!-- $("statBest").textContent = best ? best.toFixed(1) : '—'; -->
+  <!-- $("pageSubtitle").textContent = count ? ("You've checked in "+count+" time"+(count===1?'':'s')+" on this device.") : "Run your first calculation to start tracking."; -->
+
+  <!-- var statTrendEl = $("statTrend"); -->
+  <!-- if(hist.length >= 2){ -->
+    <!-- var diff = Math.round((hist[hist.length-1].score - hist[0].score)*10)/10; -->
+    <!-- var arrow = diff > 0 ? '↑' : (diff < 0 ? '↓' : '→'); -->
+    <!-- statTrendEl.textContent = arrow+' '+(diff>0?'+':'')+diff+' pts'; -->
+    <!-- statTrendEl.className = 'stat-num mono '+(diff>0?'up':(diff<0?'down':'')); -->
+  <!-- } else { -->
+    <!-- statTrendEl.textContent = '—'; -->
+  <!-- } -->
+
+  <!-- $("statStreak").textContent = hist.length ? computeCurrentStreak(hist) : '—'; -->
+
+  <!-- renderGradeSummaryAndNudge(hist); -->
+  <!-- renderScoreHero(); -->
+  <!-- renderNetWorthHero(); -->
+  <!-- renderScoreHistory(); -->
+  <!-- renderNetWorthHistory(); -->
+
+  <!-- var goal = getGoal(); -->
+  <!-- if(goal){ $("goalType").value = goal.type; $("goalTarget").value = goal.target; } -->
+  <!-- renderGoalProgress(); -->
+  <!-- renderAchievements(); -->
+  <!-- renderScenarios(); -->
+<!-- } -->
+
+<!-- init(); -->
+<!-- </script> -->
+<!-- </body> -->
+<!-- </html> -->
