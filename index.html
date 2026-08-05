@@ -417,7 +417,7 @@ section.block{ padding:76px 0 }
 .modal{ position:fixed; inset:0; display:none; z-index:100; background:rgba(6,7,9,.68) }
 .modal.show{ display:grid; place-items:center }
 .sheet{
-  width:min(980px,95vw); max-height:90vh; overflow:auto; margin:10px; padding:36px;
+  width:min(1360px,96vw); max-height:92vh; overflow:auto; margin:10px; padding:32px 36px 36px;
   border-radius:20px; position:relative;
   /* Modern dark-panel palette, scoped to this modal only — cascades to
      every var(--text)/var(--muted)/var(--surface)/var(--line)/var(--gold)*
@@ -426,7 +426,7 @@ section.block{ padding:76px 0 }
   --bg-2:#0E1116; --surface:#171C24; --surface-2:#1E2530;
   --line: #2A313D; --text:#E9ECF1; --muted:#8B93A3; --muted-2:#5D636F;
   --gold:#E8B34A; --gold-bright:#F0C168; --gold-soft: rgba(232,179,74,.14);
-  --good:#4FC28A; --good-2:#3AA173; --bad:#D97757; --mid:#5B8DEF;
+  --good:#4FC28A; --good-2:#3AA173; --bad:#E2574C; --mid:#E8B34A;
   --font-mono:'IBM Plex Mono',monospace; --font-serif:'Fraunces',serif;
   background:
     radial-gradient(ellipse 700px 400px at 12% -8%, rgba(232,179,74,.09), transparent 60%),
@@ -439,36 +439,55 @@ section.block{ padding:76px 0 }
 }
 .modal.show .sheet{ animation:popIn .35s cubic-bezier(.2,1,.2,1) }
 @keyframes popIn{ 0%{ transform:scale(.96); opacity:0 } 100%{ transform:scale(1); opacity:1 } }
-.sheet-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:18px }
+.sheet-header{ display:flex; justify-content:flex-end; align-items:flex-start; gap:12px; margin-bottom:4px }
 .xbtn{ background:var(--surface); border:1px solid var(--line); color:var(--text); border-radius:9px; padding:8px 12px; cursor:pointer; font-size:13px }
 
 /* Hero: grade stamp + greeting + streak, replacing the old wax-seal/certificate header */
-.rc-hero{
-  display:grid; grid-template-columns:150px 1fr; gap:26px; align-items:center;
-  background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:26px; width:100%;
-}
-@media (max-width:640px){ .rc-hero{ grid-template-columns:1fr; text-align:center } }
-.rc-title{ font-family:var(--font-serif); font-weight:700; font-size:15px; color:var(--muted); letter-spacing:.03em; text-transform:uppercase }
-.rc-meta{ color:var(--muted); font-size:13px; font-family:var(--font-mono); margin-top:5px }
+.rc-title{ font-family:var(--font-serif); font-weight:700; font-size:13px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase }
+.rc-meta{ color:var(--muted); font-size:12px; font-family:var(--font-mono); margin-top:5px; opacity:.8; max-width:440px }
+
+/* Grade ring — the visual centerpiece. A conic-gradient progress ring around
+   the letter grade; --ring-pct (0-100, set inline by JS from the already-
+   computed score) drives how far it travels. Tier color comes from the
+   existing good/mid/bad classes JS already applies to this element. */
 .rc-grade{
-  position:relative; font-family:var(--font-serif); font-weight:700; font-size:72px; line-height:1;
-  width:100%; height:130px; border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  flex:none; border:2px solid var(--gold); background:repeating-linear-gradient(135deg, var(--gold-soft) 0 2px, transparent 2px 14px);
+  position:relative; width:200px; height:200px; border-radius:50%; flex:none;
+  --ring-color: var(--gold-bright); --ring-pct: 0;
+  background: conic-gradient(var(--ring-color) calc(var(--ring-pct)*3.6deg), var(--surface-2) 0);
+  display:flex; align-items:center; justify-content:center;
 }
-.rc-grade .rc-grade-label{ font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:6px }
-.rc-grade.good{ color:var(--good); border-color:var(--good); background:repeating-linear-gradient(135deg, rgba(79,194,138,.10) 0 2px, transparent 2px 14px); text-shadow:0 0 30px rgba(79,194,138,.3) }
-.rc-grade.mid{ color:var(--gold-bright); text-shadow:0 0 30px rgba(232,179,74,.3) }
-.rc-grade.bad{ color:var(--bad); border-color:var(--bad); background:repeating-linear-gradient(135deg, rgba(225,91,91,.10) 0 2px, transparent 2px 14px); text-shadow:0 0 30px rgba(225,91,91,.3) }
+.rc-grade::before{
+  /* soft glow behind the ring */
+  content:""; position:absolute; inset:-30px; border-radius:50%; z-index:0;
+  background: radial-gradient(circle, var(--ring-color) 0%, transparent 68%); opacity:.16; filter:blur(6px);
+}
+.rc-grade::after{
+  /* punch the conic-gradient into a ring, leaving an inner disc for the letter */
+  content:""; position:absolute; inset:12px; border-radius:50%; background:var(--bg-2); z-index:1;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+.rc-grade .rc-grade-letter{
+  position:relative; z-index:2; font-family:var(--font-serif); font-weight:700; font-size:92px; line-height:1; color:var(--ring-color);
+}
+.rc-grade .rc-grade-label{ display:none } /* superseded by the "Financial Grade" section label above the hero */
+.rc-grade.good{ --ring-color: var(--good) }
+.rc-grade.mid{ --ring-color: var(--gold-bright) }
+.rc-grade.bad{ --ring-color: var(--bad) }
 .rc-grade.pop{ animation:stampPress .5s cubic-bezier(.3,1.2,.4,1) }
-@keyframes stampPress{ 0%{ transform:scale(.7); opacity:0 } 60%{ transform:scale(1.06); opacity:1 } 100%{ transform:scale(1) } }
+@keyframes stampPress{ 0%{ transform:scale(.85); opacity:0 } 60%{ transform:scale(1.03); opacity:1 } 100%{ transform:scale(1) } }
 .ink-ripple{
-  position:absolute; border-radius:16px; border:2px solid var(--gold-bright); pointer-events:none;
+  position:absolute; border-radius:50%; border:2px solid var(--gold-bright); pointer-events:none;
   animation:inkRipple .6s ease-out forwards; z-index:3;
 }
-@keyframes inkRipple{ 0%{ opacity:.7; transform:scale(.9) } 100%{ opacity:0; transform:scale(1.15) } }
+@keyframes inkRipple{ 0%{ opacity:.7; transform:scale(.94) } 100%{ opacity:0; transform:scale(1.08) } }
 @media (prefers-reduced-motion: reduce){ .rc-grade.pop{ animation:none } .ink-ripple{ display:none } }
-.rc-hero-right h2{ font-family:var(--font-serif); font-weight:600; font-size:22px; margin:0 0 6px }
-.rc-hero-right p{ color:var(--muted); font-size:13.5px; margin:0; max-width:480px }
+
+/* Score — the #2 visual priority, right under the grade */
+.dash-score{ font-family:var(--font-serif); font-weight:700; text-align:center; margin-top:14px; color:var(--text) }
+.dash-score #dashScoreNum{ font-size:34px }
+.dash-score .dash-score-suffix{ font-size:15px; color:var(--muted); font-family:var(--font-mono); font-weight:500; margin-left:2px }
+
+.dash-hero-text h2{ font-family:var(--font-serif); font-weight:600; font-size:24px; margin:0 0 6px }
 .rc-streak{
   display:inline-flex; align-items:center; gap:8px; margin-top:12px;
   background:var(--surface-2); border:1px solid var(--line); padding:7px 13px; border-radius:100px;
@@ -476,20 +495,80 @@ section.block{ padding:76px 0 }
 }
 .rc-streak .dot{ width:7px; height:7px; border-radius:50%; background:var(--good); box-shadow:0 0 8px var(--good); flex:none }
 
-/* Factor cards — 5 at-a-glance mini cards replacing the old bars-only view */
-.factor-cards{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin:16px 0 }
-@media (max-width:480px){ .factor-cards{ grid-template-columns:1fr } }
-.factor-card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:9px }
-.factor-card .fc-top{ display:flex; align-items:center; justify-content:space-between }
-.factor-card .fc-icon{ width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px }
-.factor-card .fc-grade{ font-family:var(--font-serif); font-weight:700; font-size:18px }
-.factor-card .fc-name{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em }
-.factor-card .fc-bar-track{ height:6px; border-radius:4px; background:var(--surface-2); overflow:hidden }
+/* ---------- One cohesive report: grade → snapshot → flow → breakdown, stacked ---------- */
+.dash-top{
+  position:relative; overflow:hidden;
+  background:var(--surface); border:1px solid var(--line); border-radius:20px;
+  padding:36px 40px 8px; margin-bottom:16px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 1px 0 rgba(255,255,255,.02);
+}
+.dash-top::before{
+  /* faint brand glow anchored behind the grade, ties the whole report together */
+  content:""; position:absolute; top:-120px; left:50%; transform:translateX(-50%);
+  width:640px; height:420px; pointer-events:none; z-index:0;
+  background: radial-gradient(ellipse at center, rgba(232,179,74,.10), transparent 65%);
+}
+
+/* --- Hero: grade ring is the focal point --- */
+.dash-hero{ position:relative; z-index:1; display:flex; align-items:center; justify-content:center; gap:44px; padding-bottom:30px; flex-wrap:wrap; text-align:left }
+.dash-hero-grade{ display:flex; flex-direction:column; align-items:center; flex:none }
+.dash-hero-text{ max-width:420px }
+@media (max-width:760px){ .dash-hero{ justify-content:center; text-align:center } .dash-hero-text{ max-width:none } }
+
+/* --- Financial snapshot: connected flow strip --- */
+.dash-flow-section{ position:relative; z-index:1; padding:26px 0; border-top:1px solid var(--line) }
+.dash-flow{ position:relative; display:flex; align-items:flex-start; justify-content:space-between; gap:6px; flex-wrap:wrap }
+.dash-flow-item{ display:flex; flex-direction:column; gap:5px; min-width:90px }
+.dash-flow-item .snap-label{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-family:var(--font-mono) }
+.dash-flow-item .snap-val{ font-family:var(--font-serif); font-weight:600; font-size:21px; color:var(--text) }
+.dash-flow-arrow{ align-self:center; color:var(--muted-2); font-size:16px; margin-top:14px; flex:none }
+.dash-flow-result .snap-val{ font-size:28px; color:var(--gold-bright) }
+.dash-flow-result .snap-label{ color:var(--gold-bright); opacity:.85 }
+@media (max-width:760px){ .dash-flow{ justify-content:flex-start } .dash-flow-arrow{ display:none } .dash-flow-item{ min-width:42% } }
+
+.dash-flow-bar{ height:6px; border-radius:99px; background:var(--surface-2); overflow:hidden; margin-top:18px }
+.dash-flow-bar-fill{ height:100%; width:0%; border-radius:99px; background:linear-gradient(90deg,var(--good-2),var(--good)); transition:width .6s cubic-bezier(.2,.8,.2,1) }
+.dash-flow-bar-caption{ font-size:12px; color:var(--muted); margin-top:8px }
+
+/* --- What's driving the grade: integrated rows, not boxed cards --- */
+.dash-breakdown-section{ position:relative; z-index:1; padding:26px 0 4px; border-top:1px solid var(--line) }
+
+@media (max-width:1180px){ .dash-top{ padding:28px 24px 6px } }
+
+/* Dashboard tabs — separate control from the inner Money-Flow sub-tabs */
+.dash-tabs{ display:flex; gap:4px; border-bottom:1px solid var(--line); margin:0 0 18px; overflow-x:auto }
+.dash-tab{
+  background:none; border:none; cursor:pointer; white-space:nowrap;
+  color:var(--muted); font-family:var(--font-body); font-size:13.5px; font-weight:600;
+  padding:12px 16px; border-bottom:2px solid transparent;
+  transition:color .15s ease, border-color .15s ease; position:relative; top:1px;
+}
+.dash-tab:hover{ color:var(--text) }
+.dash-tab.active{ color:var(--text); border-bottom-color:var(--gold) }
+.dash-panel{ display:none }
+.dash-panel.active{ display:block; animation:flowFadeIn .25s ease }
+
+/* Factor cards — reused by the score breakdown and the what-if preview.
+   Redesigned as integrated rows (name + grade + bar + insight) rather than
+   boxed cards, so they read as one report instead of a stack of tiles. */
+.factor-cards{ display:grid; grid-template-columns:1fr; gap:0; margin:0 }
+.factor-card{
+  display:grid; grid-template-columns:1fr auto; column-gap:14px; row-gap:8px;
+  grid-template-areas: "name top" "bar bar" "tip tip";
+  align-items:center; background:none; border:none; border-radius:0;
+  border-bottom:1px solid var(--line); padding:15px 0;
+}
+.factor-cards .factor-card:last-child{ border-bottom:none; padding-bottom:2px }
+.factor-card .fc-top{ grid-area:top; display:flex; align-items:center; gap:8px; justify-self:end }
+.factor-card .fc-icon{ width:7px; height:7px; border-radius:50%; font-size:0; padding:0; flex:none }
+.factor-card .fc-grade{ font-family:var(--font-serif); font-weight:700; font-size:19px }
+.factor-card .fc-name{ grid-area:name; font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em }
+.factor-card .fc-bar-track{ grid-area:bar; height:5px; border-radius:4px; background:var(--surface-2); overflow:hidden }
 .factor-card .fc-bar-fill{ height:100%; border-radius:4px }
-.factor-card .fc-tip{ font-size:11.5px; color:var(--muted); line-height:1.4; margin-top:2px }
-.fc-good .fc-icon{ background:rgba(79,194,138,.15); color:var(--good) }
-.fc-mid .fc-icon{ background:rgba(232,179,74,.15); color:var(--gold-bright) }
-.fc-bad .fc-icon{ background:rgba(225,91,91,.15); color:var(--bad) }
+.factor-card .fc-tip{ grid-area:tip; font-size:12px; color:var(--muted); line-height:1.45 }
+.fc-good .fc-icon{ background:var(--good) }
+.fc-mid .fc-icon{ background:var(--gold-bright) }
+.fc-bad .fc-icon{ background:var(--bad) }
 
 /* Flow panel — tabbed real-data Sankey-style diagrams */
 .flow-panel{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:6px 24px 22px; margin:16px 0 }
@@ -517,8 +596,11 @@ section.block{ padding:76px 0 }
 
 .rc-sections{ display:grid; grid-template-columns:1.2fr 1fr; gap:14px; margin-top:14px }
 @media (max-width:900px){ .rc-sections{ grid-template-columns:1fr } }
-.sheet .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px }
-.sheet .section-label{ font-family:var(--font-serif); font-size:13px; color:var(--gold-bright); font-weight:600; text-transform:none; letter-spacing:.01em; display:block; margin-bottom:10px }
+.sheet .card{
+  background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:18px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+}
+.sheet .section-label{ font-family:var(--font-mono); font-size:11px; color:var(--muted-2); font-weight:600; text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:10px }
 
 /* Financial snapshot — the "10 second scan" row of real numbers */
 .snapshot-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:16px 0 }
@@ -1027,99 +1109,241 @@ body.is-pro .ad-slot{ display:none !important }
 <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rcTitle">
   <div class="sheet">
     <div class="sheet-header">
-      <div class="rc-hero" style="width:100%">
-        <div id="rcGrade" class="rc-grade"><span id="rcGradeLetter">A</span><span class="rc-grade-label">Financial Grade</span></div>
-        <div class="rc-hero-right">
+      <button class="xbtn dash-close" id="closeReport" type="button" aria-label="Close report">Close</button>
+    </div>
+
+    <div class="dash-top">
+      <div class="dash-hero">
+        <div class="dash-hero-grade">
+          <span class="section-label">Financial Grade</span>
+          <div id="rcGrade" class="rc-grade"><span id="rcGradeLetter" class="rc-grade-letter">A</span></div>
+          <div class="dash-score" id="dashScoreWrap"><span id="dashScoreNum">0.0</span><span class="dash-score-suffix">/100</span></div>
+          <div class="rc-streak" id="rcStreak" style="display:none"><span class="dot"></span> <span id="rcStreakText">—</span></div>
+        </div>
+
+        <div class="dash-hero-text">
           <div id="rcTitle" class="rc-title">Your report card</div>
           <h2 id="rcHeroHeadline">Nice work.</h2>
           <p id="rcMeta" class="rc-meta">—</p>
-          <div class="rc-streak" id="rcStreak" style="display:none"><span class="dot"></span> <span id="rcStreakText">—</span></div>
         </div>
       </div>
-      <button class="xbtn" id="closeReport" type="button" aria-label="Close report">Close</button>
-    </div>
 
-    <div id="milestoneBanner" class="compare-banner" style="display:none;margin-bottom:14px"></div>
-
-    <div class="snapshot-grid" id="snapshotGrid">
-      <div class="snapshot-item"><span class="snap-label">Net Worth</span><span class="snap-val" id="snapNetWorth">—</span></div>
-      <div class="snapshot-item"><span class="snap-label">Annual Income</span><span class="snap-val" id="snapIncome">—</span></div>
-      <div class="snapshot-item"><span class="snap-label">Monthly Expenses</span><span class="snap-val" id="snapExpenses">—</span></div>
-      <div class="snapshot-item"><span class="snap-label">Total Debt</span><span class="snap-val" id="snapDebt">—</span></div>
-      <div class="snapshot-item"><span class="snap-label">Savings Rate</span><span class="snap-val" id="snapSavingsRate">—</span></div>
-    </div>
-
-    <div class="rc-sections">
-      <div class="card" style="display:grid;gap:12px">
-        <div id="compareBlock" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <span class="section-label" style="margin:0">Progress</span>
-          <div id="compareText" class="small" style="font-weight:700;color:var(--text)">—</div>
-          <svg id="spark" width="180" height="32" aria-hidden="true"></svg>
+      <div class="dash-flow-section">
+        <span class="section-label">Financial snapshot</span>
+        <div class="dash-flow" id="snapshotGrid">
+          <div class="dash-flow-item"><span class="snap-label">Annual Income</span><span class="snap-val" id="snapIncome">—</span></div>
+          <div class="dash-flow-arrow">→</div>
+          <div class="dash-flow-item"><span class="snap-label">Monthly Expenses</span><span class="snap-val" id="snapExpenses">—</span></div>
+          <div class="dash-flow-arrow">→</div>
+          <div class="dash-flow-item"><span class="snap-label">Savings Rate</span><span class="snap-val" id="snapSavingsRate">—</span></div>
+          <div class="dash-flow-arrow">→</div>
+          <div class="dash-flow-item"><span class="snap-label">Total Debt</span><span class="snap-val" id="snapDebt">—</span></div>
+          <div class="dash-flow-arrow">→</div>
+          <div class="dash-flow-item dash-flow-result"><span class="snap-label">Net Worth</span><span class="snap-val" id="snapNetWorth">—</span></div>
         </div>
-        <div id="benchWrap" style="display:grid;gap:8px">
-          <span class="section-label">How you compare to our benchmark (estimated)</span>
-          <div id="benchRows" style="display:grid;gap:8px"></div>
-        </div>
+        <div class="dash-flow-bar"><div class="dash-flow-bar-fill" id="dashFlowBarFill"></div></div>
+        <div class="dash-flow-bar-caption" id="dashFlowBarCaption">—</div>
       </div>
-      <div class="card">
-        <span class="section-label">What drove your score</span>
+
+      <div class="dash-breakdown-section">
+        <span class="section-label">What's driving your grade</span>
         <div id="weakWrap"></div>
       </div>
     </div>
 
-    <div class="explain-section" id="explainSection">
-      <span class="section-label">What went into your grade</span>
-      <div id="explainList" class="explain-list"></div>
+    <div class="dash-tabs" id="dashTabs">
+      <button class="dash-tab active" data-dtab="overview" type="button">Overview</button>
+      <button class="dash-tab" data-dtab="nextsteps" type="button">Next Steps</button>
+      <button class="dash-tab" data-dtab="details" type="button">Category Breakdown</button>
+      <button class="dash-tab" data-dtab="flow" type="button">Money Flow</button>
+      <button class="dash-tab" data-dtab="planning" type="button">Planning Tools</button>
+      <button class="dash-tab" data-dtab="achievements" type="button">Achievements</button>
     </div>
 
-    <details class="methodology-compact">
-      <summary>How is my grade calculated?</summary>
-      <p>Your grade weighs five aspects of your financial position and compares them against age-adjusted benchmarks: <b>Income Strength (25%)</b>, <b>Savings Rate (20%)</b>, <b>Non-mortgage Debt (20%)</b>, <b>Age-based Net Worth (20%)</b>, and <b>Emergency Fund (15%)</b>. Full assumptions and privacy details are further down this report.</p>
-    </details>
+    <div class="dash-panels">
 
-    <div class="weakest-link-pill" id="weakestLinkPill">Weakest link: <b id="weakestLinkPillText">—</b></div>
-    <div class="rc-head"><div>Category</div><div>Details</div><div>Grade</div></div>
-    <div class="rc-rows" id="rcRows"></div>
+      <div class="dash-panel active" id="dashPanel-overview">
+        <div class="rc-sections" style="grid-template-columns:1fr">
+          <div class="card" style="display:grid;gap:12px">
+            <div id="compareBlock" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <span class="section-label" style="margin:0">Progress</span>
+              <div id="compareText" class="small" style="font-weight:700;color:var(--text)">—</div>
+              <svg id="spark" width="180" height="32" aria-hidden="true"></svg>
+            </div>
+            <div id="benchWrap" style="display:grid;gap:8px">
+              <span class="section-label">How you compare to our benchmark (estimated)</span>
+              <div id="benchRows" style="display:grid;gap:8px"></div>
+            </div>
+          </div>
+        </div>
 
-    <div class="flow-panel">
-      <div class="flow-tabs" id="flowTabs">
-        <button class="flow-tab active" data-view="flowAssets">Assets Flow</button>
-        <button class="flow-tab" data-view="flowLiabs">Liabilities Flow</button>
-        <button class="flow-tab" data-view="flowIncome">Income &amp; Savings</button>
-        <button class="flow-tab" data-view="flowGrowth">Net Worth Trend <span class="lock-tag pro-only-hide">PRO</span></button>
+        <div class="explain-section" id="explainSection">
+          <span class="section-label">What went into your grade</span>
+          <div id="explainList" class="explain-list"></div>
+        </div>
+
+        <details class="methodology-compact">
+          <summary>How is my grade calculated?</summary>
+          <p>Your grade weighs five aspects of your financial position and compares them against age-adjusted benchmarks: <b>Income Strength (25%)</b>, <b>Savings Rate (20%)</b>, <b>Non-mortgage Debt (20%)</b>, <b>Age-based Net Worth (20%)</b>, and <b>Emergency Fund (15%)</b>. Full assumptions and privacy details are further down this report.</p>
+        </details>
       </div>
 
-      <div class="flow-view active" id="flowAssets">
-        <div class="flow-header"><h3>Assets Flow</h3><div class="flow-sub" id="flowAssetsSub">—</div></div>
-        <svg id="flowAssetsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Assets flow diagram"></svg>
-        <div class="flow-legend" id="flowAssetsLegend"></div>
-      </div>
+      <div class="dash-panel" id="dashPanel-nextsteps">
+        <div class="weakest-link-pill" id="weakestLinkPill">Weakest link: <b id="weakestLinkPillText">—</b></div>
 
-      <div class="flow-view" id="flowLiabs">
-        <div class="flow-header"><h3>Liabilities Flow</h3><div class="flow-sub" id="flowLiabsSub">—</div></div>
-        <svg id="flowLiabsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Liabilities flow diagram"></svg>
-        <div class="flow-legend" id="flowLiabsLegend"></div>
-      </div>
+        <div class="report-section">
+          <span class="section-label">Your biggest opportunities</span>
+          <div id="opportunitiesList" class="opportunities-list"></div>
+        </div>
 
-      <div class="flow-view" id="flowIncome">
-        <div class="flow-header"><h3>Income &amp; Savings Flow</h3><div class="flow-sub" id="flowIncomeSub">—</div></div>
-        <svg id="flowIncomeSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Income and savings flow diagram"></svg>
-        <div class="flow-legend" id="flowIncomeLegend"></div>
-      </div>
+        <div class="report-section">
+          <span class="section-label">Your next moves</span>
+          <ol id="pathList" class="moves-list"></ol>
+          <div class="small">Est. point gains are approximate based on our weighting.</div>
+        </div>
 
-      <div class="flow-view" id="flowGrowth">
-        <div class="flow-header"><h3>Net Worth Trend</h3><div class="flow-sub pro-only-hide">Pro feature</div><div class="flow-sub pro-only-show" style="display:none" id="flowGrowthSub">—</div></div>
-        <div class="flow-lock pro-only-hide">🔒 See your projected net worth over the next 30 years — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
-        <div class="pro-only-show" style="display:none">
-          <svg id="flowGrowthSvg" width="100%" height="280" viewBox="0 0 900 280" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth trend chart"></svg>
+        <div class="card" style="margin-top:16px">
+          <span class="section-label">What-if projections</span>
+          <div style="display:grid;gap:12px">
+            <label style="display:grid;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span>Reduce monthly expenses</span><strong class="mono" id="projExpVal">-$0</strong></div>
+              <input id="projExp" type="range" min="0" max="2000" step="50" value="0" aria-label="Reduce monthly expenses">
+            </label>
+            <label style="display:grid;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span>One-time debt payoff</span><strong class="mono" id="projDebtVal">$0</strong></div>
+              <input id="projDebt" type="range" min="0" max="20000" step="500" value="0" aria-label="One-time debt payoff">
+            </label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <div class="badge" id="projBadge">Projected: —</div>
+              <div id="projText" class="small" style="font-weight:700">Adjust sliders to preview your new grade.</div>
+              <button id="applyProjection" class="btn sm" type="button">Apply to inputs</button>
+            </div>
+            <div class="small" id="projNotes">Preview updates live. Clicking "Apply to inputs" recalculates your full report immediately.</div>
+            <div class="pro-lock">🔒 Save & name multiple scenarios — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
+            <div class="pro-gated" id="scenarioBox">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                <input id="scenarioName" type="text" placeholder="Name this scenario (e.g. \"No car payment\")" style="flex:1 1 200px;padding:10px 12px;border-radius:9px;border:1px solid var(--line);background:var(--bg-2);color:var(--text);font-size:13px">
+                <button class="btn sm" id="saveScenario" type="button">Save scenario</button>
+              </div>
+              <div id="scenarioList" style="display:grid;gap:8px;margin-top:10px"></div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <div class="dash-panel" id="dashPanel-details">
+        <div class="rc-head"><div>Category</div><div>Details</div><div>Grade</div></div>
+        <div class="rc-rows" id="rcRows"></div>
+      </div>
+
+      <div class="dash-panel" id="dashPanel-flow">
+        <div class="flow-panel" style="margin:0">
+          <div class="flow-tabs" id="flowTabs">
+            <button class="flow-tab active" data-view="flowAssets">Assets Flow</button>
+            <button class="flow-tab" data-view="flowLiabs">Liabilities Flow</button>
+            <button class="flow-tab" data-view="flowIncome">Income &amp; Savings</button>
+            <button class="flow-tab" data-view="flowGrowth">Net Worth Trend <span class="lock-tag pro-only-hide">PRO</span></button>
+          </div>
+
+          <div class="flow-view active" id="flowAssets">
+            <div class="flow-header"><h3>Assets Flow</h3><div class="flow-sub" id="flowAssetsSub">—</div></div>
+            <svg id="flowAssetsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Assets flow diagram"></svg>
+            <div class="flow-legend" id="flowAssetsLegend"></div>
+          </div>
+
+          <div class="flow-view" id="flowLiabs">
+            <div class="flow-header"><h3>Liabilities Flow</h3><div class="flow-sub" id="flowLiabsSub">—</div></div>
+            <svg id="flowLiabsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Liabilities flow diagram"></svg>
+            <div class="flow-legend" id="flowLiabsLegend"></div>
+          </div>
+
+          <div class="flow-view" id="flowIncome">
+            <div class="flow-header"><h3>Income &amp; Savings Flow</h3><div class="flow-sub" id="flowIncomeSub">—</div></div>
+            <svg id="flowIncomeSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Income and savings flow diagram"></svg>
+            <div class="flow-legend" id="flowIncomeLegend"></div>
+          </div>
+
+          <div class="flow-view" id="flowGrowth">
+            <div class="flow-header"><h3>Net Worth Trend</h3><div class="flow-sub pro-only-hide">Pro feature</div><div class="flow-sub pro-only-show" style="display:none" id="flowGrowthSub">—</div></div>
+            <div class="flow-lock pro-only-hide">🔒 See your projected net worth over the next 30 years — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
+            <div class="pro-only-show" style="display:none">
+              <svg id="flowGrowthSvg" width="100%" height="280" viewBox="0 0 900 280" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth trend chart"></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="dashPanel-planning">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <span class="section-label" style="margin:0">Net worth projection <span class="pro-badge">★ PRO</span></span>
+            <span id="nwpCaption" class="small">—</span>
+          </div>
+          <div class="pro-lock">🔒 See where you're headed — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
+          <div class="pro-gated" id="nwpBox">
+            <label style="display:grid;gap:6px;margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span>Assumed annual return</span><strong class="mono" id="nwpRateVal">7.0%</strong></div>
+              <input id="nwpRate" type="range" min="3" max="10" step="0.5" value="7" aria-label="Assumed annual return">
+            </label>
+            <svg id="nwpChart" width="100%" height="200" viewBox="0 0 640 200" preserveAspectRatio="none" role="img" aria-label="Net worth projection chart"></svg>
+            <div id="nwpMilestones" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px"></div>
+            <div class="small" style="margin-top:8px">Assumes you keep investing your current monthly surplus (income minus expenses) at this return, compounded annually. Doesn't account for inflation, market swings, or life changes — an estimate, not a promise.</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <span class="section-label" style="margin:0">Debt payoff planner <span class="pro-badge">★ PRO</span></span>
+            <span id="dppCaption" class="small">—</span>
+          </div>
+          <div class="pro-lock">🔒 See exactly when you'll be debt-free — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
+          <div class="pro-gated" id="dppBox">
+            <div class="segmented" style="margin-bottom:8px">
+              <button id="dppAvalanche" type="button">Avalanche</button>
+              <button id="dppSnowball" type="button">Snowball</button>
+            </div>
+            <div id="dppStrategyExplainer" class="small" style="margin-bottom:14px;color:var(--muted)"></div>
+            <div id="dppSameOrderNote" class="small" style="display:none;margin-bottom:10px;color:var(--muted)"></div>
+            <div id="dppRatesWrap" style="display:grid;gap:8px;margin-bottom:14px"></div>
+            <label style="display:grid;gap:6px;margin-bottom:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span>Extra monthly payment (beyond minimums)</span><strong class="mono" id="dppExtraVal">$0</strong></div>
+              <input id="dppExtra" type="range" min="0" max="1000" step="25" value="0" aria-label="Extra monthly debt payment">
+            </label>
+            <div id="dppSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px"></div>
+            <div id="dppTimeline" style="display:grid;gap:8px"></div>
+            <div id="dppNoDebt" class="small" style="display:none;padding:16px;text-align:center">No non-mortgage debt entered — nothing to plan here. 🎉</div>
+            <div class="small" style="margin-top:10px">Rates default to typical averages (credit cards ~24%, auto loans ~7%, student loans ~6%) — edit them above with your real rates for a more accurate comparison. A simplified estimate either way, not an exact payoff date. Mortgage isn't included.</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <span class="section-label" style="margin:0">Retirement readiness <span class="pro-badge">★ PRO</span></span>
+            <span id="rrCaption" class="small">—</span>
+          </div>
+          <div class="pro-lock">🔒 See if your 401k/IRA alone is on track — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
+          <div class="pro-gated" id="rrBox">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <span class="small">Retirement balance vs. target for your age</span>
+              <strong class="mono" id="rrPct">—</strong>
+            </div>
+            <div class="progress" style="margin-top:0"><div id="rrBar" style="width:0%"></div></div>
+            <div id="rrSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px"></div>
+            <div class="small" style="margin-top:10px">Benchmark: common salary-multiple milestones (roughly 1× income by 30, 3× by 40, 6× by 50, 10× by 67). This looks at your retirement accounts specifically — separate from the broader net-worth-for-age score above, which also includes home equity, cash, and other assets.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="dashPanel-achievements">
+        <div class="card">
+          <span class="section-label" style="margin:0 0 12px">Achievements</span>
+          <div id="achievementsGrid" class="achv-grid"></div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="card" style="margin-top:14px">
-      <span class="section-label" style="margin:0 0 12px">Achievements</span>
-      <div id="achievementsGrid" class="achv-grid"></div>
-    </div>
+    <div id="milestoneBanner" class="compare-banner" style="display:none;margin:16px 0"></div>
 
     <div class="subscribe-inline pulse" id="subscribeInlineRC">
       <div class="sub-row" style="margin-bottom:8px">
@@ -1138,104 +1362,6 @@ body.is-pro .ad-slot{ display:none !important }
         <input type="email" name="email" placeholder="you@example.com" required>
         <button type="submit" class="btn gold sm" id="subBtnRC">Subscribe</button>
       </form>
-    </div>
-
-    <div class="card" style="margin-top:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <span class="section-label" style="margin:0">Net worth projection <span class="pro-badge">★ PRO</span></span>
-        <span id="nwpCaption" class="small">—</span>
-      </div>
-      <div class="pro-lock">🔒 See where you're headed — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
-      <div class="pro-gated" id="nwpBox">
-        <label style="display:grid;gap:6px;margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;align-items:center"><span>Assumed annual return</span><strong class="mono" id="nwpRateVal">7.0%</strong></div>
-          <input id="nwpRate" type="range" min="3" max="10" step="0.5" value="7" aria-label="Assumed annual return">
-        </label>
-        <svg id="nwpChart" width="100%" height="200" viewBox="0 0 640 200" preserveAspectRatio="none" role="img" aria-label="Net worth projection chart"></svg>
-        <div id="nwpMilestones" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px"></div>
-        <div class="small" style="margin-top:8px">Assumes you keep investing your current monthly surplus (income minus expenses) at this return, compounded annually. Doesn't account for inflation, market swings, or life changes — an estimate, not a promise.</div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <span class="section-label" style="margin:0">Debt payoff planner <span class="pro-badge">★ PRO</span></span>
-        <span id="dppCaption" class="small">—</span>
-      </div>
-      <div class="pro-lock">🔒 See exactly when you'll be debt-free — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
-      <div class="pro-gated" id="dppBox">
-        <div class="segmented" style="margin-bottom:8px">
-          <button id="dppAvalanche" type="button">Avalanche</button>
-          <button id="dppSnowball" type="button">Snowball</button>
-        </div>
-        <div id="dppStrategyExplainer" class="small" style="margin-bottom:14px;color:var(--muted)"></div>
-        <div id="dppSameOrderNote" class="small" style="display:none;margin-bottom:10px;color:var(--muted)"></div>
-        <div id="dppRatesWrap" style="display:grid;gap:8px;margin-bottom:14px"></div>
-        <label style="display:grid;gap:6px;margin-bottom:12px">
-          <div style="display:flex;justify-content:space-between;align-items:center"><span>Extra monthly payment (beyond minimums)</span><strong class="mono" id="dppExtraVal">$0</strong></div>
-          <input id="dppExtra" type="range" min="0" max="1000" step="25" value="0" aria-label="Extra monthly debt payment">
-        </label>
-        <div id="dppSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px"></div>
-        <div id="dppTimeline" style="display:grid;gap:8px"></div>
-        <div id="dppNoDebt" class="small" style="display:none;padding:16px;text-align:center">No non-mortgage debt entered — nothing to plan here. 🎉</div>
-        <div class="small" style="margin-top:10px">Rates default to typical averages (credit cards ~24%, auto loans ~7%, student loans ~6%) — edit them above with your real rates for a more accurate comparison. A simplified estimate either way, not an exact payoff date. Mortgage isn't included.</div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <span class="section-label" style="margin:0">Retirement readiness <span class="pro-badge">★ PRO</span></span>
-        <span id="rrCaption" class="small">—</span>
-      </div>
-      <div class="pro-lock">🔒 See if your 401k/IRA alone is on track — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
-      <div class="pro-gated" id="rrBox">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <span class="small">Retirement balance vs. target for your age</span>
-          <strong class="mono" id="rrPct">—</strong>
-        </div>
-        <div class="progress" style="margin-top:0"><div id="rrBar" style="width:0%"></div></div>
-        <div id="rrSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px"></div>
-        <div class="small" style="margin-top:10px">Benchmark: common salary-multiple milestones (roughly 1× income by 30, 3× by 40, 6× by 50, 10× by 67). This looks at your retirement accounts specifically — separate from the broader net-worth-for-age score above, which also includes home equity, cash, and other assets.</div>
-      </div>
-    </div>
-
-    <div class="report-section">
-      <span class="section-label">Your biggest opportunities</span>
-      <div id="opportunitiesList" class="opportunities-list"></div>
-    </div>
-
-    <div class="report-section">
-      <span class="section-label">Your next moves</span>
-      <ol id="pathList" class="moves-list"></ol>
-      <div class="small">Est. point gains are approximate based on our weighting.</div>
-    </div>
-
-    <div class="card" style="margin-top:16px">
-      <span class="section-label">What-if projections</span>
-      <div style="display:grid;gap:12px">
-        <label style="display:grid;gap:6px">
-          <div style="display:flex;justify-content:space-between;align-items:center"><span>Reduce monthly expenses</span><strong class="mono" id="projExpVal">-$0</strong></div>
-          <input id="projExp" type="range" min="0" max="2000" step="50" value="0" aria-label="Reduce monthly expenses">
-        </label>
-        <label style="display:grid;gap:6px">
-          <div style="display:flex;justify-content:space-between;align-items:center"><span>One-time debt payoff</span><strong class="mono" id="projDebtVal">$0</strong></div>
-          <input id="projDebt" type="range" min="0" max="20000" step="500" value="0" aria-label="One-time debt payoff">
-        </label>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <div class="badge" id="projBadge">Projected: —</div>
-          <div id="projText" class="small" style="font-weight:700">Adjust sliders to preview your new grade.</div>
-          <button id="applyProjection" class="btn sm" type="button">Apply to inputs</button>
-        </div>
-        <div class="small" id="projNotes">Preview updates live. Clicking "Apply to inputs" recalculates your full report immediately.</div>
-        <div class="pro-lock">🔒 Save & name multiple scenarios — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
-        <div class="pro-gated" id="scenarioBox">
-          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-            <input id="scenarioName" type="text" placeholder="Name this scenario (e.g. \"No car payment\")" style="flex:1 1 200px;padding:10px 12px;border-radius:9px;border:1px solid var(--line);background:var(--bg-2);color:var(--text);font-size:13px">
-            <button class="btn sm" id="saveScenario" type="button">Save scenario</button>
-          </div>
-          <div id="scenarioList" style="display:grid;gap:8px;margin-top:10px"></div>
-        </div>
-      </div>
     </div>
 
     <div class="subscribe-inline" style="margin-top:12px">
@@ -2254,6 +2380,21 @@ function drawCharts(v){
   renderIncomeSavingsFlow(v);
   renderNetWorthTrendTab(v);
 }
+(function setupDashTabs(){
+  var tabs = document.querySelectorAll(".dash-tab");
+  var panels = document.querySelectorAll(".dash-panel");
+  if(!tabs.length) return;
+  tabs.forEach(function(tab){
+    tab.addEventListener("click", function(){
+      tabs.forEach(function(t){ t.classList.remove("active"); });
+      panels.forEach(function(p){ p.classList.remove("active"); });
+      tab.classList.add("active");
+      var target = document.getElementById("dashPanel-"+tab.dataset.dtab);
+      if(target) target.classList.add("active");
+      __track('dash_tab_view', {tab: tab.dataset.dtab});
+    });
+  });
+})();
 (function setupFlowTabs(){
   var tabs = document.querySelectorAll(".flow-tab");
   var views = document.querySelectorAll(".flow-view");
@@ -2626,12 +2767,14 @@ function openReport(v,cats){
   (function animateScoreReveal(){
     var target = cats.overall.score, startTime = null, duration = 900;
     var suffix = "/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
+    var dashScoreNum = $("dashScoreNum");
     function step(ts){
       if(!startTime) startTime = ts;
       var progress = Math.min(1, (ts - startTime) / duration);
       var eased = 1 - Math.pow(1 - progress, 3);
       var current = (target * eased);
       rcMeta.textContent = "Overall "+current.toFixed(1)+suffix;
+      if(dashScoreNum) dashScoreNum.textContent = current.toFixed(1);
       if(progress < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -2643,6 +2786,7 @@ function openReport(v,cats){
     ["A+","A","A-","B+"].includes(letterClean) ? "good" :
     (["B","B-","C+","C","C-"].includes(letterClean) ? "mid" : "bad")
   );
+  rcGrade.style.setProperty('--ring-pct', String(Math.max(0, Math.min(100, cats.overall.score))));
 
   rcRows.innerHTML="";
   cats.components.forEach(function(c){
@@ -2692,6 +2836,12 @@ function openReport(v,cats){
     if($("snapExpenses")) $("snapExpenses").textContent = money(v.expenses);
     if($("snapDebt")) $("snapDebt").textContent = money(v.liabs);
     if($("snapSavingsRate")) $("snapSavingsRate").textContent = Math.round(v.saveRate*100)+"%";
+    var fbFill = $("dashFlowBarFill"), fbCaption = $("dashFlowBarCaption");
+    if(fbFill){
+      var savePct = Math.max(0, Math.min(100, Math.round(v.saveRate*100)));
+      fbFill.style.width = savePct+"%";
+      if(fbCaption) fbCaption.textContent = savePct+"% of income saved — the rest covers monthly expenses";
+    }
   })();
 
   (function renderExplainAndOpportunities(){
