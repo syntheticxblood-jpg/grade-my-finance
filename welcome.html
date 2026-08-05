@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@600&display=swap" rel="stylesheet">
 
   <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H6223HYVS6"></script>
@@ -21,13 +21,15 @@
 
   <style>
     :root{
-      --bg:#0A0B0E; --surface:#14161C; --line:rgba(255,255,255,.09);
-      --text:#F2F3F5; --muted:#8B92A0;
-      --gold:#C9A227; --gold-soft:rgba(201,162,39,.14); --gold-bright:#E4C24E;
-      --shadow:0 20px 50px rgba(0,0,0,.45);
+      --bg:#0A0B0E; --bg-2:#0E1015; --surface:#14161C; --surface-2:#1A1D25; --line:rgba(255,255,255,.08);
+      --text:#F2F3F5; --muted:#8B92A0; --muted-2:#5D636F;
+      --gold:#C9A227; --gold-soft:rgba(201,162,39,.12); --gold-bright:#E4C24E;
+      --good:#34D399; --bad:#F16565;
+      --shadow:0 24px 60px rgba(0,0,0,.5);
       --font-display:'Space Grotesk',system-ui,sans-serif;
       --font-body:'Inter',system-ui,sans-serif;
       --font-mono:'IBM Plex Mono',monospace;
+      --font-serif:'Fraunces',serif;
     }
     *{box-sizing:border-box}
     html{ overflow-x:hidden }
@@ -40,102 +42,144 @@
     }
 
     .aurora{ position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none }
-    .aurora span{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.5 }
-    .aurora .a1{ width:460px; height:460px; top:-160px; left:6%; background:radial-gradient(circle, rgba(201,162,39,.45), transparent 70%); animation:auroraDrift1 16s ease-in-out infinite }
-    .aurora .a2{ width:380px; height:380px; bottom:-140px; right:4%; background:radial-gradient(circle, rgba(52,211,153,.25), transparent 70%); animation:auroraDrift2 19s ease-in-out infinite }
-    .aurora .a3{ width:320px; height:320px; top:40%; left:60%; background:radial-gradient(circle, rgba(228,194,78,.28), transparent 70%); animation:auroraDrift3 22s ease-in-out infinite }
+    .aurora span{ position:absolute; border-radius:50%; filter:blur(80px); opacity:.35 }
+    .aurora .a1{ width:460px; height:460px; top:-180px; left:6%; background:radial-gradient(circle, rgba(201,162,39,.4), transparent 70%); animation:auroraDrift1 18s ease-in-out infinite }
+    .aurora .a2{ width:380px; height:380px; bottom:-160px; right:4%; background:radial-gradient(circle, rgba(52,211,153,.2), transparent 70%); animation:auroraDrift2 21s ease-in-out infinite }
     @keyframes auroraDrift1{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(50px,40px) scale(1.15) } }
     @keyframes auroraDrift2{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(-40px,-30px) scale(1.1) } }
-    @keyframes auroraDrift3{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(-30px,40px) scale(1.2) } }
     @media (prefers-reduced-motion: reduce){ .aurora span{ animation:none } }
 
-    .lines{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.5 }
+    .lines{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.28 }
 
-    .rise{ opacity:0; transform:translateY(18px); animation:riseIn .7s cubic-bezier(.16,1,.3,1) forwards; animation-delay:var(--d,0s) }
+    .rise{ opacity:0; transform:translateY(16px); animation:riseIn .7s cubic-bezier(.16,1,.3,1) forwards; animation-delay:var(--d,0s) }
     @keyframes riseIn{ to{ opacity:1; transform:none } }
     @media (prefers-reduced-motion: reduce){ .rise{ animation:none; opacity:1; transform:none } }
 
+    /* ---------- Top nav: intentional, not a floating pill afterthought ---------- */
+    .welcome-hdr{
+      position:relative; z-index:1; width:100%; max-width:480px;
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:26px;
+    }
+    .welcome-hdr .brandmark{ display:flex; align-items:center; gap:9px; text-decoration:none; color:var(--text) }
+    .welcome-hdr .mini-seal{ width:28px; height:28px; border-radius:8px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; flex:none }
+    .welcome-hdr .mini-seal span{ font-family:var(--font-mono); font-weight:700; font-size:10.5px; color:#1a1300 }
+    .welcome-hdr .mini-word{ font-family:var(--font-display); font-weight:700; font-size:14.5px }
+    .welcome-hdr .advisors-link{
+      font-size:13px; color:var(--muted); text-decoration:none; font-weight:600;
+      padding:7px 14px; border:1px solid var(--line); border-radius:9px;
+      display:inline-flex; align-items:center; gap:6px;
+      transition:border-color .15s ease, color .15s ease, background .15s ease;
+    }
+    .welcome-hdr .advisors-link:hover{ border-color:rgba(201,162,39,.4); color:var(--gold-bright); background:var(--surface) }
+
+    /* ---------- Card: lighter, more like a product surface than a modal ---------- */
     .card{
       position:relative; z-index:1;
-      width:100%; max-width:460px; background:var(--surface); border:1px solid var(--line);
-      border-radius:20px; padding:40px 32px; box-shadow:var(--shadow);
+      width:100%; max-width:480px; background:var(--surface); border:1px solid var(--line);
+      border-radius:22px; padding:44px 36px 36px; box-shadow:var(--shadow);
     }
-    .seal{
-      position:relative; overflow:hidden;
-      width:56px; height:56px; border-radius:14px; margin:0 auto 22px;
-      background:linear-gradient(155deg,var(--gold-bright),var(--gold));
-      display:grid; place-items:center;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 8px 20px rgba(201,162,39,.28);
+
+    /* ---------- Grade badge — the visual hero ---------- */
+    .grade-hero{ margin-bottom:26px }
+    .grade-badge{
+      position:relative; width:104px; height:104px; margin:0 auto 14px; border-radius:26px;
+      background:linear-gradient(165deg, #1a1607, var(--bg-2) 60%);
+      border:1.5px solid rgba(201,162,39,.4);
+      display:grid; place-items:center; overflow:hidden;
+      box-shadow: 0 0 0 1px rgba(201,162,39,.08), 0 20px 40px -12px rgba(201,162,39,.25), inset 0 1px 0 rgba(255,255,255,.05);
     }
-    .seal::after{
-      content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
-      background:linear-gradient(75deg, transparent, rgba(255,255,255,.6), transparent);
-      animation:sealShimmer 1.6s ease-in-out .7s 1;
+    .grade-badge span{ font-family:var(--font-serif); font-weight:700; font-size:40px; color:var(--gold-bright); letter-spacing:-.02em }
+    .grade-badge::after{
+      content:""; position:absolute; top:0; left:-60%; width:40%; height:100%; border-radius:26px; overflow:hidden;
+      background:linear-gradient(75deg, transparent, rgba(255,255,255,.35), transparent);
+      animation:sealShimmer 1.8s ease-in-out .5s 1;
     }
     @keyframes sealShimmer{ 0%{ left:-60% } 100%{ left:140% } }
-    @media (prefers-reduced-motion: reduce){ .seal::after{ animation:none } }
-    .seal span{ font-family:var(--font-mono); font-weight:700; font-size:18px; color:#1a1300 }
-    h1{ font-family:var(--font-display); font-size:1.7rem; margin:0 0 10px; letter-spacing:-.01em }
-    p.lede{ max-width:360px; margin:0 auto 20px; font-size:15.5px; line-height:1.5; color:var(--muted) }
+    @media (prefers-reduced-motion: reduce){ .grade-badge::after{ animation:none } }
+    .grade-hero-label{ font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted-2) }
+
+    h1{ font-family:var(--font-display); font-size:1.6rem; margin:14px 0 8px; letter-spacing:-.015em; line-height:1.2 }
+    p.lede{ max-width:340px; margin:0 auto 26px; font-size:14.5px; line-height:1.5; color:var(--muted) }
+
     .live-stat{
-      display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:12px;
-      color:var(--gold-bright); background:var(--gold-soft); border:1px solid rgba(201,162,39,.35);
-      padding:6px 12px; border-radius:999px; margin-bottom:22px;
+      display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:11.5px;
+      color:var(--gold-bright); background:var(--gold-soft); border:1px solid rgba(201,162,39,.3);
+      padding:6px 13px; border-radius:999px; margin-bottom:24px;
     }
-    form{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:14px }
-    .survey{ margin-bottom:18px; text-align:left }
-    .survey-label{ font-size:12.5px; color:var(--muted); margin-bottom:9px; font-weight:600 }
+
+    /* ---------- Survey ---------- */
+    .survey{ margin-bottom:20px; text-align:left }
+    .survey-label{ font-size:12px; color:var(--muted); margin-bottom:9px; font-weight:600 }
     .survey-options{ display:flex; flex-wrap:wrap; gap:7px }
     .survey-pill{
-      appearance:none; border:1px solid var(--line); background:#0E1015; color:var(--muted);
+      appearance:none; border:1px solid var(--line); background:var(--bg-2); color:var(--muted);
       font-family:var(--font-body); font-size:12.5px; padding:7px 12px; border-radius:999px; cursor:pointer;
       transition:border-color .12s ease, color .12s ease, background .12s ease;
     }
     .survey-pill:hover{ border-color:var(--gold) }
+    .survey-pill:focus-visible{ outline:2px solid var(--gold-bright); outline-offset:2px }
     .survey-pill.selected{ background:var(--gold-soft); border-color:var(--gold); color:var(--gold-bright); font-weight:700 }
+    .survey-pill-skip{
+      display:block; margin-top:9px; border-style:dashed; font-size:12px; color:var(--muted-2); opacity:.85;
+    }
+    .survey-pill-skip:hover{ opacity:1; color:var(--muted) }
+    .survey-pill-skip.selected{ background:var(--surface-2); border-color:var(--muted-2); border-style:dashed; color:var(--muted); font-weight:600 }
+
+    /* ---------- Primary action: this is the obvious next step ---------- */
+    .primary-action{ margin-bottom:6px }
+    .email-field-label{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; text-align:left }
+    .email-field-label span:first-child{ font-size:12.5px; color:var(--muted); font-weight:600 }
+    .email-field-label span.opt{ font-size:11px; color:var(--muted-2); font-family:var(--font-mono) }
     input[type="email"]{
-      flex:1 1 220px; padding:13px 14px; border-radius:10px; border:1px solid var(--line);
-      background:#0E1015; color:var(--text); font-family:var(--font-mono); font-size:14.5px;
+      width:100%; padding:14px 15px; border-radius:11px; border:1px solid var(--line);
+      background:var(--bg-2); color:var(--text); font-family:var(--font-mono); font-size:14.5px;
+      margin-bottom:14px; transition:border-color .15s ease, box-shadow .15s ease;
     }
     input[type="email"]:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-soft) }
+    input[type="email"]:hover:not(:focus){ border-color:var(--muted-2) }
     .btn{
       appearance:none; border:1px solid var(--line); font-family:var(--font-body); font-weight:600;
-      font-size:14.5px; padding:12px 20px; border-radius:10px; cursor:pointer; width:100%;
-      transition:transform .12s ease, filter .12s ease;
+      font-size:14.5px; padding:14px 20px; border-radius:11px; cursor:pointer; width:100%;
+      transition:transform .12s ease, filter .12s ease, box-shadow .15s ease;
     }
-    .btn:hover{ filter:brightness(1.08) }
+    .btn:hover{ filter:brightness(1.06) }
     .btn:active{ transform:translateY(1px) }
-    .btn.gold{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700 }
-    .btn.ghost{ background:transparent; color:var(--text); margin-top:10px }
-    .btn.text{ background:transparent; color:var(--muted); border-color:transparent; margin-top:2px; font-size:13px; padding:8px }
+    .btn.gold{
+      background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700;
+      box-shadow:0 10px 24px -8px rgba(201,162,39,.5);
+    }
+    .btn.gold:hover{ box-shadow:0 14px 30px -8px rgba(201,162,39,.6) }
+    .btn.gold:focus-visible{ outline:2px solid var(--gold-bright); outline-offset:3px }
+    .btn.gold:disabled{ opacity:.75; cursor:default }
     .skip-link{
-      display:block; width:100%; margin-top:16px; background:none; border:none; padding:6px;
-      color:var(--muted); font-family:var(--font-body); font-size:13.5px; text-decoration:underline;
-      text-underline-offset:3px; cursor:pointer; text-align:center;
+      display:block; width:100%; margin-top:14px; background:none; border:none; padding:6px;
+      color:var(--muted); font-family:var(--font-body); font-size:13px;
+      cursor:pointer; text-align:center; transition:color .12s ease;
     }
-    .skip-link:hover{ color:var(--text) }
-    .foot-note{ margin-top:22px; font-size:12px; color:#5D636F }
+    .skip-link:hover{ color:var(--text); text-decoration:underline; text-underline-offset:3px }
 
-    /* ---------- Minimal top bar (brand + advisors link only) ---------- */
-    .welcome-hdr{
-      position:relative; z-index:1; width:100%; max-width:460px;
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:18px;
+    .survey-error{ display:none; color:var(--bad); font-size:12.5px; margin-top:8px; text-align:left }
+
+    .foot-note{ margin-top:24px; font-size:12px; color:var(--muted-2) }
+    .foot-note a{ color:var(--muted) }
+    .foot-note.discord{ margin-top:10px }
+    .foot-note.discord a{ color:var(--gold); text-decoration:none; font-weight:600 }
+
+    @media (max-width:480px){
+      .card{ padding:34px 22px 28px; border-radius:18px }
+      .grade-badge{ width:88px; height:88px; border-radius:22px }
+      .grade-badge span{ font-size:34px }
+      h1{ font-size:1.4rem }
     }
-    .welcome-hdr .brandmark{ display:flex; align-items:center; gap:9px; text-decoration:none; color:var(--text) }
-    .welcome-hdr .mini-seal{ width:26px; height:26px; border-radius:7px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; flex:none }
-    .welcome-hdr .mini-seal span{ font-family:var(--font-mono); font-weight:700; font-size:10px; color:#1a1300 }
-    .welcome-hdr .mini-word{ font-family:var(--font-display); font-weight:700; font-size:14px }
-    .welcome-hdr .advisors-link{ font-size:13px; color:var(--muted); text-decoration:none; font-weight:600; padding:6px 12px; border:1px solid var(--line); border-radius:999px; transition:border-color .12s ease, color .12s ease }
-    .welcome-hdr .advisors-link:hover{ border-color:var(--gold); color:var(--gold-bright) }
   </style>
 </head>
 <body>
-  <div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+  <div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span></div>
   <svg class="lines" aria-hidden="true" width="100%" height="100%" viewBox="0 0 800 800" preserveAspectRatio="none">
-    <polyline points="0,700 150,650 300,560 450,440 600,320 800,200" fill="none" stroke="#C9A227" stroke-width="2" opacity="0.35"/>
-    <circle cx="300" cy="560" r="4" fill="#E4C24E" opacity="0.6"/>
-    <circle cx="600" cy="320" r="4" fill="#E4C24E" opacity="0.6"/>
+    <polyline points="0,700 150,650 300,560 450,440 600,320 800,200" fill="none" stroke="#C9A227" stroke-width="2" opacity="0.3"/>
+    <circle cx="300" cy="560" r="4" fill="#E4C24E" opacity="0.5"/>
+    <circle cx="600" cy="320" r="4" fill="#E4C24E" opacity="0.5"/>
   </svg>
 
   <div class="welcome-hdr rise" style="--d:0s">
@@ -147,9 +191,13 @@
   </div>
 
   <div class="card rise" style="--d:.08s">
-    <div class="seal"><span>A+</span></div>
-    <h1>Welcome to Grade My Finance</h1>
-    <p class="lede">Get your free financial grade in seconds. Add your email and we'll send you today's grade to keep — plus the occasional tip if you want to raise it.</p>
+    <div class="grade-hero">
+      <div class="grade-badge"><span>A+</span></div>
+      <div class="grade-hero-label">Your Financial Grade</div>
+    </div>
+
+    <h1>How healthy is your financial life?</h1>
+    <p class="lede">Get your personalized financial grade in seconds.</p>
     <div class="live-stat" id="liveStat">Loading live stats…</div>
 
     <div class="survey" id="surveyBlock">
@@ -164,30 +212,34 @@
         <button type="button" class="survey-pill" data-source="friend">A friend</button>
         <button type="button" class="survey-pill" data-source="other">Other</button>
       </div>
+      <button type="button" class="survey-pill survey-pill-skip" data-source="skipped">Prefer not to say</button>
       <div id="otherDetailWrap" style="display:none;margin-top:10px">
         <input type="text" id="otherDetailInput" placeholder="Where, if you don't mind sharing (optional)" maxlength="120"
           style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:inherit;font-size:13.5px">
       </div>
-      <div id="surveyError" style="display:none;color:var(--bad,#F16565);font-size:12.5px;margin-top:8px">Please pick one before continuing.</div>
+      <div id="surveyError" class="survey-error">Please pick one before continuing.</div>
     </div>
 
     <form id="emailForm"
           action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
-          method="POST">
+          method="POST" class="primary-action" novalidate>
       <input type="hidden" name="source" id="sourceField" value="">
       <input type="hidden" name="sourceDetail" id="sourceDetailField" value="">
       <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
         style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
       <input type="hidden" name="t" value="">
-      <input type="email" name="email" placeholder="you@example.com" required>
-      <button type="submit" class="btn gold" style="flex:1 1 100%;margin-top:2px">Get My Grade + Email Me a Copy</button>
+
+      <div class="email-field-label"><span>Email address</span><span class="opt">optional</span></div>
+      <input type="email" name="email" placeholder="you@example.com">
+
+      <button type="submit" class="btn gold">Get My Financial Grade</button>
     </form>
 
     <button onclick="continueSession()" class="skip-link">Continue without email</button>
 
-    <div class="foot-note">No spam. Unsubscribe anytime. Calculations run locally in your browser. <a href="privacy-policy.html" style="color:var(--muted)">Privacy Policy</a></div>
-    <div class="foot-note" style="margin-top:10px">
-      <a href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-weight:600">💬 Join our Discord community</a>
+    <div class="foot-note">No spam. Unsubscribe anytime. Calculations run locally in your browser. <a href="privacy-policy.html">Privacy Policy</a></div>
+    <div class="foot-note discord">
+      <a href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">💬 Join our Discord community</a>
     </div>
   </div>
 
@@ -279,15 +331,28 @@
       if(!requireSourceSelection()) return;
       const emailInput = emailForm.querySelector('input[name="email"]');
       const email = emailInput.value.trim();
-      if(!/^\S+@\S+\.\S+$/.test(email)){
-        alert("Enter a valid email.");
+
+      // Email is optional now — only validate format if something was
+      // actually typed. An empty field just proceeds, same as clicking
+      // "Continue without email" below.
+      if(email && !/^\S+@\S+\.\S+$/.test(email)){
+        alert("That doesn't look like a valid email — leave it blank to skip, or fix the format.");
         return;
       }
+
       const submitBtn = emailForm.querySelector('button[type="submit"]');
       if(submitBtn.disabled) return; // already submitting - ignore extra clicks entirely
+
+      if(!email){
+        // Nothing to submit — go straight to the app, same as the skip link.
+        sessionStorage.setItem('skipWelcomeSession', 'true');
+        window.location.href = 'index.html';
+        return;
+      }
+
       const originalBtnText = submitBtn.textContent;
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Joining...';
+      submitBtn.textContent = 'Getting your grade...';
 
       localStorage.setItem('submittedEmail','true');
       fetch(emailForm.action, { method: 'POST', body: new FormData(emailForm) })
