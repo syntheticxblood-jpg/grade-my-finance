@@ -2796,6 +2796,27 @@ function personalizeSubscribe(weak, newlyUnlocked, checkin){
   if(box){ box.classList.remove('pulse'); void box.offsetWidth; box.classList.add('pulse'); }
 }
 
+// Animates the score ring filling from 0 up to the real score on reveal,
+// rather than appearing instantly fully-drawn. Uses requestAnimationFrame
+// directly on the --ring-pct custom property (read by the conic-gradient
+// in CSS) instead of relying on @property + CSS transitions, so this works
+// the same in every browser regardless of @property support.
+function animateRingFill(el, targetPct){
+  var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(prefersReducedMotion){ el.style.setProperty('--ring-pct', String(targetPct)); return; }
+  var duration = 1100, start = null;
+  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+  function step(ts){
+    if(start === null) start = ts;
+    var elapsed = ts - start;
+    var t = Math.min(1, elapsed / duration);
+    var eased = easeOutCubic(t);
+    el.style.setProperty('--ring-pct', String(targetPct * eased));
+    if(t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
 function openReport(v,cats){
   var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), pathList=$("pathList");
   var modal=$("reportModal");
@@ -2824,7 +2845,8 @@ function openReport(v,cats){
     ["A+","A","A-","B+"].includes(letterClean) ? "good" :
     (["B","B-","C+","C","C-"].includes(letterClean) ? "mid" : "bad")
   );
-  rcGrade.style.setProperty('--ring-pct', String(Math.max(0, Math.min(100, cats.overall.score))));
+  var targetPct = Math.max(0, Math.min(100, cats.overall.score));
+  animateRingFill(rcGrade, targetPct);
 
   rcRows.innerHTML="";
   cats.components.forEach(function(c){
