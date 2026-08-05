@@ -69,6 +69,7 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
   --font-display:'Space Grotesk',system-ui,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji';
   --font-body:'Inter',system-ui,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji';
   --font-mono:'IBM Plex Mono',monospace,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji';
+  --font-serif:'Fraunces',serif;
 }
 :root[data-theme="light"]{
   --bg:#F7F6F3; --bg-2:#FFFFFF;
@@ -825,6 +826,59 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 .plan.free ul li.locked::before{ content:"—"; color:var(--muted-2) }
 .plan.free ul li.locked{ color:var(--muted-2) }
 
+/* ---------- Pro dashboard preview (browser-chrome frame around a real-styled mock) ---------- */
+.pro-dash-frame{ max-width:760px; margin:0 auto; border-radius:16px; overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow) }
+.pro-dash-chrome{ display:flex; align-items:center; gap:7px; padding:12px 16px; background:var(--surface-2); border-bottom:1px solid var(--line) }
+.pro-dash-chrome span{ width:10px; height:10px; border-radius:50%; background:var(--muted-2); opacity:.5 }
+.pro-dash-url{ margin-left:10px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted); background:var(--bg-2); border:1px solid var(--line); border-radius:6px; padding:4px 10px }
+.pro-dash-body{ background:var(--bg-2); padding:26px }
+.pro-dash-head{ display:flex; align-items:center; gap:16px; margin-bottom:22px }
+.pro-dash-grade{ width:52px; height:52px; border-radius:13px; border:2px solid var(--good); color:var(--good); background:rgba(52,211,153,.1); display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-weight:700; font-size:20px; flex:none }
+.pro-dash-head-label{ font-weight:700; font-size:14px }
+.pro-dash-head-label b{ font-family:var(--font-mono); font-weight:600; color:var(--muted); margin-left:6px; font-size:12.5px }
+.pro-dash-head-sub{ font-size:10.5px; color:var(--muted-2); text-transform:uppercase; letter-spacing:.04em; margin-top:2px }
+.pro-dash-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px }
+@media (max-width:700px){ .pro-dash-grid{ grid-template-columns:repeat(2,1fr) } }
+.pro-dash-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:8px }
+.pro-dash-card-label{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600 }
+.pro-dash-card-trend{ font-size:11.5px; color:var(--muted); font-family:var(--font-mono) }
+.pro-dash-card-trend.up{ color:var(--good) }
+.pro-dash-progress{ height:6px; background:var(--surface-2); border-radius:99px; overflow:hidden }
+.pro-dash-progress > div{ height:100%; background:linear-gradient(90deg,var(--good),var(--good)); border-radius:99px }
+.pro-dash-big-num{ font-family:var(--font-serif); font-weight:700; font-size:24px; color:var(--gold-bright) }
+
+/* ---------- Free vs Pro comparison ---------- */
+.fvp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:820px; margin:0 auto }
+@media (max-width:760px){ .fvp-grid{ grid-template-columns:1fr } }
+.fvp-col{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:26px }
+.fvp-col.highlight{ border-color:rgba(201,162,39,.45); box-shadow:0 0 0 1px rgba(201,162,39,.2), var(--shadow) }
+.fvp-col h3{ font-size:19px }
+.fvp-tagline{ color:var(--muted); font-size:13px; margin:4px 0 18px }
+.fvp-list{ list-style:none; margin:0; padding:0; display:grid; gap:11px }
+.fvp-list li{ font-size:13.5px; padding-left:24px; position:relative }
+.fvp-list li::before{ content:"✓"; position:absolute; left:0; color:var(--good); font-weight:700 }
+.fvp-col.highlight .fvp-list li::before{ color:var(--gold-bright) }
+
+/* ---------- Financial journey ---------- */
+.journey-row{ display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative }
+@media (max-width:900px){ .journey-row{ grid-template-columns:repeat(2,1fr); gap:20px } }
+.journey-step{ text-align:center; padding:0 12px; position:relative }
+.journey-step:not(:last-child)::after{ content:"→"; position:absolute; top:14px; right:-4px; color:var(--muted-2); font-size:16px }
+@media (max-width:900px){ .journey-step:not(:last-child)::after{ display:none } }
+.journey-num{ display:inline-flex; width:32px; height:32px; border-radius:50%; align-items:center; justify-content:center; background:var(--gold-soft); color:var(--gold-bright); font-family:var(--font-mono); font-weight:700; font-size:14px; margin-bottom:10px }
+.journey-step h4{ font-size:14.5px; margin-bottom:4px }
+.journey-step p{ font-size:12.5px; color:var(--muted); margin:0 }
+
+/* ---------- Why Pro: then/now/next ---------- */
+.tnn-row{ display:flex; align-items:center; justify-content:center; gap:20px; max-width:640px; margin:0 auto; flex-wrap:wrap }
+.tnn-item{ text-align:center; min-width:110px }
+.tnn-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:700 }
+.tnn-val{ font-family:var(--font-serif); font-weight:700; font-size:34px; margin:6px 0; color:var(--text) }
+.tnn-val.good{ color:var(--good) }
+.tnn-val.gold{ color:var(--gold-bright) }
+.tnn-item p{ font-size:12px; color:var(--muted); margin:0 }
+.tnn-arrow{ font-size:20px; color:var(--muted-2) }
+
 .pro-badge{ display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:10.5px; font-weight:700; color:#1a1300; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); padding:3px 8px; border-radius:6px; letter-spacing:.03em; vertical-align:middle }
 .pro-lock{ display:flex; align-items:center; justify-content:center; gap:8px; padding:16px; border:1px dashed var(--line); border-radius:10px; color:var(--muted); font-size:13px; text-align:center; line-height:1.8 }
 .pro-only-show{ display:none }
@@ -1006,6 +1060,103 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 </section>
 
+<section class="block" id="pro-dashboard-preview">
+  <div class="container">
+    <div class="block-head center">
+      <span class="kicker">Your finances, over time</span>
+      <h2>Your financial grade tells you where you are. Pro shows you whether you're getting better.</h2>
+    </div>
+    <div class="pro-dash-frame">
+      <div class="pro-dash-chrome"><span></span><span></span><span></span><div class="pro-dash-url">grademyfinance.com/dashboard</div></div>
+      <div class="pro-dash-body">
+        <div class="pro-dash-head">
+          <div class="pro-dash-grade">A+</div>
+          <div><div class="pro-dash-head-label">Financial grade <b>100.0 / 100</b></div><div class="pro-dash-head-sub">CONCEPT PREVIEW — illustrative dashboard</div></div>
+        </div>
+        <div class="pro-dash-grid">
+          <div class="pro-dash-card">
+            <span class="pro-dash-card-label">Score history</span>
+            <svg viewBox="0 0 160 46" width="100%" height="46"><polyline points="4,38 30,30 56,32 82,20 108,16 134,8 156,6" fill="none" stroke="var(--gold-bright)" stroke-width="2.5"/></svg>
+            <span class="pro-dash-card-trend up">↗ +25.2 pts</span>
+          </div>
+          <div class="pro-dash-card">
+            <span class="pro-dash-card-label">Net worth</span>
+            <svg viewBox="0 0 160 46" width="100%" height="46"><polyline points="4,40 30,36 56,34 82,26 108,18 134,14 156,4" fill="none" stroke="var(--good)" stroke-width="2.5"/></svg>
+            <span class="pro-dash-card-trend up">↗ tracking up</span>
+          </div>
+          <div class="pro-dash-card">
+            <span class="pro-dash-card-label">Goals</span>
+            <div class="pro-dash-progress"><div style="width:75%"></div></div>
+            <span class="pro-dash-card-trend">75% to target</span>
+          </div>
+          <div class="pro-dash-card">
+            <span class="pro-dash-card-label">What-If scenarios</span>
+            <div class="pro-dash-big-num">3</div>
+            <span class="pro-dash-card-trend">saved &amp; compared</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:28px">
+      <a class="btn gold" href="#pricing">Explore Pro →</a>
+    </div>
+  </div>
+</section>
+
+<section class="block reveal" id="pricing" aria-label="Pricing">
+  <div class="container">
+    <div class="block-head center">
+      <span class="kicker">Pricing</span>
+      <h2>Free forever. Pro for people who want more.</h2>
+      <p>The grade, the breakdown, and the path are free — always. Pro adds deeper tracking and a distraction-free experience.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="plan free">
+        <h3>Free</h3>
+        <div class="price">$0<span> /forever</span></div>
+        <ul>
+          <li><b>Full grade & breakdown</b> — savings, debt, net worth, income, emergency fund</li>
+          <li><b>Top action step</b> to raise your grade</li>
+          <li><b>What-if slider preview</b> (not saved)</li>
+          <li>Last-run comparison</li>
+          <li class="locked">Full multi-month trend</li>
+          <li class="locked">Saved what-if scenarios</li>
+          <li class="locked">Ad-free experience</li>
+        </ul>
+        <button class="btn" id="gradeBtnPricingFree" type="button">Get my free grade</button>
+      </div>
+      <div class="plan highlight">
+        <h3>Pro <span class="pro-badge">★ PRO</span></h3>
+        <div class="price">$7.99<span> /mo</span></div>
+        <div class="small" style="margin-bottom:12px;color:var(--muted)">Billed monthly. Cancel anytime.</div>
+        <ul>
+          <li>Everything in Free</li>
+          <li><b>All 3 personalized action steps</b> — not just the top one</li>
+          <li><b>Net worth projection</b> — see where you're headed in 5/10/20/30 years</li>
+          <li><b>Debt payoff planner</b> — avalanche vs. snowball, with your actual numbers</li>
+          <li><b>Downloadable Certificate PDF</b> — a formal, printable version of your grade</li>
+          <li><b>Retirement readiness check</b> — your 401k/IRA vs. common salary-multiple benchmarks</li>
+          <li><b>Full trend history</b> — across every check-in</li>
+          <li><b>Save & name multiple</b> — what-if scenarios</li>
+          <li><b>Ad-free</b> — no banner ads, ever</li>
+          <li><b>4 exclusive achievement badges</b> — only Pro members can unlock these</li>
+          <li>Early access to new tools</li>
+        </ul>
+        <a class="btn gold pro-only-hide" id="upgradeBtnPricing" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pszwz">Upgrade to Pro</a>
+        <span class="btn pro-only-show" style="display:none;background:var(--gold-soft);color:var(--gold-bright);border-color:rgba(201,162,39,.4)">You're on Pro ✓</span>
+        <div class="license-row pro-only-hide">
+          <input type="text" id="licenseInput" placeholder="Have a Pro license key? Paste it here" aria-label="Pro license key">
+          <button class="btn sm" id="licenseSubmit" type="button">Activate</button>
+        </div>
+        <div class="license-status pro-only-hide" id="licenseStatus"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
 
 <section class="trust-section" aria-label="Privacy and trust">
   <div class="container">
@@ -1082,45 +1233,6 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 </section>
 
-<section class="block" id="preview">
-  <div class="container">
-    <div class="block-head center">
-      <span class="kicker">See what you get</span>
-      <h2>A real report card, not just a number.</h2>
-      <p>Here's an example of what your grade looks like once you finish the calculator above.</p>
-    </div>
-    <div class="mock" aria-hidden="true" style="margin:0 auto;max-width:420px">
-      <div class="mock-card">
-        <div class="mock-top">
-          <div>
-            <div class="mock-label">FINANCIAL HEALTH <span style="font-family:var(--font-mono);font-size:9px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em">(illustrative example)</span></div>
-            <div style="display:flex;align-items:baseline;gap:8px;margin-top:4px">
-              <span style="font-family:var(--font-mono);font-weight:700;font-size:28px;color:var(--good)">A-</span>
-              <span style="font-size:13px;color:var(--muted)">87 / 100</span>
-            </div>
-          </div>
-          <div class="mock-grade-seal">A-<span class="shimmer"></span></div>
-        </div>
-        <div class="mock-stat-grid">
-          <div class="mock-stat"><span class="ms-label">Net Worth</span><span class="ms-val">$184,320</span></div>
-          <div class="mock-stat"><span class="ms-label">Savings Rate</span><span class="ms-val">18.4%</span></div>
-          <div class="mock-stat"><span class="ms-label">Debt-to-Income</span><span class="ms-val">14%</span></div>
-        </div>
-        <div class="mock-divider"></div>
-        <div class="mock-breakdown-label">What went into this grade</div>
-        <div class="mock-row"><span>Emergency fund</span><b>4.2 / 6 mo</b></div>
-        <div class="mock-bar"><div style="width:70%"></div></div>
-        <div class="mock-row"><span>Age-based net worth</span><b>81% of target</b></div>
-        <div class="mock-bar"><div style="width:81%"></div></div>
-        <div class="mock-row"><span>Non-mortgage debt</span><b>12% of baseline</b></div>
-        <div class="mock-bar"><div style="width:88%"></div></div>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:32px">
-      <button class="btn gold" id="gradeBtnPreview" type="button">Calculate My Grade →</button>
-    </div>
-  </div>
-</section>
 
 <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
   <div class="loader">
@@ -1436,56 +1548,7 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 </div>
 
-<section class="block reveal" id="pricing" aria-label="Pricing">
-  <div class="container">
-    <div class="block-head center">
-      <span class="kicker">Pricing</span>
-      <h2>Free forever. Pro for people who want more.</h2>
-      <p>The grade, the breakdown, and the path are free — always. Pro adds deeper tracking and a distraction-free experience.</p>
-    </div>
-    <div class="pricing-grid">
-      <div class="plan free">
-        <h3>Free</h3>
-        <div class="price">$0<span> /forever</span></div>
-        <ul>
-          <li><b>Full grade & breakdown</b> — savings, debt, net worth, income, emergency fund</li>
-          <li><b>Top action step</b> to raise your grade</li>
-          <li><b>What-if slider preview</b> (not saved)</li>
-          <li>Last-run comparison</li>
-          <li class="locked">Full multi-month trend</li>
-          <li class="locked">Saved what-if scenarios</li>
-          <li class="locked">Ad-free experience</li>
-        </ul>
-        <button class="btn" id="gradeBtnPricingFree" type="button">Get my free grade</button>
-      </div>
-      <div class="plan highlight">
-        <h3>Pro <span class="pro-badge">★ PRO</span></h3>
-        <div class="price">$7.99<span> /mo</span></div>
-        <div class="small" style="margin-bottom:12px;color:var(--muted)">Billed monthly. Cancel anytime.</div>
-        <ul>
-          <li>Everything in Free</li>
-          <li><b>All 3 personalized action steps</b> — not just the top one</li>
-          <li><b>Net worth projection</b> — see where you're headed in 5/10/20/30 years</li>
-          <li><b>Debt payoff planner</b> — avalanche vs. snowball, with your actual numbers</li>
-          <li><b>Downloadable Certificate PDF</b> — a formal, printable version of your grade</li>
-          <li><b>Retirement readiness check</b> — your 401k/IRA vs. common salary-multiple benchmarks</li>
-          <li><b>Full trend history</b> — across every check-in</li>
-          <li><b>Save & name multiple</b> — what-if scenarios</li>
-          <li><b>Ad-free</b> — no banner ads, ever</li>
-          <li><b>4 exclusive achievement badges</b> — only Pro members can unlock these</li>
-          <li>Early access to new tools</li>
-        </ul>
-        <a class="btn gold pro-only-hide" id="upgradeBtnPricing" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pszwz">Upgrade to Pro</a>
-        <span class="btn pro-only-show" style="display:none;background:var(--gold-soft);color:var(--gold-bright);border-color:rgba(201,162,39,.4)">You're on Pro ✓</span>
-        <div class="license-row pro-only-hide">
-          <input type="text" id="licenseInput" placeholder="Have a Pro license key? Paste it here" aria-label="Pro license key">
-          <button class="btn sm" id="licenseSubmit" type="button">Activate</button>
-        </div>
-        <div class="license-status pro-only-hide" id="licenseStatus"></div>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <section class="block" style="padding-top:0">
   <div class="container" style="max-width:820px">
