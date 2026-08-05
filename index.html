@@ -627,7 +627,27 @@ section.block{ padding:76px 0 }
 .report-section{ margin:26px 0; padding-top:22px; border-top:1px solid var(--line) }
 
 /* Biggest opportunities — qualitative, weakest factors explained plainly */
+.biggest-opp-card{
+  background:linear-gradient(155deg, rgba(232,179,74,.08), rgba(232,179,74,.02));
+  border:1px solid rgba(232,179,74,.25); border-radius:14px; padding:20px 22px; margin:14px 0 22px;
+}
+.biggest-opp-card h3{ font-family:var(--font-serif); font-weight:600; font-size:17px; margin:0 0 6px; color:var(--text) }
+.biggest-opp-card p{ font-size:13.5px; color:var(--muted); margin:0 0 14px; line-height:1.55 }
 .opportunities-list{ display:grid; gap:16px }
+/* Benchmark comparison — real bars instead of a text-only chip, so it reads in 2-3 seconds */
+.bench-row{ padding:12px 0; border-bottom:1px solid var(--line) }
+.bench-row:last-child{ border-bottom:none; padding-bottom:2px }
+.bench-row-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px; gap:10px }
+.bench-row-head span:first-child{ font-weight:700; font-size:13.5px }
+.bench-row-expl{ font-size:12px; color:var(--muted); text-align:right }
+.bench-bar-group{ display:grid; gap:6px }
+.bench-bar-line{ display:grid; grid-template-columns:64px 1fr 30px; align-items:center; gap:9px }
+.bench-bar-tag{ font-size:10.5px; color:var(--muted-2); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.03em }
+.bench-bar-track{ height:6px; border-radius:99px; background:var(--surface-2); overflow:hidden }
+.bench-bar-fill{ height:100%; border-radius:99px; transition:width .6s cubic-bezier(.2,.8,.2,1) }
+.bench-bar-fill.you{ background:linear-gradient(90deg,var(--gold),var(--gold-bright)) }
+.bench-bar-fill.bench{ background:var(--muted-2); opacity:.4 }
+.bench-bar-num{ font-family:var(--font-mono); font-size:12px; color:var(--muted); text-align:right }
 .opportunity-item{ display:flex; gap:14px }
 .opportunity-item .op-num{ font-family:var(--font-mono); font-size:12px; color:var(--muted-2); flex:none; padding-top:2px; width:20px }
 .opportunity-item b{ display:block; font-size:14.5px; margin-bottom:3px }
@@ -693,6 +713,9 @@ section.block{ padding:76px 0 }
 .path .pts{ font-weight:700; color:var(--gold); font-family:var(--font-mono) }
 
 .subscribe-inline{ margin-top:20px; padding:18px; border-radius:var(--radius); background:var(--gold-soft); border:1px solid rgba(138,106,31,.35) }
+.discord-inline-secondary{ margin-top:12px; padding:14px 18px; border-radius:var(--radius); background:none; border:1px solid var(--line) }
+.discord-inline-secondary h4{ margin:0; font-size:13.5px; font-weight:700; color:var(--text) }
+.discord-inline-secondary p{ margin:3px 0 0; color:var(--muted); font-size:12.5px }
 .subscribe-inline.pulse{ animation:subPulse 1.6s ease-out .5s 1; }
 @keyframes subPulse{
   0%{ box-shadow:0 0 0 0 rgba(201,162,39,.5) }
@@ -844,7 +867,7 @@ body.is-pro .ad-slot{ display:none !important }
         Dashboard
         <span class="nav-lock-badge pro-only-hide" title="Requires Pro">🔒</span>
       </a>
-      <a href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">Community</a>
+      <a href="https://discord.com/invite/FfxAUqEQ6" target="_blank" rel="noopener">Community</a>
       <a href="blog/index.html">Blog</a>
       <a href="for-advisors.html">For Advisors</a>
     </nav>
@@ -855,7 +878,7 @@ body.is-pro .ad-slot{ display:none !important }
           <a class="settings-item" href="dashboard.html">
             <span>📊</span> Dashboard <span class="nav-lock-badge pro-only-hide" title="Requires Pro" style="margin-left:auto">🔒</span>
           </a>
-          <a class="settings-item" href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">
+          <a class="settings-item" href="https://discord.com/invite/FfxAUqEQ6" target="_blank" rel="noopener">
             <span style="color:#5865F2">
               <svg width="16" height="16" viewBox="0 0 127.14 96.36" fill="currentColor" aria-hidden="true"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
             </span> Discord
@@ -1184,12 +1207,19 @@ body.is-pro .ad-slot{ display:none !important }
 
         <details class="methodology-compact">
           <summary>How is my grade calculated?</summary>
-          <p>Your grade weighs five aspects of your financial position and compares them against age-adjusted benchmarks: <b>Income Strength (25%)</b>, <b>Savings Rate (20%)</b>, <b>Non-mortgage Debt (20%)</b>, <b>Age-based Net Worth (20%)</b>, and <b>Emergency Fund (15%)</b>. Full assumptions and privacy details are further down this report.</p>
+          <p>Your grade weighs five aspects of your financial position and compares them against age-adjusted benchmarks: <b>Income Strength (25%)</b>, <b>Savings Rate (20%)</b>, <b>Non-mortgage Debt (20%)</b>, <b>Age-based Net Worth (20%)</b>, and <b>Emergency Fund (15%)</b>. Each category grade above reflects that category alone — it's not simply averaged into your overall score. <b>Exception:</b> if your net worth is high enough to be considered financially independent by our benchmark (able to sustain your spending indefinitely), your overall grade reflects that directly, even if one individual category — like debt — is still weak. Full assumptions and privacy details are further down this report.</p>
         </details>
       </div>
 
       <div class="dash-panel" id="dashPanel-nextsteps">
         <div class="weakest-link-pill" id="weakestLinkPill">Weakest link: <b id="weakestLinkPillText">—</b></div>
+
+        <div class="biggest-opp-card" id="biggestOppCard">
+          <span class="section-label" style="margin-bottom:8px">Biggest opportunity</span>
+          <h3 id="biggestOppHeadline">—</h3>
+          <p id="biggestOppDetail">—</p>
+          <button class="btn sm gold" id="biggestOppCta" type="button" style="display:none">See your plan →</button>
+        </div>
 
         <div class="report-section">
           <span class="section-label">Your biggest opportunities</span>
@@ -1364,13 +1394,13 @@ body.is-pro .ad-slot{ display:none !important }
       </form>
     </div>
 
-    <div class="subscribe-inline" style="margin-top:12px">
+    <div class="discord-inline-secondary">
       <div class="sub-row">
         <div>
-          <h4>💬 Got a grade worth sharing?</h4>
+          <h4>Got a grade worth sharing?</h4>
           <p>Post it in our Discord — swap tips, compare progress, no judgment.</p>
         </div>
-        <a class="btn gold sm" href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener" style="margin-left:auto">Join Discord</a>
+        <a class="btn sm" href="https://discord.com/invite/FfxAUqEQ6" target="_blank" rel="noopener" style="margin-left:auto">Join Discord →</a>
       </div>
     </div>
 
@@ -1469,7 +1499,7 @@ body.is-pro .ad-slot{ display:none !important }
           <p style="margin:6px 0 0;color:var(--muted);font-size:14.5px">Share your grade, swap tips, and talk through what you're working on with others doing the same thing.</p>
         </div>
       </div>
-      <a class="btn gold" href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">Join on Discord</a>
+      <a class="btn gold" href="https://discord.com/invite/FfxAUqEQ6" target="_blank" rel="noopener">Join on Discord</a>
     </div>
   </div>
 </section>
@@ -1581,7 +1611,7 @@ body.is-pro .ad-slot{ display:none !important }
         <a href="emergency-fund-calculator.html">Emergency Fund Calculator</a>
         <a href="am-i-financially-healthy.html">Am I Financially Healthy?</a>
         <a href="blog/index.html">Blog</a>
-        <a href="https://discord.gg/FfxAUqEQ6" target="_blank" rel="noopener">Discord Community</a>
+        <a href="https://discord.com/invite/FfxAUqEQ6" target="_blank" rel="noopener">Discord Community</a>
         <a href="for-advisors.html">For Financial Advisors &amp; Firms</a>
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="mailto:grademyfinance@gmail.com">Contact</a>
@@ -2384,16 +2414,19 @@ function drawCharts(v){
   var tabs = document.querySelectorAll(".dash-tab");
   var panels = document.querySelectorAll(".dash-panel");
   if(!tabs.length) return;
-  tabs.forEach(function(tab){
-    tab.addEventListener("click", function(){
-      tabs.forEach(function(t){ t.classList.remove("active"); });
-      panels.forEach(function(p){ p.classList.remove("active"); });
-      tab.classList.add("active");
-      var target = document.getElementById("dashPanel-"+tab.dataset.dtab);
-      if(target) target.classList.add("active");
-      __track('dash_tab_view', {tab: tab.dataset.dtab});
-    });
-  });
+  function activate(tab){
+    tabs.forEach(function(t){ t.classList.remove("active"); });
+    panels.forEach(function(p){ p.classList.remove("active"); });
+    tab.classList.add("active");
+    var target = document.getElementById("dashPanel-"+tab.dataset.dtab);
+    if(target) target.classList.add("active");
+    __track('dash_tab_view', {tab: tab.dataset.dtab});
+  }
+  tabs.forEach(function(tab){ tab.addEventListener("click", function(){ activate(tab); }); });
+  window.__switchDashTab = function(name){
+    var tab = document.querySelector('.dash-tab[data-dtab="'+name+'"]');
+    if(tab) activate(tab);
+  };
 })();
 (function setupFlowTabs(){
   var tabs = document.querySelectorAll(".flow-tab");
@@ -2819,10 +2852,14 @@ function openReport(v,cats){
   benchRows.innerHTML='';
   var b=estimatePercentiles(v,cats);
   b.forEach(function(t){
-    var row=el('div'); row.style.display='grid'; row.style.gridTemplateColumns='1fr auto'; row.style.alignItems='center';
-    var label=el('div'); label.innerHTML='<strong>'+t.label+'</strong> — <span style="color:var(--muted)">'+t.expl+'</span>';
-    var chip=el('div'); chip.className='badge'; chip.textContent=t.value+'/100 vs. benchmark';
-    row.append(label,chip); benchRows.appendChild(row);
+    var row=el('div', { className:'bench-row' });
+    row.innerHTML =
+      '<div class="bench-row-head"><span>'+t.label+'</span><span class="bench-row-expl">'+t.expl+'</span></div>'+
+      '<div class="bench-bar-group">'+
+        '<div class="bench-bar-line"><span class="bench-bar-tag">You</span><div class="bench-bar-track"><div class="bench-bar-fill you" style="width:'+t.value+'%"></div></div><span class="bench-bar-num">'+t.value+'</span></div>'+
+        '<div class="bench-bar-line"><span class="bench-bar-tag">Benchmark</span><div class="bench-bar-track"><div class="bench-bar-fill bench" style="width:100%"></div></div><span class="bench-bar-num">100</span></div>'+
+      '</div>';
+    benchRows.appendChild(row);
   });
 
   drawCharts(v);
@@ -2875,9 +2912,29 @@ function openReport(v,cats){
         "Debt load (non-mort.)":"Reduce high-interest debt", "Age-based net worth":"Grow your net worth",
         "Income strength":"Grow your income"
       };
-      ranked.forEach(function(r, i){
+      var oppLinksToPlanning = { "Debt load (non-mort.)":true, "Age-based net worth":true };
+
+      // Elevate the single weakest factor into its own card, rather than
+      // three equally-weighted list items competing for attention.
+      var biggest = ranked[0];
+      var biggestCard = $("biggestOppCard"), biggestHeadline = $("biggestOppHeadline"), biggestDetail = $("biggestOppDetail"), biggestCta = $("biggestOppCta");
+      if(biggest && biggestCard){
+        biggestHeadline.textContent = (oppHeadlines[biggest.key] || biggest.key) + ".";
+        biggestDetail.textContent = biggest.tip;
+        if(biggestCta){
+          if(oppLinksToPlanning[biggest.key]){
+            biggestCta.style.display = "inline-flex";
+            biggestCta.textContent = biggest.key === "Debt load (non-mort.)" ? "See debt payoff plan →" : "See net worth projection →";
+            biggestCta.onclick = function(){ if(window.__switchDashTab) window.__switchDashTab("planning"); };
+          } else {
+            biggestCta.style.display = "none";
+          }
+        }
+      }
+
+      ranked.slice(1).forEach(function(r, i){
         var item = el("div", { className:"opportunity-item" });
-        item.innerHTML = '<div class="op-num">0'+(i+1)+'</div><div><b>'+(oppHeadlines[r.key]||r.key)+'</b><span>'+r.tip+'</span></div>';
+        item.innerHTML = '<div class="op-num">0'+(i+2)+'</div><div><b>'+(oppHeadlines[r.key]||r.key)+'</b><span>'+r.tip+'</span></div>';
         oppList.appendChild(item);
       });
     }
