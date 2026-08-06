@@ -50,8 +50,21 @@ a{ color:inherit }
 header.site{ position:sticky; top:0; z-index:50; background:rgba(10,11,14,.82); backdrop-filter:blur(14px); border-bottom:1px solid var(--line) }
 .hdr-row{ height:74px; display:flex; align-items:center; gap:16px }
 .brandmark{ display:flex; align-items:center; gap:10px; text-decoration:none }
-.seal{ width:36px; height:36px; border-radius:9px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; flex:none }
-.seal span{ font-family:var(--font-mono); font-weight:700; font-size:12px; color:#1a1300 }
+.seal{
+  position:relative; width:36px; height:36px; border-radius:9px; overflow:hidden; flex:none;
+  background:linear-gradient(165deg, #1a1607, #0E1015 65%);
+  border:1.5px solid rgba(201,162,39,.45);
+  display:grid; place-items:center;
+  box-shadow: 0 0 0 1px rgba(201,162,39,.08), 0 5px 14px -3px rgba(201,162,39,.32), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.seal::after{
+  content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+  background:linear-gradient(75deg, transparent, rgba(255,255,255,.3), transparent);
+  animation:sealShimmerOnce 1.8s ease-in-out .4s 1;
+}
+@keyframes sealShimmerOnce{ 0%{ left:-60% } 100%{ left:140% } }
+@media (prefers-reduced-motion: reduce){ .seal::after{ animation:none } }
+.seal span{ font-family:var(--font-mono); font-weight:700; font-size:12px; color:var(--gold-bright) }
 .wordmark{ font-weight:700; font-size:16px }
 .wordmark small{ display:block; font-size:11px; font-weight:600; color:var(--gold-bright); letter-spacing:.06em; text-transform:uppercase; margin-top:1px }
 .hdr-right{ margin-left:auto; display:flex; align-items:center; gap:14px }
