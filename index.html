@@ -2393,7 +2393,7 @@ function renderFlowRibbons(svgEl, sourceLabel, sourceAmount, destinations){
     labelYs = labelYs.map(function(y){ return padTop + (y-firstY) * (padBottom-padTop)/span; });
   }
 
-  var startX=40, midX=460, endX=860, html='';
+  var startX=40, midX=330, endX=620, html='';
   bands.forEach(function(b){
     var path = 'M'+startX+',170 C'+midX+',170 '+midX+','+b.bandY.toFixed(1)+' '+endX+','+b.bandY.toFixed(1);
     html += '<path d="'+path+'" fill="none" stroke="'+b.d.color+'" stroke-opacity="0.38" stroke-width="'+b.h.toFixed(1)+'"/>';
@@ -2401,10 +2401,11 @@ function renderFlowRibbons(svgEl, sourceLabel, sourceAmount, destinations){
   bands.forEach(function(b, i){
     var labelY = labelYs[i], pct = Math.round((b.d.amount/total)*100);
     if(Math.abs(labelY - b.bandY) > 4){
-      html += '<line x1="'+endX+'" y1="'+b.bandY.toFixed(1)+'" x2="790" y2="'+labelY.toFixed(1)+'" stroke="var(--line)" stroke-width="1"/>';
+      html += '<path d="M'+endX+','+b.bandY.toFixed(1)+' C'+(endX+16)+','+b.bandY.toFixed(1)+' '+(endX+16)+','+labelY.toFixed(1)+' '+(endX+30)+','+labelY.toFixed(1)+'" fill="none" stroke="'+b.d.color+'" stroke-opacity="0.5" stroke-width="1.5"/>';
     }
-    html += '<text x="775" y="'+(labelY-9).toFixed(1)+'" fill="var(--text)" font-size="13" font-weight="600" text-anchor="end">'+b.d.label+'</text>';
-    html += '<text x="775" y="'+(labelY+10).toFixed(1)+'" fill="var(--muted)" font-size="11" text-anchor="end">'+money(b.d.amount)+' · '+pct+'%</text>';
+    html += '<rect x="'+(endX+30)+'" y="'+(labelY-6).toFixed(1)+'" width="9" height="9" rx="2" fill="'+b.d.color+'"/>';
+    html += '<text x="'+(endX+45)+'" y="'+(labelY-9).toFixed(1)+'" fill="var(--text)" font-size="13" font-weight="600" text-anchor="start">'+b.d.label+'</text>';
+    html += '<text x="'+(endX+45)+'" y="'+(labelY+10).toFixed(1)+'" fill="var(--muted)" font-size="11" text-anchor="start">'+money(b.d.amount)+' · '+pct+'%</text>';
   });
   html += '<text x="45" y="162" fill="var(--text)" font-size="13" font-weight="600">'+sourceLabel+'</text>';
   html += '<text x="45" y="180" fill="var(--muted)" font-size="11">'+money(sourceAmount)+'</text>';
