@@ -3199,17 +3199,10 @@ function gradeNow(){
   __track('click_get_report_card', {location: 'main'});
   runWithLoader(function(){ var v=values(); var cats=categoryScores(v); openReport(v,cats); });
 }
-if($("gradeBtnTop")) $("gradeBtnTop").addEventListener("click", function(){ __track('click_get_report_card',{location:'hdr'}); gradeNow(); });
 $("gradeBtnHero").addEventListener("click", function(){
   __track('click_scroll_to_calculator',{location:'hero'});
   document.getElementById("grade").scrollIntoView({ behavior:"smooth", block:"start" });
   setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 500);
-});
-var gradeBtnPreview = $("gradeBtnPreview");
-if(gradeBtnPreview) gradeBtnPreview.addEventListener("click", function(){
-  __track('click_scroll_to_calculator',{location:'result_preview'});
-  document.getElementById("grade").scrollIntoView({ behavior:"smooth", block:"start" });
-  if(window.__stepperReset) window.__stepperReset();
 });
 $("gradeBtn").addEventListener("click", gradeNow);
 $("gradeBtnSticky").addEventListener("click", function(){ __track('click_get_report_card',{location:'sticky'}); gradeNow(); });
@@ -3916,7 +3909,7 @@ $("shareReport").addEventListener("click", function(){
 
 var progressFill = $("progressFill");
 function fakeProgress(){ progressFill.style.width="100%"; setTimeout(function(){ progressFill.style.width="0%"; }, 1600); }
-["gradeBtnTop","gradeBtn","gradeBtnSticky"].forEach(function(id){
+["gradeBtn","gradeBtnSticky"].forEach(function(id){
   var b=$(id); if(b) b.addEventListener("click", fakeProgress);
 });
 
