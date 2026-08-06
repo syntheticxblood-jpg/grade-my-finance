@@ -62,8 +62,21 @@
       margin-bottom:26px;
     }
     .welcome-hdr .brandmark{ display:flex; align-items:center; gap:9px; text-decoration:none; color:var(--text) }
-    .welcome-hdr .mini-seal{ width:28px; height:28px; border-radius:8px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); display:grid; place-items:center; flex:none }
-    .welcome-hdr .mini-seal span{ font-family:var(--font-mono); font-weight:700; font-size:10.5px; color:#1a1300 }
+    .welcome-hdr .mini-seal{
+      position:relative; width:28px; height:28px; border-radius:8px; overflow:hidden; flex:none;
+      background:linear-gradient(165deg, #1a1607, #0E1015 65%);
+      border:1.5px solid rgba(201,162,39,.45);
+      display:grid; place-items:center;
+      box-shadow: 0 0 0 1px rgba(201,162,39,.08), 0 4px 12px -3px rgba(201,162,39,.32), inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .welcome-hdr .mini-seal::after{
+      content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+      background:linear-gradient(75deg, transparent, rgba(255,255,255,.3), transparent);
+      animation:sealShimmerOnce 1.8s ease-in-out .4s 1;
+    }
+    @keyframes sealShimmerOnce{ 0%{ left:-60% } 100%{ left:140% } }
+    @media (prefers-reduced-motion: reduce){ .welcome-hdr .mini-seal::after{ animation:none } }
+    .welcome-hdr .mini-seal span{ font-family:var(--font-mono); font-weight:700; font-size:10.5px; color:var(--gold-bright) }
     .welcome-hdr .mini-word{ font-family:var(--font-display); font-weight:700; font-size:14.5px }
     .welcome-hdr .advisors-link{
       font-size:13px; color:var(--muted); text-decoration:none; font-weight:600;
