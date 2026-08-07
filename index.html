@@ -463,12 +463,16 @@ section.block{ padding:76px 0 }
 .dash-tabs{ flex:none }
 .dash-panels{ flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden }
 .dash-watermark{
-  flex:none; display:flex; align-items:center; justify-content:space-between; gap:10px;
-  padding:10px 4px 0; margin-top:10px; border-top:1px solid var(--line);
-  font-family:var(--font-mono); font-size:11px; color:var(--muted-2);
+  flex:none; display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:16px 4px 4px; margin-top:14px; border-top:1px solid var(--line);
+  font-family:var(--font-mono); font-size:14px; color:var(--muted);
 }
-.dash-watermark-brand b{ color:var(--gold-bright) }
-.dash-watermark a{ color:var(--muted-2); text-decoration:none }
+.dash-watermark-brand{ display:flex; align-items:center; gap:8px }
+.dash-watermark-brand b{
+  color:#1a1300; background:var(--gold-bright); font-size:12px; font-weight:700;
+  padding:3px 7px; border-radius:6px; letter-spacing:.02em;
+}
+.dash-watermark a{ color:var(--muted); text-decoration:none; font-weight:600 }
 .dash-watermark a:hover{ color:var(--gold-bright) }
 .dash-panel{ display:none; height:100%; }
 .dash-panel.active{ display:block; animation:flowFadeIn .25s ease }
