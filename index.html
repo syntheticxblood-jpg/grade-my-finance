@@ -462,6 +462,14 @@ section.block{ padding:76px 0 }
 .sheet-header{ flex:none }
 .dash-tabs{ flex:none }
 .dash-panels{ flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden }
+.dash-watermark{
+  flex:none; display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 4px 0; margin-top:10px; border-top:1px solid var(--line);
+  font-family:var(--font-mono); font-size:11px; color:var(--muted-2);
+}
+.dash-watermark-brand b{ color:var(--gold-bright) }
+.dash-watermark a{ color:var(--muted-2); text-decoration:none }
+.dash-watermark a:hover{ color:var(--gold-bright) }
 .dash-panel{ display:none; height:100%; }
 .dash-panel.active{ display:block; animation:flowFadeIn .25s ease }
 @media (max-width:760px){ .sheet{ height:94vh; max-height:94vh; padding:20px 18px 18px } }
@@ -1585,6 +1593,11 @@ body.is-pro .ad-slot{ display:none !important }
         </div>
       </div>
 
+    </div>
+
+    <div class="dash-watermark">
+      <span class="dash-watermark-brand"><b>A+</b> Grade My Finance</span>
+      <a href="https://discord.com/invite/FfxAUqEQ6" target="_blank" rel="noopener">Join our Discord →</a>
     </div>
 
   </div>
@@ -2917,7 +2930,7 @@ function personalizeSubscribe(weak, newlyUnlocked, checkin){
 function animateRingFill(el, targetPct){
   var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(prefersReducedMotion){ el.style.setProperty('--ring-pct', String(targetPct)); return; }
-  var duration = 1100, start = null;
+  var duration = 1265, start = null;
   function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
   function step(ts){
     if(start === null) start = ts;
