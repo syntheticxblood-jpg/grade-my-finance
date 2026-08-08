@@ -117,9 +117,7 @@ const ARTICLE_SCHEMA = {
     },
 
     faqItems: {
-      type: 'array',
-      minItems: 2,
-      maxItems: 5,
+  type: 'array',
       items: {
         type: 'object',
         additionalProperties: false,
