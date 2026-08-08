@@ -334,6 +334,11 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:2
         <span class="section-label">Financial milestones</span>
         <div id="milestonesList"></div>
       </div>
+      <div class="card">
+        <span class="section-label">Manage check-ins</span>
+        <p class="section-sub" style="margin-top:4px">Made an entry mistake or want to remove an old check-in? You can delete any individual entry below — this can't be undone.</p>
+        <div id="historyEntriesList"></div>
+      </div>
     </div>
 
     <!-- ================= NET WORTH ================= -->
@@ -720,6 +725,7 @@ function renderScoreTab(hist){
   if(!hist.length){
     heroVal.textContent = "—"; heroSub.textContent = "No check-ins yet.";
     $("scoreChart").innerHTML = ""; $("scoreStatsGrid").innerHTML = ""; $("milestonesList").innerHTML = '<div class="empty-note">No milestones yet.</div>';
+    if($("historyEntriesList")) $("historyEntriesList").innerHTML = '<div class="empty-note">No check-ins recorded yet.</div>';
     return;
   }
   var latest = hist[hist.length-1];
@@ -763,6 +769,46 @@ function renderScoreTab(hist){
       mEl.innerHTML += '<div class="milestone-row"><span class="milestone-dot"></span><span class="milestone-label">'+m.label+'</span><span class="milestone-date">'+formatDateFull(m.ts)+'</span></div>';
     });
   }
+
+  renderHistoryEntriesList(hist);
+}
+
+// Lets someone remove an individual check-in they entered incorrectly.
+// Shown newest-first; deleting re-saves the trimmed array and reloads so
+// every dependent view (chart, stats, milestones, streaks) recalculates
+// cleanly rather than trying to patch each one in place.
+function renderHistoryEntriesList(hist){
+  var el2 = $("historyEntriesList");
+  if(!el2) return;
+  if(!hist.length){
+    el2.innerHTML = '<div class="empty-note">No check-ins recorded yet.</div>';
+    return;
+  }
+  var rows = hist.slice().reverse(); // newest first
+  el2.innerHTML = "";
+  rows.forEach(function(entry){
+    var row = document.createElement("div");
+    row.className = "scenario-card";
+    var netStr = (typeof entry.net === 'number') ? money(entry.net) : "—";
+    row.innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">' +
+        '<div>' +
+          '<div class="sc-date">' + formatDateFull(entry.ts) + '</div>' +
+          '<div class="sc-cell-val mono" style="margin-top:2px">Score: ' + entry.score.toFixed(1) + ' (' + overallLetter(Math.round(entry.score)) + ') · Net worth: ' + netStr + '</div>' +
+        '</div>' +
+        '<button class="btn sm" data-del-entry="' + entry.ts + '" type="button">Delete</button>' +
+      '</div>';
+    el2.appendChild(row);
+  });
+  el2.querySelectorAll("[data-del-entry]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      if(!confirm("Delete this check-in? This can't be undone.")) return;
+      var ts = +btn.dataset.delEntry;
+      var arr = getHistory().filter(function(h){ return h.ts !== ts; });
+      localStorage.setItem('gmf_history_v2', JSON.stringify(arr));
+      location.reload();
+    });
+  });
 }
 
 /* ================= NET WORTH TAB ================= */
