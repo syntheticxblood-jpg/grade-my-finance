@@ -10,7 +10,7 @@ const APP_SECRET = process.env.PINTEREST_APP_SECRET;
 const REFRESH_TOKEN = process.env.PINTEREST_REFRESH_TOKEN;
 const BOARD_ID_OVERRIDE = process.env.PINTEREST_BOARD_ID; // optional
 
-const OG_IMAGE = 'https://grademyfinance.com/og-image.png';
+const { generatePinImage } = require('./generate-pin-image');
 
 function basicAuthHeader() {
   return 'Basic ' + Buffer.from(`${APP_ID}:${APP_SECRET}`).toString('base64');
@@ -62,6 +62,9 @@ async function pickBoard(accessToken) {
 async function createPin(accessToken, boardId, article) {
   const link = `https://grademyfinance.com/blog/${article.slug}.html?utm_source=pinterest&utm_medium=social&utm_campaign=blog_promotion&utm_content=${article.slug}`;
 
+  const imageBuffer = generatePinImage({ title: article.title, category: article.category });
+  const imageBase64 = imageBuffer.toString('base64');
+
   const res = await fetch('https://api.pinterest.com/v5/pins', {
     method: 'POST',
     headers: {
@@ -74,8 +77,9 @@ async function createPin(accessToken, boardId, article) {
       description: article.metaDescription.slice(0, 500),
       link,
       media_source: {
-        source_type: 'image_url',
-        url: OG_IMAGE,
+        source_type: 'image_base64',
+        content_type: 'image/png',
+        data: imageBase64,
       },
     }),
   });
