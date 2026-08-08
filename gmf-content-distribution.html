@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GradeMyFinance — Content Distribution Desk</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14130f;
+    --bg-panel:#1c1a14;
+    --bg-panel-2:#242119;
+    --bg-raised:#2a271d;
+    --border:#3a3527;
+    --border-soft:#2a2719;
+    --gold:#c9a227;
+    --gold-bright:#e3c04e;
+    --text:#f0ead9;
+    --text-muted:#a89d80;
+    --text-dim:#786f57;
+    --green:#6fae7f;
+    --green-dim:#3c4d3d;
+    --red:#c1666b;
+    --red-dim:#4a2f2f;
+    --font-display:'Source Serif 4', Georgia, serif;
+    --font-body:'Inter', -apple-system, sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    font-size:14px;
+    line-height:1.5;
+  }
+  ::selection{background:var(--gold);color:#14130f;}
+  a{color:var(--gold-bright);}
+  button{font-family:var(--font-body);cursor:pointer;}
+  textarea,input,select{font-family:var(--font-body);}
+
+  /* ---------- shell ---------- */
+  .shell{max-width:1180px;margin:0 auto;padding:28px 24px 80px;}
+  .masthead{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    border-bottom:2px solid var(--border);
+    padding-bottom:18px;margin-bottom:22px;
+    flex-wrap:wrap;gap:14px;
+  }
+  .masthead-title{display:flex;align-items:baseline;gap:10px;}
+  .masthead-title .seal{
+    width:34px;height:34px;border-radius:50%;
+    border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-weight:600;color:var(--gold);font-size:13px;
+    flex-shrink:0;
+  }
+  h1{
+    font-family:var(--font-display);font-weight:600;font-size:26px;
+    margin:0;letter-spacing:0.2px;
+  }
+  .masthead-sub{
+    font-family:var(--font-mono);font-size:11px;color:var(--text-dim);
+    text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;
+  }
+  .stat-row{display:flex;gap:22px;flex-wrap:wrap;}
+  .stat{text-align:right;}
+  .stat-num{font-family:var(--font-mono);font-size:19px;color:var(--gold-bright);font-weight:600;}
+  .stat-label{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;gap:2px;margin-bottom:22px;border-bottom:1px solid var(--border-soft);}
+  .tab{
+    padding:10px 18px;background:none;border:none;color:var(--text-dim);
+    font-family:var(--font-mono);font-size:12px;letter-spacing:0.8px;text-transform:uppercase;
+    border-bottom:2px solid transparent;transition:color .15s;
+  }
+  .tab:hover{color:var(--text-muted);}
+  .tab.active{color:var(--gold-bright);border-bottom-color:var(--gold);}
+  .tab .count{color:var(--text-dim);margin-left:5px;}
+  .tab.active .count{color:var(--gold);}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  /* ---------- generic pieces ---------- */
+  .card{
+    background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:6px;
+    padding:18px 20px;margin-bottom:16px;
+  }
+  .card h2{font-family:var(--font-display);font-size:17px;margin:0 0 4px;font-weight:600;}
+  .card .hint{color:var(--text-dim);font-size:12.5px;margin:0 0 14px;}
+  label{display:block;font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:5px;}
+  input[type=text],input[type=url],textarea,select{
+    width:100%;background:var(--bg-panel-2);border:1px solid var(--border);border-radius:4px;
+    color:var(--text);padding:8px 10px;font-size:13.5px;margin-bottom:12px;
+  }
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold);}
+  textarea{resize:vertical;line-height:1.5;}
+  .row{display:flex;gap:14px;flex-wrap:wrap;}
+  .row > div{flex:1;min-width:220px;}
+
+  .btn{
+    background:var(--bg-raised);border:1px solid var(--border);color:var(--text);
+    padding:8px 14px;border-radius:4px;font-size:12.5px;font-weight:500;
+  }
+  .btn:hover{border-color:var(--gold);}
+  .btn-gold{background:var(--gold);border-color:var(--gold);color:#14130f;font-weight:600;}
+  .btn-gold:hover{background:var(--gold-bright);}
+  .btn-ghost{background:none;border:1px solid var(--border);color:var(--text-muted);}
+  .btn-ghost:hover{color:var(--text);border-color:var(--text-muted);}
+  .btn-danger{background:none;border:1px solid var(--red-dim);color:var(--red);}
+  .btn-danger:hover{background:var(--red-dim);}
+  .btn-sm{padding:5px 10px;font-size:11.5px;}
+  .btn:disabled{opacity:0.4;cursor:not-allowed;}
+
+  .empty{
+    text-align:center;padding:38px 20px;color:var(--text-dim);
+    font-family:var(--font-mono);font-size:12.5px;border:1px dashed var(--border);border-radius:6px;
+  }
+  .empty b{color:var(--text-muted);display:block;font-family:var(--font-body);font-size:14px;margin-bottom:6px;}
+
+  .toast{
+    position:fixed;bottom:20px;right:20px;background:var(--bg-raised);
+    border:1px solid var(--gold);color:var(--text);padding:10px 16px;border-radius:5px;
+    font-size:12.5px;box-shadow:0 6px 20px rgba(0,0,0,.4);z-index:50;
+    max-width:340px;
+  }
+
+  /* ---------- article list ---------- */
+  .art-row{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:12px 4px;border-bottom:1px solid var(--border-soft);
+  }
+  .art-row:last-child{border-bottom:none;}
+  .art-title{font-weight:600;font-size:13.5px;}
+  .art-url{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);}
+  .art-tags{margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;}
+  .chip{
+    font-family:var(--font-mono);font-size:10px;background:var(--bg-panel-2);
+    border:1px solid var(--border);color:var(--text-muted);padding:2px 7px;border-radius:10px;
+  }
+  .chip-warn{border-color:var(--red-dim);color:var(--red);}
+  .art-actions{display:flex;gap:6px;flex-shrink:0;}
+
+  /* ---------- stamp badge (signature element) ---------- */
+  .stamp{
+    font-family:var(--font-mono);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;
+    border:1.5px solid; border-radius:50%; width:56px;height:56px;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    flex-shrink:0; transform:rotate(-8deg); line-height:1.15; padding:4px;
+  }
+  .stamp::after{content:'';position:absolute;}
+  .stamp-draft{border-color:var(--text-dim);color:var(--text-dim);}
+  .stamp-approved{border-color:var(--gold);color:var(--gold-bright);}
+  .stamp-published{border-color:var(--green);color:var(--green);}
+  .stamp-dup{border-color:var(--red);color:var(--red);}
+
+  /* ---------- queue item stub ---------- */
+  .stub{
+    display:flex;gap:16px;background:var(--bg-panel);border:1px solid var(--border-soft);
+    border-radius:6px;padding:14px 16px;margin-bottom:10px;position:relative;
+  }
+  .stub::before{
+    content:'';position:absolute;left:88px;top:8px;bottom:8px;border-left:1px dashed var(--border);
+  }
+  .stub-body{flex:1;padding-left:14px;}
+  .stub-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px;}
+  .stub-type{font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:var(--gold-bright);}
+  .stub-article{font-size:11.5px;color:var(--text-dim);}
+  .stub-text{font-size:13.5px;white-space:pre-wrap;margin-bottom:8px;}
+  .stub-edit{width:100%;min-height:80px;}
+  .stub-actions{display:flex;gap:6px;flex-wrap:wrap;}
+
+  /* ---------- link map ---------- */
+  .link-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .link-table th{
+    text-align:left;font-family:var(--font-mono);font-size:10px;text-transform:uppercase;
+    letter-spacing:0.8px;color:var(--text-dim);border-bottom:1px solid var(--border);padding:6px 8px;
+  }
+  .link-table td{padding:9px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;}
+  .orphan-row{background:rgba(193,102,107,0.07);}
+  .suggest-pill{
+    display:inline-block;font-family:var(--font-mono);font-size:11px;background:var(--bg-panel-2);
+    border:1px solid var(--border);border-radius:4px;padding:3px 7px;margin:2px 4px 2px 0;color:var(--text-muted);
+  }
+  .suggest-pill b{color:var(--gold-bright);font-weight:600;}
+
+  .section-label{
+    font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;
+    color:var(--text-dim);margin:22px 0 8px;
+  }
+  .filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+  .filter-bar select, .filter-bar input{width:auto;margin-bottom:0;min-width:150px;}
+  .spinner{
+    width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--gold);
+    border-radius:50%;display:inline-block;animation:spin .7s linear infinite;vertical-align:-2px;margin-right:6px;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .footer-note{color:var(--text-dim);font-size:11.5px;margin-top:30px;text-align:center;font-family:var(--font-mono);}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="masthead">
+    <div>
+      <div class="masthead-title">
+        <div class="seal">GMF</div>
+        <div>
+          <h1>Content Distribution Desk</h1>
+          <div class="masthead-sub">Grade My Finance — repurposing &amp; internal linking</div>
+        </div>
+      </div>
+    </div>
+    <div class="stat-row" id="statRow"></div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="articles">Articles <span class="count" id="cArticles">0</span></button>
+    <button class="tab" data-tab="generate">Generate</button>
+    <button class="tab" data-tab="queue">Queue <span class="count" id="cQueue">0</span></button>
+    <button class="tab" data-tab="linkmap">Link Map <span class="count" id="cOrphans">0</span></button>
+    <button class="tab" data-tab="settings">Settings</button>
+  </div>
+
+  <!-- ARTICLES -->
+  <div class="panel active" id="panel-articles">
+    <div class="card">
+      <h2>Add a single article</h2>
+      <p class="hint">Paste the title, URL, and body text (HTML or plain text — any &lt;a href&gt; links inside are read automatically as existing internal links).</p>
+      <div class="row">
+        <div><label>Title</label><input type="text" id="addTitle" placeholder="5 Signs Your Credit Card Debt Is Out of Control"></div>
+        <div><label>URL</label><input type="text" id="addUrl" placeholder="https://grademyfinance.com/blog/credit-card-debt-signs"></div>
+      </div>
+      <label>Content</label>
+      <textarea id="addContent" rows="5" placeholder="Paste article body here..."></textarea>
+      <button class="btn btn-gold" id="addArticleBtn">Add article</button>
+    </div>
+
+    <div class="card">
+      <h2>Bulk import</h2>
+      <p class="hint">Paste multiple articles at once. Separate each with a line containing only <code>---</code>. First line: <code>Title: ...</code>, second line: <code>URL: ...</code>, everything after is content.</p>
+      <textarea id="bulkImport" rows="6" placeholder="Title: 5 Signs Your Credit Card Debt Is Out of Control
+URL: https://grademyfinance.com/blog/credit-card-debt-signs
+Article body goes here, links like &lt;a href=&quot;/blog/other-post&quot;&gt; are auto-detected...
+---
+Title: Next article
+URL: https://grademyfinance.com/blog/next-article
+Body..."></textarea>
+      <button class="btn btn-gold" id="bulkImportBtn">Import articles</button>
+      <span class="hint" id="bulkResult"></span>
+    </div>
+
+    <div class="card">
+      <h2>Your articles</h2>
+      <p class="hint">Inbound link counts update automatically as you add articles containing links to each other.</p>
+      <div id="articleList"></div>
+    </div>
+  </div>
+
+  <!-- GENERATE -->
+  <div class="panel" id="panel-generate">
+    <div class="card">
+      <h2>Generate a content set</h2>
+      <p class="hint">Pick an article. Claude will draft platform-specific social posts, short-form hooks, discussion questions, and a promo snippet — each pointing back to this article and the free calculator. New drafts land in the Queue for your review.</p>
+      <label>Article</label>
+      <select id="genArticleSelect"></select>
+      <button class="btn btn-gold" id="genBtn">Generate content set</button>
+      <span id="genStatus" class="hint"></span>
+    </div>
+    <div class="card">
+      <h2>How duplicates are avoided</h2>
+      <p class="hint" style="margin:0;">Every draft is checked against everything already in your queue for that article using text-overlap similarity. Anything too close to existing content (paraphrase or near-repeat) is discarded automatically rather than added, so you never end up approving the same post twice.</p>
+    </div>
+  </div>
+
+  <!-- QUEUE -->
+  <div class="panel" id="panel-queue">
+    <div class="filter-bar">
+      <select id="filterArticle"><option value="">All articles</option></select>
+      <select id="filterStatus">
+        <option value="">All statuses</option>
+        <option value="draft">Draft</option>
+        <option value="approved">Approved</option>
+        <option value="published">Published</option>
+      </select>
+      <select id="filterType">
+        <option value="">All types</option>
+        <option value="social">Social post</option>
+        <option value="hook">Short-form hook</option>
+        <option value="question">Discussion question</option>
+        <option value="snippet">Promo snippet</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" id="exportCsvBtn">Export CSV</button>
+    </div>
+    <div id="queueList"></div>
+  </div>
+
+  <!-- LINK MAP -->
+  <div class="panel" id="panel-linkmap">
+    <div class="card">
+      <h2>Orphan articles</h2>
+      <p class="hint">Articles with no other article in your library linking to them. Highest priority for internal-link additions.</p>
+      <div id="orphanList"></div>
+    </div>
+    <div class="card">
+      <h2>Suggested internal links</h2>
+      <p class="hint">Topic overlap between articles that aren't already linked to each other. Add these links manually in the GitHub editor — this tool doesn't touch your site.</p>
+      <div id="suggestList"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="panel" id="panel-settings">
+    <div class="card">
+      <h2>Site settings</h2>
+      <p class="hint">Used in generated CTAs. Change these if your domain or calculator path differs.</p>
+      <div class="row">
+        <div><label>Blog base URL</label><input type="text" id="setBlogBase"></div>
+        <div><label>Calculator URL</label><input type="text" id="setCalcUrl"></div>
+      </div>
+      <button class="btn btn-gold" id="saveSettingsBtn">Save settings</button>
+    </div>
+    <div class="card">
+      <h2>Data</h2>
+      <p class="hint">Everything here is saved to your Claude account, tied to this artifact, and private to you.</p>
+      <button class="btn btn-danger btn-sm" id="resetBtn">Clear all data</button>
+    </div>
+  </div>
+
+  <div class="footer-note">Content is drafted for your review — nothing is posted automatically, and nothing on grademyfinance.com is modified by this tool.</div>
+</div>
+
+<script>
+(function(){
+  const STOPWORDS = new Set("the a an and or but if of to in on for with is are was were be been being this that these those you your it its as at by from into about over under not no can will would should could i we they he she them his her our their more most much many any all just so than then also up out down off do does did has have had".split(' '));
+
+  let state = { articles: [], queue: [], settings: { blogBase: 'https://grademyfinance.com/blog/', calcUrl: 'https://grademyfinance.com/' } };
+  let loaded = false;
+
+  function uid(){ return Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4); }
+  function esc(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function toast(msg){
+    const t = document.createElement('div'); t.className='toast'; t.textContent=msg;
+    document.body.appendChild(t); setTimeout(()=>t.remove(), 3200);
+  }
+
+  // ---------- storage ----------
+  async function loadAll(){
+    try{
+      const a = await window.storage.get('gmf_articles');
+      if(a && a.value) state.articles = JSON.parse(a.value);
+    }catch(e){}
+    try{
+      const q = await window.storage.get('gmf_queue');
+      if(q && q.value) state.queue = JSON.parse(q.value);
+    }catch(e){}
+    try{
+      const s = await window.storage.get('gmf_settings');
+      if(s && s.value) state.settings = Object.assign(state.settings, JSON.parse(s.value));
+    }catch(e){}
+    loaded = true;
+    renderAll();
+  }
+  async function saveArticles(){ try{ await window.storage.set('gmf_articles', JSON.stringify(state.articles)); }catch(e){ toast('Could not save articles.'); } }
+  async function saveQueue(){ try{ await window.storage.set('gmf_queue', JSON.stringify(state.queue)); }catch(e){ toast('Could not save queue.'); } }
+  async function saveSettings(){ try{ await window.storage.set('gmf_settings', JSON.stringify(state.settings)); }catch(e){ toast('Could not save settings.'); } }
+
+  // ---------- text utils ----------
+  function stripHtml(s){ return (s||'').replace(/<[^>]+>/g,' ').replace(/&amp;/g,'&').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim(); }
+  function extractLinks(raw, blogBase){
+    const links = new Set();
+    const re = /href\s*=\s*["']([^"']+)["']/gi;
+    let m;
+    while((m = re.exec(raw))){
+      let href = m[1];
+      if(href.startsWith('/')) href = (blogBase.replace(/\/blog\/?$/,'')) + href;
+      if(href.indexOf(location.origin) === 0 || href.startsWith('http') || href.startsWith('/')) links.add(href.split('#')[0].replace(/\/$/,''));
+    }
+    return Array.from(links);
+  }
+  function keywordFreq(text){
+    const words = stripHtml(text).toLowerCase().match(/[a-z']{4,}/g) || [];
+    const freq = {};
+    for(const w of words){ if(STOPWORDS.has(w)) continue; freq[w] = (freq[w]||0)+1; }
+    return freq;
+  }
+  function topTags(text, n){
+    const freq = keywordFreq(text);
+    return Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,n).map(e=>e[0]);
+  }
+  function cosineSim(f1, f2){
+    let dot=0, m1=0, m2=0;
+    const keys = new Set([...Object.keys(f1), ...Object.keys(f2)]);
+    for(const k of keys){ const a=f1[k]||0, b=f2[k]||0; dot += a*b; m1 += a*a; m2 += b*b; }
+    if(!m1 || !m2) return 0;
+    return dot / (Math.sqrt(m1)*Math.sqrt(m2));
+  }
+  function shingleSim(a,b){
+    function shingles(s){ const w = s.toLowerCase().match(/[a-z0-9']+/g)||[]; const set=new Set(); for(let i=0;i<w.length-2;i++) set.add(w.slice(i,i+3).join(' ')); return set; }
+    const s1 = shingles(a), s2 = shingles(b);
+    if(!s1.size || !s2.size) return 0;
+    let inter=0; for(const x of s1) if(s2.has(x)) inter++;
+    return inter / Math.min(s1.size, s2.size);
+  }
+  function normUrl(u){ return (u||'').trim().replace(/\/$/,'').replace(/^http:/,'https:'); }
+
+  // ---------- derived data ----------
+  function inboundCount(article){
+    let n = 0;
+    for(const other of state.articles){
+      if(other.id === article.id) continue;
+      if((other.existingLinks||[]).some(l => normUrl(l) === normUrl(article.url))) n++;
+    }
+    return n;
+  }
+  function linkSuggestions(article, limit){
+    const f1 = keywordFreq(article.content);
+    const existing = new Set((article.existingLinks||[]).map(normUrl));
+    const scored = [];
+    for(const other of state.articles){
+      if(other.id === article.id) continue;
+      if(existing.has(normUrl(other.url))) continue;
+      const sim = cosineSim(f1, keywordFreq(other.content));
+      if(sim > 0.12) scored.push({ article: other, sim });
+    }
+    scored.sort((a,b)=>b.sim-a.sim);
+    return scored.slice(0, limit||3);
+  }
+
+  // ---------- rendering ----------
+  function renderAll(){
+    if(!loaded) return;
+    renderStats();
+    renderArticleList();
+    renderArticleSelects();
+    renderQueue();
+    renderLinkMap();
+    document.getElementById('setBlogBase').value = state.settings.blogBase;
+    document.getElementById('setCalcUrl').value = state.settings.calcUrl;
+  }
+
+  function renderStats(){
+    const drafts = state.queue.filter(q=>q.status==='draft').length;
+    const approved = state.queue.filter(q=>q.status==='approved').length;
+    const published = state.queue.filter(q=>q.status==='published').length;
+    document.getElementById('statRow').innerHTML = `
+      <div class="stat"><div class="stat-num">${state.articles.length}</div><div class="stat-label">Articles</div></div>
+      <div class="stat"><div class="stat-num">${drafts}</div><div class="stat-label">Drafts</div></div>
+      <div class="stat"><div class="stat-num">${approved}</div><div class="stat-label">Approved</div></div>
+      <div class="stat"><div class="stat-num">${published}</div><div class="stat-label">Published</div></div>`;
+    document.getElementById('cArticles').textContent = state.articles.length;
+    document.getElementById('cQueue').textContent = state.queue.length;
+    document.getElementById('cOrphans').textContent = state.articles.filter(a=>inboundCount(a)===0).length;
+  }
+
+  function renderArticleList(){
+    const el = document.getElementById('articleList');
+    if(!state.articles.length){ el.innerHTML = `<div class="empty"><b>No articles yet</b>Add your first one above, or bulk import all 50+ at once.</div>`; return; }
+    el.innerHTML = state.articles.map(a => {
+      const inb = inboundCount(a);
+      const tags = (a.tags||[]).slice(0,5).map(t=>`<span class="chip">${esc(t)}</span>`).join('');
+      const orphanChip = inb===0 ? `<span class="chip chip-warn">no inbound links</span>` : `<span class="chip">${inb} inbound link${inb===1?'':'s'}</span>`;
+      return `<div class="art-row">
+        <div>
+          <div class="art-title">${esc(a.title)}</div>
+          <div class="art-url">${esc(a.url)}</div>
+          <div class="art-tags">${orphanChip}${tags}</div>
+        </div>
+        <div class="art-actions">
+          <button class="btn btn-ghost btn-sm" onclick="GMF.deleteArticle('${a.id}')">Remove</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderArticleSelects(){
+    const opts = state.articles.map(a=>`<option value="${a.id}">${esc(a.title)}</option>`).join('');
+    document.getElementById('genArticleSelect').innerHTML = opts || '<option value="">Add an article first</option>';
+    document.getElementById('filterArticle').innerHTML = '<option value="">All articles</option>' + opts;
+  }
+
+  function typeLabel(t){ return {social:'Social post', hook:'Short-form hook', question:'Discussion question', snippet:'Promo snippet'}[t] || t; }
+
+  function renderQueue(){
+    const el = document.getElementById('queueList');
+    const fa = document.getElementById('filterArticle').value;
+    const fs = document.getElementById('filterStatus').value;
+    const ft = document.getElementById('filterType').value;
+    let items = state.queue.filter(q => (!fa || q.articleId===fa) && (!fs || q.status===fs) && (!ft || q.type===ft));
+    items = items.slice().sort((a,b)=> b.createdAt - a.createdAt);
+    if(!items.length){ el.innerHTML = `<div class="empty"><b>Queue is empty</b>Generate a content set from the Generate tab to fill it.</div>`; return; }
+    el.innerHTML = items.map(q => {
+      const art = state.articles.find(a=>a.id===q.articleId);
+      const stampClass = q.status==='draft'?'stamp-draft':q.status==='approved'?'stamp-approved':'stamp-published';
+      const stampText = q.status.toUpperCase();
+      const platform = q.platform ? ` &middot; ${esc(q.platform)}` : '';
+      return `<div class="stub">
+        <div class="stamp ${stampClass}">${stampText}</div>
+        <div class="stub-body">
+          <div class="stub-meta">
+            <span class="stub-type">${typeLabel(q.type)}${platform}</span>
+            <span class="stub-article">${art ? esc(art.title) : '(article removed)'}</span>
+          </div>
+          <div id="text-${q.id}" class="stub-text">${esc(q.text)}</div>
+          <div class="stub-actions">
+            ${q.status==='draft' ? `<button class="btn btn-sm btn-gold" onclick="GMF.setStatus('${q.id}','approved')">Approve</button>` : ''}
+            ${q.status==='approved' ? `<button class="btn btn-sm btn-gold" onclick="GMF.setStatus('${q.id}','published')">Mark published</button>` : ''}
+            ${q.status!=='draft' ? `<button class="btn btn-sm btn-ghost" onclick="GMF.setStatus('${q.id}','draft')">Revert to draft</button>` : ''}
+            <button class="btn btn-sm btn-ghost" onclick="GMF.editItem('${q.id}')">Edit</button>
+            <button class="btn btn-sm btn-ghost" onclick="GMF.copyItem('${q.id}')">Copy</button>
+            <button class="btn btn-sm btn-danger" onclick="GMF.deleteItem('${q.id}')">Delete</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderLinkMap(){
+    const orphans = state.articles.filter(a=>inboundCount(a)===0);
+    const oEl = document.getElementById('orphanList');
+    oEl.innerHTML = orphans.length ? `<table class="link-table"><thead><tr><th>Article</th><th>URL</th></tr></thead><tbody>` +
+      orphans.map(a=>`<tr class="orphan-row"><td>${esc(a.title)}</td><td><a href="${esc(a.url)}" target="_blank">${esc(a.url)}</a></td></tr>`).join('') +
+      `</tbody></table>` : `<div class="empty">No orphans — every article has at least one inbound link. Nice.</div>`;
+
+    const sEl = document.getElementById('suggestList');
+    if(state.articles.length < 2){ sEl.innerHTML = `<div class="empty">Add at least two articles to see link suggestions.</div>`; return; }
+    let rows = '';
+    for(const a of state.articles){
+      const sugg = linkSuggestions(a, 3);
+      if(!sugg.length) continue;
+      rows += `<tr><td>${esc(a.title)}</td><td>${sugg.map(s=>`<span class="suggest-pill"><b>${Math.round(s.sim*100)}%</b> ${esc(s.article.title)}</span>`).join('')}</td></tr>`;
+    }
+    sEl.innerHTML = rows ? `<table class="link-table"><thead><tr><th>Article</th><th>Suggested links to add</th></tr></thead><tbody>${rows}</tbody></table>` : `<div class="empty">No strong topical overlaps found yet.</div>`;
+  }
+
+  // ---------- actions ----------
+  const GMF = {};
+  window.GMF = GMF;
+
+  GMF.deleteArticle = function(id){
+    state.articles = state.articles.filter(a=>a.id!==id);
+    saveArticles(); renderAll();
+  };
+  GMF.deleteItem = function(id){
+    state.queue = state.queue.filter(q=>q.id!==id);
+    saveQueue(); renderQueue(); renderStats();
+  };
+  GMF.setStatus = function(id, status){
+    const item = state.queue.find(q=>q.id===id);
+    if(item) item.status = status;
+    saveQueue(); renderQueue(); renderStats();
+  };
+  GMF.copyItem = function(id){
+    const item = state.queue.find(q=>q.id===id);
+    if(!item) return;
+    navigator.clipboard && navigator.clipboard.writeText(item.text).then(()=>toast('Copied to clipboard.')).catch(()=>toast('Copy failed — select and copy manually.'));
+  };
+  GMF.editItem = function(id){
+    const item = state.queue.find(q=>q.id===id);
+    if(!item) return;
+    const holder = document.getElementById('text-'+id);
+    holder.innerHTML = `<textarea class="stub-edit" id="editbox-${id}">${esc(item.text)}</textarea>
+      <div style="margin-top:6px;"><button class="btn btn-sm btn-gold" onclick="GMF.saveEdit('${id}')">Save</button>
+      <button class="btn btn-sm btn-ghost" onclick="GMF.renderQueueOnly()">Cancel</button></div>`;
+  };
+  GMF.saveEdit = function(id){
+    const box = document.getElementById('editbox-'+id);
+    const item = state.queue.find(q=>q.id===id);
+    if(item && box){ item.text = box.value; }
+    saveQueue(); renderQueue();
+  };
+  GMF.renderQueueOnly = function(){ renderQueue(); };
+
+  // ---------- add / import articles ----------
+  document.getElementById('addArticleBtn').addEventListener('click', async ()=>{
+    const title = document.getElementById('addTitle').value.trim();
+    const url = document.getElementById('addUrl').value.trim();
+    const content = document.getElementById('addContent').value.trim();
+    if(!title || !url || !content){ toast('Title, URL, and content are all required.'); return; }
+    state.articles.push({
+      id: uid(), title, url, content,
+      existingLinks: extractLinks(content, state.settings.blogBase),
+      tags: topTags(content, 8), addedAt: Date.now()
+    });
+    document.getElementById('addTitle').value=''; document.getElementById('addUrl').value=''; document.getElementById('addContent').value='';
+    await saveArticles(); renderAll(); toast('Article added.');
+  });
+
+  document.getElementById('bulkImportBtn').addEventListener('click', async ()=>{
+    const raw = document.getElementById('bulkImport').value;
+    if(!raw.trim()){ toast('Paste at least one article first.'); return; }
+    const blocks = raw.split(/\n---\n|\n---\s*$/g).map(b=>b.trim()).filter(Boolean);
+    let added = 0, skipped = 0;
+    for(const block of blocks){
+      const lines = block.split('\n');
+      let title='', url='', bodyLines=[];
+      let seenTitle=false, seenUrl=false;
+      for(const line of lines){
+        if(!seenTitle && /^title\s*:/i.test(line)){ title = line.replace(/^title\s*:/i,'').trim(); seenTitle=true; continue; }
+        if(!seenUrl && /^url\s*:/i.test(line)){ url = line.replace(/^url\s*:/i,'').trim(); seenUrl=true; continue; }
+        bodyLines.push(line);
+      }
+      const content = bodyLines.join('\n').trim();
+      if(!title || !url || !content){ skipped++; continue; }
+      state.articles.push({
+        id: uid(), title, url, content,
+        existingLinks: extractLinks(content, state.settings.blogBase),
+        tags: topTags(content, 8), addedAt: Date.now()
+      });
+      added++;
+    }
+    document.getElementById('bulkImport').value = '';
+    document.getElementById('bulkResult').textContent = `Imported ${added} article${added===1?'':'s'}${skipped?`, skipped ${skipped} (missing title/url/content)`:''}.`;
+    await saveArticles(); renderAll();
+  });
+
+  // ---------- generation ----------
+  function buildPrompt(article){
+    const excerpt = stripHtml(article.content).slice(0, 3500);
+    return `You are a content repurposing assistant for GradeMyFinance, a free financial grade calculator (A-F score across five weighted factors) at ${state.settings.calcUrl}. You write honest, non-spammy, non-hypey personal finance content.
+
+Source article:
+Title: ${article.title}
+URL: ${article.url}
+Content: ${excerpt}
+
+Produce a JSON object (and ONLY a JSON object, no markdown fences, no commentary) with this exact shape:
+{
+  "social_posts": [
+    {"platform":"x","text":"..."},
+    {"platform":"linkedin","text":"..."},
+    {"platform":"facebook","text":"..."}
+  ],
+  "hooks": ["...","..."],
+  "questions": ["...","..."],
+  "snippets": [{"channel":"email","text":"..."}]
+}
+
+Rules:
+- Each social_posts entry must be genuinely different in angle and wording from the others, not the same sentence reworded. Vary the tone per platform: X should be punchy and under 280 characters, LinkedIn more reflective/professional (2-4 short paragraphs OK), Facebook conversational.
+- Every social post and the email snippet must include the exact article URL (${article.url}) OR clearly reference "the free calculator at ${state.settings.calcUrl}" — never both crammed together, pick whichever fits the piece naturally, but link back to something real.
+- hooks: 2 short-form video/reel opening lines (first 2-3 seconds of a script) that would make someone stop scrolling, tied to the article's actual content — no clickbait that misrepresents the article.
+- questions: 2 open-ended discussion questions suited for a comments section or community post, directly related to the article's topic.
+- snippets: 1 short promotional blurb suitable for an email newsletter, 2-3 sentences, ending with a clear call to action to read the article or run the free calculator.
+- No fabricated statistics, no guarantees about financial outcomes, no spammy superlatives ("BEST EVER", "life-changing secret").
+- Keep everything factually grounded in the article content provided. Do not invent claims the article doesn't support.`;
+  }
+
+  async function callClaude(prompt){
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    if(data.error) throw new Error(data.error.message || 'API error');
+    const text = (data.content||[]).map(c=>c.text||'').join('\n');
+    const cleaned = text.replace(/^```json\s*|^```\s*|```\s*$/gim, '').trim();
+    return JSON.parse(cleaned);
+  }
+
+  function existingTextsFor(articleId){
+    return state.queue.filter(q=>q.articleId===articleId).map(q=>q.text);
+  }
+  function isDuplicate(text, pool){
+    return pool.some(existing => shingleSim(text, existing) > 0.75);
+  }
+
+  document.getElementById('genBtn').addEventListener('click', async ()=>{
+    const articleId = document.getElementById('genArticleSelect').value;
+    const article = state.articles.find(a=>a.id===articleId);
+    const statusEl = document.getElementById('genStatus');
+    if(!article){ toast('Pick an article first.'); return; }
+    const btn = document.getElementById('genBtn');
+    btn.disabled = true;
+    statusEl.innerHTML = `<span class="spinner"></span> Drafting content set...`;
+    try{
+      const result = await callClaude(buildPrompt(article));
+      const pool = existingTextsFor(article.id);
+      let added = 0, dup = 0;
+      const pushItem = (type, text, platform) => {
+        if(!text || !text.trim()) return;
+        if(isDuplicate(text, pool)){ dup++; return; }
+        pool.push(text);
+        state.queue.push({ id: uid(), articleId: article.id, type, platform: platform||null, text: text.trim(), status: 'draft', createdAt: Date.now() });
+        added++;
+      };
+      (result.social_posts||[]).forEach(p => pushItem('social', p.text, p.platform));
+      (result.hooks||[]).forEach(h => pushItem('hook', h));
+      (result.questions||[]).forEach(q => pushItem('question', q));
+      (result.snippets||[]).forEach(s => pushItem('snippet', s.text, s.channel));
+      await saveQueue();
+      renderAll();
+      statusEl.textContent = `Added ${added} new draft${added===1?'':'s'} to the queue.${dup ? ` Skipped ${dup} as likely duplicates.` : ''}`;
+    }catch(e){
+      statusEl.textContent = 'Generation failed: ' + e.message;
+    }finally{
+      btn.disabled = false;
+    }
+  });
+
+  // ---------- filters ----------
+  ['filterArticle','filterStatus','filterType'].forEach(id=>{
+    document.getElementById(id).addEventListener('change', renderQueue);
+  });
+
+  document.getElementById('exportCsvBtn').addEventListener('click', ()=>{
+    const rows = [['Article','Type','Platform','Status','Text']];
+    state.queue.forEach(q=>{
+      const art = state.articles.find(a=>a.id===q.articleId);
+      rows.push([art?art.title:'', typeLabel(q.type), q.platform||'', q.status, q.text.replace(/\n/g,' ')]);
+    });
+    const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'gmf-content-queue.csv';
+    a.click();
+  });
+
+  // ---------- settings ----------
+  document.getElementById('saveSettingsBtn').addEventListener('click', async ()=>{
+    state.settings.blogBase = document.getElementById('setBlogBase').value.trim() || state.settings.blogBase;
+    state.settings.calcUrl = document.getElementById('setCalcUrl').value.trim() || state.settings.calcUrl;
+    await saveSettings();
+    toast('Settings saved.');
+  });
+  document.getElementById('resetBtn').addEventListener('click', async ()=>{
+    if(!confirm('This clears all articles and queue items. Continue?')) return;
+    state.articles = []; state.queue = [];
+    await saveArticles(); await saveQueue();
+    renderAll(); toast('Data cleared.');
+  });
+
+  // ---------- tabs ----------
+  document.getElementById('tabs').addEventListener('click', (e)=>{
+    const btn = e.target.closest('.tab');
+    if(!btn) return;
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+
+  loadAll();
+})();
+</script>
+</body>
+</html>
