@@ -1,7 +1,7 @@
 // Grade My Finance — Daily Content Engine
-// Generates articles with Claude + web search, receives the article through
-// strict tool use (schema-validated), publishes it to the site, updates the
-// manifest/sitemap/blog index, and sends published articles to Pinterest.
+// Generates articles with Claude + web search, publishes them to the site,
+// updates the manifest/sitemap/blog index, and sends published articles
+// to Pinterest.
 //
 // Runs inside GitHub Actions.
 // Requires ANTHROPIC_API_KEY as an env var.
@@ -11,6 +11,7 @@ const path = require('path');
 const { publishArticlesToPinterest } = require('./pinterest');
 
 const ROOT = path.join(__dirname, '..');
+
 const ARTICLES_PER_DAY = parseInt(
   process.env.ARTICLES_PER_DAY || '2',
   10
@@ -20,28 +21,29 @@ const MODEL = 'claude-sonnet-5';
 const API_KEY = process.env.ANTHROPIC_API_KEY;
 
 if (!API_KEY) {
-  console.error(
-    'Missing ANTHROPIC_API_KEY env var. Aborting.'
-  );
+  console.error('Missing ANTHROPIC_API_KEY env var. Aborting.');
   process.exit(1);
 }
 
-// ---------- Load existing manifest ----------
+// ------------------------------------------------------------
+// LOAD MANIFEST
+// ------------------------------------------------------------
 
 function loadManifest() {
-  const raw = fs.readFileSync(
-    path.join(ROOT, 'posts-manifest.js'),
-    'utf8'
-  );
+  const manifestPath = path.join(ROOT, 'posts-manifest.js');
+
+  if (!fs.existsSync(manifestPath)) {
+    throw new Error('posts-manifest.js not found');
+  }
+
+  const raw = fs.readFileSync(manifestPath, 'utf8');
 
   const match = raw.match(
-    /var GMF_BLOG_POSTS = (\[[\s\S]*?\]);/
+    /var\s+GMF_BLOG_POSTS\s*=\s*(\[[\s\S]*?\]);/
   );
 
   if (!match) {
-    throw new Error(
-      'Could not parse posts-manifest.js'
-    );
+    throw new Error('Could not parse posts-manifest.js');
   }
 
   // This is our own repository file.
@@ -55,31 +57,30 @@ function loadManifest() {
   };
 }
 
-// ---------- Article schema ----------
-//
-// Claude is forced to provide this structure through strict tool use.
-// This eliminates the JSON.parse() problem entirely.
+// ------------------------------------------------------------
+// ARTICLE SCHEMA
+// ------------------------------------------------------------
 
 const ARTICLE_SCHEMA = {
   type: 'object',
   additionalProperties: false,
+
   properties: {
     slug: {
       type: 'string',
       description:
-        'Kebab-case URL slug using only lowercase letters, numbers, and hyphens.'
+        'Lowercase kebab-case slug using only letters, numbers, and hyphens.'
     },
 
     title: {
       type: 'string',
-      description:
-        'Clear, useful article title.'
+      description: 'Clear and useful article title.'
     },
 
     metaDescription: {
       type: 'string',
       description:
-        'One-sentence meta description under 155 characters.'
+        'One sentence under 155 characters.'
     },
 
     category: {
@@ -106,18 +107,17 @@ const ARTICLE_SCHEMA = {
 
     readTimeMinutes: {
       type: 'integer',
-      description:
-        'Estimated reading time in minutes.'
+      description: 'Estimated reading time.'
     },
 
     bodyHtml: {
       type: 'string',
       description:
-        'Full article HTML, at least 500 words. Use only p, h2, h3, ul, ol, li, strong, em, and a tags. No markdown, scripts, iframes, inline styles, or html/body wrappers.'
+        'Complete article HTML. At least 500 words. Allowed tags only: p, h2, h3, ul, ol, li, strong, em, a.'
     },
 
     faqItems: {
-  type: 'array',
+      type: 'array',
       items: {
         type: 'object',
         additionalProperties: false,
@@ -184,16 +184,19 @@ const ARTICLE_SCHEMA = {
   ]
 };
 
-// ---------- Claude API ----------
+// ------------------------------------------------------------
+// CLAUDE API
+// ------------------------------------------------------------
 //
-// This uses:
-// 1. Anthropic's web search server tool.
-// 2. A strict custom "submit_article" tool.
+// IMPORTANT:
+// We do NOT use:
+// disable_parallel_tool_use
 //
-// Claude can search first when necessary, then submit the finished
-// article through the schema-validated tool.
+// That was the source of the current Anthropic 400 error.
 //
-// We never JSON.parse Claude's article text.
+// Claude can use web search and then use submit_article.
+// We allow the API to manage the tool sequence normally.
+// ------------------------------------------------------------
 
 async function callClaude(promptText) {
   const tools = [
@@ -206,7 +209,7 @@ async function callClaude(promptText) {
     {
       name: 'submit_article',
       description:
-        'Submit the completed Grade My Finance article. You MUST use this tool when the article is finished. The input must contain the complete article and all required metadata. If current or time-sensitive financial facts are used, search the web first and include the sources actually used.',
+        'Submit the completed Grade My Finance article after researching any necessary current facts.',
       strict: true,
       input_schema: ARTICLE_SCHEMA
     }
@@ -219,11 +222,8 @@ async function callClaude(promptText) {
     }
   ];
 
-  // Allow enough turns for:
-  // search -> search result -> article submission
-  // without creating an uncontrolled loop.
-  for (let turn = 0; turn < 6; turn++) {
-    const res = await fetch(
+  for (let turn = 0; turn < 8; turn++) {
+    const response = await fetch(
       'https://api.anthropic.com/v1/messages',
       {
         method: 'POST',
@@ -238,34 +238,32 @@ async function callClaude(promptText) {
           model: MODEL,
           max_tokens: 7000,
           messages,
-          tools,
-
-          // Claude must use one of the available tools.
-          // Parallel calls are disabled so it can search first
-          // and submit the article afterward.
-          tool_choice: {
-            type: 'any',
-            disable_parallel_tool_use: true
-          }
+          tools
         })
       }
     );
 
-    if (!res.ok) {
-      const text = await res.text();
+    if (!response.ok) {
+      const text = await response.text();
 
       throw new Error(
-        `Anthropic API error ${res.status}: ${text}`
+        `Anthropic API error ${response.status}: ${text}`
       );
     }
 
-    const data = await res.json();
+    const data = await response.json();
 
-    // Look for our validated article tool call.
-    const articleToolCall = (
-      data.content || []
-    ).find(
+    const content = Array.isArray(data.content)
+      ? data.content
+      : [];
+
+    // --------------------------------------------------------
+    // LOOK FOR OUR ARTICLE TOOL CALL
+    // --------------------------------------------------------
+
+    const articleToolCall = content.find(
       (block) =>
+        block &&
         block.type === 'tool_use' &&
         block.name === 'submit_article'
     );
@@ -283,20 +281,40 @@ async function callClaude(promptText) {
       return articleToolCall.input;
     }
 
-    // If Claude used the web search server tool, Anthropic may return
-    // pause_turn while it completes the search. Continue the same
-    // conversation exactly as Anthropic recommends.
+    // --------------------------------------------------------
+    // CONTINUE TOOL CONVERSATION
+    // --------------------------------------------------------
+
     if (
-      data.stop_reason === 'pause_turn' ||
-      data.stop_reason === 'tool_use'
+      data.stop_reason === 'tool_use' ||
+      data.stop_reason === 'pause_turn'
     ) {
       messages.push({
         role: 'assistant',
-        content: data.content
+        content
       });
 
-      // For server-side web search, Claude's search results are already
-      // incorporated by Anthropic. We continue the same message thread.
+      // If Claude used a client-side custom tool that requires
+      // a result, provide a continuation message.
+      //
+      // Web search is server-side, so Anthropic handles that
+      // result internally.
+      const customToolUses = content.filter(
+        (block) =>
+          block &&
+          block.type === 'tool_use' &&
+          block.name !== 'web_search' &&
+          block.name !== 'submit_article'
+      );
+
+      if (customToolUses.length > 0) {
+        messages.push({
+          role: 'user',
+          content:
+            'Continue the task and submit the completed article using the submit_article tool.'
+        });
+      }
+
       continue;
     }
 
@@ -312,8 +330,34 @@ async function callClaude(promptText) {
       );
     }
 
+    // --------------------------------------------------------
+    // LAST CHANCE: SOME API RESPONSES MAY RETURN TEXT
+    // --------------------------------------------------------
+
+    const text = content
+      .filter(
+        (block) =>
+          block && block.type === 'text'
+      )
+      .map(
+        (block) => block.text
+      )
+      .join('\n')
+      .trim();
+
+    if (text) {
+      throw new Error(
+        `Claude returned text instead of submit_article. Response: ${text.slice(
+          0,
+          500
+        )}`
+      );
+    }
+
     throw new Error(
-      `Claude ended without submitting an article. Stop reason: ${data.stop_reason || 'unknown'}`
+      `Claude ended without submitting an article. Stop reason: ${
+        data.stop_reason || 'unknown'
+      }`
     );
   }
 
@@ -322,7 +366,9 @@ async function callClaude(promptText) {
   );
 }
 
-// ---------- Build article prompt ----------
+// ------------------------------------------------------------
+// PROMPT
+// ------------------------------------------------------------
 
 function buildPrompt(existingPosts) {
   const existingList = existingPosts
@@ -333,9 +379,10 @@ function buildPrompt(existingPosts) {
     .join('\n');
 
   return `
-You are writing one original blog article for grademyfinance.com.
+You are writing one original personal-finance article for grademyfinance.com.
 
-Brand voice:
+BRAND VOICE:
+
 - Practical
 - Plain-spoken
 - No fluff
@@ -344,9 +391,12 @@ Brand voice:
 - No exaggerated promises
 - Clear and direct
 - Short paragraphs
-- Concrete numbers where appropriate
+- Useful examples
+- Concrete numbers when appropriate
 
-Here is every article already published on the site.
+EXISTING ARTICLES:
+
+The following articles already exist.
 
 DO NOT duplicate these topics:
 
@@ -354,58 +404,101 @@ ${existingList}
 
 TASK:
 
-1. Pick ONE genuinely useful personal-finance topic that is not already covered.
-2. The article should help a reader improve their financial situation, financial knowledge, or financial grade.
-3. If the topic contains current or time-sensitive information — including tax rules, IRS limits, contribution limits, interest rates, government programs, credit rules, or other changing figures — use the web search tool before submitting the article.
-4. Prefer authoritative sources such as:
-   - irs.gov
-   - consumerfinance.gov
-   - federalreserve.gov
-   - ssa.gov
-   - fdic.gov
-   - sec.gov
-   - usa.gov
-   - official government or regulatory sources
-5. If you use current facts, record the actual sources you used in sourcesUsed.
-6. Never invent statistics, studies, testimonials, quotes, sources, or URLs.
-7. If a central time-sensitive claim cannot be verified, set verified to false and explain why in verificationNotes.
-8. Do not guess at current financial figures.
+Choose ONE genuinely useful personal-finance topic that is not already covered.
+
+The article should help readers improve their finances, understand money better, or improve their financial grade.
+
+CURRENT INFORMATION:
+
+If the article involves information that can change over time, use the web_search tool before submitting the article.
+
+Examples include:
+
+- IRS rules
+- Tax brackets
+- Contribution limits
+- Social Security rules
+- Interest rates
+- Credit rules
+- Government programs
+- Inflation figures
+- Current financial regulations
+- Current limits or thresholds
+- Other current financial statistics
+
+Prefer authoritative sources such as:
+
+- irs.gov
+- consumerfinance.gov
+- federalreserve.gov
+- ssa.gov
+- fdic.gov
+- sec.gov
+- usa.gov
+
+Never invent:
+
+- Statistics
+- Studies
+- Testimonials
+- Quotes
+- Sources
+- URLs
+
+If a time-sensitive claim is central to the article and you cannot verify it, set:
+
+verified = false
+
+and explain the issue in verificationNotes.
+
+If you use current information, put the real sources you actually used in sourcesUsed.
 
 ARTICLE REQUIREMENTS:
 
-- At least 500 words.
+- Minimum 500 words.
 - Use useful subheadings.
-- Use only these HTML tags in bodyHtml:
-  <p>
-  <h2>
-  <h3>
-  <ul>
-  <ol>
-  <li>
-  <strong>
-  <em>
-  <a>
+- Use only these HTML tags inside bodyHtml:
+
+<p>
+<h2>
+<h3>
+<ul>
+<ol>
+<li>
+<strong>
+<em>
+<a>
+
 - No markdown.
 - No scripts.
 - No iframes.
-- No inline styles.
-- No html/body wrapper.
-- Include "Grade My Finance" naturally once in the article.
-- The Grade My Finance mention should encourage the reader to check their financial grade without sounding like a hard sales pitch.
-- FAQ should contain at least two useful questions and answers.
-- The slug must be lowercase kebab-case.
-- The meta description must be under 155 characters.
+- No inline CSS.
+- No HTML or BODY wrapper.
+- Include "Grade My Finance" naturally once.
+- The Grade My Finance mention should encourage readers to check their financial grade.
+- Do not make it sound like an aggressive advertisement.
+- Include at least two FAQ questions and answers.
+- Use a lowercase kebab-case slug.
+- Keep metaDescription under 155 characters.
 - sourcesUsed must contain only sources actually used.
 - If no external sources were needed, sourcesUsed may be an empty array.
-- The finished article must be submitted using the submit_article tool.
-- Do not answer with a normal text response. Submit the completed article through submit_article.
+
+IMPORTANT:
+
+Do not respond with the article as normal text.
+
+When the article is complete, submit it using the submit_article tool.
+
+You MUST use submit_article to return the completed article.
 `;
 }
 
-// ---------- HTML escaping ----------
+// ------------------------------------------------------------
+// HTML ESCAPING
+// ------------------------------------------------------------
 
-function escapeHtml(str) {
-  return String(str)
+function escapeHtml(value) {
+  return String(value)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -413,57 +506,269 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-// ---------- Site CSS ----------
+// ------------------------------------------------------------
+// SITE CSS
+// ------------------------------------------------------------
 
-const SITE_CSS = `:root{--bg:#0A0B0E;--surface:#14161C;--line:rgba(255,255,255,.09);--text:#F2F3F5;--muted:#8B92A0;--muted-2:#5D636F;--gold:#C9A227;--gold-soft:rgba(201,162,39,.14);--gold-bright:#E4C24E;--radius-lg:20px;--shadow:0 20px 50px rgba(0,0,0,.45);--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'IBM Plex Mono',monospace;}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;}
-h1,h2,h3{font-family:var(--font-display);letter-spacing:-.01em;margin:0 0 .5em}
-.container{max-width:760px;margin:0 auto;padding:0 22px}
-a{color:var(--gold-bright)}
-header.site{border-bottom:1px solid var(--line);background:rgba(10,11,14,.8);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10}
-.hdr-row{max-width:760px;margin:0 auto;padding:16px 22px;display:flex;align-items:center;gap:10px}
-.seal{width:32px;height:32px;border-radius:8px;background:linear-gradient(155deg,var(--gold-bright),var(--gold));display:grid;place-items:center;flex:none}
-.seal span{font-family:var(--font-mono);font-weight:700;font-size:11px;color:#1a1300}
-.wordmark{font-weight:700;font-size:15.5px;color:var(--text);text-decoration:none}
-.hdr-row a.wordmark{display:flex;align-items:center;gap:10px}
-.btn{margin-left:auto;background:linear-gradient(155deg,var(--gold-bright),var(--gold));color:#1a1300;font-weight:700;padding:9px 16px;border-radius:9px;text-decoration:none;font-size:13.5px;white-space:nowrap}
-main{padding:48px 0 70px}
-.eyebrow{font-family:var(--font-mono);font-size:12px;color:var(--gold-bright);letter-spacing:.06em;text-transform:uppercase}
-h1{font-size:clamp(26px,4vw,36px);margin-top:10px}
-p.lede{color:var(--muted);font-size:16.5px;margin-top:14px}
-.prose p,.prose li{font-size:15.5px;color:#D6D9DE}
-.prose h2{font-size:21px;margin-top:38px}
-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px}
-th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
-th{color:var(--muted);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em}
-td.mono{font-weight:600}
-.cta-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin:32px 0;box-shadow:var(--shadow)}
-.cta-card h3{margin-top:0;font-size:19px}
-.cta-card p{color:var(--muted);font-size:14.5px}
-.cta-btn{display:inline-block;background:linear-gradient(155deg,var(--gold-bright),var(--gold));color:#1a1300;font-weight:700;padding:12px 20px;border-radius:10px;text-decoration:none;margin-top:6px}
-.faq-item{border-top:1px solid var(--line);padding:16px 0}
-.faq-item summary{cursor:pointer;font-weight:600;font-size:15px;list-style:none}
-.faq-item summary::-webkit-details-marker{display:none}
-.faq-item p{color:var(--muted);font-size:14.5px;margin-top:8px}
-.related{margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
-.related a{display:block;margin:6px 0;font-size:14.5px}
-footer.site{border-top:1px solid var(--line);padding:26px 0;text-align:center;color:var(--muted-2);font-size:12.5px}
-footer.site a{color:var(--muted)}`;
+const SITE_CSS = `
+:root{
+--bg:#0A0B0E;
+--surface:#14161C;
+--line:rgba(255,255,255,.09);
+--text:#F2F3F5;
+--muted:#8B92A0;
+--muted-2:#5D636F;
+--gold:#C9A227;
+--gold-soft:rgba(201,162,39,.14);
+--gold-bright:#E4C24E;
+--radius-lg:20px;
+--shadow:0 20px 50px rgba(0,0,0,.45);
+--font-display:'Space Grotesk',sans-serif;
+--font-body:'Inter',sans-serif;
+--font-mono:'IBM Plex Mono',monospace;
+}
 
-// ---------- Render article HTML ----------
+*{
+box-sizing:border-box
+}
+
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:var(--font-body);
+line-height:1.6;
+-webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3{
+font-family:var(--font-display);
+letter-spacing:-.01em;
+margin:0 0 .5em
+}
+
+.container{
+max-width:760px;
+margin:0 auto;
+padding:0 22px
+}
+
+a{
+color:var(--gold-bright)
+}
+
+header.site{
+border-bottom:1px solid var(--line);
+background:rgba(10,11,14,.8);
+backdrop-filter:blur(10px);
+position:sticky;
+top:0;
+z-index:10
+}
+
+.hdr-row{
+max-width:760px;
+margin:0 auto;
+padding:16px 22px;
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.seal{
+width:32px;
+height:32px;
+border-radius:8px;
+background:linear-gradient(155deg,var(--gold-bright),var(--gold));
+display:grid;
+place-items:center;
+flex:none
+}
+
+.seal span{
+font-family:var(--font-mono);
+font-weight:700;
+font-size:11px;
+color:#1a1300
+}
+
+.wordmark{
+font-weight:700;
+font-size:15.5px;
+color:var(--text);
+text-decoration:none
+}
+
+.hdr-row a.wordmark{
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.btn{
+margin-left:auto;
+background:linear-gradient(155deg,var(--gold-bright),var(--gold));
+color:#1a1300;
+font-weight:700;
+padding:9px 16px;
+border-radius:9px;
+text-decoration:none;
+font-size:13.5px;
+white-space:nowrap
+}
+
+main{
+padding:48px 0 70px
+}
+
+.eyebrow{
+font-family:var(--font-mono);
+font-size:12px;
+color:var(--gold-bright);
+letter-spacing:.06em;
+text-transform:uppercase
+}
+
+h1{
+font-size:clamp(26px,4vw,36px);
+margin-top:10px
+}
+
+p.lede{
+color:var(--muted);
+font-size:16.5px;
+margin-top:14px
+}
+
+.prose p,
+.prose li{
+font-size:15.5px;
+color:#D6D9DE
+}
+
+.prose h2{
+font-size:21px;
+margin-top:38px
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin:18px 0;
+font-size:14px
+}
+
+th,td{
+text-align:left;
+padding:10px 12px;
+border-bottom:1px solid var(--line)
+}
+
+th{
+color:var(--muted);
+font-weight:600;
+font-size:12.5px;
+text-transform:uppercase;
+letter-spacing:.03em
+}
+
+td.mono{
+font-weight:600
+}
+
+.cta-card{
+background:var(--surface);
+border:1px solid var(--line);
+border-radius:var(--radius-lg);
+padding:24px;
+margin:32px 0;
+box-shadow:var(--shadow)
+}
+
+.cta-card h3{
+margin-top:0;
+font-size:19px
+}
+
+.cta-card p{
+color:var(--muted);
+font-size:14.5px
+}
+
+.cta-btn{
+display:inline-block;
+background:linear-gradient(155deg,var(--gold-bright),var(--gold));
+color:#1a1300;
+font-weight:700;
+padding:12px 20px;
+border-radius:10px;
+text-decoration:none;
+margin-top:6px
+}
+
+.faq-item{
+border-top:1px solid var(--line);
+padding:16px 0
+}
+
+.faq-item summary{
+cursor:pointer;
+font-weight:600;
+font-size:15px;
+list-style:none
+}
+
+.faq-item summary::-webkit-details-marker{
+display:none
+}
+
+.faq-item p{
+color:var(--muted);
+font-size:14.5px;
+margin-top:8px
+}
+
+.related{
+margin-top:40px;
+padding-top:24px;
+border-top:1px solid var(--line)
+}
+
+.related a{
+display:block;
+margin:6px 0;
+font-size:14.5px
+}
+
+footer.site{
+border-top:1px solid var(--line);
+padding:26px 0;
+text-align:center;
+color:var(--muted-2);
+font-size:12.5px
+}
+
+footer.site a{
+color:var(--muted)
+}
+`;
+
+// ------------------------------------------------------------
+// RENDER ARTICLE
+// ------------------------------------------------------------
 
 function renderPostHtml(article, relatedPosts) {
   const year = new Date().getFullYear();
 
   const faqHtml = article.faqItems
     .map(
-      (f) =>
-        `<div class="faq-item"><details><summary>${escapeHtml(
-          f.question
-        )}</summary><p>${escapeHtml(
-          f.answer
-        )}</p></details></div>`
+      (f) => `
+<div class="faq-item">
+  <details>
+    <summary>${escapeHtml(f.question)}</summary>
+    <p>${escapeHtml(f.answer)}</p>
+  </details>
+</div>`
     )
     .join('\n');
 
@@ -480,93 +785,117 @@ function renderPostHtml(article, relatedPosts) {
     }))
   };
 
-  const relatedHtml = relatedPosts.length
-    ? `<div class="related"><span class="eyebrow">Related</span>${relatedPosts
-        .map(
-          (p) =>
-            `<a href="${escapeHtml(
-              p.slug
-            )}.html">${escapeHtml(p.title)}</a>`
-        )
-        .join('')}</div>`
-    : '';
+  const relatedHtml =
+    relatedPosts.length > 0
+      ? `
+<div class="related">
+  <span class="eyebrow">Related</span>
+  ${relatedPosts
+    .map(
+      (p) =>
+        `<a href="${escapeHtml(
+          p.slug
+        )}.html">${escapeHtml(p.title)}</a>`
+    )
+    .join('\n')}
+</div>`
+      : '';
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${escapeHtml(
-    article.title
-  )} | Grade My Finance</title>
-<meta name="description" content="${escapeHtml(
-    article.metaDescription
-  )}">
-<link rel="canonical" href="https://grademyfinance.com/blog/${escapeHtml(
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>${escapeHtml(article.title)} | Grade My Finance</title>
+
+<meta
+  name="description"
+  content="${escapeHtml(article.metaDescription)}"
+>
+
+<link
+  rel="canonical"
+  href="https://grademyfinance.com/blog/${encodeURIComponent(
     article.slug
-  )}.html">
-<style>${SITE_CSS}</style>
+  )}.html"
+>
+
+<style>
+${SITE_CSS}
+</style>
+
+<script type="application/ld+json">
+${JSON.stringify(faqSchema)}
+</script>
+
 </head>
 
 <body>
 
 <header class="site">
-<div class="hdr-row">
-<a class="wordmark" href="https://grademyfinance.com/">
-<span class="seal"><span>GMF</span></span>
-Grade My Finance
-</a>
-<a class="btn" href="https://grademyfinance.com/">Check Your Grade</a>
-</div>
+  <div class="hdr-row">
+    <a class="wordmark" href="https://grademyfinance.com/">
+      <span class="seal">
+        <span>GMF</span>
+      </span>
+      Grade My Finance
+    </a>
+
+    <a
+      class="btn"
+      href="https://grademyfinance.com/"
+    >
+      Check Your Grade
+    </a>
+  </div>
 </header>
 
 <main>
-<article class="container">
+  <article class="container">
 
-<div class="eyebrow">${escapeHtml(
-    article.category
-  )}</div>
+    <div class="eyebrow">
+      ${escapeHtml(article.category)}
+    </div>
 
-<h1>${escapeHtml(article.title)}</h1>
+    <h1>
+      ${escapeHtml(article.title)}
+    </h1>
 
-<p class="lede">${escapeHtml(
-    article.metaDescription
-  )}</p>
+    <p class="lede">
+      ${escapeHtml(article.metaDescription)}
+    </p>
 
-<div class="prose">
-${article.bodyHtml}
-</div>
+    <div class="prose">
+      ${article.bodyHtml}
+    </div>
 
-<section class="related">
-<h2>Frequently Asked Questions</h2>
-${faqHtml}
-</section>
+    <section class="faq">
+      <h2>Frequently Asked Questions</h2>
+      ${faqHtml}
+    </section>
 
-${relatedHtml}
+    ${relatedHtml}
 
-</article>
+  </article>
 </main>
 
 <footer class="site">
-<div class="container">
-© ${year} Grade My Finance
-</div>
+  <div class="container">
+    © ${year} Grade My Finance
+  </div>
 </footer>
 
-<script type="application/ld+json">${JSON.stringify(
-    faqSchema
-  )}</script>
-
 </body>
-</html>`;
+</html>
+`;
 }
 
-// ---------- Update manifest ----------
+// ------------------------------------------------------------
+// UPDATE MANIFEST
+// ------------------------------------------------------------
 
-function updateManifest(
-  manifestState,
-  article
-) {
+function updateManifest(manifestState, article) {
   const newEntry =
     `  { slug:${JSON.stringify(
       article.slug
@@ -578,7 +907,7 @@ function updateManifest(
 
   const updatedArray =
     manifestState.arrayLiteral.replace(
-      /]$/,
+      /\]$/,
       manifestState.posts.length
         ? `,\n${newEntry}\n]`
         : `\n${newEntry}\n]`
@@ -591,46 +920,60 @@ function updateManifest(
     );
 
   fs.writeFileSync(
-    path.join(
-      ROOT,
-      'posts-manifest.js'
-    ),
+    path.join(ROOT, 'posts-manifest.js'),
     updatedRaw
   );
 }
 
-// ---------- Update sitemap ----------
+// ------------------------------------------------------------
+// UPDATE SITEMAP
+// ------------------------------------------------------------
 
 function updateSitemap(article) {
-  const sitemapPath = path.join(
-    ROOT,
-    'sitemap.xml'
-  );
+  const sitemapPath =
+    path.join(ROOT, 'sitemap.xml');
 
-  const raw = fs.readFileSync(
-    sitemapPath,
-    'utf8'
-  );
-
-  const entry = `<url>
-<loc>https://grademyfinance.com/blog/${article.slug}.html</loc>
-<changefreq>monthly</changefreq>
-<priority>0.7</priority>
-</url>
-`;
-
-  if (
-    raw.includes(
-      `/blog/${article.slug}.html`
-    )
-  ) {
+  if (!fs.existsSync(sitemapPath)) {
+    console.warn(
+      'sitemap.xml not found; skipping sitemap update.'
+    );
     return;
   }
 
-  const updated = raw.replace(
-    '</urlset>',
-    `${entry}</urlset>`
-  );
+  const raw =
+    fs.readFileSync(
+      sitemapPath,
+      'utf8'
+    );
+
+  const articleUrl =
+    `https://grademyfinance.com/blog/${article.slug}.html`;
+
+  if (raw.includes(articleUrl)) {
+    return;
+  }
+
+  const entry = `
+  <url>
+    <loc>${articleUrl}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+`;
+
+  const marker = '</urlset>';
+
+  if (!raw.includes(marker)) {
+    throw new Error(
+      'Could not find </urlset> in sitemap.xml'
+    );
+  }
+
+  const updated =
+    raw.replace(
+      marker,
+      `${entry}${marker}`
+    );
 
   fs.writeFileSync(
     sitemapPath,
@@ -638,43 +981,30 @@ function updateSitemap(article) {
   );
 }
 
-// ---------- Update blog index ----------
+// ------------------------------------------------------------
+// UPDATE BLOG INDEX
+// ------------------------------------------------------------
 
 function updateBlogIndex(article) {
-  const indexPath = path.join(
-    ROOT,
-    'blog',
-    'index.html'
-  );
-
-  const raw = fs.readFileSync(
-    indexPath,
-    'utf8'
-  );
-
-  const year = new Date().getFullYear();
-
-  const entry = `    <li>
-      <a class="title" href="${article.slug}.html">${escapeHtml(
-    article.title
-  )}</a>
-      <p>${escapeHtml(
-        article.metaDescription
-      )}</p>
-      <span class="meta">${year} · ${
-    article.readTimeMinutes
-  } min read</span>
-    </li>
-`;
-
-  const marker =
-    /(Latest posts<\/span>\s*)/i;
-
-  if (!marker.test(raw)) {
-    throw new Error(
-      'Could not find blog index insertion point'
+  const indexPath =
+    path.join(
+      ROOT,
+      'blog',
+      'index.html'
     );
+
+  if (!fs.existsSync(indexPath)) {
+    console.warn(
+      'blog/index.html not found; skipping blog index update.'
+    );
+    return;
   }
+
+  const raw =
+    fs.readFileSync(
+      indexPath,
+      'utf8'
+    );
 
   if (
     raw.includes(
@@ -684,58 +1014,73 @@ function updateBlogIndex(article) {
     return;
   }
 
-  const updated = raw.replace(
-    marker,
-    `$1\n${entry}`
-  );
+  const year =
+    new Date().getFullYear();
 
-  fs.writeFileSync(
-    indexPath,
-    updated
-  );
-}
+  const entry = `
+<li>
+  <a
+    class="title"
+    href="${escapeHtml(article.slug)}.html"
+  >
+    ${escapeHtml(article.title)}
+  </a>
 
-// ---------- Queue failed validation ----------
+  <p>
+    ${escapeHtml(article.metaDescription)}
+  </p>
 
-function writeQueueDraft(
-  article,
-  reason
-) {
-  const queueDir = path.join(
-    ROOT,
-    'queue'
-  );
+  <span class="meta">
+    ${year} · ${article.readTimeMinutes} min read
+  </span>
+</li>
+`;
 
-  if (!fs.existsSync(queueDir)) {
-    fs.mkdirSync(queueDir, {
-      recursive: true
-    });
+  // Try the existing "Latest posts" marker.
+  const marker =
+    /(Latest posts<\/span>\s*)/i;
+
+  if (marker.test(raw)) {
+    const updated =
+      raw.replace(
+        marker,
+        `$1${entry}`
+      );
+
+    fs.writeFileSync(
+      indexPath,
+      updated
+    );
+
+    return;
   }
 
-  const queuePath = path.join(
-    queueDir,
-    `${
-      article.slug ||
-      'untitled-' + Date.now()
-    }.json`
-  );
+  // Fallback: put it before the first </ul>.
+  const ulMarker = '</ul>';
 
-  fs.writeFileSync(
-    queuePath,
-    JSON.stringify(
-      {
-        ...article,
-        queuedAt:
-          new Date().toISOString(),
-        reason
-      },
-      null,
-      2
-    )
+  if (raw.includes(ulMarker)) {
+    const updated =
+      raw.replace(
+        ulMarker,
+        `${entry}\n${ulMarker}`
+      );
+
+    fs.writeFileSync(
+      indexPath,
+      updated
+    );
+
+    return;
+  }
+
+  throw new Error(
+    'Could not find a place to insert article into blog/index.html'
   );
 }
 
-// ---------- Validate article ----------
+// ------------------------------------------------------------
+// VALIDATE ARTICLE
+// ------------------------------------------------------------
 
 function validateArticle(
   article,
@@ -813,10 +1158,72 @@ function validateArticle(
     );
   }
 
+  if (
+    !Array.isArray(
+      article.sourcesUsed
+    )
+  ) {
+    problems.push(
+      'sourcesUsed must be an array'
+    );
+  }
+
   return problems;
 }
 
-// ---------- Main ----------
+// ------------------------------------------------------------
+// QUEUE DRAFT
+// ------------------------------------------------------------
+
+function writeQueueDraft(
+  article,
+  reason
+) {
+  const queueDir =
+    path.join(
+      ROOT,
+      'queue'
+    );
+
+  if (!fs.existsSync(queueDir)) {
+    fs.mkdirSync(
+      queueDir,
+      {
+        recursive: true
+      }
+    );
+  }
+
+  const slug =
+    article &&
+    article.slug
+      ? article.slug
+      : `untitled-${Date.now()}`;
+
+  const queuePath =
+    path.join(
+      queueDir,
+      `${slug}.json`
+    );
+
+  fs.writeFileSync(
+    queuePath,
+    JSON.stringify(
+      {
+        ...(article || {}),
+        queuedAt:
+          new Date().toISOString(),
+        reason
+      },
+      null,
+      2
+    )
+  );
+}
+
+// ------------------------------------------------------------
+// MAIN
+// ------------------------------------------------------------
 
 async function main() {
   const manifestState =
@@ -853,10 +1260,12 @@ async function main() {
         );
 
       const article =
-        await callClaude(prompt);
+        await callClaude(
+          prompt
+        );
 
       console.log(
-        `Claude returned structured article: ${article.title}`
+        `Claude returned article: ${article.title}`
       );
 
       const problems =
@@ -865,16 +1274,29 @@ async function main() {
           existingSlugs
         );
 
-      if (problems.length) {
+      if (
+        problems.length > 0
+      ) {
+        console.warn(
+          `Article ${i + 1} queued: ${problems.join(
+            '; '
+          )}`
+        );
+
         writeQueueDraft(
           article,
-          problems.join('; ')
+          problems.join(
+            '; '
+          )
         );
 
         results.queued.push({
-          slug: article.slug,
+          slug:
+            article.slug,
           reason:
-            problems.join('; ')
+            problems.join(
+              '; '
+            )
         });
 
         continue;
@@ -895,12 +1317,15 @@ async function main() {
           relatedPosts
         );
 
-      fs.writeFileSync(
+      const articlePath =
         path.join(
           ROOT,
           'blog',
           `${article.slug}.html`
-        ),
+        );
+
+      fs.writeFileSync(
+        articlePath,
         html
       );
 
@@ -909,31 +1334,29 @@ async function main() {
         article
       );
 
-      // Refresh manifest after publishing.
-      manifestState.raw =
-        fs.readFileSync(
-          path.join(
-            ROOT,
-            'posts-manifest.js'
-          ),
-          'utf8'
-        );
-
-      const reload =
+      const refreshed =
         loadManifest();
 
+      manifestState.raw =
+        refreshed.raw;
+
       manifestState.posts =
-        reload.posts;
+        refreshed.posts;
 
       manifestState.arrayLiteral =
-        reload.arrayLiteral;
+        refreshed.arrayLiteral;
 
       existingSlugs.add(
         article.slug
       );
 
-      updateSitemap(article);
-      updateBlogIndex(article);
+      updateSitemap(
+        article
+      );
+
+      updateBlogIndex(
+        article
+      );
 
       results.published.push(
         article.slug
@@ -946,6 +1369,7 @@ async function main() {
       console.log(
         `Published: ${article.slug}`
       );
+
     } catch (err) {
       console.error(
         `Article ${i + 1} failed:`,
@@ -955,13 +1379,12 @@ async function main() {
       results.failed.push(
         err.message
       );
-
-      // Continue to the next article.
-      continue;
     }
   }
 
-  // ---------- Pinterest ----------
+  // ----------------------------------------------------------
+  // PINTEREST
+  // ----------------------------------------------------------
 
   let pinterestResults = {
     posted: [],
@@ -991,7 +1414,9 @@ async function main() {
     }
   }
 
-  // ---------- Summary ----------
+  // ----------------------------------------------------------
+  // SUMMARY
+  // ----------------------------------------------------------
 
   console.log(
     '--- Daily Content Engine summary ---'
@@ -1021,16 +1446,19 @@ async function main() {
     'Pinterest failed:',
     pinterestResults.failed
   );
-
-  // Don't make GitHub Actions fail merely because an individual
-  // article failed. The workflow can still commit successful articles.
 }
 
-main().catch((err) => {
-  console.error(
-    'Fatal error in content engine:',
-    err
-  );
+// ------------------------------------------------------------
+// START
+// ------------------------------------------------------------
 
-  process.exit(1);
-});
+main().catch(
+  (err) => {
+    console.error(
+      'Fatal error in content engine:',
+      err
+    );
+
+    process.exit(1);
+  }
+);
