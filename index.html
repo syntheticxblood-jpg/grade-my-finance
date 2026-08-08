@@ -801,7 +801,13 @@ section.block{ padding:76px 0 }
 .rc-actions-group{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center }
 .rc-actions-divider{ width:1px; height:22px; background:var(--line); margin:0 6px; flex:none }
 .rc-actions .btn svg{ flex:none; opacity:.85 }
-@media (max-width:760px){ .rc-actions-divider{ display:none } .rc-actions{ justify-content:flex-start } }
+@media (max-width:760px){
+  .rc-actions-divider{ display:none }
+  .rc-actions{ justify-content:center; padding:10px 4px; gap:8px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch }
+  .rc-actions-group{ flex-wrap:nowrap; gap:8px }
+  .rc-actions .btn{ padding:10px; flex:none }
+  .rc-actions .btn .rc-label{ display:none }
+}
 .achv-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr)); gap:10px }
 .achv-badge{ display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; padding:10px 4px; border-radius:10px; cursor:default; transition:transform .15s ease }
 .achv-badge:hover{ transform:translateY(-2px) }
@@ -1592,20 +1598,20 @@ body.is-pro .ad-slot{ display:none !important }
 
     <div class="rc-actions">
       <div class="rc-actions-group">
-        <button class="btn sm" id="downloadImage" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13m0 0l-4-4m4 4l4-4M4 19h16"/></svg>Download grade card</button>
-        <button class="btn sm" id="downloadStoryImage" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>Download for Stories</button>
-        <button class="btn gold sm pro-only-show" id="downloadCertBtn" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/></svg>Download Certificate</button>
+        <button class="btn sm" id="downloadImage" type="button" aria-label="Download grade card"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13m0 0l-4-4m4 4l4-4M4 19h16"/></svg><span class="rc-label">Download grade card</span></button>
+        <button class="btn sm" id="downloadStoryImage" type="button" aria-label="Download for Stories"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg><span class="rc-label">Download for Stories</span></button>
+        <button class="btn gold sm pro-only-show" id="downloadCertBtn" type="button" aria-label="Download Certificate"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/></svg><span class="rc-label">Download Certificate</span></button>
       </div>
       <div class="rc-actions-divider"></div>
       <div class="rc-actions-group">
-        <button class="btn sm" id="compareFriend" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="10" cy="7" r="3.5"/><path d="M22 20v-1a4 4 0 0 0-3-3.87"/><path d="M16 3.6a4 4 0 0 1 0 7.8"/></svg>Compare with a friend</button>
-        <button class="btn sm" id="shareReport" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-3.9M8.6 13.5l6.8 3.9"/></svg>Share</button>
-        <button class="btn sm" id="copyLink" type="button" title="This link contains your actual entered numbers, encoded in the URL — only share it with people you trust."><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7a5 5 0 0 1 0-10h2"/><path d="M15 7h2a5 5 0 0 1 0 10h-2"/><path d="M8 12h8"/></svg>Copy share link</button>
+        <button class="btn sm" id="compareFriend" type="button" aria-label="Compare with a friend"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="10" cy="7" r="3.5"/><path d="M22 20v-1a4 4 0 0 0-3-3.87"/><path d="M16 3.6a4 4 0 0 1 0 7.8"/></svg><span class="rc-label">Compare with a friend</span></button>
+        <button class="btn sm" id="shareReport" type="button" aria-label="Share"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-3.9M8.6 13.5l6.8 3.9"/></svg><span class="rc-label">Share</span></button>
+        <button class="btn sm" id="copyLink" type="button" aria-label="Copy share link" title="This link contains your actual entered numbers, encoded in the URL — only share it with people you trust."><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7a5 5 0 0 1 0-10h2"/><path d="M15 7h2a5 5 0 0 1 0 10h-2"/><path d="M8 12h8"/></svg><span class="rc-label">Copy share link</span></button>
       </div>
       <div class="rc-actions-divider"></div>
       <div class="rc-actions-group">
-        <button class="btn sm" id="printReport" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print / save as PDF</button>
-        <button class="btn gold sm" id="calcAgain" type="button"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>Recalculate</button>
+        <button class="btn sm" id="printReport" type="button" aria-label="Print or save as PDF"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span class="rc-label">Print / save as PDF</span></button>
+        <button class="btn gold sm" id="calcAgain" type="button" aria-label="Recalculate"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg><span class="rc-label">Recalculate</span></button>
       </div>
     </div>
     <canvas id="shareCanvas" width="1080" height="1080" style="display:none"></canvas>
