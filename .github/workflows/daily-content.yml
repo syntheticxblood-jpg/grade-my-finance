@@ -1,0 +1,40 @@
+name: Daily Content Engine
+
+on:
+  schedule:
+    # 13:00 UTC ≈ 7am Central (8am during CDT/summer). Adjust if you want a different time.
+    - cron: '0 13 * * *'
+  workflow_dispatch: {}   # lets you trigger it manually from the Actions tab to test
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run content engine
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ARTICLES_PER_DAY: '2'
+        run: node scripts/daily-content.js
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "GMF Content Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A blog posts-manifest.js sitemap.xml queue
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto content run: $(date -u +'%Y-%m-%d')"
+            git push
+          fi
