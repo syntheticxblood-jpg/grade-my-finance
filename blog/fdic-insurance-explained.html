@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>FDIC Insurance Explained: How Protected Is Your Money in the Bank? | Grade My Finance</title>
+
+<meta
+  name="description"
+  content="Learn how FDIC deposit insurance actually works, what the $250,000 limit covers, and how to protect money above that amount."
+>
+
+<link
+  rel="canonical"
+  href="https://grademyfinance.com/blog/fdic-insurance-explained.html"
+>
+
+<style>
+
+:root{
+--bg:#0A0B0E;
+--surface:#14161C;
+--line:rgba(255,255,255,.09);
+--text:#F2F3F5;
+--muted:#8B92A0;
+--muted-2:#5D636F;
+--gold:#C9A227;
+--gold-soft:rgba(201,162,39,.14);
+--gold-bright:#E4C24E;
+--radius-lg:20px;
+--shadow:0 20px 50px rgba(0,0,0,.45);
+--font-display:'Space Grotesk',sans-serif;
+--font-body:'Inter',sans-serif;
+--font-mono:'IBM Plex Mono',monospace;
+}
+
+*{
+box-sizing:border-box
+}
+
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:var(--font-body);
+line-height:1.6;
+-webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3{
+font-family:var(--font-display);
+letter-spacing:-.01em;
+margin:0 0 .5em
+}
+
+.container{
+max-width:760px;
+margin:0 auto;
+padding:0 22px
+}
+
+a{
+color:var(--gold-bright)
+}
+
+header.site{
+border-bottom:1px solid var(--line);
+background:rgba(10,11,14,.8);
+backdrop-filter:blur(10px);
+position:sticky;
+top:0;
+z-index:10
+}
+
+.hdr-row{
+max-width:760px;
+margin:0 auto;
+padding:16px 22px;
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.seal{
+width:32px;
+height:32px;
+border-radius:8px;
+background:linear-gradient(155deg,var(--gold-bright),var(--gold));
+display:grid;
+place-items:center;
+flex:none
+}
+
+.seal span{
+font-family:var(--font-mono);
+font-weight:700;
+font-size:11px;
+color:#1a1300
+}
+
+.wordmark{
+font-weight:700;
+font-size:15.5px;
+color:var(--text);
+text-decoration:none
+}
+
+.hdr-row a.wordmark{
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.btn{
+margin-left:auto;
+background:linear-gradient(155deg,var(--gold-bright),var(--gold));
+color:#1a1300;
+font-weight:700;
+padding:9px 16px;
+border-radius:9px;
+text-decoration:none;
+font-size:13.5px;
+white-space:nowrap
+}
+
+main{
+padding:48px 0 70px
+}
+
+.eyebrow{
+font-family:var(--font-mono);
+font-size:12px;
+color:var(--gold-bright);
+letter-spacing:.06em;
+text-transform:uppercase
+}
+
+h1{
+font-size:clamp(26px,4vw,36px);
+margin-top:10px
+}
+
+p.lede{
+color:var(--muted);
+font-size:16.5px;
+margin-top:14px
+}
+
+.prose p,
+.prose li{
+font-size:15.5px;
+color:#D6D9DE
+}
+
+.prose h2{
+font-size:21px;
+margin-top:38px
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin:18px 0;
+font-size:14px
+}
+
+th,td{
+text-align:left;
+padding:10px 12px;
+border-bottom:1px solid var(--line)
+}
+
+th{
+color:var(--muted);
+font-weight:600;
+font-size:12.5px;
+text-transform:uppercase;
+letter-spacing:.03em
+}
+
+td.mono{
+font-weight:600
+}
+
+.cta-card{
+background:var(--surface);
+border:1px solid var(--line);
+border-radius:var(--radius-lg);
+padding:24px;
+margin:32px 0;
+box-shadow:var(--shadow)
+}
+
+.cta-card h3{
+margin-top:0;
+font-size:19px
+}
+
+.cta-card p{
+color:var(--muted);
+font-size:14.5px
+}
+
+.cta-btn{
+display:inline-block;
+background:linear-gradient(155deg,var(--gold-bright),var(--gold));
+color:#1a1300;
+font-weight:700;
+padding:12px 20px;
+border-radius:10px;
+text-decoration:none;
+margin-top:6px
+}
+
+.faq-item{
+border-top:1px solid var(--line);
+padding:16px 0
+}
+
+.faq-item summary{
+cursor:pointer;
+font-weight:600;
+font-size:15px;
+list-style:none
+}
+
+.faq-item summary::-webkit-details-marker{
+display:none
+}
+
+.faq-item p{
+color:var(--muted);
+font-size:14.5px;
+margin-top:8px
+}
+
+.related{
+margin-top:40px;
+padding-top:24px;
+border-top:1px solid var(--line)
+}
+
+.related a{
+display:block;
+margin:6px 0;
+font-size:14.5px
+}
+
+footer.site{
+border-top:1px solid var(--line);
+padding:26px 0;
+text-align:center;
+color:var(--muted-2);
+font-size:12.5px
+}
+
+footer.site a{
+color:var(--muted)
+}
+
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my money completely safe if my bank fails?","acceptedAnswer":{"@type":"Answer","text":"Your insured deposits are safe up to $250,000 per depositor, per bank, per ownership category. Amounts above that limit at a single bank, in a single ownership category, are not guaranteed unless you restructure how the money is held."}},{"@type":"Question","name":"Are joint bank accounts insured differently than individual accounts?","acceptedAnswer":{"@type":"Answer","text":"Yes. Joint accounts are treated as a separate ownership category from individual accounts. Each co-owner's share of a joint account is generally insured up to $250,000, which is why joint accounts can sometimes hold more insured funds than a single-owner account at the same bank."}},{"@type":"Question","name":"Does FDIC insurance cover investments held at my bank?","acceptedAnswer":{"@type":"Answer","text":"No. FDIC insurance only covers deposit products like checking, savings, money market deposit accounts, and CDs. Stocks, bonds, mutual funds, and other investment products are not covered, even if you purchased them through a bank."}},{"@type":"Question","name":"What's the difference between FDIC and NCUA insurance?","acceptedAnswer":{"@type":"Answer","text":"FDIC insurance applies to banks, while NCUA share insurance applies to credit unions through the National Credit Union Share Insurance Fund. Both provide comparable protection for depositors, generally following similar coverage structures."}}]}
+</script>
+
+</head>
+
+<body>
+
+<header class="site">
+  <div class="hdr-row">
+    <a class="wordmark" href="https://grademyfinance.com/">
+      <span class="seal">
+        <span>GMF</span>
+      </span>
+      Grade My Finance
+    </a>
+
+    <a
+      class="btn"
+      href="https://grademyfinance.com/"
+    >
+      Check Your Grade
+    </a>
+  </div>
+</header>
+
+<main>
+  <article class="container">
+
+    <div class="eyebrow">
+      Savings
+    </div>
+
+    <h1>
+      FDIC Insurance Explained: How Protected Is Your Money in the Bank?
+    </h1>
+
+    <p class="lede">
+      Learn how FDIC deposit insurance actually works, what the $250,000 limit covers, and how to protect money above that amount.
+    </p>
+
+    <div class="prose">
+      <p>Most people know their bank deposits are "FDIC insured." Far fewer people know what that actually covers, how the limits work, or what happens if a bank fails. That gap matters more than it seems. Understanding deposit insurance is a basic piece of financial literacy, especially if you're building savings, an emergency fund, or holding cash for a big purchase like a house.</p>
+
+<h2>What FDIC Insurance Actually Is</h2>
+<p>The Federal Deposit Insurance Corporation (FDIC) is an independent federal agency that protects your money if your bank fails. Coverage is automatic the moment you open a deposit account at an FDIC-insured bank. You don't apply for it, sign up for it, or pay for it directly.</p>
+<p>If your credit union fails instead of a bank, a similar system called the National Credit Union Share Insurance Fund (NCUSIF), run by the National Credit Union Administration (NCUA), provides comparable protection for credit union accounts.</p>
+
+<h2>The $250,000 Limit, Explained</h2>
+<p>The standard coverage amount is $250,000 per depositor, per FDIC-insured bank, per ownership category. That single sentence has three moving parts, and all three matter:</p>
+<ul>
+<li><strong>Per depositor:</strong> the limit applies to you as an individual, not to the account itself.</li>
+<li><strong>Per bank:</strong> if you have accounts at two different FDIC-insured banks, you get a separate $250,000 limit at each one.</li>
+<li><strong>Per ownership category:</strong> a single account, a joint account, and a retirement account are treated as different categories, each with its own $250,000 limit at the same bank.</li>
+</ul>
+<p>This is why a married couple can often protect $1 million or more at a single bank without opening accounts anywhere else. A single account in one spouse's name, a single account in the other spouse's name, and a joint account owned by both could each carry their own $250,000 in coverage.</p>
+
+<h2>Ownership Categories That Get Their Own Coverage</h2>
+<p>Common categories include:</p>
+<ul>
+<li>Single accounts (one owner, no beneficiaries)</li>
+<li>Joint accounts (two or more owners)</li>
+<li>Certain retirement accounts, such as IRAs</li>
+<li>Revocable trust accounts, including payable-on-death accounts</li>
+<li>Business accounts, held separately from personal accounts</li>
+</ul>
+<p>Trust accounts have their own rules worth knowing if you're doing any estate planning. As of April 1, 2024, the maximum coverage for a trust owner with five or more beneficiaries is $1,250,000 per owner across all trust accounts at the same bank.</p>
+
+<h2>What's Covered and What Isn't</h2>
+<p>FDIC insurance covers checking accounts, savings accounts, money market deposit accounts, and certificates of deposit. It does not cover stocks, bonds, mutual funds, cryptocurrency, life insurance policies, or the contents of a safe deposit box, even if you bought those investment products through a bank. Deposit insurance also does not protect you from losses due to theft or fraud; that's handled by different consumer protection laws.</p>
+
+<h2>What Happens If a Bank Actually Fails</h2>
+<p>Bank failures are rare, but when they happen, the FDIC typically resolves the situation within a few business days. Depositors usually get access to their insured funds either through a new account automatically opened at another insured bank, or by receiving a check for the insured balance. You generally don't need to file a claim or do anything beyond confirming your account details.</p>
+
+<h2>If You Have More Than $250,000 in Cash</h2>
+<p>If your balance at one bank is creeping past the limit, you have a few practical options:</p>
+<ol>
+<li>Spread deposits across multiple FDIC-insured banks.</li>
+<li>Use different ownership categories at the same bank, such as individual, joint, and retirement accounts.</li>
+<li>Look into whether your bank offers a network program that automatically spreads deposits across partner banks for expanded coverage.</li>
+<li>Use the FDIC's Electronic Deposit Insurance Estimator (EDIE) on fdic.gov to calculate your exact coverage based on how your accounts are titled.</li>
+</ol>
+<p>It's also worth noting that lawmakers have discussed raising the $250,000 limit in recent proposals, but as of now, the standard limit remains $250,000. Don't plan your savings strategy around a change that hasn't happened yet.</p>
+
+<h2>Why This Matters for Your Financial Grade</h2>
+<p>Protecting the cash you've already saved is just as important as building it in the first place. An emergency fund or house down payment sitting in an uninsured or improperly titled account is a risk most people don't realize they're taking. If you're not sure how your savings, debt, and overall financial habits stack up, Grade My Finance can give you a quick, honest look at where you stand and what to prioritize next.</p>
+
+<h2>A Simple Checklist</h2>
+<ul>
+<li>Confirm your bank is FDIC-insured (or your credit union is NCUA-insured) using the official lookup tools on fdic.gov or ncua.gov.</li>
+<li>Know which ownership category each of your accounts falls under.</li>
+<li>If you're near or over $250,000 in cash at one bank, run the numbers through EDIE.</li>
+<li>Remember that investment accounts held at a bank, like brokerage products, are not FDIC-insured even if the bank is.</li>
+</ul>
+
+    </div>
+
+    <section class="faq">
+      <h2>Frequently Asked Questions</h2>
+      
+<div class="faq-item">
+  <details>
+    <summary>Is my money completely safe if my bank fails?</summary>
+    <p>Your insured deposits are safe up to $250,000 per depositor, per bank, per ownership category. Amounts above that limit at a single bank, in a single ownership category, are not guaranteed unless you restructure how the money is held.</p>
+  </details>
+</div>
+
+<div class="faq-item">
+  <details>
+    <summary>Are joint bank accounts insured differently than individual accounts?</summary>
+    <p>Yes. Joint accounts are treated as a separate ownership category from individual accounts. Each co-owner&#39;s share of a joint account is generally insured up to $250,000, which is why joint accounts can sometimes hold more insured funds than a single-owner account at the same bank.</p>
+  </details>
+</div>
+
+<div class="faq-item">
+  <details>
+    <summary>Does FDIC insurance cover investments held at my bank?</summary>
+    <p>No. FDIC insurance only covers deposit products like checking, savings, money market deposit accounts, and CDs. Stocks, bonds, mutual funds, and other investment products are not covered, even if you purchased them through a bank.</p>
+  </details>
+</div>
+
+<div class="faq-item">
+  <details>
+    <summary>What&#39;s the difference between FDIC and NCUA insurance?</summary>
+    <p>FDIC insurance applies to banks, while NCUA share insurance applies to credit unions through the National Credit Union Share Insurance Fund. Both provide comparable protection for depositors, generally following similar coverage structures.</p>
+  </details>
+</div>
+    </section>
+
+    
+<div class="related">
+  <span class="eyebrow">Related</span>
+  <a href="saving-for-a-wedding.html">Saving for a Wedding Without Going Into Debt</a>
+<a href="high-yield-savings-accounts.html">High-Yield Savings Accounts: Is Switching Actually Worth It?</a>
+</div>
+
+  </article>
+</main>
+
+<footer class="site">
+  <div class="container">
+    © 2026 Grade My Finance
+  </div>
+</footer>
+
+</body>
+</html>

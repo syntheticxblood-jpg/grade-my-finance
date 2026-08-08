@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Required Minimum Distributions (RMDs): What They Are and When You Have to Take Them | Grade My Finance</title>
+
+<meta
+  name="description"
+  content="RMD rules explained plainly: when they start, how to calculate them, and how to avoid the penalty for missing one."
+>
+
+<link
+  rel="canonical"
+  href="https://grademyfinance.com/blog/required-minimum-distributions-explained.html"
+>
+
+<style>
+
+:root{
+--bg:#0A0B0E;
+--surface:#14161C;
+--line:rgba(255,255,255,.09);
+--text:#F2F3F5;
+--muted:#8B92A0;
+--muted-2:#5D636F;
+--gold:#C9A227;
+--gold-soft:rgba(201,162,39,.14);
+--gold-bright:#E4C24E;
+--radius-lg:20px;
+--shadow:0 20px 50px rgba(0,0,0,.45);
+--font-display:'Space Grotesk',sans-serif;
+--font-body:'Inter',sans-serif;
+--font-mono:'IBM Plex Mono',monospace;
+}
+
+*{
+box-sizing:border-box
+}
+
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:var(--font-body);
+line-height:1.6;
+-webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3{
+font-family:var(--font-display);
+letter-spacing:-.01em;
+margin:0 0 .5em
+}
+
+.container{
+max-width:760px;
+margin:0 auto;
+padding:0 22px
+}
+
+a{
+color:var(--gold-bright)
+}
+
+header.site{
+border-bottom:1px solid var(--line);
+background:rgba(10,11,14,.8);
+backdrop-filter:blur(10px);
+position:sticky;
+top:0;
+z-index:10
+}
+
+.hdr-row{
+max-width:760px;
+margin:0 auto;
+padding:16px 22px;
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.seal{
+width:32px;
+height:32px;
+border-radius:8px;
+background:linear-gradient(155deg,var(--gold-bright),var(--gold));
+display:grid;
+place-items:center;
+flex:none
+}
+
+.seal span{
+font-family:var(--font-mono);
+font-weight:700;
+font-size:11px;
+color:#1a1300
+}
+
+.wordmark{
+font-weight:700;
+font-size:15.5px;
+color:var(--text);
+text-decoration:none
+}
+
+.hdr-row a.wordmark{
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.btn{
+margin-left:auto;
+background:linear-gradient(155deg,var(--gold-bright),var(--gold));
+color:#1a1300;
+font-weight:700;
+padding:9px 16px;
+border-radius:9px;
+text-decoration:none;
+font-size:13.5px;
+white-space:nowrap
+}
+
+main{
+padding:48px 0 70px
+}
+
+.eyebrow{
+font-family:var(--font-mono);
+font-size:12px;
+color:var(--gold-bright);
+letter-spacing:.06em;
+text-transform:uppercase
+}
+
+h1{
+font-size:clamp(26px,4vw,36px);
+margin-top:10px
+}
+
+p.lede{
+color:var(--muted);
+font-size:16.5px;
+margin-top:14px
+}
+
+.prose p,
+.prose li{
+font-size:15.5px;
+color:#D6D9DE
+}
+
+.prose h2{
+font-size:21px;
+margin-top:38px
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin:18px 0;
+font-size:14px
+}
+
+th,td{
+text-align:left;
+padding:10px 12px;
+border-bottom:1px solid var(--line)
+}
+
+th{
+color:var(--muted);
+font-weight:600;
+font-size:12.5px;
+text-transform:uppercase;
+letter-spacing:.03em
+}
+
+td.mono{
+font-weight:600
+}
+
+.cta-card{
+background:var(--surface);
+border:1px solid var(--line);
+border-radius:var(--radius-lg);
+padding:24px;
+margin:32px 0;
+box-shadow:var(--shadow)
+}
+
+.cta-card h3{
+margin-top:0;
+font-size:19px
+}
+
+.cta-card p{
+color:var(--muted);
+font-size:14.5px
+}
+
+.cta-btn{
+display:inline-block;
+background:linear-gradient(155deg,var(--gold-bright),var(--gold));
+color:#1a1300;
+font-weight:700;
+padding:12px 20px;
+border-radius:10px;
+text-decoration:none;
+margin-top:6px
+}
+
+.faq-item{
+border-top:1px solid var(--line);
+padding:16px 0
+}
+
+.faq-item summary{
+cursor:pointer;
+font-weight:600;
+font-size:15px;
+list-style:none
+}
+
+.faq-item summary::-webkit-details-marker{
+display:none
+}
+
+.faq-item p{
+color:var(--muted);
+font-size:14.5px;
+margin-top:8px
+}
+
+.related{
+margin-top:40px;
+padding-top:24px;
+border-top:1px solid var(--line)
+}
+
+.related a{
+display:block;
+margin:6px 0;
+font-size:14.5px
+}
+
+footer.site{
+border-top:1px solid var(--line);
+padding:26px 0;
+text-align:center;
+color:var(--muted-2);
+font-size:12.5px
+}
+
+footer.site a{
+color:var(--muted)
+}
+
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do Roth IRAs have RMDs?","acceptedAnswer":{"@type":"Answer","text":"No. Roth IRAs are not subject to RMDs during the original owner's lifetime, since contributions were already taxed. Inherited Roth IRAs may have different rules for beneficiaries."}},{"@type":"Question","name":"What if I'm still working past my RMD age?","acceptedAnswer":{"@type":"Answer","text":"Some 401(k) plans allow a 'still-working exception' that lets you delay RMDs from that specific employer's plan if you don't own more than 5% of the company and are still employed there. This does not apply to IRAs or to accounts from previous employers."}},{"@type":"Question","name":"Can I take more than my RMD?","acceptedAnswer":{"@type":"Answer","text":"Yes. The RMD is a minimum, not a cap. You can withdraw more if you need it, though the extra amount is still taxed as ordinary income."}},{"@type":"Question","name":"How do I know my exact RMD age?","acceptedAnswer":{"@type":"Answer","text":"It depends on your birth year: 73 if you were born between 1951 and 1959, and 75 if you were born in 1960 or later. Those born in 1950 or earlier were already subject to RMDs under older rules."}}]}
+</script>
+
+</head>
+
+<body>
+
+<header class="site">
+  <div class="hdr-row">
+    <a class="wordmark" href="https://grademyfinance.com/">
+      <span class="seal">
+        <span>GMF</span>
+      </span>
+      Grade My Finance
+    </a>
+
+    <a
+      class="btn"
+      href="https://grademyfinance.com/"
+    >
+      Check Your Grade
+    </a>
+  </div>
+</header>
+
+<main>
+  <article class="container">
+
+    <div class="eyebrow">
+      Retirement
+    </div>
+
+    <h1>
+      Required Minimum Distributions (RMDs): What They Are and When You Have to Take Them
+    </h1>
+
+    <p class="lede">
+      RMD rules explained plainly: when they start, how to calculate them, and how to avoid the penalty for missing one.
+    </p>
+
+    <div class="prose">
+      
+<p>If you've spent decades putting money into a traditional IRA or 401(k), the tax break doesn't last forever. At some point, the IRS requires you to start withdrawing money and paying taxes on it, whether you need the cash or not. That withdrawal is called a required minimum distribution, or RMD.</p>
+<p>RMDs trip up a lot of retirees, mostly because the rules have changed twice in the last few years and the penalty for getting it wrong used to be brutal. Here's what actually applies now.</p>
+
+<h2>What Counts as an RMD</h2>
+<p>An RMD is the minimum amount you're legally required to withdraw each year from certain tax-deferred retirement accounts once you hit a specific age. <a antml:cite index="2-7">If you have retirement savings in tax-deferred accounts, such as a traditional IRA or a 401(k), you'll be required to withdraw money every year after reaching a certain age.</a></p>
+<p>This applies to traditional IRAs, SEP IRAs, SIMPLE IRAs, and most employer-sponsored plans like 401(k)s and 403(b)s. It does not apply to Roth IRAs during the original owner's lifetime, since those contributions were already taxed going in.</p>
+
+<h2>When RMDs Start</h2>
+<p>Thanks to the SECURE 2.0 Act, the RMD starting age isn't the same for everyone. It depends on your birth year:</p>
+<ul>
+<li>Born 1950 or earlier: RMDs already started at age 72 (or 70½ under older rules).</li>
+<li><a antml:cite index="6-9,9-9">Those born between 1951 and 1959 must begin RMDs at age 73.</a></li>
+<li><a antml:cite index="9-9">For individuals born in 1960 or later, the required beginning age will be 75.</a></li>
+</ul>
+<p>Your very first RMD comes with a special option: you can delay it until <strong>April 1 of the year after</strong> you reach your RMD age. Every RMD after that is due by December 31. But there's a catch: if you push that first one into the following year, you'll owe two RMDs in the same calendar year — one for the year you turned 73 (or 75) and one for the current year. That can bump you into a higher tax bracket, so it's worth running the numbers before you delay.</p>
+
+<h2>How RMDs Are Calculated</h2>
+<p><a antml:cite index="2-8">The amount to be withdrawn is calculated based on your age, represented as your life expectancy factor, and your account balance on December 31 of the prior year.</a> In practice, that means:</p>
+<ol>
+<li>Take your account balance as of December 31 of last year.</li>
+<li>Divide it by the "life expectancy factor" the IRS assigns to your age, found in the IRS Uniform Lifetime Table.</li>
+<li>The result is your RMD for the year.</li>
+</ol>
+<p>If you have multiple traditional IRAs, you calculate the RMD for each one separately but can withdraw the total from just one of them. 401(k)s work differently — each 401(k) generally requires its own separate withdrawal.</p>
+
+<h2>What Happens If You Miss One</h2>
+<p>This is where the rules genuinely got better. <a antml:cite index="1-15,1-16">For decades the penalty was 50% of the amount that was supposed to be distributed as an RMD but was not, a rate selected because that was the maximum individual income tax rate when the law was enacted.</a></p>
+<p>Under SECURE 2.0, that changed. <a antml:cite index="2-5">The penalty for missing an RMD is generally 25% of the shortfall but can be lowered to 10% if you correct the mistake within 2 years.</a></p>
+<p>So if you were supposed to withdraw $10,000 and missed it entirely, you could owe up to $2,500 in penalty on top of the regular income tax on that money. But <a antml:cite index="2-11">the tax penalty would apply to whatever amount was left for distribution from your account, otherwise known as the "excess accumulation."</a></p>
+<p>To fix a missed RMD, take the distribution as soon as you realize the mistake, then <a antml:cite index="2-12">use IRS Form 5329 with your tax return to report the missed amount and calculate any penalty owed.</a> You can also <a antml:cite index="7-6">request a full waiver if you have "reasonable cause" for missing the deadline, such as illness or an administrative error.</a></p>
+
+<h2>Why RMDs Matter Even If You Don't Need the Money</h2>
+<p>RMDs count as taxable income. That means a large RMD can push you into a higher tax bracket, increase how much of your Social Security benefit is taxable, and raise your Medicare premiums through IRMAA surcharges. If you're approaching your RMD age, it's worth thinking a few years ahead — some people use Roth conversions in their early 60s and 70s specifically to shrink future RMDs.</p>
+<p>If retirement accounts are a big piece of your net worth, RMDs are one more reason to look at the whole picture, not just your savings rate. Running your numbers through a tool like Grade My Finance can help you see how upcoming required withdrawals fit into your overall financial picture, not just your retirement balance in isolation.</p>
+
+<h2>A Few Practical Tips</h2>
+<ul>
+<li>Mark your calendar. Most custodians will remind you, but you're the one responsible if it's missed.</li>
+<li>Set up automatic RMD withdrawals with your account provider so it's never left to memory.</li>
+<li>If you're charitably inclined, look into Qualified Charitable Distributions (QCDs), which let you send your RMD directly to a charity and exclude it from taxable income.</li>
+<li>If you have several accounts, double-check whether you can combine RMDs (allowed for IRAs) or must take them separately (required for most 401(k)s).</li>
+</ul>
+
+<h2>FAQ</h2>
+
+    </div>
+
+    <section class="faq">
+      <h2>Frequently Asked Questions</h2>
+      
+<div class="faq-item">
+  <details>
+    <summary>Do Roth IRAs have RMDs?</summary>
+    <p>No. Roth IRAs are not subject to RMDs during the original owner&#39;s lifetime, since contributions were already taxed. Inherited Roth IRAs may have different rules for beneficiaries.</p>
+  </details>
+</div>
+
+<div class="faq-item">
+  <details>
+    <summary>What if I&#39;m still working past my RMD age?</summary>
+    <p>Some 401(k) plans allow a &#39;still-working exception&#39; that lets you delay RMDs from that specific employer&#39;s plan if you don&#39;t own more than 5% of the company and are still employed there. This does not apply to IRAs or to accounts from previous employers.</p>
+  </details>
+</div>
+
+<div class="faq-item">
+  <details>
+    <summary>Can I take more than my RMD?</summary>
+    <p>Yes. The RMD is a minimum, not a cap. You can withdraw more if you need it, though the extra amount is still taxed as ordinary income.</p>
+  </details>
+</div>
+
+<div class="faq-item">
+  <details>
+    <summary>How do I know my exact RMD age?</summary>
+    <p>It depends on your birth year: 73 if you were born between 1951 and 1959, and 75 if you were born in 1960 or later. Those born in 1950 or earlier were already subject to RMDs under older rules.</p>
+  </details>
+</div>
+    </section>
+
+    
+<div class="related">
+  <span class="eyebrow">Related</span>
+  <a href="catching-up-on-retirement.html">Catching Up on Retirement in Your 40s and 50s</a>
+<a href="retirement-by-age.html">How Much Should You Be Saving for Retirement by Age?</a>
+</div>
+
+  </article>
+</main>
+
+<footer class="site">
+  <div class="container">
+    © 2026 Grade My Finance
+  </div>
+</footer>
+
+</body>
+</html>

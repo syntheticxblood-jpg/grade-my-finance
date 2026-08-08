@@ -61,4 +61,8 @@ var GMF_BLOG_POSTS = [
   { slug:"is-your-bank-losing-you-money", title:"High-Yield Savings Accounts: Why Your Cash Might Be Losing Value", category:"Savings" },
   { slug:"side-hustle-income", title:"Do Side Hustles Actually Move Your Financial Grade?", category:"Income" },
   { slug:"soft-saving", title:"Soft Saving: The Trend Pushing Back Against Aggressive Budgeting", category:"Money Mindset" }
+,
+  { slug:"fdic-insurance-explained", title:"FDIC Insurance Explained: How Protected Is Your Money in the Bank?", category:"Savings" }
+,
+  { slug:"required-minimum-distributions-explained", title:"Required Minimum Distributions (RMDs): What They Are and When You Have to Take Them", category:"Retirement" }
 ];
