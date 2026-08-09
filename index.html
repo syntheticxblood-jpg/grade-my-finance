@@ -440,7 +440,7 @@ section.block{ padding:76px 0 }
 .modal{ position:fixed; inset:0; display:none; z-index:100; background:rgba(6,7,9,.68) }
 .modal.show{ display:grid; place-items:center }
 .sheet{
-  width:min(1360px,96vw); height:88vh; max-height:88vh; margin:10px; padding:26px 36px 24px;
+  width:min(1360px,96vw); height:92vh; max-height:92vh; margin:10px; padding:22px 36px 20px;
   border-radius:20px; position:relative; display:flex; flex-direction:column; overflow:hidden;
   /* Modern dark-panel palette, scoped to this modal only — cascades to
      every var(--text)/var(--muted)/var(--surface)/var(--line)/var(--gold)*
@@ -462,6 +462,13 @@ section.block{ padding:76px 0 }
 .sheet-header{ flex:none }
 .dash-tabs{ flex:none }
 .dash-panels{ flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden }
+
+/* Thin, theme-matched scrollbars instead of the bulky default OS ones */
+.dash-tabs, .dash-panels, .flow-tabs{ scrollbar-width:thin; scrollbar-color:var(--line) transparent }
+.dash-tabs::-webkit-scrollbar, .dash-panels::-webkit-scrollbar, .flow-tabs::-webkit-scrollbar{ width:6px; height:6px }
+.dash-tabs::-webkit-scrollbar-track, .dash-panels::-webkit-scrollbar-track, .flow-tabs::-webkit-scrollbar-track{ background:transparent }
+.dash-tabs::-webkit-scrollbar-thumb, .dash-panels::-webkit-scrollbar-thumb, .flow-tabs::-webkit-scrollbar-thumb{ background:var(--line); border-radius:99px }
+.dash-tabs::-webkit-scrollbar-thumb:hover, .dash-panels::-webkit-scrollbar-thumb:hover, .flow-tabs::-webkit-scrollbar-thumb:hover{ background:var(--muted-2) }
 .dash-watermark{
   flex:none; display:flex; align-items:center; justify-content:space-between; gap:14px;
   padding:16px 4px 4px; margin-top:14px; border-top:1px solid var(--line);
@@ -550,7 +557,7 @@ section.block{ padding:76px 0 }
 }
 
 /* --- Hero: grade ring is the focal point --- */
-.dash-hero{ position:relative; z-index:1; display:flex; align-items:center; justify-content:center; gap:44px; padding-bottom:30px; flex-wrap:wrap; text-align:left }
+.dash-hero{ position:relative; z-index:1; display:flex; align-items:center; justify-content:center; gap:44px; padding-bottom:14px; flex-wrap:wrap; text-align:left }
 .dash-hero-grade{ display:flex; flex-direction:column; align-items:center; flex:none }
 .dash-hero-text{ max-width:420px }
 @media (max-width:760px){ .dash-hero{ justify-content:center; text-align:center } .dash-hero-text{ max-width:none } }
@@ -620,7 +627,7 @@ section.block{ padding:76px 0 }
 }
 .flow-tab:hover{ color:var(--text) }
 .flow-tab.active{ color:var(--text); border-bottom-color:var(--gold) }
-.flow-tab .lock-tag{ font-size:9px; background:var(--gold-soft); color:var(--gold-bright); padding:2px 6px; border-radius:99px; font-family:var(--font-mono); font-weight:700 }
+.lock-tag{ font-size:9px; background:var(--gold-soft); color:var(--gold-bright); padding:2px 6px; border-radius:99px; font-family:var(--font-mono); font-weight:700; margin-left:4px }
 .flow-view{ display:none }
 .flow-view.active{ display:block; animation:flowFadeIn .25s ease }
 @keyframes flowFadeIn{ from{ opacity:0; transform:translateY(4px) } to{ opacity:1; transform:none } }
@@ -801,6 +808,21 @@ section.block{ padding:76px 0 }
 .rc-actions-group{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center }
 .rc-actions-divider{ width:1px; height:22px; background:var(--line); margin:0 6px; flex:none }
 .rc-actions .btn svg{ flex:none; opacity:.85 }
+
+/* Free-tier paywall treatment: real content sits blurred underneath a gold
+   "unlock" card, rather than being hidden outright — the blur itself is
+   part of the pitch (there's clearly something real there worth seeing). */
+.pro-blur-section{ position:relative; min-height:180px }
+.pro-blur-content{ filter:blur(6px); pointer-events:none; user-select:none; opacity:.55 }
+.pro-blur-overlay{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:9px;
+  text-align:center; padding:20px; background:linear-gradient(180deg, transparent, var(--surface) 62%);
+}
+.pro-blur-title{ font-weight:700; font-size:15px }
+.pro-blur-sub{ font-size:12.5px; color:var(--muted); max-width:320px; line-height:1.5 }
+body.is-pro .pro-blur-content{ filter:none; pointer-events:auto; user-select:auto; opacity:1 }
+body.is-pro .pro-blur-overlay{ display:none }
+
 @media (max-width:760px){
   .rc-actions-divider{ display:none }
   .rc-actions{ justify-content:center; padding:10px 4px; gap:8px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch }
@@ -1333,9 +1355,9 @@ body.is-pro .ad-slot{ display:none !important }
       <button class="dash-tab" data-dtab="snapshot" type="button">Snapshot</button>
       <button class="dash-tab" data-dtab="nextsteps" type="button">Opportunities</button>
       <button class="dash-tab" data-dtab="progress" type="button">Progress</button>
-      <button class="dash-tab" data-dtab="benchmarks" type="button">Benchmarks</button>
-      <button class="dash-tab" data-dtab="details" type="button">Details</button>
-      <button class="dash-tab" data-dtab="flow" type="button">Money Flow</button>
+      <button class="dash-tab" data-dtab="benchmarks" type="button">Benchmarks <span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="details" type="button">Details <span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="flow" type="button">Money Flow <span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="planning" type="button">Planning Tools</button>
       <button class="dash-tab" data-dtab="achievements" type="button">Achievements</button>
     </div>
@@ -1361,6 +1383,19 @@ body.is-pro .ad-slot{ display:none !important }
             </div>
           </div>
         </div>
+        <div class="pro-blur-section" style="margin-top:12px;min-height:130px">
+          <div class="pro-blur-content">
+            <div class="card" style="padding:14px 18px">
+              <span class="section-label">Your financial summary</span>
+              <p id="rcSummaryParagraph" style="margin:0;color:var(--text);font-size:14.5px;line-height:1.6">—</p>
+            </div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 Get your personalized summary</div>
+            <div class="pro-blur-sub">Unlock a plain-English breakdown of what's really going on with your finances.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
       </div>
 
       <div class="dash-panel" id="dashPanel-snapshot">
@@ -1378,7 +1413,16 @@ body.is-pro .ad-slot{ display:none !important }
 
       <div class="dash-panel" id="dashPanel-nextsteps">
         <div class="weakest-link-pill" id="weakestLinkPill">Weakest link: <b id="weakestLinkPillText">—</b></div>
-        <div class="opp-cards-grid" id="opportunityCardsGrid"></div>
+        <div class="pro-blur-section">
+          <div class="pro-blur-content">
+            <div class="opp-cards-grid" id="opportunityCardsGrid"></div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See the full breakdown</div>
+            <div class="pro-blur-sub">Unlock every category's grade — not just which one is weakest.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
         <div class="report-section" style="margin-top:16px">
           <span class="section-label">Your specific next moves</span>
           <ol id="pathList" class="moves-list"></ol>
@@ -1402,16 +1446,34 @@ body.is-pro .ad-slot{ display:none !important }
 
       <div class="dash-panel" id="dashPanel-benchmarks">
         <span class="section-label">How you compare to our benchmark (estimated)</span>
-        <div id="benchRows" style="display:grid;gap:8px;margin-top:12px"></div>
+        <div class="pro-blur-section">
+          <div class="pro-blur-content">
+            <div id="benchRows" style="display:grid;gap:8px;margin-top:12px"></div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See how you compare</div>
+            <div class="pro-blur-sub">Unlock your income, emergency fund, and net worth benchmarks.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
       </div>
 
       <div class="dash-panel" id="dashPanel-details">
-        <div class="explain-section" id="explainSection">
-          <span class="section-label">What went into your grade</span>
-          <div id="explainList" class="explain-list"></div>
+        <div class="pro-blur-section">
+          <div class="pro-blur-content">
+            <div class="explain-section" id="explainSection">
+              <span class="section-label">What went into your grade</span>
+              <div id="explainList" class="explain-list"></div>
+            </div>
+            <div class="rc-head" style="margin-top:16px"><div>Category</div><div>Details</div><div>Grade</div></div>
+            <div class="rc-rows" id="rcRows"></div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See exactly what's driving your grade</div>
+            <div class="pro-blur-sub">Unlock the full category-by-category breakdown, with your real numbers and specific tips.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
         </div>
-        <div class="rc-head" style="margin-top:16px"><div>Category</div><div>Details</div><div>Grade</div></div>
-        <div class="rc-rows" id="rcRows"></div>
     <div id="milestoneBanner" class="compare-banner" style="display:none;margin:16px 0"></div>
 
     <div class="subscribe-inline pulse" id="subscribeInlineRC">
@@ -1462,38 +1524,44 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
 
       <div class="dash-panel" id="dashPanel-flow">
-        <div class="flow-panel" style="margin:0">
-          <div class="flow-tabs" id="flowTabs">
-            <button class="flow-tab active" data-view="flowAssets">Assets Flow</button>
-            <button class="flow-tab" data-view="flowLiabs">Liabilities Flow</button>
-            <button class="flow-tab" data-view="flowIncome">Income &amp; Savings</button>
-            <button class="flow-tab" data-view="flowGrowth">Net Worth Trend <span class="lock-tag pro-only-hide">PRO</span></button>
-          </div>
+        <div class="pro-blur-section">
+          <div class="pro-blur-content">
+            <div class="flow-panel" style="margin:0">
+              <div class="flow-tabs" id="flowTabs">
+                <button class="flow-tab active" data-view="flowAssets">Assets Flow</button>
+                <button class="flow-tab" data-view="flowLiabs">Liabilities Flow</button>
+                <button class="flow-tab" data-view="flowIncome">Income &amp; Savings</button>
+                <button class="flow-tab" data-view="flowGrowth">Net Worth Trend</button>
+              </div>
 
-          <div class="flow-view active" id="flowAssets">
-            <div class="flow-header"><h3>Assets Flow</h3><div class="flow-sub" id="flowAssetsSub">—</div></div>
-            <svg id="flowAssetsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Assets flow diagram"></svg>
-            <div class="flow-legend" id="flowAssetsLegend"></div>
-          </div>
+              <div class="flow-view active" id="flowAssets">
+                <div class="flow-header"><h3>Assets Flow</h3><div class="flow-sub" id="flowAssetsSub">—</div></div>
+                <svg id="flowAssetsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Assets flow diagram"></svg>
+                <div class="flow-legend" id="flowAssetsLegend"></div>
+              </div>
 
-          <div class="flow-view" id="flowLiabs">
-            <div class="flow-header"><h3>Liabilities Flow</h3><div class="flow-sub" id="flowLiabsSub">—</div></div>
-            <svg id="flowLiabsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Liabilities flow diagram"></svg>
-            <div class="flow-legend" id="flowLiabsLegend"></div>
-          </div>
+              <div class="flow-view" id="flowLiabs">
+                <div class="flow-header"><h3>Liabilities Flow</h3><div class="flow-sub" id="flowLiabsSub">—</div></div>
+                <svg id="flowLiabsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Liabilities flow diagram"></svg>
+                <div class="flow-legend" id="flowLiabsLegend"></div>
+              </div>
 
-          <div class="flow-view" id="flowIncome">
-            <div class="flow-header"><h3>Income &amp; Savings Flow</h3><div class="flow-sub" id="flowIncomeSub">—</div></div>
-            <svg id="flowIncomeSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Income and savings flow diagram"></svg>
-            <div class="flow-legend" id="flowIncomeLegend"></div>
-          </div>
+              <div class="flow-view" id="flowIncome">
+                <div class="flow-header"><h3>Income &amp; Savings Flow</h3><div class="flow-sub" id="flowIncomeSub">—</div></div>
+                <svg id="flowIncomeSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Income and savings flow diagram"></svg>
+                <div class="flow-legend" id="flowIncomeLegend"></div>
+              </div>
 
-          <div class="flow-view" id="flowGrowth">
-            <div class="flow-header"><h3>Net Worth Trend</h3><div class="flow-sub pro-only-hide">Pro feature</div><div class="flow-sub pro-only-show" style="display:none" id="flowGrowthSub">—</div></div>
-            <div class="flow-lock pro-only-hide">🔒 See your projected net worth over the next 30 years — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
-            <div class="pro-only-show" style="display:none">
-              <svg id="flowGrowthSvg" width="100%" height="280" viewBox="0 0 900 280" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth trend chart"></svg>
+              <div class="flow-view" id="flowGrowth">
+                <div class="flow-header"><h3>Net Worth Trend</h3><div class="flow-sub" id="flowGrowthSub">—</div></div>
+                <svg id="flowGrowthSvg" width="100%" height="280" viewBox="0 0 900 280" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth trend chart"></svg>
+              </div>
             </div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See where your money actually flows</div>
+            <div class="pro-blur-sub">Unlock visual breakdowns of your assets, liabilities, income, and net worth trend.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
           </div>
         </div>
       </div>
@@ -2084,6 +2152,40 @@ function nextLetterTarget(score){
   for(var i=0;i<bounds.length;i++){ if(score<bounds[i]) return bounds[i]; }
   return null;
 }
+// Builds a short, plain-English narrative summary of the report — the Pro
+// "read this instead of the whole breakdown" version. Deterministic (no
+// AI call), built from the same components/scores already computed for
+// the rest of the report, so it's always consistent with what's shown
+// elsewhere and costs nothing to generate.
+function buildGradeSummaryParagraph(v, cats){
+  var letterClean = cats.overall.letter.split(" ")[0];
+  var tier = ["A+","A","A-","B+"].indexOf(letterClean)>-1 ? "good"
+           : ["B","B-","C+","C","C-"].indexOf(letterClean)>-1 ? "mid" : "bad";
+  var opener = tier==="good" ? "You're in strong financial shape overall."
+             : tier==="mid" ? "You're in okay financial shape, with real room to grow."
+             : "There's real work to do here, but the path forward is clear.";
+
+  var scores = { "Savings rate":cats.s.sSave, "Emergency fund":cats.s.sEF, "Debt load (non-mort.)":cats.s.sDebt, "Age-based net worth":cats.s.sAgeNW, "Income strength":cats.s.sInc };
+  var labels = { "Savings rate":"your savings rate", "Emergency fund":"your emergency fund", "Debt load (non-mort.)":"your debt load", "Age-based net worth":"your net worth", "Income strength":"your income" };
+  var sortedKeys = Object.keys(scores).sort(function(a,b){ return scores[b]-scores[a]; });
+  var strongestKey = sortedKeys[0], weakestKey = sortedKeys[sortedKeys.length-1];
+  var strongestComp = cats.components.filter(function(c){ return c.key===strongestKey; })[0];
+  var weakestComp = cats.components.filter(function(c){ return c.key===weakestKey; })[0];
+
+  var parts = [
+    opener,
+    "You're scoring "+cats.overall.score.toFixed(1)+" out of 100 overall.",
+    "The strongest part of your picture right now is "+labels[strongestKey]+" — "+strongestComp.val+"."
+  ];
+  if(weakestKey !== strongestKey){
+    parts.push("The biggest thing holding your grade back is "+labels[weakestKey]+". "+weakestComp.tip);
+  } else {
+    parts.push("Every factor is landing in roughly the same place, so there's no single obvious weak spot.");
+  }
+  parts.push(tier==="good" ? "Keep doing what you're doing — consistency from here compounds." : "Fix that one thing first, and the rest of your grade should follow naturally.");
+  return parts.join(" ");
+}
+
 function buildPath(v,cats){
   var goal = nextLetterTarget(cats.overall.score);
   var items=[];
@@ -2551,7 +2653,10 @@ function renderIncomeSavingsFlow(v){
   renderFlowLegend($("flowIncomeLegend"), dests);
 }
 function renderNetWorthTrendTab(v){
-  var svgEl=$("flowGrowthSvg"); if(!svgEl || !document.body.classList.contains("is-pro")) return;
+  // Chart now renders for everyone — the whole Money Flow tab is
+  // Pro-gated at the CSS blur level, so a real (blurred) chart underneath
+  // is more persuasive than an empty one.
+  var svgEl=$("flowGrowthSvg"); if(!svgEl) return;
   var monthlyContribution = Math.max(0, v.income - v.expenses);
   var points = projectNetWorth(v.net, monthlyContribution, 7, 30);
   drawProjectionLine(svgEl, points, [5,10,20,30]);
@@ -2952,7 +3057,7 @@ function personalizeSubscribe(weak, newlyUnlocked, checkin){
 function animateRingFill(el, targetPct){
   var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(prefersReducedMotion){ el.style.setProperty('--ring-pct', String(targetPct)); return; }
-  var duration = 1265, start = null;
+  var duration = 2100, start = null;
   function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
   function step(ts){
     if(start === null) start = ts;
@@ -3222,6 +3327,12 @@ function openReport(v,cats){
       }
     }
   })();
+
+  (function renderGradeSummaryParagraph(){
+    var pEl = $("rcSummaryParagraph");
+    if(pEl) pEl.textContent = buildGradeSummaryParagraph(v, cats);
+  })();
+
   var newlyUnlockedAchievements = renderAchievements(v, cats, checkinResult, streakCount);
   personalizeSubscribe(weakLinkForSubscribe, newlyUnlockedAchievements, checkinResult);
   if($("subReportGrade")) $("subReportGrade").value = cats.overall.letter;
