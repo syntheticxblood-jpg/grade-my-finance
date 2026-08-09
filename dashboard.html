@@ -74,6 +74,30 @@ header.site{ position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:8
 
 main{ padding:28px 0 70px }
 
+/* ---------- Personalized greeting ---------- */
+.dash-greeting-card{
+  display:flex; align-items:center; gap:16px; margin-bottom:26px; flex-wrap:wrap;
+}
+.dash-greeting-avatar{
+  width:52px; height:52px; border-radius:50%; flex:none; display:grid; place-items:center;
+  font-family:var(--font-serif); font-weight:700; font-size:19px; color:var(--gold-bright);
+  background:linear-gradient(155deg, rgba(201,162,39,.22), rgba(201,162,39,.06));
+  border:1.5px solid rgba(201,162,39,.4);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+.dash-greeting-body{ flex:1; min-width:200px }
+.dash-greeting-text{ font-family:var(--font-serif); font-weight:600; font-size:25px; letter-spacing:-.01em; line-height:1.2 }
+.dash-greeting-text .name-highlight{ color:var(--gold-bright) }
+.dash-greeting-sub{ font-size:12.5px; color:var(--muted); margin-top:5px }
+.name-capture-inline{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:4px }
+.name-capture-inline input{
+  border:1px solid var(--line); border-radius:8px; padding:8px 12px; background:var(--bg-2); color:var(--text);
+  font-family:var(--font-body); font-size:13px; width:190px;
+}
+.name-capture-inline input:focus{ outline:none; border-color:var(--gold) }
+.edit-name-link{ appearance:none; border:none; background:none; color:var(--muted-2); font-size:11.5px; cursor:pointer; padding:0; margin-top:6px; text-decoration:underline; text-underline-offset:2px }
+.edit-name-link:hover{ color:var(--text) }
+
 /* ---------- Dashboard header ---------- */
 .dash-header{ display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:6px }
 .dash-header-left{ display:flex; align-items:center; gap:16px }
@@ -253,6 +277,15 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:2
   </div>
 
   <div id="dashboardContent" style="display:none">
+
+    <div class="dash-greeting-card" id="greetingCard">
+      <div class="dash-greeting-avatar" id="greetAvatar">–</div>
+      <div class="dash-greeting-body">
+        <h1 class="dash-greeting-text" id="greetingText">Welcome</h1>
+        <div class="dash-greeting-sub" id="greetingSub"></div>
+        <button class="edit-name-link" id="editNameLink" type="button" style="display:none">Not you? Edit name</button>
+      </div>
+    </div>
 
     <div class="dash-header">
       <div class="dash-header-left">
@@ -461,6 +494,84 @@ function getGoals(){
   }catch(_){ return []; }
 }
 function saveGoals(arr){ localStorage.setItem(GOALS_KEY, JSON.stringify(arr)); }
+
+/* ================= PERSONALIZED GREETING =================
+   Name lives only in localStorage (never leaves the browser, consistent
+   with the rest of the site's privacy promise). Falls back to a clean
+   time-of-day greeting with an inline capture prompt if no name is set. */
+var NAME_KEY = 'gmf_user_name';
+function getUserName(){ try{ return (localStorage.getItem(NAME_KEY)||'').trim(); }catch(_){ return ''; } }
+function setUserName(name){ try{ localStorage.setItem(NAME_KEY, name); }catch(_){} }
+
+function timeOfDayGreeting(){
+  var h = new Date().getHours();
+  if(h < 5) return "Burning the midnight oil";
+  if(h < 12) return "Good morning";
+  if(h < 17) return "Good afternoon";
+  if(h < 21) return "Good evening";
+  return "Working late";
+}
+function initialsFor(name){
+  var parts = name.trim().split(/\s+/).filter(Boolean);
+  if(!parts.length) return "•";
+  if(parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length-1].charAt(0)).toUpperCase();
+}
+function daysBetween(ts){ return Math.floor((Date.now() - ts) / (24*60*60*1000)); }
+
+function showNameCaptureUI(container, existingValue, onSaved){
+  container.innerHTML = "";
+  var wrap = el("div", { className:"name-capture-inline" });
+  var input = el("input", { type:"text", maxLength:24 });
+  input.placeholder = "What should we call you?";
+  if(existingValue) input.value = existingValue;
+  var saveBtn = el("button", { className:"btn sm gold", type:"button" });
+  saveBtn.textContent = "Save";
+  function commit(){
+    var v = input.value.trim();
+    if(!v) { input.focus(); return; }
+    setUserName(v);
+    onSaved();
+  }
+  saveBtn.addEventListener("click", commit);
+  input.addEventListener("keydown", function(e){ if(e.key === "Enter") commit(); });
+  wrap.appendChild(input);
+  wrap.appendChild(saveBtn);
+  container.appendChild(wrap);
+  input.focus();
+}
+
+function renderGreeting(hist){
+  var name = getUserName();
+  var textEl = $("greetingText"), subEl = $("greetingSub"), avatarEl = $("greetAvatar"), editLink = $("editNameLink");
+
+  if(!name){
+    avatarEl.textContent = "•";
+    textEl.textContent = timeOfDayGreeting() + ".";
+    editLink.style.display = "none";
+    showNameCaptureUI(subEl, "", function(){ renderGreeting(getHistory()); });
+    return;
+  }
+
+  var firstName = name.split(/\s+/)[0];
+  avatarEl.textContent = initialsFor(name);
+  textEl.innerHTML = timeOfDayGreeting() + ', <span class="name-highlight">' + firstName + "</span>.";
+
+  if(!hist.length){
+    subEl.textContent = "Run your first calculation to start building your dashboard.";
+  } else {
+    var latest = hist[hist.length-1];
+    var gap = daysBetween(latest.ts);
+    if(gap <= 0) subEl.textContent = "Welcome back — you already checked in today.";
+    else if(gap === 1) subEl.textContent = "Welcome back — it's been 1 day since your last check-in.";
+    else if(gap <= 45) subEl.textContent = "Welcome back — it's been " + gap + " days since your last check-in.";
+    else subEl.textContent = "Welcome back — it's been a while. Worth a fresh check-in?";
+  }
+  editLink.style.display = "inline-block";
+}
+$("editNameLink").addEventListener("click", function(){
+  showNameCaptureUI($("greetingSub"), getUserName(), function(){ renderGreeting(getHistory()); });
+});
 
 /* ================= CHECK-IN GROUPING =================
    Collapses consecutive check-ins with (essentially) no real change into
@@ -994,7 +1105,7 @@ $("settingsToggle").addEventListener("click", function(){
 var BACKUP_KEYS = [
   'gmf_pro','gmf_theme','gmf_currency','gmf_housing','gmf_autosave',
   'gmf_history_v2','gmf_checkin_count','gmf_best_score','gmf_achievements',
-  'gmf_scenarios','gmf_goal', GOALS_KEY
+  'gmf_scenarios','gmf_goal', GOALS_KEY, NAME_KEY
 ];
 function buildBackupLink(){
   var data = {};
@@ -1049,6 +1160,7 @@ function init(){
   var hist = getHistory();
   var groups = groupCheckins(hist);
 
+  renderGreeting(hist);
   renderHeader(hist);
   renderOverview(hist, groups);
   renderScoreTab(hist);
