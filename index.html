@@ -1353,8 +1353,8 @@ body.is-pro .ad-slot{ display:none !important }
     <div class="dash-tabs" id="dashTabs">
       <button class="dash-tab active" data-dtab="overview" type="button">Overview</button>
       <button class="dash-tab" data-dtab="snapshot" type="button">Snapshot</button>
-      <button class="dash-tab" data-dtab="nextsteps" type="button">Opportunities</button>
-      <button class="dash-tab" data-dtab="progress" type="button">Progress</button>
+      <button class="dash-tab" data-dtab="nextsteps" type="button">Opportunities <span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="progress" type="button">Progress <span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="benchmarks" type="button">Benchmarks <span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="details" type="button">Details <span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="flow" type="button">Money Flow <span class="lock-tag pro-only-hide">PRO</span></button>
@@ -1412,35 +1412,44 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
 
       <div class="dash-panel" id="dashPanel-nextsteps">
-        <div class="weakest-link-pill" id="weakestLinkPill">Weakest link: <b id="weakestLinkPillText">—</b></div>
-        <div class="pro-blur-section">
+        <div class="pro-blur-section" style="min-height:340px">
           <div class="pro-blur-content">
+            <div class="weakest-link-pill" id="weakestLinkPill">Weakest link: <b id="weakestLinkPillText">—</b></div>
             <div class="opp-cards-grid" id="opportunityCardsGrid"></div>
+            <div class="report-section" style="margin-top:16px">
+              <span class="section-label">Your specific next moves</span>
+              <ol id="pathList" class="moves-list"></ol>
+              <div class="small">Est. point gains are approximate based on our weighting.</div>
+            </div>
           </div>
           <div class="pro-blur-overlay">
-            <div class="pro-blur-title">🔒 See the full breakdown</div>
-            <div class="pro-blur-sub">Unlock every category's grade — not just which one is weakest.</div>
+            <div class="pro-blur-title">🔒 See your full opportunities</div>
+            <div class="pro-blur-sub">Unlock every category's grade and your complete action plan.</div>
             <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
           </div>
-        </div>
-        <div class="report-section" style="margin-top:16px">
-          <span class="section-label">Your specific next moves</span>
-          <ol id="pathList" class="moves-list"></ol>
-          <div class="small">Est. point gains are approximate based on our weighting.</div>
         </div>
       </div>
 
       <div class="dash-panel" id="dashPanel-progress">
-        <div class="card" style="display:grid;gap:12px">
-          <div id="compareBlock" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <span class="section-label" style="margin:0">Since your last check-in</span>
-            <div id="compareText" class="small" style="font-weight:700;color:var(--text);font-size:15px">—</div>
+        <div class="pro-blur-section" style="min-height:260px">
+          <div class="pro-blur-content">
+            <div class="card" style="display:grid;gap:12px">
+              <div id="compareBlock" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                <span class="section-label" style="margin:0">Since your last check-in</span>
+                <div id="compareText" class="small" style="font-weight:700;color:var(--text);font-size:15px">—</div>
+              </div>
+              <svg id="spark" width="100%" height="70" viewBox="0 0 500 70" preserveAspectRatio="none" aria-hidden="true"></svg>
+            </div>
+            <div class="report-section" style="margin-top:14px">
+              <span class="section-label">Milestones</span>
+              <div id="progressMilestonesList"></div>
+            </div>
           </div>
-          <svg id="spark" width="100%" height="70" viewBox="0 0 500 70" preserveAspectRatio="none" aria-hidden="true"></svg>
-        </div>
-        <div class="report-section" style="margin-top:14px">
-          <span class="section-label">Milestones</span>
-          <div id="progressMilestonesList"></div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 Track your progress over time</div>
+            <div class="pro-blur-sub">Unlock your full score trend and check-in milestones.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
         </div>
       </div>
 
@@ -3227,32 +3236,30 @@ function openReport(v,cats){
   var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; }})();
   pathList.innerHTML="";
   var isPro = document.body.classList.contains("is-pro");
-  var visibleActions = isPro ? actions : actions.slice(0,1);
+  // The whole Opportunities tab is now blurred behind a single Pro-blur
+  // wrapper (see the markup), so there's no need to separately blur a
+  // subset of actions here too - just render the real, full list. Free
+  // users see it blurred along with the rest of the tab; Pro users see
+  // it clearly, same content either way.
   if(actions.length === 0){
     var emptyLi = document.createElement("li");
     emptyLi.style.listStyle = "none"; emptyLi.style.marginLeft = "-22px";
     emptyLi.innerHTML = '<div class="small" style="color:var(--muted)">Every factor is already performing well — there\'s no single obvious next step right now. Keep doing what you\'re doing, and check back as your numbers change.</div>';
     pathList.appendChild(emptyLi);
   }
-  visibleActions.forEach(function(a){
+  actions.forEach(function(a){
     var li=document.createElement("li");
     li.innerHTML = a.txt + ' <span class="pts">≈ +' + a.pts + ' pts</span>';
     pathList.appendChild(li);
   });
-  var lockedActions = isPro ? [] : actions.slice(1);
-  if(lockedActions.length > 0){
-    var lockLi = document.createElement("li");
-    lockLi.style.listStyle = "none"; lockLi.style.marginLeft = "-22px"; lockLi.className = "moves-locked";
-    var blurredHtml = lockedActions.map(function(a){ return '<li>'+a.txt+' <span class="pts">≈ +'+a.pts+' pts</span></li>'; }).join("");
-    lockLi.innerHTML =
-      '<ol class="moves-list moves-locked-blur" style="margin:0">'+blurredHtml+'</ol>'+
-      '<div class="moves-locked-overlay"><a href="#pricing">🔒 Unlock your complete action plan</a></div>';
-    pathList.appendChild(lockLi);
-  }
 
   var hist=getHistory();
   var fullTrend=hist.map(function(h){ return h.score; }).concat([cats.overall.score]);
-  var trendArr = isPro ? fullTrend.slice(-12) : fullTrend.slice(-3);
+  // The whole Progress tab is now blurred behind a single Pro-blur wrapper
+  // regardless of tier, so show the fuller real trend underneath (more
+  // convincing than a truncated 3-point version) rather than gating the
+  // data itself here too.
+  var trendArr = fullTrend.slice(-12);
   sparkline(spark, trendArr);
   if(hist.length){
     var last=hist[hist.length-1];
@@ -3260,9 +3267,6 @@ function openReport(v,cats){
     var arrow= diff>0?'↑':(diff<0?'↓':'→');
     var color= diff>0?'var(--good)':(diff<0?'var(--bad)':'var(--muted)');
     compareText.innerHTML = 'Since last check: <span style="font-weight:700;color:'+color+'">'+arrow+' '+(diff>0?'+':'')+diff+'</span> pts';
-    if(!isPro && fullTrend.length>3){
-      compareText.innerHTML += ' <a href="#pricing" style="color:var(--gold-bright);font-size:11px;text-decoration:none">· see full trend with Pro</a>';
-    }
   } else {
     compareText.textContent = 'First run saved on this device.';
   }
