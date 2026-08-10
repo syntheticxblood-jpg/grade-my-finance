@@ -65,4 +65,6 @@ var GMF_BLOG_POSTS = [
   { slug:"fdic-insurance-explained", title:"FDIC Insurance Explained: How Protected Is Your Money in the Bank?", category:"Savings" }
 ,
   { slug:"required-minimum-distributions-explained", title:"Required Minimum Distributions (RMDs): What They Are and When You Have to Take Them", category:"Retirement" }
+,
+  { slug:"what-to-do-with-a-financial-windfall", title:"What to Do With a Financial Windfall: Bonus, Tax Refund, or Inheritance", category:"Advice" }
 ];
