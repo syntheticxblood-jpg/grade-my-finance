@@ -1024,6 +1024,10 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 }
 .plan h3{ font-size:20px }
 .plan .price{ font-family:var(--font-mono); font-size:34px; font-weight:700; margin:10px 0 4px }
+.trial-badge{
+  display:inline-block; background:var(--gold-soft); border:1px solid rgba(201,162,39,.35); color:var(--gold-bright);
+  font-size:12.5px; font-weight:600; padding:6px 12px; border-radius:8px; margin-bottom:10px;
+}
 .plan .price span{ font-size:14px; color:var(--muted); font-weight:500 }
 .plan ul{ list-style:none; margin:18px 0; padding:0; display:grid; gap:11px; flex:1 }
 .plan ul li{ font-size:14px; color:var(--muted); display:flex; gap:8px; align-items:flex-start }
@@ -1166,7 +1170,7 @@ body.is-pro .ad-slot{ display:none !important }
           </button>
         </div>
       </div>
-      <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing"><span class="pro-star">★</span> Upgrade to Pro</a>
+      <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing"><span class="pro-star">★</span> Start Free Trial</a>
       <span class="btn sm pro-badge-filled pro-only-show" id="proPill" style="display:none">★ PRO</span>
     </div>
   </div>
@@ -1339,7 +1343,8 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="plan highlight">
         <h3>Pro <span class="pro-badge">★ PRO</span></h3>
         <div class="price">$7.99<span> /mo</span></div>
-        <div class="small" style="margin-bottom:12px;color:var(--muted)">Billed monthly. Cancel anytime.</div>
+        <div class="trial-badge">7-day free trial — cancel before it ends and you're never charged</div>
+        <div class="small" style="margin-bottom:12px;color:var(--muted)">Then $7.99/mo. Cancel anytime.</div>
         <ul>
           <li>Everything in Free</li>
           <li><b>Full category breakdown</b> — savings, debt, net worth, income, emergency fund, each graded individually</li>
@@ -1357,7 +1362,7 @@ body.is-pro .ad-slot{ display:none !important }
           <li><b>4 exclusive achievement badges</b> — only Pro members can unlock these</li>
           <li>Early access to new tools</li>
         </ul>
-        <a class="btn gold pro-only-hide" id="upgradeBtnPricing" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pszwz">Upgrade to Pro</a>
+        <a class="btn gold pro-only-hide" id="upgradeBtnPricing" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pszwz">Start Free Trial</a>
         <span class="btn pro-only-show" style="display:none;background:var(--gold-soft);color:var(--gold-bright);border-color:rgba(201,162,39,.4)">You're on Pro ✓</span>
         <div class="license-row pro-only-hide">
           <input type="text" id="licenseInput" placeholder="Have a Pro license key? Paste it here" aria-label="Pro license key">
