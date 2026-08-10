@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { jsonrepair } = require('jsonrepair');
 const { publishArticlesToPinterest } = require('./pinterest');
 
 const ROOT = path.join(__dirname, '..');
@@ -75,50 +76,6 @@ async function callClaude(promptText) {
 // otherwise-valid pretty-printed JSON. This walks the text character by
 // character, tracking whether we're currently inside a string (handling
 // escaped quotes correctly), and only touches control characters found
-// there.
-function sanitizeJsonControlChars(text) {
-  let result = '';
-  let inString = false;
-  let escaped = false;
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    const code = text.charCodeAt(i);
-    if (inString) {
-      if (escaped) {
-        result += ch;
-        escaped = false;
-        continue;
-      }
-      if (ch === '\\') {
-        result += ch;
-        escaped = true;
-        continue;
-      }
-      if (ch === '"') {
-        inString = false;
-        result += ch;
-        continue;
-      }
-      if (code < 0x20) {
-        switch (ch) {
-          case '\n': result += '\\n'; break;
-          case '\r': result += '\\r'; break;
-          case '\t': result += '\\t'; break;
-          case '\b': result += '\\b'; break;
-          case '\f': result += '\\f'; break;
-          default: result += '\\u' + code.toString(16).padStart(4, '0');
-        }
-        continue;
-      }
-      result += ch;
-    } else {
-      if (ch === '"') inString = true;
-      result += ch;
-    }
-  }
-  return result;
-}
-
 function extractJson(rawText) {
   // Strip markdown fences if the model added them despite instructions.
   const cleaned = rawText.replace(/```json|```/g, '').trim();
@@ -127,16 +84,30 @@ function extractJson(rawText) {
   const candidate = cleaned.slice(firstBrace, cleaned.lastIndexOf('}') + 1);
   const toParse = candidate.length ? candidate : cleaned;
 
-  const sanitized = sanitizeJsonControlChars(toParse);
-
+  // Try a direct parse first (fast path - most responses are already
+  // valid JSON). Only fall back to jsonrepair, a well-tested library
+  // purpose-built for fixing exactly the kinds of small mistakes LLMs
+  // make in generated JSON (missing commas between array/object
+  // elements, unescaped control characters inside strings, trailing
+  // commas, etc.), when the direct parse fails. This replaced several
+  // rounds of hand-rolled fixes here that kept missing edge cases one at
+  // a time - a dedicated library covers far more cases than we can
+  // realistically anticipate and patch for individually.
   try {
-    return JSON.parse(sanitized);
-  } catch (err) {
-    const pos = Number((err.message.match(/position (\d+)/) || [])[1]);
-    const context = Number.isFinite(pos)
-      ? sanitized.slice(Math.max(0, pos - 80), pos + 80)
-      : sanitized.slice(0, 200);
-    throw new Error(`JSON parse failed after sanitization: ${err.message}\nContext: ...${context}...`);
+    return JSON.parse(toParse);
+  } catch (directErr) {
+    try {
+      const repaired = jsonrepair(toParse);
+      return JSON.parse(repaired);
+    } catch (repairErr) {
+      const pos = Number((directErr.message.match(/position (\d+)/) || [])[1]);
+      const context = Number.isFinite(pos)
+        ? toParse.slice(Math.max(0, pos - 80), pos + 80)
+        : toParse.slice(0, 200);
+      throw new Error(
+        `JSON parse failed even after repair attempt. Direct error: ${directErr.message}. Repair error: ${repairErr.message}\nContext: ...${context}...`
+      );
+    }
   }
 }
 
