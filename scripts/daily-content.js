@@ -68,10 +68,28 @@ function extractJson(rawText) {
   // Strip markdown fences if the model added them despite instructions.
   const cleaned = rawText.replace(/```json|```/g, '').trim();
   // Grab the last {...} block in case there's reasoning text before it.
-  const lastBrace = cleaned.lastIndexOf('{');
   const firstBrace = cleaned.indexOf('{');
   const candidate = cleaned.slice(firstBrace, cleaned.lastIndexOf('}') + 1);
-  return JSON.parse(candidate.length ? candidate : cleaned);
+  const toParse = candidate.length ? candidate : cleaned;
+
+  // The model sometimes emits literal newlines/tabs inside JSON string
+  // values (e.g. in bodyHtml), which is invalid JSON and throws "Bad
+  // control character in string literal". Outside of strings, JSON
+  // whitespace is insignificant, so it's always safe to escape raw
+  // newlines/tabs/carriage-returns globally before parsing.
+  const sanitized = toParse
+    .replace(/\r\n/g, '\\n')
+    .replace(/\r/g, '\\n')
+    .replace(/\n/g, '\\n')
+    .replace(/\t/g, '\\t');
+
+  try {
+    return JSON.parse(sanitized);
+  } catch (err) {
+    // Fall back to the unsanitized version as a last resort, in case
+    // sanitizing introduced its own problem.
+    return JSON.parse(toParse);
+  }
 }
 
 // ---------- Build the article prompt ----------
@@ -259,10 +277,22 @@ function updateBlogIndex(article) {
   const raw = fs.readFileSync(indexPath, 'utf8');
   const year = new Date().getFullYear();
   const entry = `    <li>\n      <a class="title" href="${article.slug}.html">${escapeHtml(article.title)}</a>\n      <p>${escapeHtml(article.metaDescription)}</p>\n      <span class="meta">${year} · ${article.readTimeMinutes} min read</span>\n    </li>\n`;
-  // Insert right after the "Latest posts" <ul> opening tag.
-  const marker = /(<span class="section-label">Latest posts<\/span>\s*<ul>)/;
-  if (!marker.test(raw)) throw new Error('Could not find blog index insertion point');
-  const updated = raw.replace(marker, `$1\n${entry}`);
+
+  // Insert right after the first <ul> tag that appears anywhere after the
+  // "Latest posts" label. Deliberately does NOT require the <ul> to sit
+  // immediately next to the label — the blog index page's layout can
+  // change independently of this script (extra text, filters, etc.
+  // inserted between them), which previously broke a strict adjacency
+  // match. Anchoring on "next <ul> after the label" survives that.
+  const labelText = '<span class="section-label">Latest posts</span>';
+  const labelIdx = raw.indexOf(labelText);
+  if (labelIdx === -1) throw new Error('Could not find "Latest posts" label in blog index');
+
+  const ulIdx = raw.indexOf('<ul>', labelIdx);
+  if (ulIdx === -1) throw new Error('Could not find blog index insertion point (<ul> after Latest posts label)');
+
+  const insertAt = ulIdx + '<ul>'.length;
+  const updated = raw.slice(0, insertAt) + '\n' + entry + raw.slice(insertAt);
   fs.writeFileSync(indexPath, updated);
 }
 
