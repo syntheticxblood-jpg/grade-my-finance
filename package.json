@@ -3,6 +3,7 @@
   "private": true,
   "description": "Dependencies for the daily content + Pinterest automation scripts. Not related to the static site itself.",
   "dependencies": {
-    "@napi-rs/canvas": "^1.0.3"
+    "@napi-rs/canvas": "^1.0.3",
+    "jsonrepair": "^3.15.0"
   }
 }
