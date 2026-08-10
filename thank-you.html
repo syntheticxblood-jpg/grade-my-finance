@@ -90,9 +90,9 @@ p.lede{ color:var(--muted); font-size:16px; margin:0 0 32px; line-height:1.6 }
   <div class="seal">
     <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
   </div>
-  <span class="eyebrow">Payment confirmed</span>
+  <span class="eyebrow">7-day free trial started</span>
   <h1>You're in. Welcome to Pro.</h1>
-  <p class="lede">Your upgrade is active on this device right now — no extra setup needed. Here's what just unlocked:</p>
+  <p class="lede">Your trial is active on this device right now — no extra setup needed. Cancel anytime in the next 7 days and you won't be charged. Here's what just unlocked:</p>
 
   <div class="unlocks">
     <span class="unlocks-label">Now unlocked</span>
@@ -108,7 +108,8 @@ p.lede{ color:var(--muted); font-size:16px; margin:0 0 32px; line-height:1.6 }
     <a class="btn" href="/index.html">Back to Grade My Finance</a>
   </div>
 
-  <p class="receipt-note">A receipt was emailed to you by Gumroad. Questions? <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
+  <p class="receipt-note" id="chargeDateNote"></p>
+  <p class="receipt-note">Manage or cancel your trial anytime from the receipt Gumroad emailed you. Questions? <a href="mailto:grademyfinance@gmail.com">grademyfinance@gmail.com</a></p>
 </div>
 
 <script>
@@ -123,28 +124,54 @@ p.lede{ color:var(--muted); font-size:16px; margin:0 0 32px; line-height:1.6 }
       localStorage.setItem("gmf_pro", "true");
     }
 
-    // Fire the Google Ads conversion + a GA4 purchase-style key event.
-    // Only fires once per visit to this page (not on repeat views if
-    // someone bookmarks/refreshes it).
+    // Fire the Google Ads conversion + a GA4 key event. Only fires once
+    // per visit to this page (not on repeat views if someone bookmarks
+    // or refreshes it).
     if(!sessionStorage.getItem("gmf_conversion_logged")){
       sessionStorage.setItem("gmf_conversion_logged", "true");
 
-      // Google Ads conversion — replace the send_to value below with your
-      // real Conversion ID/Label (same place you got the ID above).
+      // IMPORTANT: this is a 7-day free trial - Gumroad does not charge
+      // the card until the trial ends, and some people will cancel
+      // before then. Firing this with a $7.99 value would tell Google
+      // Ads that revenue was collected right now, which isn't true and
+      // would overstate what this campaign is actually earning. Value
+      // is deliberately 0 - the event itself is still a genuinely useful
+      // signal (someone started a trial), just not a completed sale.
+      //
+      // Kept as event name "purchase" (not renamed) because that's the
+      // exact event Google Ads is already importing as its conversion
+      // goal - renaming it would silently break that import.
       gtag('event', 'conversion', {
         'send_to': 'AW-XXXXXXXXXX/AbCdEfGhIjKlMnOp',
-        'value': 7.99,
+        'value': 0,
         'currency': 'USD'
       });
 
-      // GA4 key event, so this shows up in your existing GA4 property too.
       gtag('event', 'purchase', {
-        'value': 7.99,
+        'value': 0,
+        'currency': 'USD',
+        'items': [{ 'item_name': 'Grade My Finance Pro (trial started)', 'price': 0, 'quantity': 1 }]
+      });
+
+      // Separate, clearly-named event for your own GA4 reporting, so
+      // "trial started" and "actually paid" never get confused with
+      // each other when you're looking at your own Analytics later.
+      gtag('event', 'start_trial', {
+        'value': 0,
         'currency': 'USD',
         'items': [{ 'item_name': 'Grade My Finance Pro', 'price': 7.99, 'quantity': 1 }]
       });
     }
   } catch(e){ console.warn("Thank-you page tracking failed:", e); }
+
+  // Show the actual date they'll be charged, so nobody's caught off guard.
+  try{
+    var chargeDate = new Date();
+    chargeDate.setDate(chargeDate.getDate() + 7);
+    var formatted = chargeDate.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+    var noteEl = document.getElementById("chargeDateNote");
+    if(noteEl) noteEl.textContent = "Your card will be charged $7.99 on " + formatted + ", unless you cancel before then.";
+  } catch(e){}
 })();
 </script>
 
