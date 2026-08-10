@@ -773,6 +773,10 @@ section.block{ padding:76px 0 }
 .snap-card.result{ border-color:rgba(232,179,74,.4); background:linear-gradient(155deg, rgba(232,179,74,.08), transparent) }
 .snap-card .snap-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600 }
 .snap-card .snap-val{ font-family:var(--font-serif); font-weight:600; font-size:22px }
+.snap-delta{ font-family:var(--font-mono); font-size:11.5px; font-weight:600 }
+.snap-delta.up{ color:var(--good) }
+.snap-delta.down{ color:var(--bad) }
+.snap-delta:empty{ display:none }
 
 .opp-cards-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:14px }
 .opp-card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:8px }
@@ -787,6 +791,42 @@ section.block{ padding:76px 0 }
 .opp-card-pts{ font-family:var(--font-mono); font-size:12px; font-weight:700; color:var(--gold-bright) }
 .opp-card-pts.good{ color:var(--good) }
 .opp-card .opp-cta{ margin-top:2px; align-self:flex-start }
+
+.snap-composition{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; margin-top:12px }
+.snap-composition-legend{ display:flex; flex-direction:column; gap:8px }
+.snap-composition-legend-item{ display:flex; align-items:center; gap:8px; font-size:13px }
+.snap-composition-swatch{ width:10px; height:10px; border-radius:3px; flex:none }
+.snap-composition-legend-item b{ font-family:var(--font-mono); margin-left:auto; padding-left:14px }
+
+.progress-stat-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px }
+@media (max-width:760px){ .progress-stat-row{ grid-template-columns:repeat(2,1fr) } }
+.progress-stat-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:4px }
+.progress-stat-label{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600 }
+.progress-stat-val{ font-family:var(--font-serif); font-weight:700; font-size:19px }
+.progress-chart-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600 }
+.biggest-jump-card{ background:linear-gradient(155deg, rgba(232,179,74,.10), transparent); border:1px solid rgba(232,179,74,.3); border-radius:12px; padding:14px 16px; font-size:13.5px }
+.biggest-jump-card b{ color:var(--gold-bright) }
+
+.milestone-timeline{ position:relative; padding-left:20px }
+.milestone-timeline::before{ content:""; position:absolute; left:5px; top:6px; bottom:6px; width:1.5px; background:var(--line) }
+.milestone-timeline .milestone-row{ position:relative; border-bottom:none; padding:9px 0 }
+.milestone-timeline .milestone-row::before{ content:""; position:absolute; left:-20px; top:14px; width:8px; height:8px; border-radius:50%; background:var(--gold-bright); box-shadow:0 0 0 3px var(--bg-2) }
+
+.goal-cards-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px }
+.report-goal-card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px }
+.report-goal-card .g-type{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600; margin-bottom:8px }
+.report-goal-card .g-progress-num{ font-family:var(--font-mono); font-weight:700; font-size:15px; margin-bottom:8px }
+.report-goal-card .g-remaining{ font-size:12.5px; color:var(--muted); margin-top:6px }
+.report-goal-card .progress-bar{ height:8px; background:var(--surface-2); border-radius:99px; overflow:hidden; margin:2px 0 }
+.report-goal-card .progress-bar > div{ height:100%; background:linear-gradient(90deg,var(--good-2),var(--good)); border-radius:99px }
+.empty-note{ color:var(--muted); font-size:13.5px; padding:14px 2px; line-height:1.5 }
+
+.history-table{ display:grid; gap:6px }
+.history-row{ display:grid; grid-template-columns:1fr auto auto auto; gap:12px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:13px }
+@media (max-width:640px){ .history-row{ grid-template-columns:1fr; gap:4px } }
+.history-row .h-date{ color:var(--muted) }
+.history-row .h-score{ font-family:var(--font-mono); font-weight:700 }
+.history-row .h-net{ font-family:var(--font-mono); color:var(--muted) }
 
 .milestone-row{ display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line); font-size:13px }
 .milestone-row:last-child{ border-bottom:none }
@@ -1423,6 +1463,8 @@ body.is-pro .ad-slot{ display:none !important }
       <button class="dash-tab" data-dtab="snapshot" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 9.5 4h5L16 7"/><circle cx="12" cy="13.5" r="3.2"/></svg></span><span class="dash-tab-label">Snapshot</span></button>
       <button class="dash-tab" data-dtab="nextsteps" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="dash-tab-label">Opportunities</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="progress" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg></span><span class="dash-tab-label">Progress</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="goals" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg></span><span class="dash-tab-label">Goals</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="history" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l4 2"/></svg></span><span class="dash-tab-label">History</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="benchmarks" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M12 20V4M20 20v-7"/></svg></span><span class="dash-tab-label">Benchmarks</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="details" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span class="dash-tab-label">Details</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="flow" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c4 0 4 6 8 6s4-6 8-6M4 19c4 0 4-6 8-6s4 6 8 6"/></svg></span><span class="dash-tab-label">Money Flow</span><span class="lock-tag pro-only-hide">PRO</span></button>
@@ -1474,14 +1516,22 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="dash-panel" id="dashPanel-snapshot">
         <span class="section-label">Financial snapshot</span>
         <div class="snapshot-cards">
-          <div class="snap-card"><span class="snap-label">Annual Income</span><span class="snap-val" id="snapIncome">—</span></div>
-          <div class="snap-card"><span class="snap-label">Monthly Expenses</span><span class="snap-val" id="snapExpenses">—</span></div>
-          <div class="snap-card"><span class="snap-label">Savings Rate</span><span class="snap-val" id="snapSavingsRate">—</span></div>
-          <div class="snap-card"><span class="snap-label">Total Debt</span><span class="snap-val" id="snapDebt">—</span></div>
-          <div class="snap-card result"><span class="snap-label">Net Worth</span><span class="snap-val" id="snapNetWorth">—</span></div>
+          <div class="snap-card"><span class="snap-label">Annual Income</span><span class="snap-val" id="snapIncome">—</span><span class="snap-delta" id="snapIncomeDelta"></span></div>
+          <div class="snap-card"><span class="snap-label">Monthly Expenses</span><span class="snap-val" id="snapExpenses">—</span><span class="snap-delta" id="snapExpensesDelta"></span></div>
+          <div class="snap-card"><span class="snap-label">Savings Rate</span><span class="snap-val" id="snapSavingsRate">—</span><span class="snap-delta" id="snapSavingsRateDelta"></span></div>
+          <div class="snap-card"><span class="snap-label">Total Debt</span><span class="snap-val" id="snapDebt">—</span><span class="snap-delta" id="snapDebtDelta"></span></div>
+          <div class="snap-card result"><span class="snap-label">Net Worth</span><span class="snap-val" id="snapNetWorth">—</span><span class="snap-delta" id="snapNetWorthDelta"></span></div>
         </div>
         <div class="dash-flow-bar" style="margin-top:22px"><div class="dash-flow-bar-fill" id="dashFlowBarFill"></div></div>
         <div class="dash-flow-bar-caption" id="dashFlowBarCaption">—</div>
+
+        <div class="report-section" style="margin-top:22px">
+          <span class="section-label">Assets vs. debt</span>
+          <div class="snap-composition">
+            <svg id="snapCompositionSvg" width="132" height="132" viewBox="0 0 132 132" role="img" aria-label="Assets vs debt composition"></svg>
+            <div class="snap-composition-legend" id="snapCompositionLegend"></div>
+          </div>
+        </div>
       </div>
 
       <div class="dash-panel" id="dashPanel-nextsteps">
@@ -1506,21 +1556,57 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="dash-panel" id="dashPanel-progress">
         <div class="pro-blur-section" style="min-height:260px">
           <div class="pro-blur-content">
-            <div class="card" style="display:grid;gap:12px">
+            <div class="progress-stat-row" id="progressStatRow"></div>
+            <div class="card" style="display:grid;gap:12px;margin-top:14px">
               <div id="compareBlock" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
                 <span class="section-label" style="margin:0">Since your last check-in</span>
                 <div id="compareText" class="small" style="font-weight:700;color:var(--text);font-size:15px">—</div>
               </div>
+              <span class="progress-chart-label">Score</span>
               <svg id="spark" width="100%" height="70" viewBox="0 0 500 70" preserveAspectRatio="none" aria-hidden="true"></svg>
+              <span class="progress-chart-label" style="margin-top:6px">Net worth</span>
+              <svg id="sparkNet" width="100%" height="70" viewBox="0 0 500 70" preserveAspectRatio="none" aria-hidden="true"></svg>
             </div>
+            <div class="report-section" id="biggestJumpSection" style="margin-top:14px;display:none"></div>
             <div class="report-section" style="margin-top:14px">
               <span class="section-label">Milestones</span>
-              <div id="progressMilestonesList"></div>
+              <div id="progressMilestonesList" class="milestone-timeline"></div>
             </div>
           </div>
           <div class="pro-blur-overlay">
             <div class="pro-blur-title">🔒 Track your progress over time</div>
             <div class="pro-blur-sub">Unlock your full score trend and check-in milestones.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="dashPanel-goals">
+        <div class="pro-blur-section" style="min-height:220px">
+          <div class="pro-blur-content">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+              <span class="section-label" style="margin:0">Your goals</span>
+              <a class="btn sm" href="dashboard.html">Manage goals on Dashboard →</a>
+            </div>
+            <div id="reportGoalsGrid" class="goal-cards-grid"></div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 Set and track real targets</div>
+            <div class="pro-blur-sub">Set a net worth or score goal on your Dashboard, then track it here every time you check in.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="dashPanel-history">
+        <div class="pro-blur-section" style="min-height:220px">
+          <div class="pro-blur-content">
+            <span class="section-label">Every check-in on this device</span>
+            <div id="reportHistoryTable" class="history-table"></div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See your full check-in history</div>
+            <div class="pro-blur-sub">Every check-in you've ever recorded, in one table.</div>
             <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
           </div>
         </div>
@@ -1983,6 +2069,15 @@ function money(n){
   }catch(e){
     return new Intl.NumberFormat(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 }).format(Math.round(n));
   }
+}
+
+function formatDateShort(ts){
+  try{ return new Date(ts).toLocaleDateString(undefined, { month:'short', day:'numeric' }); }
+  catch(e){ return ''; }
+}
+function formatDateFull(ts){
+  try{ return new Date(ts).toLocaleDateString(undefined, { month:'short', day:'numeric', year:'numeric' }); }
+  catch(e){ return ''; }
 }
 
 (function(){
@@ -3291,6 +3386,66 @@ function openReport(v,cats){
     if($("ovMetricNW")) $("ovMetricNW").textContent = money(v.net);
     if($("ovMetricSR")) $("ovMetricSR").textContent = Math.round(v.saveRate*100)+"%";
     if($("ovMetricDTI")) $("ovMetricDTI").textContent = v.annualIncome > 0 ? Math.round((v.liabs/v.annualIncome)*100)+"%" : "—";
+
+    // Deltas vs. the previous check-in. Older entries recorded before this
+    // update won't have these per-field values saved, only score/net - so
+    // each delta only renders when the previous entry actually has that
+    // specific field, rather than showing a misleading "0" or guessing.
+    var priorHist = getHistory();
+    var prevEntry = priorHist.length ? priorHist[priorHist.length-1] : null;
+    function renderDelta(id, current, prevVal, isPercent){
+      var el2 = $(id);
+      if(!el2) return;
+      if(!prevEntry || typeof prevVal !== 'number'){ el2.textContent = ''; el2.className = 'snap-delta'; return; }
+      var diff = current - prevVal;
+      if(Math.abs(diff) < (isPercent ? 0.001 : 1)){ el2.textContent = 'No change since last check-in'; el2.className = 'snap-delta'; return; }
+      var up = diff > 0;
+      var formatted = isPercent ? Math.round(Math.abs(diff)*100)+'pt' : money(Math.abs(diff));
+      el2.textContent = (up?'↑ ':'↓ ') + formatted + ' since last check-in';
+      el2.className = 'snap-delta ' + (up ? 'up' : 'down');
+    }
+    renderDelta('snapIncomeDelta', v.annualIncome, prevEntry ? prevEntry.annualIncome : null, false);
+    renderDelta('snapExpensesDelta', v.expenses, prevEntry ? prevEntry.monthlyExpenses : null, false);
+    renderDelta('snapSavingsRateDelta', v.saveRate, prevEntry ? prevEntry.savingsRate : null, true);
+    // Debt and net worth: falling debt is the "good" direction, so flip
+    // the up/down color logic for that one card specifically.
+    (function(){
+      var el2 = $('snapDebtDelta');
+      if(!el2) return;
+      if(!prevEntry || typeof prevEntry.totalDebt !== 'number'){ el2.textContent=''; el2.className='snap-delta'; return; }
+      var diff = v.liabs - prevEntry.totalDebt;
+      if(Math.abs(diff) < 1){ el2.textContent = 'No change since last check-in'; el2.className = 'snap-delta'; return; }
+      var improved = diff < 0; // less debt = good
+      el2.textContent = (diff<0?'↓ ':'↑ ') + money(Math.abs(diff)) + ' since last check-in';
+      el2.className = 'snap-delta ' + (improved ? 'up' : 'down');
+    })();
+    renderDelta('snapNetWorthDelta', v.net, prevEntry ? prevEntry.net : null, false);
+
+    // Assets vs. debt composition donut
+    var svgEl = $("snapCompositionSvg"), legendEl = $("snapCompositionLegend");
+    if(svgEl){
+      var assetsVal = Math.max(0, v.assets), debtVal = Math.max(0, v.liabs);
+      var total = assetsVal + debtVal;
+      if(total <= 0){
+        setHTML(svgEl, '<circle cx="66" cy="66" r="52" fill="none" stroke="rgba(148,163,184,.25)" stroke-width="14"/>');
+        legendEl.innerHTML = '<div class="small">No assets or debt entered yet.</div>';
+      } else {
+        var r = 52, cx = 66, cy = 66, circumference = 2*Math.PI*r;
+        var assetsFrac = assetsVal/total;
+        var assetsLen = assetsFrac * circumference;
+        var html2 =
+          '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="var(--bad)" stroke-width="14"/>' +
+          '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="var(--good)" stroke-width="14" ' +
+            'stroke-dasharray="'+assetsLen.toFixed(1)+' '+circumference.toFixed(1)+'" ' +
+            'stroke-linecap="round" transform="rotate(-90 '+cx+' '+cy+')"/>' +
+          '<text x="'+cx+'" y="'+(cy-3)+'" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700" font-family="var(--font-serif)">'+Math.round(assetsFrac*100)+'%</text>' +
+          '<text x="'+cx+'" y="'+(cy+13)+'" text-anchor="middle" fill="var(--muted)" font-size="9.5">assets</text>';
+        setHTML(svgEl, html2);
+        legendEl.innerHTML =
+          '<div class="snap-composition-legend-item"><span class="snap-composition-swatch" style="background:var(--good)"></span>Assets<b>'+money(assetsVal)+'</b></div>' +
+          '<div class="snap-composition-legend-item"><span class="snap-composition-swatch" style="background:var(--bad)"></span>Debt<b>'+money(debtVal)+'</b></div>';
+      }
+    }
   })();
 
   (function renderExplainAndOpportunities(){
@@ -3391,6 +3546,53 @@ function openReport(v,cats){
     compareText.textContent = 'First run saved on this device.';
   }
 
+  // Net worth trend, same sparkline treatment as the score trend above.
+  (function(){
+    var netSparkEl = $("sparkNet");
+    if(!netSparkEl) return;
+    var netTrend = hist.map(function(h){ return h.net; }).concat([v.net]).filter(function(n){ return typeof n === 'number'; }).slice(-12);
+    sparkline(netSparkEl, netTrend);
+  })();
+
+  // Stat row: best score, average score, longest improvement streak, total check-ins.
+  (function(){
+    var rowEl = $("progressStatRow");
+    if(!rowEl) return;
+    var allScores = hist.map(function(h){ return h.score; }).concat([cats.overall.score]);
+    var best = Math.max.apply(null, allScores);
+    var avg = allScores.reduce(function(a,b){ return a+b; }, 0) / allScores.length;
+    var longestStreak = 1, curStreak = 1;
+    for(var i=1;i<allScores.length;i++){
+      if(allScores[i] > allScores[i-1]){ curStreak++; longestStreak = Math.max(longestStreak, curStreak); }
+      else { curStreak = 1; }
+    }
+    var stats = [
+      { label:'Best score', val: best.toFixed(1) },
+      { label:'Average score', val: avg.toFixed(1) },
+      { label:'Longest streak', val: longestStreak + (longestStreak===1?' check-in':' check-ins') },
+      { label:'Total check-ins', val: String(allScores.length) }
+    ];
+    rowEl.innerHTML = stats.map(function(s){
+      return '<div class="progress-stat-card"><span class="progress-stat-label">'+s.label+'</span><span class="progress-stat-val">'+s.val+'</span></div>';
+    }).join('');
+  })();
+
+  // Biggest single jump between two consecutive check-ins.
+  (function(){
+    var sectionEl = $("biggestJumpSection");
+    if(!sectionEl) return;
+    var allEntries = hist.concat([{ ts: Date.now(), score: cats.overall.score }]);
+    if(allEntries.length < 2){ sectionEl.style.display = 'none'; return; }
+    var biggest = null;
+    for(var i=1;i<allEntries.length;i++){
+      var jump = allEntries[i].score - allEntries[i-1].score;
+      if(!biggest || jump > biggest.jump){ biggest = { jump: jump, from: allEntries[i-1], to: allEntries[i] }; }
+    }
+    if(!biggest || biggest.jump <= 0){ sectionEl.style.display = 'none'; return; }
+    sectionEl.style.display = 'block';
+    sectionEl.innerHTML = '<div class="biggest-jump-card">Your biggest jump so far: <b>+'+biggest.jump.toFixed(1)+' pts</b> between '+formatDateShort(biggest.from.ts)+' and '+formatDateShort(biggest.to.ts)+'.</div>';
+  })();
+
   var weakestForHistory = (function(){
     var scores = { "Savings rate":cats.s.sSave, "Emergency fund":cats.s.sEF, "Debt load (non-mort.)":cats.s.sDebt, "Age-based net worth":cats.s.sAgeNW, "Income strength":cats.s.sInc };
     var minKey = null, minVal = Infinity;
@@ -3398,7 +3600,7 @@ function openReport(v,cats){
     var match = cats.components.filter(function(c){ return c.key === minKey; })[0];
     return match ? { key: match.key, tip: match.tip } : null;
   })();
-  saveHistory({ ts: Date.now(), score: cats.overall.score, net: v.net, weakKey: weakestForHistory ? weakestForHistory.key : null, weakTip: weakestForHistory ? weakestForHistory.tip : null });
+  saveHistory({ ts: Date.now(), score: cats.overall.score, net: v.net, annualIncome: v.annualIncome, monthlyExpenses: v.expenses, savingsRate: v.saveRate, totalDebt: v.liabs, weakKey: weakestForHistory ? weakestForHistory.key : null, weakTip: weakestForHistory ? weakestForHistory.tip : null });
   logGradeCompletion(cats.overall.letter.split(" ")[0], cats.overall.score);
   var checkinResult = recordCheckin(cats.overall.score);
   var streakCount = computeImprovementStreak(hist, cats.overall.score);
@@ -3426,6 +3628,61 @@ function openReport(v,cats){
       return '<div class="milestone-row"><span class="milestone-row-icon">'+m.icon+'</span><span>'+m.text+'</span></div>';
     }).join("");
   })();
+
+  (function renderReportGoals(){
+    var gridEl = $("reportGoalsGrid");
+    if(!gridEl) return;
+    var goals = [];
+    try{ goals = JSON.parse(localStorage.getItem('gmf_goals_v2') || '[]'); }catch(e){ goals = []; }
+    if(!goals.length){
+      gridEl.innerHTML = '<div class="empty-note">No goals set yet. <a href="dashboard.html" style="color:var(--gold-bright)">Set one on your Dashboard</a> and it\'ll show progress here automatically.</div>';
+      return;
+    }
+    gridEl.innerHTML = goals.map(function(g){
+      var current = g.type === 'score' ? cats.overall.score : v.net;
+      var fmt = g.type === 'score' ? function(n){ return n.toFixed(1); } : money;
+      var pct = Math.max(0, Math.min(100, (current/g.target)*100));
+      var remaining = Math.max(0, g.target - current);
+      var reached = current >= g.target;
+      return '<div class="report-goal-card">' +
+        '<div class="g-type">'+(g.type==='score'?'Overall Score':'Net Worth')+'</div>' +
+        '<div class="g-progress-num mono">'+fmt(current)+' / '+fmt(g.target)+'</div>' +
+        '<div class="progress-bar"><div style="width:'+pct.toFixed(0)+'%"></div></div>' +
+        '<div class="g-remaining">'+(reached ? 'Goal reached 🎉' : fmt(remaining)+' remaining') + '</div>' +
+      '</div>';
+    }).join('');
+  })();
+
+  function renderReportHistoryTable(){
+    var tableEl = $("reportHistoryTable");
+    if(!tableEl) return;
+    var allEntries = hist.concat([{ ts: Date.now(), score: cats.overall.score, net: v.net }]).slice().reverse();
+    if(!allEntries.length){
+      tableEl.innerHTML = '<div class="empty-note">No check-ins recorded yet.</div>';
+      return;
+    }
+    tableEl.innerHTML = allEntries.map(function(entry, i){
+      var netStr = typeof entry.net === 'number' ? money(entry.net) : '—';
+      var delBtn = i === 0 ? '' : '<button class="btn sm" data-hist-del="'+entry.ts+'" type="button">Delete</button>';
+      return '<div class="history-row">' +
+        '<span class="h-date">'+formatDateFull(entry.ts)+(i===0?' (this check-in)':'')+'</span>' +
+        '<span class="h-score">'+entry.score.toFixed(1)+' ('+overallLetter(Math.round(entry.score))+')</span>' +
+        '<span class="h-net">'+netStr+'</span>' +
+        delBtn +
+      '</div>';
+    }).join('');
+    tableEl.querySelectorAll('[data-hist-del]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(!confirm("Delete this check-in? This can't be undone.")) return;
+        var ts = +btn.dataset.histDel;
+        var arr = getHistory().filter(function(h){ return h.ts !== ts; });
+        localStorage.setItem('gmf_history_v2', JSON.stringify(arr));
+        hist = getHistory();
+        renderReportHistoryTable();
+      });
+    });
+  }
+  renderReportHistoryTable();
 
   (function renderHeroGreeting(){
     var headlineEl = $("rcHeroHeadline"), streakEl = $("rcStreak"), streakTextEl = $("rcStreakText");
