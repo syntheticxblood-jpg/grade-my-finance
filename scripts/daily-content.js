@@ -72,23 +72,37 @@ function extractJson(rawText) {
   const candidate = cleaned.slice(firstBrace, cleaned.lastIndexOf('}') + 1);
   const toParse = candidate.length ? candidate : cleaned;
 
-  // The model sometimes emits literal newlines/tabs inside JSON string
-  // values (e.g. in bodyHtml), which is invalid JSON and throws "Bad
-  // control character in string literal". Outside of strings, JSON
-  // whitespace is insignificant, so it's always safe to escape raw
-  // newlines/tabs/carriage-returns globally before parsing.
-  const sanitized = toParse
-    .replace(/\r\n/g, '\\n')
-    .replace(/\r/g, '\\n')
-    .replace(/\n/g, '\\n')
-    .replace(/\t/g, '\\t');
+  // The model sometimes emits literal control characters inside JSON
+  // string values (e.g. raw newlines, tabs, or other characters below
+  // code point 0x20 in bodyHtml) - all of these are invalid unescaped
+  // inside a JSON string and throw "Bad control character in string
+  // literal". A narrow fix that only handles \n/\r/\t isn't enough - any
+  // character in that whole 0x00-0x1F range needs escaping. Doing this
+  // globally (not just inside detected strings) is safe because outside
+  // of strings, JSON whitespace is insignificant either way.
+  const sanitized = toParse.replace(/[\x00-\x1F]/g, (ch) => {
+    switch (ch) {
+      case '\n': return '\\n';
+      case '\r': return '\\r';
+      case '\t': return '\\t';
+      case '\b': return '\\b';
+      case '\f': return '\\f';
+      default: return '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0');
+    }
+  });
 
   try {
     return JSON.parse(sanitized);
   } catch (err) {
-    // Fall back to the unsanitized version as a last resort, in case
-    // sanitizing introduced its own problem.
-    return JSON.parse(toParse);
+    // Don't silently fall back to the unsanitized text - it still has
+    // the same raw control characters and would just re-throw the same
+    // masked error, hiding whatever actually went wrong. Surface a
+    // useful error instead, with enough context to debug from the log.
+    const pos = Number((err.message.match(/position (\d+)/) || [])[1]);
+    const context = Number.isFinite(pos)
+      ? sanitized.slice(Math.max(0, pos - 80), pos + 80)
+      : sanitized.slice(0, 200);
+    throw new Error(`JSON parse failed after sanitization: ${err.message}\nContext: ...${context}...`);
   }
 }
 
