@@ -1037,25 +1037,50 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 .plan.free ul li.locked{ color:var(--muted-2) }
 
 /* ---------- Pro dashboard preview (browser-chrome frame around a real-styled mock) ---------- */
-.pro-dash-frame{ max-width:760px; margin:0 auto; border-radius:16px; overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow) }
+.pro-dash-frame{
+  max-width:840px; margin:0 auto; border-radius:18px; overflow:hidden; border:1px solid var(--line);
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.6), 0 0 0 1px rgba(232,179,74,.06);
+}
 .pro-dash-chrome{ display:flex; align-items:center; gap:7px; padding:12px 16px; background:var(--surface-2); border-bottom:1px solid var(--line) }
 .pro-dash-chrome span{ width:10px; height:10px; border-radius:50%; background:var(--muted-2); opacity:.5 }
 .pro-dash-url{ margin-left:10px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted); background:var(--bg-2); border:1px solid var(--line); border-radius:6px; padding:4px 10px }
-.pro-dash-body{ background:var(--bg-2); padding:26px }
-.pro-dash-head{ display:flex; align-items:center; gap:16px; margin-bottom:22px }
-.pro-dash-grade{ width:52px; height:52px; border-radius:13px; border:2px solid var(--good); color:var(--good); background:rgba(52,211,153,.1); display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-weight:700; font-size:20px; flex:none }
-.pro-dash-head-label{ font-weight:700; font-size:14px }
-.pro-dash-head-label b{ font-family:var(--font-mono); font-weight:600; color:var(--muted); margin-left:6px; font-size:12.5px }
-.pro-dash-head-sub{ font-size:10.5px; color:var(--muted-2); text-transform:uppercase; letter-spacing:.04em; margin-top:2px }
-.pro-dash-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px }
-@media (max-width:700px){ .pro-dash-grid{ grid-template-columns:repeat(2,1fr) } }
-.pro-dash-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:8px }
-.pro-dash-card-label{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600 }
-.pro-dash-card-trend{ font-size:11.5px; color:var(--muted); font-family:var(--font-mono) }
-.pro-dash-card-trend.up{ color:var(--good) }
-.pro-dash-progress{ height:6px; background:var(--surface-2); border-radius:99px; overflow:hidden }
-.pro-dash-progress > div{ height:100%; background:linear-gradient(90deg,var(--good),var(--good)); border-radius:99px }
-.pro-dash-big-num{ font-family:var(--font-serif); font-weight:700; font-size:24px; color:var(--gold-bright) }
+
+.pdm-body{ display:flex; background:#0E1116 }
+.pdm-sidebar{ flex:none; width:52px; display:flex; flex-direction:column; align-items:center; gap:8px; padding:20px 0; border-right:1px solid rgba(255,255,255,.06) }
+.pdm-nav-item{ width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; color:#8B93A3 }
+.pdm-nav-item.active{ background:linear-gradient(155deg, rgba(232,179,74,.18), rgba(232,179,74,.06)); color:#F0C168 }
+
+.pdm-main{ flex:1 1 auto; padding:24px 26px 26px; min-width:0 }
+.pdm-hero-row{ display:flex; align-items:center; gap:16px; margin-bottom:20px }
+.pdm-ring{
+  width:64px; height:64px; border-radius:50%; flex:none; position:relative;
+  background:conic-gradient(#4FC28A 360deg, #1E2530 0);
+  display:flex; align-items:center; justify-content:center;
+}
+.pdm-ring::before{ content:""; position:absolute; inset:-14px; border-radius:50%; background:radial-gradient(circle,#4FC28A,transparent 68%); opacity:.18; filter:blur(4px) }
+.pdm-ring::after{ content:""; position:absolute; inset:6px; border-radius:50%; background:#0E1116; z-index:1 }
+.pdm-ring span{ position:relative; z-index:2; font-family:var(--font-serif); font-weight:700; font-size:24px; color:#4FC28A }
+.pdm-hero-text{ flex:1 1 auto; min-width:0 }
+.pdm-hero-label{ font-size:11px; color:#8B93A3; text-transform:uppercase; letter-spacing:.05em; font-weight:600 }
+.pdm-hero-score{ font-family:var(--font-serif); font-weight:700; font-size:30px; color:#E9ECF1; line-height:1.2 }
+.pdm-hero-score span{ font-size:14px; color:#8B93A3; font-weight:500; margin-left:2px }
+.pdm-streak{ display:inline-flex; align-items:center; gap:6px; margin-top:6px; font-size:11.5px; color:#8B93A3; font-family:var(--font-mono) }
+.pdm-streak-dot{ width:6px; height:6px; border-radius:50%; background:#4FC28A; box-shadow:0 0 6px #4FC28A }
+.pdm-preview-tag{ flex:none; font-size:9.5px; color:#8B93A3; text-transform:uppercase; letter-spacing:.05em; font-family:var(--font-mono); align-self:flex-start; margin-top:2px }
+
+.pdm-flow-card{ background:#171C24; border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:16px 18px 10px; margin-bottom:16px }
+.pdm-flow-label{ font-size:11px; color:#8B93A3; text-transform:uppercase; letter-spacing:.04em; font-weight:600; display:block; margin-bottom:6px }
+.pdm-flow-svg{ width:100%; height:auto; display:block }
+
+.pdm-stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px }
+@media (max-width:700px){ .pdm-stat-row{ grid-template-columns:1fr } .pdm-sidebar{ display:none } }
+.pdm-stat{ background:#171C24; border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:8px }
+.pdm-stat-label{ font-size:10.5px; color:#8B93A3; text-transform:uppercase; letter-spacing:.04em; font-weight:600 }
+.pdm-stat-trend{ font-size:11.5px; color:#8B93A3; font-family:var(--font-mono) }
+.pdm-stat-trend.up{ color:#4FC28A }
+.pdm-progress{ height:6px; background:#1E2530; border-radius:99px; overflow:hidden }
+.pdm-progress > div{ height:100%; background:linear-gradient(90deg,#3AA173,#4FC28A); border-radius:99px }
+.pdm-stat-num{ font-family:var(--font-serif); font-weight:700; font-size:22px; color:#F0C168 }
 
 /* ---------- Free vs Pro comparison ---------- */
 .fvp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:820px; margin:0 auto }
@@ -1274,38 +1299,81 @@ body.is-pro .ad-slot{ display:none !important }
 </section>
 
 <section class="block" id="pro-dashboard-preview">
-  <div class="container">
+  <div class="aurora" aria-hidden="true" style="opacity:.6"><span class="a1" style="top:20%"></span><span class="a2" style="top:10%"></span></div>
+  <div class="container" style="position:relative">
     <div class="block-head center">
       <span class="kicker">Your finances, over time</span>
       <h2>Your financial grade tells you where you are. Pro shows you whether you're getting better.</h2>
     </div>
     <div class="pro-dash-frame">
       <div class="pro-dash-chrome"><span></span><span></span><span></span><div class="pro-dash-url">grademyfinance.com/dashboard</div></div>
-      <div class="pro-dash-body">
-        <div class="pro-dash-head">
-          <div class="pro-dash-grade">A+</div>
-          <div><div class="pro-dash-head-label">Financial grade <b>100.0 / 100</b></div><div class="pro-dash-head-sub">CONCEPT PREVIEW — illustrative dashboard</div></div>
+      <div class="pdm-body">
+        <div class="pdm-sidebar">
+          <div class="pdm-nav-item active"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></div>
+          <div class="pdm-nav-item"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
+          <div class="pdm-nav-item"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c4 0 4 6 8 6s4-6 8-6M4 19c4 0 4-6 8-6s4 6 8 6"/></svg></div>
+          <div class="pdm-nav-item"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div>
         </div>
-        <div class="pro-dash-grid">
-          <div class="pro-dash-card">
-            <span class="pro-dash-card-label">Score history</span>
-            <svg viewBox="0 0 160 46" width="100%" height="46"><polyline points="4,38 30,30 56,32 82,20 108,16 134,8 156,6" fill="none" stroke="var(--gold-bright)" stroke-width="2.5"/></svg>
-            <span class="pro-dash-card-trend up">↗ +25.2 pts</span>
+        <div class="pdm-main">
+          <div class="pdm-hero-row">
+            <div class="pdm-ring"><span>A+</span></div>
+            <div class="pdm-hero-text">
+              <div class="pdm-hero-label">Financial grade</div>
+              <div class="pdm-hero-score">100.0<span>/100</span></div>
+              <div class="pdm-streak"><span class="pdm-streak-dot"></span>6-check-in improvement streak</div>
+            </div>
+            <div class="pdm-preview-tag">CONCEPT PREVIEW</div>
           </div>
-          <div class="pro-dash-card">
-            <span class="pro-dash-card-label">Net worth</span>
-            <svg viewBox="0 0 160 46" width="100%" height="46"><polyline points="4,40 30,36 56,34 82,26 108,18 134,14 156,4" fill="none" stroke="var(--good)" stroke-width="2.5"/></svg>
-            <span class="pro-dash-card-trend up">↗ tracking up</span>
+
+          <div class="pdm-flow-card">
+            <span class="pdm-flow-label">Money Flow — Assets</span>
+            <svg class="pdm-flow-svg" viewBox="0 0 480 190" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="pdmG1" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#E8B34A" stop-opacity="0.5"/>
+                  <stop offset="55%" stop-color="#4FC28A" stop-opacity="0.55"/>
+                  <stop offset="100%" stop-color="#4FC28A" stop-opacity="0.85"/>
+                </linearGradient>
+                <linearGradient id="pdmG2" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#E8B34A" stop-opacity="0.5"/>
+                  <stop offset="55%" stop-color="#5B8DEF" stop-opacity="0.55"/>
+                  <stop offset="100%" stop-color="#5B8DEF" stop-opacity="0.85"/>
+                </linearGradient>
+                <linearGradient id="pdmG3" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#E8B34A" stop-opacity="0.5"/>
+                  <stop offset="55%" stop-color="#45C4D6" stop-opacity="0.55"/>
+                  <stop offset="100%" stop-color="#45C4D6" stop-opacity="0.85"/>
+                </linearGradient>
+              </defs>
+              <rect x="24" y="69" width="6" height="52" rx="3" fill="#E8B34A" fill-opacity="0.85"/>
+              <path d="M30,95 C170,95 170,40 340,40" fill="none" stroke="url(#pdmG1)" stroke-width="22" stroke-linecap="round"/>
+              <path d="M30,95 C170,95 170,95 340,95" fill="none" stroke="url(#pdmG2)" stroke-width="18" stroke-linecap="round"/>
+              <path d="M30,95 C170,95 170,150 340,150" fill="none" stroke="url(#pdmG3)" stroke-width="14" stroke-linecap="round"/>
+              <text x="352" y="34" fill="#E9ECF1" font-size="13" font-weight="600" font-family="Inter,sans-serif">Retirement</text>
+              <text x="352" y="50" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$142,000 · 44%</text>
+              <text x="352" y="89" fill="#E9ECF1" font-size="13" font-weight="600" font-family="Inter,sans-serif">Brokerage</text>
+              <text x="352" y="105" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$96,000 · 30%</text>
+              <text x="352" y="144" fill="#E9ECF1" font-size="13" font-weight="600" font-family="Inter,sans-serif">Cash</text>
+              <text x="352" y="160" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$84,000 · 26%</text>
+            </svg>
           </div>
-          <div class="pro-dash-card">
-            <span class="pro-dash-card-label">Goals</span>
-            <div class="pro-dash-progress"><div style="width:75%"></div></div>
-            <span class="pro-dash-card-trend">75% to target</span>
-          </div>
-          <div class="pro-dash-card">
-            <span class="pro-dash-card-label">What-If scenarios</span>
-            <div class="pro-dash-big-num">3</div>
-            <span class="pro-dash-card-trend">saved &amp; compared</span>
+
+          <div class="pdm-stat-row">
+            <div class="pdm-stat">
+              <span class="pdm-stat-label">Net worth trend</span>
+              <svg viewBox="0 0 160 40" width="100%" height="34"><polyline points="4,34 30,30 56,32 82,20 108,16 134,8 156,4" fill="none" stroke="var(--good)" stroke-width="2.5"/></svg>
+              <span class="pdm-stat-trend up">↗ tracking up</span>
+            </div>
+            <div class="pdm-stat">
+              <span class="pdm-stat-label">Emergency fund goal</span>
+              <div class="pdm-progress"><div style="width:75%"></div></div>
+              <span class="pdm-stat-trend">75% to target</span>
+            </div>
+            <div class="pdm-stat">
+              <span class="pdm-stat-label">What-if scenarios</span>
+              <div class="pdm-stat-num">3</div>
+              <span class="pdm-stat-trend">saved &amp; compared</span>
+            </div>
           </div>
         </div>
       </div>
