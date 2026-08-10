@@ -510,6 +510,17 @@ section.block{ padding:76px 0 }
   .dash-tabs{
     width:auto; flex-direction:row; border-right:none; border-bottom:1px solid var(--line);
     padding:10px 8px; gap:4px;
+    /* The base rule above sets overflow-x:hidden (correct for the
+       vertical desktop sidebar, which should never scroll sideways) -
+       that has to be switched back to scrollable here, or the row of
+       tabs just gets clipped once it runs out of width, with no way to
+       reach anything past it. */
+    overflow-x:auto; overflow-y:hidden;
+    /* Fades the right edge to hint there's more to scroll to, without
+       needing extra markup or JS - mask applies to the element's own
+       box, so it stays fixed at the edge regardless of scroll position. */
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 32px), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - 32px), transparent 100%);
   }
   .dash-tab{ flex:none; width:auto; white-space:nowrap; padding:9px 12px }
   .dash-tab-label{ white-space:nowrap }
