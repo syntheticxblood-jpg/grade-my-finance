@@ -64,6 +64,61 @@ async function callClaude(promptText) {
   return textBlocks.join('\n');
 }
 
+// Escapes raw control characters (newlines, tabs, etc.) that appear
+// INSIDE quoted JSON string values, while leaving structural whitespace
+// between tokens (e.g. the newline after "{" in pretty-printed JSON)
+// completely untouched. That distinction matters: raw newlines/tabs are
+// valid, insignificant JSON whitespace outside of strings, but illegal
+// unescaped inside them. A previous version of this function escaped
+// control characters everywhere, which inserted a literal backslash
+// into positions where the JSON spec doesn't allow one - breaking
+// otherwise-valid pretty-printed JSON. This walks the text character by
+// character, tracking whether we're currently inside a string (handling
+// escaped quotes correctly), and only touches control characters found
+// there.
+function sanitizeJsonControlChars(text) {
+  let result = '';
+  let inString = false;
+  let escaped = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    const code = text.charCodeAt(i);
+    if (inString) {
+      if (escaped) {
+        result += ch;
+        escaped = false;
+        continue;
+      }
+      if (ch === '\\') {
+        result += ch;
+        escaped = true;
+        continue;
+      }
+      if (ch === '"') {
+        inString = false;
+        result += ch;
+        continue;
+      }
+      if (code < 0x20) {
+        switch (ch) {
+          case '\n': result += '\\n'; break;
+          case '\r': result += '\\r'; break;
+          case '\t': result += '\\t'; break;
+          case '\b': result += '\\b'; break;
+          case '\f': result += '\\f'; break;
+          default: result += '\\u' + code.toString(16).padStart(4, '0');
+        }
+        continue;
+      }
+      result += ch;
+    } else {
+      if (ch === '"') inString = true;
+      result += ch;
+    }
+  }
+  return result;
+}
+
 function extractJson(rawText) {
   // Strip markdown fences if the model added them despite instructions.
   const cleaned = rawText.replace(/```json|```/g, '').trim();
@@ -72,32 +127,11 @@ function extractJson(rawText) {
   const candidate = cleaned.slice(firstBrace, cleaned.lastIndexOf('}') + 1);
   const toParse = candidate.length ? candidate : cleaned;
 
-  // The model sometimes emits literal control characters inside JSON
-  // string values (e.g. raw newlines, tabs, or other characters below
-  // code point 0x20 in bodyHtml) - all of these are invalid unescaped
-  // inside a JSON string and throw "Bad control character in string
-  // literal". A narrow fix that only handles \n/\r/\t isn't enough - any
-  // character in that whole 0x00-0x1F range needs escaping. Doing this
-  // globally (not just inside detected strings) is safe because outside
-  // of strings, JSON whitespace is insignificant either way.
-  const sanitized = toParse.replace(/[\x00-\x1F]/g, (ch) => {
-    switch (ch) {
-      case '\n': return '\\n';
-      case '\r': return '\\r';
-      case '\t': return '\\t';
-      case '\b': return '\\b';
-      case '\f': return '\\f';
-      default: return '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0');
-    }
-  });
+  const sanitized = sanitizeJsonControlChars(toParse);
 
   try {
     return JSON.parse(sanitized);
   } catch (err) {
-    // Don't silently fall back to the unsanitized text - it still has
-    // the same raw control characters and would just re-throw the same
-    // masked error, hiding whatever actually went wrong. Surface a
-    // useful error instead, with enough context to debug from the log.
     const pos = Number((err.message.match(/position (\d+)/) || [])[1]);
     const context = Number.isFinite(pos)
       ? sanitized.slice(Math.max(0, pos - 80), pos + 80)
