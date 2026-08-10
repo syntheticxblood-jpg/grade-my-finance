@@ -440,8 +440,8 @@ section.block{ padding:76px 0 }
 .modal{ position:fixed; inset:0; display:none; z-index:100; background:rgba(6,7,9,.68) }
 .modal.show{ display:grid; place-items:center }
 .sheet{
-  width:min(1360px,96vw); height:92vh; max-height:92vh; margin:10px; padding:22px 36px 20px;
-  border-radius:20px; position:relative; display:flex; flex-direction:column; overflow:hidden;
+  width:min(1360px,96vw); height:92vh; max-height:92vh; margin:10px; padding:0;
+  border-radius:20px; position:relative; display:flex; flex-direction:row; overflow:hidden;
   /* Modern dark-panel palette, scoped to this modal only — cascades to
      every var(--text)/var(--muted)/var(--surface)/var(--line)/var(--gold)*
      used by cards, badges, rows, etc. inside here without touching the
@@ -451,17 +451,42 @@ section.block{ padding:76px 0 }
   --gold:#E8B34A; --gold-bright:#F0C168; --gold-soft: rgba(232,179,74,.14);
   --good:#4FC28A; --good-2:#3AA173; --bad:#E2574C; --mid:#E8B34A;
   --font-mono:'IBM Plex Mono',monospace; --font-serif:'Fraunces',serif;
-  background:
-    radial-gradient(ellipse 700px 400px at 12% -8%, rgba(232,179,74,.09), transparent 60%),
-    radial-gradient(ellipse 600px 400px at 100% 8%, rgba(91,141,239,.07), transparent 60%),
-    var(--bg-2);
+  background: var(--bg-2);
   border:1px solid var(--line);
   box-shadow: 0 24px 60px rgba(0,0,0,.6);
   color:var(--text);
 }
+.sheet-main{
+  flex:1 1 auto; min-width:0; display:flex; flex-direction:column; overflow:hidden;
+  padding:22px 34px 20px;
+  background:
+    radial-gradient(ellipse 700px 400px at 18% -8%, rgba(232,179,74,.09), transparent 60%),
+    radial-gradient(ellipse 600px 400px at 100% 8%, rgba(91,141,239,.07), transparent 60%);
+}
 .sheet-header{ flex:none }
-.dash-tabs{ flex:none }
 .dash-panels{ flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden }
+
+/* Left sidebar navigation */
+.dash-tabs{
+  flex:none; width:238px; display:flex; flex-direction:column; gap:2px;
+  padding:22px 14px; border-right:1px solid var(--line); overflow-y:auto; overflow-x:hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,.015), transparent 40%);
+}
+.dash-tab{
+  appearance:none; border:none; background:none; cursor:pointer; text-align:left;
+  display:flex; align-items:center; gap:11px; width:100%; padding:10px 12px; border-radius:11px;
+  color:var(--muted); font-family:var(--font-body); font-size:13.5px; font-weight:600;
+  transition:background .14s ease, color .14s ease;
+}
+.dash-tab-icon{ flex:none; display:flex; opacity:.8 }
+.dash-tab-label{ flex:1 1 auto; white-space:nowrap }
+.dash-tab:hover{ background:rgba(255,255,255,.04); color:var(--text) }
+.dash-tab.active{
+  background:linear-gradient(155deg, rgba(232,179,74,.16), rgba(232,179,74,.05));
+  color:var(--text);
+}
+.dash-tab.active .dash-tab-icon{ opacity:1; color:var(--gold-bright) }
+.dash-tab .lock-tag{ margin-left:auto }
 
 /* Thin, theme-matched scrollbars instead of the bulky default OS ones */
 .dash-tabs, .dash-panels, .flow-tabs{ scrollbar-width:thin; scrollbar-color:var(--line) transparent }
@@ -469,6 +494,20 @@ section.block{ padding:76px 0 }
 .dash-tabs::-webkit-scrollbar-track, .dash-panels::-webkit-scrollbar-track, .flow-tabs::-webkit-scrollbar-track{ background:transparent }
 .dash-tabs::-webkit-scrollbar-thumb, .dash-panels::-webkit-scrollbar-thumb, .flow-tabs::-webkit-scrollbar-thumb{ background:var(--line); border-radius:99px }
 .dash-tabs::-webkit-scrollbar-thumb:hover, .dash-panels::-webkit-scrollbar-thumb:hover, .flow-tabs::-webkit-scrollbar-thumb:hover{ background:var(--muted-2) }
+
+/* Mobile: sidebar becomes a horizontal scrollable strip along the top,
+   same pattern the tab bar already used before this redesign - a fixed
+   238px sidebar doesn't work on a narrow screen. */
+@media (max-width:760px){
+  .sheet{ flex-direction:column }
+  .dash-tabs{
+    width:auto; flex-direction:row; border-right:none; border-bottom:1px solid var(--line);
+    padding:10px 8px; gap:4px;
+  }
+  .dash-tab{ flex:none; width:auto; white-space:nowrap; padding:9px 12px }
+  .dash-tab-label{ white-space:nowrap }
+  .sheet-main{ padding:18px 18px 16px }
+}
 .dash-watermark{
   flex:none; display:flex; align-items:center; justify-content:space-between; gap:14px;
   padding:16px 4px 4px; margin-top:14px; border-top:1px solid var(--line);
@@ -583,15 +622,9 @@ section.block{ padding:76px 0 }
 @media (max-width:1180px){ .dash-top{ padding:28px 24px 6px } }
 
 /* Dashboard tabs — separate control from the inner Money-Flow sub-tabs */
-.dash-tabs{ display:flex; gap:4px; border-bottom:1px solid var(--line); margin:0 0 18px; overflow-x:auto }
-.dash-tab{
-  background:none; border:none; cursor:pointer; white-space:nowrap;
-  color:var(--muted); font-family:var(--font-body); font-size:13.5px; font-weight:600;
-  padding:12px 16px; border-bottom:2px solid transparent;
-  transition:color .15s ease, border-color .15s ease; position:relative; top:1px;
-}
-.dash-tab:hover{ color:var(--text) }
-.dash-tab.active{ color:var(--text); border-bottom-color:var(--gold) }
+/* .dash-tabs base layout now defined earlier as the left sidebar - this
+   old horizontal-row rule, and the old flat-tab button styling below it,
+   are intentionally removed to avoid overriding the sidebar styling. */
 
 /* Factor cards — reused by the score breakdown and the what-if preview.
    Redesigned as integrated rows (name + grade + bar + insight) rather than
@@ -617,6 +650,21 @@ section.block{ padding:76px 0 }
 
 /* Flow panel — tabbed real-data Sankey-style diagrams */
 .flow-panel{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:6px 24px 22px; margin:16px 0 }
+
+.flow-summary-cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px }
+@media (max-width:640px){ .flow-summary-cards{ grid-template-columns:1fr } }
+.flow-summary-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+  display:flex; flex-direction:column; gap:6px; border-top:3px solid var(--line);
+}
+.flow-summary-card.income{ border-top-color:var(--good) }
+.flow-summary-card.expenses{ border-top-color:var(--bad) }
+.flow-summary-card.net{ border-top-color:var(--gold-bright) }
+.flow-summary-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:600 }
+.flow-summary-val{ font-family:var(--font-serif); font-weight:700; font-size:22px }
+.flow-summary-card.income .flow-summary-val{ color:var(--good) }
+.flow-summary-card.expenses .flow-summary-val{ color:var(--bad) }
+.flow-summary-card.net .flow-summary-val{ color:var(--gold-bright) }
 .flow-tabs{ display:flex; gap:4px; border-bottom:1px solid var(--line); margin:0 -24px 18px; padding:0 24px; overflow-x:auto }
 .flow-tab{
   background:none; border:none; cursor:pointer; white-space:nowrap;
@@ -1352,20 +1400,21 @@ body.is-pro .ad-slot{ display:none !important }
 
 <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rcTitle">
   <div class="sheet">
-    <div class="sheet-header">
-      <button class="xbtn dash-close" id="closeReport" type="button" aria-label="Close report">Close</button>
+    <div class="dash-tabs" id="dashTabs">
+      <button class="dash-tab active" data-dtab="overview" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span><span class="dash-tab-label">Overview</span></button>
+      <button class="dash-tab" data-dtab="snapshot" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 9.5 4h5L16 7"/><circle cx="12" cy="13.5" r="3.2"/></svg></span><span class="dash-tab-label">Snapshot</span></button>
+      <button class="dash-tab" data-dtab="nextsteps" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="dash-tab-label">Opportunities</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="progress" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg></span><span class="dash-tab-label">Progress</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="benchmarks" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M12 20V4M20 20v-7"/></svg></span><span class="dash-tab-label">Benchmarks</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="details" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span class="dash-tab-label">Details</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="flow" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c4 0 4 6 8 6s4-6 8-6M4 19c4 0 4-6 8-6s4 6 8 6"/></svg></span><span class="dash-tab-label">Money Flow</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="planning" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1-5.66 5.66L4 17v3h3l5.04-5.04a4 4 0 0 1 5.66-5.66l-2.5 2.5-2-2z"/></svg></span><span class="dash-tab-label">Planning Tools</span></button>
+      <button class="dash-tab" data-dtab="achievements" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a1 1 0 0 0-1 1 4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1 4 4 0 0 1-4 4"/></svg></span><span class="dash-tab-label">Achievements</span></button>
     </div>
 
-    <div class="dash-tabs" id="dashTabs">
-      <button class="dash-tab active" data-dtab="overview" type="button">Overview</button>
-      <button class="dash-tab" data-dtab="snapshot" type="button">Snapshot</button>
-      <button class="dash-tab" data-dtab="nextsteps" type="button">Opportunities <span class="lock-tag pro-only-hide">PRO</span></button>
-      <button class="dash-tab" data-dtab="progress" type="button">Progress <span class="lock-tag pro-only-hide">PRO</span></button>
-      <button class="dash-tab" data-dtab="benchmarks" type="button">Benchmarks <span class="lock-tag pro-only-hide">PRO</span></button>
-      <button class="dash-tab" data-dtab="details" type="button">Details <span class="lock-tag pro-only-hide">PRO</span></button>
-      <button class="dash-tab" data-dtab="flow" type="button">Money Flow <span class="lock-tag pro-only-hide">PRO</span></button>
-      <button class="dash-tab" data-dtab="planning" type="button">Planning Tools</button>
-      <button class="dash-tab" data-dtab="achievements" type="button">Achievements</button>
+    <div class="sheet-main">
+    <div class="sheet-header">
+      <button class="xbtn dash-close" id="closeReport" type="button" aria-label="Close report">Close</button>
     </div>
 
     <div class="dash-panels">
@@ -1541,6 +1590,20 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="dash-panel" id="dashPanel-flow">
         <div class="pro-blur-section">
           <div class="pro-blur-content">
+            <div class="flow-summary-cards" id="flowSummaryCards">
+              <div class="flow-summary-card income">
+                <span class="flow-summary-label">Total Income</span>
+                <span class="flow-summary-val" id="flowSumIncome">—</span>
+              </div>
+              <div class="flow-summary-card expenses">
+                <span class="flow-summary-label">Total Expenses</span>
+                <span class="flow-summary-val" id="flowSumExpenses">—</span>
+              </div>
+              <div class="flow-summary-card net">
+                <span class="flow-summary-label">Net Income</span>
+                <span class="flow-summary-val" id="flowSumNet">—</span>
+              </div>
+            </div>
             <div class="flow-panel" style="margin:0">
               <div class="flow-tabs" id="flowTabs">
                 <button class="flow-tab active" data-view="flowAssets">Assets Flow</button>
@@ -1703,6 +1766,7 @@ body.is-pro .ad-slot{ display:none !important }
     <div class="dash-watermark">
       <span class="dash-watermark-brand"><b>A+</b> Grade My Finance</span>
       <a href="https://discord.gg/g76aPc6FQT" target="_blank" rel="noopener">Join our Discord →</a>
+    </div>
     </div>
 
   </div>
@@ -2595,9 +2659,31 @@ function renderFlowRibbons(svgEl, sourceLabel, sourceAmount, destinations){
   }
 
   var startX=40, midX=330, endX=620, html='';
-  bands.forEach(function(b){
-    var path = 'M'+startX+',170 C'+midX+',170 '+midX+','+b.bandY.toFixed(1)+' '+endX+','+b.bandY.toFixed(1);
-    html += '<path d="'+path+'" fill="none" stroke="'+b.d.color+'" stroke-opacity="0.38" stroke-width="'+b.h.toFixed(1)+'"/>';
+  var svgId = (svgEl.id || 'flow') + '-' + Math.random().toString(36).slice(2,7);
+  var sourceY = (top + bottom) / 2;
+
+  // Gradient defs: each band fades from a shared warm "source" tone into
+  // its own destination color, giving the flowing, glowing look of a
+  // proper Sankey diagram instead of flat single-color strokes.
+  var defs = '<defs>';
+  bands.forEach(function(b, i){
+    var gid = svgId + '-g' + i;
+    defs += '<linearGradient id="'+gid+'" x1="0" y1="0" x2="1" y2="0">' +
+              '<stop offset="0%" stop-color="#E8B34A" stop-opacity="0.5"/>' +
+              '<stop offset="55%" stop-color="'+b.d.color+'" stop-opacity="0.55"/>' +
+              '<stop offset="100%" stop-color="'+b.d.color+'" stop-opacity="0.85"/>' +
+            '</linearGradient>';
+  });
+  defs += '</defs>';
+  html += defs;
+
+  // Source node: a soft rounded accent bar anchoring where every band originates.
+  html += '<rect x="'+(startX-6)+'" y="'+(sourceY-26)+'" width="6" height="52" rx="3" fill="#E8B34A" fill-opacity="0.85"/>';
+
+  bands.forEach(function(b, i){
+    var gid = svgId + '-g' + i;
+    var path = 'M'+startX+','+sourceY.toFixed(1)+' C'+midX+','+sourceY.toFixed(1)+' '+midX+','+b.bandY.toFixed(1)+' '+endX+','+b.bandY.toFixed(1);
+    html += '<path d="'+path+'" fill="none" stroke="url(#'+gid+')" stroke-width="'+b.h.toFixed(1)+'" stroke-linecap="round"/>';
   });
   bands.forEach(function(b, i){
     var labelY = labelYs[i], pct = Math.round((b.d.amount/total)*100);
@@ -2677,7 +2763,17 @@ function renderNetWorthTrendTab(v){
   drawProjectionLine(svgEl, points, [5,10,20,30]);
   if($("flowGrowthSub")) $("flowGrowthSub").textContent = "Assuming "+money(monthlyContribution)+"/mo invested at 7%";
 }
+function renderFlowSummaryCards(v){
+  var incomeEl = $("flowSumIncome"), expensesEl = $("flowSumExpenses"), netEl = $("flowSumNet");
+  if(!incomeEl) return;
+  var annualExpenses = v.expenses * 12;
+  var netAnnual = v.annualIncome - annualExpenses;
+  incomeEl.textContent = money(v.annualIncome);
+  expensesEl.textContent = money(annualExpenses);
+  netEl.textContent = (netAnnual >= 0 ? '+' : '') + money(netAnnual);
+}
 function drawCharts(v){
+  renderFlowSummaryCards(v);
   renderAssetsFlow(v);
   renderLiabilitiesFlow(v);
   renderIncomeSavingsFlow(v);
