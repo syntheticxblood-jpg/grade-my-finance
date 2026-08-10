@@ -67,4 +67,8 @@ var GMF_BLOG_POSTS = [
   { slug:"required-minimum-distributions-explained", title:"Required Minimum Distributions (RMDs): What They Are and When You Have to Take Them", category:"Retirement" }
 ,
   { slug:"what-to-do-with-a-financial-windfall", title:"What to Do With a Financial Windfall: Bonus, Tax Refund, or Inheritance", category:"Advice" }
+,
+  { slug:"estate-planning-basics-wills-beneficiaries", title:"Estate Planning Basics: The 4 Documents Everyone Needs (Not Just the Wealthy)", category:"Advice" }
+,
+  { slug:"do-you-need-disability-insurance", title:"Disability Insurance: The Coverage Most People Skip (and Shouldn't)", category:"Insurance" }
 ];
