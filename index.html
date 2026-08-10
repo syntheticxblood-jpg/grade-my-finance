@@ -3759,6 +3759,32 @@ function unlockBodyScroll(){
   window.scrollTo(0, __scrollLockY);
 }
 
+// Every "Unlock with Pro" link inside the report card points to
+// #pricing (the homepage pricing section). While the report modal is
+// open, the page's scroll is intentionally locked (see lockBodyScroll
+// above) so the background doesn't visibly shift as you scroll inside
+// the modal - but that same lock breaks the browser's normal on-page
+// anchor scrolling, and even if it didn't, the modal is a full-screen
+// overlay sitting on top of the pricing section, so you'd never
+// actually see it. This closes the modal first, unlocks scroll, then
+// does the anchor scroll manually once the page is actually scrollable
+// again - for any link anywhere on the site pointing to #pricing, not
+// just ones added after this fix.
+document.addEventListener("click", function(e){
+  var link = e.target.closest('a[href="#pricing"]');
+  if(!link) return;
+  var modal = $("reportModal");
+  if(modal && modal.classList.contains("show")){
+    e.preventDefault();
+    modal.classList.remove("show");
+    unlockBodyScroll();
+    setTimeout(function(){
+      var target = document.getElementById("pricing");
+      if(target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 60);
+  }
+});
+
 $("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); unlockBodyScroll(); });
 $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
 
