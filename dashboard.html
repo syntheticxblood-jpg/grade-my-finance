@@ -991,9 +991,12 @@ function renderScoreTab(hist){
 }
 
 // Lets someone remove an individual check-in they entered incorrectly.
-// Shown newest-first; deleting re-saves the trimmed array and reloads so
-// every dependent view (chart, stats, milestones, streaks) recalculates
-// cleanly rather than trying to patch each one in place.
+// Shown newest-first. Deleting used to call location.reload(), which
+// works but is jarring and slow if you're removing several entries in a
+// row - it kicks you back to the top of the page and off this tab every
+// single time. Re-running renderScoreTab() instead rebuilds everything
+// that depends on history (chart, stats, streaks, milestones, and this
+// list) in place, so deleting stays on this tab and feels instant.
 function renderHistoryEntriesList(hist){
   var el2 = $("historyEntriesList");
   if(!el2) return;
@@ -1023,7 +1026,7 @@ function renderHistoryEntriesList(hist){
       var ts = +btn.dataset.delEntry;
       var arr = getHistory().filter(function(h){ return h.ts !== ts; });
       localStorage.setItem('gmf_history_v2', JSON.stringify(arr));
-      location.reload();
+      renderScoreTab(getHistory());
     });
   });
 }
