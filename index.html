@@ -79,6 +79,11 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
   --shadow: 0 20px 44px rgba(20,20,20,.08);
 }
 *{box-sizing:border-box}
+/* Removes the ~300ms tap-delay mobile browsers impose on clickable
+   elements while they wait to see if a second tap is coming (double-tap
+   to zoom detection). This is what makes buttons feel laggy on mobile
+   even though nothing else is actually slow. */
+button, a, .btn, .dash-tab, .flow-tab{ touch-action:manipulation }
 html{scroll-behavior:smooth}
 body{
   margin:0; padding-top:var(--header-h); background:var(--bg); color:var(--text);
@@ -464,16 +469,18 @@ section.block{ padding:76px 0 }
     radial-gradient(ellipse 600px 400px at 100% 8%, rgba(91,141,239,.07), transparent 60%);
 }
 .sheet-header{ flex:none }
-.dash-panels{ flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden }
+.dash-panels{ flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain }
 
 /* Left sidebar navigation */
 .dash-tabs{
   flex:none; width:238px; display:flex; flex-direction:column; gap:2px;
   padding:22px 14px; border-right:1px solid var(--line); overflow-y:auto; overflow-x:hidden;
+  overscroll-behavior:contain;
   background: linear-gradient(180deg, rgba(255,255,255,.015), transparent 40%);
 }
 .dash-tab{
   appearance:none; border:none; background:none; cursor:pointer; text-align:left;
+  touch-action:manipulation;
   display:flex; align-items:center; gap:11px; width:100%; padding:10px 12px; border-radius:11px;
   color:var(--muted); font-family:var(--font-body); font-size:13.5px; font-weight:600;
   transition:background .14s ease, color .14s ease;
@@ -3445,6 +3452,7 @@ function openReport(v,cats){
   if($("subReportScore")) $("subReportScore").value = cats.overall.score;
 
   modal.classList.add("show");
+  lockBodyScroll();
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
   spawnInkRipple(rcGrade);
   __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
@@ -3452,7 +3460,33 @@ function openReport(v,cats){
   initProjections(v, cats);
 }
 
-$("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); });
+// Mobile fix: without this, scrolling inside the report modal (the tab
+// strip or the panel content) can "leak" past its own scroll boundary
+// and drag the page underneath along with it - the background visibly
+// shifts as you scroll the modal on top of it. Locking the body's own
+// scroll position while the modal is open (rather than relying only on
+// CSS overscroll-behavior, which isn't fully reliable on iOS Safari on
+// its own) stops that leak completely, and restoring the exact scroll
+// position on close means the page doesn't jump when you dismiss it.
+var __scrollLockY = 0;
+function lockBodyScroll(){
+  __scrollLockY = window.scrollY || window.pageYOffset || 0;
+  document.body.style.position = 'fixed';
+  document.body.style.top = (-__scrollLockY) + 'px';
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+}
+function unlockBodyScroll(){
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  window.scrollTo(0, __scrollLockY);
+}
+
+$("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); unlockBodyScroll(); });
 $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
 
 var downloadCertBtn = $("downloadCertBtn");
@@ -3521,7 +3555,7 @@ if(downloadCertBtn){
     nudgeSubscribeAfterDownload();
   });
 }
-$("calcAgain").addEventListener("click",function(){ $("reportModal").classList.remove("show"); gradeNow(); });
+$("calcAgain").addEventListener("click",function(){ $("reportModal").classList.remove("show"); unlockBodyScroll(); gradeNow(); });
 
 function gradeNow(){
   __track('click_get_report_card', {location: 'main'});
