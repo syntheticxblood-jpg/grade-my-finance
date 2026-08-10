@@ -71,4 +71,8 @@ var GMF_BLOG_POSTS = [
   { slug:"estate-planning-basics-wills-beneficiaries", title:"Estate Planning Basics: The 4 Documents Everyone Needs (Not Just the Wealthy)", category:"Advice" }
 ,
   { slug:"do-you-need-disability-insurance", title:"Disability Insurance: The Coverage Most People Skip (and Shouldn't)", category:"Insurance" }
+,
+  { slug:"when-to-claim-social-security", title:"When to Claim Social Security: What Claiming Early or Late Actually Costs You", category:"Retirement" }
+,
+  { slug:"capital-gains-tax-explained", title:"Capital Gains Tax Explained: Short-Term vs. Long-Term (and Why the Difference Is Huge)", category:"Taxes" }
 ];
