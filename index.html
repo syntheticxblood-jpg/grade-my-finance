@@ -1143,6 +1143,48 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 .life-event-chip .lec-detail{ color:var(--muted); font-size:11.5px; font-family:var(--font-mono) }
 .life-event-chip .lec-remove{ flex:none; background:none; border:none; color:var(--muted-2); cursor:pointer; font-size:16px; line-height:1; padding:4px }
 .life-event-chip .lec-remove:hover{ color:var(--bad) }
+
+/* Debt payoff race — two horizontal bars counting down */
+.debt-race{ display:grid; gap:10px; margin:10px 0 }
+.debt-race-row{ display:grid; gap:4px }
+.debt-race-label{ display:flex; justify-content:space-between; font-size:12px; color:var(--muted) }
+.debt-race-track{ height:14px; border-radius:99px; background:var(--surface-2); overflow:hidden }
+.debt-race-fill{ height:100%; border-radius:99px; transition:width 1.1s cubic-bezier(.2,.8,.2,1) }
+.debt-race-fill.min{ background:linear-gradient(90deg,#5D636F,#8B93A3) }
+.debt-race-fill.plan{ background:linear-gradient(90deg,var(--good-2),var(--good)) }
+
+/* Time-cost translator */
+.tc-wage-display{
+  font-family:var(--font-serif); font-weight:700; font-size:28px; color:var(--gold-bright);
+  background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+}
+.tc-wage-display span{ font-size:14px; color:var(--muted); font-weight:500; margin-left:6px }
+.tc-result{
+  font-family:var(--font-serif); font-weight:700; font-size:22px; color:var(--text);
+  background:linear-gradient(155deg, rgba(91,141,239,.12), transparent); border:1px solid rgba(91,141,239,.3);
+  border-radius:12px; padding:16px 18px; margin-top:4px;
+}
+.tc-quick-list{ display:grid; gap:8px; margin-top:14px }
+.tc-quick-item{ display:flex; justify-content:space-between; font-size:13px; padding:9px 0; border-bottom:1px solid var(--line) }
+.tc-quick-item:last-child{ border-bottom:none }
+.tc-quick-item b{ font-family:var(--font-mono); color:var(--gold-bright) }
+
+/* Net worth pace gauge */
+#pgGauge{ display:block; margin:0 auto }
+
+/* Emergency fund stress test */
+.stress-scenario-buttons{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px }
+.stress-scenario-buttons button.active{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700 }
+.stress-result{ font-family:var(--font-serif); font-weight:700; font-size:24px; margin:10px 0 6px }
+.stress-result.ok{ color:var(--good) }
+.stress-result.warn{ color:var(--gold-bright) }
+.stress-result.bad{ color:var(--bad) }
+.stress-burn-bar{ height:16px; border-radius:99px; background:var(--surface-2); overflow:hidden; position:relative }
+.stress-burn-bar-fill{ height:100%; border-radius:99px; transition:width 1s cubic-bezier(.2,.8,.2,1) }
+
+/* Reused grid for freedom-number stat cards */
+.fn-stats-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
+@media (max-width:640px){ .fn-stats-grid{ grid-template-columns:1fr } }
 .pro-only-show{ display:none }
 body.is-pro .pro-only-hide{ display:none !important }
 body.is-pro .pro-only-show{ display:inline-flex !important }
@@ -1568,7 +1610,11 @@ body.is-pro .ad-slot{ display:none !important }
       <button class="dash-tab" data-dtab="benchmarks" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M12 20V4M20 20v-7"/></svg></span><span class="dash-tab-label">Benchmarks</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="details" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span class="dash-tab-label">Details</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="flow" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c4 0 4 6 8 6s4-6 8-6M4 19c4 0 4-6 8-6s4 6 8 6"/></svg></span><span class="dash-tab-label">Money Flow</span><span class="lock-tag pro-only-hide">PRO</span></button>
-      <button class="dash-tab" data-dtab="planning" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1-5.66 5.66L4 17v3h3l5.04-5.04a4 4 0 0 1 5.66-5.66l-2.5 2.5-2-2z"/></svg></span><span class="dash-tab-label">Planning Tools</span></button>
+      <button class="dash-tab" data-dtab="projections" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><span class="dash-tab-label">Projections</span></button>
+      <button class="dash-tab" data-dtab="debtplan" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="dash-tab-label">Debt Plan</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="retirement" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><span class="dash-tab-label">Retirement</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="perspective" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span><span class="dash-tab-label">Perspective</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="stresstest" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg></span><span class="dash-tab-label">Stress Test</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="achievements" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a1 1 0 0 0-1 1 4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1 4 4 0 0 1-4 4"/></svg></span><span class="dash-tab-label">Achievements</span></button>
     </div>
 
@@ -1848,7 +1894,7 @@ body.is-pro .ad-slot{ display:none !important }
         </div>
       </div>
 
-      <div class="dash-panel" id="dashPanel-planning">
+      <div class="dash-panel" id="dashPanel-projections">
         <div class="card">
           <span class="section-label">What-if projections</span>
           <div style="display:grid;gap:12px">
@@ -1877,88 +1923,196 @@ body.is-pro .ad-slot{ display:none !important }
           </div>
         </div>
 
-        <div class="card" style="margin-top:12px">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-            <span class="section-label" style="margin:0">Net worth projection <span class="pro-badge">★ PRO</span></span>
-            <span id="nwpCaption" class="small">—</span>
+        <div class="pro-blur-section" style="margin-top:12px">
+          <div class="pro-blur-content">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+                <span class="section-label" style="margin:0">Net worth projection <span class="pro-badge">★ PRO</span></span>
+                <span id="nwpCaption" class="small">—</span>
+              </div>
+              <div id="nwpBox">
+                <label style="display:grid;gap:6px;margin-bottom:10px">
+                  <div style="display:flex;justify-content:space-between;align-items:center"><span>Assumed annual return</span><strong class="mono" id="nwpRateVal">7.0%</strong></div>
+                  <input id="nwpRate" type="range" min="3" max="10" step="0.5" value="7" aria-label="Assumed annual return">
+                </label>
+                <svg id="nwpChart" width="100%" height="200" viewBox="0 0 640 200" preserveAspectRatio="none" role="img" aria-label="Net worth projection chart"></svg>
+                <div id="nwpMilestones" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px"></div>
+                <div class="small" style="margin-top:8px">Assumes you keep investing your current monthly surplus (income minus expenses) at this return, compounded annually. Doesn't account for inflation, market swings, or life changes — an estimate, not a promise.</div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+                <span class="section-label" style="margin:0">Life events timeline <span class="pro-badge">★ PRO</span></span>
+                <span id="lifeEventsCaption" class="small">—</span>
+              </div>
+              <div id="lifeEventsBox">
+                <p class="small" style="margin:0 0 14px">Add real life events to your timeline and watch your net worth path reshape around them — buying a home, a kid, a job loss, a raise. See exactly how much runway you have either way.</p>
+                <div class="life-event-presets">
+                  <button class="btn sm" type="button" data-preset="home">🏠 Buy a home</button>
+                  <button class="btn sm" type="button" data-preset="kid">👶 Have a kid</button>
+                  <button class="btn sm" type="button" data-preset="jobloss">💼 Job loss</button>
+                  <button class="btn sm" type="button" data-preset="raise">📈 Get a raise</button>
+                  <button class="btn sm" type="button" data-preset="windfall">🎁 Windfall</button>
+                </div>
+                <div id="lifeEventForm" class="life-event-form" style="display:none"></div>
+                <svg id="lifeEventsChart" width="100%" height="220" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Net worth with life events chart"></svg>
+                <div class="life-events-legend">
+                  <span class="life-events-legend-item"><span class="swatch" style="background:var(--gold-bright)"></span>Current path</span>
+                  <span class="life-events-legend-item"><span class="swatch" style="background:#5B8DEF"></span>With these events</span>
+                </div>
+                <div id="lifeEventsList" class="life-events-list"></div>
+                <div class="small" style="margin-top:10px">Each event's dollar effect (down payment, new expense, income change) is applied on top of your current numbers — an illustration of the shape of the impact, not a precise forecast.</div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+                <span class="section-label" style="margin:0">Freedom number explorer <span class="pro-badge">★ PRO</span></span>
+                <span id="fnCaption" class="small">—</span>
+              </div>
+              <p class="small" style="margin:0 0 12px">The "safe withdrawal rate" is the assumption behind every FI number you've ever seen — drag it and watch your actual target move.</p>
+              <label style="display:grid;gap:6px;margin-bottom:12px">
+                <div style="display:flex;justify-content:space-between;align-items:center"><span>Assumed safe withdrawal rate</span><strong class="mono" id="fnRateVal">4.0%</strong></div>
+                <input id="fnRate" type="range" min="3" max="5" step="0.1" value="4" aria-label="Safe withdrawal rate">
+              </label>
+              <div id="fnStats" class="fn-stats-grid"></div>
+              <div class="small" style="margin-top:10px">Your "number" = annual spending ÷ withdrawal rate. A lower rate is more conservative (bigger number, more cushion); a higher rate assumes your money needs to last less time or you're comfortable with more risk.</div>
+            </div>
           </div>
-          <div class="pro-lock">🔒 See where you're headed — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
-          <div class="pro-gated" id="nwpBox">
-            <label style="display:grid;gap:6px;margin-bottom:10px">
-              <div style="display:flex;justify-content:space-between;align-items:center"><span>Assumed annual return</span><strong class="mono" id="nwpRateVal">7.0%</strong></div>
-              <input id="nwpRate" type="range" min="3" max="10" step="0.5" value="7" aria-label="Assumed annual return">
-            </label>
-            <svg id="nwpChart" width="100%" height="200" viewBox="0 0 640 200" preserveAspectRatio="none" role="img" aria-label="Net worth projection chart"></svg>
-            <div id="nwpMilestones" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px"></div>
-            <div class="small" style="margin-top:8px">Assumes you keep investing your current monthly surplus (income minus expenses) at this return, compounded annually. Doesn't account for inflation, market swings, or life changes — an estimate, not a promise.</div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See where you're actually headed</div>
+            <div class="pro-blur-sub">Unlock your net worth projection, life events simulator, and freedom number.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
           </div>
         </div>
+      </div>
 
-        <div class="card" style="margin-top:12px">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-            <span class="section-label" style="margin:0">Life events timeline <span class="pro-badge">★ PRO</span></span>
-            <span id="lifeEventsCaption" class="small">—</span>
+      <div class="dash-panel" id="dashPanel-debtplan">
+        <div class="pro-blur-section" style="min-height:320px">
+          <div class="pro-blur-content">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+                <span class="section-label" style="margin:0">Debt payoff planner <span class="pro-badge">★ PRO</span></span>
+                <span id="dppCaption" class="small">—</span>
+              </div>
+              <div id="dppBox">
+                <div class="segmented" style="margin-bottom:8px">
+                  <button id="dppAvalanche" type="button">Avalanche</button>
+                  <button id="dppSnowball" type="button">Snowball</button>
+                </div>
+                <div id="dppStrategyExplainer" class="small" style="margin-bottom:14px;color:var(--muted)"></div>
+                <div id="dppSameOrderNote" class="small" style="display:none;margin-bottom:10px;color:var(--muted)"></div>
+                <div id="dppRatesWrap" style="display:grid;gap:8px;margin-bottom:14px"></div>
+                <label style="display:grid;gap:6px;margin-bottom:12px">
+                  <div style="display:flex;justify-content:space-between;align-items:center"><span>Extra monthly payment (beyond minimums)</span><strong class="mono" id="dppExtraVal">$0</strong></div>
+                  <input id="dppExtra" type="range" min="0" max="1000" step="25" value="0" aria-label="Extra monthly debt payment">
+                </label>
+                <div id="dppSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px"></div>
+                <span class="section-label" style="margin-top:6px">Payoff race — minimum payments vs. your plan</span>
+                <div id="dppRace" class="debt-race"></div>
+                <div id="dppTimeline" style="display:grid;gap:8px;margin-top:12px"></div>
+                <div id="dppNoDebt" class="small" style="display:none;padding:16px;text-align:center">No non-mortgage debt entered — nothing to plan here.</div>
+                <div class="small" style="margin-top:10px">Rates default to typical averages (credit cards ~24%, auto loans ~7%, student loans ~6%) — edit them above with your real rates for a more accurate comparison. A simplified estimate either way, not an exact payoff date. Mortgage isn't included.</div>
+              </div>
+            </div>
           </div>
-          <div class="pro-lock">🔒 See how real life changes your trajectory — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
-          <div class="pro-gated" id="lifeEventsBox">
-            <p class="small" style="margin:0 0 14px">Add real life events to your timeline and watch your net worth path reshape around them — buying a home, a kid, a job loss, a raise. See exactly how much runway you have either way.</p>
-            <div class="life-event-presets">
-              <button class="btn sm" type="button" data-preset="home">🏠 Buy a home</button>
-              <button class="btn sm" type="button" data-preset="kid">👶 Have a kid</button>
-              <button class="btn sm" type="button" data-preset="jobloss">💼 Job loss</button>
-              <button class="btn sm" type="button" data-preset="raise">📈 Get a raise</button>
-              <button class="btn sm" type="button" data-preset="windfall">🎁 Windfall</button>
-            </div>
-            <div id="lifeEventForm" class="life-event-form" style="display:none"></div>
-            <svg id="lifeEventsChart" width="100%" height="220" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Net worth with life events chart"></svg>
-            <div class="life-events-legend">
-              <span class="life-events-legend-item"><span class="swatch" style="background:var(--gold-bright)"></span>Current path</span>
-              <span class="life-events-legend-item"><span class="swatch" style="background:#5B8DEF"></span>With these events</span>
-            </div>
-            <div id="lifeEventsList" class="life-events-list"></div>
-            <div class="small" style="margin-top:10px">Each event's dollar effect (down payment, new expense, income change) is applied on top of your current numbers — an illustration of the shape of the impact, not a precise forecast.</div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See exactly when you'll be debt-free</div>
+            <div class="pro-blur-sub">Unlock avalanche vs. snowball, with your real numbers and a live payoff race.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
           </div>
         </div>
+      </div>
 
-        <div class="card" style="margin-top:12px">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-            <span class="section-label" style="margin:0">Debt payoff planner <span class="pro-badge">★ PRO</span></span>
-            <span id="dppCaption" class="small">—</span>
-          </div>
-          <div class="pro-lock">🔒 See exactly when you'll be debt-free — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
-          <div class="pro-gated" id="dppBox">
-            <div class="segmented" style="margin-bottom:8px">
-              <button id="dppAvalanche" type="button">Avalanche</button>
-              <button id="dppSnowball" type="button">Snowball</button>
+      <div class="dash-panel" id="dashPanel-retirement">
+        <div class="pro-blur-section" style="min-height:260px">
+          <div class="pro-blur-content">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+                <span class="section-label" style="margin:0">Retirement readiness <span class="pro-badge">★ PRO</span></span>
+                <span id="rrCaption" class="small">—</span>
+              </div>
+              <div id="rrBox">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                  <span class="small">Retirement balance vs. target for your age</span>
+                  <strong class="mono" id="rrPct">—</strong>
+                </div>
+                <div class="progress" style="margin-top:0"><div id="rrBar" style="width:0%"></div></div>
+                <div id="rrSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px"></div>
+                <div class="small" style="margin-top:10px">Benchmark: common salary-multiple milestones (roughly 1× income by 30, 3× by 40, 6× by 50, 10× by 67). This looks at your retirement accounts specifically — separate from the broader net-worth-for-age score above, which also includes home equity, cash, and other assets.</div>
+              </div>
             </div>
-            <div id="dppStrategyExplainer" class="small" style="margin-bottom:14px;color:var(--muted)"></div>
-            <div id="dppSameOrderNote" class="small" style="display:none;margin-bottom:10px;color:var(--muted)"></div>
-            <div id="dppRatesWrap" style="display:grid;gap:8px;margin-bottom:14px"></div>
-            <label style="display:grid;gap:6px;margin-bottom:12px">
-              <div style="display:flex;justify-content:space-between;align-items:center"><span>Extra monthly payment (beyond minimums)</span><strong class="mono" id="dppExtraVal">$0</strong></div>
-              <input id="dppExtra" type="range" min="0" max="1000" step="25" value="0" aria-label="Extra monthly debt payment">
-            </label>
-            <div id="dppSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px"></div>
-            <div id="dppTimeline" style="display:grid;gap:8px"></div>
-            <div id="dppNoDebt" class="small" style="display:none;padding:16px;text-align:center">No non-mortgage debt entered — nothing to plan here. 🎉</div>
-            <div class="small" style="margin-top:10px">Rates default to typical averages (credit cards ~24%, auto loans ~7%, student loans ~6%) — edit them above with your real rates for a more accurate comparison. A simplified estimate either way, not an exact payoff date. Mortgage isn't included.</div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See if your 401k/IRA alone is on track</div>
+            <div class="pro-blur-sub">Unlock your retirement readiness vs. real age-based benchmarks.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
           </div>
         </div>
+      </div>
 
-        <div class="card" style="margin-top:12px">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-            <span class="section-label" style="margin:0">Retirement readiness <span class="pro-badge">★ PRO</span></span>
-            <span id="rrCaption" class="small">—</span>
-          </div>
-          <div class="pro-lock">🔒 See if your 401k/IRA alone is on track — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
-          <div class="pro-gated" id="rrBox">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-              <span class="small">Retirement balance vs. target for your age</span>
-              <strong class="mono" id="rrPct">—</strong>
+      <div class="dash-panel" id="dashPanel-perspective">
+        <div class="pro-blur-section" style="min-height:320px">
+          <div class="pro-blur-content">
+            <div class="card">
+              <span class="section-label">Time-cost translator <span class="pro-badge">★ PRO</span></span>
+              <p class="small" style="margin:6px 0 14px">Your real hourly wage, based on what you actually entered — then any dollar amount translated into hours of your life.</p>
+              <div id="tcWage" class="tc-wage-display">—</div>
+              <label style="display:grid;gap:6px;margin:14px 0 6px">
+                <span class="small" style="font-weight:600">Translate an amount</span>
+                <input id="tcAmount" type="number" value="500" min="0" step="10" style="padding:11px 13px;border-radius:10px;border:1px solid var(--line);background:var(--bg-2);color:var(--text);font-family:var(--font-mono);font-size:15px">
+              </label>
+              <div id="tcResult" class="tc-result">—</div>
+              <div id="tcQuickList" class="tc-quick-list"></div>
             </div>
-            <div class="progress" style="margin-top:0"><div id="rrBar" style="width:0%"></div></div>
-            <div id="rrSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px"></div>
-            <div class="small" style="margin-top:10px">Benchmark: common salary-multiple milestones (roughly 1× income by 30, 3× by 40, 6× by 50, 10× by 67). This looks at your retirement accounts specifically — separate from the broader net-worth-for-age score above, which also includes home equity, cash, and other assets.</div>
+
+            <div class="card" style="margin-top:12px">
+              <span class="section-label">Lifestyle inflation simulator <span class="pro-badge">★ PRO</span></span>
+              <p class="small" style="margin:6px 0 12px">What % of every future raise do you save instead of spend? Same starting point, wildly different 20-year outcomes.</p>
+              <label style="display:grid;gap:6px;margin-bottom:12px">
+                <div style="display:flex;justify-content:space-between;align-items:center"><span>% of future raises saved</span><strong class="mono" id="liRateVal">50%</strong></div>
+                <input id="liRate" type="range" min="0" max="100" step="5" value="50" aria-label="Percent of raises saved">
+              </label>
+              <svg id="liChart" width="100%" height="180" viewBox="0 0 640 180" preserveAspectRatio="none" role="img" aria-label="Lifestyle inflation comparison chart"></svg>
+              <div class="life-events-legend">
+                <span class="life-events-legend-item"><span class="swatch" style="background:#E15B5B"></span>Spend every raise</span>
+                <span class="life-events-legend-item"><span class="swatch" style="background:#4FC28A"></span>At this rate</span>
+              </div>
+              <div id="liCaption" class="small" style="margin-top:8px">—</div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <span class="section-label">Net worth pace gauge <span class="pro-badge">★ PRO</span></span>
+              <p class="small" style="margin:6px 0 12px">Ahead, on pace, or behind for your age — at a glance.</p>
+              <svg id="pgGauge" width="100%" height="150" viewBox="0 0 300 170" role="img" aria-label="Net worth pace gauge"></svg>
+              <div id="pgCaption" class="small" style="text-align:center;margin-top:4px">—</div>
+            </div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See your money differently</div>
+            <div class="pro-blur-sub">Unlock time-cost translation, lifestyle inflation modeling, and your pace gauge.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="dashPanel-stresstest">
+        <div class="pro-blur-section" style="min-height:280px">
+          <div class="pro-blur-content">
+            <div class="card">
+              <span class="section-label">Emergency fund stress test <span class="pro-badge">★ PRO</span></span>
+              <p class="small" style="margin:6px 0 14px">Pick a real shock. Watch your actual cash reserve burn down, month by month, using your real numbers instead of a generic rule.</p>
+              <div class="stress-scenario-buttons" id="stressScenarioButtons"></div>
+              <div id="stressResult" class="stress-result"></div>
+              <div id="stressBurnBar" class="stress-burn-bar"></div>
+              <div id="stressCaption" class="small" style="margin-top:10px">—</div>
+            </div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See exactly how long you'd last</div>
+            <div class="pro-blur-sub">Unlock real scenario stress-testing against your actual emergency fund.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
           </div>
         </div>
       </div>
@@ -3103,7 +3257,6 @@ function drawProjectionLine(svgEl, points, milestoneYears){
 function renderNetWorthProjection(v){
   var box=$("nwpBox"), rateEl=$("nwpRate"), rateVal=$("nwpRateVal"), chart=$("nwpChart"), caption=$("nwpCaption"), milestonesEl=$("nwpMilestones");
   if(!box) return;
-  if(!document.body.classList.contains("is-pro")){ caption.textContent='Locked'; return; }
   var monthlyContribution = Math.max(0, v.income - v.expenses);
   function update(){
     var rate = +rateEl.value;
@@ -3333,7 +3486,6 @@ function renderDebtPayoffPlanner(v){
   var summaryEl=$("dppSummary"), timelineEl=$("dppTimeline");
   var avalancheBtn=$("dppAvalanche"), snowballBtn=$("dppSnowball");
   if(!box) return;
-  if(!document.body.classList.contains("is-pro")){ caption.textContent='Locked'; return; }
 
   var rawDebts = [
     { key:'cc', label:'Credit cards', balance:v.cc, rate:DEBT_ASSUMED_RATES.cc },
@@ -3448,6 +3600,35 @@ function renderDebtPayoffPlanner(v){
       summaryEl.appendChild(card);
     });
 
+    // Payoff race: two bars whose LENGTH represents payoff time (longer =
+    // takes longer), animated in on each recalculation. The minimum-only
+    // bar is always full-width (the slower baseline); the plan bar's
+    // width is scaled relative to it, so a much faster plan visibly
+    // shrinks - the whole point being to actually feel the difference,
+    // not just read two numbers in a table.
+    var raceEl = $("dppRace");
+    if(raceEl){
+      var maxMonths = Math.max(baseline.months, result.months, 1);
+      var minPct = Math.round((baseline.months/maxMonths)*100);
+      var planPct = Math.round((result.months/maxMonths)*100);
+      raceEl.innerHTML =
+        '<div class="debt-race-row">'+
+          '<div class="debt-race-label"><span>Minimum payments only</span><span>'+fmtMonths(baseline.months)+'</span></div>'+
+          '<div class="debt-race-track"><div class="debt-race-fill min" style="width:0%" data-target="'+minPct+'"></div></div>'+
+        '</div>'+
+        '<div class="debt-race-row">'+
+          '<div class="debt-race-label"><span>Your plan</span><span>'+fmtMonths(result.months)+'</span></div>'+
+          '<div class="debt-race-track"><div class="debt-race-fill plan" style="width:0%" data-target="'+planPct+'"></div></div>'+
+        '</div>';
+      // Animate on next frame so the CSS transition actually plays
+      // (setting the final width immediately would just snap, no motion).
+      requestAnimationFrame(function(){
+        raceEl.querySelectorAll('.debt-race-fill').forEach(function(bar){
+          bar.style.width = bar.dataset.target + '%';
+        });
+      });
+    }
+
     timelineEl.innerHTML='';
     result.timeline.forEach(function(t, idx){
       var row=el('div',{className:'card', style:'padding:10px 12px;display:flex;justify-content:space-between;align-items:center'});
@@ -3493,7 +3674,6 @@ function targetRetireMultiple(age){
 function renderRetirementReadiness(v){
   var box=$("rrBox"), caption=$("rrCaption"), pctEl=$("rrPct"), bar=$("rrBar"), summaryEl=$("rrSummary");
   if(!box) return;
-  if(!document.body.classList.contains("is-pro")){ caption.textContent='Locked'; return; }
 
   var age = v.age || 30;
   var multiple = targetRetireMultiple(age);
@@ -3517,6 +3697,201 @@ function renderRetirementReadiness(v){
     card.innerHTML='<div class="small">'+s.label+'</div><div class="mono" style="font-weight:700;font-size:14px;color:var(--gold-bright);overflow-wrap:break-word;word-break:break-word">'+s.val+'</div>';
     summaryEl.appendChild(card);
   });
+}
+
+/* ================= FREEDOM NUMBER EXPLORER (Pro) ================= */
+function renderFreedomNumberExplorer(v){
+  var rateEl=$("fnRate"), rateVal=$("fnRateVal"), statsEl=$("fnStats"), caption=$("fnCaption");
+  if(!rateEl) return;
+  var annualSpend = Math.max(0, v.expenses*12);
+  function update(){
+    var rate = +rateEl.value;
+    rateVal.textContent = rate.toFixed(1)+"%";
+    var target = rate>0 ? annualSpend/(rate/100) : 0;
+    var monthlyContribution = Math.max(0, v.income - v.expenses);
+    var gap = Math.max(0, target - v.net);
+    var yearsToFI = (monthlyContribution>0 && gap>0)
+      ? Math.log((target*0.07/12 + monthlyContribution)/(v.net*0.07/12 + monthlyContribution || monthlyContribution)) / Math.log(1+0.07/12) / 12
+      : (v.net >= target ? 0 : Infinity);
+    caption.textContent = "Your number: "+money(target);
+    statsEl.innerHTML='';
+    [
+      { label:'Your FI number', val: money(target) },
+      { label:'Current progress', val: target>0 ? Math.round(Math.min(999,(v.net/target)*100))+'%' : '—' },
+      { label:'Rough years to FI', val: isFinite(yearsToFI) ? Math.max(0,Math.round(yearsToFI))+' yrs' : (v.net>=target?'Reached':'—') }
+    ].forEach(function(s){
+      var card=el('div',{className:'card', style:'padding:10px;text-align:center'});
+      card.innerHTML='<div class="small">'+s.label+'</div><div class="mono" style="font-weight:700;font-size:15px;color:var(--gold-bright)">'+s.val+'</div>';
+      statsEl.appendChild(card);
+    });
+  }
+  rateEl.oninput = update;
+  update();
+}
+
+/* ================= TIME-COST TRANSLATOR (Pro) ================= */
+function renderTimeCostTranslator(v){
+  var wageEl=$("tcWage"), amountEl=$("tcAmount"), resultEl=$("tcResult"), quickListEl=$("tcQuickList");
+  if(!wageEl) return;
+  // Rough effective hourly wage: annual income over a standard 2080-hour
+  // work year. A real simplification (doesn't account for actual hours
+  // worked, taxes, PTO) - framed as "effective" rather than claiming
+  // precision it doesn't have.
+  var hourlyWage = v.annualIncome > 0 ? v.annualIncome / 2080 : 0;
+  wageEl.innerHTML = money(hourlyWage) + '<span>/hr effective wage, before taxes</span>';
+
+  function update(){
+    var amount = Math.max(0, +amountEl.value || 0);
+    var hours = hourlyWage > 0 ? amount/hourlyWage : 0;
+    var wholeHours = Math.floor(hours);
+    var mins = Math.round((hours-wholeHours)*60);
+    resultEl.textContent = hourlyWage > 0
+      ? money(amount) + ' = ' + (wholeHours ? wholeHours+'h ' : '') + mins+'m of your work'
+      : 'Enter your income to see this';
+
+    quickListEl.innerHTML='';
+    // Estimated total minimum debt payments, using the same "2% of
+    // balance or $25, whichever is greater" formula the debt payoff
+    // planner itself uses - so this number is consistent with that tool
+    // rather than a separate, differently-derived estimate.
+    var estMinDebtPayment = [v.cc, v.otherDebt, v.auto, v.student]
+      .filter(function(b){ return b > 0; })
+      .reduce(function(sum, b){ return sum + Math.min(Math.max(b*0.02, 25), b); }, 0);
+    var quickItems = [
+      { label: 'Your estimated monthly debt payments', amt: estMinDebtPayment },
+      { label: 'Your monthly expenses', amt: v.expenses },
+      { label: 'This subscription ($7.99/mo)', amt: 7.99 }
+    ];
+    quickItems.forEach(function(item){
+      if(!item.amt) return;
+      var h = hourlyWage>0 ? item.amt/hourlyWage : 0;
+      var chip = el('div', {className:'tc-quick-item'});
+      chip.innerHTML = '<span>'+item.label+'</span><b>'+h.toFixed(1)+' hrs</b>';
+      quickListEl.appendChild(chip);
+    });
+  }
+  amountEl.oninput = update;
+  update();
+}
+
+/* ================= LIFESTYLE INFLATION SIMULATOR (Pro) ================= */
+function renderLifestyleInflationSimulator(v){
+  var rateEl=$("liRate"), rateVal=$("liRateVal"), chart=$("liChart"), caption=$("liCaption");
+  if(!rateEl) return;
+  // Both paths assume the same starting point and the same modest 3%/yr
+  // raise, but differ in what happens to that raise: "spend every raise"
+  // keeps monthly contribution flat forever (lifestyle grows to match
+  // income); "at this rate" banks the chosen % of each year's raise on
+  // top of the current contribution.
+  function simulate(savePct){
+    var balance = v.net;
+    var monthly = Math.max(0, v.income - v.expenses);
+    var annualIncome = v.annualIncome;
+    var points = [balance];
+    for(var y=1; y<=20; y++){
+      var raise = annualIncome*0.03;
+      monthly += (raise*(savePct/100))/12;
+      annualIncome += raise;
+      for(var m=0;m<12;m++){ balance = balance*(1+0.07/12) + monthly; }
+      points.push(balance);
+    }
+    return points;
+  }
+  function update(){
+    var rate = +rateEl.value;
+    rateVal.textContent = rate+"%";
+    var spendAll = simulate(0);
+    var atRate = simulate(rate);
+    drawDualProjectionLine(chart, spendAll, atRate, []);
+    var diff = atRate[20] - spendAll[20];
+    caption.textContent = rate>0 ? ('+'+money(diff)+' more by year 20, banking '+rate+'% of every raise') : 'Set the slider above 0% to see the difference';
+  }
+  rateEl.oninput = update;
+  update();
+}
+
+/* ================= NET WORTH PACE GAUGE (Pro) ================= */
+function renderNetWorthPaceGauge(v){
+  var gaugeEl=$("pgGauge"), captionEl=$("pgCaption");
+  if(!gaugeEl) return;
+  var age = v.age || 30;
+  // Rough age-based net worth benchmark, same spirit as the retirement
+  // multiple table but for total net worth rather than retirement
+  // accounts specifically - roughly "half your age times income" as a
+  // widely-cited (if rough) rule of thumb.
+  var benchmark = Math.max(1, age * v.annualIncome * 0.1);
+  var ratio = benchmark>0 ? v.net/benchmark : 0;
+  var pct = clamp(ratio, 0, 2); // 0-200% mapped onto the gauge
+  var angle = -90 + pct*90; // -90deg (0%) to +90deg (200%), 0deg = 100% (on pace)
+  var needleRad = (angle-90) * Math.PI/180;
+  var cx=150, cy=150, r=110;
+  var nx = cx + r*Math.cos(needleRad), ny = cy + r*Math.sin(needleRad);
+  var zoneColor = ratio>=1 ? '#4FC28A' : (ratio>=0.6 ? '#E8B34A' : '#E15B5B');
+  var label = ratio>=1.1 ? 'Ahead of pace' : (ratio>=0.85 ? 'On pace' : (ratio>=0.5 ? 'Behind pace' : 'Well behind pace'));
+
+  var html =
+    '<path d="M 40 150 A 110 110 0 0 1 150 40" fill="none" stroke="#E15B5B" stroke-width="16" stroke-linecap="round" opacity="0.5"/>' +
+    '<path d="M 150 40 A 110 110 0 0 1 220 63.9" fill="none" stroke="#E8B34A" stroke-width="16" opacity="0.5"/>' +
+    '<path d="M 220 63.9 A 110 110 0 0 1 260 150" fill="none" stroke="#4FC28A" stroke-width="16" stroke-linecap="round" opacity="0.5"/>' +
+    '<line x1="'+cx+'" y1="'+cy+'" x2="'+nx.toFixed(1)+'" y2="'+ny.toFixed(1)+'" stroke="'+zoneColor+'" stroke-width="4" stroke-linecap="round"/>' +
+    '<circle cx="'+cx+'" cy="'+cy+'" r="8" fill="'+zoneColor+'"/>' +
+    '<text x="150" y="150" text-anchor="middle" fill="#E9ECF1" font-size="15" font-weight="700" font-family="Fraunces,serif" dy="-14">' + Math.round(pct*100) + '%</text>';
+  setHTML(gaugeEl, html);
+  captionEl.textContent = label + ' for your age — ' + money(v.net) + ' vs. a rough benchmark of ' + money(benchmark);
+}
+
+/* ================= EMERGENCY FUND STRESS TEST (Pro) ================= */
+var STRESS_SCENARIOS = {
+  jobloss:  { icon:'💼', label:'Job loss', monthlyHit: null }, // uses full monthly expenses
+  medical:  { icon:'🏥', label:'$3,000 medical bill', lump: 3000 },
+  car:      { icon:'🚗', label:'Major car repair ($2,500)', lump: 2500 },
+  reduced:  { icon:'📉', label:'Reduced hours (-40% income)', incomeCutPct: 0.4 }
+};
+function renderEmergencyStressTest(v){
+  var btnWrap=$("stressScenarioButtons"), resultEl=$("stressResult"), barEl=$("stressBurnBar"), captionEl=$("stressCaption");
+  if(!btnWrap) return;
+  var cash = Math.max(0, v.cash || 0);
+  var monthlyExpenses = Math.max(1, v.expenses);
+
+  btnWrap.innerHTML = Object.keys(STRESS_SCENARIOS).map(function(key){
+    var s = STRESS_SCENARIOS[key];
+    return '<button type="button" data-scenario="'+key+'">'+s.icon+' '+s.label+'</button>';
+  }).join('');
+
+  function run(key){
+    var s = STRESS_SCENARIOS[key];
+    btnWrap.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b.dataset.scenario===key); });
+    var monthsOfRunway;
+    var detail;
+    if(s.lump){
+      var remaining = Math.max(0, cash - s.lump);
+      monthsOfRunway = remaining / monthlyExpenses;
+      detail = money(s.lump)+' comes straight out of your cash reserve, leaving '+money(remaining)+'.';
+    } else if(s.incomeCutPct){
+      var incomeLoss = (v.income||0) * s.incomeCutPct;
+      var monthlyShortfall = Math.max(1, incomeLoss);
+      monthsOfRunway = cash / monthlyShortfall;
+      detail = 'At a '+Math.round(s.incomeCutPct*100)+'% income cut ('+money(incomeLoss)+'/mo shortfall), your cash covers the gap for a while.';
+    } else {
+      monthsOfRunway = cash / monthlyExpenses;
+      detail = 'Assumes your full monthly expenses ('+money(monthlyExpenses)+') keep going with no income at all.';
+    }
+    var pct = clamp((monthsOfRunway/6)*100, 0, 100); // 6 months = "full bar", the common benchmark
+    var tier = monthsOfRunway>=6 ? 'ok' : (monthsOfRunway>=3 ? 'warn' : 'bad');
+    resultEl.className = 'stress-result '+tier;
+    resultEl.textContent = monthsOfRunway>=1 ? monthsOfRunway.toFixed(1)+' months of runway' : Math.round(monthsOfRunway*30)+' days of runway';
+    barEl.innerHTML = '<div class="stress-burn-bar-fill" style="width:0%;background:'+(tier==='ok'?'linear-gradient(90deg,var(--good-2),var(--good))':tier==='warn'?'linear-gradient(90deg,var(--gold),var(--gold-bright))':'linear-gradient(90deg,#a34141,var(--bad))')+'" data-target="'+pct+'"></div>';
+    requestAnimationFrame(function(){
+      var fill = barEl.querySelector('.stress-burn-bar-fill');
+      if(fill) fill.style.width = fill.dataset.target+'%';
+    });
+    captionEl.textContent = detail;
+  }
+
+  btnWrap.querySelectorAll('button').forEach(function(b){
+    b.onclick = function(){ run(b.dataset.scenario); };
+  });
+  run('jobloss');
 }
 
 // Fired right after someone downloads their grade image, story image, or
@@ -3663,8 +4038,13 @@ function openReport(v,cats){
   drawCharts(v);
   renderNetWorthProjection(v);
   renderLifeEventsSimulator(v);
+  renderFreedomNumberExplorer(v);
   renderDebtPayoffPlanner(v);
   renderRetirementReadiness(v);
+  renderTimeCostTranslator(v);
+  renderLifestyleInflationSimulator(v);
+  renderNetWorthPaceGauge(v);
+  renderEmergencyStressTest(v);
 
   (function renderSnapshot(){
     if($("snapNetWorth")) $("snapNetWorth").textContent = money(v.net);
