@@ -2210,8 +2210,10 @@ body.is-pro .ad-slot{ display:none !important }
                 <svg id="stChart" width="100%" height="220" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Liquid assets during stress event"></svg>
                 <div class="life-events-legend">
                   <span class="life-events-legend-item"><span class="swatch" style="background:#4FC28A"></span>Cash + brokerage</span>
+                  <span class="life-events-legend-item"><span class="swatch" style="background:#5B8DEF"></span>Income resumes</span>
                   <span class="life-events-legend-item"><span class="swatch" style="background:#E15B5B"></span>Zero line</span>
                 </div>
+                <div id="stChartSummary" class="small" style="margin-top:8px;font-weight:600"></div>
               </div>
 
               <div class="report-section">
@@ -4142,6 +4144,16 @@ function renderStressChart(svgEl, result){
     html += '<circle cx="'+bx+'" cy="'+by+'" r="5" fill="#E15B5B" stroke="#0A0B0E" stroke-width="1.5"/>';
     html += '<text x="'+bx+'" y="'+(padT+10)+'" text-anchor="middle" fill="#E15B5B" font-size="11" font-weight="700">Breaks: Mo '+result.breakingMonth+'</text>';
   }
+  // Marks exactly where income resumes, so a rebound in the line has a
+  // visible cause instead of looking like an unexplained recovery - this
+  // is what actually turns the trajectory around, and without labeling it
+  // the chart's long climb after the crisis can read as "things are fine"
+  // even when the ending balance is still well below where it started.
+  if(result.stabilizeMonth !== null && result.stabilizeMonth < vals.length){
+    var sx = x(result.stabilizeMonth), sy = y(vals[result.stabilizeMonth]);
+    html += '<circle cx="'+sx+'" cy="'+sy+'" r="4" fill="#5B8DEF" stroke="#0A0B0E" stroke-width="1.5"/>';
+    html += '<text x="'+sx+'" y="'+(sy-10)+'" text-anchor="middle" fill="#5B8DEF" font-size="10" font-weight="700">Income resumes</text>';
+  }
   setHTML(svgEl, html);
 }
 
@@ -4153,7 +4165,7 @@ function computeVulnerability(a){
   var liquidityRatio = (a.liquidCash + a.brokerage) / Math.max(1, a.liquidCash + a.brokerage + a.retirement);
   var expenseRatio = (a.essential + a.discretionary + a.debtPayments) / income;
   var debtRatio = a.debtPayments / income;
-  var standardStress = simulateStress(a, { employment:'jobloss', emergencyExpense:0, housingIncrease:0 }, 36);
+  var standardStress = simulateStress(a, { employment:'jobloss', emergencyExpense:0, housingIncrease:0 }, 24);
   var jobLossRunway = standardStress.breakingMonth === null ? 36 : standardStress.breakingMonth;
 
   var candidates = [
@@ -4167,7 +4179,7 @@ function computeVulnerability(a){
 }
 
 function resilienceScore(a){
-  var standardStress = simulateStress(a, { employment:'jobloss', emergencyExpense:0, housingIncrease:0 }, 36);
+  var standardStress = simulateStress(a, { employment:'jobloss', emergencyExpense:0, housingIncrease:0 }, 24);
   var stressedRunway = standardStress.breakingMonth === null ? 36 : standardStress.breakingMonth;
   var runwayPts = clamp(stressedRunway/6, 0, 1) * 40;
   var liquidityRatio = (a.liquidCash + a.brokerage) / Math.max(1, a.liquidCash + a.brokerage + a.retirement);
@@ -4234,8 +4246,8 @@ function renderEmergencyStressTest(v){
 
   function update(){
     var scenario = currentScenario();
-    var normalResult = simulateStress(a, emptyScenario(), 36);
-    var stressedResult = simulateStress(a, scenario, 36);
+    var normalResult = simulateStress(a, emptyScenario(), 24);
+    var stressedResult = simulateStress(a, scenario, 24);
 
     $("rwNormal").textContent = fmtRunway(normalResult);
     $("rwStressed").textContent = fmtRunway(stressedResult);
@@ -4248,6 +4260,21 @@ function renderEmergencyStressTest(v){
     $("rsExplain").textContent = rs.tierExplain + ' (Based on a standard job-loss stress test, independent of the scenario built below.)';
 
     renderStressChart($("stChart"), stressedResult);
+    (function(){
+      var summaryEl = $("stChartSummary");
+      if(!summaryEl) return;
+      var startVal = stressedResult.startingAccessible;
+      var endVal = stressedResult.finalAccessible;
+      var diff = endVal - startVal;
+      var windowMonths = stressedResult.timeline.length - 1;
+      if(diff < -1){
+        summaryEl.innerHTML = '<span style="color:var(--bad)">↓ Net down '+money(Math.abs(diff))+' over '+windowMonths+' months</span> — still recovering from this scenario by the end of the window.';
+      } else if(diff > 1){
+        summaryEl.innerHTML = '<span style="color:var(--good)">↑ Net up '+money(diff)+' over '+windowMonths+' months</span> — fully recovered and rebuilding within this window.';
+      } else {
+        summaryEl.textContent = 'Roughly back to where you started by month '+windowMonths+'.';
+      }
+    })();
 
     var bpEl = $("stBreakingPoint");
     if(stressedResult.breakingMonth === null){
@@ -4290,7 +4317,7 @@ function renderEmergencyStressTest(v){
       if(c.name === 'Worst Reasonable Case'){
         worstAssumptions = Object.assign({}, a, { monthsToFindJob: a.monthsToFindJob + 3 });
       }
-      var r = simulateStress(worstAssumptions, c.scenario, 36);
+      var r = simulateStress(worstAssumptions, c.scenario, 24);
       return { name:c.name, runway:fmtRunway(r), breaking: r.breakingMonth===null ? '—' : 'Month '+r.breakingMonth, recovery: r.rebuildAccessibleMonth===null ? (r.breakingMonth===null?'—':'36+ mo') : r.rebuildAccessibleMonth+' mo' };
     });
     $("stCompareTable").innerHTML =
@@ -4302,7 +4329,7 @@ function renderEmergencyStressTest(v){
     // applied one at a time against the current scenario.
     var baseRunwayMonths = stressedResult.breakingMonth === null ? 36 : stressedResult.breakingMonth;
     function deltaFor(modifiedAssumptions){
-      var r = simulateStress(modifiedAssumptions, scenario, 36);
+      var r = simulateStress(modifiedAssumptions, scenario, 24);
       var m = r.breakingMonth === null ? 36 : r.breakingMonth;
       return m - baseRunwayMonths;
     }
