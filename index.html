@@ -1116,6 +1116,33 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 
 .pro-badge{ display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:10.5px; font-weight:700; color:#1a1300; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); padding:3px 8px; border-radius:6px; letter-spacing:.03em; vertical-align:middle }
 .pro-lock{ display:flex; align-items:center; justify-content:center; gap:8px; padding:16px; border:1px dashed var(--line); border-radius:10px; color:var(--muted); font-size:13px; text-align:center; line-height:1.8 }
+
+/* Life Events Timeline Simulator */
+.life-event-presets{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px }
+.life-event-form{
+  background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:14px; margin:12px 0;
+  display:grid; gap:10px;
+}
+.life-event-form .lef-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end }
+.life-event-form label{ display:flex; flex-direction:column; gap:4px; font-size:11.5px; color:var(--muted); font-weight:600; flex:1 1 120px }
+.life-event-form input{
+  padding:9px 11px; border-radius:8px; border:1px solid var(--line); background:var(--bg-2); color:var(--text);
+  font-family:var(--font-mono); font-size:13px;
+}
+.life-events-legend{ display:flex; gap:18px; margin:10px 0 4px; flex-wrap:wrap }
+.life-events-legend-item{ display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted) }
+.life-events-legend-item .swatch{ width:16px; height:3px; border-radius:2px; flex:none }
+.life-events-list{ display:grid; gap:8px; margin-top:10px }
+.life-event-chip{
+  display:flex; align-items:center; gap:10px; background:var(--surface-2); border:1px solid var(--line);
+  border-radius:10px; padding:10px 12px; font-size:13px;
+}
+.life-event-chip .lec-icon{ font-size:16px; flex:none }
+.life-event-chip .lec-body{ flex:1 1 auto; min-width:0 }
+.life-event-chip .lec-title{ font-weight:600 }
+.life-event-chip .lec-detail{ color:var(--muted); font-size:11.5px; font-family:var(--font-mono) }
+.life-event-chip .lec-remove{ flex:none; background:none; border:none; color:var(--muted-2); cursor:pointer; font-size:16px; line-height:1; padding:4px }
+.life-event-chip .lec-remove:hover{ color:var(--bad) }
 .pro-only-show{ display:none }
 body.is-pro .pro-only-hide{ display:none !important }
 body.is-pro .pro-only-show{ display:inline-flex !important }
@@ -1864,6 +1891,32 @@ body.is-pro .ad-slot{ display:none !important }
             <svg id="nwpChart" width="100%" height="200" viewBox="0 0 640 200" preserveAspectRatio="none" role="img" aria-label="Net worth projection chart"></svg>
             <div id="nwpMilestones" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px"></div>
             <div class="small" style="margin-top:8px">Assumes you keep investing your current monthly surplus (income minus expenses) at this return, compounded annually. Doesn't account for inflation, market swings, or life changes — an estimate, not a promise.</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <span class="section-label" style="margin:0">Life events timeline <span class="pro-badge">★ PRO</span></span>
+            <span id="lifeEventsCaption" class="small">—</span>
+          </div>
+          <div class="pro-lock">🔒 See how real life changes your trajectory — <a href="#pricing" style="color:var(--gold-bright);font-weight:700;text-decoration:none">unlock with Pro</a></div>
+          <div class="pro-gated" id="lifeEventsBox">
+            <p class="small" style="margin:0 0 14px">Add real life events to your timeline and watch your net worth path reshape around them — buying a home, a kid, a job loss, a raise. See exactly how much runway you have either way.</p>
+            <div class="life-event-presets">
+              <button class="btn sm" type="button" data-preset="home">🏠 Buy a home</button>
+              <button class="btn sm" type="button" data-preset="kid">👶 Have a kid</button>
+              <button class="btn sm" type="button" data-preset="jobloss">💼 Job loss</button>
+              <button class="btn sm" type="button" data-preset="raise">📈 Get a raise</button>
+              <button class="btn sm" type="button" data-preset="windfall">🎁 Windfall</button>
+            </div>
+            <div id="lifeEventForm" class="life-event-form" style="display:none"></div>
+            <svg id="lifeEventsChart" width="100%" height="220" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Net worth with life events chart"></svg>
+            <div class="life-events-legend">
+              <span class="life-events-legend-item"><span class="swatch" style="background:var(--gold-bright)"></span>Current path</span>
+              <span class="life-events-legend-item"><span class="swatch" style="background:#5B8DEF"></span>With these events</span>
+            </div>
+            <div id="lifeEventsList" class="life-events-list"></div>
+            <div class="small" style="margin-top:10px">Each event's dollar effect (down payment, new expense, income change) is applied on top of your current numbers — an illustration of the shape of the impact, not a precise forecast.</div>
           </div>
         </div>
 
@@ -3069,6 +3122,174 @@ function renderNetWorthProjection(v){
   update();
 }
 
+/* ================= LIFE EVENTS TIMELINE SIMULATOR (Pro) ================= */
+// Lets someone add real life events (buying a home, a kid, a job loss, a
+// raise, a windfall) onto their net worth projection and see two lines
+// diverge: their current path vs. their path with these events layered
+// on top. Deliberately simple model: each event applies a one-time lump
+// sum at its year, plus an optional permanent change to the monthly
+// contribution from that year forward. That's a real simplification (a
+// "job loss" isn't actually permanent, for instance) - the presets below
+// are chosen to stay honest within that limitation rather than pretend
+// to model things the simple version can't (see comments per preset).
+var LIFE_EVENTS_KEY = 'gmf_life_events';
+var LIFE_EVENT_PRESETS = {
+  home:     { icon:'🏠', label:'Buy a home', defaultYear:3, defaultLump:-60000, defaultMonthly:-200,
+              lumpHint:'Down payment & closing costs', monthlyHint:'Mortgage vs. renting, net difference' },
+  kid:      { icon:'👶', label:'Have a kid', defaultYear:2, defaultLump:-2000, defaultMonthly:-900,
+              lumpHint:'One-time costs', monthlyHint:'Ongoing childcare & expenses' },
+  // Modeled as a one-time hit to savings rather than a permanent income
+  // cut, since this simplified simulator can't represent "temporary" -
+  // a real job loss usually isn't a permanent pay cut, so a lump-sum
+  // withdrawal (savings drawn down during the gap) is the more honest
+  // way to represent it within this model's limits.
+  jobloss:  { icon:'💼', label:'Job loss', defaultYear:4, defaultLump:-10000, defaultMonthly:0,
+              lumpHint:'Savings drawn down during the gap', monthlyHint:'Assumes income recovers after' },
+  raise:    { icon:'📈', label:'Get a raise', defaultYear:2, defaultLump:0, defaultMonthly:500,
+              lumpHint:'One-time bonus, if any', monthlyHint:'Extra take-home per month' },
+  windfall: { icon:'🎁', label:'Windfall', defaultYear:1, defaultLump:15000, defaultMonthly:0,
+              lumpHint:'Inheritance, bonus, sale, etc.', monthlyHint:'Any ongoing change' }
+};
+
+function getLifeEvents(){ try{ return JSON.parse(localStorage.getItem(LIFE_EVENTS_KEY)||'[]'); }catch(_){ return []; } }
+function saveLifeEvents(arr){ localStorage.setItem(LIFE_EVENTS_KEY, JSON.stringify(arr)); }
+
+// Same monthly-compounding model as projectNetWorth, but applies each
+// event's lump sum once (at the start of its year) and folds its
+// monthly delta into the ongoing contribution from that year forward.
+function projectNetWorthWithEvents(startNet, baseMonthlyContribution, annualRatePct, years, events){
+  var r = annualRatePct/100/12;
+  var points = [];
+  var balance = startNet;
+  points.push(balance);
+  for(var y=1; y<=years; y++){
+    var yearEvents = events.filter(function(e){ return e.year === y; });
+    yearEvents.forEach(function(e){ balance += (e.lumpSum||0); });
+    var monthlyForThisYear = baseMonthlyContribution;
+    events.forEach(function(e){ if(e.year <= y) monthlyForThisYear += (e.monthlyDelta||0); });
+    for(var m=0; m<12; m++){
+      balance = balance*(1+r) + monthlyForThisYear;
+    }
+    points.push(balance);
+  }
+  return points;
+}
+
+// Draws two lines (baseline + with-events) on one chart, plus small flag
+// markers on the x-axis at each event's year.
+function drawDualProjectionLine(svgEl, baselinePoints, eventPoints, events){
+  var w=640, h=220, padL=54, padR=32, padT=14, padB=34;
+  var innerW=w-padL-padR, innerH=h-padT-padB;
+  var allVals = baselinePoints.concat(eventPoints, [0]);
+  var minV=Math.min.apply(null, allVals), maxV=Math.max.apply(null, allVals);
+  if(maxV===minV) maxV=minV+1;
+  function x(i){ return padL + (i/(baselinePoints.length-1))*innerW; }
+  function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
+  var html='';
+  if(minV<0 && maxV>0){
+    var zy=y(0);
+    html+='<line x1="'+padL+'" y1="'+zy+'" x2="'+(w-padR)+'" y2="'+zy+'" stroke="rgba(255,255,255,.18)" stroke-dasharray="3 5"/>';
+  }
+  [minV, (minV+maxV)/2, maxV].forEach(function(gv){
+    var gy=y(gv);
+    html+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.06)"/>';
+    html+='<text x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
+  });
+  function pathFor(points){
+    var d=''; for(var i=0;i<points.length;i++){ d += (i?' L ':'M ') + x(i) + ' ' + y(points[i]); }
+    return d;
+  }
+  // baseline (gold), always shown for comparison
+  html += '<path d="'+pathFor(baselinePoints)+'" fill="none" stroke="#E8B34A" stroke-width="2" stroke-dasharray="4 4" opacity="0.7"></path>';
+  // with-events (blue), the "tinkered" path
+  html += '<path d="'+pathFor(eventPoints)+'" fill="none" stroke="#5B8DEF" stroke-width="2.5"></path>';
+  // event flags on the x-axis
+  events.forEach(function(e){
+    if(e.year >= baselinePoints.length) return;
+    var ex = x(e.year);
+    html += '<line x1="'+ex+'" y1="'+padT+'" x2="'+ex+'" y2="'+(h-padB)+'" stroke="#5B8DEF" stroke-opacity="0.25" stroke-dasharray="2 3"/>';
+    html += '<circle cx="'+ex+'" cy="'+(h-padB)+'" r="4" fill="#5B8DEF"/>';
+    html += '<text x="'+ex+'" y="'+(h-padB+18)+'" text-anchor="middle" fill="#8B93A3" font-size="14">'+e.icon+'</text>';
+  });
+  setHTML(svgEl, html);
+}
+
+function renderLifeEventsSimulator(v){
+  var box = $("lifeEventsBox"), caption = $("lifeEventsCaption"), chart = $("lifeEventsChart");
+  var listEl = $("lifeEventsList"), formEl = $("lifeEventForm");
+  if(!box) return;
+  if(!document.body.classList.contains("is-pro")){ if(caption) caption.textContent='Locked'; return; }
+
+  var baseMonthlyContribution = Math.max(0, v.income - v.expenses);
+
+  function renderList(){
+    var events = getLifeEvents();
+    listEl.innerHTML = events.length ? '' : '<div class="empty-note">No events added yet — try one of the presets above.</div>';
+    events.forEach(function(e){
+      var chip = el('div', { className:'life-event-chip' });
+      var parts = [];
+      if(e.lumpSum) parts.push((e.lumpSum>0?'+':'')+money(e.lumpSum)+' once');
+      if(e.monthlyDelta) parts.push((e.monthlyDelta>0?'+':'')+money(e.monthlyDelta)+'/mo after');
+      chip.innerHTML =
+        '<span class="lec-icon">'+e.icon+'</span>'+
+        '<div class="lec-body"><div class="lec-title">'+e.label+' — Year '+e.year+'</div>'+
+        '<div class="lec-detail">'+(parts.join(' · ')||'No dollar effect')+'</div></div>'+
+        '<button class="lec-remove" type="button" aria-label="Remove event">×</button>';
+      chip.querySelector('.lec-remove').addEventListener('click', function(){
+        saveLifeEvents(getLifeEvents().filter(function(x){ return x.id !== e.id; }));
+        renderList(); renderChart();
+      });
+      listEl.appendChild(chip);
+    });
+  }
+
+  function renderChart(){
+    var events = getLifeEvents();
+    var baseline = projectNetWorth(v.net, baseMonthlyContribution, 7, 30);
+    var withEvents = projectNetWorthWithEvents(v.net, baseMonthlyContribution, 7, 30, events);
+    drawDualProjectionLine(chart, baseline, withEvents, events);
+    var diff = withEvents[30] - baseline[30];
+    caption.textContent = events.length
+      ? (diff>=0?'+':'') + money(diff) + ' vs. current path by year 30'
+      : 'Add an event to see the difference';
+  }
+
+  function showForm(presetKey){
+    var p = LIFE_EVENT_PRESETS[presetKey];
+    formEl.style.display = 'grid';
+    formEl.innerHTML =
+      '<div style="font-weight:700;font-size:13.5px">'+p.icon+' '+p.label+'</div>'+
+      '<div class="lef-row">'+
+        '<label>Year<input type="number" id="lefYear" min="1" max="30" value="'+p.defaultYear+'"></label>'+
+        '<label>One-time amount<input type="number" id="lefLump" step="500" value="'+p.defaultLump+'"><span style="font-size:10.5px;color:var(--muted-2);font-weight:400">'+p.lumpHint+'</span></label>'+
+        '<label>Monthly change<input type="number" id="lefMonthly" step="50" value="'+p.defaultMonthly+'"><span style="font-size:10.5px;color:var(--muted-2);font-weight:400">'+p.monthlyHint+'</span></label>'+
+      '</div>'+
+      '<div style="display:flex;gap:8px"><button class="btn gold sm" type="button" id="lefAdd">Add to timeline</button><button class="btn sm" type="button" id="lefCancel">Cancel</button></div>';
+    $("lefAdd").addEventListener('click', function(){
+      var events = getLifeEvents();
+      events.push({
+        id: Date.now() + '-' + Math.random().toString(36).slice(2,6),
+        type: presetKey, icon: p.icon, label: p.label,
+        year: Math.max(1, Math.min(30, +document.getElementById('lefYear').value || p.defaultYear)),
+        lumpSum: +document.getElementById('lefLump').value || 0,
+        monthlyDelta: +document.getElementById('lefMonthly').value || 0
+      });
+      saveLifeEvents(events);
+      formEl.style.display = 'none'; formEl.innerHTML = '';
+      renderList(); renderChart();
+      __track('life_event_added', { type: presetKey });
+    });
+    $("lefCancel").addEventListener('click', function(){ formEl.style.display='none'; formEl.innerHTML=''; });
+  }
+
+  box.querySelectorAll('.life-event-presets [data-preset]').forEach(function(btn){
+    btn.onclick = function(){ showForm(btn.dataset.preset); };
+  });
+
+  renderList();
+  renderChart();
+}
+
 /* ================= DEBT PAYOFF PLANNER (Pro) ================= */
 var DEBT_ASSUMED_RATES = { cc: 24, otherDebt: 12, auto: 7, student: 6 }; // typical average annual rates — we don't collect real ones
 
@@ -3441,6 +3662,7 @@ function openReport(v,cats){
 
   drawCharts(v);
   renderNetWorthProjection(v);
+  renderLifeEventsSimulator(v);
   renderDebtPayoffPlanner(v);
   renderRetirementReadiness(v);
 
