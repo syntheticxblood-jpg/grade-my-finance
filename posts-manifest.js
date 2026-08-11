@@ -75,4 +75,6 @@ var GMF_BLOG_POSTS = [
   { slug:"when-to-claim-social-security", title:"When to Claim Social Security: What Claiming Early or Late Actually Costs You", category:"Retirement" }
 ,
   { slug:"capital-gains-tax-explained", title:"Capital Gains Tax Explained: Short-Term vs. Long-Term (and Why the Difference Is Huge)", category:"Taxes" }
+,
+  { slug:"credit-utilization-ratio-explained", title:"Credit Utilization: The Single Number Quietly Controlling Your Credit Score", category:"Credit" }
 ];
