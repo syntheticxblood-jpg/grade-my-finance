@@ -1183,38 +1183,89 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 .stress-burn-bar-fill{ height:100%; border-radius:99px; transition:width 1s cubic-bezier(.2,.8,.2,1) }
 
 /* Financial Resilience Simulator */
-.resilience-hero-row{ display:grid; grid-template-columns:1fr 1.4fr; gap:14px }
-@media (max-width:640px){ .resilience-hero-row{ grid-template-columns:1fr } }
-.resilience-score-card{
-  background:linear-gradient(155deg, rgba(232,179,74,.10), transparent); border:1px solid rgba(232,179,74,.28);
-  border-radius:14px; padding:18px; text-align:center; display:flex; flex-direction:column; gap:4px; justify-content:center;
-}
-.rs-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:600 }
-.rs-num{ font-family:var(--font-serif); font-weight:700; font-size:38px; color:var(--gold-bright) }
-.rs-tier{ font-size:12.5px; font-weight:700 }
-.rs-tier.strong{ color:var(--good) }
-.rs-tier.watch{ color:var(--gold-bright) }
-.rs-tier.vulnerable{ color:#E8A34A }
-.rs-tier.critical{ color:var(--bad) }
-.runway-compare-card{ display:grid; grid-template-columns:1fr 1fr; gap:10px }
-.rw-item{
-  background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px;
-  display:flex; flex-direction:column; gap:6px; justify-content:center;
-}
-.rw-label{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600 }
-.rw-val{ font-family:var(--font-mono); font-weight:700; font-size:18px }
+/* ================= Financial Resilience Simulator (redesign) ================= */
+.stress-hero{ margin-bottom:8px }
+.stress-hero-top{ margin-bottom:18px }
+.stress-hero-sub{ margin:6px 0 0; color:var(--muted); font-size:13.5px; line-height:1.55; max-width:520px }
 
-.stress-builder-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px }
+.rs-block{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line) }
+.rs-ring-wrap{ position:relative; flex:none; width:120px; height:120px }
+.rs-ring{ display:block; transform:rotate(0)}
+.rs-ring circle{ transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1), stroke .3s ease }
+.rs-ring-num{
+  position:absolute; inset:0; display:flex; align-items:baseline; justify-content:center; gap:2px;
+  font-family:var(--font-serif); font-weight:700;
+}
+.rs-ring-num span:first-child{ font-size:34px; color:var(--text) }
+.rs-ring-max{ font-size:13px; color:var(--muted); font-weight:500 }
+.rs-text{ flex:1 1 260px; min-width:220px }
+.rs-tier{
+  display:inline-block; font-family:var(--font-mono); font-weight:700; font-size:12px; letter-spacing:.05em;
+  text-transform:uppercase; padding:4px 11px; border-radius:99px; margin-bottom:8px;
+}
+.rs-tier.strong{ color:var(--good); background:rgba(79,194,138,.14) }
+.rs-tier.watch{ color:var(--gold-bright); background:rgba(232,179,74,.14) }
+.rs-tier.vulnerable{ color:#E8A34A; background:rgba(232,163,74,.14) }
+.rs-tier.critical{ color:var(--bad); background:rgba(226,87,76,.14) }
+.rs-explain{ margin:0 0 10px; color:var(--text); font-size:14px; line-height:1.55 }
+.rs-factors{ display:flex; gap:8px; flex-wrap:wrap }
+.rs-factor{ display:flex; align-items:center; gap:6px; font-size:12px; padding:5px 10px; border-radius:99px; background:var(--surface-2); border:1px solid var(--line) }
+.rs-factor.pos{ color:var(--good) }
+.rs-factor.neg{ color:var(--bad) }
+
+.stress-metrics-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:18px }
+@media (max-width:760px){ .stress-metrics-row{ grid-template-columns:repeat(2,1fr) } }
+.stress-metric-card{ display:flex; flex-direction:column; gap:2px }
+.stress-metric-num{ font-family:var(--font-serif); font-weight:700; font-size:26px; color:var(--text); line-height:1.15 }
+.stress-metric-num.good{ color:var(--good) }
+.stress-metric-num.bad{ color:var(--bad) }
+.stress-metric-label{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:700 }
+.stress-metric-sub{ font-size:11.5px; color:var(--muted-2) }
+
+.stress-preset-row{ display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 18px }
+.stress-preset-btn{
+  appearance:none; border:1px solid var(--line); background:var(--surface-2); color:var(--muted);
+  font-family:var(--font-body); font-weight:600; font-size:12.5px; padding:9px 14px; border-radius:99px; cursor:pointer;
+  transition:border-color .15s ease, color .15s ease, background .15s ease;
+}
+.stress-preset-btn:hover{ color:var(--text); border-color:rgba(232,179,74,.4) }
+.stress-preset-btn.active{
+  background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700;
+}
+
+.stress-builder-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:6px }
 @media (max-width:640px){ .stress-builder-grid{ grid-template-columns:1fr } }
 .stress-builder-col{ display:flex; flex-direction:column; gap:6px }
-.stress-builder-label{ font-size:11.5px; color:var(--muted); font-weight:600 }
+.stress-builder-label{ font-size:12px; color:var(--text); font-weight:700 }
 .stress-builder-col select{
-  padding:10px 11px; border-radius:9px; border:1px solid var(--line); background:var(--bg-2); color:var(--text);
-  font-family:var(--font-body); font-size:13px; cursor:pointer;
+  padding:12px 13px; border-radius:10px; border:1px solid var(--line); background:var(--surface-2); color:var(--text);
+  font-family:var(--font-body); font-size:13.5px; font-weight:600; cursor:pointer;
+  transition:border-color .15s ease;
 }
+.stress-builder-col select:focus{ outline:none; border-color:var(--gold-bright) }
+.stress-builder-caption{ font-size:11.5px; color:var(--muted-2); line-height:1.4 }
 
-.stress-two-col{ display:grid; grid-template-columns:1fr 1fr; gap:14px }
-@media (max-width:640px){ .stress-two-col{ grid-template-columns:1fr } }
+.stress-story{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:18px; padding:16px; background:var(--surface-2); border-radius:12px }
+.stress-story-step{ display:flex; flex-direction:column; gap:2px; min-width:88px }
+.stress-story-val{ font-family:var(--font-mono); font-weight:700; font-size:14.5px; color:var(--text) }
+.stress-story-val.good{ color:var(--good) }
+.stress-story-val.bad{ color:var(--bad) }
+.stress-story-label{ font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em }
+.stress-story-arrow{ color:var(--muted-2); font-size:15px; flex:none }
+@media (max-width:640px){ .stress-story{ flex-direction:column; align-items:flex-start } .stress-story-arrow{ transform:rotate(90deg); align-self:center } }
+
+.stress-insight-card{
+  background:linear-gradient(155deg, rgba(91,141,239,.08), transparent); border:1px solid rgba(91,141,239,.25);
+  border-radius:14px; padding:18px 20px; font-size:14px; color:var(--text); line-height:1.65;
+}
+.stress-insight-card b{ color:var(--gold-bright) }
+
+.stress-detail-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:8px }
+@media (max-width:640px){ .stress-detail-grid{ grid-template-columns:repeat(2,1fr) } }
+.stress-detail-item{ background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:10px 12px }
+.stress-detail-label{ font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600 }
+.stress-detail-val{ font-family:var(--font-mono); font-weight:700; font-size:14px; margin-top:2px }
+
 .stress-callout{
   background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px;
   font-size:13px; color:var(--text); line-height:1.55;
@@ -2156,97 +2207,100 @@ body.is-pro .ad-slot{ display:none !important }
         <div class="pro-blur-section" style="min-height:400px">
           <div class="pro-blur-content">
             <div class="card">
-              <span class="section-label">Financial Resilience Simulator <span class="pro-badge">★ PRO</span></span>
-              <p class="small" style="margin:6px 0 16px">Simulate real financial shocks month by month using your actual numbers — see how long you'd last, what breaks first, and what would actually help.</p>
+              <div class="stress-hero">
+                <div class="stress-hero-top">
+                  <span class="section-label" style="margin:0">Financial Resilience Simulator <span class="pro-badge">★ PRO</span></span>
+                  <p class="stress-hero-sub">If your income stopped tomorrow, what actually happens to your money? Simulated month by month, using your real numbers.</p>
+                </div>
 
-              <div class="resilience-hero-row">
-                <div class="resilience-score-card">
-                  <span class="rs-label">Resilience Score</span>
-                  <div class="rs-num" id="rsScoreNum">—</div>
-                  <div class="rs-tier" id="rsScoreTier">—</div>
+                <div class="rs-block">
+                  <div class="rs-ring-wrap">
+                    <svg class="rs-ring" viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
+                      <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+                      <circle id="rsRingFg" cx="60" cy="60" r="52" fill="none" stroke="#4FC28A" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+                    </svg>
+                    <div class="rs-ring-num"><span id="rsScoreNum">—</span><span class="rs-ring-max">/100</span></div>
+                  </div>
+                  <div class="rs-text">
+                    <div class="rs-tier" id="rsScoreTier">—</div>
+                    <p class="rs-explain" id="rsExplain">—</p>
+                    <div class="rs-factors" id="rsFactors"></div>
+                  </div>
                 </div>
-                <div class="runway-compare-card">
-                  <div class="rw-item"><span class="rw-label">Normal runway</span><span class="rw-val" id="rwNormal">—</span></div>
-                  <div class="rw-item"><span class="rw-label">Stressed runway</span><span class="rw-val" id="rwStressed">—</span></div>
-                </div>
+
+                <div class="stress-metrics-row" id="stressMetricsRow"></div>
               </div>
-              <div id="rsExplain" class="small" style="margin:10px 0 4px"></div>
 
               <div class="report-section">
-                <span class="section-label">Build your scenario</span>
+                <span class="section-label">What if life goes sideways?</span>
+                <div class="stress-preset-row" id="stressPresetRow"></div>
+
                 <div class="stress-builder-grid">
                   <div class="stress-builder-col">
-                    <label class="stress-builder-label" for="stEmployment">Employment shock</label>
+                    <label class="stress-builder-label" for="stEmployment">Income shock</label>
                     <select id="stEmployment">
-                      <option value="none">No change</option>
+                      <option value="none">No income disruption</option>
                       <option value="jobloss" selected>Job loss</option>
                       <option value="cut25">25% income reduction</option>
                       <option value="cut50">50% income reduction</option>
                       <option value="leave">Temporary unpaid leave (2 mo)</option>
                     </select>
+                    <span class="stress-builder-caption">How long does your income stop or decrease?</span>
                   </div>
                   <div class="stress-builder-col">
-                    <label class="stress-builder-label" for="stEmergency">One-time emergency expense</label>
+                    <label class="stress-builder-label" for="stEmergency">Emergency expense</label>
                     <select id="stEmergency">
                       <option value="0">None</option>
                       <option value="5000">$5,000</option>
                       <option value="10000" selected>$10,000</option>
                       <option value="20000">$20,000</option>
                     </select>
+                    <span class="stress-builder-caption">One-time unexpected cost</span>
                   </div>
                   <div class="stress-builder-col">
-                    <label class="stress-builder-label" for="stHousing">Ongoing cost increase</label>
+                    <label class="stress-builder-label" for="stHousing">Monthly cost change</label>
                     <select id="stHousing">
-                      <option value="0" selected>None</option>
+                      <option value="0" selected>No change</option>
                       <option value="200">+$200/mo</option>
                       <option value="400">+$400/mo</option>
                     </select>
+                    <span class="stress-builder-caption">Permanent increase in monthly spending</span>
                   </div>
                 </div>
+
+                <div class="stress-story" id="stressStory"></div>
               </div>
 
               <div class="report-section">
                 <span class="section-label">Liquid assets over time</span>
-                <svg id="stChart" width="100%" height="220" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Liquid assets during stress event"></svg>
-                <div class="life-events-legend">
-                  <span class="life-events-legend-item"><span class="swatch" style="background:#4FC28A"></span>Cash + brokerage</span>
-                  <span class="life-events-legend-item"><span class="swatch" style="background:#5B8DEF"></span>Income resumes</span>
-                  <span class="life-events-legend-item"><span class="swatch" style="background:#E15B5B"></span>Zero line</span>
-                </div>
-                <div id="stChartSummary" class="small" style="margin-top:8px;font-weight:600"></div>
+                <svg id="stChart" width="100%" height="260" viewBox="0 0 640 260" preserveAspectRatio="none" role="img" aria-label="Liquid assets during stress event"></svg>
               </div>
 
               <div class="report-section">
-                <div class="stress-two-col">
-                  <div>
+                <div class="stress-insight-card" id="stressInsightCard"></div>
+              </div>
+
+              <div class="report-section">
+                <details class="methodology-compact">
+                  <summary>Detailed breakdown</summary>
+                  <div class="stress-detail-grid" id="stDetailGrid"></div>
+                  <div style="margin-top:16px">
                     <span class="section-label">Breaking point</span>
-                    <div id="stBreakingPoint" class="stress-callout">—</div>
+                    <div id="stBreakingPoint" class="stress-callout"></div>
                   </div>
-                  <div>
+                  <div style="margin-top:16px">
                     <span class="section-label">What breaks first</span>
-                    <div id="stVulnerability" class="stress-callout">—</div>
+                    <div id="stVulnerability" class="stress-callout"></div>
                   </div>
-                </div>
-              </div>
-
-              <div class="report-section">
-                <span class="section-label">Recovery timeline</span>
-                <div id="stRecovery" class="fn-stats-grid"></div>
-              </div>
-
-              <div class="report-section">
-                <span class="section-label">Compare cases</span>
-                <div id="stCompareTable" class="stress-compare-table"></div>
-              </div>
-
-              <div class="report-section">
-                <span class="section-label">Your biggest financial levers</span>
-                <div id="stLevers" class="tc-quick-list"></div>
-              </div>
-
-              <div class="report-section">
-                <span class="section-label">Recommendations</span>
-                <div id="stRecommendations" class="explain-list"></div>
+                  <div style="margin-top:16px">
+                    <span class="section-label">Compare cases</span>
+                    <div id="stCompareTable" class="stress-compare-table"></div>
+                  </div>
+                  <div style="margin-top:16px">
+                    <span class="section-label">Your biggest financial levers</span>
+                    <div id="stLevers" class="tc-quick-list"></div>
+                  </div>
+                </details>
               </div>
 
               <div class="report-section">
@@ -4110,7 +4164,7 @@ function runwayLabel(result){
 function emptyScenario(){ return { employment:'none', emergencyExpense:0, housingIncrease:0 }; }
 
 function renderStressChart(svgEl, result){
-  var w=640, h=220, padL=54, padR=20, padT=14, padB=30;
+  var w=640, h=260, padL=58, padR=20, padT=44, padB=32;
   var innerW=w-padL-padR, innerH=h-padT-padB;
   var vals = result.timeline.map(function(t){ return t.accessible; });
   var minV = Math.min.apply(null, vals.concat([0])), maxV = Math.max.apply(null, vals.concat([1]));
@@ -4118,6 +4172,17 @@ function renderStressChart(svgEl, result){
   function x(i){ return padL + (i/(vals.length-1))*innerW; }
   function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
   var html = '';
+
+  // Danger-zone shading: red below zero, amber below ~1 month of typical
+  // outflow, green above that - gives the eye an immediate "is this
+  // dangerous" read without having to study the numbers on the left.
+  var monthlyOutflowApprox = Math.max(1, result.timeline[0].essential + result.timeline[0].discretionary + result.timeline[0].debt);
+  var cautionThreshold = clamp(monthlyOutflowApprox, 0, maxV);
+  var y0 = y(0), yCaution = y(cautionThreshold), yTop = padT;
+  html += '<rect x="'+padL+'" y="'+y0+'" width="'+innerW+'" height="'+Math.max(0,(padT+innerH-y0))+'" fill="#E15B5B" opacity="0.05"/>';
+  html += '<rect x="'+padL+'" y="'+yCaution+'" width="'+innerW+'" height="'+Math.max(0,y0-yCaution)+'" fill="#E8B34A" opacity="0.05"/>';
+  html += '<rect x="'+padL+'" y="'+yTop+'" width="'+innerW+'" height="'+Math.max(0,yCaution-yTop)+'" fill="#4FC28A" opacity="0.04"/>';
+
   var zy = y(0);
   html += '<line x1="'+padL+'" y1="'+zy+'" x2="'+(w-padR)+'" y2="'+zy+'" stroke="#E15B5B" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.7"/>';
   [minV, (minV+maxV)/2, maxV].forEach(function(gv){
@@ -4125,9 +4190,6 @@ function renderStressChart(svgEl, result){
     html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.06)"/>';
     html += '<text x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
   });
-  // Month labels on the x-axis, every 6 months (every 3 for shorter windows) -
-  // without these there's no way to tell how long the dip actually lasted or
-  // when recovery kicked in, which is most of the point of a timeline chart.
   var monthCount = vals.length - 1;
   var tickInterval = monthCount <= 12 ? 3 : 6;
   for(var tm = 0; tm <= monthCount; tm += tickInterval){
@@ -4139,21 +4201,34 @@ function renderStressChart(svgEl, result){
   var areaD = pathD + ' L ' + x(vals.length-1) + ' ' + y(minV) + ' L ' + x(0) + ' ' + y(minV) + ' Z';
   html += '<path d="'+areaD+'" fill="rgba(79,194,138,.10)"></path>';
   html += '<path d="'+pathD+'" fill="none" stroke="#4FC28A" stroke-width="2.5"></path>';
-  if(result.breakingMonth !== null){
-    var bx = x(result.breakingMonth), by = y(0);
-    html += '<circle cx="'+bx+'" cy="'+by+'" r="5" fill="#E15B5B" stroke="#0A0B0E" stroke-width="1.5"/>';
-    html += '<text x="'+bx+'" y="'+(padT+10)+'" text-anchor="middle" fill="#E15B5B" font-size="11" font-weight="700">Breaks: Mo '+result.breakingMonth+'</text>';
-  }
-  // Marks exactly where income resumes, so a rebound in the line has a
-  // visible cause instead of looking like an unexplained recovery - this
-  // is what actually turns the trajectory around, and without labeling it
-  // the chart's long climb after the crisis can read as "things are fine"
-  // even when the ending balance is still well below where it started.
+
+  // START marker
+  html += '<circle cx="'+x(0)+'" cy="'+y(vals[0])+'" r="4" fill="#F0C168" stroke="#0A0B0E" stroke-width="1.5"/>';
+  html += '<text x="'+x(0)+'" y="'+(y(vals[0])-10)+'" text-anchor="start" fill="#F0C168" font-size="10" font-weight="700">START</text>';
+
+  // LOWEST POINT marker (always shown - the single most important number in a stress test)
+  var lowIdx = 0; for(var li=1; li<vals.length; li++){ if(vals[li] < vals[lowIdx]) lowIdx = li; }
+  var lx = x(lowIdx), ly = y(vals[lowIdx]);
+  html += '<circle cx="'+lx+'" cy="'+ly+'" r="5" fill="'+(vals[lowIdx]<=0.5 ? "#E15B5B" : "#E8B34A")+'" stroke="#0A0B0E" stroke-width="1.5"/>';
+  html += '<text x="'+lx+'" y="'+Math.max(padT+10, ly-12)+'" text-anchor="middle" fill="'+(vals[lowIdx]<=0.5 ? "#E15B5B" : "#E8B34A")+'" font-size="11" font-weight="700">LOWEST: '+money(vals[lowIdx])+'</text>';
+
+  // Income resumes marker
   if(result.stabilizeMonth !== null && result.stabilizeMonth < vals.length){
     var sx = x(result.stabilizeMonth), sy = y(vals[result.stabilizeMonth]);
     html += '<circle cx="'+sx+'" cy="'+sy+'" r="4" fill="#5B8DEF" stroke="#0A0B0E" stroke-width="1.5"/>';
-    html += '<text x="'+sx+'" y="'+(sy-10)+'" text-anchor="middle" fill="#5B8DEF" font-size="10" font-weight="700">Income resumes</text>';
+    html += '<text x="'+sx+'" y="'+(sy-12)+'" text-anchor="middle" fill="#5B8DEF" font-size="10" font-weight="700">INCOME RESUMES</text>';
   }
+
+  // Recovery-complete marker
+  if(result.rebuildAccessibleMonth !== null && result.rebuildAccessibleMonth < vals.length){
+    var rx = x(result.rebuildAccessibleMonth), ry = y(vals[result.rebuildAccessibleMonth]);
+    html += '<circle cx="'+rx+'" cy="'+ry+'" r="4" fill="#4FC28A" stroke="#0A0B0E" stroke-width="1.5"/>';
+    html += '<text x="'+rx+'" y="'+(ry-12)+'" text-anchor="middle" fill="#4FC28A" font-size="10" font-weight="700">RECOVERED</text>';
+  }
+
+  // END marker
+  var endIdx = vals.length-1;
+  html += '<circle cx="'+x(endIdx)+'" cy="'+y(vals[endIdx])+'" r="4" fill="#F2F3F5" stroke="#0A0B0E" stroke-width="1.5"/>';
   setHTML(svgEl, html);
 }
 
@@ -4178,9 +4253,17 @@ function computeVulnerability(a){
   return candidates[0];
 }
 
-function resilienceScore(a){
-  var standardStress = simulateStress(a, { employment:'jobloss', emergencyExpense:0, housingIncrease:0 }, 24);
-  var stressedRunway = standardStress.breakingMonth === null ? 36 : standardStress.breakingMonth;
+function resilienceScore(a, scenario){
+  // Accepts the CURRENT scenario being explored (falls back to a standard
+  // job-loss test if none given, e.g. for any old caller). This is a
+  // deliberate, disclosed behavior change from the previous version: the
+  // score used to always run against a fixed hidden scenario regardless
+  // of what was shown elsewhere on screen, which meant the score and the
+  // rest of the simulator could tell two different stories. Now they're
+  // always describing the same thing.
+  var s = scenario || { employment:'jobloss', emergencyExpense:0, housingIncrease:0 };
+  var stress = simulateStress(a, s, 24);
+  var stressedRunway = stress.breakingMonth === null ? 24 : stress.breakingMonth;
   var runwayPts = clamp(stressedRunway/6, 0, 1) * 40;
   var liquidityRatio = (a.liquidCash + a.brokerage) / Math.max(1, a.liquidCash + a.brokerage + a.retirement);
   var liquidityPts = liquidityRatio * 20;
@@ -4198,7 +4281,10 @@ function resilienceScore(a){
     vulnerable: 'Your current cash flow could become problematic fairly quickly under a real shock.',
     critical: 'You may want to prioritize building an emergency cushion before anything else.'
   }[tier];
-  return { score:score, tier:tier, tierLabel:tierLabel, tierExplain:tierExplain, stressedRunway:stressedRunway };
+  return {
+    score:score, tier:tier, tierLabel:tierLabel, tierExplain:tierExplain, stressedRunway:stressedRunway,
+    liquidityRatio:liquidityRatio, debtRatio:debtRatio, expenseRatio:expenseRatio
+  };
 }
 
 function renderEmergencyStressTest(v){
@@ -4242,43 +4328,163 @@ function renderEmergencyStressTest(v){
     };
   }
 
-  function fmtRunway(result){ return runwayLabel(result); }
+  // Scenario presets - clicking one sets all three controls at once and
+  // recalculates immediately, so exploring a named "what if" takes one
+  // click instead of three separate menu choices.
+  var PRESETS = [
+    { key:'jobloss', label:'Job loss', employment:'jobloss', emergency:'0', housing:'0' },
+    { key:'medical', label:'Medical emergency', employment:'none', emergency:'10000', housing:'0' },
+    { key:'homerepair', label:'Home repair', employment:'none', emergency:'20000', housing:'0' },
+    { key:'leave', label:'Unpaid leave', employment:'leave', emergency:'0', housing:'0' },
+    { key:'cut25', label:'Income reduction', employment:'cut25', emergency:'0', housing:'0' },
+    { key:'recession', label:'Recession', employment:'cut50', emergency:'5000', housing:'200' }
+  ];
+  var presetRow = $("stressPresetRow");
+  if(presetRow){
+    presetRow.innerHTML = PRESETS.map(function(p){
+      return '<button type="button" class="stress-preset-btn" data-preset="'+p.key+'">'+p.label+'</button>';
+    }).join('');
+    presetRow.querySelectorAll('.stress-preset-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var p = PRESETS.filter(function(x){ return x.key===btn.dataset.preset; })[0];
+        if(!p) return;
+        employmentEl.value = p.employment;
+        emergencyEl.value = p.emergency;
+        housingEl.value = p.housing;
+        update();
+        __track('stress_preset_selected', { preset: p.key });
+      });
+    });
+  }
+  function syncPresetActiveState(){
+    if(!presetRow) return;
+    var emp=employmentEl.value, emg=emergencyEl.value, hou=housingEl.value;
+    presetRow.querySelectorAll('.stress-preset-btn').forEach(function(btn){
+      var p = PRESETS.filter(function(x){ return x.key===btn.dataset.preset; })[0];
+      btn.classList.toggle('active', !!p && p.employment===emp && p.emergency===emg && p.housing===hou);
+    });
+  }
+
+  // Real computed marginal-impact deltas for the "biggest levers" list -
+  // unchanged math, just pulled into its own function so both the insight
+  // narrative and the detailed-breakdown levers list can reuse it.
+  function computeLevers(assumptions, scenario, stressedResult){
+    var baseRunwayMonths = stressedResult.breakingMonth === null ? 24 : stressedResult.breakingMonth;
+    function deltaFor(modifiedAssumptions){
+      var r = simulateStress(modifiedAssumptions, scenario, 24);
+      var m = r.breakingMonth === null ? 24 : r.breakingMonth;
+      return m - baseRunwayMonths;
+    }
+    return [
+      { label:'+$5,000 emergency savings', delta: deltaFor(Object.assign({}, assumptions, { liquidCash: assumptions.liquidCash + 5000 })) },
+      { label:'-$500/mo discretionary spending', delta: deltaFor(Object.assign({}, assumptions, { discretionary: Math.max(0, assumptions.discretionary - 500) })) },
+      { label:'Find replacement income 1 month faster', delta: deltaFor(Object.assign({}, assumptions, { monthsToFindJob: Math.max(1, assumptions.monthsToFindJob - 1) })) },
+      { label:'-$300/mo debt payments', delta: deltaFor(Object.assign({}, assumptions, { debtPayments: Math.max(0, assumptions.debtPayments - 300) })) }
+    ].filter(function(l){ return l.delta > 0; }).sort(function(x,y){ return y.delta - x.delta; }).slice(0,3);
+  }
 
   function update(){
     var scenario = currentScenario();
-    var normalResult = simulateStress(a, emptyScenario(), 24);
+    syncPresetActiveState();
+
     var stressedResult = simulateStress(a, scenario, 24);
+    var vals = stressedResult.timeline.map(function(t){ return t.accessible; });
+    var lowIdx = 0; for(var li=1; li<vals.length; li++){ if(vals[li] < vals[lowIdx]) lowIdx = li; }
+    var lowestVal = vals[lowIdx];
 
-    $("rwNormal").textContent = fmtRunway(normalResult);
-    $("rwStressed").textContent = fmtRunway(stressedResult);
+    // Resilience score now reflects the CURRENT scenario (see note on the
+    // function itself) so the ring, tier, and factors always describe
+    // exactly what's shown in the rest of the simulator.
+    var rs = resilienceScore(a, scenario);
 
-    var rs = resilienceScore(a);
+    var ringFg = $("rsRingFg");
+    if(ringFg){
+      var circumference = 2*Math.PI*52;
+      var offset = circumference * (1 - rs.score/100);
+      ringFg.setAttribute('stroke-dasharray', circumference.toFixed(1));
+      ringFg.setAttribute('stroke-dashoffset', offset.toFixed(1));
+      ringFg.setAttribute('stroke', rs.tier==='strong' ? '#4FC28A' : rs.tier==='watch' ? '#E8B34A' : rs.tier==='vulnerable' ? '#E8A34A' : '#E15B5B');
+    }
     $("rsScoreNum").textContent = rs.score;
     var tierEl = $("rsScoreTier");
     tierEl.textContent = rs.tierLabel;
     tierEl.className = 'rs-tier ' + rs.tier;
-    $("rsExplain").textContent = rs.tierExplain + ' (Based on a standard job-loss stress test, independent of the scenario built below.)';
+    $("rsExplain").textContent = rs.tierExplain;
+
+    var factorsEl = $("rsFactors");
+    var factors = [];
+    factors.push(rs.liquidityRatio >= 0.55 ? { txt:'Strong liquid reserves', pos:true } : { txt:'Limited liquid reserves', pos:false });
+    factors.push(rs.expenseRatio <= 0.7 ? { txt:'Low fixed expenses', pos:true } : { txt:'High fixed expenses', pos:false });
+    if(rs.debtRatio <= 0.08) factors.push({ txt:'Low debt burden', pos:true });
+    if(rs.stressedRunway < 3) factors.push({ txt:'High exposure to income interruption', pos:false });
+    factorsEl.innerHTML = factors.slice(0,3).map(function(f){
+      return '<span class="rs-factor '+(f.pos?'pos':'neg')+'">'+(f.pos?'+ ':'\u2212 ')+f.txt+'</span>';
+    }).join('');
+
+    var recoveryStatus = stressedResult.rebuildAccessibleMonth !== null ? 'Fully recovered'
+      : (stressedResult.breakingMonth === null ? 'Never at risk' : 'Still recovering');
+    var metrics = [
+      { label:'Lowest liquid assets', val: money(lowestVal), sub: 'Around month '+lowIdx, cls: lowestVal<=0 ? 'bad' : '' },
+      { label:'Stressed runway', val: runwayLabel(stressedResult), sub: stressedResult.breakingMonth!==null ? 'Reserves run out here' : "Doesn't run out in this window" },
+      { label:'Recovery time', val: stressedResult.rebuildAccessibleMonth!==null ? 'Month '+stressedResult.rebuildAccessibleMonth : '\u2014', sub: 'Back to pre-stress level' },
+      { label:'Recovery status', val: recoveryStatus, sub: recoveryStatus==='Fully recovered' ? 'Within 24 months' : (recoveryStatus==='Never at risk' ? 'Reserves stayed healthy' : 'Not yet, in this window') }
+    ];
+    $("stressMetricsRow").innerHTML = metrics.map(function(m){
+      return '<div class="stress-metric-card"><div class="stress-metric-num '+(m.cls||'')+'">'+m.val+'</div><div class="stress-metric-label">'+m.label+'</div><div class="stress-metric-sub">'+m.sub+'</div></div>';
+    }).join('');
+
+    var storyEl = $("stressStory");
+    var storySteps = [
+      { label:'Starting assets', val: money(stressedResult.startingAccessible) },
+      { label:'Lowest point', val: money(lowestVal), cls: lowestVal<=0 ? 'bad' : '' },
+      { label:'Runway', val: runwayLabel(stressedResult) }
+    ];
+    if(stressedResult.stabilizeMonth !== null) storySteps.push({ label:'Income resumes', val:'Month '+stressedResult.stabilizeMonth });
+    storySteps.push(stressedResult.rebuildAccessibleMonth !== null
+      ? { label:'Fully recovered', val:'Month '+stressedResult.rebuildAccessibleMonth, cls:'good' }
+      : { label:'End of window', val: money(stressedResult.finalAccessible) });
+    storyEl.innerHTML = storySteps.map(function(s,i){
+      return (i>0 ? '<span class="stress-story-arrow">\u2192</span>' : '') +
+        '<div class="stress-story-step"><span class="stress-story-val '+(s.cls||'')+'">'+s.val+'</span><span class="stress-story-label">'+s.label+'</span></div>';
+    }).join('');
 
     renderStressChart($("stChart"), stressedResult);
-    (function(){
-      var summaryEl = $("stChartSummary");
-      if(!summaryEl) return;
-      var startVal = stressedResult.startingAccessible;
-      var endVal = stressedResult.finalAccessible;
-      var diff = endVal - startVal;
-      var windowMonths = stressedResult.timeline.length - 1;
-      if(diff < -1){
-        summaryEl.innerHTML = '<span style="color:var(--bad)">↓ Net down '+money(Math.abs(diff))+' over '+windowMonths+' months</span> — still recovering from this scenario by the end of the window.';
-      } else if(diff > 1){
-        summaryEl.innerHTML = '<span style="color:var(--good)">↑ Net up '+money(diff)+' over '+windowMonths+' months</span> — fully recovered and rebuilding within this window.';
-      } else {
-        summaryEl.textContent = 'Roughly back to where you started by month '+windowMonths+'.';
-      }
-    })();
+
+    var vuln = computeVulnerability(a);
+    var leverCandidates = computeLevers(a, scenario, stressedResult);
+    var insightEl = $("stressInsightCard");
+    var parts = [];
+    if(stressedResult.breakingMonth === null){
+      parts.push("You're financially resilient under this scenario \u2014 your liquid assets never run out across the full 24-month window.");
+    } else {
+      parts.push('Under this scenario, your liquid assets run out around <b>month '+stressedResult.breakingMonth+'</b>, dropping to <b>'+money(lowestVal)+'</b> at the lowest point.');
+    }
+    parts.push('Your biggest vulnerability is <b>'+vuln.title.toLowerCase()+'</b>.');
+    if(leverCandidates.length){
+      var top = leverCandidates[0];
+      parts.push(top.label+' would extend your runway by about <b>'+top.delta+' months</b>.');
+    }
+    insightEl.innerHTML = parts.join(' ');
+
+    var netDiff = stressedResult.finalAccessible - stressedResult.startingAccessible;
+    var detailEl = $("stDetailGrid");
+    var detailItems = [
+      { label:'Starting liquid assets', val: money(stressedResult.startingAccessible) },
+      { label:'Lowest liquid assets', val: money(lowestVal) },
+      { label:'Total drawdown', val: money(Math.max(0, stressedResult.startingAccessible - lowestVal)) },
+      { label:'Emergency expense', val: money(scenario.emergencyExpense) },
+      { label:'Monthly cost increase', val: money(scenario.housingIncrease)+'/mo' },
+      { label:'Final liquid assets', val: money(stressedResult.finalAccessible) },
+      { label:'Net change (window)', val: (netDiff>=0?'+':'')+money(netDiff) },
+      { label:'Touched retirement funds', val: stressedResult.touchedRetirement ? 'Yes' : 'No' }
+    ];
+    detailEl.innerHTML = detailItems.map(function(d){
+      return '<div class="stress-detail-item"><div class="stress-detail-label">'+d.label+'</div><div class="stress-detail-val">'+d.val+'</div></div>';
+    }).join('');
 
     var bpEl = $("stBreakingPoint");
     if(stressedResult.breakingMonth === null){
-      bpEl.innerHTML = '<b>No breaking point in 36 months</b>Under this scenario, your accessible reserves (cash + brokerage) never run out within the simulated window.';
+      bpEl.innerHTML = '<b>No breaking point in this window</b>Your accessible reserves (cash + brokerage) never run out under this scenario.';
     } else {
       var lastMonth = stressedResult.timeline[stressedResult.breakingMonth];
       var driverParts = [
@@ -4288,25 +4494,10 @@ function renderEmergencyStressTest(v){
         { label:'the emergency expense', val: lastMonth.emergency }
       ].sort(function(x,y){ return y.val - x.val; });
       var incomeGap = Math.max(0, a.income - lastMonth.income);
-      bpEl.innerHTML = '<b>Around month '+stressedResult.breakingMonth+'</b>Your income drops by about '+money(incomeGap)+'/mo under this scenario, while '+driverParts[0].label+' ('+money(driverParts[0].val)+'/mo) makes up the largest share of what keeps going out.' + (stressedResult.touchedRetirement ? ' At this point you\'d need to tap retirement accounts - a real last resort.' : '');
+      bpEl.innerHTML = '<b>Around month '+stressedResult.breakingMonth+'</b>Your income drops by about '+money(incomeGap)+'/mo under this scenario, while '+driverParts[0].label+' ('+money(driverParts[0].val)+'/mo) makes up the largest share of what keeps going out.' + (stressedResult.touchedRetirement ? ' At this point you\u2019d need to tap retirement accounts - a real last resort.' : '');
     }
-
-    var vuln = computeVulnerability(a);
     $("stVulnerability").innerHTML = '<b>'+vuln.title+'</b>'+vuln.detail;
 
-    var recEl = $("stRecovery");
-    var recoveryItems = [
-      { label:'Time to stabilize income', val: stressedResult.stabilizeMonth !== null ? stressedResult.stabilizeMonth+' mo' : (scenario.employment==='none' ? '—' : 'Not within 36 mo') },
-      { label:'Time to rebuild emergency fund', val: stressedResult.rebuildLiquidMonth !== null ? stressedResult.rebuildLiquidMonth+' mo' : (stressedResult.breakingMonth===null ? '—' : 'Not within 36 mo') },
-      { label:'Time to pre-stress position', val: stressedResult.rebuildAccessibleMonth !== null ? stressedResult.rebuildAccessibleMonth+' mo' : (stressedResult.breakingMonth===null ? '—' : 'Not within 36 mo') }
-    ];
-    recEl.innerHTML = recoveryItems.map(function(r){
-      return '<div class="card" style="padding:10px;text-align:center"><div class="small">'+r.label+'</div><div class="mono" style="font-weight:700;font-size:15px;color:var(--gold-bright)">'+r.val+'</div></div>';
-    }).join('');
-
-    // Compare cases: three fixed illustrative scenarios, always shown the
-    // same regardless of the interactive builder above, so they stay a
-    // stable point of reference as assumptions are tuned.
     var CASES = [
       { name:'Base Case', scenario:{ employment:'cut25', emergencyExpense:5000, housingIncrease:0 } },
       { name:'Severe Case', scenario:{ employment:'jobloss', emergencyExpense:10000, housingIncrease:200 } },
@@ -4318,51 +4509,17 @@ function renderEmergencyStressTest(v){
         worstAssumptions = Object.assign({}, a, { monthsToFindJob: a.monthsToFindJob + 3 });
       }
       var r = simulateStress(worstAssumptions, c.scenario, 24);
-      return { name:c.name, runway:fmtRunway(r), breaking: r.breakingMonth===null ? '—' : 'Month '+r.breakingMonth, recovery: r.rebuildAccessibleMonth===null ? (r.breakingMonth===null?'—':'36+ mo') : r.rebuildAccessibleMonth+' mo' };
+      return { name:c.name, runway:runwayLabel(r), breaking: r.breakingMonth===null ? '\u2014' : 'Month '+r.breakingMonth, recovery: r.rebuildAccessibleMonth===null ? (r.breakingMonth===null?'\u2014':'24+ mo') : r.rebuildAccessibleMonth+' mo' };
     });
     $("stCompareTable").innerHTML =
       '<table><thead><tr><th>Scenario</th><th>Runway</th><th>Breaking point</th><th>Recovery</th></tr></thead><tbody>' +
       compareRows.map(function(r){ return '<tr><td>'+r.name+'</td><td>'+r.runway+'</td><td>'+r.breaking+'</td><td>'+r.recovery+'</td></tr>'; }).join('') +
       '</tbody></table>';
 
-    // Top levers: real computed deltas from three candidate changes,
-    // applied one at a time against the current scenario.
-    var baseRunwayMonths = stressedResult.breakingMonth === null ? 36 : stressedResult.breakingMonth;
-    function deltaFor(modifiedAssumptions){
-      var r = simulateStress(modifiedAssumptions, scenario, 24);
-      var m = r.breakingMonth === null ? 36 : r.breakingMonth;
-      return m - baseRunwayMonths;
-    }
-    var leverCandidates = [
-      { label:'+$5,000 emergency savings', delta: deltaFor(Object.assign({}, a, { liquidCash: a.liquidCash + 5000 })) },
-      { label:'-$500/mo discretionary spending', delta: deltaFor(Object.assign({}, a, { discretionary: Math.max(0, a.discretionary - 500) })) },
-      { label:'Find replacement income 1 month faster', delta: deltaFor(Object.assign({}, a, { monthsToFindJob: Math.max(1, a.monthsToFindJob - 1) })) },
-      { label:'-$300/mo debt payments', delta: deltaFor(Object.assign({}, a, { debtPayments: Math.max(0, a.debtPayments - 300) })) }
-    ].filter(function(l){ return l.delta > 0; }).sort(function(x,y){ return y.delta - x.delta; }).slice(0,3);
     var leversEl = $("stLevers");
     leversEl.innerHTML = leverCandidates.length
       ? leverCandidates.map(function(l){ return '<div class="tc-quick-item"><span>'+l.label+'</span><b>+'+l.delta+' mo</b></div>'; }).join('')
-      : '<div class="empty-note">Under this scenario, your reserves already don\'t run out within 36 months - no lever shows a further improvement to measure.</div>';
-
-    // Recommendations, built from the same computed levers plus the
-    // vulnerability diagnosis, referencing actual numbers rather than
-    // generic advice.
-    var recsEl = $("stRecommendations");
-    var recs = [];
-    if(leverCandidates.length){
-      var top = leverCandidates[0];
-      recs.push({ title:'Your highest-impact move', body: top.label + ' would extend your stressed runway by about ' + top.delta + ' months, based on your current numbers.' });
-    }
-    if(vuln.key === 'liquidity'){
-      recs.push({ title:'Increase liquidity', body: 'You have real net worth, but relatively little of it is quickly accessible. Shifting even a portion of retirement or brokerage balances toward liquid savings would meaningfully shorten how long a real shock takes to become serious.' });
-    }
-    if(rs.stressedRunway < 6){
-      recs.push({ title:'Build toward a 6-month cushion', body: 'Under a standard job-loss scenario, your reserves last about ' + rs.stressedRunway + ' months. Common guidance targets 6 - closing that gap is the single biggest lever on your Resilience Score.' });
-    }
-    recs.push({ title:'Revisit this after life changes', body: 'This simulation is only as good as the assumptions above - update them whenever your income, expenses, or savings meaningfully change.' });
-    recsEl.innerHTML = recs.map(function(r){
-      return '<div class="explain-item"><span class="ei-dot" style="background:var(--gold-bright)"></span><div><b>'+r.title+'</b><span>'+r.body+'</span></div></div>';
-    }).join('');
+      : '<div class="empty-note">Under this scenario, your reserves already don\u2019t run out within this window - no lever shows a further improvement to measure.</div>';
   }
 
   employmentEl.onchange = update;
