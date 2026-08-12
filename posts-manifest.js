@@ -77,4 +77,8 @@ var GMF_BLOG_POSTS = [
   { slug:"capital-gains-tax-explained", title:"Capital Gains Tax Explained: Short-Term vs. Long-Term (and Why the Difference Is Huge)", category:"Taxes" }
 ,
   { slug:"credit-utilization-ratio-explained", title:"Credit Utilization: The Single Number Quietly Controlling Your Credit Score", category:"Credit" }
+,
+  { slug:"flexible-spending-accounts-explained", title:"FSAs Explained: The Pre-Tax Benefit Most People Waste Every Year", category:"Taxes" }
+,
+  { slug:"quarterly-estimated-taxes-explained", title:"Quarterly Estimated Taxes: What Freelancers and Side Hustlers Actually Owe (and When)", category:"Taxes" }
 ];
