@@ -25,7 +25,7 @@
       --text:#F2F3F5; --muted:#8B92A0; --muted-2:#5D636F;
       --gold:#C9A227; --gold-soft:rgba(201,162,39,.12); --gold-bright:#E4C24E;
       --good:#34D399; --bad:#F16565;
-      --shadow:0 24px 60px rgba(0,0,0,.5);
+      --shadow:0 30px 80px -20px rgba(0,0,0,.6), 0 10px 30px -10px rgba(0,0,0,.4);
       --font-display:'Space Grotesk',system-ui,sans-serif;
       --font-body:'Inter',system-ui,sans-serif;
       --font-mono:'IBM Plex Mono',monospace;
@@ -41,25 +41,35 @@
       position:relative; overflow-x:hidden;
     }
 
+    /* Ambient background: aurora glow + a very fine hairline grid for
+       texture, kept subtle enough to read as premium rather than busy. */
     .aurora{ position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none }
-    .aurora span{ position:absolute; border-radius:50%; filter:blur(80px); opacity:.35 }
-    .aurora .a1{ width:460px; height:460px; top:-180px; left:6%; background:radial-gradient(circle, rgba(201,162,39,.4), transparent 70%); animation:auroraDrift1 18s ease-in-out infinite }
-    .aurora .a2{ width:380px; height:380px; bottom:-160px; right:4%; background:radial-gradient(circle, rgba(52,211,153,.2), transparent 70%); animation:auroraDrift2 21s ease-in-out infinite }
+    .aurora span{ position:absolute; border-radius:50%; filter:blur(90px); opacity:.32 }
+    .aurora .a1{ width:520px; height:520px; top:-200px; left:2%; background:radial-gradient(circle, rgba(201,162,39,.42), transparent 70%); animation:auroraDrift1 19s ease-in-out infinite }
+    .aurora .a2{ width:420px; height:420px; bottom:-180px; right:0%; background:radial-gradient(circle, rgba(52,211,153,.22), transparent 70%); animation:auroraDrift2 22s ease-in-out infinite }
     @keyframes auroraDrift1{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(50px,40px) scale(1.15) } }
     @keyframes auroraDrift2{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(-40px,-30px) scale(1.1) } }
     @media (prefers-reduced-motion: reduce){ .aurora span{ animation:none } }
 
-    .lines{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.28 }
+    .grid-texture{
+      position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.5;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size:44px 44px;
+      -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 40%, black 0%, transparent 75%);
+      mask-image: radial-gradient(ellipse 70% 55% at 50% 40%, black 0%, transparent 75%);
+    }
 
-    .rise{ opacity:0; transform:translateY(16px); animation:riseIn .7s cubic-bezier(.16,1,.3,1) forwards; animation-delay:var(--d,0s) }
+    .rise{ opacity:0; transform:translateY(16px); animation:riseIn .75s cubic-bezier(.16,1,.3,1) forwards; animation-delay:var(--d,0s) }
     @keyframes riseIn{ to{ opacity:1; transform:none } }
     @media (prefers-reduced-motion: reduce){ .rise{ animation:none; opacity:1; transform:none } }
 
-    /* ---------- Top nav: intentional, not a floating pill afterthought ---------- */
+    /* ---------- Top nav ---------- */
     .welcome-hdr{
-      position:relative; z-index:1; width:100%; max-width:480px;
+      position:relative; z-index:2; width:100%; max-width:440px;
       display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:26px;
+      margin-bottom:28px;
     }
     .welcome-hdr .brandmark{ display:flex; align-items:center; gap:9px; text-decoration:none; color:var(--text) }
     .welcome-hdr .mini-seal{
@@ -77,30 +87,56 @@
     @keyframes sealShimmerOnce{ 0%{ left:-60% } 100%{ left:140% } }
     @media (prefers-reduced-motion: reduce){ .welcome-hdr .mini-seal::after{ animation:none } }
     .welcome-hdr .mini-seal span{ font-family:var(--font-mono); font-weight:700; font-size:10.5px; color:var(--gold-bright) }
-    .welcome-hdr .mini-word{ font-family:var(--font-display); font-weight:700; font-size:14.5px }
+    .welcome-hdr .mini-word{ font-family:var(--font-display); font-weight:700; font-size:14.5px; letter-spacing:-.01em }
     .welcome-hdr .advisors-link{
-      font-size:13px; color:var(--muted); text-decoration:none; font-weight:600;
+      font-size:12.5px; color:var(--muted); text-decoration:none; font-weight:600;
       padding:7px 14px; border:1px solid var(--line); border-radius:9px;
       display:inline-flex; align-items:center; gap:6px;
-      transition:border-color .15s ease, color .15s ease, background .15s ease;
+      transition:border-color .18s ease, color .18s ease, background .18s ease;
     }
-    .welcome-hdr .advisors-link:hover{ border-color:rgba(201,162,39,.4); color:var(--gold-bright); background:var(--surface) }
+    .welcome-hdr .advisors-link:hover{ border-color:rgba(201,162,39,.4); color:var(--gold-bright); background:rgba(255,255,255,.03) }
 
-    /* ---------- Card: lighter, more like a product surface than a modal ---------- */
+    /* ---------- Card: glass surface, not a flat panel ---------- */
     .card{
-      position:relative; z-index:1;
-      width:100%; max-width:480px; background:var(--surface); border:1px solid var(--line);
-      border-radius:22px; padding:44px 36px 36px; box-shadow:var(--shadow);
+      position:relative; z-index:1; isolation:isolate;
+      width:100%; max-width:440px;
+      background:rgba(20,22,28,.68);
+      -webkit-backdrop-filter:blur(22px) saturate(140%);
+      backdrop-filter:blur(22px) saturate(140%);
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:24px; padding:46px 38px 38px; box-shadow:var(--shadow);
+      overflow:hidden;
     }
+    /* Fine top hairline accent, matching the app's own calculator card treatment */
+    .card::before{
+      content:""; position:absolute; top:0; left:0; right:0; height:2px; z-index:1;
+      background:linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+      opacity:.75;
+    }
+    /* Soft inner highlight along the top edge - the thing that actually
+       reads as "glass" rather than just "dark card with blur" */
+    .card::after{
+      content:""; position:absolute; inset:0; z-index:0; border-radius:24px; pointer-events:none;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), transparent 40%);
+    }
+    .card > *{ position:relative; z-index:1 }
 
-    /* ---------- Grade badge — the visual hero ---------- */
-    .grade-hero{ margin-bottom:26px }
+    /* ---------- Grade badge - the visual hero ---------- */
+    .grade-hero{ margin-bottom:28px; position:relative }
+    .grade-badge-glow{
+      position:absolute; top:8px; left:50%; transform:translateX(-50%);
+      width:150px; height:150px; border-radius:50%; z-index:0;
+      background:radial-gradient(circle, rgba(201,162,39,.35), transparent 70%);
+      filter:blur(8px); opacity:.8; animation:glowPulse 4s ease-in-out infinite;
+    }
+    @keyframes glowPulse{ 0%,100%{ opacity:.6; transform:translateX(-50%) scale(1) } 50%{ opacity:.9; transform:translateX(-50%) scale(1.08) } }
+    @media (prefers-reduced-motion: reduce){ .grade-badge-glow{ animation:none } }
     .grade-badge{
-      position:relative; width:104px; height:104px; margin:0 auto 14px; border-radius:26px;
+      position:relative; z-index:1; width:104px; height:104px; margin:0 auto 16px; border-radius:26px;
       background:linear-gradient(165deg, #1a1607, var(--bg-2) 60%);
-      border:1.5px solid rgba(201,162,39,.4);
+      border:1.5px solid rgba(201,162,39,.45);
       display:grid; place-items:center; overflow:hidden;
-      box-shadow: 0 0 0 1px rgba(201,162,39,.08), 0 20px 40px -12px rgba(201,162,39,.25), inset 0 1px 0 rgba(255,255,255,.05);
+      box-shadow: 0 0 0 1px rgba(201,162,39,.1), 0 24px 44px -14px rgba(201,162,39,.3), inset 0 1px 0 rgba(255,255,255,.06);
     }
     .grade-badge span{ font-family:var(--font-serif); font-weight:700; font-size:40px; color:var(--gold-bright); letter-spacing:-.02em }
     .grade-badge::after{
@@ -110,90 +146,101 @@
     }
     @keyframes sealShimmer{ 0%{ left:-60% } 100%{ left:140% } }
     @media (prefers-reduced-motion: reduce){ .grade-badge::after{ animation:none } }
-    .grade-hero-label{ font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted-2) }
+    .grade-hero-label{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-2) }
 
-    h1{ font-family:var(--font-display); font-size:1.6rem; margin:14px 0 8px; letter-spacing:-.015em; line-height:1.2 }
-    p.lede{ max-width:340px; margin:0 auto 26px; font-size:14.5px; line-height:1.5; color:var(--muted) }
+    h1{ font-family:var(--font-display); font-weight:700; font-size:1.75rem; margin:16px 0 10px; letter-spacing:-.02em; line-height:1.18 }
+    p.lede{ max-width:320px; margin:0 auto 26px; font-size:14.5px; line-height:1.55; color:var(--muted) }
 
     .live-stat{
-      display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:11.5px;
-      color:var(--gold-bright); background:var(--gold-soft); border:1px solid rgba(201,162,39,.3);
-      padding:6px 13px; border-radius:999px; margin-bottom:24px;
+      display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:11px;
+      color:var(--gold-bright); background:rgba(201,162,39,.09); border:1px solid rgba(201,162,39,.25);
+      padding:6px 13px; border-radius:999px; margin-bottom:26px;
     }
 
     /* ---------- Survey ---------- */
-    .survey{ margin-bottom:20px; text-align:left }
-    .survey-label{ font-size:12px; color:var(--muted); margin-bottom:9px; font-weight:600 }
+    .survey{ margin-bottom:22px; text-align:left }
+    .survey-label{ font-size:12px; color:var(--muted); margin-bottom:10px; font-weight:600 }
     .survey-options{ display:flex; flex-wrap:wrap; gap:7px }
     .survey-pill{
-      appearance:none; border:1px solid var(--line); background:var(--bg-2); color:var(--muted);
-      font-family:var(--font-body); font-size:12.5px; padding:7px 12px; border-radius:999px; cursor:pointer;
-      transition:border-color .12s ease, color .12s ease, background .12s ease;
+      appearance:none; border:1px solid var(--line); background:rgba(255,255,255,.02); color:var(--muted);
+      font-family:var(--font-body); font-size:12.5px; padding:8px 13px; border-radius:999px; cursor:pointer;
+      transition:border-color .16s cubic-bezier(.2,.8,.2,1), color .16s ease, background .16s ease, transform .12s ease;
     }
-    .survey-pill:hover{ border-color:var(--gold) }
+    .survey-pill:hover{ border-color:var(--gold); color:var(--text); transform:translateY(-1px) }
+    .survey-pill:active{ transform:translateY(0) }
     .survey-pill:focus-visible{ outline:2px solid var(--gold-bright); outline-offset:2px }
     .survey-pill.selected{ background:var(--gold-soft); border-color:var(--gold); color:var(--gold-bright); font-weight:700 }
     .survey-pill-skip{
-      display:block; margin-top:9px; border-style:dashed; font-size:12px; color:var(--muted-2); opacity:.85;
+      display:block; margin-top:10px; border-style:dashed; font-size:12px; color:var(--muted-2); opacity:.85;
     }
-    .survey-pill-skip:hover{ opacity:1; color:var(--muted) }
+    .survey-pill-skip:hover{ opacity:1; color:var(--muted); transform:none }
     .survey-pill-skip.selected{ background:var(--surface-2); border-color:var(--muted-2); border-style:dashed; color:var(--muted); font-weight:600 }
 
-    /* ---------- Primary action: this is the obvious next step ---------- */
+    /* ---------- Primary action ---------- */
     .primary-action{ margin-bottom:6px }
-    .email-field-label{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; text-align:left }
+    .email-field-label{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px; text-align:left }
     .email-field-label span:first-child{ font-size:12.5px; color:var(--muted); font-weight:600 }
-    .email-field-label span.opt{ font-size:11px; color:var(--muted-2); font-family:var(--font-mono) }
+    .email-field-label span.opt{ font-size:10.5px; color:var(--muted-2); font-family:var(--font-mono); letter-spacing:.03em }
     input[type="email"]{
-      width:100%; padding:14px 15px; border-radius:11px; border:1px solid var(--line);
-      background:var(--bg-2); color:var(--text); font-family:var(--font-mono); font-size:14.5px;
-      margin-bottom:14px; transition:border-color .15s ease, box-shadow .15s ease;
+      width:100%; padding:15px 16px; border-radius:12px; border:1px solid var(--line);
+      background:rgba(0,0,0,.22); color:var(--text); font-family:var(--font-mono); font-size:14.5px;
+      margin-bottom:16px; transition:border-color .18s cubic-bezier(.2,.8,.2,1), box-shadow .18s cubic-bezier(.2,.8,.2,1);
+      box-shadow:inset 0 1px 3px rgba(0,0,0,.2);
     }
-    input[type="email"]:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-soft) }
-    input[type="email"]:hover:not(:focus){ border-color:var(--muted-2) }
+    input[type="email"]::placeholder{ color:var(--muted-2) }
+    input[type="email"]:focus{ outline:none; border-color:var(--gold); box-shadow:inset 0 1px 3px rgba(0,0,0,.2), 0 0 0 4px var(--gold-soft) }
+    input[type="email"]:hover:not(:focus){ border-color:rgba(255,255,255,.18) }
+
     .btn{
-      appearance:none; border:1px solid var(--line); font-family:var(--font-body); font-weight:600;
-      font-size:14.5px; padding:14px 20px; border-radius:11px; cursor:pointer; width:100%;
-      transition:transform .12s ease, filter .12s ease, box-shadow .15s ease;
+      position:relative; overflow:hidden;
+      appearance:none; border:1px solid var(--line); font-family:var(--font-body); font-weight:700;
+      font-size:14.5px; padding:15px 20px; border-radius:12px; cursor:pointer; width:100%;
+      transition:transform .14s cubic-bezier(.2,.8,.2,1), filter .14s ease, box-shadow .18s ease;
     }
-    .btn:hover{ filter:brightness(1.06) }
     .btn:active{ transform:translateY(1px) }
     .btn.gold{
       background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700;
-      box-shadow:0 10px 24px -8px rgba(201,162,39,.5);
+      box-shadow:0 14px 30px -10px rgba(201,162,39,.55);
     }
-    .btn.gold:hover{ box-shadow:0 14px 30px -8px rgba(201,162,39,.6) }
+    /* Subtle shine sweep on hover - a premium micro-interaction rather than a constant animation */
+    .btn.gold::after{
+      content:""; position:absolute; top:0; left:-75%; width:50%; height:100%;
+      background:linear-gradient(75deg, transparent, rgba(255,255,255,.4), transparent);
+      transform:skewX(-20deg); transition:left .55s cubic-bezier(.2,.8,.2,1);
+    }
+    .btn.gold:hover{ box-shadow:0 18px 38px -10px rgba(201,162,39,.65); transform:translateY(-1px) }
+    .btn.gold:hover::after{ left:130% }
     .btn.gold:focus-visible{ outline:2px solid var(--gold-bright); outline-offset:3px }
-    .btn.gold:disabled{ opacity:.75; cursor:default }
+    .btn.gold:disabled{ opacity:.75; cursor:default; transform:none }
+    .btn.gold:disabled::after{ display:none }
+    @media (prefers-reduced-motion: reduce){ .btn.gold::after{ transition:none } }
+
     .skip-link{
-      display:block; width:100%; margin-top:14px; background:none; border:none; padding:6px;
+      display:block; width:100%; margin-top:16px; background:none; border:none; padding:6px;
       color:var(--muted); font-family:var(--font-body); font-size:13px;
-      cursor:pointer; text-align:center; transition:color .12s ease;
+      cursor:pointer; text-align:center; transition:color .16s ease;
     }
     .skip-link:hover{ color:var(--text); text-decoration:underline; text-underline-offset:3px }
 
     .survey-error{ display:none; color:var(--bad); font-size:12.5px; margin-top:8px; text-align:left }
 
-    .foot-note{ margin-top:24px; font-size:12px; color:var(--muted-2) }
+    .foot-note{ margin-top:26px; font-size:11.5px; color:var(--muted-2); line-height:1.6 }
     .foot-note a{ color:var(--muted) }
-    .foot-note.discord{ margin-top:10px }
-    .foot-note.discord a{ color:var(--gold); text-decoration:none; font-weight:600 }
+    .foot-note.discord{ margin-top:11px }
+    .foot-note.discord a{ color:var(--gold); text-decoration:none; font-weight:600; transition:color .16s ease }
+    .foot-note.discord a:hover{ color:var(--gold-bright) }
 
     @media (max-width:480px){
-      .card{ padding:34px 22px 28px; border-radius:18px }
+      .card{ padding:36px 24px 30px; border-radius:20px }
       .grade-badge{ width:88px; height:88px; border-radius:22px }
       .grade-badge span{ font-size:34px }
-      h1{ font-size:1.4rem }
+      h1{ font-size:1.5rem }
     }
   </style>
 </head>
 <body>
   <div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span></div>
-  <svg class="lines" aria-hidden="true" width="100%" height="100%" viewBox="0 0 800 800" preserveAspectRatio="none">
-    <polyline points="0,700 150,650 300,560 450,440 600,320 800,200" fill="none" stroke="#C9A227" stroke-width="2" opacity="0.3"/>
-    <circle cx="300" cy="560" r="4" fill="#E4C24E" opacity="0.5"/>
-    <circle cx="600" cy="320" r="4" fill="#E4C24E" opacity="0.5"/>
-  </svg>
+  <div class="grid-texture" aria-hidden="true"></div>
 
   <div class="welcome-hdr rise" style="--d:0s">
     <a class="brandmark" href="index.html">
@@ -205,12 +252,13 @@
 
   <div class="card rise" style="--d:.08s">
     <div class="grade-hero">
+      <div class="grade-badge-glow" aria-hidden="true"></div>
       <div class="grade-badge"><span>A+</span></div>
       <div class="grade-hero-label">Your Financial Grade</div>
     </div>
 
-    <h1>How healthy is your financial life?</h1>
-    <p class="lede">Get your personalized financial grade in seconds.</p>
+    <h1>Welcome to Grade My Finance</h1>
+    <p class="lede">Enter your email below to get started.</p>
     <div class="live-stat" id="liveStat">Loading live stats…</div>
 
     <div class="survey" id="surveyBlock">
@@ -245,7 +293,7 @@
       <div class="email-field-label"><span>Email address</span><span class="opt">optional</span></div>
       <input type="email" name="email" placeholder="you@example.com">
 
-      <button type="submit" class="btn gold">Get My Financial Grade</button>
+      <button type="submit" class="btn gold">Enter GradeMyFinance</button>
     </form>
 
     <button onclick="continueSession()" class="skip-link">Continue without email</button>
