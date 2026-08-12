@@ -915,6 +915,22 @@ section.block{ padding:76px 0 }
 .rc-actions-divider{ width:1px; height:22px; background:var(--line); margin:0 6px; flex:none }
 .rc-actions .btn svg{ flex:none; opacity:.85 }
 
+.rc-actions-primary{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center }
+.rc-more-wrap{ position:relative }
+.rc-more-menu{
+  display:none; position:absolute; bottom:calc(100% + 8px); right:0; min-width:210px;
+  background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow);
+  padding:8px; z-index:60;
+}
+.rc-more-menu.open{ display:block }
+.rc-more-item{
+  display:flex; align-items:center; gap:10px; width:100%; box-sizing:border-box; padding:10px 12px; border-radius:8px;
+  background:none; border:none; cursor:pointer; text-align:left; color:var(--text);
+  font-family:var(--font-body); font-size:13px; font-weight:500;
+}
+.rc-more-item:hover{ background:var(--surface-2) }
+.rc-more-item svg{ flex:none; opacity:.75 }
+
 /* Free-tier paywall treatment: real content sits blurred underneath a gold
    "unlock" card, rather than being hidden outright — the blur itself is
    part of the pitch (there's clearly something real there worth seeing). */
@@ -1287,6 +1303,55 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
   padding:8px 10px; border-radius:8px; border:1px solid var(--line); background:var(--bg-2); color:var(--text);
   font-family:var(--font-mono); font-size:13px;
 }
+
+/* Risk badges alongside the tier pill - secondary, more muted so the
+   primary tier pill still reads as the main signal, not two competing
+   badges shouting the same thing. */
+.rs-badges{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px }
+.rs-risk{
+  display:inline-block; font-family:var(--font-mono); font-weight:600; font-size:11px; letter-spacing:.04em;
+  text-transform:uppercase; padding:4px 10px; border-radius:99px; border:1px solid var(--line); color:var(--muted);
+}
+
+/* What Drives Your Score */
+.stress-drivers{ display:grid; gap:16px; margin-top:10px }
+.stress-driver-row{ display:grid; gap:6px }
+.stress-driver-head{ display:flex; justify-content:space-between; align-items:baseline; gap:10px }
+.stress-driver-name{ font-size:13.5px; font-weight:700; color:var(--text) }
+.stress-driver-strength{ font-family:var(--font-mono); font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em }
+.stress-driver-strength.strong{ color:var(--good) }
+.stress-driver-strength.good{ color:#8FCB9E }
+.stress-driver-strength.fair{ color:var(--gold-bright) }
+.stress-driver-strength.weak{ color:var(--bad) }
+.stress-driver-bar-track{ height:8px; border-radius:99px; background:var(--surface-2); overflow:hidden }
+.stress-driver-bar-fill{ height:100%; border-radius:99px; transition:width .8s cubic-bezier(.2,.8,.2,1) }
+.stress-driver-bar-fill.strong{ background:linear-gradient(90deg,var(--good-2),var(--good)) }
+.stress-driver-bar-fill.good{ background:linear-gradient(90deg,#3AA173,#8FCB9E) }
+.stress-driver-bar-fill.fair{ background:linear-gradient(90deg,var(--gold),var(--gold-bright)) }
+.stress-driver-bar-fill.weak{ background:linear-gradient(90deg,#a34141,var(--bad)) }
+.stress-driver-explain{ font-size:12.5px; color:var(--muted); line-height:1.5 }
+
+/* Pro analysis card - now structured as a verdict line plus 3 labeled
+   facts rather than a single paragraph, so it reads as an analysis
+   rather than a longer version of the same summary shown elsewhere. */
+.stress-analysis-verdict{ font-size:15px; font-weight:600; color:var(--text); margin-bottom:14px; line-height:1.5 }
+.stress-analysis-facts{ display:grid; gap:12px }
+.stress-analysis-fact-label{ font-family:var(--font-mono); font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--gold-bright); margin-bottom:3px }
+.stress-analysis-fact-body{ font-size:13.5px; color:var(--text); line-height:1.5 }
+
+/* Chart hover tooltip */
+.stress-chart-wrap{ position:relative }
+.stress-chart-tooltip{
+  display:none; position:absolute; top:8px; transform:translateX(-50%);
+  background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 12px;
+  box-shadow:var(--shadow); pointer-events:none; z-index:5; min-width:150px;
+}
+.sct-month{ font-family:var(--font-mono); font-size:11px; font-weight:700; color:var(--gold-bright); margin-bottom:6px; text-transform:uppercase; letter-spacing:.03em }
+.sct-row{ display:flex; justify-content:space-between; gap:14px; font-size:12px; padding:2px 0 }
+.sct-row span{ color:var(--muted) }
+.sct-row b{ font-family:var(--font-mono); color:var(--text) }
+.sct-row b.good{ color:var(--good) }
+.sct-row b.bad{ color:var(--bad) }
 
 /* Reused grid for freedom-number stat cards */
 .fn-stats-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
@@ -2222,13 +2287,21 @@ body.is-pro .ad-slot{ display:none !important }
                     <div class="rs-ring-num"><span id="rsScoreNum">—</span><span class="rs-ring-max">/100</span></div>
                   </div>
                   <div class="rs-text">
-                    <div class="rs-tier" id="rsScoreTier">—</div>
+                    <div class="rs-badges">
+                      <span class="rs-tier" id="rsScoreTier">—</span>
+                      <span class="rs-risk" id="rsRiskLevel">—</span>
+                    </div>
                     <p class="rs-explain" id="rsExplain">—</p>
                     <div class="rs-factors" id="rsFactors"></div>
                   </div>
                 </div>
 
                 <div class="stress-metrics-row" id="stressMetricsRow"></div>
+              </div>
+
+              <div class="report-section">
+                <span class="section-label">What drives your score?</span>
+                <div class="stress-drivers" id="stressDrivers"></div>
               </div>
 
               <div class="report-section">
@@ -2273,10 +2346,14 @@ body.is-pro .ad-slot{ display:none !important }
 
               <div class="report-section">
                 <span class="section-label">Liquid assets over time</span>
-                <svg id="stChart" width="100%" height="280" viewBox="0 0 640 280" preserveAspectRatio="none" role="img" aria-label="Liquid assets during stress event"></svg>
+                <div class="stress-chart-wrap">
+                  <svg id="stChart" width="100%" height="280" viewBox="0 0 640 280" preserveAspectRatio="none" role="img" aria-label="Liquid assets during stress event"></svg>
+                  <div class="stress-chart-tooltip" id="stChartTooltip"></div>
+                </div>
               </div>
 
               <div class="report-section">
+                <span class="section-label">Pro analysis</span>
                 <div class="stress-insight-card" id="stressInsightCard"></div>
               </div>
 
@@ -2331,21 +2408,20 @@ body.is-pro .ad-slot{ display:none !important }
     </div>
 
     <div class="rc-actions">
-      <div class="rc-actions-group">
-        <button class="btn sm" id="downloadImage" type="button" aria-label="Download grade card"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13m0 0l-4-4m4 4l4-4M4 19h16"/></svg><span class="rc-label">Download grade card</span></button>
-        <button class="btn sm" id="downloadStoryImage" type="button" aria-label="Download for Stories"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg><span class="rc-label">Download for Stories</span></button>
-        <button class="btn gold sm pro-only-show" id="downloadCertBtn" type="button" aria-label="Download Certificate"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/></svg><span class="rc-label">Download Certificate</span></button>
-      </div>
-      <div class="rc-actions-divider"></div>
-      <div class="rc-actions-group">
-        <button class="btn sm" id="compareFriend" type="button" aria-label="Compare with a friend"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="10" cy="7" r="3.5"/><path d="M22 20v-1a4 4 0 0 0-3-3.87"/><path d="M16 3.6a4 4 0 0 1 0 7.8"/></svg><span class="rc-label">Compare with a friend</span></button>
-        <button class="btn sm" id="shareReport" type="button" aria-label="Share"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-3.9M8.6 13.5l6.8 3.9"/></svg><span class="rc-label">Share</span></button>
-        <button class="btn sm" id="copyLink" type="button" aria-label="Copy share link" title="This link contains your actual entered numbers, encoded in the URL — only share it with people you trust."><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7a5 5 0 0 1 0-10h2"/><path d="M15 7h2a5 5 0 0 1 0 10h-2"/><path d="M8 12h8"/></svg><span class="rc-label">Copy share link</span></button>
-      </div>
-      <div class="rc-actions-divider"></div>
-      <div class="rc-actions-group">
-        <button class="btn sm" id="printReport" type="button" aria-label="Print or save as PDF"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span class="rc-label">Print / save as PDF</span></button>
+      <div class="rc-actions-primary">
         <button class="btn gold sm" id="calcAgain" type="button" aria-label="Recalculate"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg><span class="rc-label">Recalculate</span></button>
+        <button class="btn sm" id="shareReport" type="button" aria-label="Share"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-3.9M8.6 13.5l6.8 3.9"/></svg><span class="rc-label">Share</span></button>
+        <button class="btn sm" id="downloadCertBtn" type="button" aria-label="Download Report"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/></svg><span class="rc-label">Download Report</span></button>
+        <div class="rc-more-wrap">
+          <button class="btn sm" id="rcMoreBtn" type="button" aria-label="More options" aria-expanded="false"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg><span class="rc-label">More</span></button>
+          <div class="rc-more-menu" id="rcMoreMenu">
+            <button class="rc-more-item" id="downloadImage" type="button" aria-label="Download grade card"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13m0 0l-4-4m4 4l4-4M4 19h16"/></svg> Download grade card</button>
+            <button class="rc-more-item" id="downloadStoryImage" type="button" aria-label="Download for Stories"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg> Download for Stories</button>
+            <button class="rc-more-item" id="compareFriend" type="button" aria-label="Compare with a friend"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="10" cy="7" r="3.5"/><path d="M22 20v-1a4 4 0 0 0-3-3.87"/><path d="M16 3.6a4 4 0 0 1 0 7.8"/></svg> Compare with a friend</button>
+            <button class="rc-more-item" id="copyLink" type="button" aria-label="Copy share link" title="This link contains your actual entered numbers, encoded in the URL — only share it with people you trust."><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7a5 5 0 0 1 0-10h2"/><path d="M15 7h2a5 5 0 0 1 0 10h-2"/><path d="M8 12h8"/></svg> Copy share link</button>
+            <button class="rc-more-item" id="printReport" type="button" aria-label="Print or save as PDF"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Print / save as PDF</button>
+          </div>
+        </div>
       </div>
     </div>
     <canvas id="shareCanvas" width="1080" height="1080" style="display:none"></canvas>
@@ -2660,6 +2736,31 @@ if(settingsBtn && settingsMenu){
   });
   // Don't close the menu when interacting with the currency dropdown inside it
   settingsMenu.addEventListener("click", function(e){ e.stopPropagation(); });
+}
+
+// "More" menu for secondary report-card actions (same open/close pattern
+// as the settings menu above), except here clicking an item should close
+// the menu right after firing that item's own action - each button below
+// already has its own click handler wired up elsewhere in this file.
+var rcMoreBtn = $("rcMoreBtn"), rcMoreMenu = $("rcMoreMenu");
+if(rcMoreBtn && rcMoreMenu){
+  rcMoreBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var isOpen = rcMoreMenu.classList.toggle("open");
+    rcMoreBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+  document.addEventListener("click", function(e){
+    if(!rcMoreMenu.contains(e.target) && !rcMoreBtn.contains(e.target)){
+      rcMoreMenu.classList.remove("open");
+      rcMoreBtn.setAttribute("aria-expanded", "false");
+    }
+  });
+  rcMoreMenu.querySelectorAll(".rc-more-item").forEach(function(item){
+    item.addEventListener("click", function(){
+      rcMoreMenu.classList.remove("open");
+      rcMoreBtn.setAttribute("aria-expanded", "false");
+    });
+  });
 }
 
 var currencySelect = $("currencySelect");
@@ -4163,7 +4264,7 @@ function runwayLabel(result){
 
 function emptyScenario(){ return { employment:'none', emergencyExpense:0, housingIncrease:0 }; }
 
-function renderStressChart(svgEl, result){
+function renderStressChart(svgEl, result, baseIncome){
   var w=640, h=280, padL=58, padR=20, padT=56, padB=32;
   var innerW=w-padL-padR, innerH=h-padT-padB;
   var vals = result.timeline.map(function(t){ return t.accessible; });
@@ -4264,7 +4365,75 @@ function renderStressChart(svgEl, result){
   // metrics and story ticker above the chart.
   var endIdx = vals.length-1;
   html += '<circle cx="'+x(endIdx)+'" cy="'+y(vals[endIdx])+'" r="4" fill="#F2F3F5" stroke="#0A0B0E" stroke-width="1.5"/>';
+
+  // Empty group, always present, that the hover handler below repaints
+  // on its own (crosshair + highlighted dot) without re-rendering the
+  // whole chart on every mouse move.
+  html += '<g id="stHoverLayer"></g>';
   setHTML(svgEl, html);
+
+  // Data the hover handler needs, stored directly on the element so it
+  // always reads the CURRENT chart's numbers even though this function
+  // re-runs (and this data gets overwritten) every time the scenario
+  // changes - the listener itself is only attached once, see below.
+  svgEl._chartData = { vals:vals, timeline:result.timeline, w:w, h:h, padL:padL, padR:padR, padT:padT, padB:padB, innerW:innerW, innerH:innerH, minV:minV, maxV:maxV, baseIncome: baseIncome||0 };
+  attachStressChartHover(svgEl);
+}
+
+// Attached once per chart element (guarded below) rather than re-attached
+// on every render, since the render function runs on every scenario
+// change - re-adding listeners each time would stack up duplicate
+// handlers. Always reads the LATEST data via svgEl._chartData, which
+// renderStressChart refreshes on every call, so the hover stays correct
+// even as the scenario changes without needing to re-attach anything.
+function attachStressChartHover(svgEl){
+  if(svgEl._hoverAttached) return;
+  svgEl._hoverAttached = true;
+  var tooltipEl = svgEl.parentElement ? svgEl.parentElement.querySelector('.stress-chart-tooltip') : null;
+
+  function hide(){
+    if(tooltipEl) tooltipEl.style.display = 'none';
+    var layer = svgEl.querySelector('#stHoverLayer');
+    if(layer) layer.innerHTML = '';
+  }
+  svgEl.addEventListener('mouseleave', hide);
+  svgEl.addEventListener('mousemove', function(e){
+    var data = svgEl._chartData;
+    if(!data) return;
+    var rect = svgEl.getBoundingClientRect();
+    if(!rect.width) return;
+    var relX = clamp((e.clientX - rect.left) / rect.width, 0, 1);
+    var vbX = relX * data.w;
+    var n = data.vals.length;
+    var idx = Math.round(((vbX - data.padL) / data.innerW) * (n-1));
+    idx = Math.max(0, Math.min(n-1, idx));
+    var t = data.timeline[idx];
+
+    var px = data.padL + (idx/(n-1))*data.innerW;
+    var py = data.padT + data.innerH - ((t.accessible - data.minV)/(data.maxV-data.minV))*data.innerH;
+    var layer = svgEl.querySelector('#stHoverLayer');
+    if(layer){
+      layer.innerHTML =
+        '<line x1="'+px+'" y1="'+data.padT+'" x2="'+px+'" y2="'+(data.h-data.padB)+'" stroke="rgba(255,255,255,.18)" stroke-width="1"/>' +
+        '<circle cx="'+px+'" cy="'+py+'" r="4.5" fill="#F2F3F5" stroke="#0A0B0E" stroke-width="1.5"/>';
+    }
+
+    if(tooltipEl){
+      var burn = t.essential + t.discretionary + t.debt;
+      var incomeStatus = t.income <= 0.5 ? 'No income' : (t.income < data.baseIncome*0.99 ? 'Reduced income' : 'Normal income');
+      var prevAccessible = idx>0 ? data.vals[idx-1] : t.accessible;
+      var delta = t.accessible - prevAccessible;
+      tooltipEl.innerHTML =
+        '<div class="sct-month">Month '+idx+'</div>' +
+        '<div class="sct-row"><span>Liquid assets</span><b>'+money(t.accessible)+'</b></div>' +
+        '<div class="sct-row"><span>Monthly burn</span><b>'+money(burn)+'/mo</b></div>' +
+        '<div class="sct-row"><span>Income</span><b>'+incomeStatus+'</b></div>' +
+        (idx>0 ? '<div class="sct-row"><span>Change</span><b class="'+(delta>=0?'good':'bad')+'">'+(delta>=0?'+':'')+money(delta)+'</b></div>' : '');
+      var tipLeft = clamp(relX*rect.width, 70, Math.max(70, rect.width-70));
+      tooltipEl.style.left = tipLeft+'px';
+      tooltipEl.style.display = 'block';
+    }
+  });
 }
 
 // Standalone diagnostic (independent of the current scenario builder
@@ -4316,9 +4485,20 @@ function resilienceScore(a, scenario){
     vulnerable: 'Your current cash flow could become problematic fairly quickly under a real shock.',
     critical: 'You may want to prioritize building an emergency cushion before anything else.'
   }[tier];
+  var riskLevel = { strong:'Low Risk', watch:'Moderate Risk', vulnerable:'High Risk', critical:'Severe Risk' }[tier];
   return {
     score:score, tier:tier, tierLabel:tierLabel, tierExplain:tierExplain, stressedRunway:stressedRunway,
-    liquidityRatio:liquidityRatio, debtRatio:debtRatio, expenseRatio:expenseRatio
+    liquidityRatio:liquidityRatio, debtRatio:debtRatio, expenseRatio:expenseRatio, riskLevel:riskLevel,
+    // Exact same weighted components that produce the score above, just
+    // surfaced as 0-100 "strength" percentages per factor so the UI can
+    // explain WHY the score landed where it did without re-deriving or
+    // approximating anything.
+    factors: [
+      { key:'liquidity', label:'Liquidity', pct: Math.round(liquidityRatio*100) },
+      { key:'spending', label:'Monthly spending', pct: Math.round(clamp(1 - expenseRatio, 0, 1)*100) },
+      { key:'debt', label:'Debt obligations', pct: Math.round(clamp(1 - debtRatio/0.4, 0, 1)*100) },
+      { key:'recovery', label:'Income recovery', pct: Math.round(clamp(stressedRunway/6, 0, 1)*100) }
+    ]
   };
 }
 
@@ -4442,8 +4622,10 @@ function renderEmergencyStressTest(v){
     }
     $("rsScoreNum").textContent = rs.score;
     var tierEl = $("rsScoreTier");
-    tierEl.textContent = rs.tierLabel;
+    tierEl.textContent = rs.tierLabel + ' Resilience';
     tierEl.className = 'rs-tier ' + rs.tier;
+    var riskEl = $("rsRiskLevel");
+    if(riskEl) riskEl.textContent = rs.riskLevel;
     $("rsExplain").textContent = rs.tierExplain;
 
     var factorsEl = $("rsFactors");
@@ -4455,6 +4637,29 @@ function renderEmergencyStressTest(v){
     factorsEl.innerHTML = factors.slice(0,3).map(function(f){
       return '<span class="rs-factor '+(f.pos?'pos':'neg')+'">'+(f.pos?'+ ':'\u2212 ')+f.txt+'</span>';
     }).join('');
+
+    // What drives your score - the exact same weighted components behind
+    // the number above, just shown per-factor so the score is explained
+    // rather than just stated.
+    var driversEl = $("stressDrivers");
+    if(driversEl){
+      var DRIVER_EXPLANATIONS = {
+        liquidity: function(){ return 'You hold about '+Math.round(rs.liquidityRatio*100)+'% of your accessible net worth in cash or brokerage rather than retirement accounts.'; },
+        spending: function(){ return 'Essential and discretionary spending together use about '+Math.round(rs.expenseRatio*100)+'% of your income.'; },
+        debt: function(){ return 'Estimated debt payments run about '+Math.round(rs.debtRatio*100)+'% of your income.'; },
+        recovery: function(){ return rs.stressedRunway >= 24 ? 'Under a standard job-loss test, your reserves hold up for the full simulated window.' : 'Under a standard job-loss test, your reserves last about '+rs.stressedRunway+' months before running out.'; }
+      };
+      driversEl.innerHTML = rs.factors.map(function(f){
+        var strengthTier = f.pct>=80 ? 'strong' : f.pct>=60 ? 'good' : f.pct>=40 ? 'fair' : 'weak';
+        var strengthLabel = { strong:'Strong', good:'Good', fair:'Fair', weak:'Weak' }[strengthTier];
+        var explain = DRIVER_EXPLANATIONS[f.key] ? DRIVER_EXPLANATIONS[f.key]() : '';
+        return '<div class="stress-driver-row">' +
+          '<div class="stress-driver-head"><span class="stress-driver-name">'+f.label+'</span><span class="stress-driver-strength '+strengthTier+'">'+strengthLabel+'</span></div>' +
+          '<div class="stress-driver-bar-track"><div class="stress-driver-bar-fill '+strengthTier+'" style="width:'+f.pct+'%"></div></div>' +
+          '<div class="stress-driver-explain">'+explain+'</div>' +
+        '</div>';
+      }).join('');
+    }
 
     var recoveryStatus = stressedResult.rebuildAccessibleMonth !== null ? 'Fully recovered'
       : (stressedResult.breakingMonth === null ? 'Never at risk' : 'Still recovering');
@@ -4483,23 +4688,34 @@ function renderEmergencyStressTest(v){
         '<div class="stress-story-step"><span class="stress-story-val '+(s.cls||'')+'">'+s.val+'</span><span class="stress-story-label">'+s.label+'</span></div>';
     }).join('');
 
-    renderStressChart($("stChart"), stressedResult);
+    renderStressChart($("stChart"), stressedResult, a.income);
 
     var vuln = computeVulnerability(a);
     var leverCandidates = computeLevers(a, scenario, stressedResult);
     var insightEl = $("stressInsightCard");
-    var parts = [];
-    if(stressedResult.breakingMonth === null){
-      parts.push("You're financially resilient under this scenario \u2014 your liquid assets never run out across the full 24-month window.");
-    } else {
-      parts.push('Under this scenario, your liquid assets run out around <b>month '+stressedResult.breakingMonth+'</b>, dropping to <b>'+money(lowestVal)+'</b> at the lowest point.');
-    }
-    parts.push('Your biggest vulnerability is <b>'+vuln.title.toLowerCase()+'</b>.');
-    if(leverCandidates.length){
-      var top = leverCandidates[0];
-      parts.push(top.label+' would extend your runway by about <b>'+top.delta+' months</b>.');
-    }
-    insightEl.innerHTML = parts.join(' ');
+    // Pro Analysis: a one-sentence verdict plus 3 labeled facts (strength /
+    // vulnerability / what matters most) - deliberately a different shape
+    // from a flowing paragraph, built from the same real computed values
+    // (vulnerability diagnosis + top lever), not duplicated content.
+    var strongestFactor = rs.factors.slice().sort(function(x,y){ return y.pct-x.pct; })[0];
+    var STRENGTH_TEXT = {
+      liquidity: 'You maintain substantial liquid reserves relative to your modeled expenses.',
+      spending: 'Your monthly spending leaves real margin, even under this scenario.',
+      debt: 'Your debt obligations stay light relative to your income, even under stress.',
+      recovery: (stressedResult.breakingMonth === null) ? 'Your liquid assets never run out under this scenario.' : 'Your income recovery timeline keeps the disruption relatively short.'
+    };
+    var verdict = stressedResult.breakingMonth === null
+      ? ('Your financial resilience is <b>'+rs.tierLabel.toLowerCase()+'</b>, and your biggest exposure is <b>'+vuln.title.toLowerCase()+'</b>.')
+      : ('Your financial resilience is <b>'+rs.tierLabel.toLowerCase()+'</b>, but this scenario would meaningfully reduce your liquid reserves before you recover.');
+    var factsHtml =
+      '<div class="stress-analysis-facts">' +
+        '<div><div class="stress-analysis-fact-label">Your biggest strength</div><div class="stress-analysis-fact-body">'+(STRENGTH_TEXT[strongestFactor.key]||'')+'</div></div>' +
+        '<div><div class="stress-analysis-fact-label">Your biggest vulnerability</div><div class="stress-analysis-fact-body">'+vuln.detail+'</div></div>' +
+        (leverCandidates.length
+          ? '<div><div class="stress-analysis-fact-label">What matters most</div><div class="stress-analysis-fact-body">'+leverCandidates[0].label+' would extend your runway by about '+leverCandidates[0].delta+' months.</div></div>'
+          : '') +
+      '</div>';
+    insightEl.innerHTML = '<div class="stress-analysis-verdict">'+verdict+'</div>' + factsHtml;
 
     var netDiff = stressedResult.finalAccessible - stressedResult.startingAccessible;
     var detailEl = $("stDetailGrid");
