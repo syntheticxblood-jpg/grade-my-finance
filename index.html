@@ -1198,56 +1198,60 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 .stress-burn-bar{ height:16px; border-radius:99px; background:var(--surface-2); overflow:hidden; position:relative }
 .stress-burn-bar-fill{ height:100%; border-radius:99px; transition:width 1s cubic-bezier(.2,.8,.2,1) }
 
-/* Financial Resilience Simulator */
-/* ================= Financial Resilience Simulator (redesign) ================= */
-.stress-hero{ margin-bottom:8px }
-.stress-hero-top{ margin-bottom:18px }
-.stress-hero-sub{ margin:6px 0 0; color:var(--muted); font-size:13.5px; line-height:1.55; max-width:520px }
+/* ================= Financial Resilience Simulator (simplified) ================= */
+.stress-hero-v2{ margin-bottom:6px; text-align:center }
+.stress-hero-sub{ margin:8px auto 0; color:var(--muted); font-size:14px; line-height:1.55; max-width:440px }
 
-.rs-block{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line) }
-.rs-ring-wrap{ position:relative; flex:none; width:120px; height:120px }
-.rs-ring{ display:block; transform:rotate(0)}
+.stress-score-block{ display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding:32px 0 8px }
+.rs-ring-wrap{ position:relative; flex:none; width:130px; height:130px }
+.rs-ring{ display:block }
 .rs-ring circle{ transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1), stroke .3s ease }
 .rs-ring-num{
   position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:2px;
   font-family:var(--font-display); font-weight:700;
 }
-.rs-ring-num span:first-child{ font-size:34px; color:var(--text) }
-.rs-ring-max{ font-size:13px; color:var(--muted); font-weight:500 }
-.rs-text{ flex:1 1 260px; min-width:220px }
-.rs-tier{
-  display:inline-block; font-family:var(--font-mono); font-weight:700; font-size:12px; letter-spacing:.05em;
-  text-transform:uppercase; padding:4px 11px; border-radius:99px; margin-bottom:8px;
+.rs-ring-num span:first-child{ font-size:38px; color:var(--text) }
+.rs-ring-max{ font-size:14px; color:var(--muted); font-weight:500 }
+.stress-score-text{ text-align:left; max-width:340px }
+.stress-tier-v2{
+  font-family:var(--font-mono); font-weight:700; font-size:20px; letter-spacing:.03em; margin-bottom:8px;
 }
-.rs-tier.strong{ color:var(--good); background:rgba(79,194,138,.14) }
-.rs-tier.watch{ color:var(--gold-bright); background:rgba(232,179,74,.14) }
-.rs-tier.vulnerable{ color:#E8A34A; background:rgba(232,163,74,.14) }
-.rs-tier.critical{ color:var(--bad); background:rgba(226,87,76,.14) }
-.rs-explain{ margin:0 0 10px; color:var(--text); font-size:14px; line-height:1.55 }
-.rs-factors{ display:flex; gap:8px; flex-wrap:wrap }
-.rs-factor{ display:flex; align-items:center; gap:6px; font-size:12px; padding:5px 10px; border-radius:99px; background:var(--surface-2); border:1px solid var(--line) }
-.rs-factor.pos{ color:var(--good) }
-.rs-factor.neg{ color:var(--bad) }
+.stress-tier-v2.strong{ color:var(--good) }
+.stress-tier-v2.watch{ color:var(--gold-bright) }
+.stress-tier-v2.vulnerable{ color:#E8A34A }
+.stress-tier-v2.critical{ color:var(--bad) }
+.stress-explain-v2{ margin:0; color:var(--muted); font-size:14.5px; line-height:1.6 }
 
-.stress-metrics-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:18px }
-@media (max-width:760px){ .stress-metrics-row{ grid-template-columns:repeat(2,1fr) } }
-.stress-metric-card{ display:flex; flex-direction:column; gap:2px; align-items:center; text-align:center }
-.stress-metric-num{ font-family:var(--font-serif); font-weight:700; font-size:26px; color:var(--text); line-height:1.15 }
-.stress-metric-num.good{ color:var(--good) }
-.stress-metric-num.bad{ color:var(--bad) }
-.stress-metric-label{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:700 }
-.stress-metric-sub{ font-size:11.5px; color:var(--muted-2) }
+.stress-chart-hero{ padding:28px 0 8px }
 
-.stress-preset-row{ display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 18px }
+.stress-outcomes-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; padding:10px 0 8px; text-align:center }
+@media (max-width:560px){ .stress-outcomes-row{ grid-template-columns:1fr; gap:20px } }
+.stress-outcome-card{ display:flex; flex-direction:column; gap:4px }
+.stress-outcome-num{ font-family:var(--font-serif); font-weight:700; font-size:28px; color:var(--text) }
+.stress-outcome-num.good{ color:var(--good) }
+.stress-outcome-num.bad{ color:var(--bad) }
+.stress-outcome-label{ font-size:12.5px; color:var(--muted) }
+
+.stress-preset-row{ display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 16px; justify-content:center }
 .stress-preset-btn{
   appearance:none; border:1px solid var(--line); background:var(--surface-2); color:var(--muted);
-  font-family:var(--font-body); font-weight:600; font-size:12.5px; padding:9px 14px; border-radius:99px; cursor:pointer;
+  font-family:var(--font-body); font-weight:600; font-size:13px; padding:10px 16px; border-radius:99px; cursor:pointer;
   transition:border-color .15s ease, color .15s ease, background .15s ease;
 }
 .stress-preset-btn:hover{ color:var(--text); border-color:rgba(232,179,74,.4) }
 .stress-preset-btn.active{
   background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700;
 }
+
+.stress-adjust-details{ text-align:center }
+.stress-adjust-details summary{
+  cursor:pointer; font-size:13.5px; font-weight:600; color:var(--muted); list-style:none; display:inline-block;
+}
+.stress-adjust-details summary::-webkit-details-marker{ display:none }
+.stress-adjust-details summary:hover{ color:var(--text) }
+.stress-adjust-arrow{ display:inline-block; transition:transform .2s ease }
+.stress-adjust-details[open] .stress-adjust-arrow{ transform:rotate(90deg) }
+.stress-adjust-body{ text-align:left; margin-top:18px }
 
 .stress-builder-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:6px }
 @media (max-width:640px){ .stress-builder-grid{ grid-template-columns:1fr } }
@@ -1261,17 +1265,21 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 .stress-builder-col select:focus{ outline:none; border-color:var(--gold-bright) }
 .stress-builder-caption{ font-size:11.5px; color:var(--muted-2); line-height:1.4 }
 
-.stress-story{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:18px; padding:16px; background:var(--surface-2); border-radius:12px }
-.stress-story-step{ display:flex; flex-direction:column; gap:2px; align-items:center; text-align:center; min-width:88px }
-.stress-story-val{ font-family:var(--font-mono); font-weight:700; font-size:14.5px; color:var(--text) }
-.stress-story-val.good{ color:var(--good) }
-.stress-story-val.bad{ color:var(--bad) }
-.stress-story-label{ font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em }
-.stress-story-arrow{ color:var(--muted-2); font-size:15px; flex:none }
-@media (max-width:640px){ .stress-story{ flex-direction:column; align-items:flex-start } .stress-story-arrow{ transform:rotate(90deg); align-self:center } }
+/* View your full analysis - a single unified accordion replacing what
+   used to be 5 separate always-visible sections */
+.stress-full-analysis{ margin-top:8px; padding-top:20px; border-top:1px solid var(--line) }
+.stress-full-analysis summary{
+  cursor:pointer; list-style:none; display:flex; flex-direction:column; gap:3px;
+}
+.stress-full-analysis summary::-webkit-details-marker{ display:none }
+.stress-full-analysis-title{ font-size:15px; font-weight:700; color:var(--text) }
+.stress-full-analysis-title:hover{ color:var(--gold-bright) }
+.stress-full-analysis-sub{ font-size:12.5px; color:var(--muted) }
+.stress-full-analysis-body{ margin-top:22px; display:grid; gap:26px }
+.stress-section{ display:grid; gap:10px }
 
 .stress-insight-card{
-  background:linear-gradient(155deg, rgba(91,141,239,.08), transparent); border:1px solid rgba(91,141,239,.25);
+  background:var(--surface-2); border:1px solid var(--line);
   border-radius:14px; padding:18px 20px; font-size:14px; color:var(--text); line-height:1.65;
 }
 .stress-insight-card b{ color:var(--gold-bright) }
@@ -2272,13 +2280,10 @@ body.is-pro .ad-slot{ display:none !important }
         <div class="pro-blur-section" style="min-height:400px">
           <div class="pro-blur-content">
             <div class="card">
-              <div class="stress-hero">
-                <div class="stress-hero-top">
-                  <span class="section-label" style="margin:0">Financial Resilience Simulator <span class="pro-badge">★ PRO</span></span>
-                  <p class="stress-hero-sub">If your income stopped tomorrow, what actually happens to your money? Simulated month by month, using your real numbers.</p>
-                </div>
-
-                <div class="rs-block">
+              <div class="stress-hero-v2">
+                <span class="section-label" style="margin:0">Financial Resilience Simulator <span class="pro-badge">★ PRO</span></span>
+                <p class="stress-hero-sub">If your income stopped tomorrow, what actually happens to your money?</p>
+                <div class="stress-score-block">
                   <div class="rs-ring-wrap">
                     <svg class="rs-ring" viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
                       <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
@@ -2286,106 +2291,102 @@ body.is-pro .ad-slot{ display:none !important }
                     </svg>
                     <div class="rs-ring-num"><span id="rsScoreNum">—</span><span class="rs-ring-max">/100</span></div>
                   </div>
-                  <div class="rs-text">
-                    <div class="rs-badges">
-                      <span class="rs-tier" id="rsScoreTier">—</span>
-                      <span class="rs-risk" id="rsRiskLevel">—</span>
-                    </div>
-                    <p class="rs-explain" id="rsExplain">—</p>
-                    <div class="rs-factors" id="rsFactors"></div>
+                  <div class="stress-score-text">
+                    <div class="stress-tier-v2" id="rsScoreTier">—</div>
+                    <p class="stress-explain-v2" id="rsExplain">—</p>
                   </div>
                 </div>
-
-                <div class="stress-metrics-row" id="stressMetricsRow"></div>
               </div>
 
-              <div class="report-section">
-                <span class="section-label">What drives your score?</span>
-                <div class="stress-drivers" id="stressDrivers"></div>
-              </div>
-
-              <div class="report-section">
-                <span class="section-label">What if life goes sideways?</span>
-                <div class="stress-preset-row" id="stressPresetRow"></div>
-
-                <div class="stress-builder-grid">
-                  <div class="stress-builder-col">
-                    <label class="stress-builder-label" for="stEmployment">Income shock</label>
-                    <select id="stEmployment">
-                      <option value="none">No income disruption</option>
-                      <option value="jobloss" selected>Job loss</option>
-                      <option value="cut25">25% income reduction</option>
-                      <option value="cut50">50% income reduction</option>
-                      <option value="leave">Temporary unpaid leave (2 mo)</option>
-                    </select>
-                    <span class="stress-builder-caption">How long does your income stop or decrease?</span>
-                  </div>
-                  <div class="stress-builder-col">
-                    <label class="stress-builder-label" for="stEmergency">Emergency expense</label>
-                    <select id="stEmergency">
-                      <option value="0">None</option>
-                      <option value="5000">$5,000</option>
-                      <option value="10000" selected>$10,000</option>
-                      <option value="20000">$20,000</option>
-                    </select>
-                    <span class="stress-builder-caption">One-time unexpected cost</span>
-                  </div>
-                  <div class="stress-builder-col">
-                    <label class="stress-builder-label" for="stHousing">Monthly cost change</label>
-                    <select id="stHousing">
-                      <option value="0" selected>No change</option>
-                      <option value="200">+$200/mo</option>
-                      <option value="400">+$400/mo</option>
-                    </select>
-                    <span class="stress-builder-caption">Permanent increase in monthly spending</span>
-                  </div>
-                </div>
-
-                <div class="stress-story" id="stressStory"></div>
-              </div>
-
-              <div class="report-section">
-                <span class="section-label">Liquid assets over time</span>
+              <div class="stress-chart-hero">
                 <div class="stress-chart-wrap">
-                  <svg id="stChart" width="100%" height="280" viewBox="0 0 640 280" preserveAspectRatio="none" role="img" aria-label="Liquid assets during stress event"></svg>
+                  <svg id="stChart" width="100%" height="340" viewBox="0 0 640 340" preserveAspectRatio="none" role="img" aria-label="Liquid assets during stress event"></svg>
                   <div class="stress-chart-tooltip" id="stChartTooltip"></div>
                 </div>
               </div>
 
-              <div class="report-section">
-                <span class="section-label">Pro analysis</span>
-                <div class="stress-insight-card" id="stressInsightCard"></div>
-              </div>
+              <div class="stress-outcomes-row" id="stressOutcomesRow"></div>
 
               <div class="report-section">
-                <details class="methodology-compact">
-                  <summary>Detailed breakdown</summary>
-                  <div class="stress-detail-grid" id="stDetailGrid"></div>
-                  <div style="margin-top:16px">
-                    <span class="section-label">Breaking point</span>
-                    <div id="stBreakingPoint" class="stress-callout"></div>
+                <span class="section-label">What if this happened?</span>
+                <div class="stress-preset-row" id="stressPresetRow"></div>
+
+                <details class="stress-adjust-details">
+                  <summary>Adjust assumptions <span class="stress-adjust-arrow">→</span></summary>
+                  <div class="stress-adjust-body">
+                    <div class="stress-builder-grid">
+                      <div class="stress-builder-col">
+                        <label class="stress-builder-label" for="stEmployment">Income shock</label>
+                        <select id="stEmployment">
+                          <option value="none">No income disruption</option>
+                          <option value="jobloss" selected>Job loss</option>
+                          <option value="cut25">25% income reduction</option>
+                          <option value="cut50">50% income reduction</option>
+                          <option value="leave">Temporary unpaid leave (2 mo)</option>
+                        </select>
+                        <span class="stress-builder-caption">How long does your income stop or decrease?</span>
+                      </div>
+                      <div class="stress-builder-col">
+                        <label class="stress-builder-label" for="stEmergency">Emergency expense</label>
+                        <select id="stEmergency">
+                          <option value="0">None</option>
+                          <option value="5000">$5,000</option>
+                          <option value="10000" selected>$10,000</option>
+                          <option value="20000">$20,000</option>
+                        </select>
+                        <span class="stress-builder-caption">One-time unexpected cost</span>
+                      </div>
+                      <div class="stress-builder-col">
+                        <label class="stress-builder-label" for="stHousing">Monthly cost change</label>
+                        <select id="stHousing">
+                          <option value="0" selected>No change</option>
+                          <option value="200">+$200/mo</option>
+                          <option value="400">+$400/mo</option>
+                        </select>
+                        <span class="stress-builder-caption">Permanent increase in monthly spending</span>
+                      </div>
+                    </div>
+                    <div class="stress-assumptions-grid" id="stAssumptionsGrid" style="margin-top:18px"></div>
                   </div>
-                  <div style="margin-top:16px">
-                    <span class="section-label">What breaks first</span>
-                    <div id="stVulnerability" class="stress-callout"></div>
+                </details>
+              </div>
+
+              <details class="stress-full-analysis">
+                <summary>
+                  <span class="stress-full-analysis-title">View your full analysis <span class="stress-adjust-arrow">→</span></span>
+                  <span class="stress-full-analysis-sub">Score breakdown, personalized insights, recommendations &amp; scenario details</span>
+                </summary>
+                <div class="stress-full-analysis-body">
+                  <div class="stress-section">
+                    <span class="section-label">Your score breakdown</span>
+                    <div class="stress-drivers" id="stressDrivers"></div>
                   </div>
-                  <div style="margin-top:16px">
-                    <span class="section-label">Compare cases</span>
-                    <div id="stCompareTable" class="stress-compare-table"></div>
+                  <div class="stress-section">
+                    <span class="section-label">Pro analysis</span>
+                    <div class="stress-insight-card" id="stressInsightCard"></div>
                   </div>
-                  <div style="margin-top:16px">
-                    <span class="section-label">Your biggest financial levers</span>
+                  <div class="stress-section">
+                    <span class="section-label">What to do next</span>
                     <div id="stLevers" class="tc-quick-list"></div>
                   </div>
-                </details>
-              </div>
-
-              <div class="report-section">
-                <details class="methodology-compact">
-                  <summary>Adjust assumptions (starting from your report card)</summary>
-                  <div class="stress-assumptions-grid" id="stAssumptionsGrid"></div>
-                </details>
-              </div>
+                  <div class="stress-section">
+                    <span class="section-label">Scenario details</span>
+                    <div class="stress-detail-grid" id="stDetailGrid"></div>
+                    <div style="margin-top:16px">
+                      <span class="section-label">Breaking point</span>
+                      <div id="stBreakingPoint" class="stress-callout"></div>
+                    </div>
+                    <div style="margin-top:16px">
+                      <span class="section-label">What breaks first</span>
+                      <div id="stVulnerability" class="stress-callout"></div>
+                    </div>
+                    <div style="margin-top:16px">
+                      <span class="section-label">Compare cases</span>
+                      <div id="stCompareTable" class="stress-compare-table"></div>
+                    </div>
+                  </div>
+                </div>
+              </details>
 
               <div class="small" style="margin-top:16px;padding-top:12px;border-top:1px solid var(--line)">This stress test is a planning simulation, not a prediction or financial advice. Results depend entirely on the assumptions above — adjust them to match your real situation. Actual outcomes may differ.</div>
             </div>
@@ -4265,7 +4266,7 @@ function runwayLabel(result){
 function emptyScenario(){ return { employment:'none', emergencyExpense:0, housingIncrease:0 }; }
 
 function renderStressChart(svgEl, result, baseIncome){
-  var w=640, h=280, padL=58, padR=20, padT=56, padB=32;
+  var w=640, h=340, padL=58, padR=20, padT=56, padB=32;
   var innerW=w-padL-padR, innerH=h-padT-padB;
   var vals = result.timeline.map(function(t){ return t.accessible; });
   var minV = Math.min.apply(null, vals.concat([0])), maxV = Math.max.apply(null, vals.concat([1]));
@@ -4622,25 +4623,14 @@ function renderEmergencyStressTest(v){
     }
     $("rsScoreNum").textContent = rs.score;
     var tierEl = $("rsScoreTier");
-    tierEl.textContent = rs.tierLabel + ' Resilience';
-    tierEl.className = 'rs-tier ' + rs.tier;
-    var riskEl = $("rsRiskLevel");
-    if(riskEl) riskEl.textContent = rs.riskLevel;
+    tierEl.textContent = rs.tierLabel.toUpperCase();
+    tierEl.className = 'stress-tier-v2 ' + rs.tier;
     $("rsExplain").textContent = rs.tierExplain;
-
-    var factorsEl = $("rsFactors");
-    var factors = [];
-    factors.push(rs.liquidityRatio >= 0.55 ? { txt:'Strong liquid reserves', pos:true } : { txt:'Limited liquid reserves', pos:false });
-    factors.push(rs.expenseRatio <= 0.7 ? { txt:'Low fixed expenses', pos:true } : { txt:'High fixed expenses', pos:false });
-    if(rs.debtRatio <= 0.08) factors.push({ txt:'Low debt burden', pos:true });
-    if(rs.stressedRunway < 3) factors.push({ txt:'High exposure to income interruption', pos:false });
-    factorsEl.innerHTML = factors.slice(0,3).map(function(f){
-      return '<span class="rs-factor '+(f.pos?'pos':'neg')+'">'+(f.pos?'+ ':'\u2212 ')+f.txt+'</span>';
-    }).join('');
 
     // What drives your score - the exact same weighted components behind
     // the number above, just shown per-factor so the score is explained
-    // rather than just stated.
+    // rather than just stated. Lives inside "View your full analysis" now,
+    // not on the main screen.
     var driversEl = $("stressDrivers");
     if(driversEl){
       var DRIVER_EXPLANATIONS = {
@@ -4661,31 +4651,21 @@ function renderEmergencyStressTest(v){
       }).join('');
     }
 
-    var recoveryStatus = stressedResult.rebuildAccessibleMonth !== null ? 'Fully recovered'
-      : (stressedResult.breakingMonth === null ? 'Never at risk' : 'Still recovering');
-    var metrics = [
-      { label:'Lowest liquid assets', val: money(lowestVal), sub: 'Around month '+lowIdx, cls: lowestVal<=0 ? 'bad' : '' },
-      { label:'Stressed runway', val: runwayLabel(stressedResult), sub: stressedResult.breakingMonth!==null ? 'Reserves run out here' : "Doesn't run out in this window" },
-      { label:'Recovery time', val: stressedResult.rebuildAccessibleMonth!==null ? 'Month '+stressedResult.rebuildAccessibleMonth : '\u2014', sub: 'Back to pre-stress level' },
-      { label:'Recovery status', val: recoveryStatus, sub: recoveryStatus==='Fully recovered' ? 'Within 24 months' : (recoveryStatus==='Never at risk' ? 'Reserves stayed healthy' : 'Not yet, in this window') }
+    // Three outcome numbers - the only always-visible results besides the
+    // score and chart. Everything else that used to live here (the old
+    // 4-card metric row, the story ticker) either duplicated what the
+    // chart already shows, or belongs in the full-analysis view instead.
+    var incomeResumesVal;
+    if(scenario.employment === 'none'){ incomeResumesVal = 'No disruption'; }
+    else if(stressedResult.stabilizeMonth !== null){ incomeResumesVal = 'Month '+stressedResult.stabilizeMonth; }
+    else { incomeResumesVal = 'Ongoing'; }
+    var outcomes = [
+      { label:'Lowest liquidity', val: money(lowestVal), cls: lowestVal<=0 ? 'bad' : '' },
+      { label:'Income resumes', val: incomeResumesVal },
+      { label:'Ending liquidity', val: money(stressedResult.finalAccessible), cls: stressedResult.finalAccessible >= stressedResult.startingAccessible ? 'good' : '' }
     ];
-    $("stressMetricsRow").innerHTML = metrics.map(function(m){
-      return '<div class="stress-metric-card"><div class="stress-metric-num '+(m.cls||'')+'">'+m.val+'</div><div class="stress-metric-label">'+m.label+'</div><div class="stress-metric-sub">'+m.sub+'</div></div>';
-    }).join('');
-
-    var storyEl = $("stressStory");
-    var storySteps = [
-      { label:'Starting assets', val: money(stressedResult.startingAccessible) },
-      { label:'Lowest point', val: money(lowestVal), cls: lowestVal<=0 ? 'bad' : '' },
-      { label:'Runway', val: runwayLabel(stressedResult) }
-    ];
-    if(stressedResult.stabilizeMonth !== null) storySteps.push({ label:'Income resumes', val:'Month '+stressedResult.stabilizeMonth });
-    storySteps.push(stressedResult.rebuildAccessibleMonth !== null
-      ? { label:'Fully recovered', val:'Month '+stressedResult.rebuildAccessibleMonth, cls:'good' }
-      : { label:'End of window', val: money(stressedResult.finalAccessible) });
-    storyEl.innerHTML = storySteps.map(function(s,i){
-      return (i>0 ? '<span class="stress-story-arrow">\u2192</span>' : '') +
-        '<div class="stress-story-step"><span class="stress-story-val '+(s.cls||'')+'">'+s.val+'</span><span class="stress-story-label">'+s.label+'</span></div>';
+    $("stressOutcomesRow").innerHTML = outcomes.map(function(o){
+      return '<div class="stress-outcome-card"><div class="stress-outcome-num '+(o.cls||'')+'">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';
     }).join('');
 
     renderStressChart($("stChart"), stressedResult, a.income);
