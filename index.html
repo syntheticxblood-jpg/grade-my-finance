@@ -2152,7 +2152,10 @@ body.is-pro .ad-slot{ display:none !important }
                   <button class="btn sm" type="button" data-preset="windfall">🎁 Windfall</button>
                 </div>
                 <div id="lifeEventForm" class="life-event-form" style="display:none"></div>
-                <svg id="lifeEventsChart" width="100%" height="220" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Net worth with life events chart"></svg>
+                <div class="stress-chart-wrap">
+                  <svg id="lifeEventsChart" width="100%" height="220" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Net worth with life events chart"></svg>
+                  <div class="stress-chart-tooltip" id="lifeEventsChartTooltip"></div>
+                </div>
                 <div class="life-events-legend">
                   <span class="life-events-legend-item"><span class="swatch" style="background:var(--gold-bright)"></span>Current path</span>
                   <span class="life-events-legend-item"><span class="swatch" style="background:#5B8DEF"></span>With these events</span>
@@ -2247,7 +2250,10 @@ body.is-pro .ad-slot{ display:none !important }
 
             <div class="card" style="margin-top:12px">
               <span class="section-label">Balance projection vs. benchmark</span>
-              <svg id="rrChart" width="100%" height="240" viewBox="0 0 640 240" preserveAspectRatio="none" role="img" aria-label="Retirement balance projection vs benchmark"></svg>
+              <div class="stress-chart-wrap">
+                <svg id="rrChart" width="100%" height="240" viewBox="0 0 640 240" preserveAspectRatio="none" role="img" aria-label="Retirement balance projection vs benchmark"></svg>
+                <div class="stress-chart-tooltip" id="rrChartTooltip"></div>
+              </div>
               <div class="life-events-legend">
                 <span class="life-events-legend-item"><span class="swatch" style="background:#E8B34A"></span>Benchmark trajectory</span>
                 <span class="life-events-legend-item"><span class="swatch" style="background:#5B8DEF"></span>Your projected trajectory</span>
@@ -2315,7 +2321,10 @@ body.is-pro .ad-slot{ display:none !important }
                 <div style="display:flex;justify-content:space-between;align-items:center"><span>% of future raises saved</span><strong class="mono" id="liRateVal">50%</strong></div>
                 <input id="liRate" type="range" min="0" max="100" step="5" value="50" aria-label="Percent of raises saved">
               </label>
-              <svg id="liChart" width="100%" height="180" viewBox="0 0 640 180" preserveAspectRatio="none" role="img" aria-label="Lifestyle inflation comparison chart"></svg>
+              <div class="stress-chart-wrap">
+                <svg id="liChart" width="100%" height="180" viewBox="0 0 640 180" preserveAspectRatio="none" role="img" aria-label="Lifestyle inflation comparison chart"></svg>
+                <div class="stress-chart-tooltip" id="liChartTooltip"></div>
+              </div>
               <div class="life-events-legend">
                 <span class="life-events-legend-item"><span class="swatch" style="background:#E15B5B"></span>Spend every raise</span>
                 <span class="life-events-legend-item"><span class="swatch" style="background:#4FC28A"></span>At this rate</span>
@@ -3698,7 +3707,8 @@ function projectNetWorthWithEvents(startNet, baseMonthlyContribution, annualRate
 
 // Draws two lines (baseline + with-events) on one chart, plus small flag
 // markers on the x-axis at each event's year.
-function drawDualProjectionLine(svgEl, baselinePoints, eventPoints, events){
+function drawDualProjectionLine(svgEl, baselinePoints, eventPoints, events, labels){
+  labels = labels || { line1:'Current path', line2:'With these events' };
   var w=640, h=220, padL=64, padR=32, padT=14, padB=34;
   var innerW=w-padL-padR, innerH=h-padT-padB;
   var allVals = baselinePoints.concat(eventPoints, [0]);
@@ -3732,7 +3742,69 @@ function drawDualProjectionLine(svgEl, baselinePoints, eventPoints, events){
     html += '<circle cx="'+ex+'" cy="'+(h-padB)+'" r="4" fill="#5B8DEF"/>';
     html += '<text x="'+ex+'" y="'+(h-padB+18)+'" text-anchor="middle" fill="#8B93A3" font-size="14">'+e.icon+'</text>';
   });
+  html += '<g id="'+svgEl.id+'-hoverLayer"></g>';
   setHTML(svgEl, html);
+
+  svgEl._chartData = {
+    baselinePoints:baselinePoints, eventPoints:eventPoints, w:w, h:h, padL:padL, padR:padR, padT:padT, padB:padB,
+    innerW:innerW, innerH:innerH, minV:minV, maxV:maxV, labels:labels
+  };
+  attachDualChartHover(svgEl);
+}
+
+// Shared hover system for every dual-line projection chart (Life Events,
+// Retirement, Lifestyle Inflation) - attached once per chart element
+// (guarded below) and reads whatever the latest drawDualProjectionLine
+// call stored on svgEl._chartData, so it always tracks the current
+// scenario without needing to be re-attached on every redraw.
+function attachDualChartHover(svgEl){
+  if(svgEl._hoverAttached) return;
+  svgEl._hoverAttached = true;
+  var tooltipEl = svgEl.parentElement ? svgEl.parentElement.querySelector('.stress-chart-tooltip') : null;
+
+  function hide(){
+    if(tooltipEl) tooltipEl.style.display = 'none';
+    var layer = svgEl.querySelector('g[id$="-hoverLayer"]');
+    if(layer) layer.innerHTML = '';
+  }
+  svgEl.addEventListener('mouseleave', hide);
+  svgEl.addEventListener('mousemove', function(e){
+    var data = svgEl._chartData;
+    if(!data) return;
+    var rect = svgEl.getBoundingClientRect();
+    if(!rect.width) return;
+    var relX = clamp((e.clientX - rect.left) / rect.width, 0, 1);
+    var vbX = relX * data.w;
+    var n = data.baselinePoints.length;
+    var idx = Math.round(((vbX - data.padL) / data.innerW) * (n-1));
+    idx = Math.max(0, Math.min(n-1, idx));
+
+    function xPos(i){ return data.padL + (i/(n-1))*data.innerW; }
+    function yPos(v){ return data.padT + data.innerH - ((v-data.minV)/(data.maxV-data.minV))*data.innerH; }
+    var px = xPos(idx);
+    var py1 = yPos(data.baselinePoints[idx]);
+    var py2 = yPos(data.eventPoints[idx]);
+
+    var layer = svgEl.querySelector('g[id$="-hoverLayer"]');
+    if(layer){
+      layer.innerHTML =
+        '<line x1="'+px+'" y1="'+data.padT+'" x2="'+px+'" y2="'+(data.h-data.padB)+'" stroke="rgba(255,255,255,.18)" stroke-width="1"/>' +
+        '<circle cx="'+px+'" cy="'+py1+'" r="4.5" fill="#E8B34A" stroke="#0A0B0E" stroke-width="1.5"/>' +
+        '<circle cx="'+px+'" cy="'+py2+'" r="4.5" fill="#5B8DEF" stroke="#0A0B0E" stroke-width="1.5"/>';
+    }
+
+    if(tooltipEl){
+      var diff = data.eventPoints[idx] - data.baselinePoints[idx];
+      tooltipEl.innerHTML =
+        '<div class="sct-month">Year '+idx+'</div>' +
+        '<div class="sct-row"><span>'+data.labels.line1+'</span><b style="color:#E8B34A">'+money(data.baselinePoints[idx])+'</b></div>' +
+        '<div class="sct-row"><span>'+data.labels.line2+'</span><b style="color:#5B8DEF">'+money(data.eventPoints[idx])+'</b></div>' +
+        '<div class="sct-row"><span>Difference</span><b class="'+(diff>=0?'good':'bad')+'">'+(diff>=0?'+':'')+money(diff)+'</b></div>';
+      var tipLeft = clamp(relX*rect.width, 70, Math.max(70, rect.width-70));
+      tooltipEl.style.left = tipLeft+'px';
+      tooltipEl.style.display = 'block';
+    }
+  });
 }
 
 function renderLifeEventsSimulator(v){
@@ -3768,7 +3840,7 @@ function renderLifeEventsSimulator(v){
     var events = getLifeEvents();
     var baseline = projectNetWorth(v.net, baseMonthlyContribution, 7, 30);
     var withEvents = projectNetWorthWithEvents(v.net, baseMonthlyContribution, 7, 30, events);
-    drawDualProjectionLine(chart, baseline, withEvents, events);
+    drawDualProjectionLine(chart, baseline, withEvents, events, { line1:'Current path', line2:'With these events' });
     var diff = withEvents[30] - baseline[30];
     caption.textContent = events.length
       ? (diff>=0?'+':'') + money(diff) + ' vs. current path by year 30'
@@ -4099,7 +4171,7 @@ function renderRetirementProjections(v){
       benchmarkPoints.push(targetRetireMultiple(age+y) * v.annualIncome);
     }
 
-    drawDualProjectionLine($("rrChart"), benchmarkPoints, points, []);
+    drawDualProjectionLine($("rrChart"), benchmarkPoints, points, [], { line1:'Benchmark trajectory', line2:'Your projected trajectory' });
 
     var monthlyRetirementIncome = balanceAtRetirement * 0.04 / 12;
     var incomeReplacementPct = v.annualIncome > 0 ? (balanceAtRetirement*0.04) / v.annualIncome : 0;
@@ -4244,7 +4316,7 @@ function renderLifestyleInflationSimulator(v){
     rateVal.textContent = rate+"%";
     var spendAll = simulate(0);
     var atRate = simulate(rate);
-    drawDualProjectionLine(chart, spendAll, atRate, []);
+    drawDualProjectionLine(chart, spendAll, atRate, [], { line1:'Spend every raise', line2:'At this rate' });
     var diff = atRate[20] - spendAll[20];
     caption.textContent = rate>0 ? ('+'+money(diff)+' more by year 20, banking '+rate+'% of every raise') : 'Set the slider above 0% to see the difference';
   }
