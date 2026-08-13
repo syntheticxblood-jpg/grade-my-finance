@@ -1612,11 +1612,11 @@ body.is-pro .ad-slot{ display:none !important }
               <path d="M30,95 C170,95 170,95 340,95" fill="none" stroke="url(#pdmG2)" stroke-width="18" stroke-linecap="round"/>
               <path d="M30,95 C170,95 170,150 340,150" fill="none" stroke="url(#pdmG3)" stroke-width="14" stroke-linecap="round"/>
               <text x="352" y="34" fill="#E9ECF1" font-size="13" font-weight="600" font-family="Inter,sans-serif">Retirement</text>
-              <text x="352" y="50" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$142,000 · 44%</text>
+              <text font-weight="600" x="352" y="50" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$142,000 · 44%</text>
               <text x="352" y="89" fill="#E9ECF1" font-size="13" font-weight="600" font-family="Inter,sans-serif">Brokerage</text>
-              <text x="352" y="105" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$96,000 · 30%</text>
+              <text font-weight="600" x="352" y="105" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$96,000 · 30%</text>
               <text x="352" y="144" fill="#E9ECF1" font-size="13" font-weight="600" font-family="Inter,sans-serif">Cash</text>
-              <text x="352" y="160" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$84,000 · 26%</text>
+              <text font-weight="600" x="352" y="160" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$84,000 · 26%</text>
             </svg>
           </div>
 
@@ -3606,7 +3606,7 @@ function drawProjectionLine(svgEl, points, milestoneYears){
   [minV, (minV+maxV)/2, maxV].forEach(function(gv){
     var gy=y(gv);
     html+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.06)"/>';
-    html+='<text x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
+    html+='<text font-weight="600" x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
   });
   // area fill
   var pathD=''; for(var i=0;i<points.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(points[i]); }
@@ -3618,7 +3618,7 @@ function drawProjectionLine(svgEl, points, milestoneYears){
     if(yr>=points.length) return;
     var cx=x(yr), cy=y(points[yr]);
     html += '<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>';
-    html += '<text x="'+cx+'" y="'+(h-6)+'" text-anchor="middle" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>Yr '+yr+'</text>';
+    html += '<text font-weight="600" x="'+cx+'" y="'+(h-6)+'" text-anchor="middle" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>Yr '+yr+'</text>';
   });
   setHTML(svgEl, html);
 }
@@ -3714,7 +3714,7 @@ function drawDualProjectionLine(svgEl, baselinePoints, eventPoints, events){
   [minV, (minV+maxV)/2, maxV].forEach(function(gv){
     var gy=y(gv);
     html+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.06)"/>';
-    html+='<text x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
+    html+='<text font-weight="600" x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
   });
   function pathFor(points){
     var d=''; for(var i=0;i<points.length;i++){ d += (i?' L ':'M ') + x(i) + ' ' + y(points[i]); }
@@ -4423,14 +4423,14 @@ function renderStressChart(svgEl, result, baseIncome){
   [minV, (minV+maxV)/2, maxV].forEach(function(gv){
     var gy = y(gv);
     html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.06)"/>';
-    html += '<text x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="12" font-family="IBM Plex Mono, monospace">'+money(gv)+'</text>';
+    html += '<text font-weight="600" x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="12" font-family="IBM Plex Mono, monospace">'+money(gv)+'</text>';
   });
   var monthCount = vals.length - 1;
   var tickInterval = monthCount <= 12 ? 3 : 6;
   for(var tm = 0; tm <= monthCount; tm += tickInterval){
     var tx = x(tm);
     html += '<line x1="'+tx+'" y1="'+padT+'" x2="'+tx+'" y2="'+(h-padB)+'" stroke="rgba(255,255,255,.04)"/>';
-    html += '<text x="'+tx+'" y="'+(h-10)+'" text-anchor="middle" fill="#5D636F" font-size="11.5" font-family="IBM Plex Mono, monospace">Mo '+tm+'</text>';
+    html += '<text font-weight="600" x="'+tx+'" y="'+(h-10)+'" text-anchor="middle" fill="#5D636F" font-size="11.5" font-family="IBM Plex Mono, monospace">Mo '+tm+'</text>';
   }
   var pathD = ''; for(var i=0;i<vals.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(vals[i]); }
   var areaD = pathD + ' L ' + x(vals.length-1) + ' ' + y(minV) + ' L ' + x(0) + ' ' + y(minV) + ' Z';
