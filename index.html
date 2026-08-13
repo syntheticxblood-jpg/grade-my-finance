@@ -3590,7 +3590,7 @@ function projectNetWorth(startNet, monthlyContribution, annualRatePct, years){
   return points; // yearly balances, index 0 = today, index N = year N
 }
 function drawProjectionLine(svgEl, points, milestoneYears){
-  var w=640, h=200, padL=54, padR=32, padT=14, padB=26;
+  var w=640, h=200, padL=64, padR=32, padT=14, padB=26;
   var innerW=w-padL-padR, innerH=h-padT-padB;
   var minV=Math.min.apply(null, points.concat([0])), maxV=Math.max.apply(null, points);
   if(maxV===minV) maxV=minV+1;
@@ -3605,8 +3605,8 @@ function drawProjectionLine(svgEl, points, milestoneYears){
   // gridlines + y labels (min, mid, max)
   [minV, (minV+maxV)/2, maxV].forEach(function(gv){
     var gy=y(gv);
-    html+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.06)"/>';
-    html+='<text font-weight="600" x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
+    html+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.045)" stroke-width="1"/>';
+    html+='<text font-weight="700" x="6" y="'+(gy+4)+'" fill="#A3ABBD" font-size="13" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
   });
   // area fill
   var pathD=''; for(var i=0;i<points.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(points[i]); }
@@ -3618,7 +3618,7 @@ function drawProjectionLine(svgEl, points, milestoneYears){
     if(yr>=points.length) return;
     var cx=x(yr), cy=y(points[yr]);
     html += '<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>';
-    html += '<text font-weight="600" x="'+cx+'" y="'+(h-6)+'" text-anchor="middle" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>Yr '+yr+'</text>';
+    html += '<text font-weight="600" x="'+cx+'" y="'+(h-6)+'" text-anchor="middle" fill="#8B93A3" font-size="11.5" font-family=\'IBM Plex Mono\'>Yr '+yr+'</text>';
   });
   setHTML(svgEl, html);
 }
@@ -3699,7 +3699,7 @@ function projectNetWorthWithEvents(startNet, baseMonthlyContribution, annualRate
 // Draws two lines (baseline + with-events) on one chart, plus small flag
 // markers on the x-axis at each event's year.
 function drawDualProjectionLine(svgEl, baselinePoints, eventPoints, events){
-  var w=640, h=220, padL=54, padR=32, padT=14, padB=34;
+  var w=640, h=220, padL=64, padR=32, padT=14, padB=34;
   var innerW=w-padL-padR, innerH=h-padT-padB;
   var allVals = baselinePoints.concat(eventPoints, [0]);
   var minV=Math.min.apply(null, allVals), maxV=Math.max.apply(null, allVals);
@@ -3713,8 +3713,8 @@ function drawDualProjectionLine(svgEl, baselinePoints, eventPoints, events){
   }
   [minV, (minV+maxV)/2, maxV].forEach(function(gv){
     var gy=y(gv);
-    html+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.06)"/>';
-    html+='<text font-weight="600" x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="11" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
+    html+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.045)" stroke-width="1"/>';
+    html+='<text font-weight="700" x="6" y="'+(gy+4)+'" fill="#A3ABBD" font-size="13" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
   });
   function pathFor(points){
     var d=''; for(var i=0;i<points.length;i++){ d += (i?' L ':'M ') + x(i) + ' ' + y(points[i]); }
@@ -4402,7 +4402,7 @@ function runwayLabel(result){
 function emptyScenario(){ return { employment:'none', emergencyExpense:0, housingIncrease:0 }; }
 
 function renderStressChart(svgEl, result, baseIncome){
-  var w=640, h=340, padL=58, padR=20, padT=56, padB=32;
+  var w=640, h=340, padL=66, padR=20, padT=56, padB=32;
   var innerW=w-padL-padR, innerH=h-padT-padB;
   var vals = result.timeline.map(function(t){ return t.accessible; });
   var minV = Math.min.apply(null, vals.concat([0])), maxV = Math.max.apply(null, vals.concat([1]));
@@ -4422,15 +4422,15 @@ function renderStressChart(svgEl, result, baseIncome){
   html += '<line x1="'+padL+'" y1="'+zy+'" x2="'+(w-padR)+'" y2="'+zy+'" stroke="#E15B5B" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.7"/>';
   [minV, (minV+maxV)/2, maxV].forEach(function(gv){
     var gy = y(gv);
-    html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.06)"/>';
-    html += '<text font-weight="600" x="4" y="'+(gy+4)+'" fill="#8B92A0" font-size="12" font-family="IBM Plex Mono, monospace">'+money(gv)+'</text>';
+    html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.045)" stroke-width="1"/>';
+    html += '<text font-weight="700" x="6" y="'+(gy+4)+'" fill="#A3ABBD" font-size="13" font-family="IBM Plex Mono, monospace">'+money(gv)+'</text>';
   });
   var monthCount = vals.length - 1;
   var tickInterval = monthCount <= 12 ? 3 : 6;
   for(var tm = 0; tm <= monthCount; tm += tickInterval){
     var tx = x(tm);
     html += '<line x1="'+tx+'" y1="'+padT+'" x2="'+tx+'" y2="'+(h-padB)+'" stroke="rgba(255,255,255,.04)"/>';
-    html += '<text font-weight="600" x="'+tx+'" y="'+(h-10)+'" text-anchor="middle" fill="#5D636F" font-size="11.5" font-family="IBM Plex Mono, monospace">Mo '+tm+'</text>';
+    html += '<text font-weight="600" x="'+tx+'" y="'+(h-10)+'" text-anchor="middle" fill="#8B93A3" font-size="11.5" font-family="IBM Plex Mono, monospace">Mo '+tm+'</text>';
   }
   var pathD = ''; for(var i=0;i<vals.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(vals[i]); }
   var areaD = pathD + ' L ' + x(vals.length-1) + ' ' + y(minV) + ' L ' + x(0) + ' ' + y(minV) + ' Z';
