@@ -2239,6 +2239,51 @@ body.is-pro .ad-slot{ display:none !important }
                 <div class="small" style="margin-top:10px">Benchmark: common salary-multiple milestones (roughly 1× income by 30, 3× by 40, 6× by 50, 10× by 67). This looks at your retirement accounts specifically — separate from the broader net-worth-for-age score above, which also includes home equity, cash, and other assets.</div>
               </div>
             </div>
+
+            <div class="card" style="margin-top:12px">
+              <span class="section-label">Projected balance at retirement</span>
+              <div class="stress-outcomes-row" id="rrOutcomesRow"></div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <span class="section-label">Balance projection vs. benchmark</span>
+              <svg id="rrChart" width="100%" height="240" viewBox="0 0 640 240" preserveAspectRatio="none" role="img" aria-label="Retirement balance projection vs benchmark"></svg>
+              <div class="life-events-legend">
+                <span class="life-events-legend-item"><span class="swatch" style="background:#E8B34A"></span>Benchmark trajectory</span>
+                <span class="life-events-legend-item"><span class="swatch" style="background:#5B8DEF"></span>Your projected trajectory</span>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <span class="section-label">Coast FI check</span>
+              <div class="stress-callout" id="rrCoastFi"></div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <span class="section-label">Adjust assumptions</span>
+              <div class="stress-builder-grid">
+                <div class="stress-builder-col">
+                  <label class="stress-builder-label" for="rrAge">Retirement age</label>
+                  <input type="number" id="rrAge" min="50" max="75" value="67" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px;font-weight:600">
+                  <span class="stress-builder-caption">When you plan to stop working</span>
+                </div>
+                <div class="stress-builder-col">
+                  <label class="stress-builder-label" for="rrContribution">Monthly contribution</label>
+                  <input type="number" id="rrContribution" min="0" step="25" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px;font-weight:600">
+                  <span class="stress-builder-caption">Defaults to ~10% of your income</span>
+                </div>
+                <div class="stress-builder-col">
+                  <label class="stress-builder-label" for="rrReturn">Expected annual return</label>
+                  <input type="number" id="rrReturn" min="2" max="12" step="0.5" value="7" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px;font-weight:600">
+                  <span class="stress-builder-caption">Long-run average, before fees</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <span class="section-label">Your biggest levers</span>
+              <div id="rrLevers" class="tc-quick-list"></div>
+            </div>
           </div>
           <div class="pro-blur-overlay">
             <div class="pro-blur-title">🔒 See if your 401k/IRA alone is on track</div>
@@ -4022,6 +4067,80 @@ function renderRetirementReadiness(v){
   });
 }
 
+/* ================= RETIREMENT PROJECTIONS & SIMULATOR (Pro) =================
+   Builds on the readiness check above with an actual forward projection:
+   grows the current retirement balance (plus assumed ongoing contributions)
+   to a chosen retirement age, compares that trajectory against the same
+   age-based benchmark curve used by the readiness score, estimates a
+   4%-rule retirement income, and checks Coast FI - whether the current
+   balance alone, with zero further contributions, would still reach the
+   benchmark by retirement age on growth alone. Reuses the existing
+   projectNetWorth/drawDualProjectionLine engine already built for the
+   net worth projection and life events tools, rather than duplicating
+   that math here. */
+function renderRetirementProjections(v){
+  var ageEl = $("rrAge"), contribEl = $("rrContribution"), returnEl = $("rrReturn");
+  if(!ageEl) return;
+
+  var age = v.age || 30;
+  contribEl.value = Math.round(Math.max(0, v.income) * 0.10);
+
+  function update(){
+    var retirementAge = Math.max(age+1, +ageEl.value || 67);
+    var monthlyContribution = Math.max(0, +contribEl.value || 0);
+    var expectedReturn = clamp(+returnEl.value || 7, 2, 12);
+    var yearsToRetirement = Math.max(1, retirementAge - age);
+
+    var points = projectNetWorth(v.retire, monthlyContribution, expectedReturn, yearsToRetirement);
+    var balanceAtRetirement = points[points.length-1];
+
+    var benchmarkPoints = [];
+    for(var y=0; y<=yearsToRetirement; y++){
+      benchmarkPoints.push(targetRetireMultiple(age+y) * v.annualIncome);
+    }
+
+    drawDualProjectionLine($("rrChart"), benchmarkPoints, points, []);
+
+    var monthlyRetirementIncome = balanceAtRetirement * 0.04 / 12;
+    var incomeReplacementPct = v.annualIncome > 0 ? (balanceAtRetirement*0.04) / v.annualIncome : 0;
+
+    $("rrOutcomesRow").innerHTML = [
+      { label:'Balance at age '+retirementAge, val: money(balanceAtRetirement) },
+      { label:'Est. monthly retirement income', val: money(monthlyRetirementIncome)+'/mo' },
+      { label:'Income replacement', val: Math.round(incomeReplacementPct*100)+'%' }
+    ].map(function(o){
+      return '<div class="stress-outcome-card"><div class="stress-outcome-num">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';
+    }).join('');
+
+    var coastPoints = projectNetWorth(v.retire, 0, expectedReturn, yearsToRetirement);
+    var coastBalance = coastPoints[coastPoints.length-1];
+    var targetAtRetirement = targetRetireMultiple(retirementAge) * v.annualIncome;
+    var coastPct = targetAtRetirement>0 ? (coastBalance/targetAtRetirement)*100 : 0;
+    var coastEl = $("rrCoastFi");
+    if(coastBalance >= targetAtRetirement){
+      coastEl.innerHTML = '<b>You\'ve already hit Coast FI</b>Even with zero further contributions, your current balance alone would grow to '+money(coastBalance)+' by age '+retirementAge+' \u2014 '+Math.round(coastPct)+'% of your benchmark target. Anything you contribute from here is extra cushion, not a requirement.';
+    } else {
+      coastEl.innerHTML = '<b>Not at Coast FI yet</b>If you stopped contributing today, growth alone would carry your balance to '+money(coastBalance)+' by age '+retirementAge+' \u2014 about '+Math.round(coastPct)+'% of your benchmark target. You still need ongoing contributions to close the rest of the gap.';
+    }
+
+    var baselineBalance = balanceAtRetirement;
+    var leverCandidates = [
+      { label:'+$200/mo contribution', delta: projectNetWorth(v.retire, monthlyContribution+200, expectedReturn, yearsToRetirement).slice(-1)[0] - baselineBalance },
+      { label:'Retire 2 years later', delta: projectNetWorth(v.retire, monthlyContribution, expectedReturn, yearsToRetirement+2).slice(-1)[0] - baselineBalance },
+      { label:'+1% higher return', delta: projectNetWorth(v.retire, monthlyContribution, expectedReturn+1, yearsToRetirement).slice(-1)[0] - baselineBalance }
+    ].sort(function(a,b){ return b.delta - a.delta; });
+
+    $("rrLevers").innerHTML = leverCandidates.map(function(l){
+      return '<div class="tc-quick-item"><span>'+l.label+'</span><b>+'+money(l.delta)+'</b></div>';
+    }).join('');
+  }
+
+  ageEl.oninput = update;
+  contribEl.oninput = update;
+  returnEl.oninput = update;
+  update();
+}
+
 /* ================= FREEDOM NUMBER EXPLORER (Pro) ================= */
 function renderFreedomNumberExplorer(v){
   var rateEl=$("fnRate"), rateVal=$("fnRateVal"), statsEl=$("fnStats"), caption=$("fnCaption");
@@ -4923,6 +5042,7 @@ function openReport(v,cats){
   renderFreedomNumberExplorer(v);
   renderDebtPayoffPlanner(v);
   renderRetirementReadiness(v);
+  renderRetirementProjections(v);
   renderTimeCostTranslator(v);
   renderLifestyleInflationSimulator(v);
   renderNetWorthPaceGauge(v);
