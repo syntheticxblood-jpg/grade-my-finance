@@ -81,4 +81,8 @@ var GMF_BLOG_POSTS = [
   { slug:"flexible-spending-accounts-explained", title:"FSAs Explained: The Pre-Tax Benefit Most People Waste Every Year", category:"Taxes" }
 ,
   { slug:"quarterly-estimated-taxes-explained", title:"Quarterly Estimated Taxes: What Freelancers and Side Hustlers Actually Owe (and When)", category:"Taxes" }
+,
+  { slug:"401k-employer-match-free-money", title:"401(k) Employer Match: Are You Leaving Free Money on the Table?", category:"Retirement" }
+,
+  { slug:"cd-laddering-explained", title:"CD Laddering: How to Earn More on Your Cash Without Locking It All Up", category:"Savings" }
 ];
