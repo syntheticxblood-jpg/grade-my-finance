@@ -5267,7 +5267,13 @@ function openReport(v,cats){
         var card = el("div", { className:"opp-card" + (o.key === weakestKey ? " weakest" : "") });
         var ctaHtml = "";
         if(oppLinksToPlanning[o.key] && o.potentialPts > 0.2){
-          ctaHtml = '<button class="btn sm opp-cta" type="button" data-planning-link="'+o.key+'">'+(o.key === "Debt load (non-mort.)" ? "See debt payoff plan →" : "See net worth projection →")+'</button>';
+          // Each opportunity now points at its own specific tab (debt
+          // payoff lives under "debtplan", net worth projection under
+          // "projections" - both split out of the old single "Planning
+          // Tools" tab), rather than one hardcoded target that stopped
+          // matching anything once that split happened.
+          var targetTab = (o.key === "Debt load (non-mort.)") ? "debtplan" : "projections";
+          ctaHtml = '<button class="btn sm opp-cta" type="button" data-target-tab="'+targetTab+'">'+(o.key === "Debt load (non-mort.)" ? "See debt payoff plan →" : "See net worth projection →")+'</button>';
         }
         card.innerHTML =
           '<div class="opp-card-top"><span class="opp-card-title">'+(oppHeadlines[o.key]||o.key)+'</span><span class="opp-card-grade '+tier+'">'+o.letter+'</span></div>'+
@@ -5276,8 +5282,8 @@ function openReport(v,cats){
           ctaHtml;
         oppGrid.appendChild(card);
       });
-      oppGrid.querySelectorAll("[data-planning-link]").forEach(function(btn){
-        btn.addEventListener("click", function(){ if(window.__switchDashTab) window.__switchDashTab("planning"); });
+      oppGrid.querySelectorAll("[data-target-tab]").forEach(function(btn){
+        btn.addEventListener("click", function(){ if(window.__switchDashTab) window.__switchDashTab(btn.dataset.targetTab); });
       });
     }
   })();
