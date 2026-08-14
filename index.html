@@ -3901,15 +3901,27 @@ var DEBT_ASSUMED_RATES = { cc: 24, otherDebt: 12, auto: 7, student: 6 }; // typi
 
 function simulateDebtPayoff(debtList, extraMonthly, order){
   var d = debtList.map(function(x){ return { key:x.key, label:x.label, balance:x.balance, rate:x.rate, paidMonth:null }; });
+  // Minimum payment is calculated ONCE from each debt's starting balance
+  // and held fixed for the life of that debt - matching how a real
+  // installment loan (auto, student) actually works: a fixed monthly
+  // payment amount, not one that shrinks as the balance does. Recomputing
+  // this every month from the CURRENT balance (the previous behavior)
+  // creates the classic revolving-credit "minimum payment trap" dynamic -
+  // realistic for how some credit cards work, but wildly wrong for a
+  // fixed-payment loan, where it can turn a genuine 5-year payoff into a
+  // fabricated 25-year one purely because the assumed payment kept
+  // shrinking alongside the balance instead of staying constant.
+  var fixedMinPay = {};
+  d.forEach(function(x){ fixedMinPay[x.key] = Math.max(x.balance*0.02, 25); });
   var totalInterest = 0, month = 0, maxMonths = 600;
   while(d.some(function(x){ return x.balance > 0.5; }) && month < maxMonths){
     month++;
     // accrue interest
     d.forEach(function(x){ if(x.balance>0){ var interest = x.balance*(x.rate/100/12); totalInterest += interest; x.balance += interest; } });
-    // minimum payments (approximate: 2% of balance or $25, whichever is greater)
+    // minimum payments (fixed dollar amount per debt, set from its starting balance)
     d.forEach(function(x){
       if(x.balance<=0) return;
-      var minPay = Math.min(Math.max(x.balance*0.02, 25), x.balance);
+      var minPay = Math.min(fixedMinPay[x.key], x.balance);
       x.balance -= minPay;
     });
     // extra payment cascades through the chosen strategy's order
