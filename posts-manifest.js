@@ -85,4 +85,8 @@ var GMF_BLOG_POSTS = [
   { slug:"401k-employer-match-free-money", title:"401(k) Employer Match: Are You Leaving Free Money on the Table?", category:"Retirement" }
 ,
   { slug:"cd-laddering-explained", title:"CD Laddering: How to Earn More on Your Cash Without Locking It All Up", category:"Savings" }
+,
+  { slug:"umbrella-insurance-explained", title:"Umbrella Insurance: The Cheap Policy Most People Forget to Buy", category:"Insurance" }
+,
+  { slug:"term-vs-whole-life-insurance", title:"Term vs. Whole Life Insurance: Which One Actually Makes Sense", category:"Insurance" }
 ];
