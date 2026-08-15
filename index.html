@@ -1804,6 +1804,7 @@ body.is-pro .ad-slot{ display:none !important }
       <button class="dash-tab" data-dtab="benchmarks" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M12 20V4M20 20v-7"/></svg></span><span class="dash-tab-label">Benchmarks</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="details" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span class="dash-tab-label">Details</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="flow" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c4 0 4 6 8 6s4-6 8-6M4 19c4 0 4-6 8-6s4 6 8 6"/></svg></span><span class="dash-tab-label">Money Flow</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="credit" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></span><span class="dash-tab-label">Credit</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <span class="dash-tab-group-label">Planning</span>
       <button class="dash-tab" data-dtab="projections" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><span class="dash-tab-label">Projections</span></button>
       <button class="dash-tab" data-dtab="debtplan" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="dash-tab-label">Debt Plan</span><span class="lock-tag pro-only-hide">PRO</span></button>
@@ -2097,6 +2098,60 @@ body.is-pro .ad-slot{ display:none !important }
           <div class="pro-blur-overlay">
             <div class="pro-blur-title">🔒 See where your money actually flows</div>
             <div class="pro-blur-sub">Unlock visual breakdowns of your assets, liabilities, income, and net worth trend.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="dashPanel-credit">
+        <div class="pro-blur-section" style="min-height:360px">
+          <div class="pro-blur-content">
+            <div class="card">
+              <span class="section-label">Credit utilization <span class="pro-badge">★ PRO</span></span>
+              <p class="small" style="margin:6px 0 18px">We don't have access to your real credit score (no credit bureau connects here) — but utilization, the amount you owe versus your available credit, is the one factor you can see and act on directly. It's also the single biggest lever you actually control, at 30% of a real FICO score.</p>
+
+              <div class="stress-score-block" style="padding:16px 0 8px">
+                <div class="rs-ring-wrap">
+                  <svg class="rs-ring" viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+                    <circle id="creditRingFg" cx="60" cy="60" r="52" fill="none" stroke="#4FC28A" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+                  </svg>
+                  <div class="rs-ring-num"><span id="creditUtilNum">—</span><span class="rs-ring-max">%</span></div>
+                </div>
+                <div class="stress-score-text">
+                  <div class="stress-tier-v2" id="creditUtilTier">—</div>
+                  <p class="stress-explain-v2" id="creditUtilExplain">—</p>
+                </div>
+              </div>
+
+              <div class="stress-builder-grid" style="margin-top:8px">
+                <div class="stress-builder-col">
+                  <label class="stress-builder-label" for="creditLimit">Total available credit limit</label>
+                  <input type="number" id="creditLimit" min="100" step="500" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px;font-weight:600">
+                  <span class="stress-builder-caption">Add up the limits across all your credit cards</span>
+                </div>
+                <div class="stress-builder-col">
+                  <label class="stress-builder-label" for="creditPaydown">Hypothetical paydown</label>
+                  <input type="range" id="creditPaydown" min="0" max="10000" step="100" value="0">
+                  <span class="stress-builder-caption" id="creditPaydownCaption">$0 extra paid toward balances</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <span class="section-label">What actually makes up a credit score</span>
+              <p class="small" style="margin:6px 0 14px">General FICO methodology — not calculated from your specific data, since that requires a real credit bureau. Utilization is the only factor above we can actually show you in real time.</p>
+              <div class="stress-drivers" id="creditFactorBars"></div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <span class="section-label">Your biggest levers</span>
+              <div id="creditLevers" class="tc-quick-list"></div>
+            </div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See your real utilization, and what would move it</div>
+            <div class="pro-blur-sub">Track the one credit factor you can actually see and control.</div>
             <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
           </div>
         </div>
@@ -3240,12 +3295,25 @@ function computeImprovementStreak(hist, currentScore){
   return streak;
 }
 
-function renderMilestoneBanner(cats, checkin, streak){
+function renderMilestoneBanner(cats, checkin, streak, hist){
   var el = $("milestoneBanner");
   if(!el) return;
   var msg = null;
 
-  if(checkin.isNewBest && checkin.hadPriorBest){
+  // A real gap since the last check-in is worth acknowledging before
+  // anything else - if someone's been away for weeks, "your streak
+  // continued" or a generic milestone message undersells what actually
+  // matters right now: they came back at all. Only fires for a
+  // meaningful gap (3+ weeks), not every routine return, so it doesn't
+  // turn into a nag on someone checking in every few days.
+  var daysSinceLast = null;
+  if(hist && hist.length){
+    var lastTs = hist[hist.length-1].ts;
+    if(lastTs) daysSinceLast = Math.floor((Date.now() - lastTs) / (1000*60*60*24));
+  }
+  if(daysSinceLast !== null && daysSinceLast >= 21){
+    msg = '👋 Welcome back — it\'s been '+daysSinceLast+' days since your last check-in. Good time to see what\'s changed.';
+  } else if(checkin.isNewBest && checkin.hadPriorBest){
     msg = '🏆 New personal best — '+cats.overall.letter.split(" ")[0]+' is the highest grade you\'ve recorded here.';
   } else if(streak >= 3){
     msg = '🔥 '+streak+' check-ins in a row with an improving score. Keep it up.';
@@ -4183,6 +4251,107 @@ function renderRetirementReadiness(v){
    projectNetWorth/drawDualProjectionLine engine already built for the
    net worth projection and life events tools, rather than duplicating
    that math here. */
+/* ================= CREDIT UTILIZATION SIMULATOR (Pro) =================
+   Honest about a real constraint: this app has no connection to an actual
+   credit bureau, so it cannot compute or display a real credit score.
+   Utilization - balance divided by available limit - is the one factor
+   that's both genuinely computable from data already entered AND the
+   single biggest factor someone can act on immediately (30% of a real
+   FICO score). The other four FICO factors are shown as pure education
+   (their real weighting), never as a fabricated "strength" percentage,
+   since faking a bar for data we don't have would be actively misleading
+   rather than just incomplete. */
+function renderCreditUtilization(v){
+  var limitEl = $("creditLimit"), paydownEl = $("creditPaydown"), paydownCaptionEl = $("creditPaydownCaption");
+  if(!limitEl) return;
+
+  var currentCCBalance = Math.max(0, v.cc || 0);
+  // Default limit assumption: if there's a real balance, default to what
+  // a 30% utilization would imply (a reasonable, commonly-cited starting
+  // point) so the number isn't arbitrary; otherwise a sensible flat
+  // default so the field isn't just $0 for someone with no card balance.
+  var defaultLimit = currentCCBalance > 0 ? Math.round(currentCCBalance / 0.30 / 100) * 100 : 10000;
+  limitEl.value = defaultLimit;
+
+  function tierFor(pct){
+    if(pct <= 10) return { tier:'strong', label:'Excellent' };
+    if(pct <= 30) return { tier:'good', label:'Good' };
+    if(pct <= 50) return { tier:'fair', label:'Fair' };
+    return { tier:'critical', label:'High' };
+  }
+
+  var FICO_FACTORS = [
+    { label:'Payment history', weight:'35% of score', note:'On-time payments over time. This tool has no way to see your payment record - that data lives with the credit bureaus, not here.' },
+    { label:'Length of credit history', weight:'15% of score', note:'How long your accounts have been open. Generally improves on its own; closing your oldest account can actually hurt this.' },
+    { label:'New credit', weight:'10% of score', note:'Recent applications and hard inquiries. Several new applications in a short window can temporarily lower this.' },
+    { label:'Credit mix', weight:'10% of score', note:'Having a mix of account types. A minor factor - not worth opening new debt just to diversify it.' }
+  ];
+
+  function update(){
+    var limit = Math.max(1, +limitEl.value || 1);
+    var paydown = +paydownEl.value || 0;
+    paydownCaptionEl.textContent = '$'+paydown.toLocaleString()+' extra paid toward balances';
+
+    var effectiveBalance = Math.max(0, currentCCBalance - paydown);
+    var utilPct = clamp((effectiveBalance/limit)*100, 0, 999);
+    var t = tierFor(utilPct);
+
+    var ringFg = $("creditRingFg");
+    if(ringFg){
+      var circumference = 2*Math.PI*52;
+      var displayPct = clamp(utilPct, 0, 100);
+      var offset = circumference * (1 - displayPct/100);
+      ringFg.setAttribute('stroke-dasharray', circumference.toFixed(1));
+      ringFg.setAttribute('stroke-dashoffset', offset.toFixed(1));
+      var color = t.tier==='strong' ? '#4FC28A' : t.tier==='good' ? '#8FCB9E' : t.tier==='fair' ? '#E8B34A' : '#E15B5B';
+      ringFg.setAttribute('stroke', color);
+    }
+    $("creditUtilNum").textContent = Math.round(utilPct);
+    var tierEl = $("creditUtilTier");
+    tierEl.textContent = t.label;
+    tierEl.className = 'stress-tier-v2 ' + t.tier;
+    $("creditUtilExplain").textContent = utilPct <= 30
+      ? 'Generally considered a healthy range for this factor.'
+      : 'Above the commonly cited 30% threshold - paying this down is one of the fastest ways to help this specific factor.';
+
+    var factorsEl = $("creditFactorBars");
+    if(factorsEl){
+      var utilStrengthTier = utilPct<=10?'strong':utilPct<=30?'good':utilPct<=50?'fair':'weak';
+      var utilStrengthLabel = { strong:'Strong', good:'Good', fair:'Fair', weak:'Weak' }[utilStrengthTier];
+      var rows = '<div class="stress-driver-row">' +
+        '<div class="stress-driver-head"><span class="stress-driver-name">Credit utilization <span style="color:var(--muted-2);font-weight:500">(30% of score)</span></span><span class="stress-driver-strength '+utilStrengthTier+'">'+utilStrengthLabel+'</span></div>' +
+        '<div class="stress-driver-bar-track"><div class="stress-driver-bar-fill '+utilStrengthTier+'" style="width:'+clamp(100-utilPct,0,100)+'%"></div></div>' +
+        '<div class="stress-driver-explain">The one factor above computed from your real numbers - '+Math.round(utilPct)+'% utilization right now.</div>' +
+      '</div>';
+      rows += FICO_FACTORS.map(function(f){
+        return '<div class="stress-driver-row">' +
+          '<div class="stress-driver-head"><span class="stress-driver-name">'+f.label+' <span style="color:var(--muted-2);font-weight:500">('+f.weight+')</span></span><span class="small" style="color:var(--muted-2)">Not shown here</span></div>' +
+          '<div class="stress-driver-explain">'+f.note+'</div>' +
+        '</div>';
+      }).join('');
+      factorsEl.innerHTML = rows;
+    }
+
+    var leversEl = $("creditLevers");
+    if(leversEl){
+      var leverAmounts = [500, 1000, 2000];
+      var leverCandidates = leverAmounts.map(function(amt){
+        var newBal = Math.max(0, currentCCBalance - paydown - amt);
+        var newUtil = clamp((newBal/limit)*100, 0, 999);
+        var delta = utilPct - newUtil;
+        return { label:'Pay off an extra $'+amt.toLocaleString(), delta: delta, newUtil: newUtil };
+      }).filter(function(l){ return l.delta > 0.05; });
+      leversEl.innerHTML = leverCandidates.length ? leverCandidates.map(function(l){
+        return '<div class="tc-quick-item"><span>'+l.label+'</span><b>-'+l.delta.toFixed(0)+' pts \u2192 '+l.newUtil.toFixed(0)+'%</b></div>';
+      }).join('') : '<div class="empty-note">Your utilization is already at 0% here - nothing left to pay down.</div>';
+    }
+  }
+
+  limitEl.oninput = update;
+  paydownEl.oninput = update;
+  update();
+}
+
 function renderRetirementProjections(v){
   var ageEl = $("rrAge"), contribEl = $("rrContribution"), returnEl = $("rrReturn");
   if(!ageEl) return;
@@ -5148,6 +5317,7 @@ function openReport(v,cats){
   renderDebtPayoffPlanner(v);
   renderRetirementReadiness(v);
   renderRetirementProjections(v);
+  renderCreditUtilization(v);
   renderTimeCostTranslator(v);
   renderLifestyleInflationSimulator(v);
   renderNetWorthPaceGauge(v);
@@ -5392,7 +5562,7 @@ function openReport(v,cats){
   logGradeCompletion(cats.overall.letter.split(" ")[0], cats.overall.score);
   var checkinResult = recordCheckin(cats.overall.score);
   var streakCount = computeImprovementStreak(hist, cats.overall.score);
-  renderMilestoneBanner(cats, checkinResult, streakCount);
+  renderMilestoneBanner(cats, checkinResult, streakCount, hist);
   (function renderProgressMilestones(){
     var container = $("progressMilestonesList");
     if(!container) return;
