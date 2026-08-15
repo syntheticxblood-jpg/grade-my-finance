@@ -313,6 +313,32 @@ main{ padding:28px 0 70px }
 
 footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:26px 0; text-align:center; color:var(--muted-2); font-size:12px }
 
+/* ---------- Money Coach insight feed ---------- */
+.insight-feed-item{ display:flex; gap:10px; padding:11px 0; border-bottom:1px solid var(--line) }
+.insight-feed-item:last-child{ border-bottom:none }
+.insight-feed-icon{ flex:none; width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px }
+.insight-feed-icon.pos{ background:var(--good-soft); color:var(--good) }
+.insight-feed-icon.warn{ background:rgba(245,158,11,.12); color:#F59E0B }
+.insight-feed-icon.neutral{ background:var(--brand-soft); color:var(--brand) }
+.insight-feed-text{ font-size:13px; color:var(--text); line-height:1.5; padding-top:2px }
+
+/* ---------- Momentum gauge ---------- */
+.momentum-gauge-wrap{ position:relative; flex:none; width:60px; height:60px }
+.momentum-gauge-wrap circle{ transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1) }
+.momentum-gauge-num{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-weight:700; font-size:16px }
+
+/* ---------- Composition chart legend ---------- */
+.composition-legend{ display:flex; gap:18px; margin-top:10px; font-size:12px; color:var(--muted) }
+.composition-legend .swatch{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:middle }
+
+/* ---------- Story mode ---------- */
+.story-beat{ display:flex; gap:14px; padding:14px 0; border-bottom:1px solid var(--line) }
+.story-beat:last-child{ border-bottom:none }
+.story-beat-marker{ flex:none; width:10px; height:10px; border-radius:50%; background:var(--brand); margin-top:5px }
+.story-beat-text{ font-size:13.5px; line-height:1.55; color:var(--text) }
+.story-beat-text b{ color:var(--brand) }
+.story-beat-date{ font-size:11px; color:var(--muted-2); font-family:var(--font-mono); margin-top:2px }
+
 /* ---------- App shell: fixed left sidebar + main content area ---------- */
 .app-shell{ display:flex; min-height:100vh }
 .sidebar{
@@ -489,6 +515,50 @@ main{ padding:28px 0 50px }
           <div class="insight-card win" id="biggestWinCard" style="display:none"></div>
           <div class="insight-card" id="nextMoveCard" style="display:none"></div>
         </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <span class="section-label">Money Coach</span>
+        <p class="section-sub" style="margin-top:4px">Patterns spotted in your own check-in history — not generic tips.</p>
+        <div id="insightFeedList"></div>
+      </div>
+
+      <div class="metrics-row" style="margin-top:16px; grid-template-columns:1fr 1fr">
+        <div class="metric-card">
+          <div class="m-label">Momentum Score</div>
+          <div style="display:flex; align-items:center; gap:14px; margin-top:8px">
+            <div class="momentum-gauge-wrap">
+              <svg viewBox="0 0 80 80" width="60" height="60" aria-hidden="true">
+                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--surface-2)" stroke-width="7"/>
+                <circle id="momentumRingFg" cx="40" cy="40" r="33" fill="none" stroke="var(--brand)" stroke-width="7" stroke-linecap="round" stroke-dasharray="207.3" stroke-dashoffset="207.3" transform="rotate(-90 40 40)"/>
+              </svg>
+              <div class="momentum-gauge-num" id="momentumVal">—</div>
+            </div>
+            <div class="m-sub" id="momentumSub" style="margin-top:0">—</div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="m-label">Pace Projection</div>
+          <div class="m-val mono" id="paceVal" style="font-size:17px; margin-top:8px">—</div>
+          <div class="m-sub" id="paceSub">—</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <span class="section-label">Net worth vs. debt</span>
+        <p class="section-sub" style="margin-top:4px" id="compositionSub">—</p>
+        <div class="chart-wrap"><svg id="compositionChart" width="100%" height="140" viewBox="0 0 600 140" preserveAspectRatio="none"></svg></div>
+        <div class="composition-legend">
+          <span><span class="swatch" style="background:var(--brand-bright)"></span>Net worth</span>
+          <span><span class="swatch" style="background:var(--bad)"></span>Total debt</span>
+        </div>
+      </div>
+
+      <div class="card" id="storyModeCard" style="margin-top:16px; display:none">
+        <span class="section-label">Your financial story</span>
+        <p class="section-sub" style="margin-top:4px">A quick narrative of your journey so far, built from your own check-ins.</p>
+        <button class="view-link" id="storyModeToggle" type="button">View your story →</button>
+        <div id="storyModeContent" style="display:none; margin-top:16px"></div>
       </div>
     </div>
 
@@ -1001,6 +1071,265 @@ function renderOverview(hist, groups){
   renderGoalPreview();
   renderBiggestWin(hist);
   renderNextMove(hist);
+  renderInsightFeed(hist);
+  renderMomentumScore(hist);
+  renderPaceProjection(hist);
+  renderCompositionChart(hist);
+  renderStoryMode(hist);
+}
+
+/* ================= MONEY COACH INSIGHT FEED =================
+   Pattern-spotting from the check-in history that already exists here -
+   no new data collection, just noticing things a single trend line
+   doesn't surface on its own. Each insight is a real, computed
+   observation, not a canned tip. */
+function generateInsights(hist){
+  var insights = [];
+  if(hist.length < 3) return insights;
+
+  var withSaveRate = hist.filter(function(h){ return typeof h.savingsRate === 'number'; });
+  var withDebt = hist.filter(function(h){ return typeof h.totalDebt === 'number'; });
+  var withNet = hist.filter(function(h){ return typeof h.net === 'number'; });
+
+  // Savings rate improving streak
+  if(withSaveRate.length >= 3){
+    var saveStreak = 1;
+    for(var i=withSaveRate.length-1; i>0; i--){
+      if(withSaveRate[i].savingsRate > withSaveRate[i-1].savingsRate) saveStreak++; else break;
+    }
+    if(saveStreak >= 3) insights.push({ type:'pos', text:'Your savings rate has climbed for '+saveStreak+' check-ins in a row.' });
+  }
+
+  // Debt streak (decreasing = good, increasing = worth flagging)
+  if(withDebt.length >= 3){
+    var debtDecStreak = 1, debtIncStreak = 1;
+    for(var d=withDebt.length-1; d>0; d--){
+      if(withDebt[d].totalDebt < withDebt[d-1].totalDebt) debtDecStreak++; else break;
+    }
+    for(var d2=withDebt.length-1; d2>0; d2--){
+      if(withDebt[d2].totalDebt > withDebt[d2-1].totalDebt) debtIncStreak++; else break;
+    }
+    if(debtDecStreak >= 3) insights.push({ type:'pos', text:'Your debt has decreased for '+debtDecStreak+' check-ins in a row.' });
+    else if(debtIncStreak >= 3) insights.push({ type:'warn', text:'Your debt has increased for '+debtIncStreak+' check-ins in a row — worth a look at what changed.' });
+  }
+
+  // Net worth pace acceleration: recent short-term rate vs full-history rate
+  if(withNet.length >= 5){
+    var full = withNet;
+    var fullMonths = Math.max(0.5, (full[full.length-1].ts - full[0].ts) / (1000*60*60*24*30.44));
+    var fullRate = (full[full.length-1].net - full[0].net) / fullMonths;
+    var recent = full.slice(-4);
+    var recentMonths = Math.max(0.25, (recent[recent.length-1].ts - recent[0].ts) / (1000*60*60*24*30.44));
+    var recentRate = (recent[recent.length-1].net - recent[0].net) / recentMonths;
+    if(fullRate !== 0 && recentRate > fullRate * 1.3 && recentRate > 0){
+      insights.push({ type:'pos', text:'Your net worth has been growing faster lately than your overall average pace.' });
+    } else if(fullRate > 0 && recentRate < fullRate * 0.5){
+      insights.push({ type:'warn', text:'Your net worth growth has slowed compared to your overall average pace.' });
+    }
+  }
+
+  // All-time best score
+  var latestEntry = hist[hist.length-1];
+  var best = getBestScore();
+  if(latestEntry && best !== null && latestEntry.score >= best){
+    insights.push({ type:'pos', text:'This check-in ties or beats your all-time best score.' });
+  }
+
+  return insights.slice(0, 4);
+}
+
+function renderInsightFeed(hist){
+  var listEl = $("insightFeedList");
+  if(!listEl) return;
+  var insights = generateInsights(hist);
+  if(!insights.length){
+    listEl.innerHTML = '<div class="empty-note"><b>Not enough history yet</b>Check in a few more times and we\'ll start spotting real patterns in your own numbers.</div>';
+    return;
+  }
+  var icons = { pos:'↑', warn:'!', neutral:'•' };
+  listEl.innerHTML = insights.map(function(ins){
+    return '<div class="insight-feed-item"><div class="insight-feed-icon '+ins.type+'">'+icons[ins.type]+'</div><div class="insight-feed-text">'+ins.text+'</div></div>';
+  }).join('');
+}
+
+/* ================= MOMENTUM SCORE =================
+   Combines the direction (not magnitude) of three trends - savings rate,
+   debt, net worth - over the last few check-ins into one 0-100 gauge.
+   Deliberately direction-based rather than percentage-based: percentage
+   change against a near-zero starting value can produce wild, misleading
+   swings, while "is this getting better, flat, or worse" is robust
+   regardless of the underlying numbers' scale. */
+function trendDirectionScore(filtered, key, invert){
+  if(filtered.length < 2) return null;
+  var n = Math.min(5, filtered.length);
+  var slice = filtered.slice(-n);
+  var first = slice[0][key], last = slice[slice.length-1][key];
+  var diff = last - first;
+  if(invert) diff = -diff;
+  if(Math.abs(diff) < 1e-9) return 50;
+  return diff > 0 ? 100 : 0;
+}
+function computeMomentumScore(hist){
+  if(hist.length < 2) return null;
+  var withSaveRate = hist.filter(function(h){ return typeof h.savingsRate === 'number'; });
+  var withDebt = hist.filter(function(h){ return typeof h.totalDebt === 'number'; });
+  var withNet = hist.filter(function(h){ return typeof h.net === 'number'; });
+  var scores = [
+    trendDirectionScore(withSaveRate, 'savingsRate', false),
+    trendDirectionScore(withDebt, 'totalDebt', true),
+    trendDirectionScore(withNet, 'net', false)
+  ].filter(function(s){ return s !== null; });
+  if(!scores.length) return null;
+  return Math.round(scores.reduce(function(a,b){ return a+b; },0) / scores.length);
+}
+function renderMomentumScore(hist){
+  var valEl = $("momentumVal"), subEl = $("momentumSub"), ringFg = $("momentumRingFg");
+  if(!valEl) return;
+  var score = computeMomentumScore(hist);
+  if(score === null){
+    valEl.textContent = "—"; subEl.textContent = "Check in a few more times to see your momentum.";
+    return;
+  }
+  valEl.textContent = score;
+  var label = score >= 75 ? "Strong upward momentum" : score >= 55 ? "Building momentum" : score >= 45 ? "Holding steady" : "Momentum has cooled";
+  subEl.textContent = label + " across your recent check-ins.";
+  if(ringFg){
+    var circumference = 2*Math.PI*33;
+    var offset = circumference * (1 - clamp(score,0,100)/100);
+    ringFg.setAttribute('stroke-dasharray', circumference.toFixed(1));
+    ringFg.setAttribute('stroke-dashoffset', offset.toFixed(1));
+    ringFg.setAttribute('stroke', score >= 55 ? 'var(--good)' : score >= 45 ? 'var(--brand)' : 'var(--bad)');
+  }
+}
+
+/* ================= REAL-TREND PACE PROJECTION =================
+   Uses the ACTUAL observed growth rate between your first and most
+   recent tracked net worth (not an assumed contribution amount, unlike
+   the report card's projection tool) to estimate when you'd cross the
+   next round milestone at that same pace. */
+function computePaceProjection(hist){
+  var withNet = hist.filter(function(h){ return typeof h.net === 'number'; });
+  if(withNet.length < 2) return null;
+  var first = withNet[0], last = withNet[withNet.length-1];
+  var elapsedMonths = (last.ts - first.ts) / (1000*60*60*24*30.44);
+  if(elapsedMonths < 0.5) return { insufficientTime:true };
+  var monthlyRate = (last.net - first.net) / elapsedMonths;
+  if(monthlyRate <= 0) return { rate: monthlyRate, milestone:null };
+  var current = last.net;
+  var increment = current < 50000 ? 10000 : current < 250000 ? 25000 : 50000;
+  var milestone = Math.ceil((current + 1) / increment) * increment;
+  var monthsToMilestone = (milestone - current) / monthlyRate;
+  var targetDate = new Date(Date.now() + monthsToMilestone * 30.44 * 24*60*60*1000);
+  return { rate: monthlyRate, milestone: milestone, monthsToMilestone: monthsToMilestone, targetDate: targetDate };
+}
+function renderPaceProjection(hist){
+  var valEl = $("paceVal"), subEl = $("paceSub");
+  if(!valEl) return;
+  var proj = computePaceProjection(hist);
+  if(!proj){
+    valEl.textContent = "—"; subEl.textContent = "Track a couple more check-ins to see your pace.";
+    return;
+  }
+  if(proj.insufficientTime){
+    valEl.textContent = "—"; subEl.textContent = "Check back after a bit more time between check-ins.";
+    return;
+  }
+  if(proj.milestone === null){
+    valEl.textContent = formatCompact(proj.rate) + "/mo"; subEl.textContent = "Your net worth hasn't been trending upward recently.";
+    return;
+  }
+  valEl.textContent = money(proj.milestone) + " by " + proj.targetDate.toLocaleDateString(undefined,{month:'short',year:'numeric'});
+  subEl.textContent = "At your real pace of about " + formatCompact(proj.rate) + "/mo.";
+}
+
+/* ================= NET WORTH VS. DEBT COMPOSITION CHART =================
+   Uses only fields already stored on every check-in (net, totalDebt) -
+   no dependency on the newer cash/retire/brokerage/crypto fields, so
+   this works immediately for existing history, not just future
+   check-ins. */
+function renderCompositionChart(hist){
+  var svgEl = $("compositionChart"), subEl = $("compositionSub");
+  if(!svgEl) return;
+  var rows = hist.filter(function(h){ return typeof h.net === 'number' && typeof h.totalDebt === 'number'; }).slice(-30);
+  if(rows.length < 2){
+    subEl.textContent = "Track a couple more check-ins to see this compared over time.";
+    setHTML(svgEl, '');
+    return;
+  }
+  subEl.textContent = "How your net worth and total debt have moved together over your last " + rows.length + " check-ins.";
+  var netVals = rows.map(function(r){ return r.net; });
+  var debtVals = rows.map(function(r){ return r.totalDebt; });
+  var allVals = netVals.concat(debtVals, [0]);
+  var minV = Math.min.apply(null, allVals), maxV = Math.max.apply(null, allVals);
+  if(maxV === minV) maxV = minV + 1;
+  var w=600, h=140, padL=54, padR=14, padT=10, padB=10;
+  var innerW=w-padL-padR, innerH=h-padT-padB;
+  function x(i){ return rows.length===1 ? padL+innerW/2 : padL + (i/(rows.length-1))*innerW; }
+  function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
+  function pathFor(vals){
+    var d=''; for(var i=0;i<vals.length;i++){ d += (i?' L ':'M ') + x(i) + ' ' + y(vals[i]); }
+    return d;
+  }
+  var html = '';
+  [minV, maxV].forEach(function(gv){
+    var gy = y(gv);
+    html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="var(--line)" stroke-width="1"/>';
+    html += '<text x="4" y="'+(gy+4)+'" fill="var(--muted-2)" font-size="10" font-family=\'IBM Plex Mono\'>'+formatCompact(gv)+'</text>';
+  });
+  html += '<path d="'+pathFor(debtVals)+'" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray="4 4" opacity="0.75"/>';
+  html += '<path d="'+pathFor(netVals)+'" fill="none" stroke="var(--brand-bright)" stroke-width="2.5"/>';
+  setHTML(svgEl, html);
+}
+function setHTML(el, html){ el.innerHTML = html; }
+
+/* ================= FINANCIAL STORY MODE =================
+   An auto-generated narrative built entirely from real check-ins - the
+   starting point, the biggest single jump, and where things stand now.
+   No fabricated commentary about anything not directly observable in
+   the stored history. */
+function generateStoryBeats(hist){
+  var withNet = hist.filter(function(h){ return typeof h.net === 'number'; });
+  if(withNet.length < 2) return [];
+  var beats = [];
+  var first = withNet[0], last = withNet[withNet.length-1];
+  beats.push({ text:'You started tracking with a net worth of <b>'+money(first.net)+'</b>.', ts:first.ts });
+
+  var biggestJump = null;
+  for(var i=1;i<withNet.length;i++){
+    var diff = withNet[i].net - withNet[i-1].net;
+    if(!biggestJump || diff > biggestJump.diff) biggestJump = { diff:diff, ts:withNet[i].ts };
+  }
+  if(biggestJump && biggestJump.diff > 0){
+    beats.push({ text:'Your biggest single jump was <b>+'+money(biggestJump.diff)+'</b> in one check-in.', ts:biggestJump.ts });
+  }
+
+  var best = getBestScore();
+  if(best !== null){
+    beats.push({ text:'Your best recorded score so far is <b>'+best.toFixed(1)+'</b>.', ts:null });
+  }
+
+  var totalChange = last.net - first.net;
+  beats.push({ text: (totalChange>=0 ? 'Since you started, your net worth is up <b>'+money(totalChange)+'</b>.' : 'Since you started, your net worth is down <b>'+money(Math.abs(totalChange))+'</b>.'), ts:last.ts });
+
+  return beats;
+}
+function renderStoryMode(hist){
+  var card = $("storyModeCard"), toggle = $("storyModeToggle"), content = $("storyModeContent");
+  if(!card) return;
+  var beats = generateStoryBeats(hist);
+  if(!beats.length){ card.style.display = "none"; return; }
+  card.style.display = "block";
+  content.innerHTML = beats.map(function(b){
+    return '<div class="story-beat"><div class="story-beat-marker"></div><div><div class="story-beat-text">'+b.text+'</div>'+(b.ts?'<div class="story-beat-date">'+formatDate(b.ts)+'</div>':'')+'</div></div>';
+  }).join('');
+  if(toggle && !toggle._wired){
+    toggle._wired = true;
+    toggle.addEventListener('click', function(){
+      var isOpen = content.style.display === 'block';
+      content.style.display = isOpen ? 'none' : 'block';
+      toggle.textContent = isOpen ? 'View your story →' : 'Hide your story';
+    });
+  }
 }
 
 function renderGoalPreview(){
