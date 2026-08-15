@@ -1,0 +1,22 @@
+Add these 10 lines to posts-manifest.js, just before the closing "];" line:
+
+,
+  { slug:"what-drives-your-resilience-score", title:"What Actually Drives Your Financial Resilience Score?", category:"Financial Grade" }
+,
+  { slug:"recovering-from-a-financial-setback", title:"How Long Does It Actually Take to Recover From a Financial Setback?", category:"Advice" }
+,
+  { slug:"savings-vs-debt-payoff-priority", title:"Should You Build Savings or Pay Off Debt First?", category:"Debt" }
+,
+  { slug:"what-is-a-roth-conversion", title:"What Is a Roth Conversion, and Should You Do One?", category:"Retirement" }
+,
+  { slug:"how-much-should-you-spend-on-rent", title:"How Much Should You Actually Spend on Rent?", category:"Housing" }
+,
+  { slug:"cost-of-waiting-to-invest", title:"The Real Cost of Waiting: What a 5-Year Delay in Investing Actually Costs You", category:"Investing" }
+,
+  { slug:"refinancing-your-auto-loan", title:"Should You Refinance Your Auto Loan?", category:"Debt" }
+,
+  { slug:"what-happens-to-debt-when-you-die", title:"What Actually Happens to Your Debt When You Die?", category:"Advice" }
+,
+  { slug:"your-biggest-financial-vulnerability", title:"What's Your Single Biggest Financial Vulnerability?", category:"Financial Grade" }
+,
+  { slug:"how-much-cash-is-too-much-cash", title:"How Much Cash Is Too Much Cash?", category:"Net Worth" }
