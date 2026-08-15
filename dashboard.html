@@ -904,8 +904,14 @@ function renderHeader(hist){
   updatedEl.textContent = "Last updated " + formatDateFull(latest.ts);
 
   // Ring fill - purely additive, doesn't touch any of the scoring logic
-  // above, just visualizes the same score already being computed.
+  // above, just visualizes the same score already being computed. Color
+  // follows the same good/mid/bad tier as the badge text (gradeTier),
+  // rather than always showing the flat brand color regardless of
+  // whether the actual grade is good or bad.
   if(ringFg){
+    var tier = gradeTier(letter);
+    var ringColor = tier === 'good' ? 'var(--good)' : tier === 'bad' ? 'var(--bad)' : 'var(--brand)';
+    ringFg.setAttribute('stroke', ringColor);
     var circumference = 2*Math.PI*50;
     var pct = clamp(latest.score/100, 0, 1);
     var offset = circumference * (1 - pct);
