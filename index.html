@@ -174,7 +174,7 @@ nav.primary a:hover{ color:var(--text) }
 @media (max-width: 860px){ nav.primary{ display:none } }
 
 /* ---------- Hero ---------- */
-.hero{ padding:44px 0 32px; position:relative; overflow:hidden }
+.hero{ padding:44px 0 24px; position:relative; overflow:hidden }
 .hero::before{
   content:""; position:absolute; inset:-20% -10% auto -10%; height:520px; z-index:0;
   background: radial-gradient(600px 300px at 20% 0%, rgba(201,162,39,.14), transparent 60%);
@@ -312,7 +312,7 @@ section.block{ padding:76px 0 }
 .block-head{ max-width:640px; margin:0 0 40px }
 .block-head.center{ margin:0 auto 44px; text-align:center }
 .kicker{ font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; color:var(--gold-bright); text-transform:uppercase; margin-bottom:10px; display:block }
-.block-head h2{ font-size:clamp(24px,3vw,34px) }
+.block-head h2{ font-size:clamp(26px,3.3vw,38px); line-height:1.15 }
 .block-head p{ color:var(--muted); margin-top:12px; font-size:15.5px }
 
 /* how it works */
@@ -1476,7 +1476,7 @@ body.is-pro .ad-slot{ display:none !important }
         <span class="eyebrow">FREE · NO SIGN-UP · RUNS IN YOUR BROWSER</span>
       </div>
       <h1 class="hero-in" style="--d:.16s">How healthy is your <em>financial life</em>?</h1>
-      <p class="lede hero-in" style="--d:.26s">Grade My Finance analyzes your income, spending, savings, debt, and net worth to show you exactly where you stand — and what to do next.</p>
+      <p class="lede hero-in" style="--d:.26s">Answer a few honest questions about your income, spending, and debt — no financial background required — and get a personalized grade in about 60 seconds.</p>
       <div class="hero-cta hero-in" style="--d:.36s">
         <button class="btn gold" id="gradeBtnHero" type="button">Get My Financial Grade</button>
         <button class="btn ghost" id="demoBtn" type="button">See How It Works</button>
@@ -1560,7 +1560,7 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 </section>
 
-<section class="block" id="pro-dashboard-preview">
+<section class="block" id="pro-dashboard-preview" style="padding-top:38px">
   <div class="aurora" aria-hidden="true" style="opacity:.6"><span class="a1" style="top:20%"></span><span class="a2" style="top:10%"></span></div>
   <div class="container" style="position:relative">
     <div class="block-head center">
@@ -1651,7 +1651,7 @@ body.is-pro .ad-slot{ display:none !important }
     <div class="block-head center">
       <span class="kicker">Pricing</span>
       <h2>See your grade for free. Get the full picture with Pro.</h2>
-      <p>Anyone can check their grade in seconds. Pro unlocks exactly what's behind it, and what to do next.</p>
+      <p>Anyone can check their grade in seconds — that tells you if you're doing well. Pro tells you what to do next, and whether you're actually improving.</p>
     </div>
     <div class="pricing-grid">
       <div class="plan free">
@@ -2597,6 +2597,14 @@ body.is-pro .ad-slot{ display:none !important }
     <details class="faq-item"><summary>Do you store my financial data?</summary><p>Your income, expenses, assets, and debts are entered and calculated entirely in your browser — we never receive or see your actual financial figures. Your inputs are automatically saved to your own device's local storage (not sent to us) so they're there next time you open the site. When you complete a grade, we do log your letter grade and numeric score (not your financial details) to power our public counter of report cards graded. Full details in our <a href="privacy-policy.html">Privacy Policy</a>.</p></details>
     <details class="faq-item"><summary>Is this financial advice?</summary><p>No. Grade My Finance is for educational purposes only and is not a substitute for professional financial advice. Always do your own research or consult a licensed advisor.</p></details>
     <details class="faq-item"><summary>How is my grade calculated?</summary><p>We use weighted factors: age-based net worth, income strength, savings rate, emergency fund size, and non-mortgage debt levels. Scores are benchmarks, not guarantees. See the methodology in your report card for exact weights.</p></details>
+  </div>
+</section>
+
+<section class="block" style="padding-top:20px" aria-label="Get started">
+  <div class="container" style="text-align:center; max-width:560px">
+    <h2 style="font-size:clamp(24px,3.3vw,36px); margin-bottom:12px">Ready to see your financial grade?</h2>
+    <p style="color:var(--muted); font-size:16px; margin-bottom:26px">It takes about 60 seconds, and your numbers never leave your browser.</p>
+    <button class="btn gold" id="gradeBtnFooterCta" type="button" style="font-size:16px; padding:16px 32px">Get My Financial Grade →</button>
   </div>
 </section>
 
@@ -5637,6 +5645,11 @@ function gradeNow(){
 }
 $("gradeBtnHero").addEventListener("click", function(){
   __track('click_scroll_to_calculator',{location:'hero'});
+  document.getElementById("grade").scrollIntoView({ behavior:"smooth", block:"start" });
+  setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 500);
+});
+if($("gradeBtnFooterCta")) $("gradeBtnFooterCta").addEventListener("click", function(){
+  __track('click_scroll_to_calculator',{location:'footer_cta'});
   document.getElementById("grade").scrollIntoView({ behavior:"smooth", block:"start" });
   setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 500);
 });
