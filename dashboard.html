@@ -24,18 +24,26 @@ gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true });
   --bg:#0A0B0E; --bg-2:#0E1015; --surface:#14161C; --surface-2:#1A1D25;
   --line: rgba(255,255,255,.08); --text:#F2F3F5; --muted:#8B92A0; --muted-2:#5D636F;
   --gold:#C9A227; --gold-soft: rgba(201,162,39,.12); --gold-bright:#E4C24E;
+  --brand:#E4C24E; --brand-soft:rgba(201,162,39,.12); --brand-bright:#E4C24E; --brand-text:#1a1300;
   --good:#34D399; --good-soft:rgba(52,211,153,.12); --bad:#D97757; --bad-soft:rgba(217,119,87,.12);
+  --warn:#E8B34A; --warn-soft:rgba(232,179,74,.12);
+  --shadow-sm: none; --shadow-md: 0 8px 24px rgba(0,0,0,.35);
   --radius:12px; --radius-lg:16px; --header-h:64px;
   --font-display:'Space Grotesk',system-ui,sans-serif; --font-body:'Inter',system-ui,sans-serif;
   --font-mono:'IBM Plex Mono',monospace; --font-serif:'Fraunces',serif;
 }
 :root[data-theme="light"]{
-  --bg:#F7F6F3; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#F1EFEA;
-  --line: rgba(10,11,14,.09); --text:#14161C; --muted:#5B616C; --muted-2:#8B92A0;
+  --bg:#F8FAFC; --bg-2:#FFFFFF; --surface:#FFFFFF; --surface-2:#F1F5F9;
+  --line: rgba(15,23,42,.08); --text:#0F172A; --muted:#64748B; --muted-2:#94A3B8;
+  --brand:#6366F1; --brand-soft:rgba(99,102,241,.08); --brand-bright:#818CF8; --brand-text:#FFFFFF;
+  --good:#22C55E; --good-soft:rgba(34,197,94,.10); --bad:#EF4444; --bad-soft:rgba(239,68,68,.10);
+  --warn:#F59E0B; --warn-soft:rgba(245,158,11,.10);
+  --shadow-sm: 0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.06);
+  --shadow-md: 0 4px 10px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
 }
 *{box-sizing:border-box}
 html, body{ overflow-x:hidden }
-body{ margin:0; padding-top:var(--header-h); background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.5; font-size:14px }
+body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.5; font-size:14px }
 h1,h2,h3{ font-family:var(--font-display); margin:0; letter-spacing:-.01em }
 .mono{ font-family:var(--font-mono) }
 .container{ max-width:1100px; margin:0 auto; padding:0 20px }
@@ -61,14 +69,14 @@ header.site{ position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:8
 }
 @keyframes sealShimmerOnce{ 0%{ left:-60% } 100%{ left:140% } }
 @media (prefers-reduced-motion: reduce){ .seal::after{ animation:none } }
-.seal span{ font-family:var(--font-mono); font-weight:700; font-size:11px; color:var(--gold-bright) }
+.seal span{ font-family:var(--font-mono); font-weight:700; font-size:11px; color:var(--brand-bright) }
 .wordmark{ font-weight:700; font-size:15px }
 .pro-chip{ display:inline-flex; align-items:center; gap:4px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:800; font-size:10px; letter-spacing:.03em; padding:2px 8px; border-radius:99px; margin-left:2px }
 .hdr-right{ margin-left:auto; display:flex; align-items:center; gap:8px }
 .btn{ appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--text); font-weight:600; font-size:13px; padding:9px 15px; border-radius:9px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; text-decoration:none; transition:filter .12s ease, border-color .12s ease, background .12s ease }
 .btn:hover{ filter:brightness(1.08); border-color:rgba(201,162,39,.35) }
 .btn:active{ transform:translateY(1px) }
-.btn.gold{ background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; border-color:transparent; font-weight:700 }
+.btn.gold{ background:linear-gradient(155deg,var(--brand-bright),var(--brand)); color:var(--brand-text); border-color:transparent; font-weight:700 }
 .btn.sm{ padding:7px 12px; font-size:12.5px }
 .icon-btn{ width:34px; height:34px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--text); cursor:pointer; display:grid; place-items:center; font-size:14px }
 
@@ -80,21 +88,21 @@ main{ padding:28px 0 70px }
 }
 .dash-greeting-avatar{
   width:52px; height:52px; border-radius:50%; flex:none; display:grid; place-items:center;
-  font-family:var(--font-serif); font-weight:700; font-size:19px; color:var(--gold-bright);
+  font-family:var(--font-serif); font-weight:700; font-size:19px; color:var(--brand-bright);
   background:linear-gradient(155deg, rgba(201,162,39,.22), rgba(201,162,39,.06));
   border:1.5px solid rgba(201,162,39,.4);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
 }
 .dash-greeting-body{ flex:1; min-width:200px }
 .dash-greeting-text{ font-family:var(--font-serif); font-weight:600; font-size:25px; letter-spacing:-.01em; line-height:1.2 }
-.dash-greeting-text .name-highlight{ color:var(--gold-bright) }
+.dash-greeting-text .name-highlight{ color:var(--brand-bright) }
 .dash-greeting-sub{ font-size:12.5px; color:var(--muted); margin-top:5px }
 .name-capture-inline{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:4px }
 .name-capture-inline input{
   border:1px solid var(--line); border-radius:8px; padding:8px 12px; background:var(--bg-2); color:var(--text);
   font-family:var(--font-body); font-size:13px; width:190px;
 }
-.name-capture-inline input:focus{ outline:none; border-color:var(--gold) }
+.name-capture-inline input:focus{ outline:none; border-color:var(--brand) }
 .edit-name-link{ appearance:none; border:none; background:none; color:var(--muted-2); font-size:11.5px; cursor:pointer; padding:0; margin-top:6px; text-decoration:underline; text-underline-offset:2px }
 .edit-name-link:hover{ color:var(--text) }
 
@@ -104,7 +112,7 @@ main{ padding:28px 0 70px }
 .dash-grade-badge{
   width:56px; height:56px; border-radius:14px; display:flex; align-items:center; justify-content:center;
   font-family:var(--font-serif); font-weight:700; font-size:22px; flex:none;
-  border:2px solid var(--gold); color:var(--gold-bright); background:var(--gold-soft);
+  border:2px solid var(--brand); color:var(--brand-bright); background:var(--brand-soft);
 }
 .dash-grade-badge.good{ border-color:var(--good); color:var(--good); background:var(--good-soft) }
 .dash-grade-badge.bad{ border-color:var(--bad); color:var(--bad); background:var(--bad-soft) }
@@ -122,21 +130,35 @@ main{ padding:28px 0 70px }
   transition:color .15s ease, border-color .15s ease;
 }
 .dash-nav-btn:hover{ color:var(--text) }
-.dash-nav-btn.active{ color:var(--text); border-bottom-color:var(--gold) }
+.dash-nav-btn.active{ color:var(--text); border-bottom-color:var(--brand) }
 
 .dash-tab-panel{ display:none }
 .dash-tab-panel.active{ display:block; animation:fadeIn .2s ease }
 @keyframes fadeIn{ from{ opacity:0; transform:translateY(4px) } to{ opacity:1; transform:none } }
 
 /* ---------- Cards & grid rhythm (used selectively, not everywhere) ---------- */
-.card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:20px }
+.card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm) }
 .section-label{ font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px; display:block }
 .section-sub{ font-size:12.5px; color:var(--muted-2); margin-bottom:14px }
 
 /* Overview: primary metrics — Score + Net Worth dominant, others secondary */
-.metrics-row{ display:grid; grid-template-columns:1.4fr 1.4fr 1fr 1fr; gap:12px; margin-bottom:20px }
+.metrics-row{ display:grid; grid-template-columns:1.7fr 1fr 1fr 1fr; gap:12px; margin-bottom:20px }
 @media (max-width:820px){ .metrics-row{ grid-template-columns:1fr 1fr } }
-.metric-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:18px }
+.metric-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:18px; box-shadow:var(--shadow-sm) }
+.grade-ring-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:18px;
+  box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:16px; grid-column:span 1;
+}
+@media (max-width:820px){ .grade-ring-card{ grid-column:1/-1 } }
+.grade-ring-wrap{ position:relative; flex:none; width:88px; height:88px }
+.grade-ring circle{ transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1) }
+.grade-ring-center{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center }
+.grade-ring-center .dash-grade-badge{
+  border:none; background:none; width:auto; height:auto; font-size:24px; padding:0;
+}
+.grade-ring-text{ min-width:0 }
+.grade-ring-text .score-part{ font-size:15px; font-weight:700; color:var(--muted) }
+.grade-ring-text .grade-explain{ font-size:12px; color:var(--muted); margin-top:3px; line-height:1.4 }
 .metric-card .m-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:600 }
 .metric-card .m-val{ font-family:var(--font-serif); font-weight:600; font-size:26px; margin-top:6px; color:var(--text) }
 .metric-card.primary .m-val{ font-size:30px }
@@ -148,13 +170,13 @@ main{ padding:28px 0 70px }
 @media (max-width:900px){ .ov-grid{ grid-template-columns:1fr } }
 .ov-col{ display:grid; gap:16px; align-content:start }
 
-.hero-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:22px }
+.hero-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:22px; box-shadow:var(--shadow-sm) }
 .hero-card-top{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:4px }
 .hero-card .hv{ font-family:var(--font-serif); font-weight:600; font-size:28px }
 .hero-card .hv-sub{ font-size:12px; color:var(--muted); margin-top:4px }
 .chart-time-filters{ display:flex; gap:3px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:3px }
 .chart-time-filters button{ appearance:none; border:none; background:none; color:var(--muted); font-family:var(--font-mono); font-size:11px; font-weight:600; padding:5px 9px; border-radius:5px; cursor:pointer }
-.chart-time-filters button.active{ background:var(--surface); color:var(--gold-bright) }
+.chart-time-filters button.active{ background:var(--surface); color:var(--brand-bright) }
 .chart-wrap{ position:relative; margin-top:14px }
 .chart-tooltip{
   position:absolute; pointer-events:none; background:var(--bg-2); border:1px solid var(--line); border-radius:8px;
@@ -164,7 +186,7 @@ main{ padding:28px 0 70px }
 .chart-empty{ color:var(--muted); font-size:12.5px; padding:30px 10px; text-align:center }
 .chart-empty b{ display:block; color:var(--text); font-size:13.5px; margin-bottom:3px }
 
-.view-link{ appearance:none; border:none; background:none; color:var(--gold-bright); font-weight:600; font-size:12.5px; cursor:pointer; padding:0; margin-top:12px; display:inline-block }
+.view-link{ appearance:none; border:none; background:none; color:var(--brand-bright); font-weight:600; font-size:12.5px; cursor:pointer; padding:0; margin-top:12px; display:inline-block }
 .view-link:hover{ text-decoration:underline }
 
 /* Recent activity timeline */
@@ -176,7 +198,7 @@ main{ padding:28px 0 70px }
 .activity-score{ font-family:var(--font-mono); font-size:12.5px; color:var(--muted); min-width:44px; text-align:right }
 
 /* Goal / Win / Next-move insight cards */
-.insight-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:18px }
+.insight-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:18px; box-shadow:var(--shadow-sm) }
 .insight-card.win{ border-color:rgba(52,211,153,.3); background:linear-gradient(155deg, var(--good-soft), transparent) }
 .insight-card h4{ font-family:var(--font-serif); font-weight:600; font-size:15px; margin:6px 0 4px }
 .insight-card p{ font-size:12.5px; color:var(--muted); margin:0 0 10px; line-height:1.5 }
@@ -195,7 +217,7 @@ main{ padding:28px 0 70px }
 
 .milestone-row{ display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--line) }
 .milestone-row:last-child{ border-bottom:none }
-.milestone-dot{ width:8px; height:8px; border-radius:50%; background:var(--gold); flex:none }
+.milestone-dot{ width:8px; height:8px; border-radius:50%; background:var(--brand); flex:none }
 .milestone-label{ font-weight:600; font-size:13px; flex:1 }
 .milestone-date{ font-size:11.5px; color:var(--muted-2); font-family:var(--font-mono) }
 
@@ -212,7 +234,7 @@ main{ padding:28px 0 70px }
 .goals-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px }
 @media (max-width:760px){ .goals-grid{ grid-template-columns:1fr } }
 .goal-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:18px }
-.goal-card .g-type{ font-size:10.5px; color:var(--gold-bright); text-transform:uppercase; letter-spacing:.05em; font-weight:700 }
+.goal-card .g-type{ font-size:10.5px; color:var(--brand-bright); text-transform:uppercase; letter-spacing:.05em; font-weight:700 }
 .goal-card .g-progress-num{ font-family:var(--font-serif); font-weight:600; font-size:20px; margin:6px 0 10px }
 .goal-card .g-remaining{ font-size:11.5px; color:var(--muted); margin-top:8px }
 .goal-card .g-actions{ display:flex; gap:8px; margin-top:14px }
@@ -256,7 +278,7 @@ main{ padding:28px 0 70px }
 .ret-scenario-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:14px 0 }
 @media (max-width:760px){ .ret-scenario-grid{ grid-template-columns:1fr } }
 .ret-scenario-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px }
-.ret-scenario-card.primary{ border-color:rgba(201,162,39,.4); background:linear-gradient(155deg, var(--gold-soft), transparent) }
+.ret-scenario-card.primary{ border-color:rgba(201,162,39,.4); background:linear-gradient(155deg, var(--brand-soft), transparent) }
 .ret-scenario-card .rs-rate{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; font-weight:700 }
 .ret-scenario-card .rs-age{ font-family:var(--font-serif); font-weight:600; font-size:21px; margin:6px 0 2px }
 .ret-scenario-card .rs-date{ font-size:11.5px; color:var(--muted-2); font-family:var(--font-mono) }
@@ -265,8 +287,8 @@ main{ padding:28px 0 70px }
 .ret-slider-block:last-child{ margin-bottom:0 }
 .ret-slider-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; gap:10px }
 .ret-slider-top .rs-label{ font-size:12.5px; font-weight:600; color:var(--text) }
-.ret-slider-top .rs-val{ font-family:var(--font-mono); font-size:13px; color:var(--gold-bright); font-weight:700; white-space:nowrap }
-.ret-slider-block input[type="range"]{ width:100%; accent-color:var(--gold-bright) }
+.ret-slider-top .rs-val{ font-family:var(--font-mono); font-size:13px; color:var(--brand-bright); font-weight:700; white-space:nowrap }
+.ret-slider-block input[type="range"]{ width:100%; accent-color:var(--brand-bright) }
 
 .ret-share-wrap{ display:flex; gap:18px; align-items:center; flex-wrap:wrap }
 .ret-share-canvas-wrap{ border:1px solid var(--line); border-radius:12px; overflow:hidden; flex:none; width:220px }
@@ -279,70 +301,148 @@ main{ padding:28px 0 70px }
 .settings-panel.open{ display:block }
 
 footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:26px 0; text-align:center; color:var(--muted-2); font-size:12px }
+
+/* ---------- App shell: fixed left sidebar + main content area ---------- */
+.app-shell{ display:flex; min-height:100vh }
+.sidebar{
+  position:fixed; top:0; left:0; bottom:0; width:250px; z-index:80;
+  background:var(--surface); border-right:1px solid var(--line);
+  display:flex; flex-direction:column; padding:20px 14px;
+}
+.sidebar-brand{ display:flex; align-items:center; gap:9px; text-decoration:none; padding:0 8px 22px; border-bottom:1px solid var(--line); margin-bottom:18px }
+.sidebar .dash-nav{ display:flex; flex-direction:column; gap:2px; border-bottom:none; margin-bottom:0; overflow:visible }
+.sidebar .dash-nav-btn{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+  padding:10px 12px; border-radius:10px; border-bottom:none; font-size:13.5px; font-weight:600;
+}
+.sidebar .dash-nav-btn:hover{ background:var(--surface-2); color:var(--text) }
+.sidebar .dash-nav-btn.active{ background:var(--brand-soft); color:var(--brand); border-bottom-color:transparent }
+:root[data-theme="light"] .sidebar .dash-nav-btn.active{ color:#4F46E5 }
+.nav-icon{ flex:none; opacity:.85 }
+.sidebar-bottom{ margin-top:auto; padding-top:14px; border-top:1px solid var(--line) }
+.sidebar-bottom .settings-panel{ margin:8px 4px 4px }
+.sidebar-bottom .icon-btn{ width:auto; height:auto; padding:9px 12px; border-radius:10px; gap:8px; display:flex; justify-content:flex-start; font-size:13px; font-weight:600; border:none }
+.sidebar-bottom .icon-btn:hover{ background:var(--surface-2) }
+.sidebar-profile{ display:flex; align-items:center; gap:10px; padding:10px 8px 0; margin-top:6px }
+.sidebar-profile-body{ min-width:0 }
+.sidebar-profile-name{ font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px }
+.sidebar-profile .dash-greeting-avatar{ width:34px; height:34px; font-size:13px }
+
+.main-area{ flex:1; min-width:0; margin-left:250px }
+.main-area .container{ max-width:1180px }
+main{ padding:28px 0 50px }
+
+.content-header{ display:flex; align-items:flex-start; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:24px }
+.content-header .dash-greeting-text{ font-family:var(--font-display); font-weight:700; font-size:24px; letter-spacing:-.01em }
+.content-header .dash-greeting-sub{ font-size:13px; color:var(--muted); margin-top:4px }
+.content-header-right{ display:flex; align-items:center; gap:14px; flex-wrap:wrap }
+.content-header-right .updated{ font-size:12.5px; color:var(--muted-2) }
+
+@media (max-width:900px){
+  .sidebar{ position:fixed; top:auto; bottom:0; left:0; right:0; width:auto; height:64px;
+    flex-direction:row; align-items:center; padding:0 6px; border-right:none; border-top:1px solid var(--line); overflow-x:auto }
+  .sidebar-brand{ display:none }
+  .sidebar .dash-nav{ flex-direction:row; flex:1; overflow-x:auto; scrollbar-width:none }
+  .sidebar .dash-nav::-webkit-scrollbar{ display:none }
+  .sidebar .dash-nav-btn{ flex-direction:column; gap:3px; font-size:10px; padding:8px 10px; white-space:nowrap; border-radius:9px }
+  .sidebar-bottom{ display:flex; flex-direction:row; align-items:center; gap:4px; margin-top:0; padding-top:0; border-top:none; flex:none; position:relative }
+  .sidebar-bottom .settings-panel{ position:fixed; bottom:68px; left:10px; right:10px; margin:0; max-height:60vh; overflow-y:auto; z-index:90; box-shadow:var(--shadow-md) }
+  .sidebar-bottom .dash-nav-btn{ flex-direction:column; gap:3px; font-size:10px; padding:8px 10px }
+  .sidebar-bottom .icon-btn{ flex-direction:column; gap:3px; font-size:10px; padding:8px 10px; justify-content:center }
+  .sidebar-profile{ display:none } /* avatar/name drop on mobile - not critical nav, saves space in a slim bar */
+  .main-area{ margin-left:0; padding-bottom:64px }
+  .content-header{ margin-bottom:18px }
+}
 </style>
 </head>
 <body>
-<script>try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.dataset.theme="light"; } }catch(e){}</script>
+<script>try{ if(localStorage.getItem("gmf_theme")!=="dark"){ document.documentElement.dataset.theme="light"; } }catch(e){ document.documentElement.dataset.theme="light"; }</script>
 
-<header class="site">
-  <div class="container hdr-row">
-    <a class="brandmark" href="index.html"><span class="seal"><span>A+</span></span><span class="wordmark">Grade My Finance</span><span class="pro-chip" id="headerProChip" style="display:none">★ PRO</span></a>
-    <div class="hdr-right">
-      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">◐</button>
-      <a class="btn gold" href="index.html#grade">Update My Finances</a>
-    </div>
-  </div>
-</header>
+<div class="app-shell">
+  <aside class="sidebar" id="appSidebar">
+    <a class="brandmark sidebar-brand" href="index.html">
+      <span class="seal"><span>A+</span></span>
+      <span class="wordmark">Grade My Finance</span>
+      <span class="pro-chip" id="headerProChip" style="display:none">PRO</span>
+    </a>
 
-<main class="container">
-  <div id="lockedState" style="display:none">
-    <div class="card" style="max-width:480px;margin:60px auto 0;text-align:center;padding:44px 30px">
-      <div class="dash-grade-badge good" style="margin:0 auto 18px">A+</div>
-      <h1 style="font-size:20px;margin-bottom:8px">Your Financial Dashboard is a Pro feature</h1>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:18px">Track how your financial life is changing over time — score history, net worth trends, goals, saved what-if scenarios, and achievements, all in one place.</p>
-      <a class="btn gold" href="index.html#pricing">Upgrade to Pro</a>
-    </div>
-  </div>
+    <nav class="dash-nav" id="dashNav">
+      <button class="dash-nav-btn active" data-tab="overview" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Overview</button>
+      <button class="dash-nav-btn" data-tab="score" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg>Score History</button>
+      <button class="dash-nav-btn" data-tab="networth" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 9.5 4h5L16 7"/></svg>Net Worth</button>
+      <button class="dash-nav-btn" data-tab="goals" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>Goals</button>
+      <button class="dash-nav-btn" data-tab="scenarios" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>What-If Scenarios</button>
+      <button class="dash-nav-btn" data-tab="achievements" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a1 1 0 0 0-1 1 4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1 4 4 0 0 1-4 4"/></svg>Achievements</button>
+      <button class="dash-nav-btn" data-tab="retirement" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>Retirement</button>
+    </nav>
 
-  <div id="dashboardContent" style="display:none">
-
-    <div class="dash-greeting-card" id="greetingCard">
-      <div class="dash-greeting-avatar" id="greetAvatar">–</div>
-      <div class="dash-greeting-body">
-        <h1 class="dash-greeting-text" id="greetingText">Welcome</h1>
-        <div class="dash-greeting-sub" id="greetingSub"></div>
-        <button class="edit-name-link" id="editNameLink" type="button" style="display:none">Not you? Edit name</button>
+    <div class="sidebar-bottom">
+      <button class="dash-nav-btn" id="settingsToggle" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings <span id="settingsChevron" style="margin-left:auto">▾</span></button>
+      <div class="settings-panel" id="settingsPanel">
+        <p style="margin:0 0 12px">Your financial history currently lives on this device only. Use a transfer link to bring it to another device or browser — nothing is stored on our servers, this just re-encodes what's already saved locally.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn sm gold" id="copyBackupLinkBtn" type="button">Copy Transfer Link</button>
+          <button class="btn sm" id="exportCsvBtn" type="button">Export History as CSV</button>
+        </div>
+        <div id="backupStatus" style="margin-top:10px"></div>
       </div>
-    </div>
-
-    <div class="dash-header">
-      <div class="dash-header-left">
-        <div class="dash-grade-badge" id="dashGradeBadge">—</div>
-        <div class="dash-header-meta">
-          <h1>Financial grade <span class="score-part" id="dashHeaderScore">—</span></h1>
-          <div class="updated" id="dashHeaderUpdated">—</div>
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" style="margin:10px 0">◐ Toggle theme</button>
+      <div class="sidebar-profile" id="greetingCard">
+        <div class="dash-greeting-avatar" id="greetAvatar">–</div>
+        <div class="sidebar-profile-body">
+          <div class="sidebar-profile-name" id="sidebarProfileName">Welcome</div>
+          <button class="edit-name-link" id="editNameLink" type="button" style="display:none">Edit name</button>
         </div>
       </div>
     </div>
-    <div class="dash-context-line" id="dashContextLine">—</div>
+  </aside>
 
-    <nav class="dash-nav" id="dashNav">
-      <button class="dash-nav-btn active" data-tab="overview" type="button">Overview</button>
-      <button class="dash-nav-btn" data-tab="score" type="button">Score History</button>
-      <button class="dash-nav-btn" data-tab="networth" type="button">Net Worth</button>
-      <button class="dash-nav-btn" data-tab="goals" type="button">Goals</button>
-      <button class="dash-nav-btn" data-tab="scenarios" type="button">What-If</button>
-      <button class="dash-nav-btn" data-tab="achievements" type="button">Achievements</button>
-      <button class="dash-nav-btn" data-tab="retirement" type="button">Retirement</button>
-    </nav>
+  <div class="main-area">
+    <main class="container">
+      <div id="lockedState" style="display:none">
+        <div class="card" style="max-width:480px;margin:60px auto 0;text-align:center;padding:44px 30px">
+          <div class="dash-grade-badge good" style="margin:0 auto 18px">A+</div>
+          <h1 style="font-size:20px;margin-bottom:8px">Your Financial Dashboard is a Pro feature</h1>
+          <p style="color:var(--muted);font-size:13px;margin-bottom:18px">Track how your financial life is changing over time — score history, net worth trends, goals, saved what-if scenarios, and achievements, all in one place.</p>
+          <a class="btn gold" href="index.html#pricing">Upgrade to Pro</a>
+        </div>
+      </div>
+
+      <div id="dashboardContent" style="display:none">
+
+        <div class="content-header">
+          <div class="content-header-left">
+            <h1 class="dash-greeting-text" id="greetingText">Welcome</h1>
+            <div class="dash-greeting-sub" id="greetingSub">Here's how your finances look today.</div>
+          </div>
+          <div class="content-header-right">
+            <div class="updated" id="dashHeaderUpdated">—</div>
+            <a class="btn gold" href="index.html#grade">Update My Finances</a>
+          </div>
+        </div>
 
     <!-- ================= OVERVIEW ================= -->
     <div class="dash-tab-panel active" id="panel-overview">
       <div class="metrics-row">
-        <div class="metric-card primary"><div class="m-label">Financial Score</div><div class="m-val mono" id="mScoreVal">—</div><div class="m-sub" id="mScoreGrade">—</div></div>
-        <div class="metric-card primary"><div class="m-label">Net Worth</div><div class="m-val mono" id="mNetVal">—</div><div class="m-sub" id="mNetSub">—</div></div>
+        <div class="grade-ring-card">
+          <span class="m-label">Financial Grade</span>
+          <div class="grade-ring-wrap">
+            <svg class="grade-ring" viewBox="0 0 120 120" width="88" height="88" aria-hidden="true">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-2)" stroke-width="9"/>
+              <circle id="gradeRingFg" cx="60" cy="60" r="50" fill="none" stroke="var(--brand)" stroke-width="9" stroke-linecap="round" stroke-dasharray="314.2" stroke-dashoffset="314.2" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="grade-ring-center"><span class="dash-grade-badge" id="dashGradeBadge">—</span></div>
+          </div>
+          <div class="grade-ring-text">
+            <div class="score-part mono" id="dashHeaderScore">—</div>
+            <div class="grade-explain" id="dashContextLine">—</div>
+            <a class="view-link" href="#" id="howGradesWorkLink" style="margin-top:6px">How grades work →</a>
+          </div>
+        </div>
+        <div class="metric-card"><div class="m-label">Net Worth</div><div class="m-val mono" id="mNetVal">—</div><div class="m-sub" id="mNetSub">—</div></div>
         <div class="metric-card"><div class="m-label">Score Change</div><div class="m-val mono" id="mChangeVal" style="font-size:20px">—</div></div>
         <div class="metric-card"><div class="m-label">Check-ins</div><div class="m-val mono" id="mCheckinsVal" style="font-size:20px">—</div></div>
+        <span id="mScoreVal" style="display:none"></span><span id="mScoreGrade" style="display:none"></span>
       </div>
 
       <div class="ov-grid">
@@ -521,29 +621,19 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:2
       </div>
     </div>
 
-    <div class="settings-block">
-      <button class="settings-toggle" id="settingsToggle" type="button">⚙ Settings &amp; data <span id="settingsChevron">▾</span></button>
-      <div class="settings-panel" id="settingsPanel">
-        <p style="margin:0 0 12px">Your financial history currently lives on this device only. Use a transfer link to bring it to another device or browser — nothing is stored on our servers, this just re-encodes what's already saved locally.</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn sm gold" id="copyBackupLinkBtn" type="button">Copy Transfer Link</button>
-          <button class="btn sm" id="exportCsvBtn" type="button">Export History as CSV</button>
-        </div>
-        <div id="backupStatus" style="margin-top:10px"></div>
-      </div>
-    </div>
-
   </div>
 </main>
-
-<footer class="site">
-  <div class="container">© 2026 Grade My Finance — educational use only, not financial advice. <a href="index.html">Home</a></div>
-</footer>
+    <footer class="site">
+      <div class="container">© 2026 Grade My Finance — educational use only, not financial advice. <a href="index.html">Home</a></div>
+    </footer>
+  </div>
+</div>
 
 <script>
 "use strict";
 function $(id){ return document.getElementById(id); }
 function el(tag, attrs){ var n=document.createElement(tag); if(attrs) Object.assign(n, attrs); return n; }
+function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
 function money(n){
   if (!isFinite(n)) return "—";
   return new Intl.NumberFormat(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 }).format(Math.round(n));
@@ -731,11 +821,11 @@ function drawChart(svgEl, tooltipEl, points, opts){
   var pathD = ''; for(var i=0;i<points.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(points[i].v); }
   var areaD = pathD + ' L '+x(points.length-1)+','+(padT+innerH)+' L '+padL+','+(padT+innerH)+' Z';
   html += '<path d="'+areaD+'" fill="url(#chartGrad)" opacity="0.5"/>';
-  html += '<defs><linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--gold-bright)" stop-opacity="0.25"/><stop offset="100%" stop-color="var(--gold-bright)" stop-opacity="0"/></linearGradient></defs>';
-  html += '<path d="'+pathD+'" fill="none" stroke="var(--gold-bright)" stroke-width="2.5"/>';
+  html += '<defs><linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--brand-bright)" stop-opacity="0.25"/><stop offset="100%" stop-color="var(--brand-bright)" stop-opacity="0"/></linearGradient></defs>';
+  html += '<path d="'+pathD+'" fill="none" stroke="var(--brand-bright)" stroke-width="2.5"/>';
   points.forEach(function(p,i){
     html += '<circle class="chart-pt" data-i="'+i+'" cx="'+x(i)+'" cy="'+y(p.v)+'" r="9" fill="transparent"/>';
-    html += '<circle cx="'+x(i)+'" cy="'+y(p.v)+'" r="3" fill="var(--gold-bright)" stroke="var(--bg-2)" stroke-width="1.5" style="pointer-events:none"/>';
+    html += '<circle cx="'+x(i)+'" cy="'+y(p.v)+'" r="3" fill="var(--brand-bright)" stroke="var(--bg-2)" stroke-width="1.5" style="pointer-events:none"/>';
   });
   svgEl.innerHTML = html;
 
@@ -785,6 +875,7 @@ function __track(){} // no-op if GA hasn't wired a custom tracker on this page
 function renderHeader(hist){
   var latest = hist.length ? hist[hist.length-1] : null;
   var badge = $("dashGradeBadge"), scoreEl = $("dashHeaderScore"), updatedEl = $("dashHeaderUpdated"), ctxEl = $("dashContextLine");
+  var ringFg = $("gradeRingFg");
   if(!latest){
     badge.textContent = "—"; scoreEl.textContent = "No check-ins yet";
     updatedEl.textContent = "Run your first calculation to begin.";
@@ -796,6 +887,16 @@ function renderHeader(hist){
   badge.className = "dash-grade-badge " + gradeTier(letter);
   scoreEl.textContent = latest.score.toFixed(1) + " / 100";
   updatedEl.textContent = "Last updated " + formatDateFull(latest.ts);
+
+  // Ring fill - purely additive, doesn't touch any of the scoring logic
+  // above, just visualizes the same score already being computed.
+  if(ringFg){
+    var circumference = 2*Math.PI*50;
+    var pct = clamp(latest.score/100, 0, 1);
+    var offset = circumference * (1 - pct);
+    ringFg.setAttribute('stroke-dasharray', circumference.toFixed(1));
+    ringFg.setAttribute('stroke-dashoffset', offset.toFixed(1));
+  }
 
   if(hist.length >= 2){
     var first = hist[0];
@@ -1124,7 +1225,7 @@ function renderScenariosTab(){
     html += '<div class="scenario-compare">';
     html += '<div class="sc-cell"><div class="sc-cell-label">Expense cut</div><div class="sc-cell-val mono">'+money(s.expCut)+'/mo</div></div>';
     html += '<div class="sc-cell"><div class="sc-cell-label">One-time debt payoff</div><div class="sc-cell-val mono">'+money(s.debtPay)+'</div></div>';
-    html += '<div class="sc-cell"><div class="sc-cell-label">Scenario grade</div><div class="sc-cell-val mono" style="color:var(--gold-bright)">'+s.letter+'</div></div>';
+    html += '<div class="sc-cell"><div class="sc-cell-label">Scenario grade</div><div class="sc-cell-val mono" style="color:var(--brand-bright)">'+s.letter+'</div></div>';
     html += '<div class="sc-cell"><div class="sc-cell-label">Your grade now</div><div class="sc-cell-val mono">'+(currentLetter||'—')+'</div></div>';
     html += '</div>';
     html += '<div class="g-actions"><a class="btn sm gold" href="index.html#grade">Open Scenario</a><button class="btn sm" data-del="'+idx+'" type="button">Remove</button></div>';
