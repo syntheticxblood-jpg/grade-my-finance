@@ -1805,6 +1805,8 @@ body.is-pro .ad-slot{ display:none !important }
       <button class="dash-tab" data-dtab="details" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span class="dash-tab-label">Details</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="flow" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c4 0 4 6 8 6s4-6 8-6M4 19c4 0 4-6 8-6s4 6 8 6"/></svg></span><span class="dash-tab-label">Money Flow</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <button class="dash-tab" data-dtab="credit" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></span><span class="dash-tab-label">Credit</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="allocation" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18M12 3a9 9 0 0 0 0 18"/></svg></span><span class="dash-tab-label">Allocation</span><span class="lock-tag pro-only-hide">PRO</span></button>
+      <button class="dash-tab" data-dtab="bills" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="dash-tab-label">Bills</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <span class="dash-tab-group-label">Planning</span>
       <button class="dash-tab" data-dtab="projections" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><span class="dash-tab-label">Projections</span></button>
       <button class="dash-tab" data-dtab="debtplan" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="dash-tab-label">Debt Plan</span><span class="lock-tag pro-only-hide">PRO</span></button>
@@ -2152,6 +2154,86 @@ body.is-pro .ad-slot{ display:none !important }
           <div class="pro-blur-overlay">
             <div class="pro-blur-title">🔒 See your real utilization, and what would move it</div>
             <div class="pro-blur-sub">Track the one credit factor you can actually see and control.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="dashPanel-allocation">
+        <div class="pro-blur-section" style="min-height:400px">
+          <div class="pro-blur-content">
+            <div class="card">
+              <span class="section-label">Your asset mix <span class="pro-badge">★ PRO</span></span>
+              <p class="small" style="margin:6px 0 16px">Where your money actually sits right now — computed directly from what you entered, no assumptions needed for this part.</p>
+              <div class="stress-outcomes-row" id="allocMixRow"></div>
+              <div id="allocConcentrationCallout" class="stress-callout" style="margin-top:16px"></div>
+            </div>
+
+            <div class="card" style="margin-top:12px">
+              <span class="section-label">Stocks vs. bonds, vs. your age</span>
+              <p class="small" style="margin:6px 0 16px">This app has no visibility into how your retirement and brokerage accounts are actually invested internally — that detail lives with your account provider, not here. Estimate your split below and we'll compare it to a common age-based guideline.</p>
+
+              <div class="stress-builder-col" style="margin-bottom:18px">
+                <label class="stress-builder-label" for="allocStockPct">Estimated % in stocks / growth investments</label>
+                <input type="range" id="allocStockPct" min="0" max="100" step="5" value="80">
+                <span class="stress-builder-caption" id="allocStockPctCaption">80% stocks / 20% bonds &amp; conservative</span>
+              </div>
+
+              <div class="stress-score-block" style="padding:8px 0">
+                <div class="rs-ring-wrap">
+                  <svg class="rs-ring" viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+                    <circle id="allocRingFg" cx="60" cy="60" r="52" fill="none" stroke="#5B8DEF" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+                  </svg>
+                  <div class="rs-ring-num"><span id="allocStockNum">—</span><span class="rs-ring-max">%</span></div>
+                </div>
+                <div class="stress-score-text">
+                  <div class="stress-tier-v2" id="allocTier">—</div>
+                  <p class="stress-explain-v2" id="allocExplain">—</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See your real asset mix and concentration risk</div>
+            <div class="pro-blur-sub">Where your money actually sits, and how it compares to a common age-based guideline.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="dashPanel-bills">
+        <div class="pro-blur-section" style="min-height:340px">
+          <div class="pro-blur-content">
+            <div class="card">
+              <span class="section-label">Bills & subscriptions <span class="pro-badge">★ PRO</span></span>
+              <p class="small" style="margin:6px 0 16px">Add your recurring bills and subscriptions to see the real total, and how much of your monthly expenses they actually make up. Saved on this device.</p>
+
+              <div class="stress-outcomes-row" id="billsOutcomesRow"></div>
+
+              <div class="stress-builder-grid" style="margin-top:20px">
+                <div class="stress-builder-col">
+                  <label class="stress-builder-label" for="billName">Name</label>
+                  <input type="text" id="billName" placeholder="e.g. Netflix" maxlength="40" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px">
+                </div>
+                <div class="stress-builder-col">
+                  <label class="stress-builder-label" for="billAmount">Monthly amount</label>
+                  <input type="number" id="billAmount" min="0" step="1" placeholder="0" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px">
+                </div>
+                <div class="stress-builder-col">
+                  <label class="stress-builder-label" for="billDay">Due day of month</label>
+                  <input type="number" id="billDay" min="1" max="31" placeholder="1" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px">
+                </div>
+              </div>
+              <button class="btn gold sm" id="billAddBtn" type="button" style="margin-top:12px">Add bill</button>
+
+              <div id="billsList" style="display:grid;gap:8px;margin-top:20px"></div>
+              <div id="billsEmptyNote" class="empty-note" style="display:none">No bills added yet — add your first one above.</div>
+            </div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See your real recurring spend</div>
+            <div class="pro-blur-sub">Track every subscription and bill in one place, and see the actual monthly total.</div>
             <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
           </div>
         </div>
@@ -4261,6 +4343,167 @@ function renderRetirementReadiness(v){
    (their real weighting), never as a fabricated "strength" percentage,
    since faking a bar for data we don't have would be actively misleading
    rather than just incomplete. */
+/* ================= ASSET ALLOCATION / PORTFOLIO HEALTH CHECK (Pro) =================
+   Honest about a real constraint: this app has no visibility into how
+   retirement and brokerage accounts are actually invested internally
+   (stocks vs. bonds vs. cash within them) - that detail lives with the
+   account provider, not here. What IS genuinely computable without any
+   assumption: the mix ACROSS account types (cash vs. brokerage vs.
+   retirement vs. crypto), and crypto concentration specifically, since
+   crypto balances are entered as their own field. The stock/bond split
+   is collected as the user's own estimate, clearly labeled as such, and
+   compared to a common age-based guideline - never presented as if it
+   were computed from real portfolio data. */
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
+}
+
+/* ================= BILL & SUBSCRIPTION TRACKER (Pro) =================
+   Self-contained recurring-cost list, stored on this device only
+   (localStorage), separate from the main calculator inputs - adding a
+   bill here doesn't change your entered expenses elsewhere. Surfaces the
+   real monthly total and, where monthly expenses were entered on the
+   main calculator, what share of that total these specific recurring
+   costs make up. */
+var BILLS_KEY = 'gmf_bills_v1';
+function getBills(){ try{ return JSON.parse(localStorage.getItem(BILLS_KEY)||'[]'); }catch(_){ return []; } }
+function saveBills(arr){ localStorage.setItem(BILLS_KEY, JSON.stringify(arr)); }
+
+function renderBillsTracker(v){
+  var nameEl=$("billName"), amountEl=$("billAmount"), dayEl=$("billDay"), addBtn=$("billAddBtn");
+  var listEl=$("billsList"), emptyEl=$("billsEmptyNote"), outcomesEl=$("billsOutcomesRow");
+  if(!listEl) return;
+
+  function render(){
+    var bills = getBills();
+    bills.sort(function(a,b){ return (a.day||99) - (b.day||99); });
+
+    var total = bills.reduce(function(sum,b){ return sum + (b.amount||0); }, 0);
+    var pctOfExpenses = v.expenses > 0 ? (total/v.expenses)*100 : 0;
+
+    outcomesEl.innerHTML = [
+      { label:'Bills tracked', val: String(bills.length) },
+      { label:'Total monthly', val: money(total) },
+      { label:'% of your expenses', val: v.expenses>0 ? Math.round(pctOfExpenses)+'%' : '\u2014' }
+    ].map(function(o){
+      return '<div class="stress-outcome-card"><div class="stress-outcome-num">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';
+    }).join('');
+
+    if(bills.length === 0){
+      listEl.innerHTML = '';
+      if(emptyEl) emptyEl.style.display = 'block';
+      return;
+    }
+    if(emptyEl) emptyEl.style.display = 'none';
+
+    listEl.innerHTML = bills.map(function(b){
+      return '<div class="card" style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px">'+
+        '<div style="min-width:0"><div style="font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escapeHtml(b.name)+'</div>'+
+        '<div class="small" style="color:var(--muted)">Due day '+b.day+'</div></div>'+
+        '<div style="display:flex;align-items:center;gap:10px;flex:none">'+
+        '<div class="mono" style="font-weight:700;color:var(--gold-bright)">'+money(b.amount)+'/mo</div>'+
+        '<button type="button" class="bill-delete-btn" data-id="'+b.id+'" aria-label="Delete '+escapeHtml(b.name)+'" style="background:none;border:none;color:var(--muted-2);cursor:pointer;padding:4px;display:flex"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg></button>'+
+        '</div></div>';
+    }).join('');
+
+    listEl.querySelectorAll('.bill-delete-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.dataset.id;
+        var updated = getBills().filter(function(b){ return String(b.id) !== id; });
+        saveBills(updated);
+        render();
+      });
+    });
+  }
+
+  // Guarded with a one-time flag so the add-button listener doesn't stack
+  // duplicate handlers every time the report re-renders (e.g. clicking
+  // Recalculate) - the same pattern used for the chart hover listeners.
+  if(addBtn && !addBtn._wired){
+    addBtn._wired = true;
+    addBtn.addEventListener('click', function(){
+      var name = (nameEl.value||'').trim();
+      var amount = Math.max(0, +amountEl.value || 0);
+      var day = clamp(Math.round(+dayEl.value || 1), 1, 31);
+      if(!name){ nameEl.focus(); return; }
+      if(amount <= 0){ amountEl.focus(); return; }
+      var bills = getBills();
+      bills.push({ id: Date.now()+'_'+Math.random().toString(36).slice(2,7), name:name, amount:amount, day:day });
+      saveBills(bills);
+      nameEl.value=''; amountEl.value=''; dayEl.value='';
+      render();
+    });
+  }
+
+  render();
+}
+
+function renderAssetAllocation(v){
+  var stockPctEl = $("allocStockPct"), stockPctCaptionEl = $("allocStockPctCaption");
+  if(!stockPctEl) return;
+
+  var investable = Math.max(0, v.retire) + Math.max(0, v.brokerage) + Math.max(0, v.crypto);
+  var cryptoPct = investable > 0 ? (Math.max(0,v.crypto)/investable)*100 : 0;
+
+  $("allocMixRow").innerHTML = [
+    { label:'Liquid cash', val: money(v.cash) },
+    { label:'Investable assets', val: money(investable) },
+    { label:'Crypto exposure', val: Math.round(cryptoPct)+'% of that', cls: cryptoPct>=20 ? 'bad' : '' }
+  ].map(function(o){
+    return '<div class="stress-outcome-card"><div class="stress-outcome-num '+(o.cls||'')+'">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';
+  }).join('');
+
+  var concEl = $("allocConcentrationCallout");
+  if(concEl){
+    if(investable <= 0){
+      concEl.innerHTML = '<b>Nothing to assess yet</b>No retirement, brokerage, or crypto balance entered, so there\'s no investable mix to check here.';
+    } else if(cryptoPct >= 20){
+      concEl.innerHTML = '<b>High concentration risk</b>Crypto makes up '+Math.round(cryptoPct)+'% of your investable assets. Concentrating a large share of your portfolio in one volatile asset class is a real, specific risk - not necessarily wrong, but worth being a deliberate choice rather than an accident.';
+    } else if(cryptoPct >= 8){
+      concEl.innerHTML = '<b>Moderate crypto exposure</b>Crypto is about '+Math.round(cryptoPct)+'% of your investable assets - a meaningful but not extreme share.';
+    } else {
+      concEl.innerHTML = '<b>No major concentration flag</b>Your investable assets aren\'t heavily concentrated in a single volatile asset class right now.';
+    }
+  }
+
+  function update(){
+    var stockPct = clamp(+stockPctEl.value || 0, 0, 100);
+    stockPctCaptionEl.textContent = stockPct+'% stocks / '+(100-stockPct)+'% bonds & conservative';
+
+    var age = v.age || 30;
+    // "110 minus age" is one commonly cited rule of thumb for a
+    // reasonable stock allocation - not the only valid approach, just a
+    // widely used starting point, clamped to a sane range at either end.
+    var benchmarkStock = clamp(110 - age, 20, 90);
+    var gap = stockPct - benchmarkStock;
+
+    var ringFg = $("allocRingFg");
+    if(ringFg){
+      var circumference = 2*Math.PI*52;
+      var offset = circumference * (1 - stockPct/100);
+      ringFg.setAttribute('stroke-dasharray', circumference.toFixed(1));
+      ringFg.setAttribute('stroke-dashoffset', offset.toFixed(1));
+      var color = Math.abs(gap)<=10 ? '#4FC28A' : Math.abs(gap)<=25 ? '#E8B34A' : '#E15B5B';
+      ringFg.setAttribute('stroke', color);
+    }
+    $("allocStockNum").textContent = stockPct;
+
+    var tierEl = $("allocTier");
+    var tier, label;
+    if(Math.abs(gap) <= 10){ tier='strong'; label='On target for your age'; }
+    else if(gap > 10){ tier = Math.abs(gap)<=25 ? 'fair' : 'critical'; label='More aggressive than typical for your age'; }
+    else { tier = Math.abs(gap)<=25 ? 'fair' : 'critical'; label='More conservative than typical for your age'; }
+    tierEl.textContent = label;
+    tierEl.className = 'stress-tier-v2 ' + tier;
+    $("allocExplain").textContent = 'A common guideline for age '+age+' is roughly '+benchmarkStock+'% in stocks. This compares your own estimate to that benchmark - it isn\'t a recommendation to match it exactly, since your actual risk tolerance and timeline matter too.';
+  }
+
+  stockPctEl.oninput = update;
+  update();
+}
+
 function renderCreditUtilization(v){
   var limitEl = $("creditLimit"), paydownEl = $("creditPaydown"), paydownCaptionEl = $("creditPaydownCaption");
   if(!limitEl) return;
@@ -5318,6 +5561,8 @@ function openReport(v,cats){
   renderRetirementReadiness(v);
   renderRetirementProjections(v);
   renderCreditUtilization(v);
+  renderAssetAllocation(v);
+  renderBillsTracker(v);
   renderTimeCostTranslator(v);
   renderLifestyleInflationSimulator(v);
   renderNetWorthPaceGauge(v);
