@@ -89,4 +89,6 @@ var GMF_BLOG_POSTS = [
   { slug:"umbrella-insurance-explained", title:"Umbrella Insurance: The Cheap Policy Most People Forget to Buy", category:"Insurance" }
 ,
   { slug:"term-vs-whole-life-insurance", title:"Term vs. Whole Life Insurance: Which One Actually Makes Sense", category:"Insurance" }
+,
+  { slug:"credit-freeze-vs-credit-lock", title:"Credit Freeze vs. Credit Lock: Which One Actually Protects You?", category:"Credit" }
 ];
