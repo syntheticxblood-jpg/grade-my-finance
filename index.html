@@ -192,12 +192,12 @@ nav.primary a:hover{ color:var(--text) }
 @keyframes auroraDrift2{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(-50px,30px) scale(1.1) } }
 @keyframes auroraDrift3{ 0%,100%{ transform:translate(0,0) scale(1) } 50%{ transform:translate(30px,-40px) scale(1.2) } }
 @media (prefers-reduced-motion: reduce){ .aurora span{ animation:none } }
-.hero-grid{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:32px; text-align:center }
+.hero-grid{ position:relative; z-index:1; display:grid; grid-template-columns:1.05fr .95fr; align-items:center; gap:32px; text-align:left }
 .hero-copy{ padding-top:0; max-width:680px; display:flex; flex-direction:column; align-items:center }
-.hero-badge-row{ display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap }
-.hero-cta{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center }
+.hero-badge-row{ display:flex; align-items:center; justify-content:flex-start; gap:10px; flex-wrap:wrap }
+.hero-cta{ display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-start }
 .hero-proof{ margin-top:22px; display:flex; gap:18px; align-items:center; justify-content:center; flex-wrap:wrap; font-size:13px; color:var(--muted-2) }
-@media (max-width:980px){ .hero-grid{ grid-template-columns:1fr; text-align:center } .hero-cta{ justify-content:center } .hero-proof{ justify-content:center } }
+@media (max-width:980px){ .hero-grid{ grid-template-columns:1fr; text-align:center } .hero-cta{ justify-content:center } .hero-proof{ justify-content:center } .hero-badge-row{ justify-content:center } .hero-trust-row{ justify-content:center } .htr-item{ text-align:left } }
 .live-counter-badge{
   display:inline-flex; align-items:center; gap:9px; margin-bottom:16px;
   background:var(--surface); border:1px solid var(--line); border-radius:999px;
@@ -206,6 +206,8 @@ nav.primary a:hover{ color:var(--text) }
 .lcb-dot{ width:8px; height:8px; border-radius:50%; background:var(--good); flex:none; animation:lcbPulse 2s ease-in-out infinite }
 @keyframes lcbPulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(52,211,153,.5) } 50%{ box-shadow:0 0 0 5px rgba(52,211,153,0) } }
 @media (prefers-reduced-motion: reduce){ .lcb-dot{ animation:none } }
+.lcb-live-text{ font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--good) }
+.lcb-sep{ color:var(--muted-2); font-size:12px }
 .lcb-count{ font-family:var(--font-mono); font-weight:700; font-size:16px; color:var(--brand-bright) }
 .lcb-label{ font-size:12.5px; color:var(--muted) }
 .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; color:var(--brand-bright); background:var(--brand-soft); border:1px solid rgba(201,162,39,.35); padding:6px 12px; border-radius:999px; margin-bottom:20px }
@@ -220,6 +222,109 @@ nav.primary a:hover{ color:var(--text) }
 .hero p.lede{ margin:24px 0 32px; font-size:18.5px; color:var(--muted); max-width:560px }
 @media (max-width:980px){ .hero p.lede{ margin-left:auto;margin-right:auto } }
 .hero-proof b{ color:var(--text); font-family:var(--font-mono) }
+
+.hero-headline-accent{
+  background:linear-gradient(90deg, var(--brand-bright), #fff6d8, var(--brand), var(--brand-bright));
+  background-size:300% 100%; -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation:gradeShimmer 6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce){ .hero-headline-accent{ animation:none; color:var(--brand-bright); background:none } }
+
+.hero-trust-row{ display:flex; gap:22px; flex-wrap:wrap; margin-top:28px; justify-content:flex-start }
+@media (max-width:980px){ .hero-trust-row{ justify-content:center } }
+.htr-item{ display:flex; align-items:center; gap:9px }
+.htr-icon{ flex:none; width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; background:var(--brand-soft); color:var(--brand-bright) }
+.htr-item div{ display:flex; flex-direction:column; text-align:left; line-height:1.3 }
+.htr-item b{ font-size:12.5px; color:var(--text) }
+.htr-item span{ font-size:11px; color:var(--muted-2) }
+
+/* ---------- Decorative hero grade ring (illustrative, not a live calculation) ---------- */
+.hero-ring-wrap{ position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:30px 20px 10px }
+.hero-ring-stage{ position:relative; width:min(320px,76vw); aspect-ratio:1/1 }
+.hero-ring-glow{
+  position:absolute; inset:-10%; border-radius:50%; z-index:0; pointer-events:none;
+  background:radial-gradient(circle, rgba(94,234,212,.24), rgba(79,194,138,.14) 48%, transparent 72%);
+  filter:blur(26px);
+}
+.hero-ring-sparkles{ position:absolute; inset:-14%; z-index:0; pointer-events:none }
+.hrs{
+  position:absolute; width:4px; height:4px; border-radius:50%; background:#fff;
+  box-shadow:0 0 6px 1.5px rgba(255,255,255,.85);
+  animation:hrsTwinkle 2.6s ease-in-out infinite;
+}
+.hrs.s1{ top:8%; left:10%; animation-delay:0s }
+.hrs.s2{ top:16%; right:6%; width:3px; height:3px; animation-delay:.5s }
+.hrs.s3{ bottom:14%; left:4%; width:5px; height:5px; animation-delay:1s }
+.hrs.s4{ bottom:6%; right:14%; animation-delay:1.5s }
+.hrs.s5{ top:46%; left:-2%; width:3px; height:3px; animation-delay:.8s }
+.hrs.s6{ top:2%; right:28%; width:3px; height:3px; animation-delay:2s }
+@keyframes hrsTwinkle{ 0%,100%{ opacity:.25; transform:scale(.7) } 50%{ opacity:1; transform:scale(1.15) } }
+@media (prefers-reduced-motion: reduce){ .hrs{ animation:none; opacity:.7 } }
+.hero-ring{
+  position:absolute; inset:0; z-index:1; width:100%; height:100%; border-radius:50%; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(circle at 32% 26%, rgba(255,255,255,.07), transparent 42%), #05090A;
+  box-shadow:
+    0 0 60px -14px rgba(94,234,212,.45),
+    0 0 100px -30px rgba(79,194,138,.35),
+    inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.hero-ring-svg{ position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); z-index:0 }
+.hero-ring-track{ fill:none; stroke:rgba(255,255,255,.07); stroke-width:6 }
+.hero-ring-progress{
+  fill:none; stroke:url(#heroRingGrad); stroke-width:6; stroke-linecap:round;
+  stroke-dasharray:666; stroke-dashoffset:6; /* ~99% — a hair short so the bright head reads as the leading edge */
+}
+.hero-ring-head{ fill:#F4FFFB; filter:drop-shadow(0 0 5px rgba(255,255,255,.95)) drop-shadow(0 0 10px rgba(94,234,212,.85)) }
+.hero-ring-inner{
+  position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; gap:3px; padding:0 20px;
+}
+.hero-ring-label{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:.16em; color:rgba(233,236,241,.55); margin-bottom:2px; text-transform:uppercase }
+.hero-ring-letter{
+  font-family:var(--font-body); font-weight:800; font-size:clamp(58px,9.5vw,78px); line-height:1;
+  color:#FFFFFF; text-shadow:0 0 22px rgba(94,234,212,.4); letter-spacing:-.02em;
+  -webkit-font-smoothing:antialiased;
+}
+.hero-ring-score{ font-family:var(--font-mono); font-size:13.5px; color:rgba(233,236,241,.6); margin-top:3px; letter-spacing:.03em }
+.hero-ring-pill{
+  margin-top:12px; display:inline-flex; align-items:center; gap:6px;
+  font-size:11.5px; font-weight:600; color:#8FE8C4; background:rgba(79,194,138,.14);
+  border:1px solid rgba(94,234,212,.28); padding:6px 13px; border-radius:999px;
+  box-shadow:0 4px 16px -6px rgba(79,194,138,.5);
+}
+.hero-ring-pill svg{ color:#5EEAD4; flex:none }
+.hero-ring-example{ font-size:10.5px; color:var(--muted-2); font-style:italic; text-align:center }
+@media (max-width:980px){ .hero-ring-wrap{ margin-top:20px } }
+
+.steps-4{ grid-template-columns:repeat(4,1fr) }
+@media (max-width:900px){ .steps-4{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:560px){ .steps-4{ grid-template-columns:1fr } }
+.step-icon{
+  position:relative; width:60px; height:60px; border-radius:18px; overflow:hidden;
+  display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+}
+.step-icon::before{
+  content:""; position:absolute; inset:0; border-radius:inherit;
+  background:radial-gradient(circle at 30% 22%, rgba(255,255,255,.4), transparent 55%);
+  mix-blend-mode:overlay; pointer-events:none;
+}
+.step-icon svg{ position:relative; z-index:1; filter:drop-shadow(0 2px 4px rgba(0,0,0,.3)) }
+.step-icon.c1{
+  background:linear-gradient(150deg, #1F5C46, #0E2A22); color:#6EF0C4;
+  box-shadow:0 10px 26px -10px rgba(79,194,138,.55), inset 0 1px 0 rgba(255,255,255,.14), inset 0 -10px 18px rgba(0,0,0,.3), 0 0 0 1px rgba(94,234,212,.22);
+}
+.step-icon.c2{
+  background:linear-gradient(150deg, #6B4E14, #2E2107); color:#F6CE78;
+  box-shadow:0 10px 26px -10px rgba(232,179,74,.55), inset 0 1px 0 rgba(255,255,255,.14), inset 0 -10px 18px rgba(0,0,0,.3), 0 0 0 1px rgba(240,193,104,.22);
+}
+.step-icon.c3{
+  background:linear-gradient(150deg, #2C3E82, #131A3B); color:#9FB1FF;
+  box-shadow:0 10px 26px -10px rgba(91,141,239,.55), inset 0 1px 0 rgba(255,255,255,.14), inset 0 -10px 18px rgba(0,0,0,.3), 0 0 0 1px rgba(163,148,255,.22);
+}
+.step:hover .step-icon{ transform:translateY(-2px) }
+.step-icon{ transition:transform .2s ease }
+
 
 /* ---------- Welcome entrance animations ---------- */
 .hero-in{
@@ -447,6 +552,15 @@ section.block{ padding:76px 0 }
 /* ---------- Report modal — modern dashboard treatment ---------- */
 .modal{ position:fixed; inset:0; display:none; z-index:100; background:rgba(6,7,9,.68) }
 .modal.show{ display:grid; place-items:center }
+/* ---------- Calculator modal — calculator opens as an overlay instead of living inline on the page ---------- */
+.calc-modal{ z-index:110; padding:20px; overflow-y:auto; backdrop-filter:blur(3px) }
+.calc-modal .calc-wrap{ width:min(880px,94vw); max-height:92vh; max-height:92dvh; margin:10px auto; overflow-y:auto; overflow-x:hidden }
+.calc-modal.show .calc-wrap{ animation:popIn .35s cubic-bezier(.2,1,.2,1) }
+.calc-modal-close{
+  position:absolute; top:14px; right:14px; z-index:5; width:34px; height:34px; padding:0;
+  display:flex; align-items:center; justify-content:center; border-radius:10px; font-size:14px;
+}
+@media (max-width:760px){ .calc-modal{ padding:0 } .calc-modal .calc-wrap{ width:100%; max-width:100%; margin:0; min-height:100%; max-height:none; border-radius:0; padding:26px 18px 24px } }
 .sheet{
   width:min(1360px,96vw); height:92vh; height:92dvh; max-height:92vh; max-height:92dvh; margin:10px; padding:0;
   border-radius:20px; position:relative; display:flex; flex-direction:row; overflow:hidden;
@@ -1480,24 +1594,80 @@ body.is-pro .ad-slot{ display:none !important }
     <div class="hero-copy">
       <div class="hero-badge-row hero-in" style="--d:0s">
         <div class="live-counter-badge">
-          <span class="lcb-dot"></span>
+          <span class="lcb-dot" aria-hidden="true"></span>
+          <span class="lcb-live-text">Live</span>
+          <span class="lcb-sep" aria-hidden="true">·</span>
+          <span>Join</span>
           <span class="lcb-count" id="liveGradeCountHero">—</span>
-          <span class="lcb-label" id="liveGradeCountHeroLabel">report cards graded</span>
+          <span class="lcb-label" id="liveGradeCountHeroLabel">people improving their financial future</span>
         </div>
-        <span class="eyebrow">FREE · NO SIGN-UP · RUNS IN YOUR BROWSER</span>
       </div>
-      <h1 class="hero-in" style="--d:.16s">How healthy is your <em>financial life</em>?</h1>
-      <p class="lede hero-in" style="--d:.26s">Answer a few honest questions about your income, spending, and debt — no financial background required — and get a personalized grade in about 60 seconds.</p>
+      <h1 class="hero-in" style="--d:.16s">Know your numbers.<br><span class="hero-headline-accent">Grade your life.</span></h1>
+      <p class="lede hero-in" style="--d:.26s">Get a personalized financial grade in 60 seconds and discover exactly where you stand — and how to level up.</p>
       <div class="hero-cta hero-in" style="--d:.36s">
-        <button class="btn gold" id="gradeBtnHero" type="button">Get My Financial Grade</button>
-        <button class="btn ghost" id="demoBtn" type="button">See How It Works</button>
+        <button class="btn gold" id="gradeBtnHero" type="button">Get My Financial Grade →</button>
+        <button class="btn ghost" id="demoBtn" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> See How It Works</button>
+      </div>
+      <div class="hero-trust-row hero-in" style="--d:.44s">
+        <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span><div><b>100% Private</b><span>Your data stays yours</span></div></div>
+        <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>No Credit Check</b><span>Zero impact to score</span></div></div>
+        <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><div><b>Takes 60 Seconds</b><span>Instant personalized grade</span></div></div>
       </div>
     </div>
-    <div class="hero-calc-wrap hero-in-mock">
+    <div class="hero-ring-wrap hero-in-mock">
+      <div class="hero-ring-stage">
+        <div class="hero-ring-glow" aria-hidden="true"></div>
+        <div class="hero-ring-sparkles" aria-hidden="true">
+          <span class="hrs s1"></span><span class="hrs s2"></span><span class="hrs s3"></span>
+          <span class="hrs s4"></span><span class="hrs s5"></span><span class="hrs s6"></span>
+        </div>
+        <div class="hero-ring">
+          <svg class="hero-ring-svg" viewBox="0 0 240 240" aria-hidden="true">
+            <defs>
+              <linearGradient id="heroRingGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#3AA173"/>
+                <stop offset="55%" stop-color="#5EEAD4"/>
+                <stop offset="100%" stop-color="#F4FFFB"/>
+              </linearGradient>
+            </defs>
+            <circle class="hero-ring-track" cx="120" cy="120" r="106"/>
+            <circle class="hero-ring-progress" cx="120" cy="120" r="106"/>
+            <circle class="hero-ring-head" cx="120" cy="14" r="5"/>
+          </svg>
+          <div class="hero-ring-inner">
+            <span class="hero-ring-label">FINANCIAL GRADE</span>
+            <span class="hero-ring-letter">A+</span>
+            <span class="hero-ring-score">100 / 100</span>
+            <span class="hero-ring-pill"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26L21 9.27l-4.5 4.38L17.8 21 12 17.77 6.2 21l1.3-7.35L3 9.27l6.1-1.01L12 2z"/></svg> You're in excellent shape!</span>
+          </div>
+        </div>
+      </div>
+      <span class="hero-ring-example">Example grade — yours is personal to you</span>
+    </div>
+
+  </div>
+</section>
+
+<section class="block" id="how">
+  <div class="container">
+    <div class="block-head center">
+      <span class="kicker">Simple. Fast. Powerful.</span>
+      <h2>How it works</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="idx mono">01</div><div class="step-icon c1"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><h3>Enter Your Numbers</h3><p>Answer a few simple questions about your income, spending, savings, and debt.</p></div>
+      <div class="step"><div class="idx mono">02</div><div class="step-icon c2"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M13 2 3 14h7l-1 8 11-14h-8l1-6z"/></svg></div><h3>We Crunch the Data</h3><p>Our algorithm analyzes your financial health and benchmarks you against others.</p></div>
+      <div class="step"><div class="idx mono">03</div><div class="step-icon c3"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a1 1 0 0 0-1 1 4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1 4 4 0 0 1-4 4"/></svg></div><h3>Get Your Grade</h3><p>See your personalized financial grade, a detailed breakdown, and how to improve it.</p></div>
+    </div>
+  </div>
+</section>
+
+<div id="calcModal" class="modal calc-modal" role="dialog" aria-modal="true" aria-labelledby="calcModalTitle">
 <section id="grade" class="calc-wrap" aria-label="Calculator">
+  <button class="xbtn calc-modal-close" id="calcModalClose" type="button" aria-label="Close calculator">✕</button>
   <div class="calc-header">
     <span class="calc-eyebrow">✏️ Enter your numbers</span>
-    <h2>Get your financial grade</h2>
+    <h2 id="calcModalTitle">Get your financial grade</h2>
     <p class="calc-subtitle">Answer a few questions and discover your personalized financial score.</p>
   </div>
   <div class="stepper-head">
@@ -1567,9 +1737,8 @@ body.is-pro .ad-slot{ display:none !important }
     <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
   </div>
 </section>
-    </div>
-  </div>
-</section>
+</div>
+
 
 <section class="block" id="pro-dashboard-preview" style="padding-top:38px">
   <div class="aurora" aria-hidden="true" style="opacity:.6"><span class="a1" style="top:20%"></span><span class="a2" style="top:10%"></span></div>
@@ -1763,21 +1932,6 @@ body.is-pro .ad-slot{ display:none !important }
     <div class="stat"><div class="num mono">0</div><div class="cap">numbers stored on our servers</div></div>
   </div>
 </div>
-
-<section class="block" id="how">
-  <div class="container">
-    <div class="block-head center">
-      <span class="kicker">How it works</span>
-      <h2>Three steps. No account, no bank link.</h2>
-      <p>Everything below runs locally in your browser — your numbers never leave your device unless you choose to save a share link.</p>
-    </div>
-    <div class="steps">
-      <div class="step"><div class="idx mono">01</div><h3>Enter your numbers</h3><p>Income, expenses, assets, and debts. Takes about a minute — no account required.</p></div>
-      <div class="step"><div class="idx mono">02</div><h3>Get your grade</h3><p>A letter grade with a full breakdown: savings rate, emergency fund, debt load, net worth, and income strength.</p></div>
-      <div class="step"><div class="idx mono">03</div><h3>Follow your path</h3><p>See the 1–3 moves that would raise your grade fastest, with real dollar targets — not generic advice.</p></div>
-    </div>
-  </div>
-</section>
 
 <section class="block" id="features" style="background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
   <div class="container">
@@ -6086,18 +6240,27 @@ function gradeNow(){
   __track('click_get_report_card', {location: 'main'});
   runWithLoader(function(){ var v=values(); var cats=categoryScores(v); openReport(v,cats); });
 }
-$("gradeBtnHero").addEventListener("click", function(){
-  __track('click_scroll_to_calculator',{location:'hero'});
-  document.getElementById("grade").scrollIntoView({ behavior:"smooth", block:"start" });
-  setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 500);
-});
-if($("gradeBtnFooterCta")) $("gradeBtnFooterCta").addEventListener("click", function(){
-  __track('click_scroll_to_calculator',{location:'footer_cta'});
-  document.getElementById("grade").scrollIntoView({ behavior:"smooth", block:"start" });
-  setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 500);
-});
-$("gradeBtn").addEventListener("click", gradeNow);
-$("gradeBtnSticky").addEventListener("click", function(){ __track('click_get_report_card',{location:'sticky'}); gradeNow(); });
+function openCalcModal(location){
+  __track('click_open_calculator',{location:location});
+  var m=$("calcModal");
+  m.classList.add("show");
+  lockBodyScroll();
+  setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 350);
+}
+function closeCalcModal(){
+  var m=$("calcModal");
+  if(!m.classList.contains("show")) return;
+  m.classList.remove("show");
+  unlockBodyScroll();
+}
+$("calcModalClose").addEventListener("click", closeCalcModal);
+$("calcModal").addEventListener("click", function(e){ if(e.target === $("calcModal")) closeCalcModal(); });
+document.addEventListener("keydown", function(e){ if(e.key === "Escape" && $("calcModal").classList.contains("show")) closeCalcModal(); });
+
+$("gradeBtnHero").addEventListener("click", function(){ openCalcModal('hero'); });
+if($("gradeBtnFooterCta")) $("gradeBtnFooterCta").addEventListener("click", function(){ openCalcModal('footer_cta'); });
+$("gradeBtn").addEventListener("click", function(){ closeCalcModal(); gradeNow(); });
+$("gradeBtnSticky").addEventListener("click", function(){ __track('click_get_report_card',{location:'sticky'}); openCalcModal('sticky'); });
 
 function randomDemo(){
   __track('click_demo');
@@ -6314,7 +6477,7 @@ if(licenseSubmit){
 }
 
 ['gradeBtnPricingFree','upgradeBtnTop','upgradeBtnPricing'].forEach(function(id){
-  var b=$(id); if(b && id==='gradeBtnPricingFree') b.addEventListener('click', gradeNow);
+  var b=$(id); if(b && id==='gradeBtnPricingFree') b.addEventListener('click', function(){ openCalcModal('pricing'); });
 });
 
 /* ================= SAVED SCENARIOS (Pro) ================= */
@@ -6687,8 +6850,7 @@ function animateCountUp(el, target, formatFn, duration){
 function loadGradeCount(){
   var heroEl=$("liveGradeCountHero"), stripEl=$("liveGradeCountStrip"), heroLabelEl=$("liveGradeCountHeroLabel");
   function showFallback(){
-    if(heroEl) heroEl.textContent = "Growing daily";
-    if(heroLabelEl) heroLabelEl.style.display = "none";
+    if(heroEl) heroEl.textContent = "thousands of";
     if(stripEl) stripEl.textContent = "—";
   }
   if(!GRADE_COUNT_ENDPOINT){ showFallback(); return; }
