@@ -55,21 +55,7 @@ header.site{ position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:8
 :root[data-theme="light"] header.site{ background:rgba(247,246,243,.8) }
 .hdr-row{ height:100%; display:flex; align-items:center; gap:12px }
 .brandmark{ display:flex; align-items:center; gap:9px; text-decoration:none }
-.seal{
-  position:relative; width:32px; height:32px; border-radius:9px; overflow:hidden; flex:none;
-  background:linear-gradient(165deg, #1a1607, #0E1015 65%);
-  border:1.5px solid rgba(201,162,39,.45);
-  display:grid; place-items:center;
-  box-shadow: 0 0 0 1px rgba(201,162,39,.08), 0 4px 12px -3px rgba(201,162,39,.32), inset 0 1px 0 rgba(255,255,255,.06);
-}
-.seal::after{
-  content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
-  background:linear-gradient(75deg, transparent, rgba(255,255,255,.3), transparent);
-  animation:sealShimmerOnce 1.8s ease-in-out .4s 1;
-}
-@keyframes sealShimmerOnce{ 0%{ left:-60% } 100%{ left:140% } }
-@media (prefers-reduced-motion: reduce){ .seal::after{ animation:none } }
-.seal span{ font-family:var(--font-mono); font-weight:700; font-size:11px; color:var(--brand-bright) }
+
 .wordmark{ font-weight:700; font-size:15px }
 .pro-chip{ display:inline-flex; align-items:center; gap:4px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:800; font-size:10px; letter-spacing:.03em; padding:2px 8px; border-radius:99px; margin-left:2px }
 .hdr-right{ margin-left:auto; display:flex; align-items:center; gap:8px }
@@ -177,8 +163,9 @@ main{ padding:28px 0 70px }
 .m-card-head{ display:flex; align-items:center; justify-content:space-between; gap:10px }
 .m-icon{ flex:none; width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center }
 .m-icon-good{ background:var(--good-soft); color:var(--good) }
-.m-icon-brand{ background:var(--brand-soft); color:var(--brand-bright) }
+.m-icon-brand{ background:rgba(139,110,246,.16); color:#A78BFA }
 .m-icon-info{ background:rgba(91,141,239,.14); color:#5B8DEF }
+.m-spark{ display:block; margin-top:10px }
 .metric-card .m-sub{ font-size:11.5px; color:var(--muted-2); margin-top:4px; font-family:var(--font-mono) }
 .metric-card .m-sub.up{ color:var(--good) }
 .metric-card .m-sub.down{ color:var(--bad) }
@@ -219,7 +206,7 @@ main{ padding:28px 0 70px }
 .insight-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:18px; box-shadow:var(--shadow-sm) }
 .insight-card.goal-card-decorated{ position:relative; overflow:hidden; padding:20px }
 .goal-card-content{ position:relative; z-index:1; max-width:62% }
-.goal-mountain-deco{ position:absolute; right:-10px; bottom:-8px; width:150px; height:auto; opacity:0.9; pointer-events:none }
+.goal-mountain-deco{ position:absolute; right:-10px; bottom:-8px; width:190px; height:auto; opacity:0.95; pointer-events:none }
 @media (max-width:560px){ .goal-mountain-deco{ display:none } .goal-card-content{ max-width:100% } }
 .insight-card.win{ border-color:rgba(52,211,153,.3); background:linear-gradient(155deg, var(--good-soft), transparent) }
 .insight-card h4{ font-family:var(--font-serif); font-weight:600; font-size:15px; margin:6px 0 4px }
@@ -356,8 +343,18 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:2
   position:fixed; top:0; left:0; bottom:0; width:250px; z-index:80;
   background:var(--surface); border-right:1px solid var(--line);
   display:flex; flex-direction:column; padding:20px 14px;
+  box-shadow: 8px 0 40px -10px rgba(228,194,78,.18);
 }
 .sidebar-brand{ display:flex; align-items:center; gap:9px; text-decoration:none; padding:0 8px 22px; border-bottom:1px solid var(--line); margin-bottom:18px }
+.seal{
+  position:relative; flex:none; display:flex; align-items:flex-start; justify-content:center;
+}
+.seal span{
+  font-family:var(--font-serif); font-weight:700; font-size:44px; line-height:0.85;
+  background:linear-gradient(155deg, #F5D98A, var(--brand-bright) 45%, var(--brand) 85%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 0 10px rgba(228,194,78,.35));
+}
 .sidebar .dash-nav{ display:flex; flex-direction:column; gap:2px; border-bottom:none; margin-bottom:0; overflow:visible }
 .sidebar .dash-nav-btn{
   display:flex; align-items:center; gap:10px; width:100%; text-align:left;
@@ -387,7 +384,15 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:2
 .sidebar-profile-name{ font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px }
 .sidebar-profile .dash-greeting-avatar{ width:34px; height:34px; font-size:13px }
 
-.main-area{ flex:1; min-width:0; margin-left:250px }
+.main-area{ flex:1; min-width:0; margin-left:250px; position:relative }
+.main-area::before{
+  content:""; position:fixed; top:0; left:250px; right:0; height:100vh; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 900px 500px at 30% 0%, rgba(139,110,246,.10), transparent 60%),
+    radial-gradient(ellipse 500px 400px at 0% 40%, rgba(228,194,78,.09), transparent 65%);
+}
+.main-area .container{ position:relative; z-index:1 }
+@media (max-width:900px){ .main-area::before{ left:0 } }
 .main-area .container{ max-width:1180px }
 main{ padding:28px 0 50px }
 
@@ -507,8 +512,8 @@ main{ padding:28px 0 50px }
             <a class="view-link" href="index.html#faq" id="howGradesWorkLink" style="margin-top:6px">How grades work →</a>
           </div>
         </div>
-        <div class="metric-card"><div class="m-card-head"><div class="m-label">Net Worth</div><div class="m-icon m-icon-good"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5a2.5 2.5 0 0 1 2.5-2.5h1a2.5 2.5 0 0 1 0 5h-1a2.5 2.5 0 0 0 0 5h1a2.5 2.5 0 0 0 2.5-2.5"/></svg></div></div><div class="m-val mono" id="mNetVal">—</div><div class="m-sub" id="mNetSub">—</div></div>
-        <div class="metric-card"><div class="m-card-head"><div class="m-label">Score Change</div><div class="m-icon m-icon-brand"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div></div><div class="m-val mono" id="mChangeVal" style="font-size:20px">—</div></div>
+        <div class="metric-card"><div class="m-card-head"><div class="m-label">Net Worth</div><div class="m-icon m-icon-good"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5a2.5 2.5 0 0 1 2.5-2.5h1a2.5 2.5 0 0 1 0 5h-1a2.5 2.5 0 0 0 0 5h1a2.5 2.5 0 0 0 2.5-2.5"/></svg></div></div><div class="m-val mono" id="mNetVal">—</div><div class="m-sub" id="mNetSub">—</div><svg class="m-spark" id="mNetSpark" width="100%" height="34" viewBox="0 0 200 34" preserveAspectRatio="none"></svg></div>
+        <div class="metric-card"><div class="m-card-head"><div class="m-label">Score Change</div><div class="m-icon m-icon-brand"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div></div><div class="m-val mono" id="mChangeVal" style="font-size:20px">—</div><svg class="m-spark" id="mScoreSpark" width="100%" height="34" viewBox="0 0 200 34" preserveAspectRatio="none"></svg></div>
         <div class="metric-card"><div class="m-card-head"><div class="m-label">Check-ins</div><div class="m-icon m-icon-info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div></div><div class="m-val mono" id="mCheckinsVal" style="font-size:20px">—</div></div>
         <span id="mScoreVal" style="display:none"></span><span id="mScoreGrade" style="display:none"></span>
       </div>
@@ -925,6 +930,22 @@ function groupCheckins(history){
 /* ================= CHART RENDERER =================
    Shared line chart with real hover tooltips and honest flat-data
    handling (no fabricated range when every value is identical). */
+function drawSparkline(svgEl, values, colorVar){
+  if(!svgEl) return;
+  if(!values || values.length < 2){ svgEl.innerHTML = ""; return; }
+  var w=200, h=34, pad=3;
+  var minV = Math.min.apply(null, values), maxV = Math.max.apply(null, values);
+  if(maxV === minV){ maxV = minV + 1; }
+  function x(i){ return pad + (i/(values.length-1)) * (w - pad*2); }
+  function y(v){ return pad + (h - pad*2) - ((v - minV)/(maxV - minV)) * (h - pad*2); }
+  var d = "";
+  for(var i=0;i<values.length;i++){ d += (i?" L ":"M ") + x(i) + " " + y(values[i]); }
+  var areaD = d + " L " + x(values.length-1) + " " + (h-pad) + " L " + x(0) + " " + (h-pad) + " Z";
+  svgEl.innerHTML =
+    '<path d="'+areaD+'" fill="'+colorVar+'" opacity="0.10"/>'+
+    '<path d="'+d+'" fill="none" stroke="'+colorVar+'" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>';
+}
+
 function drawChart(svgEl, tooltipEl, points, opts){
   opts = opts || {};
   var formatter = opts.formatter || function(v){ return v.toFixed(1); };
@@ -1065,6 +1086,11 @@ function renderOverview(hist, groups){
     changeEl.style.color = d>=0 ? "var(--good)" : "var(--bad)";
   } else { changeEl.textContent = "—"; changeEl.style.color = ""; }
   $("mCheckinsVal").textContent = getCheckinCount() || "—";
+
+  // Mini sparklines - purely decorative trend context, not touching any
+  // of the number logic above, just visualizing the same real history.
+  drawSparkline($("mNetSpark"), withNet.slice(-20).map(function(h){ return h.net; }), "var(--good)");
+  drawSparkline($("mScoreSpark"), hist.slice(-20).map(function(h){ return h.score; }), "#A78BFA");
 
   // Score mini chart
   var scEl = $("ovScoreVal"), scSub = $("ovScoreSub"), sliderMarker = $("scoreSliderMarker");
@@ -1413,15 +1439,24 @@ function renderGoalPreview(){
       card.innerHTML += '<div class="g-progress-num mono">'+fmt(current)+' / '+fmt(g.target)+'</div><div class="progress-bar"><div style="width:'+pct.toFixed(0)+'%"></div></div><div class="g-remaining">'+pct.toFixed(0)+'% complete</div>';
     }
     card.innerHTML += '<button class="btn sm" data-goto="goals" style="margin-top:12px">View goal →</button></div>'+
-      '<svg class="goal-mountain-deco" viewBox="0 0 200 160" aria-hidden="true">'+
-        '<path d="M0 160 L55 70 L85 105 L120 40 L200 160 Z" fill="url(#mtnGrad)"/>'+
-        '<path d="M120 40 L145 78 L108 78 Z" fill="var(--surface-2)" opacity="0.5"/>'+
-        '<circle cx="30" cy="40" r="1.5" fill="var(--brand-bright)" opacity="0.6"/>'+
-        '<circle cx="165" cy="55" r="1.5" fill="var(--good)" opacity="0.5"/>'+
-        '<circle cx="60" cy="20" r="1" fill="var(--brand-bright)" opacity="0.5"/>'+
-        '<line x1="120" y1="40" x2="120" y2="18" stroke="var(--brand-bright)" stroke-width="2"/>'+
-        '<path d="M120 18 L138 24 L120 30 Z" fill="var(--brand-bright)"/>'+
-        '<defs><linearGradient id="mtnGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--good)"/><stop offset="100%" stop-color="var(--surface-2)"/></linearGradient></defs>'+
+      '<svg class="goal-mountain-deco" viewBox="0 0 200 170" aria-hidden="true">'+
+        '<circle cx="150" cy="28" r="24" fill="url(#mtnGlow)"/>'+
+        '<path d="M0 170 L38 100 L58 122 L80 78 L98 98 L128 45 L155 88 L175 65 L200 170 Z" fill="url(#mtnBack)" opacity="0.55"/>'+
+        '<path d="M0 170 L45 118 L70 138 L100 82 L135 130 L165 110 L200 170 Z" fill="url(#mtnFront)"/>'+
+        '<path d="M100 82 L112 100 L88 100 Z" fill="#fff" opacity="0.85"/>'+
+        '<path d="M128 45 L138 62 L118 62 Z" fill="#fff" opacity="0.7"/>'+
+        '<path d="M45 118 L200 170 L100 82 Z" fill="#000" opacity="0.12"/>'+
+        '<circle cx="28" cy="35" r="1.4" fill="var(--brand-bright)" opacity="0.7"/>'+
+        '<circle cx="170" cy="50" r="1.6" fill="var(--good)" opacity="0.6"/>'+
+        '<circle cx="55" cy="18" r="1.1" fill="var(--brand-bright)" opacity="0.6"/>'+
+        '<circle cx="185" cy="90" r="1.2" fill="var(--brand-bright)" opacity="0.5"/>'+
+        '<line x1="100" y1="82" x2="100" y2="52" stroke="var(--brand-bright)" stroke-width="2.5"/>'+
+        '<path d="M100 52 L124 60 L100 68 Z" fill="var(--brand-bright)"/>'+
+        '<defs>'+
+          '<radialGradient id="mtnGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--brand-bright)" stop-opacity="0.45"/><stop offset="100%" stop-color="var(--brand-bright)" stop-opacity="0"/></radialGradient>'+
+          '<linearGradient id="mtnBack" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6B7280"/><stop offset="100%" stop-color="var(--surface-2)"/></linearGradient>'+
+          '<linearGradient id="mtnFront" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--good)"/><stop offset="100%" stop-color="#0B3B2A"/></linearGradient>'+
+        '</defs>'+
       '</svg>';
   }
   card.querySelectorAll("[data-goto]").forEach(function(b){ b.addEventListener("click", function(){ window.__gotoDashTab("goals"); window.scrollTo({top:0,behavior:'smooth'}); }); });
