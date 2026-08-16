@@ -6033,6 +6033,16 @@ function openReport(v,cats){
   window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score };
   window.__lastFullReport = { v: v, cats: cats };
 
+  // FIX: show the report card before optional renderers run. A failure in one
+  // dashboard widget must never prevent the main report card from opening.
+  modal.classList.add("show");
+  lockBodyScroll();
+
+  function safeReportRender(name, fn){
+    try { fn(); }
+    catch(err){ console.error("Grade My Finance report renderer failed:", name, err); }
+  }
+
   (function animateScoreReveal(){
     var target = cats.overall.score, startTime = null, duration = 900;
     var suffix = "/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
@@ -6099,21 +6109,21 @@ function openReport(v,cats){
     benchRows.appendChild(row);
   });
 
-  drawCharts(v);
-  renderNetWorthProjection(v);
-  renderLifeEventsSimulator(v);
-  renderFreedomNumberExplorer(v);
-  renderDebtPayoffPlanner(v);
-  renderRetirementReadiness(v);
-  renderRetirementProjections(v);
-  renderCreditUtilization(v);
-  renderOverviewSparklines(v);
-  renderAssetAllocation(v);
-  renderBillsTracker(v);
-  renderTimeCostTranslator(v);
-  renderLifestyleInflationSimulator(v);
-  renderNetWorthPaceGauge(v);
-  renderEmergencyStressTest(v);
+  safeReportRender("drawCharts(v", function(){ drawCharts(v); });
+  safeReportRender("renderNetWorthProjection(v", function(){ renderNetWorthProjection(v); });
+  safeReportRender("renderLifeEventsSimulator(v", function(){ renderLifeEventsSimulator(v); });
+  safeReportRender("renderFreedomNumberExplorer(v", function(){ renderFreedomNumberExplorer(v); });
+  safeReportRender("renderDebtPayoffPlanner(v", function(){ renderDebtPayoffPlanner(v); });
+  safeReportRender("renderRetirementReadiness(v", function(){ renderRetirementReadiness(v); });
+  safeReportRender("renderRetirementProjections(v", function(){ renderRetirementProjections(v); });
+  safeReportRender("renderCreditUtilization(v", function(){ renderCreditUtilization(v); });
+  safeReportRender("renderOverviewSparklines(v", function(){ renderOverviewSparklines(v); });
+  safeReportRender("renderAssetAllocation(v", function(){ renderAssetAllocation(v); });
+  safeReportRender("renderBillsTracker(v", function(){ renderBillsTracker(v); });
+  safeReportRender("renderTimeCostTranslator(v", function(){ renderTimeCostTranslator(v); });
+  safeReportRender("renderLifestyleInflationSimulator(v", function(){ renderLifestyleInflationSimulator(v); });
+  safeReportRender("renderNetWorthPaceGauge(v", function(){ renderNetWorthPaceGauge(v); });
+  safeReportRender("renderEmergencyStressTest(v", function(){ renderEmergencyStressTest(v); });
 
   (function renderSnapshot(){
     if($("snapNetWorth")) $("snapNetWorth").textContent = money(v.net);
@@ -6471,8 +6481,8 @@ function openReport(v,cats){
   if($("subReportGrade")) $("subReportGrade").value = cats.overall.letter;
   if($("subReportScore")) $("subReportScore").value = cats.overall.score;
 
-  modal.classList.add("show");
-  lockBodyScroll();
+  // Modal was opened at the start of openReport so renderer failures cannot
+  // prevent the report card from appearing.
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
   spawnInkRipple(rcGrade);
   __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
