@@ -564,14 +564,19 @@ section.block{ padding:76px 0 }
 .sheet{
   width:min(1360px,96vw); height:92vh; height:92dvh; max-height:92vh; max-height:92dvh; margin:10px; padding:0;
   border-radius:20px; position:relative; display:flex; flex-direction:row; overflow:hidden;
-  /* Modern dark-panel palette, scoped to this modal only — cascades to
-     every var(--text)/var(--muted)/var(--surface)/var(--line)/var(--brand)*
-     used by cards, badges, rows, etc. inside here without touching the
-     rest of the (still gold/certificate-adjacent) site. */
-  --bg-2:#0E1116; --surface:#171C24; --surface-2:#1E2530;
-  --line: #2A313D; --text:#E9ECF1; --muted:#8B93A3; --muted-2:#5D636F;
-  --gold:#E8B34A; --gold-bright:#F0C168; --gold-soft: rgba(232,179,74,.14);
-  --good:#4FC28A; --good-2:#3AA173; --bad:#E2574C; --mid:#E8B34A;
+  /* Vibrant purple/pink/blue palette, scoped to this modal only via the
+     same --gold/--gold-bright/--gold-soft variables the whole modal
+     already uses pervasively for buttons, active states, badges, and
+     borders - redefining what they resolve to here cascades the new
+     color everywhere automatically, without touching the rest of the
+     (still gold/certificate-adjacent) site or rewriting every rule by
+     hand. --rc-grad-1/2/3 are separate, used only for the multi-stop
+     ring and logo gradients specifically. */
+  --bg-2:#0E1020; --surface:#181B2E; --surface-2:#1F2338;
+  --line: #2E3350; --text:#EDEFFA; --muted:#9498B8; --muted-2:#63678A;
+  --gold:#7C6FF5; --gold-bright:#9B8FFF; --gold-soft: rgba(124,111,245,.16);
+  --good:#4ADE9E; --good-2:#34C588; --bad:#F0578C; --mid:#7C6FF5;
+  --rc-grad-1:#3B82F6; --rc-grad-2:#EC4899; --rc-grad-3:#8B5CF6;
   --font-mono:'IBM Plex Mono',monospace; --font-serif:'Fraunces',serif;
   background: var(--bg-2);
   border:1px solid var(--line);
@@ -606,9 +611,46 @@ section.block{ padding:76px 0 }
 .dash-tab-label{ flex:1 1 auto; white-space:nowrap }
 .dash-tab:hover{ background:rgba(255,255,255,.04); color:var(--text) }
 .dash-tab.active{
-  background:linear-gradient(155deg, rgba(232,179,74,.16), rgba(232,179,74,.05));
-  color:var(--text);
+  background:linear-gradient(135deg, var(--gold), var(--rc-grad-3));
+  color:#fff;
 }
+
+.rc-sidebar-brand{ display:flex; align-items:center; gap:10px; padding:4px 10px 20px }
+.rc-logo-mark{ flex:none; display:block; filter:drop-shadow(0 3px 8px rgba(139,92,246,.4)) }
+.gmf-logo-mark{ flex:none; display:block; filter:drop-shadow(0 3px 8px rgba(139,92,246,.4)) }
+.rc-social-row{
+  display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+  margin-top:18px; padding-top:16px; border-top:1px solid var(--line);
+}
+.rc-social-label{ font-size:12.5px; color:var(--muted); font-weight:600 }
+.rc-social-icons{ display:flex; gap:8px }
+.rc-social-icons a{
+  display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%;
+  background:var(--surface-2); border:1px solid var(--line); color:var(--muted);
+  transition:color .15s ease, border-color .15s ease, transform .15s ease;
+}
+.rc-social-icons a:hover{ color:#fff; border-color:rgba(155,143,255,.5); transform:translateY(-1px) }
+
+.rc-spark-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:14px }
+@media (max-width:820px){ .rc-spark-row{ grid-template-columns:1fr 1fr } }
+.rc-spark-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px 10px;
+}
+.rc-spark-label{ display:block; font-size:11.5px; font-weight:700; color:var(--muted); margin-bottom:8px }
+.rc-spark-chart{ display:block; width:100%; height:36px; overflow:visible }
+.rc-logo-word{ font-weight:700; font-size:14.5px; color:var(--text); white-space:nowrap }
+
+.rc-unlock-premium-card{
+  display:flex; flex-direction:column; gap:2px; margin-top:14px; padding:14px 14px 16px;
+  border-radius:14px; text-decoration:none; cursor:pointer;
+  background:linear-gradient(155deg, rgba(124,111,245,.18), rgba(236,72,153,.10));
+  border:1px solid rgba(155,143,255,.25);
+  transition:transform .15s ease, border-color .15s ease;
+}
+.rc-unlock-premium-card:hover{ transform:translateY(-1px); border-color:rgba(155,143,255,.5) }
+.rc-upc-crown{ font-size:18px; margin-bottom:4px }
+.rc-upc-title{ font-weight:700; font-size:13.5px; color:var(--text) }
+.rc-upc-sub{ font-size:11.5px; color:var(--muted); line-height:1.4 }
 /* Sidebar group labels - turns 15 flat tabs into 3 organized groups
    (Overview standing alone as the dominant entry point, then Your
    Report / Planning / More) without touching tab markup, click
@@ -619,7 +661,7 @@ section.block{ padding:76px 0 }
   padding:16px 12px 6px; margin-top:2px;
 }
 .dash-tab-group-label:first-of-type{ border-top:1px solid var(--line); margin-top:10px }
-.dash-tab.active .dash-tab-icon{ opacity:1; color:var(--brand-bright) }
+.dash-tab.active .dash-tab-icon{ opacity:1; color:#fff }
 .dash-tab .lock-tag{ margin-left:auto }
 
 /* Thin, theme-matched scrollbars instead of the bulky default OS ones */
@@ -672,7 +714,12 @@ section.block{ padding:76px 0 }
 @media (max-width:760px){ .sheet{ height:94vh; height:94dvh; max-height:94vh; max-height:94dvh; padding:20px 18px 18px } }
 .modal.show .sheet{ animation:popIn .35s cubic-bezier(.2,1,.2,1) }
 @keyframes popIn{ 0%{ transform:scale(.96); opacity:0 } 100%{ transform:scale(1); opacity:1 } }
-.sheet-header{ display:flex; justify-content:flex-end; align-items:flex-start; gap:12px; margin-bottom:4px }
+.sheet-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:16px }
+.rc-header-titles{ min-width:0 }
+.rc-header-title{ font-family:var(--font-display,'Space Grotesk',sans-serif); font-size:22px; font-weight:700; margin:0; color:var(--text) }
+.rc-header-sub{ font-size:13px; color:var(--muted); margin:4px 0 0 }
+.rc-header-actions{ display:flex; gap:10px; flex:none }
+.rc-share-btn{ background:linear-gradient(135deg, var(--gold), var(--rc-grad-3)); border-color:transparent; color:#fff; font-weight:600 }
 .xbtn{ background:var(--surface); border:1px solid var(--line); color:var(--text); border-radius:9px; padding:8px 12px; cursor:pointer; font-size:13px }
 
 /* Hero: grade stamp + greeting + streak, replacing the old wax-seal/certificate header */
@@ -685,14 +732,23 @@ section.block{ padding:76px 0 }
    existing good/mid/bad classes JS already applies to this element. */
 .rc-grade{
   position:relative; width:200px; height:200px; border-radius:50%; flex:none;
-  --ring-color: var(--brand-bright); --ring-pct: 0;
-  background: conic-gradient(var(--ring-color) calc(var(--ring-pct)*3.6deg), var(--surface-2) 0);
+  --ring-color: var(--rc-grad-2); --ring-pct: 0;
+  /* Vibrant 3-stop sweep across the filled arc (matching the reference
+     exactly, rather than the old single-tier-color approach) - the 3
+     colors are distributed within the filled portion only, then the
+     remainder of the circle falls back to the surface color. */
+  background: conic-gradient(
+    var(--rc-grad-1) 0deg,
+    var(--rc-grad-2) calc(var(--ring-pct)*1.8deg),
+    var(--rc-grad-3) calc(var(--ring-pct)*3.6deg),
+    var(--surface-2) calc(var(--ring-pct)*3.6deg)
+  );
   display:flex; align-items:center; justify-content:center;
 }
 .rc-grade::before{
   /* soft glow behind the ring */
   content:""; position:absolute; inset:-30px; border-radius:50%; z-index:0;
-  background: radial-gradient(circle, var(--ring-color) 0%, transparent 68%); opacity:.16; filter:blur(6px);
+  background: radial-gradient(circle, var(--rc-grad-2) 0%, transparent 68%); opacity:.18; filter:blur(8px);
 }
 .rc-grade::after{
   /* punch the conic-gradient into a ring, leaving an inner disc for the letter */
@@ -700,12 +756,9 @@ section.block{ padding:76px 0 }
   box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
 }
 .rc-grade .rc-grade-letter{
-  position:relative; z-index:2; font-family:var(--font-serif); font-weight:700; font-size:92px; line-height:1; color:var(--ring-color);
+  position:relative; z-index:2; font-family:var(--font-serif); font-weight:700; font-size:92px; line-height:1; color:var(--rc-grad-2);
 }
 .rc-grade .rc-grade-label{ display:none } /* superseded by the "Financial Grade" section label above the hero */
-.rc-grade.good{ --ring-color: var(--good) }
-.rc-grade.mid{ --ring-color: var(--mid) }
-.rc-grade.bad{ --ring-color: var(--bad) }
 .rc-grade.pop{ animation:stampPress .5s cubic-bezier(.3,1.2,.4,1) }
 @keyframes stampPress{ 0%{ transform:scale(.85); opacity:0 } 60%{ transform:scale(1.03); opacity:1 } 100%{ transform:scale(1) } }
 .ink-ripple{
@@ -1548,7 +1601,10 @@ body.is-pro .ad-slot{ display:none !important }
 <header class="site">
   <div class="container hdr-row">
     <a class="brandmark" href="#top">
-      <span class="seal"><span>A+</span></span>
+      <svg class="gmf-logo-mark" viewBox="0 0 44 44" width="30" height="30" aria-hidden="true">
+        <defs><linearGradient id="gLogoGradSiteHeader" x1="10%" y1="0%" x2="90%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="50%" stop-color="#EC4899"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
+        <text x="50%" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="38" fill="none" stroke="url(#gLogoGradSiteHeader)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">G</text>
+      </svg>
       <span class="wordmark">Grade My Finance</span>
     </a>
     <nav class="primary">
@@ -2002,6 +2058,13 @@ body.is-pro .ad-slot{ display:none !important }
 <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rcTitle">
   <div class="sheet">
     <div class="dash-tabs" id="dashTabs">
+      <div class="rc-sidebar-brand">
+        <svg class="rc-logo-mark" viewBox="0 0 44 44" width="30" height="30" aria-hidden="true">
+          <defs><linearGradient id="gLogoGradSidebar" x1="10%" y1="0%" x2="90%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="50%" stop-color="#EC4899"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
+          <text x="50%" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="38" fill="none" stroke="url(#gLogoGradSidebar)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">G</text>
+        </svg>
+        <span class="rc-logo-word">Grade My Finance</span>
+      </div>
       <button class="dash-tab active" data-dtab="overview" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span><span class="dash-tab-label">Overview</span></button>
       <span class="dash-tab-group-label">Your Report</span>
       <button class="dash-tab" data-dtab="snapshot" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 9.5 4h5L16 7"/><circle cx="12" cy="13.5" r="3.2"/></svg></span><span class="dash-tab-label">Snapshot</span></button>
@@ -2023,11 +2086,24 @@ body.is-pro .ad-slot{ display:none !important }
       <button class="dash-tab" data-dtab="stresstest" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg></span><span class="dash-tab-label">Stress Test</span><span class="lock-tag pro-only-hide">PRO</span></button>
       <span class="dash-tab-group-label">More</span>
       <button class="dash-tab" data-dtab="achievements" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a1 1 0 0 0-1 1 4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1 4 4 0 0 1-4 4"/></svg></span><span class="dash-tab-label">Achievements</span></button>
+      <a href="#pricing" class="rc-unlock-premium-card pro-only-hide">
+        <span class="rc-upc-crown">👑</span>
+        <span class="rc-upc-title">Unlock Premium</span>
+        <span class="rc-upc-sub">Advanced insights &amp; custom recommendations</span>
+      </a>
     </div>
 
     <div class="sheet-main">
     <div class="sheet-header">
-      <button class="xbtn dash-close" id="closeReport" type="button" aria-label="Close report">Close</button>
+      <div class="rc-header-titles">
+        <h1 class="rc-header-title">Your Report Card <span aria-hidden="true">✨</span></h1>
+        <p class="rc-header-sub">Your financial health at a glance</p>
+      </div>
+      <div class="rc-header-actions">
+        <button class="xbtn" id="rcExportBtn" type="button">Export</button>
+        <button class="xbtn rc-share-btn" id="rcShareBtn2" type="button">Share</button>
+        <button class="xbtn dash-close" id="closeReport" type="button" aria-label="Close report">Close</button>
+      </div>
     </div>
 
     <div class="dash-panels">
@@ -2051,6 +2127,26 @@ body.is-pro .ad-slot{ display:none !important }
             </div>
           </div>
         </div>
+
+        <div class="rc-spark-row" id="rcSparkRow">
+          <div class="rc-spark-card">
+            <span class="rc-spark-label">Overall Score</span>
+            <svg class="rc-spark-chart" id="rcSparkScore" viewBox="0 0 120 36" preserveAspectRatio="none"></svg>
+          </div>
+          <div class="rc-spark-card">
+            <span class="rc-spark-label">Net Worth</span>
+            <svg class="rc-spark-chart" id="rcSparkNet" viewBox="0 0 120 36" preserveAspectRatio="none"></svg>
+          </div>
+          <div class="rc-spark-card">
+            <span class="rc-spark-label">Savings Rate</span>
+            <svg class="rc-spark-chart" id="rcSparkSave" viewBox="0 0 120 36" preserveAspectRatio="none"></svg>
+          </div>
+          <div class="rc-spark-card">
+            <span class="rc-spark-label">Debt-to-Income</span>
+            <svg class="rc-spark-chart" id="rcSparkDti" viewBox="0 0 120 36" preserveAspectRatio="none"></svg>
+          </div>
+        </div>
+
         <div class="pro-blur-section" style="margin-top:12px;min-height:130px">
           <div class="pro-blur-content">
             <div class="card" style="padding:14px 18px">
@@ -2074,6 +2170,15 @@ body.is-pro .ad-slot{ display:none !important }
               </div>
               <a class="btn gold sm" href="#pricing" style="flex:none">Start Free Trial</a>
             </div>
+          </div>
+        </div>
+
+        <div class="rc-social-row">
+          <span class="rc-social-label">Join our community</span>
+          <div class="rc-social-icons">
+            <a href="https://discord.gg/g76aPc6FQT" target="_blank" rel="noopener" aria-label="Discord"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M20.3 4.4A19.5 19.5 0 0 0 15.7 3c-.2.4-.5.9-.6 1.3a18 18 0 0 0-6.2 0A9 9 0 0 0 8.3 3a19.6 19.6 0 0 0-4.6 1.4C1.2 8.7.5 12.9.8 17a19.7 19.7 0 0 0 5.9 3c.5-.6.9-1.3 1.2-2a12 12 0 0 1-1.9-.9l.5-.4a14 14 0 0 0 11 0l.5.4a12 12 0 0 1-1.9.9c.3.7.7 1.4 1.2 2a19.6 19.6 0 0 0 5.9-3c.4-4.8-.8-9-3.9-12.6zM8.8 14.3c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8zm6.4 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8z"/></svg></a>
+            <a href="https://www.linkedin.com/in/grade-my-finance-220389383/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.7c0-1.36-.03-3.1-1.9-3.1-1.9 0-2.2 1.48-2.2 3v5.8H9z"/></svg></a>
+            <a href="https://www.youtube.com/@Grademyfinance" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M22 12s0-3.4-.4-5a3 3 0 0 0-2.1-2.1C17.9 4.5 12 4.5 12 4.5s-5.9 0-7.5.4A3 3 0 0 0 2.4 7C2 8.6 2 12 2 12s0 3.4.4 5A3 3 0 0 0 4.5 19c1.6.4 7.5.4 7.5.4s5.9 0 7.5-.4a3 3 0 0 0 2.1-2.1c.4-1.6.4-5 .4-5zM10 15.4V8.6L15.8 12z"/></svg></a>
           </div>
         </div>
       </div>
@@ -2993,7 +3098,7 @@ body.is-pro .ad-slot{ display:none !important }
 <footer class="site">
   <div class="container">
     <div class="foot-row">
-      <a class="brandmark" href="#top"><span class="seal"><span>A+</span></span><span class="wordmark">Grade My Finance</span></a>
+      <a class="brandmark" href="#top"><svg class="gmf-logo-mark" viewBox="0 0 44 44" width="30" height="30" aria-hidden="true"><defs><linearGradient id="gLogoGradFooter" x1="10%" y1="0%" x2="90%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="50%" stop-color="#EC4899"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs><text x="50%" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="38" fill="none" stroke="url(#gLogoGradFooter)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">G</text></svg><span class="wordmark">Grade My Finance</span></a>
       <div class="foot-links">
         <a href="about.html">About</a>
         <a href="net-worth-by-age.html">Net Worth by Age</a>
@@ -3001,6 +3106,8 @@ body.is-pro .ad-slot{ display:none !important }
         <a href="am-i-financially-healthy.html">Am I Financially Healthy?</a>
         <a href="blog/index.html">Blog</a>
         <a href="https://discord.gg/g76aPc6FQT" target="_blank" rel="noopener">Discord Community</a>
+        <a href="https://www.linkedin.com/in/grade-my-finance-220389383/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.youtube.com/@Grademyfinance" target="_blank" rel="noopener">YouTube</a>
         <a href="for-advisors.html">For Financial Advisors &amp; Firms</a>
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="mailto:grademyfinance@gmail.com">Contact</a>
@@ -4729,6 +4836,49 @@ function renderAssetAllocation(v){
   update();
 }
 
+/* ================= OVERVIEW SPARKLINE CARDS =================
+   Draws real trend lines from actual check-in history - Debt-to-Income
+   is computed per entry using the exact same formula already used for
+   the ovMetricDTI chip (totalDebt/annualIncome), so the trend agrees
+   with the single current-value number shown elsewhere, not a
+   different, newly-invented calculation. */
+function drawSparkline(svgEl, values, color){
+  if(!svgEl) return;
+  var validVals = values.filter(function(v){ return typeof v === 'number' && isFinite(v); });
+  if(validVals.length < 2){
+    svgEl.innerHTML = '';
+    return;
+  }
+  var w = 120, h = 36, pad = 3;
+  var minV = Math.min.apply(null, validVals), maxV = Math.max.apply(null, validVals);
+  if(maxV === minV){ minV -= 1; maxV += 1; } // flat trend - avoid divide-by-zero, still draws a visible flat-ish line
+  function x(i){ return validVals.length===1 ? w/2 : pad + (i/(validVals.length-1))*(w-pad*2); }
+  function y(val){ return pad + (h-pad*2) - ((val-minV)/(maxV-minV))*(h-pad*2); }
+  var points = validVals.map(function(v,i){ return x(i)+','+y(v); }).join(' ');
+  var lastX = x(validVals.length-1), lastY = y(validVals[validVals.length-1]);
+  svgEl.innerHTML =
+    '<polyline points="'+points+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 3px '+color+')"/>' +
+    '<circle cx="'+lastX+'" cy="'+lastY+'" r="2.5" fill="'+color+'"/>';
+}
+function renderOverviewSparklines(v){
+  var hist = getHistory();
+  if(!hist.length) return;
+  var recent = hist.slice(-20);
+
+  var scoreVals = recent.map(function(h){ return h.score; });
+  var netVals = recent.map(function(h){ return h.net; });
+  var saveVals = recent.map(function(h){ return h.savingsRate; });
+  var dtiVals = recent.map(function(h){
+    return (typeof h.totalDebt === 'number' && typeof h.annualIncome === 'number' && h.annualIncome > 0)
+      ? h.totalDebt / h.annualIncome : null;
+  }).filter(function(x){ return x !== null; });
+
+  drawSparkline($("rcSparkScore"), scoreVals, "#3B82F6");
+  drawSparkline($("rcSparkNet"), netVals, "#F0578C");
+  drawSparkline($("rcSparkSave"), saveVals, "#4ADE9E");
+  drawSparkline($("rcSparkDti"), dtiVals, "#8B5CF6");
+}
+
 function renderCreditUtilization(v){
   var limitEl = $("creditLimit"), paydownEl = $("creditPaydown"), paydownCaptionEl = $("creditPaydownCaption");
   if(!limitEl) return;
@@ -5786,6 +5936,7 @@ function openReport(v,cats){
   renderRetirementReadiness(v);
   renderRetirementProjections(v);
   renderCreditUtilization(v);
+  renderOverviewSparklines(v);
   renderAssetAllocation(v);
   renderBillsTracker(v);
   renderTimeCostTranslator(v);
@@ -6209,6 +6360,12 @@ document.addEventListener("click", function(e){
 });
 
 $("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); unlockBodyScroll(); });
+// Header Export/Share buttons delegate to the existing, real
+// download/share buttons in the action bar below - reusing that proven
+// logic rather than duplicating it, since both need to stay in sync
+// (e.g. the "run a calculation first" guard on share).
+if($("rcExportBtn")) $("rcExportBtn").addEventListener("click", function(){ var b=$("downloadCertBtn"); if(b) b.click(); });
+if($("rcShareBtn2")) $("rcShareBtn2").addEventListener("click", function(){ var b=$("shareReport"); if(b) b.click(); });
 $("printReport").addEventListener("click",function(){ window.print(); __track('print_report'); });
 
 var downloadCertBtn = $("downloadCertBtn");
