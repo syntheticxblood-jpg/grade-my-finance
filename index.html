@@ -638,6 +638,55 @@ section.block{ padding:76px 0 }
 }
 .rc-spark-label{ display:block; font-size:11.5px; font-weight:700; color:var(--muted); margin-bottom:8px }
 .rc-spark-chart{ display:block; width:100%; height:36px; overflow:visible }
+.rc-summary-card{ display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap }
+.rc-summary-text{ flex:1 1 280px; min-width:0 }
+.rc-summary-road{ flex:none; width:150px; height:75px; opacity:.9 }
+@media (max-width:700px){ .rc-summary-road{ display:none } }
+
+.rc-bottom-row{ display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:14px; margin-top:14px }
+@media (max-width:900px){ .rc-bottom-row{ grid-template-columns:1fr } }
+.rc-bottom-card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px }
+.rc-bottom-label{ display:block; font-size:11px; font-weight:700; letter-spacing:.04em; color:var(--muted-2); text-transform:uppercase; margin-bottom:12px }
+
+.rc-priority-card{ border-color:rgba(236,72,153,.3); background:linear-gradient(155deg, rgba(236,72,153,.08), transparent) }
+.rc-priority-body{ display:flex; gap:12px; align-items:flex-start; margin-bottom:14px }
+.rc-priority-icon{
+  flex:none; width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  background:rgba(236,72,153,.15); font-size:16px;
+}
+.rc-priority-title{ font-weight:700; font-size:13.5px; color:var(--text); margin-bottom:3px }
+.rc-priority-desc{ font-size:12px; color:var(--muted); line-height:1.5 }
+.rc-priority-bar-track{ height:6px; border-radius:99px; background:var(--surface-2); overflow:hidden; margin-bottom:6px }
+.rc-priority-bar-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg, #EC4899, #8B5CF6); width:0%; transition:width .6s ease }
+.rc-priority-pct{ font-size:11px; color:var(--muted-2); font-family:var(--font-mono); margin-bottom:14px; text-align:right }
+.rc-see-plan-btn{
+  width:100%; padding:9px; border-radius:9px; border:1px solid var(--line); background:var(--surface-2);
+  color:var(--text); font-size:12.5px; font-weight:600; cursor:pointer;
+}
+.rc-see-plan-btn:hover{ border-color:rgba(236,72,153,.4) }
+
+.rc-rec-item{
+  display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line);
+  cursor:pointer; text-decoration:none; color:inherit;
+}
+.rc-rec-item:last-child{ border-bottom:none }
+.rc-rec-icon{ flex:none; width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px }
+.rc-rec-icon.c1{ background:rgba(59,130,246,.15); color:#3B82F6 }
+.rc-rec-icon.c2{ background:rgba(139,92,246,.15); color:#8B5CF6 }
+.rc-rec-icon.c3{ background:rgba(74,222,158,.15); color:#4ADE9E }
+.rc-rec-text{ flex:1 1 auto; min-width:0 }
+.rc-rec-title{ font-size:12.5px; font-weight:700; color:var(--text) }
+.rc-rec-sub{ font-size:11px; color:var(--muted); margin-top:1px }
+.rc-rec-chevron{ flex:none; color:var(--muted-2) }
+
+.rc-resource-list{ display:flex; flex-direction:column; gap:2px }
+.rc-resource-list a{
+  display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 0;
+  border-bottom:1px solid var(--line); color:var(--text); text-decoration:none; font-size:12.5px; font-weight:600;
+}
+.rc-resource-list a:last-child{ border-bottom:none }
+.rc-resource-list a:hover{ color:var(--gold-bright) }
+.rc-resource-list svg{ flex:none; opacity:.6 }
 .rc-logo-word{ font-weight:700; font-size:14.5px; color:var(--text); white-space:nowrap }
 
 .rc-unlock-premium-card{
@@ -2149,9 +2198,27 @@ body.is-pro .ad-slot{ display:none !important }
 
         <div class="pro-blur-section" style="margin-top:12px;min-height:130px">
           <div class="pro-blur-content">
-            <div class="card" style="padding:14px 18px">
-              <span class="section-label">Your financial summary</span>
-              <p id="rcSummaryParagraph" style="margin:0;color:var(--text);font-size:14.5px;line-height:1.6">—</p>
+            <div class="card rc-summary-card" style="padding:14px 18px">
+              <div class="rc-summary-text">
+                <span class="section-label">Your financial summary</span>
+                <p id="rcSummaryParagraph" style="margin:0;color:var(--text);font-size:14.5px;line-height:1.6">—</p>
+              </div>
+              <svg class="rc-summary-road" viewBox="0 0 280 140" aria-hidden="true">
+                <defs>
+                  <linearGradient id="rcRoadGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#3B82F6"/>
+                    <stop offset="50%" stop-color="#8B5CF6"/>
+                    <stop offset="100%" stop-color="#EC4899"/>
+                  </linearGradient>
+                </defs>
+                <path d="M10 120 C 60 120, 50 70, 100 65 S 150 30, 190 40 S 230 80, 260 20"
+                      fill="none" stroke="url(#rcRoadGrad)" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 12" opacity="0.85"/>
+                <circle cx="10" cy="120" r="5" fill="#3B82F6"/>
+                <g transform="translate(255,12)">
+                  <line x1="0" y1="0" x2="0" y2="26" stroke="#EC4899" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M0 2 L16 7 L0 12 Z" fill="#EC4899"/>
+                </g>
+              </svg>
             </div>
           </div>
           <div class="pro-blur-overlay">
@@ -2169,6 +2236,35 @@ body.is-pro .ad-slot{ display:none !important }
                 <div class="small" style="line-height:1.55">Full category breakdown, benchmarks, net worth projection, debt payoff planner, retirement readiness, and the Financial Resilience Simulator — all unlocked with Pro.</div>
               </div>
               <a class="btn gold sm" href="#pricing" style="flex:none">Start Free Trial</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="rc-bottom-row">
+          <div class="rc-bottom-card rc-priority-card">
+            <span class="rc-bottom-label">Top Priority</span>
+            <div class="rc-priority-body">
+              <span class="rc-priority-icon">🎯</span>
+              <div class="rc-priority-text">
+                <div class="rc-priority-title" id="rcPriorityTitle">—</div>
+                <div class="rc-priority-desc" id="rcPriorityDesc">—</div>
+              </div>
+            </div>
+            <div class="rc-priority-bar-track"><div class="rc-priority-bar-fill" id="rcPriorityBarFill"></div></div>
+            <div class="rc-priority-pct" id="rcPriorityPct">—</div>
+            <button class="rc-see-plan-btn" id="rcSeePlanBtn" type="button">See Action Plan →</button>
+          </div>
+          <div class="rc-bottom-card">
+            <span class="rc-bottom-label">Recommended for You</span>
+            <div id="rcRecommendedList"></div>
+          </div>
+          <div class="rc-bottom-card">
+            <span class="rc-bottom-label">Resources</span>
+            <div class="rc-resource-list">
+              <a href="am-i-financially-healthy.html" target="_blank" rel="noopener">Financial Health Guide <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+              <a href="blog/index.html" target="_blank" rel="noopener">Smart Money Blog <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+              <a href="https://discord.gg/g76aPc6FQT" target="_blank" rel="noopener">Community Discord <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+              <a href="mailto:grademyfinance@gmail.com">Help Center <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
             </div>
           </div>
         </div>
@@ -4860,6 +4956,81 @@ function drawSparkline(svgEl, values, color){
     '<polyline points="'+points+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 3px '+color+')"/>' +
     '<circle cx="'+lastX+'" cy="'+lastY+'" r="2.5" fill="'+color+'"/>';
 }
+/* ================= TOP PRIORITY + RECOMMENDED (Overview) =================
+   Reuses the exact same buildPath() actions array already computed for
+   the Opportunities tab - no separate recommendation logic, just a
+   different presentation of the same real, calculated data (sorted by
+   actual point impact, since buildPath's own array order is just
+   factor-check order, not impact order). */
+function classifyAction(txt){
+  var t = txt.toLowerCase();
+  if(t.indexOf('emergency fund') > -1) return { title:'Build Your Emergency Fund', icon:'🛟' };
+  if(t.indexOf('savings') > -1 || t.indexOf('save aside') > -1 || t.indexOf('boost savings') > -1) return { title:'Boost Your Savings Rate', icon:'💰' };
+  if(t.indexOf('debt') > -1 || t.indexOf('credit card') > -1 || t.indexOf('loan') > -1) return { title:'Reduce High-Interest Debt', icon:'💳' };
+  if(t.indexOf('net worth') > -1) return { title:'Grow Your Net Worth', icon:'📈' };
+  if(t.indexOf('income') > -1) return { title:'Increase Your Income', icon:'🚀' };
+  return { title:'Improve This Factor', icon:'⭐' };
+}
+function computeProgressPct(txt, v){
+  var t = txt.toLowerCase();
+  if(t.indexOf('emergency fund') > -1) return Math.round(map01(v.efMonths,0,6)*100);
+  if(t.indexOf('savings') > -1 || t.indexOf('save aside') > -1 || t.indexOf('boost savings') > -1) return Math.round(map01(v.saveRate,0,0.25)*100);
+  if(t.indexOf('debt') > -1 || t.indexOf('credit card') > -1 || t.indexOf('loan') > -1) return Math.round(clamp(1 - v.dtiWeighted/0.60,0,1)*100);
+  if(t.indexOf('net worth') > -1) return Math.round(clamp(v.nwProgress,0,1)*100);
+  return null; // income has no clean 0-100 progress metric readily available
+}
+function renderTopPriorityAndRecommended(actions, v){
+  var titleEl = $("rcPriorityTitle"), descEl = $("rcPriorityDesc"), barFill = $("rcPriorityBarFill"), pctEl = $("rcPriorityPct");
+  var recList = $("rcRecommendedList"), seeBtn = $("rcSeePlanBtn");
+  if(!titleEl) return;
+
+  if(!actions.length){
+    titleEl.textContent = "You're doing great!";
+    descEl.textContent = "No single obvious next step right now — keep it up.";
+    barFill.style.width = "100%";
+    pctEl.textContent = "100%";
+    if(recList) recList.innerHTML = '<div class="small" style="color:var(--muted)">Nothing urgent right now.</div>';
+    return;
+  }
+
+  var sorted = actions.slice().sort(function(a,b){ return b.pts - a.pts; });
+  var top = sorted[0];
+  var topInfo = classifyAction(top.txt);
+  var pct = computeProgressPct(top.txt, v);
+
+  titleEl.textContent = topInfo.title;
+  descEl.textContent = top.txt;
+  if(pct !== null){
+    barFill.style.width = pct + "%";
+    pctEl.textContent = pct + "%";
+  } else {
+    barFill.style.width = "50%";
+    pctEl.textContent = "In progress";
+  }
+
+  if(seeBtn && !seeBtn._wired){
+    seeBtn._wired = true;
+    seeBtn.addEventListener("click", function(){ if(window.__switchDashTab) window.__switchDashTab("nextsteps"); });
+  }
+
+  if(recList){
+    var rest = sorted.slice(1, 4);
+    var colorClasses = ['c1','c2','c3'];
+    recList.innerHTML = rest.length ? rest.map(function(a, i){
+      var info = classifyAction(a.txt);
+      return '<div class="rc-rec-item" data-goto-opportunities>' +
+        '<span class="rc-rec-icon '+colorClasses[i%3]+'">'+info.icon+'</span>' +
+        '<div class="rc-rec-text"><div class="rc-rec-title">'+info.title+'</div><div class="rc-rec-sub">≈ +'+a.pts+' pts</div></div>' +
+        '<span class="rc-rec-chevron">›</span>' +
+      '</div>';
+    }).join('') : '<div class="small" style="color:var(--muted)">That\'s your one big opportunity right now.</div>';
+
+    recList.querySelectorAll('[data-goto-opportunities]').forEach(function(el){
+      el.addEventListener('click', function(){ if(window.__switchDashTab) window.__switchDashTab("nextsteps"); });
+    });
+  }
+}
+
 function renderOverviewSparklines(v){
   var hist = getHistory();
   if(!hist.length) return;
@@ -6106,6 +6277,8 @@ function openReport(v,cats){
     li.innerHTML = a.txt + ' <span class="pts">≈ +' + a.pts + ' pts</span>';
     pathList.appendChild(li);
   });
+
+  renderTopPriorityAndRecommended(actions, v);
 
   var hist=getHistory();
   var fullTrend=hist.map(function(h){ return h.score; }).concat([cats.overall.score]);
