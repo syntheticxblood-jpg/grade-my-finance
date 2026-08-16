@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Grade My Finance | Free Financial Grade Calculator</title>
 <meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and a personalized plan to improve it. No sign-up required.">
 <meta name="theme-color" content="#0A0B0E">
@@ -448,7 +448,7 @@ section.block{ padding:76px 0 }
 .modal{ position:fixed; inset:0; display:none; z-index:100; background:rgba(6,7,9,.68) }
 .modal.show{ display:grid; place-items:center }
 .sheet{
-  width:min(1360px,96vw); height:92vh; max-height:92vh; margin:10px; padding:0;
+  width:min(1360px,96vw); height:92vh; height:92dvh; max-height:92vh; max-height:92dvh; margin:10px; padding:0;
   border-radius:20px; position:relative; display:flex; flex-direction:row; overflow:hidden;
   /* Modern dark-panel palette, scoped to this modal only — cascades to
      every var(--text)/var(--muted)/var(--surface)/var(--line)/var(--brand)*
@@ -542,7 +542,8 @@ section.block{ padding:76px 0 }
 }
 .dash-watermark{
   flex:none; display:flex; align-items:center; justify-content:space-between; gap:14px;
-  padding:16px 4px 4px; margin-top:14px; border-top:1px solid var(--line);
+  padding:16px 4px calc(4px + env(safe-area-inset-bottom, 0px));
+  margin-top:14px; border-top:1px solid var(--line);
   font-family:var(--font-mono); font-size:14px; color:var(--muted);
 }
 .dash-watermark-brand{ display:flex; align-items:center; gap:8px }
@@ -554,7 +555,7 @@ section.block{ padding:76px 0 }
 .dash-watermark a:hover{ color:var(--brand-bright) }
 .dash-panel{ display:none; height:100%; }
 .dash-panel.active{ display:block; animation:flowFadeIn .25s ease }
-@media (max-width:760px){ .sheet{ height:94vh; max-height:94vh; padding:20px 18px 18px } }
+@media (max-width:760px){ .sheet{ height:94vh; height:94dvh; max-height:94vh; max-height:94dvh; padding:20px 18px 18px } }
 .modal.show .sheet{ animation:popIn .35s cubic-bezier(.2,1,.2,1) }
 @keyframes popIn{ 0%{ transform:scale(.96); opacity:0 } 100%{ transform:scale(1); opacity:1 } }
 .sheet-header{ display:flex; justify-content:flex-end; align-items:flex-start; gap:12px; margin-bottom:4px }
@@ -620,16 +621,22 @@ section.block{ padding:76px 0 }
   padding:36px 40px 8px; margin-bottom:16px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 1px 0 rgba(255,255,255,.02);
 }
-.dash-top::before{
-  /* faint brand glow anchored behind the grade, ties the whole report together */
-  content:""; position:absolute; top:-120px; left:50%; transform:translateX(-50%);
-  width:640px; height:420px; pointer-events:none; z-index:0;
-  background: radial-gradient(ellipse at center, rgba(232,179,74,.10), transparent 65%);
-}
 
 /* --- Hero: grade ring is the focal point --- */
 .dash-hero{ position:relative; z-index:1; display:flex; align-items:center; justify-content:center; gap:44px; padding-bottom:14px; flex-wrap:wrap; text-align:left }
-.dash-hero-grade{ display:flex; flex-direction:column; align-items:center; flex:none }
+.dash-hero-grade{ display:flex; flex-direction:column; align-items:center; flex:none; position:relative }
+.dash-hero-grade::before{
+  /* Ambient brand glow, anchored to the ring's own column rather than the
+     whole hero card - the hero row centers itself as a unit
+     (justify-content:center) with a second, differently-sized column of
+     text next to it, so a glow centered on the CARD's full width doesn't
+     track where the ring actually ends up sitting. Anchoring to this
+     narrower column instead means it always centers on the ring itself,
+     regardless of how the row reflows at different widths. */
+  content:""; position:absolute; top:-50px; left:50%; transform:translateX(-50%);
+  width:340px; height:280px; pointer-events:none; z-index:0;
+  background: radial-gradient(ellipse at center, rgba(232,179,74,.14), transparent 65%);
+}
 .dash-hero-text{ max-width:420px }
 @media (max-width:760px){ .dash-hero{ justify-content:center; text-align:center } .dash-hero-text{ max-width:none } }
 
@@ -932,9 +939,9 @@ section.block{ padding:76px 0 }
 .rc-actions-primary{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center }
 .rc-more-wrap{ position:relative }
 .rc-more-menu{
-  display:none; position:absolute; bottom:calc(100% + 8px); right:0; min-width:210px;
+  display:none; position:fixed; min-width:210px;
   background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow);
-  padding:8px; z-index:60;
+  padding:8px; z-index:200;
 }
 .rc-more-menu.open{ display:block }
 .rc-more-item{
@@ -2634,7 +2641,7 @@ body.is-pro .ad-slot{ display:none !important }
 
     <div class="rc-actions">
       <div class="rc-actions-primary">
-        <a href="#pricing" class="btn gold sm pro-only-hide" aria-label="Upgrade to Pro"><span class="pro-star">★</span><span class="rc-label">Upgrade to Pro</span></a>
+        <a href="#pricing" class="btn gold sm pro-only-hide" aria-label="Upgrade to Pro"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" stroke="none"><path d="M12 2l2.9 6.26L21 9.27l-4.5 4.38L17.8 21 12 17.77 6.2 21l1.3-7.35L3 9.27l6.1-1.01L12 2z"/></svg><span class="rc-label">Upgrade to Pro</span></a>
         <button class="btn sm" id="calcAgain" type="button" aria-label="Recalculate"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg><span class="rc-label">Recalculate</span></button>
         <button class="btn sm" id="shareReport" type="button" aria-label="Share"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-3.9M8.6 13.5l6.8 3.9"/></svg><span class="rc-label">Share</span></button>
         <button class="btn sm" id="downloadCertBtn" type="button" aria-label="Download Report"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/></svg><span class="rc-label">Download Report</span></button>
@@ -2983,6 +2990,22 @@ if(rcMoreBtn && rcMoreMenu){
     e.stopPropagation();
     var isOpen = rcMoreMenu.classList.toggle("open");
     rcMoreBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    if(isOpen){
+      // Fixed positioning computed from the button's real on-screen
+      // location, not CSS-relative to a wrapper - the modal this sits in
+      // has overflow:hidden (needed for its own rounded corners), which
+      // was silently clipping the menu whenever it tried to pop outside
+      // normal flow near the bottom of the sheet. Fixed positioning
+      // anchored to the viewport sidesteps that ancestor clipping
+      // entirely instead of fighting it.
+      var rect = rcMoreBtn.getBoundingClientRect();
+      var menuWidth = 210;
+      var left = Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 10);
+      left = Math.max(10, left);
+      rcMoreMenu.style.left = left + "px";
+      rcMoreMenu.style.bottom = (window.innerHeight - rect.top + 8) + "px";
+      rcMoreMenu.style.top = "auto";
+    }
   });
   document.addEventListener("click", function(e){
     if(!rcMoreMenu.contains(e.target) && !rcMoreBtn.contains(e.target)){
