@@ -6453,40 +6453,43 @@ var FREE_PROMO_CODES = [
 // license verification only.
 var PROMO_ENDPOINT = "";
 
-// Gumroad's license verify API requires the exact product_permalink the
-// key was issued under - there's no "check any product" option. Now that
-// there are two separate Pro products (monthly "pszwz" and yearly
-// "pzllld"), a key needs to be checked against BOTH, since there's no way
-// to know from the key alone which product it belongs to. Tries monthly
-// first, then yearly only if that fails - a real, valid yearly key would
-// previously have failed here 100% of the time, since this only ever
-// checked the monthly permalink.
-var GUMROAD_PRODUCT_PERMALINKS = ["pszwz", "pzllld"];
-function verifyAgainstPermalink(key, permalink){
+// Gumroad's license verify API requires the exact product_id the key
+// was issued under, NOT product_permalink - Gumroad changed this for all
+// products created on/after Jan 9, 2023, and these products were created
+// well after that date. The real product_id values below were pulled
+// directly from each product's Content tab -> License key module in
+// Gumroad, not guessed. A key needs to be checked against BOTH products,
+// since there's no way to know from the key alone which one it belongs
+// to - tries monthly first, then yearly only if that fails.
+var GUMROAD_PRODUCTS = [
+  { label: "monthly", productId: "19WZ-UD12CrWJ-wsVgh9yA==" },
+  { label: "yearly",  productId: "F_g18R0gGngx_Zz8qn2iyg==" }
+];
+function verifyAgainstProduct(key, productId){
   return fetch("https://api.gumroad.com/v2/licenses/verify", {
     method:"POST",
     headers:{"Content-Type":"application/x-www-form-urlencoded"},
-    body:"product_permalink="+permalink+"&license_key="+encodeURIComponent(key)
+    body:"product_id="+encodeURIComponent(productId)+"&license_key="+encodeURIComponent(key)
   }).then(function(res){ return res.json().catch(function(){ return {success:false}; }); })
     .catch(function(){ return {success:false, networkError:true}; });
 }
 function tryGumroadVerify(key){
   var i = 0;
   function tryNext(){
-    if(i >= GUMROAD_PRODUCT_PERMALINKS.length){
+    if(i >= GUMROAD_PRODUCTS.length){
       licenseStatus.textContent="Couldn't verify that key. Double-check it, or contact support.";
       licenseStatus.className="license-status err";
       return;
     }
-    var permalink = GUMROAD_PRODUCT_PERMALINKS[i];
+    var product = GUMROAD_PRODUCTS[i];
     i++;
-    verifyAgainstPermalink(key, permalink).then(function(data){
+    verifyAgainstProduct(key, product.productId).then(function(data){
       if(data && data.success){
         setProState(true);
         licenseStatus.textContent="Pro activated ✓";
         licenseStatus.className="license-status ok";
-        __track('pro_activated', {method:'license_key', plan: permalink});
-      } else if(data && data.networkError && i >= GUMROAD_PRODUCT_PERMALINKS.length){
+        __track('pro_activated', {method:'license_key', plan: product.label});
+      } else if(data && data.networkError && i >= GUMROAD_PRODUCTS.length){
         licenseStatus.textContent="Couldn't verify online right now — try the automatic activation link from your purchase receipt, or contact grademyfinance@gmail.com.";
         licenseStatus.className="license-status err";
       } else {
