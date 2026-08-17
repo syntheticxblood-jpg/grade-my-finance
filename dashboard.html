@@ -277,6 +277,15 @@ main{ padding:28px 0 70px }
 
 /* Retirement / FI planning */
 .ret-form-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px }
+@media (max-width:700px){ .ret-form-grid{ grid-template-columns:1fr 1fr } }
+.nw-update-header{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap }
+.nw-update-form{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line) }
+.nw-update-group-label{ font-size:11px; font-weight:700; letter-spacing:.04em; color:var(--muted-2); text-transform:uppercase; margin-bottom:8px }
+.nw-update-preview{
+  margin-top:16px; padding:14px 16px; border-radius:12px; background:var(--surface-2);
+  border:1px solid var(--line); font-size:13.5px; color:var(--text);
+}
+.nw-update-preview b{ color:var(--brand-bright) }
 @media (max-width:820px){ .ret-form-grid{ grid-template-columns:1fr 1fr } }
 .ret-form-grid label{ font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; display:block; margin-bottom:6px }
 .ret-form-grid input{ width:100%; border:1px solid var(--line); border-radius:9px; padding:10px 12px; background:var(--bg-2); color:var(--text); font-family:var(--font-mono); font-size:13px }
@@ -627,6 +636,42 @@ main{ padding:28px 0 50px }
     <!-- ================= NET WORTH ================= -->
     <div class="dash-tab-panel" id="panel-networth">
       <span class="section-label">Net worth</span>
+      <p class="section-sub">This is the spot to keep your numbers current — log an update any time your accounts change, right from here.</p>
+
+      <div class="card" id="nwUpdateCard">
+        <div class="nw-update-header">
+          <span class="section-label" style="margin:0">Log a net worth update</span>
+          <button class="btn sm" id="nwUpdateToggle" type="button">+ Add update</button>
+        </div>
+        <div id="nwUpdateForm" class="nw-update-form" style="display:none">
+          <p class="section-sub" style="margin:2px 0 14px">Enter what's changed. Anything left blank keeps its last known value.</p>
+          <div class="nw-update-group-label">Assets</div>
+          <div class="ret-form-grid">
+            <div><label for="nwCash">Cash savings</label><input id="nwCash" type="number" min="0" placeholder="e.g. 8000"></div>
+            <div><label for="nwRetire">Retirement (401k, IRA)</label><input id="nwRetire" type="number" min="0" placeholder="e.g. 42000"></div>
+            <div><label for="nwBrokerage">Brokerage / stocks</label><input id="nwBrokerage" type="number" min="0" placeholder="e.g. 12000"></div>
+            <div><label for="nwCrypto">Crypto &amp; other</label><input id="nwCrypto" type="number" min="0" placeholder="e.g. 0"></div>
+            <div><label for="nwHome">Home value</label><input id="nwHome" type="number" min="0" placeholder="e.g. 0"></div>
+            <div><label for="nwCar">Car value</label><input id="nwCar" type="number" min="0" placeholder="e.g. 6000"></div>
+            <div><label for="nwHsa">HSA</label><input id="nwHsa" type="number" min="0" placeholder="e.g. 0"></div>
+          </div>
+          <div class="nw-update-group-label" style="margin-top:16px">Debts</div>
+          <div class="ret-form-grid">
+            <div><label for="nwMortgage">Mortgage balance</label><input id="nwMortgage" type="number" min="0" placeholder="e.g. 0"></div>
+            <div><label for="nwStudent">Student loans</label><input id="nwStudent" type="number" min="0" placeholder="e.g. 15000"></div>
+            <div><label for="nwAuto">Auto loans</label><input id="nwAuto" type="number" min="0" placeholder="e.g. 0"></div>
+            <div><label for="nwCc">Credit cards</label><input id="nwCc" type="number" min="0" placeholder="e.g. 2000"></div>
+            <div><label for="nwOtherDebt">Personal loans / other</label><input id="nwOtherDebt" type="number" min="0" placeholder="e.g. 0"></div>
+          </div>
+          <div id="nwUpdatePreview" class="nw-update-preview"></div>
+          <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+            <button class="btn gold sm" id="nwSaveUpdate" type="button">Save update</button>
+            <button class="btn sm" id="nwCancelUpdate" type="button">Cancel</button>
+          </div>
+          <div id="nwUpdateEmptyNote" class="empty-note" style="display:none;margin-top:10px">Run your first full check-in from "Update My Finances" before logging quick updates here — this needs a baseline to build on.</div>
+        </div>
+      </div>
+
       <div class="hero-card">
         <div class="hero-card-top">
           <div><div class="hv mono" id="nwHeroVal">—</div><div class="hv-sub" id="nwHeroSub">—</div></div>
@@ -1595,6 +1640,119 @@ function renderHistoryEntriesList(hist){
 
 /* ================= NET WORTH TAB ================= */
 var nwRange = 'all';
+/* ================= NET WORTH QUICK UPDATE FORM =================
+   Lets someone log a fresh net worth snapshot right from the dashboard,
+   without going through the full multi-step calculator. Uses the exact
+   same assets/liabilities formula as the real calculator
+   (assets = home+retire+brokerage+car+hsa+cash+crypto,
+   liabs = mortgage+student+auto+cc+otherDebt) so the numbers stay
+   consistent everywhere they're shown. The overall score is carried
+   forward from the most recent entry rather than recalculated - a
+   partial update here doesn't collect income/expenses, so recomputing
+   the full grade would need data this form was never meant to ask for.
+   Income/expenses/savings rate are carried forward for the same reason. */
+function setupNetWorthUpdateForm(){
+  var toggleBtn = $("nwUpdateToggle"), formEl = $("nwUpdateForm"), cancelBtn = $("nwCancelUpdate"), saveBtn = $("nwSaveUpdate");
+  var previewEl = $("nwUpdatePreview"), emptyNote = $("nwUpdateEmptyNote");
+  if(!toggleBtn) return;
+
+  function getLastKnown(hist, key){
+    for(var i=hist.length-1; i>=0; i--){
+      if(typeof hist[i][key] === 'number') return hist[i][key];
+    }
+    return 0;
+  }
+  function readFieldOrLastKnown(id, hist, key){
+    var raw = $(id).value;
+    if(raw === "" || raw === null) return getLastKnown(hist, key);
+    var n = parseFloat(raw);
+    return isNaN(n) ? getLastKnown(hist, key) : n;
+  }
+  function computeFromForm(){
+    var hist = getHistory();
+    var cash = readFieldOrLastKnown("nwCash", hist, "cash");
+    var retire = readFieldOrLastKnown("nwRetire", hist, "retire");
+    var brokerage = readFieldOrLastKnown("nwBrokerage", hist, "brokerage");
+    var crypto = readFieldOrLastKnown("nwCrypto", hist, "crypto");
+    // home/car/hsa/individual debt fields aren't stored per-entry in
+    // history (only cash/retire/brokerage/crypto/totalDebt are), so
+    // there's no "last known" to fall back to for these specifically -
+    // blank simply means 0 for these.
+    var home = parseFloat($("nwHome").value) || 0;
+    var car = parseFloat($("nwCar").value) || 0;
+    var hsa = parseFloat($("nwHsa").value) || 0;
+    var mortgage = parseFloat($("nwMortgage").value) || 0;
+    var student = parseFloat($("nwStudent").value) || 0;
+    var auto = parseFloat($("nwAuto").value) || 0;
+    var cc = parseFloat($("nwCc").value) || 0;
+    var otherDebt = parseFloat($("nwOtherDebt").value) || 0;
+    var assets = home+retire+brokerage+car+hsa+cash+crypto;
+    var liabs = mortgage+student+auto+cc+otherDebt;
+    return { cash:cash, retire:retire, brokerage:brokerage, crypto:crypto, assets:assets, liabs:liabs, net:assets-liabs };
+  }
+  function updatePreview(){
+    var r = computeFromForm();
+    if(previewEl) previewEl.innerHTML = 'New net worth: <b>'+money(r.net)+'</b> (assets '+money(r.assets)+' &minus; debts '+money(r.liabs)+')';
+  }
+
+  toggleBtn.addEventListener("click", function(){
+    var hist = getHistory();
+    if(!hist.length){
+      formEl.style.display = "block";
+      formEl.querySelectorAll(".ret-form-grid, .nw-update-group-label, #nwUpdatePreview, #nwSaveUpdate, #nwCancelUpdate").forEach(function(el){ el.style.display = "none"; });
+      if(emptyNote) emptyNote.style.display = "block";
+      return;
+    }
+    var isOpen = formEl.style.display === "block";
+    formEl.style.display = isOpen ? "none" : "block";
+    toggleBtn.textContent = isOpen ? "+ Add update" : "− Close";
+    if(!isOpen){
+      var last = hist[hist.length-1];
+      if(typeof last.cash === 'number') $("nwCash").value = last.cash;
+      if(typeof last.retire === 'number') $("nwRetire").value = last.retire;
+      if(typeof last.brokerage === 'number') $("nwBrokerage").value = last.brokerage;
+      if(typeof last.crypto === 'number') $("nwCrypto").value = last.crypto;
+      updatePreview();
+    }
+  });
+  cancelBtn.addEventListener("click", function(){
+    formEl.style.display = "none";
+    toggleBtn.textContent = "+ Add update";
+  });
+  formEl.querySelectorAll("input").forEach(function(inp){
+    inp.addEventListener("input", updatePreview);
+  });
+  saveBtn.addEventListener("click", function(){
+    var hist = getHistory();
+    if(!hist.length) return;
+    var last = hist[hist.length-1];
+    var r = computeFromForm();
+    hist.push({
+      ts: Date.now(),
+      score: last.score,
+      net: r.net,
+      annualIncome: last.annualIncome,
+      monthlyExpenses: last.monthlyExpenses,
+      savingsRate: last.savingsRate,
+      totalDebt: r.liabs,
+      cash: r.cash,
+      retire: r.retire,
+      brokerage: r.brokerage,
+      crypto: r.crypto,
+      isNetWorthUpdate: true
+    });
+    if(hist.length>500) hist = hist.slice(hist.length-500);
+    localStorage.setItem('gmf_history_v2', JSON.stringify(hist));
+    formEl.style.display = "none";
+    toggleBtn.textContent = "+ Add update";
+    var freshHist = getHistory();
+    renderNetWorthTab(freshHist);
+    renderOverview(freshHist, groupCheckins(freshHist));
+    renderScoreTab(freshHist);
+  });
+}
+setupNetWorthUpdateForm();
+
 function renderNetWorthTab(hist){
   var withNet = hist.filter(function(h){ return typeof h.net === 'number'; });
   var heroVal = $("nwHeroVal"), heroSub = $("nwHeroSub");
