@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (onLiveDomain && !hasEmail && !skipped) window.location.assign("welcome.html");
   } catch (e) { console.warn("Redirect check failed:", e); }
 });
-</script>
+</script>A
 
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -6828,7 +6828,18 @@ function openCalcModal(location){
   var m=$("calcModal");
   m.classList.add("show");
   lockBodyScroll();
-  setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 350);
+  // Auto-focusing the income field is a nice touch on desktop, but on a
+  // real touch device it pops the virtual keyboard immediately after the
+  // modal opens - and the browser's own keyboard-avoidance scrolling
+  // (separate from, and not prevented by, this focus() call's own
+  // preventScroll option) can shift the page enough to push the sidebar
+  // content out of view before the person has even seen it. Skipping
+  // this on touch devices avoids that, while keeping the convenience on
+  // desktop where there's no keyboard to trigger it.
+  var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if(!isTouchDevice){
+    setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 350);
+  }
 }
 function closeCalcModal(){
   var m=$("calcModal");
