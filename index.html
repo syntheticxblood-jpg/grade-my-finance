@@ -124,6 +124,8 @@ header.site{
 @keyframes sealShimmerOnce{ 0%{ left:-60% } 100%{ left:140% } }
 @media (prefers-reduced-motion: reduce){ .seal::after{ animation:none } }
 .seal span{ font-family:var(--font-mono); font-weight:700; font-size:13px; color:var(--gold-bright) }
+.seal-lg{ width:52px; height:52px; border-radius:14px }
+.seal-lg span{ font-size:19px }
 .wordmark{ font-weight:700; font-size:17px; letter-spacing:-.01em; white-space:nowrap }
 @media (max-width:420px){ .wordmark{ font-size:14.5px } }
 nav.primary{ display:flex; align-items:center; gap:26px; margin-left:24px; flex-shrink:1; min-width:0; overflow:hidden; }
@@ -1767,10 +1769,7 @@ body.is-pro .ad-slot{ display:none !important }
 <header class="site">
   <div class="container hdr-row">
     <a class="brandmark" href="#top">
-      <svg class="gmf-logo-mark" viewBox="0 0 44 44" width="30" height="30" aria-hidden="true">
-        <defs><linearGradient id="gLogoGradSiteHeader" x1="10%" y1="0%" x2="90%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="50%" stop-color="#EC4899"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
-        <text x="50%" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="38" fill="none" stroke="url(#gLogoGradSiteHeader)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">G</text>
-      </svg>
+      <span class="seal seal-lg"><span>A+</span></span>
       <span class="wordmark">Grade My Finance</span>
     </a>
     <nav class="primary">
@@ -3354,7 +3353,7 @@ body.is-pro .ad-slot{ display:none !important }
 <footer class="site">
   <div class="container">
     <div class="foot-row">
-      <a class="brandmark" href="#top"><svg class="gmf-logo-mark" viewBox="0 0 44 44" width="30" height="30" aria-hidden="true"><defs><linearGradient id="gLogoGradFooter" x1="10%" y1="0%" x2="90%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="50%" stop-color="#EC4899"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs><text x="50%" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="38" fill="none" stroke="url(#gLogoGradFooter)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">G</text></svg><span class="wordmark">Grade My Finance</span></a>
+      <a class="brandmark" href="#top"><span class="seal"><span>A+</span></span><span class="wordmark">Grade My Finance</span></a>
       <div class="foot-links">
         <a href="about.html">About</a>
         <a href="net-worth-by-age.html">Net Worth by Age</a>
