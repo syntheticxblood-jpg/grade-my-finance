@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — Grade My Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-1:#4FBF9F;
+    --teal-2:#2E9C81;
+    --teal-dark:#1C2B28;
+    --gold:#F5B942;
+    --bg:#FAFAF8;
+    --card:#FFFFFF;
+    --ink:#1C2B28;
+    --ink-muted:#5B6D68;
+    --border:#E4E7E3;
+    --error:#C1493D;
+    --radius-lg:20px;
+    --radius-md:12px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+  }
+  .shell{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    min-height:100vh;
+  }
+  /* LEFT PANEL — brand moment */
+  .brand-panel{
+    position:relative;
+    background:linear-gradient(160deg, var(--teal-1) 0%, var(--teal-2) 100%);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:56px 56px 64px;
+    color:#fff;
+    overflow:hidden;
+  }
+  .wordmark{
+    font-family:'Fraunces',serif;
+    font-size:22px;
+    font-weight:500;
+    letter-spacing:-0.01em;
+  }
+  .mark-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:1;
+  }
+  .g-mark{ width:220px; height:220px; }
+  .gold-slice{
+    transform-origin:110px 110px;
+    animation:sweep 3.5s ease-in-out infinite;
+  }
+  @keyframes sweep{
+    0%,20%{ transform:rotate(0deg); opacity:1; }
+    50%{ transform:rotate(28deg); opacity:0.7; }
+    80%,100%{ transform:rotate(0deg); opacity:1; }
+  }
+  .brand-copy h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:32px;
+    line-height:1.25;
+    margin:0 0 12px;
+    max-width:380px;
+  }
+  .brand-copy p{
+    font-size:15px;
+    line-height:1.6;
+    color:rgba(255,255,255,0.85);
+    max-width:360px;
+    margin:0 0 24px;
+  }
+  .trust-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .trust-list li{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:13px;
+    color:rgba(255,255,255,0.85);
+  }
+  .trust-list li::before{
+    content:'';
+    width:5px;height:5px;border-radius:50%;
+    background:var(--gold);
+    flex-shrink:0;
+  }
+  /* RIGHT PANEL — form */
+  .form-panel{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 24px;
+  }
+  .form-card{
+    width:100%;
+    max-width:380px;
+  }
+  .tabs{
+    display:flex;
+    background:#F0F1EE;
+    border-radius:999px;
+    padding:4px;
+    margin-bottom:32px;
+  }
+  .tab{
+    flex:1;
+    text-align:center;
+    padding:9px 0;
+    border-radius:999px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    color:var(--ink-muted);
+    transition:background .18s ease, color .18s ease;
+    user-select:none;
+  }
+  .tab.active{
+    background:var(--card);
+    color:var(--ink);
+    box-shadow:0 1px 2px rgba(28,43,40,0.08);
+  }
+  h2.form-title{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:24px;
+    margin:0 0 6px;
+  }
+  .form-sub{
+    font-size:14px;
+    color:var(--ink-muted);
+    margin:0 0 28px;
+  }
+  label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:6px;
+    color:var(--ink);
+  }
+  .field{ margin-bottom:18px; }
+  input{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    font-size:14px;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:#fff;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  input:focus{
+    outline:none;
+    border-color:var(--teal-2);
+    box-shadow:0 0 0 3px rgba(46,156,129,0.15);
+  }
+  input.invalid{ border-color:var(--error); }
+  .field-error{
+    font-size:12px;
+    color:var(--error);
+    margin-top:6px;
+    display:none;
+  }
+  .field-error.show{ display:block; }
+  .row-between{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:-6px 0 20px;
+  }
+  .remember{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:13px;
+    color:var(--ink-muted);
+  }
+  .link-btn{
+    background:none;
+    border:none;
+    font-size:13px;
+    color:var(--teal-2);
+    font-weight:600;
+    cursor:pointer;
+    padding:0;
+    font-family:'Inter',sans-serif;
+  }
+  .link-btn:hover{ text-decoration:underline; }
+  button.submit{
+    width:100%;
+    padding:13px 0;
+    border:none;
+    border-radius:var(--radius-md);
+    background:linear-gradient(135deg, var(--teal-1), var(--teal-2));
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    font-family:'Inter',sans-serif;
+    cursor:pointer;
+    transition:opacity .15s ease, transform .1s ease;
+  }
+  button.submit:hover{ opacity:0.92; }
+  button.submit:active{ transform:scale(0.99); }
+  button.submit:disabled{ opacity:0.6; cursor:default; }
+  .banner{
+    display:none;
+    padding:12px 14px;
+    border-radius:var(--radius-md);
+    font-size:13px;
+    margin-bottom:20px;
+    line-height:1.5;
+  }
+  .banner.show{ display:block; }
+  .banner.error{ background:#FBEAE7; color:var(--error); }
+  .banner.success{ background:#E9F6F1; color:var(--teal-2); }
+  .switch-line{
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-muted);
+    margin-top:24px;
+  }
+  .switch-line button{
+    background:none;border:none;color:var(--teal-2);font-weight:600;
+    cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;
+  }
+  .pane{ display:none; }
+  .pane.active{ display:block; }
+  @media (max-width:860px){
+    .shell{ grid-template-columns:1fr; }
+    .brand-panel{ min-height:260px; padding:32px; }
+    .mark-wrap{ display:none; }
+    .brand-copy h1{ font-size:24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="brand-panel">
+    <div class="wordmark">Grade My Finance</div>
+    <div class="mark-wrap">
+      <svg class="g-mark" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="110" cy="110" r="88" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="26"/>
+        <rect x="110" y="94" width="66" height="34" fill="#fff"/>
+        <g class="gold-slice">
+          <path d="M 110 22 A 88 88 0 0 1 176 84 L 148 100 A 55 55 0 0 0 110 55 Z" fill="var(--gold)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="brand-copy">
+      <h1>Know exactly where you stand financially.</h1>
+      <p>Save your profile, track your progress, and see your financial report card evolve over time.</p>
+      <ul class="trust-list">
+        <li>Your data stays private, tied only to your account</li>
+        <li>Free to create — no credit card required</li>
+        <li>Update your numbers anytime and re-grade instantly</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="form-panel">
+    <div class="form-card">
+      <div class="tabs">
+        <div class="tab active" id="tab-signin" onclick="switchTab('signin')">Sign In</div>
+        <div class="tab" id="tab-signup" onclick="switchTab('signup')">Create Account</div>
+      </div>
+
+      <div id="banner" class="banner"></div>
+
+      <!-- SIGN IN -->
+      <div class="pane active" id="pane-signin">
+        <h2 class="form-title">Welcome back</h2>
+        <p class="form-sub">Sign in to view your financial report card.</p>
+        <form id="signin-form" novalidate>
+          <div class="field">
+            <label for="si-email">Email</label>
+            <input type="email" id="si-email" autocomplete="email" required>
+            <div class="field-error" id="si-email-error">Enter a valid email address.</div>
+          </div>
+          <div class="field">
+            <label for="si-password">Password</label>
+            <input type="password" id="si-password" autocomplete="current-password" required>
+            <div class="field-error" id="si-password-error">Enter your password.</div>
+          </div>
+          <div class="row-between">
+            <label class="remember"><input type="checkbox" id="si-remember" checked style="width:auto;"> Remember me</label>
+            <button type="button" class="link-btn" onclick="handleForgotPassword()">Forgot password?</button>
+          </div>
+          <button type="submit" class="submit" id="signin-btn">Sign In</button>
+        </form>
+        <div class="switch-line">Don't have an account? <button onclick="switchTab('signup')">Create one</button></div>
+      </div>
+
+      <!-- SIGN UP -->
+      <div class="pane" id="pane-signup">
+        <h2 class="form-title">Create your account</h2>
+        <p class="form-sub">Takes under a minute. No credit card needed.</p>
+        <form id="signup-form" novalidate>
+          <div class="field">
+            <label for="su-name">Full name</label>
+            <input type="text" id="su-name" autocomplete="name" required>
+            <div class="field-error" id="su-name-error">Enter your name.</div>
+          </div>
+          <div class="field">
+            <label for="su-email">Email</label>
+            <input type="email" id="su-email" autocomplete="email" required>
+            <div class="field-error" id="su-email-error">Enter a valid email address.</div>
+          </div>
+          <div class="field">
+            <label for="su-password">Password</label>
+            <input type="password" id="su-password" autocomplete="new-password" required>
+            <div class="field-error" id="su-password-error">Use at least 8 characters.</div>
+          </div>
+          <button type="submit" class="submit" id="signup-btn">Create Account</button>
+        </form>
+        <div class="switch-line">Already have an account? <button onclick="switchTab('signin')">Sign in</button></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  const SUPABASE_URL = 'https://pagqrjbsxcpfnpdbeanj.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_ANjKwMyMxNUtJ0YX_bAkFw_T0Q-yF1A';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  window.switchTab = function(tab){
+    document.getElementById('tab-signin').classList.toggle('active', tab==='signin');
+    document.getElementById('tab-signup').classList.toggle('active', tab==='signup');
+    document.getElementById('pane-signin').classList.toggle('active', tab==='signin');
+    document.getElementById('pane-signup').classList.toggle('active', tab==='signup');
+    hideBanner();
+  };
+
+  function showBanner(msg, type){
+    const b = document.getElementById('banner');
+    b.textContent = msg;
+    b.className = 'banner show ' + type;
+  }
+  function hideBanner(){
+    document.getElementById('banner').className = 'banner';
+  }
+  function setFieldError(inputId, errorId, show){
+    document.getElementById(inputId).classList.toggle('invalid', show);
+    document.getElementById(errorId).classList.toggle('show', show);
+  }
+
+  // Redirect if already signed in
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    if (session) window.location.href = 'dashboard.html';
+  });
+
+  // SIGN IN
+  document.getElementById('signin-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideBanner();
+    const email = document.getElementById('si-email').value.trim();
+    const password = document.getElementById('si-password').value;
+    const emailValid = /\S+@\S+\.\S+/.test(email);
+    setFieldError('si-email','si-email-error', !emailValid);
+    setFieldError('si-password','si-password-error', password.length === 0);
+    if (!emailValid || password.length === 0) return;
+
+    const btn = document.getElementById('signin-btn');
+    btn.disabled = true; btn.textContent = 'Signing in…';
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    btn.disabled = false; btn.textContent = 'Sign In';
+
+    if (error) {
+      showBanner(error.message === 'Invalid login credentials'
+        ? 'That email or password isn\u2019t right. Try again.'
+        : error.message, 'error');
+      return;
+    }
+    window.location.href = 'dashboard.html';
+  });
+
+  // SIGN UP
+  document.getElementById('signup-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideBanner();
+    const name = document.getElementById('su-name').value.trim();
+    const email = document.getElementById('su-email').value.trim();
+    const password = document.getElementById('su-password').value;
+    const emailValid = /\S+@\S+\.\S+/.test(email);
+    setFieldError('su-name','su-name-error', name.length === 0);
+    setFieldError('su-email','su-email-error', !emailValid);
+    setFieldError('su-password','su-password-error', password.length < 8);
+    if (name.length === 0 || !emailValid || password.length < 8) return;
+
+    const btn = document.getElementById('signup-btn');
+    btn.disabled = true; btn.textContent = 'Creating account…';
+
+    const { data, error } = await supabase.auth.signUp({
+      email, password,
+      options: { data: { full_name: name } }
+    });
+
+    btn.disabled = false; btn.textContent = 'Create Account';
+
+    if (error) {
+      showBanner(error.message, 'error');
+      return;
+    }
+
+    if (data.session) {
+      window.location.href = 'dashboard.html';
+    } else {
+      showBanner('Account created! Check your email to confirm before signing in.', 'success');
+      switchTab('signin');
+    }
+  });
+
+  window.handleForgotPassword = async function(){
+    const email = document.getElementById('si-email').value.trim();
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setFieldError('si-email','si-email-error', true);
+      showBanner('Enter your email above first, then click "Forgot password?"', 'error');
+      return;
+    }
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/reset-password.html'
+    });
+    if (error) { showBanner(error.message, 'error'); return; }
+    showBanner('Check your email for a password reset link.', 'success');
+  };
+</script>
+</body>
+</html>
