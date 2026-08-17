@@ -91,4 +91,8 @@ var GMF_BLOG_POSTS = [
   { slug:"term-vs-whole-life-insurance", title:"Term vs. Whole Life Insurance: Which One Actually Makes Sense", category:"Insurance" }
 ,
   { slug:"credit-freeze-vs-credit-lock", title:"Credit Freeze vs. Credit Lock: Which One Actually Protects You?", category:"Credit" }
+,
+  { slug:"index-funds-vs-actively-managed-funds-fees", title:"Index Funds vs. Actively Managed Funds: What the Fees Actually Cost You", category:"Investing" }
+,
+  { slug:"portfolio-rebalancing-explained", title:"Portfolio Rebalancing: Why It Matters and How Often You Should Actually Do It", category:"Investing" }
 ];
