@@ -705,6 +705,14 @@ section.block{ padding:76px 0 }
 
 .rc-sidebar-brand{ display:flex; align-items:center; gap:10px; padding:4px 10px 20px }
 .rc-logo-mark{ flex:none; display:block; filter:drop-shadow(0 3px 8px rgba(139,92,246,.4)) }
+.rc-seal-mark{
+  position:relative; width:32px; height:32px; border-radius:9px; overflow:hidden; flex:none;
+  background:linear-gradient(165deg, #1a1607, #0E1015 65%);
+  border:1.5px solid rgba(201,162,39,.45);
+  display:grid; place-items:center;
+  box-shadow: 0 0 0 1px rgba(201,162,39,.08), 0 5px 14px -4px rgba(201,162,39,.32);
+}
+.rc-seal-mark span{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12px; color:#E4C24E }
 .gmf-logo-mark{ flex:none; display:block; filter:drop-shadow(0 3px 8px rgba(139,92,246,.4)) }
 .rc-social-row{
   display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
@@ -2049,77 +2057,9 @@ body.is-pro .ad-slot{ display:none !important }
     </div>
     <div class="pro-dash-frame">
       <div class="pro-dash-chrome"><span></span><span></span><span></span><div class="pro-dash-url">grademyfinance.com/dashboard</div></div>
-      <div class="pdm-body">
-        <div class="pdm-sidebar">
-          <div class="pdm-nav-item active"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></div>
-          <div class="pdm-nav-item"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
-          <div class="pdm-nav-item"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c4 0 4 6 8 6s4-6 8-6M4 19c4 0 4-6 8-6s4 6 8 6"/></svg></div>
-          <div class="pdm-nav-item"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div>
-        </div>
-        <div class="pdm-main">
-          <div class="pdm-hero-row">
-            <div class="pdm-ring"><span>A+</span></div>
-            <div class="pdm-hero-text">
-              <div class="pdm-hero-label">Financial grade</div>
-              <div class="pdm-hero-score">100.0<span>/100</span></div>
-              <div class="pdm-streak"><span class="pdm-streak-dot"></span>6-check-in improvement streak</div>
-            </div>
-            <div class="pdm-preview-tag">CONCEPT PREVIEW</div>
-          </div>
-
-          <div class="pdm-flow-card">
-            <span class="pdm-flow-label">Money Flow — Assets</span>
-            <svg class="pdm-flow-svg" viewBox="0 0 480 190" preserveAspectRatio="xMidYMid meet">
-              <defs>
-                <linearGradient id="pdmG1" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#E8B34A" stop-opacity="0.5"/>
-                  <stop offset="55%" stop-color="#4FC28A" stop-opacity="0.55"/>
-                  <stop offset="100%" stop-color="#4FC28A" stop-opacity="0.85"/>
-                </linearGradient>
-                <linearGradient id="pdmG2" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#E8B34A" stop-opacity="0.5"/>
-                  <stop offset="55%" stop-color="#5B8DEF" stop-opacity="0.55"/>
-                  <stop offset="100%" stop-color="#5B8DEF" stop-opacity="0.85"/>
-                </linearGradient>
-                <linearGradient id="pdmG3" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#E8B34A" stop-opacity="0.5"/>
-                  <stop offset="55%" stop-color="#45C4D6" stop-opacity="0.55"/>
-                  <stop offset="100%" stop-color="#45C4D6" stop-opacity="0.85"/>
-                </linearGradient>
-              </defs>
-              <rect x="24" y="69" width="6" height="52" rx="3" fill="#E8B34A" fill-opacity="0.85"/>
-              <path d="M30,95 C170,95 170,40 340,40" fill="none" stroke="url(#pdmG1)" stroke-width="22" stroke-linecap="round"/>
-              <path d="M30,95 C170,95 170,95 340,95" fill="none" stroke="url(#pdmG2)" stroke-width="18" stroke-linecap="round"/>
-              <path d="M30,95 C170,95 170,150 340,150" fill="none" stroke="url(#pdmG3)" stroke-width="14" stroke-linecap="round"/>
-              <text x="352" y="34" fill="#E9ECF1" font-size="13" font-weight="600" font-family="Inter,sans-serif">Retirement</text>
-              <text font-weight="600" x="352" y="50" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$142,000 · 44%</text>
-              <text x="352" y="89" fill="#E9ECF1" font-size="13" font-weight="600" font-family="Inter,sans-serif">Brokerage</text>
-              <text font-weight="600" x="352" y="105" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$96,000 · 30%</text>
-              <text x="352" y="144" fill="#E9ECF1" font-size="13" font-weight="600" font-family="Inter,sans-serif">Cash</text>
-              <text font-weight="600" x="352" y="160" fill="#8B93A3" font-size="11" font-family="IBM Plex Mono,monospace">$84,000 · 26%</text>
-            </svg>
-          </div>
-
-          <div class="pdm-stat-row">
-            <div class="pdm-stat">
-              <span class="pdm-stat-label">Net worth trend</span>
-              <svg viewBox="0 0 160 40" width="100%" height="34"><polyline points="4,34 30,30 56,32 82,20 108,16 134,8 156,4" fill="none" stroke="var(--good)" stroke-width="2.5"/></svg>
-              <span class="pdm-stat-trend up">↗ tracking up</span>
-            </div>
-            <div class="pdm-stat">
-              <span class="pdm-stat-label">Emergency fund goal</span>
-              <div class="pdm-progress"><div style="width:75%"></div></div>
-              <span class="pdm-stat-trend">75% to target</span>
-            </div>
-            <div class="pdm-stat">
-              <span class="pdm-stat-label">What-if scenarios</span>
-              <div class="pdm-stat-num">3</div>
-              <span class="pdm-stat-trend">saved &amp; compared</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <img src="dashboard-preview.png" alt="Grade My Finance Pro dashboard — financial grade, net worth trend, and score history" style="display:block;width:100%;height:auto">
     </div>
+
     <div style="text-align:center;margin-top:28px">
       <a class="btn gold" href="#pricing">Explore Pro →</a>
     </div>
@@ -2285,10 +2225,7 @@ body.is-pro .ad-slot{ display:none !important }
   <div class="sheet">
     <div class="dash-tabs" id="dashTabs">
       <div class="rc-sidebar-brand">
-        <svg class="rc-logo-mark" viewBox="0 0 44 44" width="30" height="30" aria-hidden="true">
-          <defs><linearGradient id="gLogoGradSidebar" x1="10%" y1="0%" x2="90%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="50%" stop-color="#EC4899"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
-          <text x="50%" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="38" fill="none" stroke="url(#gLogoGradSidebar)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">G</text>
-        </svg>
+        <span class="rc-seal-mark"><span>A+</span></span>
         <span class="rc-logo-word">Grade My Finance</span>
       </div>
       <button class="dash-tab active" data-dtab="overview" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span><span class="dash-tab-label">Overview</span></button>
