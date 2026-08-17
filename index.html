@@ -565,6 +565,7 @@ section.block{ padding:76px 0 }
   padding:6px 12px; border-radius:999px; text-transform:uppercase; margin-bottom:18px;
 }
 .calc-v2-headline{ font-size:clamp(26px,3.4vw,34px); font-weight:800; line-height:1.15; margin:0 0 12px; color:var(--text) }
+.calc-simple-title{ font-size:20px; font-weight:700; color:var(--text); margin:0 0 22px }
 .calc-v2-gradient-text{
   background:linear-gradient(90deg,#2DD4BF,#8B5CF6,#EC4899); -webkit-background-clip:text; background-clip:text; color:transparent;
 }
@@ -1881,37 +1882,8 @@ body.is-pro .ad-slot{ display:none !important }
 <div id="calcModal" class="modal calc-modal" role="dialog" aria-modal="true" aria-labelledby="calcModalTitle">
 <section id="grade" class="calc-wrap" aria-label="Calculator">
   <button class="xbtn calc-modal-close" id="calcModalClose" type="button" aria-label="Close calculator">✕</button>
-  <div class="calc-v2-grid">
-    <div class="calc-v2-sidebar">
-      <div class="calc-step-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg> STEP <span id="calcStepBadgeNum">1</span> OF 4</div>
-      <h2 class="calc-v2-headline" id="calcModalTitle"><span id="calcHeadlinePart1">Let's get to know</span> <span class="calc-v2-gradient-text" id="calcHeadlinePart2">your numbers.</span></h2>
-      <p class="calc-v2-sub" id="calcSidebarSub">Just the basics to start — this takes about a minute.</p>
-
-      <div class="calc-benefit-card">
-        <span class="calc-benefit-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span>
-        <div><b>Private &amp; Secure</b><span>Your data stays on your device and is never stored.</span></div>
-      </div>
-      <div class="calc-benefit-card">
-        <span class="calc-benefit-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5 3.4 8.4 8 10 4.6-1.6 8-5 8-10V6l-8-4z"/></svg></span>
-        <div><b>100% Free</b><span>No credit card required. Always will be.</span></div>
-      </div>
-      <div class="calc-benefit-card">
-        <span class="calc-benefit-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></span>
-        <div><b>Results in 30 Seconds</b><span>Get your personalized grade instantly.</span></div>
-      </div>
-
-      <div class="calc-whatyoullget-card">
-        <span class="calc-wyg-title">✨ What You'll Get</span>
-        <ul>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Your financial letter grade (A–F)</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Personalized insights &amp; recommendations</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Score breakdown across 6 key areas</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Action steps to level up your finances</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="calc-v2-main">
+  <div class="calc-v2-main">
+    <h2 id="calcModalTitle" class="calc-simple-title">Get your financial grade</h2>
   <div class="stepper-head">
     <div class="stepper-track-wrap">
       <div class="stepper-track-bg"></div>
@@ -2042,7 +2014,6 @@ body.is-pro .ad-slot{ display:none !important }
     <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
   </div>
     </div>
-  </div>
   <div class="calc-v2-trust-bar">
     <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg> bank-level security</span>
     <span>•</span>
