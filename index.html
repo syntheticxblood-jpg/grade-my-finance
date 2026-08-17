@@ -3557,13 +3557,24 @@ if(rcMoreBtn && rcMoreMenu){
       // normal flow near the bottom of the sheet. Fixed positioning
       // anchored to the viewport sidesteps that ancestor clipping
       // entirely instead of fighting it.
+      //
+      // Positioning via "bottom: window.innerHeight - rect.top" (the
+      // earlier version of this fix) turned out to still be fragile on
+      // real mobile Safari - innerHeight changes as the address bar
+      // shows/hides, and if it's read at a different moment than the
+      // button's position was last stable, the menu can land far from
+      // the button entirely. Using "top" + translateY(-100%) instead
+      // only ever depends on rect.top, a directly-measured, always-
+      // current value - the browser handles shifting the menu up by its
+      // own height automatically, no viewport-height arithmetic needed.
       var rect = rcMoreBtn.getBoundingClientRect();
       var menuWidth = 210;
       var left = Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 10);
       left = Math.max(10, left);
       rcMoreMenu.style.left = left + "px";
-      rcMoreMenu.style.bottom = (window.innerHeight - rect.top + 8) + "px";
-      rcMoreMenu.style.top = "auto";
+      rcMoreMenu.style.top = (rect.top - 8) + "px";
+      rcMoreMenu.style.bottom = "auto";
+      rcMoreMenu.style.transform = "translateY(-100%)";
     }
   });
   document.addEventListener("click", function(e){
