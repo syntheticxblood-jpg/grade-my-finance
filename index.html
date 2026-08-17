@@ -1930,21 +1930,33 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 
   <div class="calc-step active" data-step="1">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></span><div><b>About You</b><span>A couple quick basics to get started</span></div></div>
     <div class="inputs">
-      <div class="field"><label for="age">Age</label><input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"><div class="hint">Used to compare your numbers to others at your stage of life.</div></div>
-      <div class="field"><label for="income">Monthly household income (after-tax)</label><input id="income" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Your take-home pay — after taxes, before rent or bills.</div></div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span><label for="age">Age</label></div>
+        <input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"><div class="hint">Used to compare your numbers to others at your stage of life.</div>
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><label for="income">Monthly Household Income</label></div>
+        <input id="income" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Your take-home pay — after taxes, before rent or bills.</div>
+      </div>
     </div>
     <div class="step-actions"><span></span><button class="btn gold" type="button" data-next>Continue →</button></div>
   </div>
 
   <div class="calc-step" data-step="2">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><div><b>Your Spending</b><span>What goes out each month</span></div></div>
     <div class="inputs">
-      <div class="field"><label for="expenses">Monthly expenses (total)</label><input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined. One number keeps this quick; we compare it against your income either way.</div></div>
+      <div class="field icon-field" style="grid-column:1/-1">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><label for="expenses">Monthly Expenses (Total)</label></div>
+        <input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined. One number keeps this quick; we compare it against your income either way.</div>
+      </div>
     </div>
     <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
   </div>
 
   <div class="calc-step" data-step="3">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1"/></svg></span><div><b>Your Assets</b><span>Everything you own that holds value</span></div></div>
     <div class="field-row">
       <div class="segmented" role="group" aria-label="Housing">
         <button id="modeOwner" type="button">Owner</button>
@@ -1952,13 +1964,40 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
     </div>
     <div class="inputs">
-      <div class="field" id="homeCard"><label for="home">Home value</label><input id="home" type="number" value="0" min="0" inputmode="decimal"><div class="hint" id="assetsHint">Total assets: —</div></div>
-      <div class="field"><label for="retire">Retirement (401k, IRA, etc.)</label><input id="retire" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="brokerage">Brokerage / stocks</label><input id="brokerage" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="hsa">HSA</label><input id="hsa" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="cash">Cash savings</label><input id="cash" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="crypto">Crypto & other investments</label><input id="crypto" type="number" value="0" min="0" inputmode="decimal"></div>
-      <div class="field"><label for="car">Car value</label><input id="car" type="number" value="0" min="0" inputmode="decimal"></div>
+      <div class="field icon-field" id="homeCard">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="home">Home Value</label></div>
+        <input id="home" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="retire">Retirement (401k, IRA)</label></div>
+        <input id="retire" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(74,222,158,.15);color:#4ADE9E"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><label for="brokerage">Brokerage / Stocks</label></div>
+        <input id="brokerage" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><label for="hsa">HSA</label></div>
+        <input id="hsa" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><label for="cash">Cash Savings</label></div>
+        <input id="cash" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(236,72,153,.15);color:#EC4899"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span><label for="crypto">Crypto &amp; Other</label></div>
+        <input id="crypto" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="car">Car Value</label></div>
+        <input id="car" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+    </div>
+
+    <div class="calc-total-card">
+      <span class="calc-total-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
+      <div class="calc-total-text"><b>Total Assets</b><span>Total of everything entered above</span></div>
+      <div class="calc-total-value" id="assetsHint">—</div>
     </div>
     <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
   </div>
@@ -1997,7 +2036,7 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
     </div>
 
-    <div class="calc-privacy-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg> All calculations are done locally on your device. Your data is <b>never</b> sent anywhere.</div>
+    <div class="calc-privacy-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg><span>All calculations are done locally on your device. Your data is <b>never</b> sent anywhere.</span></div>
 
     <div class="progress"><div id="progressFill"></div></div>
     <div class="calc-actions">
