@@ -529,6 +529,14 @@ section.block{ padding:76px 0 }
 .step-label.done .step-circle{ color:#0d1608; background:var(--good); border-color:var(--good) }
 .step-label.done .step-name{ color:var(--muted) }
 @media (max-width:640px){ .step-name{ display:none } .step-circle{ width:32px; height:32px; font-size:12px } .stepper-track-bg,.stepper-track-fill{ top:16px } }
+@media (max-width:760px){
+  .inputs{ gap:10px }
+  .field .hint{ font-size:10.5px; margin-top:4px }
+  .calc-total-card{ padding:12px 14px; gap:9px }
+  .calc-total-value{ font-size:18px }
+  .calc-field-header{ margin-bottom:14px }
+  .calc-privacy-note{ font-size:11px }
+}
 .calc-trust-badge{
   display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted);
   background:rgba(45,212,191,.06); border:1px solid rgba(45,212,191,.18); border-radius:10px;
@@ -540,7 +548,17 @@ section.block{ padding:76px 0 }
 .calc-v2-grid{ display:grid; grid-template-columns:340px 1fr; gap:36px; align-items:start }
 @media (max-width:900px){ .calc-v2-grid{ grid-template-columns:1fr; gap:24px } }
 .calc-v2-sidebar{ position:sticky; top:0 }
-@media (max-width:900px){ .calc-v2-sidebar{ position:static } }
+@media (max-width:900px){
+  .calc-v2-sidebar{ position:static }
+  /* On mobile the sidebar stacks ABOVE the form (single column), so its
+     full marketing content - 3 benefit cards, the "what you'll get"
+     checklist - adds real scroll distance before someone even reaches
+     the actual fields. Keeping just the step badge/headline/subtext and
+     dropping the rest here directly addresses "I don't want to scroll
+     to see the form" without losing that content on desktop, where the
+     sidebar sits beside the form instead of above it. */
+  .calc-benefit-card, .calc-whatyoullget-card{ display:none }
+}
 .calc-step-badge{
   display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:.06em;
   color:var(--calc-accent-bright); background:var(--calc-accent-soft); border:1px solid rgba(45,212,191,.35);
@@ -583,9 +601,10 @@ section.block{ padding:76px 0 }
 .calc-field-header b{ display:block; font-size:16px; color:var(--text) }
 .calc-field-header span{ font-size:12.5px; color:var(--muted) }
 
-.icon-field{ display:flex; gap:11px; align-items:flex-start }
-.field-icon{ flex:none; width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-top:22px }
-.field-body{ flex:1 1 auto; min-width:0 }
+.icon-field{ display:flex; flex-direction:column }
+.field-icon-row{ display:flex; align-items:center; gap:8px; margin-bottom:7px }
+.field-icon{ flex:none; width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center }
+.icon-field .field-icon-row label{ margin:0; min-height:0 }
 
 .calc-total-card{
   display:flex; align-items:center; gap:12px; margin-top:16px; padding:16px 18px; border-radius:14px;
@@ -1948,33 +1967,33 @@ body.is-pro .ad-slot{ display:none !important }
     <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>Your Debt &amp; Liabilities</b><span>Include all outstanding balances</span></div></div>
     <div class="inputs">
       <div class="field icon-field" id="mortCard">
-        <span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span>
-        <div class="field-body"><label for="mortgage">Mortgage Balance</label><input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Current mortgage payoff amount</div></div>
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="mortgage">Mortgage Balance</label></div>
+        <input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Current mortgage payoff amount</div>
       </div>
       <div class="field icon-field">
-        <span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span>
-        <div class="field-body"><label for="student">Student Loans</label><input id="student" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total student loan balance</div></div>
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span><label for="student">Student Loans</label></div>
+        <input id="student" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total student loan balance</div>
       </div>
       <div class="field icon-field">
-        <span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span>
-        <div class="field-body"><label for="auto">Auto Loans</label><input id="auto" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Outstanding auto loan balance</div></div>
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="auto">Auto Loans</label></div>
+        <input id="auto" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Outstanding auto loan balance</div>
       </div>
       <div class="field icon-field">
-        <span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
-        <div class="field-body"><label for="cc">Credit Cards (Balance)</label><input id="cc" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total credit card balances</div></div>
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><label for="cc">Credit Cards</label></div>
+        <input id="cc" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total credit card balances</div>
       </div>
     </div>
 
     <div class="calc-total-card">
-      <span class="calc-total-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
+      <span class="calc-total-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
       <div class="calc-total-text"><b>Total Liabilities</b><span>Total of all debts entered</span></div>
       <div class="calc-total-value" id="liabHint">—</div>
     </div>
 
-    <div class="inputs" style="margin-top:14px">
+    <div class="inputs" style="margin-top:10px">
       <div class="field icon-field" style="grid-column:1/-1">
-        <span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-        <div class="field-body"><label for="otherDebt">Personal Loans / Other Debt</label><input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Personal loans, lines of credit, or other debts</div></div>
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="otherDebt">Personal Loans / Other Debt</label></div>
+        <input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Personal loans, lines of credit, or other debts</div>
       </div>
     </div>
 
