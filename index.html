@@ -1375,6 +1375,21 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
   display:inline-block; background:var(--brand-soft); border:1px solid rgba(201,162,39,.35); color:var(--brand-bright);
   font-size:12.5px; font-weight:600; padding:6px 12px; border-radius:8px; margin-bottom:10px;
 }
+.proj-subtabs{
+  display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; padding-bottom:2px;
+  border-bottom:1px solid var(--line);
+}
+.proj-subtab-btn{
+  display:flex; align-items:center; gap:5px; background:none; border:none; border-bottom:2px solid transparent;
+  padding:10px 4px; margin-right:14px; font-size:13.5px; font-weight:600; color:var(--muted); cursor:pointer;
+  font-family:var(--font-body); transition:color .15s ease, border-color .15s ease;
+}
+.proj-subtab-btn:hover{ color:var(--text) }
+.proj-subtab-btn.active{ color:var(--brand-bright); border-bottom-color:var(--brand-bright) }
+.proj-subtab-btn .pro-badge{ font-size:9px; padding:1px 5px }
+.proj-subpanel{ display:none; animation:flowFadeIn .25s ease }
+.proj-subpanel.active{ display:block }
+
 .billing-toggle{
   display:inline-flex; background:var(--surface-2); border:1px solid var(--line); border-radius:99px;
   padding:3px; margin-bottom:16px; gap:2px;
@@ -2541,7 +2556,20 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
 
       <div class="dash-panel" id="dashPanel-benchmarks">
-        <span class="section-label">How you compare to our benchmark (estimated)</span>
+        <span class="section-label">Your score, factor by factor</span>
+        <p class="small" style="margin:6px 0 14px;color:var(--muted)">The 5 things that make up your overall grade, weighted by how much each one actually matters.</p>
+        <div class="pro-blur-section" style="min-height:180px">
+          <div class="pro-blur-content">
+            <div id="weakWrap" style="display:grid;gap:10px"></div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See exactly what's driving your grade</div>
+            <div class="pro-blur-sub">Every factor, weighted and explained, with your weakest link flagged.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
+
+        <span class="section-label" style="margin-top:22px;display:block">How you compare to our benchmark (estimated)</span>
         <div class="pro-blur-section">
           <div class="pro-blur-content">
             <div id="benchRows" style="display:grid;gap:8px;margin-top:12px"></div>
@@ -2811,6 +2839,14 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
 
       <div class="dash-panel" id="dashPanel-projections">
+        <div class="proj-subtabs" id="projSubtabs">
+          <button class="proj-subtab-btn active" data-subtab="whatif" type="button">Quick What-If</button>
+          <button class="proj-subtab-btn" data-subtab="networth" type="button">Net Worth <span class="pro-badge">★</span></button>
+          <button class="proj-subtab-btn" data-subtab="lifeevents" type="button">Life Events <span class="pro-badge">★</span></button>
+          <button class="proj-subtab-btn" data-subtab="freedom" type="button">Freedom # <span class="pro-badge">★</span></button>
+        </div>
+
+        <div class="proj-subpanel active" data-subpanel="whatif">
         <div class="card">
           <span class="section-label">What-if projections</span>
           <div style="display:grid;gap:12px">
@@ -2838,8 +2874,10 @@ body.is-pro .ad-slot{ display:none !important }
             </div>
           </div>
         </div>
+        </div>
 
-        <div class="pro-blur-section" style="margin-top:12px">
+        <div class="proj-subpanel" data-subpanel="networth">
+        <div class="pro-blur-section">
           <div class="pro-blur-content">
             <div class="card">
               <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
@@ -2856,8 +2894,19 @@ body.is-pro .ad-slot{ display:none !important }
                 <div class="small" style="margin-top:8px">Assumes you keep investing your current monthly surplus (income minus expenses) at this return, compounded annually. Doesn't account for inflation, market swings, or life changes — an estimate, not a promise.</div>
               </div>
             </div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See where you're actually headed</div>
+            <div class="pro-blur-sub">Unlock your full net worth projection, based on your real numbers.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
+        </div>
 
-            <div class="card" style="margin-top:12px">
+        <div class="proj-subpanel" data-subpanel="lifeevents">
+        <div class="pro-blur-section">
+          <div class="pro-blur-content">
+            <div class="card">
               <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
                 <span class="section-label" style="margin:0">Life events timeline <span class="pro-badge">★ PRO</span></span>
                 <span id="lifeEventsCaption" class="small">—</span>
@@ -2884,8 +2933,19 @@ body.is-pro .ad-slot{ display:none !important }
                 <div class="small" style="margin-top:10px">Each event's dollar effect (down payment, new expense, income change) is applied on top of your current numbers — an illustration of the shape of the impact, not a precise forecast.</div>
               </div>
             </div>
+          </div>
+          <div class="pro-blur-overlay">
+            <div class="pro-blur-title">🔒 See how life events reshape your path</div>
+            <div class="pro-blur-sub">Model buying a home, a kid, a job loss, or a raise against your real numbers.</div>
+            <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
+          </div>
+        </div>
+        </div>
 
-            <div class="card" style="margin-top:12px">
+        <div class="proj-subpanel" data-subpanel="freedom">
+        <div class="pro-blur-section">
+          <div class="pro-blur-content">
+            <div class="card">
               <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
                 <span class="section-label" style="margin:0">Freedom number explorer <span class="pro-badge">★ PRO</span></span>
                 <span id="fnCaption" class="small">—</span>
@@ -2900,10 +2960,11 @@ body.is-pro .ad-slot{ display:none !important }
             </div>
           </div>
           <div class="pro-blur-overlay">
-            <div class="pro-blur-title">🔒 See where you're actually headed</div>
-            <div class="pro-blur-sub">Unlock your net worth projection, life events simulator, and freedom number.</div>
+            <div class="pro-blur-title">🔒 Find your real number</div>
+            <div class="pro-blur-sub">See your actual FI target, and how it moves with your assumptions.</div>
             <a class="btn gold sm" href="#pricing">Unlock with Pro</a>
           </div>
+        </div>
         </div>
       </div>
 
@@ -3933,9 +3994,19 @@ function sparkline(svgEl, arr){
 
 function estimatePercentiles(v, cats){
   var incomeRatio = v.annualIncome/incomeBenchmark(v.age||30);
-  var incomePct = Math.round(clamp(50 + (incomeRatio-1)*35*100/100, 5, 95));
-  var efPct     = Math.round(clamp(v.efMonths/6,0,1)*90);
-  var nwPct     = Math.round(clamp(v.nwProgress,0,1)*90);
+  var incomePct = Math.round(clamp(50 + (incomeRatio-1)*35, 5, 95));
+  // Emergency fund and net worth both have a real, fixed target (6
+  // months of expenses; the age-based net worth curve) - reaching or
+  // exceeding that target should show as matching or leading the
+  // benchmark bar, not sitting artificially behind it. The previous
+  // *90 cap meant someone who had fully hit their target still saw a
+  // shorter bar than the 100%-wide benchmark bar next to it, directly
+  // contradicting text like "Ahead of our benchmark for your age" shown
+  // right next to a bar that visually looked behind. Income has no such
+  // fixed ceiling (it can run arbitrarily higher than the benchmark), so
+  // it keeps its own headroom-preserving cap at 95 rather than 100.
+  var efPct     = Math.round(clamp(v.efMonths/6,0,1)*100);
+  var nwPct     = Math.round(clamp(v.nwProgress,0,1)*100);
   return [
     {label:'Income', value: incomePct, expl: money(v.annualIncome)+'/yr vs. our age-adjusted benchmark'},
     {label:'Emergency fund', value: efPct, expl: v.efMonths.toFixed(1)+' months of expenses saved (our benchmark targets 6)'},
@@ -4342,6 +4413,18 @@ function drawCharts(v){
     var tab = document.querySelector('.dash-tab[data-dtab="'+name+'"]');
     if(tab) activate(tab);
   };
+})();
+(function setupProjectionSubtabs(){
+  var buttons = document.querySelectorAll(".proj-subtab-btn");
+  var panels = document.querySelectorAll(".proj-subpanel");
+  if(!buttons.length) return;
+  buttons.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      buttons.forEach(function(b){ b.classList.toggle("active", b===btn); });
+      panels.forEach(function(p){ p.classList.toggle("active", p.dataset.subpanel===btn.dataset.subtab); });
+      __track('projections_subtab_view', {subtab: btn.dataset.subtab});
+    });
+  });
 })();
 (function setupFlowTabs(){
   var tabs = document.querySelectorAll(".flow-tab");
