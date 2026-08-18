@@ -426,6 +426,484 @@ main{ padding:28px 0 50px }
   .content-header{ margin-bottom:18px }
 }
 </style>
+<style>
+
+/* =========================================================
+   GRADE MY FINANCE — DASHBOARD 2.0
+   Visual upgrade only: preserves existing IDs, tabs, charts,
+   local history, goals, scenarios, and dashboard logic.
+   ========================================================= */
+
+:root{
+  --dash-ink:#16352f;
+  --dash-muted:#63756f;
+  --dash-line:#dfe7e2;
+  --dash-bg:#f4f3ea;
+  --dash-card:#ffffff;
+  --dash-mint:#dcefe8;
+  --dash-blue:#e5edf8;
+  --dash-gold:#f4d77f;
+  --dash-purple:#e8e1f8;
+  --dash-green:#159a78;
+}
+
+/* Page atmosphere */
+body{
+  background:var(--dash-bg) !important;
+  color:var(--dash-ink) !important;
+}
+.main-area{
+  background:transparent !important;
+}
+.main-area::before{
+  background:
+    radial-gradient(ellipse 850px 520px at 22% 0%,rgba(54,170,137,.12),transparent 62%),
+    radial-gradient(ellipse 560px 460px at 88% 22%,rgba(242,204,92,.10),transparent 65%),
+    radial-gradient(ellipse 500px 500px at 78% 90%,rgba(121,145,209,.07),transparent 70%) !important;
+}
+
+/* Sidebar */
+.sidebar{
+  width:244px !important;
+  padding:18px 12px !important;
+  background:#fff !important;
+  border-right:1px solid #dfe7e2 !important;
+  box-shadow:10px 0 35px rgba(18,52,45,.055) !important;
+}
+.sidebar-brand{
+  padding:4px 8px 20px !important;
+  margin-bottom:16px !important;
+}
+.sidebar .dash-nav-btn{
+  color:#4f625c !important;
+  min-height:43px;
+  border-radius:12px !important;
+}
+.sidebar .dash-nav-btn:hover{
+  background:#f0f5f2 !important;
+  color:#173a32 !important;
+}
+.sidebar .dash-nav-btn.active{
+  background:#dcefe8 !important;
+  color:#0c8a6b !important;
+  box-shadow:inset 3px 0 0 #159a78;
+}
+.sidebar .nav-icon{opacity:.8}
+.sidebar-pro-card{
+  background:#f3eee0 !important;
+  border:1px solid #e5d7aa !important;
+  box-shadow:0 8px 22px rgba(120,93,22,.06);
+}
+.sidebar-pro-icon{
+  background:#f4d77f !important;
+  color:#6e5310 !important;
+}
+.sidebar-profile{
+  padding-top:12px !important;
+}
+.sidebar-profile .dash-greeting-avatar{
+  background:#48b79b !important;
+  color:#fff !important;
+}
+
+/* Main content */
+.main-area{margin-left:244px !important;}
+.main-area .container{max-width:1220px !important;}
+main{padding:30px 0 60px !important;}
+
+/* Greeting header */
+.content-header{
+  margin-bottom:22px !important;
+  align-items:center !important;
+}
+.content-header .dash-greeting-eyebrow{
+  color:#61746d !important;
+  font-size:12px !important;
+  letter-spacing:.02em;
+}
+.content-header .dash-greeting-text{
+  color:#173a33 !important;
+  font-size:28px !important;
+  letter-spacing:-.035em !important;
+}
+.content-header .dash-greeting-text .accent,
+.content-header .dash-greeting-text .highlight{
+  color:#159a78 !important;
+}
+.content-header .dash-greeting-sub{
+  color:#647670 !important;
+}
+.content-header-right .updated{
+  color:#7a8984 !important;
+}
+.content-header-right .btn.gold{
+  background:#159a78 !important;
+  border-color:#159a78 !important;
+  color:#fff !important;
+  border-radius:10px !important;
+  box-shadow:0 8px 18px rgba(21,154,120,.18);
+}
+
+/* Overview metric strip */
+#panel-overview > .metrics-row:first-child{
+  display:grid !important;
+  grid-template-columns:1.65fr 1fr 1fr .9fr !important;
+  gap:12px !important;
+  margin-bottom:14px !important;
+}
+.grade-ring-card,
+.metric-card{
+  background:#fff !important;
+  border:1px solid #dfe7e2 !important;
+  border-radius:16px !important;
+  box-shadow:0 8px 24px rgba(25,52,46,.055) !important;
+}
+.grade-ring-card{
+  min-height:150px;
+  padding:20px !important;
+  display:grid !important;
+  grid-template-columns:100px 100px 1fr !important;
+  align-items:center !important;
+  gap:12px !important;
+}
+.grade-ring-card .m-label{
+  align-self:start;
+  grid-column:1/-1;
+  margin-bottom:-26px;
+}
+.grade-ring-wrap{margin:0 !important;}
+.grade-ring-text{min-width:0;}
+.grade-ring-text .score-part{
+  color:#183b34 !important;
+  font-size:21px !important;
+}
+.grade-ring-text .grade-explain{
+  color:#667771 !important;
+  line-height:1.45;
+}
+.metric-card{
+  min-height:150px;
+  padding:18px !important;
+}
+.m-label,.section-label{
+  color:#5b6c66 !important;
+  letter-spacing:.07em !important;
+}
+.m-val,.hv{
+  color:#183a33 !important;
+}
+.m-sub{
+  color:#687a74 !important;
+}
+.m-icon-good{
+  background:#def5ec !important;
+  color:#159a78 !important;
+}
+.m-icon-brand{
+  background:#e9e2fa !important;
+  color:#866bd4 !important;
+}
+.m-icon-info{
+  background:#e4edfc !important;
+  color:#4d7ec9 !important;
+}
+
+/* Grade ring */
+#gradeRingFg{stroke:#159a78 !important;}
+.dash-grade-badge{
+  border-color:#159a78 !important;
+  color:#159a78 !important;
+  background:#e2f4ed !important;
+}
+
+/* Main two-column area */
+.ov-grid{
+  gap:14px !important;
+}
+.ov-col{
+  gap:14px !important;
+}
+.hero-card,
+.card,
+.insight-card{
+  background:#fff !important;
+  border:1px solid #dfe7e2 !important;
+  box-shadow:0 8px 24px rgba(25,52,46,.055) !important;
+  border-radius:16px !important;
+}
+.hero-card{
+  padding:20px !important;
+}
+.card{
+  padding:20px !important;
+}
+.hero-card-top{
+  margin-bottom:4px;
+}
+.hv{
+  font-size:31px !important;
+  letter-spacing:-.035em;
+}
+.hv-sub{
+  color:#6c7d77 !important;
+}
+
+/* Score slider */
+.score-slider-track{
+  background:linear-gradient(90deg,#ef4b43 0%,#f3ad27 42%,#f0d43b 64%,#25bd63 100%) !important;
+  height:9px !important;
+  border-radius:999px !important;
+}
+.score-slider-marker{
+  width:19px !important;
+  height:19px !important;
+  border:4px solid #fff !important;
+  background:#159a78 !important;
+  box-shadow:0 0 0 2px #159a78,0 4px 12px rgba(21,154,120,.22) !important;
+}
+.score-slider-labels{
+  color:#7c8b86 !important;
+}
+
+/* Recent activity */
+.activity-row{
+  padding:12px 0 !important;
+  border-color:#e7ece9 !important;
+}
+.activity-row.activity-head{
+  color:#82918c !important;
+}
+.activity-grade{
+  color:#193b34 !important;
+}
+
+/* Net worth hero */
+#panel-overview .ov-col:last-child .hero-card:first-child{
+  background:linear-gradient(145deg,#fff 0%,#f5fbf8 100%) !important;
+}
+#ovNetVal{
+  color:#173b34 !important;
+}
+#ovNetChart{
+  margin-top:8px;
+}
+
+/* Insight cards */
+.insight-card{
+  padding:20px !important;
+}
+.insight-card.goal-card-decorated{
+  background:linear-gradient(145deg,#fff 0%,#fff7df 100%) !important;
+  border-color:#eadcae !important;
+}
+.insight-card.win{
+  background:linear-gradient(145deg,#fff 0%,#e7f7f0 100%) !important;
+  border-color:#b9e3d3 !important;
+}
+.insight-card:not(.win):not(.goal-card-decorated){
+  background:linear-gradient(145deg,#fff 0%,#eef2fb 100%) !important;
+  border-color:#d6dfef !important;
+}
+.insight-card h4{
+  color:#183a33 !important;
+}
+
+/* Money Coach */
+#insightFeedList{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:0 22px;
+}
+.insight-feed-item{
+  padding:13px 0 !important;
+}
+.insight-feed-icon{
+  width:30px !important;
+  height:30px !important;
+  border-radius:9px !important;
+}
+.insight-feed-text{
+  color:#304a43 !important;
+}
+
+/* Momentum + pace */
+#panel-overview > .metrics-row[style*="grid-template-columns:1fr 1fr"]{
+  gap:14px !important;
+}
+#panel-overview > .metrics-row[style*="grid-template-columns:1fr 1fr"] .metric-card{
+  min-height:112px !important;
+  background:linear-gradient(145deg,#fff,#f4f8f6) !important;
+}
+.momentum-gauge-wrap circle:first-child{
+  stroke:#e7efeb !important;
+}
+#momentumRingFg{stroke:#159a78 !important;}
+
+/* Composition + story */
+#compositionChart{
+  min-height:140px;
+}
+#storyModeCard{
+  background:linear-gradient(145deg,#fff,#eef7f4) !important;
+  border-color:#cfe5dc !important;
+}
+
+/* Other dashboard tabs */
+.dash-tab-panel > .hero-card,
+.dash-tab-panel > .card,
+.dash-tab-panel > .scenario-card,
+.dash-tab-panel > .ret-scenario-card{
+  box-shadow:0 8px 24px rgba(25,52,46,.05) !important;
+}
+.dash-nav{
+  border-bottom-color:#dfe7e2 !important;
+}
+.dash-nav-btn.active{
+  color:#159a78 !important;
+  border-bottom-color:#159a78 !important;
+}
+
+/* Make secondary sections feel intentional */
+#panel-score .section-sub,
+#panel-networth .section-sub,
+#panel-goals .section-sub,
+#panel-scenarios .section-sub,
+#panel-achievements .section-sub,
+#panel-retirement .section-sub{
+  color:#6c7d77 !important;
+}
+
+/* Mobile dashboard */
+@media (max-width:900px){
+  .sidebar{
+    height:68px !important;
+    background:#fff !important;
+    box-shadow:0 -8px 25px rgba(19,53,46,.08) !important;
+  }
+  .main-area{
+    margin-left:0 !important;
+  }
+  main{padding:22px 16px 88px !important;}
+  .content-header{
+    align-items:flex-start !important;
+  }
+  .content-header .dash-greeting-text{
+    font-size:23px !important;
+  }
+  .content-header-right{
+    width:100%;
+    justify-content:space-between;
+  }
+  .content-header-right .updated{
+    font-size:11px;
+  }
+  #panel-overview > .metrics-row:first-child{
+    grid-template-columns:1fr 1fr !important;
+  }
+  .grade-ring-card{
+    grid-column:1/-1;
+    grid-template-columns:90px 90px 1fr !important;
+  }
+  .ov-grid{
+    grid-template-columns:1fr !important;
+  }
+  #insightFeedList{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width:600px){
+  main{padding-left:12px !important;padding-right:12px !important;}
+  .content-header{
+    gap:12px !important;
+  }
+  .content-header-right .btn{
+    flex:1;
+    text-align:center;
+  }
+  #panel-overview > .metrics-row:first-child{
+    grid-template-columns:1fr 1fr !important;
+    gap:9px !important;
+  }
+  .grade-ring-card{
+    min-height:142px;
+    padding:15px !important;
+    grid-template-columns:76px 78px 1fr !important;
+    gap:8px !important;
+  }
+  .grade-ring{
+    width:78px !important;
+    height:78px !important;
+  }
+  .grade-ring-card .m-label{
+    margin-bottom:-20px;
+    font-size:10px;
+  }
+  .grade-ring-text .score-part{
+    font-size:17px !important;
+  }
+  .grade-ring-text .grade-explain{
+    font-size:11px;
+  }
+  .metric-card{
+    min-height:125px !important;
+    padding:14px !important;
+  }
+  .m-val{
+    font-size:21px !important;
+  }
+  .hero-card,.card,.insight-card{
+    padding:16px !important;
+    border-radius:14px !important;
+  }
+  .hv{font-size:27px !important;}
+  .activity-row{
+    grid-template-columns:1fr .7fr .6fr .8fr !important;
+    gap:6px !important;
+  }
+  .activity-row.activity-head{font-size:9px !important;}
+  .activity-date,.activity-score,.activity-change{font-size:11px !important;}
+  .composition-legend{
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .dash-nav-btn{
+    min-width:64px;
+  }
+}
+
+/* Tiny phones: never allow charts/cards to create horizontal scrolling */
+@media (max-width:390px){
+  .grade-ring-card{
+    grid-template-columns:70px 1fr !important;
+  }
+  .grade-ring-card .grade-ring-wrap{
+    grid-row:2;
+  }
+  .grade-ring-text{
+    grid-column:2;
+    grid-row:2;
+  }
+  .grade-ring-card .m-label{
+    grid-column:1/-1;
+    margin-bottom:-8px;
+  }
+  #panel-overview > .metrics-row:first-child{
+    grid-template-columns:1fr !important;
+  }
+  .grade-ring-card{
+    grid-column:1 !important;
+  }
+  .content-header-right{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .content-header-right .btn{
+    width:100%;
+  }
+}
+
+</style>
 </head>
 <body>
 <script>
