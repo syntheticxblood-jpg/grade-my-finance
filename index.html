@@ -2341,6 +2341,83 @@ header.site .pro-cta{
 }
 
 </style>
+<style>
+
+/* --- Account name + dropdown visibility fix --- */
+header.site .hdr-right .icon-btn{
+  background:#fff !important;
+  color:#173b34 !important;
+  border-color:#d7ddd8 !important;
+}
+header.site .hdr-right .settings-wrap .icon-btn svg{
+  color:#173b34 !important;
+}
+header.site #accountBtn{
+  background:#fff !important;
+  color:#111f1b !important;
+  border:1px solid #d5ddd8 !important;
+  box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+header.site #accountNameLabel{
+  color:#111f1b !important;
+  -webkit-text-fill-color:#111f1b !important;
+  opacity:1 !important;
+}
+header.site #accountBtn > svg{
+  color:#48645d !important;
+}
+header.site #accountMenu{
+  display:none;
+  min-width:250px !important;
+  background:#ffffff !important;
+  color:#172923 !important;
+  border:1px solid #d7e0dc !important;
+  box-shadow:0 18px 45px rgba(8,48,42,.20) !important;
+  border-radius:14px !important;
+  padding:8px !important;
+  z-index:100 !important;
+}
+header.site #accountMenu.open{
+  display:block !important;
+}
+header.site #accountMenu .settings-item{
+  color:#172923 !important;
+  background:transparent !important;
+  -webkit-text-fill-color:#172923 !important;
+}
+header.site #accountMenu .settings-item:hover{
+  background:#edf6f2 !important;
+}
+header.site #accountMenu #accountMenuName{
+  color:#12251f !important;
+  -webkit-text-fill-color:#12251f !important;
+}
+header.site #accountMenu #accountMenuEmail{
+  color:#667a73 !important;
+  -webkit-text-fill-color:#667a73 !important;
+}
+header.site #accountMenu .settings-item svg{
+  color:#365b50 !important;
+}
+header.site #accountMenu #signOutBtn{
+  color:#8b3d3d !important;
+}
+header.site #accountMenu #signOutBtn svg{
+  color:#8b3d3d !important;
+}
+
+/* Keep the account pill usable on small screens */
+@media (max-width:640px){
+  header.site #accountNameLabel{
+    max-width:82px !important;
+  }
+  header.site #accountMenu{
+    min-width:230px !important;
+    right:0 !important;
+  }
+}
+
+</style>
 </head>
 <body>
 <script>try{ if(localStorage.getItem("gmf_pro")==="true"){ document.body.classList.add("is-pro"); } }catch(e){}</script>
