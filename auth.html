@@ -349,6 +349,12 @@
   const GMF_PAGE_LOAD_TIME = Date.now();
   const APPS_SCRIPT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec';
 
+  // Paste your Discord webhook URL here to get an instant, independent
+  // notification for every new signup — this doesn't touch Gmail's daily
+  // send quota at all, so it keeps working even if the Apps Script email
+  // gets rate-limited. Leave blank to skip.
+  const DISCORD_SIGNUP_WEBHOOK = '';
+
   function notifyNewSignup(email, name){
     var websiteEl = document.getElementById('su-website');
     fetch(APPS_SCRIPT_ENDPOINT, {
@@ -362,6 +368,16 @@
         t: Date.now() - GMF_PAGE_LOAD_TIME
       })
     }).catch(function(){});
+
+    if(DISCORD_SIGNUP_WEBHOOK){
+      fetch(DISCORD_SIGNUP_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: '🎉 New signup: **' + (name || 'Unknown') + '** — ' + email
+        })
+      }).catch(function(){});
+    }
   }
 
   window.switchTab = function(tab){
