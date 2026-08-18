@@ -1764,6 +1764,13 @@ body.is-pro .ad-slot{ display:none !important }
 </head>
 <body>
 <script>try{ if(localStorage.getItem("gmf_pro")==="true"){ document.body.classList.add("is-pro"); } }catch(e){}</script>
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  window.gmfSupabase = createClient(
+    'https://pagqrjbsxcpfnpdbeanj.supabase.co',
+    'sb_publishable_ANjKwMyMxNUtJ0YX_bAkFw_T0Q-yF1A'
+  );
+</script>
 <script>try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.dataset.theme="light"; } }catch(e){}</script>
 
 <header class="site">
@@ -3973,6 +3980,38 @@ function saveHistory(entry){
   localStorage.setItem(HISTORY_KEY, JSON.stringify(arr));
 }
 function getHistory(){ try{ return JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]'); }catch(_){ return []; } }
+
+// Signed-in free users get one saved report in the cloud (Pro stays
+// local-only, matching the existing Pro dashboard design).
+function saveCloudReportIfEligible(v, cats){
+  if(!window.gmfSupabase) return;
+  if(document.body.classList.contains('is-pro')) return;
+  window.gmfSupabase.auth.getSession().then(function(res){
+    var session = res.data && res.data.session;
+    if(!session) return;
+    window.gmfSupabase.from('financial_profiles').upsert({
+      user_id: session.user.id,
+      monthly_income: v.income,
+      monthly_expenses: v.expenses,
+      total_debt: v.liabs,
+      total_savings: v.cash,
+      total_investments: v.retire + v.brokerage + v.crypto,
+      emergency_fund: v.cash,
+      age: v.age,
+      overall_score: Math.round(cats.overall.score),
+      overall_grade: cats.overall.letter,
+      category_scores: {
+        savings: cats.components[0].letter,
+        emergencyFund: cats.components[1].letter,
+        debt: cats.components[2].letter,
+        netWorth: cats.components[3].letter,
+        income: cats.components[4].letter
+      }
+    }, { onConflict: 'user_id' }).then(function(r){
+      if(r.error) console.warn('Cloud save failed:', r.error);
+    });
+  });
+}
 
 /* ================= STREAKS & MILESTONES ================= */
 // Uses an all-time counter and best-score record, separate from the
@@ -6560,6 +6599,7 @@ function openReport(v,cats){
     return match ? { key: match.key, tip: match.tip } : null;
   })();
   saveHistory({ ts: Date.now(), score: cats.overall.score, net: v.net, annualIncome: v.annualIncome, monthlyExpenses: v.expenses, savingsRate: v.saveRate, totalDebt: v.liabs, cash: v.cash, retire: v.retire, brokerage: v.brokerage, crypto: v.crypto, weakKey: weakestForHistory ? weakestForHistory.key : null, weakTip: weakestForHistory ? weakestForHistory.tip : null });
+  saveCloudReportIfEligible(v, cats);
   logGradeCompletion(cats.overall.letter.split(" ")[0], cats.overall.score);
   var checkinResult = recordCheckin(cats.overall.score);
   var streakCount = computeImprovementStreak(hist, cats.overall.score);
