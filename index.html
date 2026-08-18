@@ -919,6 +919,17 @@ section.block{ padding:76px 0 }
   position:relative; z-index:2; font-family:var(--font-serif); font-weight:700; font-size:92px; line-height:1; color:var(--rc-grad-2);
 }
 .rc-grade .rc-grade-label{ display:none } /* superseded by the "Financial Grade" section label above the hero */
+
+/* Tier colors: the ring and letter are neutral teal/gold by default (set
+   via --rc-grad-1/2/3 above), but a bad grade should visibly read as bad.
+   JS adds one of these classes (plus grade-f for an F specifically) to
+   #rcGrade alongside the score reveal - see openReport(). */
+.rc-grade.good{ --rc-grad-1:#2E9C81; --rc-grad-2:#4FBF9F; --rc-grad-3:#22C55E; }
+.rc-grade.mid{ --rc-grad-1:#C9911F; --rc-grad-2:#F5B942; --rc-grad-3:#F5B942; }
+.rc-grade.bad{ --rc-grad-1:#8A2F2F; --rc-grad-2:#C1493D; --rc-grad-3:#C1493D; }
+.rc-grade.grade-f{ --rc-grad-1:#B91C1C; --rc-grad-2:#EF4444; --rc-grad-3:#EF4444; }
+.rc-grade.grade-f .rc-grade-letter{ color:#EF4444; }
+
 .rc-grade.pop{ animation:stampPress .5s cubic-bezier(.3,1.2,.4,1) }
 @keyframes stampPress{ 0%{ transform:scale(.85); opacity:0 } 60%{ transform:scale(1.03); opacity:1 } 100%{ transform:scale(1) } }
 .ink-ripple{
@@ -7068,7 +7079,8 @@ function openReport(v,cats){
   var letterClean = cats.overall.letter.split(" ")[0];
   rcGrade.className = "rc-grade " + (
     ["A+","A","A-","B+"].includes(letterClean) ? "good" :
-    (["B","B-","C+","C","C-"].includes(letterClean) ? "mid" : "bad")
+    (["B","B-","C+","C","C-"].includes(letterClean) ? "mid" :
+    (letterClean === "F" ? "bad grade-f" : "bad"))
   );
   var targetPct = Math.max(0, Math.min(100, cats.overall.score));
   animateRingFill(rcGrade, targetPct);
