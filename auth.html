@@ -513,7 +513,9 @@
     }
 
     if (data && data.session) {
-      window.location.href = 'dashboard.html';
+      // First-time signups land on the homepage, not the dashboard -
+      // dashboard.html is still where returning users go after sign in.
+      window.location.href = 'index.html';
     } else {
       switchTab('signin');
       showBanner('Account created! Check your email to confirm before signing in.', 'success');
