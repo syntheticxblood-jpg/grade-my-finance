@@ -2438,6 +2438,22 @@ header.site #accountMenu #signOutBtn svg{
   }
 }
 
+
+/* ---------- Product polish: action-plan card ---------- */
+.rc-90day-card{margin-top:16px;padding:20px;border:1px solid rgba(46,156,129,.24);border-radius:16px;background:radial-gradient(circle at 90% 0%,rgba(245,185,66,.10),transparent 35%),linear-gradient(135deg,rgba(46,156,129,.08),rgba(255,255,255,.72))}
+.rc-90day-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:15px}
+.rc-90day-head h3{font-size:18px;margin-top:4px}
+.rc-90day-badge{font-family:var(--font-mono);font-size:10px;font-weight:800;letter-spacing:.08em;padding:5px 8px;border-radius:999px;background:var(--brand-soft);color:var(--brand);border:1px solid rgba(46,156,129,.22)}
+.rc-90day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rc-90day-step{padding:14px;border:1px solid var(--line);background:rgba(255,255,255,.82);border-radius:12px}
+.rc-90day-step .n{font-family:var(--font-mono);font-size:10px;color:var(--brand);letter-spacing:.08em;text-transform:uppercase}
+.rc-90day-step b{display:block;font-size:13px;margin:6px 0 4px}
+.rc-90day-step span{display:block;font-size:12px;color:var(--muted);line-height:1.45}
+.rc-summary-free .pro-blur-content{filter:none!important;opacity:1!important}
+.rc-summary-free .pro-blur-overlay{display:none!important}
+.field input:invalid{border-color:rgba(193,73,61,.55)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(46,156,129,.28);outline-offset:2px}
+@media(max-width:720px){.rc-90day-grid{grid-template-columns:1fr}.rc-90day-card{padding:16px}}
 </style>
 </head>
 <body>
@@ -2860,7 +2876,7 @@ header.site #accountMenu #signOutBtn svg{
           <div class="pdm-stat-row">
             <div class="pdm-stat"><span class="pdm-stat-label">Net Worth</span><span class="pdm-stat-num">$187,245</span><span class="pdm-stat-trend up">↑ 8.4% this year</span></div>
             <div class="pdm-stat"><span class="pdm-stat-label">Savings Rate</span><span class="pdm-stat-num">22%</span><div class="pdm-progress"><div style="width:74%"></div></div></div>
-            <div class="pdm-stat"><span class="pdm-stat-label">Debt-to-Income</span><span class="pdm-stat-num">18%</span><div class="pdm-progress"><div style="width:24%"></div></div></div>
+            <div class="pdm-stat"><span class="pdm-stat-label">Debt Load</span><span class="pdm-stat-num">18%</span><div class="pdm-progress"><div style="width:24%"></div></div></div>
           </div>
         </div>
       </div>
@@ -3082,7 +3098,7 @@ header.site #accountMenu #signOutBtn svg{
             <div class="ov-key-metrics" id="ovKeyMetrics">
               <div class="ov-metric-chip"><span class="ov-metric-label">Net Worth</span><span class="ov-metric-val" id="ovMetricNW">—</span></div>
               <div class="ov-metric-chip"><span class="ov-metric-label">Savings Rate</span><span class="ov-metric-val" id="ovMetricSR">—</span></div>
-              <div class="ov-metric-chip"><span class="ov-metric-label">Debt-to-Income</span><span class="ov-metric-val" id="ovMetricDTI">—</span></div>
+              <div class="ov-metric-chip"><span class="ov-metric-label">Debt Load</span><span class="ov-metric-val" id="ovMetricDTI">—</span></div>
             </div>
           </div>
         </div>
@@ -3101,12 +3117,12 @@ header.site #accountMenu #signOutBtn svg{
             <svg class="rc-spark-chart" id="rcSparkSave" viewBox="0 0 120 36" preserveAspectRatio="none"></svg>
           </div>
           <div class="rc-spark-card">
-            <span class="rc-spark-label">Debt-to-Income</span>
+            <span class="rc-spark-label">Debt Load</span>
             <svg class="rc-spark-chart" id="rcSparkDti" viewBox="0 0 120 36" preserveAspectRatio="none"></svg>
           </div>
         </div>
 
-        <div class="pro-blur-section" style="margin-top:12px;min-height:130px">
+        <div class="pro-blur-section rc-summary-free" style="margin-top:12px;min-height:130px">
           <div class="pro-blur-content">
             <div class="card rc-summary-card" style="padding:14px 18px">
               <div class="rc-summary-text">
@@ -3177,6 +3193,14 @@ header.site #accountMenu #signOutBtn svg{
               <a href="mailto:grademyfinance@gmail.com">Help Center <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
             </div>
           </div>
+        </div>
+
+        <div class="rc-90day-card" id="rc90DayCard">
+          <div class="rc-90day-head">
+            <div><span class="rc-bottom-label">Your 90-Day Game Plan</span><h3>Three moves that can improve your grade</h3></div>
+            <span class="rc-90day-badge">FREE</span>
+          </div>
+          <div class="rc-90day-grid" id="rc90DayGrid"></div>
         </div>
 
         <div class="rc-social-row">
@@ -4096,7 +4120,7 @@ header.site #accountMenu #signOutBtn svg{
 <section class="block homepage-secondary" style="padding-top:0" id="faq">
   <div class="container" style="max-width:820px">
     <div class="block-head"><h2>FAQ & disclaimer</h2></div>
-    <details class="faq-item"><summary>Do you store my financial data?</summary><p>Your income, expenses, assets, and debts are entered and calculated entirely in your browser — we never receive or see your actual financial figures. Your inputs are automatically saved to your own device's local storage (not sent to us) so they're there next time you open the site. When you complete a grade, we do log your letter grade and numeric score (not your financial details) to power our public counter of report cards graded. Full details in our <a href="privacy-policy.html">Privacy Policy</a>.</p></details>
+    <details class="faq-item"><summary>Do you store my financial data?</summary><p>If you are signed out, your calculator inputs stay on your device in local storage. If you are signed in, Grade My Finance can save a financial profile to your account so your dashboard can persist your report. You can use the calculator without saving a cloud profile. When you complete a grade, we do log your letter grade and numeric score (not your financial details) to power our public counter of report cards graded. Full details in our <a href="privacy-policy.html">Privacy Policy</a>.</p></details>
     <details class="faq-item"><summary>Is this financial advice?</summary><p>No. Grade My Finance is for educational purposes only and is not a substitute for professional financial advice. Always do your own research or consult a licensed advisor.</p></details>
     <details class="faq-item"><summary>How is my grade calculated?</summary><p>We use weighted factors: age-based net worth, income strength, savings rate, emergency fund size, and non-mortgage debt levels. Scores are benchmarks, not guarantees. See the methodology in your report card for exact weights.</p></details>
   </div>
@@ -4115,9 +4139,9 @@ header.site #accountMenu #signOutBtn svg{
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "Do you store my financial data?", "acceptedAnswer": { "@type": "Answer", "text": "Your income, expenses, assets, and debts are entered and calculated entirely in your browser and are never received by our servers. Inputs are saved to your own device's local storage. We do log your letter grade and numeric score (not financial details) to power a public counter." } },
+    { "@type": "Question", "name": "Do you store my financial data?", "acceptedAnswer": { "@type": "Answer", "text": "When you are signed out, inputs are calculated in your browser and saved locally. When you are signed in, the site may save the financial profile fields needed for your dashboard. We do not publish your financial details." } },
     { "@type": "Question", "name": "Is this financial advice?", "acceptedAnswer": { "@type": "Answer", "text": "No. Grade My Finance is for educational purposes only and is not a substitute for professional financial advice." } },
-    { "@type": "Question", "name": "How is my grade calculated?", "acceptedAnswer": { "@type": "Answer", "text": "We use weighted factors: income strength (25%), savings rate (20%), non-mortgage debt (20%), age-based net worth (20%), and emergency fund (15%). Within the debt factor, credit cards count most heavily, auto loans moderately, and student loans lightest. Scores are benchmarks, not guarantees." } }
+    { "@type": "Question", "name": "How is my grade calculated?", "acceptedAnswer": { "@type": "Answer", "text": "We use weighted factors: income strength (25%), savings rate (20%), non-mortgage debt burden (20%), age-based net worth (20%), and emergency fund (15%). The debt factor uses outstanding non-mortgage balances relative to annual income; it is a debt-burden proxy, not a traditional DTI calculation because the calculator does not collect monthly debt payments. Scores are benchmarks, not guarantees." } }
   ]
 }
 </script>
@@ -4409,13 +4433,25 @@ if(currencySelect){
 
 var ids=["age","income","expenses","home","retire","brokerage","car","hsa","cash","crypto","mortgage","student","auto","cc","otherDebt"];
 var els={}; ids.forEach(function(id){ els[id]=$(id); });
-function val(id){ var e=els[id]; return e && e.value!=="" ? Number(e.value) : 0; }
+function val(id){ var e=els[id]; return e && e.value!=="" ? Math.max(0, Number(e.value)||0) : 0; }
+function sanitizeField(id){
+  var e=els[id]; if(!e) return;
+  var n=Number(String(e.value||"").replace(/[^\d.-]/g,""));
+  if(!Number.isFinite(n) || n<0) n=0;
+  if(id==="age") n=Math.min(100,Math.max(18,n));
+  e.value = n ? String(Math.round(n)) : "0";
+}
 ids.forEach(function(id){
   var e=els[id];
-  e.addEventListener("input", function(){ e.value=e.value.replace(/[^\d.-]/g,""); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); });
-  e.addEventListener("blur", function(){ if(e.value!=="") e.value=String(Math.round(+e.value)); updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); });
+  if(!e) return;
+  e.addEventListener("input", function(){
+    e.value=e.value.replace(/[^\d.-]/g,"");
+    var n=Number(e.value); if(Number.isFinite(n) && n<0) e.value="0";
+    localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); updateHints();
+  });
+  e.addEventListener("blur", function(){ sanitizeField(id); updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); });
 });
-function currentRaw(){ var obj={}; ids.forEach(function(id){ obj[id]=Number(els[id]?els[id].value:0); }); return obj; }
+function currentRaw(){ var obj={}; ids.forEach(function(id){ obj[id]=val(id); }); return obj; }
 try{
   var saved = JSON.parse(localStorage.getItem("gmf_autosave")||"null");
   if(saved){ Object.keys(saved).forEach(function(id){ if(els[id]) els[id].value = saved[id]; }); }
@@ -4424,36 +4460,31 @@ try{
 /* ===== Derive scoring inputs from ANY raw value set (fixes projection preview bug) ===== */
 function deriveFrom(raw){
   var v={};
-  ids.forEach(function(id){ v[id] = raw[id] || 0; });
+  ids.forEach(function(id){ v[id] = Math.max(0, Number(raw[id])||0); });
+  v.age = Math.min(100, Math.max(18, v.age || 30));
   v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash+v.crypto;
   v.liabs=v.mortgage+v.student+v.auto+v.cc+v.otherDebt;
   v.net=v.assets-v.liabs;
   v.annualIncome=v.income*12;
   v.annualSpend=v.expenses*12;
   v.baseline=Math.max(v.annualSpend, 30000);
-  var denomSav=Math.max(v.income, v.expenses, 2000);
-  v.saveRate=denomSav>0 ? Math.max(0, v.income - v.expenses)/denomSav : 0;
-  // Use a realistic monthly-spend denominator even if "expenses" was left blank,
-  // so a high earner with real savings doesn't get zeroed out on this factor.
-  var efDenom = Math.max(v.expenses, v.income*0.3, 500);
-  v.efMonths = v.cash/efDenom;
+  v.monthlySurplus=v.income-v.expenses;
+  v.saveRate=v.income>0 ? clamp(v.monthlySurplus/v.income, 0, 1) : 0;
+  v.efMonths=v.expenses>0 ? v.cash/v.expenses : 0;
   v.nonMortDebt=v.student+v.auto+v.cc+v.otherDebt;
-  v.dtiNonMort = v.baseline > 0 ? v.nonMortDebt / v.baseline : 0; // raw, for display
-  // Scoring uses a weighted version: credit cards are the debt that actually
-  // hurts financial health most (high interest, revolving); personal loans/
-  // other debt are moderate-high; auto loans are moderate; student loans are
-  // weighted lightest since they're typically fixed-rate and often treated
-  // as more "expected" at this life stage.
+  // This is a debt-balance burden, not traditional DTI. True DTI requires monthly debt payments.
+  v.debtBalanceRatio=v.annualIncome>0 ? v.nonMortDebt/v.annualIncome : 1;
   v.debtWeighted = v.cc*1.5 + v.otherDebt*1.2 + v.auto*1.0 + v.student*0.5;
-  v.dtiWeighted = v.baseline > 0 ? v.debtWeighted / v.baseline : 0;
-  v.nwTargetMultiple = targetNW(v.age || 30);
-  v.nwIncomeBase = Math.max(v.annualIncome, v.baseline);
-  v.nwTargetAmount = v.nwTargetMultiple * v.nwIncomeBase;
-  if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) v.nwProgress = 1;
-  else v.nwProgress = v.nwTargetAmount > 0 ? v.net / v.nwTargetAmount : 0;
-  var ratio = v.annualIncome / incomeBenchmark(v.age || 30);
-  v.incomeScore = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2), 0, 1);
-  v.incomeLetter = incomeLetterFromRatio(ratio);
+  v.dtiWeighted = v.annualIncome>0 ? v.debtWeighted/v.annualIncome : 1;
+  v.dtiNonMort = v.debtBalanceRatio;
+  v.nwTargetMultiple=targetNW(v.age);
+  v.nwIncomeBase=Math.max(v.annualIncome, v.baseline);
+  v.nwTargetAmount=v.nwTargetMultiple*v.nwIncomeBase;
+  if(v.net>=retirementSafe || v.net>=v.baseline/withdrawalRate) v.nwProgress=1;
+  else v.nwProgress=v.nwTargetAmount>0 ? v.net/v.nwTargetAmount : 0;
+  var ratio=v.annualIncome/incomeBenchmark(v.age);
+  v.incomeScore=clamp(0.5+0.5*Math.tanh((ratio-1)*1.2),0,1);
+  v.incomeLetter=incomeLetterFromRatio(ratio);
   return v;
 }
 function values(){ return deriveFrom(currentRaw()); }
@@ -4513,9 +4544,19 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
     __track('calculator_step_view', {step: current});
   }
 
+  function validateCurrentStep(){
+    var raw=currentRaw();
+    if(current===1){
+      if(raw.age<18 || raw.age>100){ toastMsg("Enter an age between 18 and 100."); return false; }
+      if(raw.income<=0){ toastMsg("Enter your monthly take-home income."); return false; }
+    }
+    if(current===2 && raw.expenses<=0){ toastMsg("Enter your average monthly expenses."); return false; }
+    return true;
+  }
+
   steps.forEach(function(stepEl){
     stepEl.querySelectorAll("[data-next]").forEach(function(btn){
-      btn.addEventListener("click", function(){ show(current+1); });
+      btn.addEventListener("click", function(){ if(validateCurrentStep()) show(current+1); });
     });
     stepEl.querySelectorAll("[data-prev]").forEach(function(btn){
       btn.addEventListener("click", function(){ show(current-1); });
@@ -4554,7 +4595,7 @@ function categoryScores(v){
     components: [
       { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home", letter:letterFrom01(sSave), tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(Math.max(0, v.income*0.25 - (v.income - v.expenses)))+"/mo" : "Keeping pace with your income — nice work." },
       { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months", letter:letterFrom01(sEF), tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
-      { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of annual expenses", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add ~"+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt load." },
+      { key:"Debt load (non-mort.)", sub:"Debt balance vs annual income", val:Math.round(v.debtBalanceRatio*100)+"% of annual income", letter:letterFrom01(sDebt), tip: v.debtBalanceRatio>0.25 ? "Focus extra payments on high-interest debt first." : "Healthy debt balance relative to income." },
       { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× annual income", val:Math.round(clamp(v.nwProgress,0,1)*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+" to target." : "On track or ahead." },
       { key:"Income strength", sub:"vs age-adjusted benchmark", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: v.annualIncome < incomeBenchmark(v.age||30)*1.15 ? "Plan skill/raise to reach "+money(Math.round(incomeBenchmark(v.age||30)*1.15))+"+." : "Automate investing + match." }
     ],
@@ -4611,7 +4652,7 @@ function buildPath(v,cats){
   if(goal===null){ return [{txt:"You're already at A+. Keep compounding and maintaining your buffers!", pts:0}]; }
   if(v.saveRate < 0.25){
     var dSave=(1 - map01(v.saveRate,0,0.25))*0.20*100;
-    var need = Math.max(0, v.income*0.25 - (v.income - v.expenses));
+    var need = Math.max(0, v.income*0.25 - Math.max(0, v.monthlySurplus));
     push("Boost savings to 25% (set aside about "+money(roundNice(need))+"/mo).", dSave);
   }
   if(v.efMonths < 6){
@@ -4622,7 +4663,7 @@ function buildPath(v,cats){
   if(v.dtiWeighted > 0.30){
     var sDebtNow = clamp(1 - v.dtiWeighted/0.60,0,1), sDebtGoal = clamp(1 - 0.30/0.60,0,1);
     var dDebt=(sDebtGoal - sDebtNow)*0.20*100;
-    var targetWeighted = Math.round(v.baseline*0.30), weightedPaydown = Math.max(0, v.debtWeighted - targetWeighted);
+    var targetWeighted = Math.round(v.annualIncome*0.30), weightedPaydown = Math.max(0, v.debtWeighted - targetWeighted);
     // Recommend paying down whichever counts most against the score first: cards, then auto, then student.
     var debtTip;
     if(v.cc > 0) debtTip = "Pay down credit cards first (they weigh heaviest on this score) — reduce about "+money(roundNice(Math.min(v.cc, weightedPaydown/1.5)))+".";
@@ -5970,9 +6011,9 @@ function renderAssetAllocation(v){
 }
 
 /* ================= OVERVIEW SPARKLINE CARDS =================
-   Draws real trend lines from actual check-in history - Debt-to-Income
+   Draws real trend lines from actual check-in history - Debt Load
    is computed per entry using the exact same formula already used for
-   the ovMetricDTI chip (totalDebt/annualIncome), so the trend agrees
+   the ovMetricDTI chip (non-mortgage debt balance / annual income), so the trend agrees
    with the single current-value number shown elsewhere, not a
    different, newly-invented calculation. */
 function drawSparkline(svgEl, values, color){
@@ -7120,6 +7161,17 @@ function openReport(v,cats){
   var minIdx=0; for(var i=1;i<items.length;i++){ if(items[i].score<items[minIdx].score) minIdx=i; }
   items = items.map(function(it,idx){ it.isWeak = (idx===minIdx); return it; });
   hbars(weakWrap, items);
+
+  (function render90DayPlan(){
+    var grid=$("rc90DayGrid"); if(!grid) return;
+    var plan=buildPath(v,cats).filter(function(x){ return x && x.txt; }).slice(0,3);
+    if(!plan.length) plan=[{txt:"Keep your current savings and debt habits consistent.",pts:0}];
+    var phases=["Days 1–30","Days 31–60","Days 61–90"];
+    while(plan.length<3) plan.push({txt:"Recheck your numbers and keep the strongest habit going.",pts:0});
+    grid.innerHTML=plan.map(function(item,i){
+      return '<div class="rc-90day-step"><span class="n">'+phases[i]+'</span><b>'+(i===0?"Start here":i===1?"Build momentum":"Recheck & raise the bar")+'</b><span>'+item.txt+'</span></div>';
+    }).join("");
+  })();
   var weakLinkForSubscribe = items[minIdx];
   var weakestPillEl = $("weakestLinkPill"), weakestPillTextEl = $("weakestLinkPillText");
   if(weakestPillEl && weakestPillTextEl){ weakestPillTextEl.textContent = weakLinkForSubscribe.label; }
@@ -7167,7 +7219,7 @@ function openReport(v,cats){
     }
     if($("ovMetricNW")) $("ovMetricNW").textContent = money(v.net);
     if($("ovMetricSR")) $("ovMetricSR").textContent = Math.round(v.saveRate*100)+"%";
-    if($("ovMetricDTI")) $("ovMetricDTI").textContent = v.annualIncome > 0 ? Math.round((v.liabs/v.annualIncome)*100)+"%" : "—";
+    if($("ovMetricDTI")) $("ovMetricDTI").textContent = v.annualIncome > 0 ? Math.round((v.nonMortDebt/v.annualIncome)*100)+"%" : "—";
 
     // Deltas vs. the previous check-in. Older entries recorded before this
     // update won't have these per-field values saved, only score/net - so
@@ -7652,6 +7704,10 @@ $("calcAgain").addEventListener("click",function(){ $("reportModal").classList.r
 
 function gradeNow(){
   __track('click_get_report_card', {location: 'main'});
+  var raw=currentRaw();
+  if(raw.age<18 || raw.age>100){ toastMsg("Enter an age between 18 and 100."); return; }
+  if(raw.income<=0){ toastMsg("Enter your monthly take-home income."); return; }
+  if(raw.expenses<=0){ toastMsg("Enter your average monthly expenses."); return; }
   runWithLoader(function(){ var v=values(); var cats=categoryScores(v); openReport(v,cats); });
 }
 function openCalcModal(location){
