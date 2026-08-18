@@ -357,9 +357,14 @@
 
   function notifyNewSignup(email, name){
     var websiteEl = document.getElementById('su-website');
+    // text/plain, not application/json - avoids a CORS preflight against
+    // Apps Script (Apps Script doesn't handle preflight requests, so a
+    // JSON content-type here made the browser silently block the whole
+    // request before it ever reached the script). The body is still real
+    // JSON text; doPost parses it the same way either way.
     fetch(APPS_SCRIPT_ENDPOINT, {
       method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         email: email,
         source: 'grademyfinance.com/signup',
