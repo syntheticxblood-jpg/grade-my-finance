@@ -314,6 +314,7 @@
         <h2 class="form-title">Create your account</h2>
         <p class="form-sub">Takes under a minute. No credit card needed.</p>
         <form id="signup-form" novalidate>
+          <input type="text" name="website" id="su-website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
           <div class="field">
             <label for="su-name">Full name</label>
             <input type="text" id="su-name" autocomplete="name" required>
@@ -344,6 +345,24 @@
   const SUPABASE_URL = 'https://pagqrjbsxcpfnpdbeanj.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_ANjKwMyMxNUtJ0YX_bAkFw_T0Q-yF1A';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const GMF_PAGE_LOAD_TIME = Date.now();
+  const APPS_SCRIPT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec';
+
+  function notifyNewSignup(email, name){
+    var websiteEl = document.getElementById('su-website');
+    fetch(APPS_SCRIPT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        source: 'grademyfinance.com/signup',
+        full_name: name,
+        website: websiteEl ? websiteEl.value : '',
+        t: Date.now() - GMF_PAGE_LOAD_TIME
+      })
+    }).catch(function(){});
+  }
 
   window.switchTab = function(tab){
     document.getElementById('tab-signin').classList.toggle('active', tab==='signin');
@@ -425,6 +444,8 @@
       showBanner(error.message, 'error');
       return;
     }
+
+    notifyNewSignup(email, name);
 
     if (data.session) {
       window.location.href = 'dashboard.html';
