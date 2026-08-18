@@ -10,16 +10,10 @@
 <link rel="canonical" href="https://grademyfinance.com/">
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  try {
-    // Only redirect on the live domain — avoids a dead-link redirect when
-    // previewing or testing this file standalone (no welcome.html next to it).
-    var onLiveDomain = /(^|\.)grademyfinance\.com$/.test(window.location.hostname);
-    const hasEmail = localStorage.getItem("submittedEmail") === "true";
-    const skipped = sessionStorage.getItem("skipWelcomeSession") === "true";
-    if (onLiveDomain && !hasEmail && !skipped) window.location.assign("welcome.html");
-  } catch (e) { console.warn("Redirect check failed:", e); }
-});
+// Hide the page instantly while we check auth state below (module scripts
+// run after the DOM parses, so without this there'd be a flash of the
+// full page before an unauthenticated visitor gets sent to auth.html).
+document.documentElement.style.visibility = "hidden";
 </script>
 
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -1766,10 +1760,75 @@ body.is-pro .ad-slot{ display:none !important }
 <script>try{ if(localStorage.getItem("gmf_pro")==="true"){ document.body.classList.add("is-pro"); } }catch(e){}</script>
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-  window.gmfSupabase = createClient(
+  var supabase = createClient(
     'https://pagqrjbsxcpfnpdbeanj.supabase.co',
     'sb_publishable_ANjKwMyMxNUtJ0YX_bAkFw_T0Q-yF1A'
   );
+  window.gmfSupabase = supabase;
+
+  function initialsFor(name){
+    var parts = (name||'').trim().split(/\s+/).filter(Boolean);
+    if(!parts.length) return '?';
+    if(parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length-1].charAt(0)).toUpperCase();
+  }
+
+  function wireAccountMenu(session){
+    var wrap = document.getElementById('accountWrap');
+    var btn = document.getElementById('accountBtn');
+    var menu = document.getElementById('accountMenu');
+    var avatarEl = document.getElementById('accountAvatar');
+    var nameLabelEl = document.getElementById('accountNameLabel');
+    var menuNameEl = document.getElementById('accountMenuName');
+    var menuEmailEl = document.getElementById('accountMenuEmail');
+    var signOutBtn = document.getElementById('signOutBtn');
+    if(!wrap) return;
+
+    var fullName = (session.user.user_metadata && session.user.user_metadata.full_name) || '';
+    var email = session.user.email || '';
+    var displayName = fullName || email.split('@')[0];
+
+    wrap.style.display = '';
+    avatarEl.textContent = initialsFor(fullName || email);
+    nameLabelEl.textContent = displayName;
+    menuNameEl.textContent = displayName;
+    menuEmailEl.textContent = email;
+
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var isOpen = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    document.addEventListener('click', function(e){
+      if(!menu.contains(e.target) && e.target !== btn){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+    menu.addEventListener('click', function(e){ e.stopPropagation(); });
+    signOutBtn.addEventListener('click', function(){
+      supabase.auth.signOut().then(function(){
+        window.location.href = 'auth.html';
+      });
+    });
+  }
+
+  (async function gateAuth(){
+    var onLiveDomain = /(^|\.)grademyfinance\.com$/.test(window.location.hostname);
+    try{
+      var res = await supabase.auth.getSession();
+      var session = res.data && res.data.session;
+      if(!session){
+        if(onLiveDomain){
+          window.location.replace('auth.html');
+          return; // stay hidden, we're navigating away
+        }
+      } else {
+        wireAccountMenu(session);
+      }
+    }catch(e){ console.warn('Auth gate check failed:', e); }
+    document.documentElement.style.visibility = '';
+  })();
 </script>
 <script>try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.dataset.theme="light"; } }catch(e){}</script>
 
@@ -1830,6 +1889,21 @@ body.is-pro .ad-slot{ display:none !important }
       </div>
       <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing"><span class="pro-star">★</span> Start Free Trial</a>
       <span class="btn sm pro-badge-filled pro-only-show" id="proPill" style="display:none">★ PRO</span>
+      <div class="settings-wrap" id="accountWrap" style="display:none">
+        <button class="icon-btn" id="accountBtn" aria-label="Account menu" aria-expanded="false" style="width:auto;padding:6px 12px 6px 6px;gap:8px;display:flex;align-items:center;border-radius:99px">
+          <span id="accountAvatar" style="width:26px;height:26px;border-radius:50%;background:var(--brand-soft);color:var(--brand-bright);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none">–</span>
+          <span id="accountNameLabel" style="font-size:13px;font-weight:600;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Account</span>
+        </button>
+        <div class="settings-menu" id="accountMenu" style="right:0;left:auto">
+          <div class="settings-item" style="cursor:default;flex-direction:column;align-items:flex-start;gap:2px;padding-bottom:10px;margin-bottom:4px;border-bottom:1px solid var(--line)">
+            <span style="font-weight:700;font-size:13px" id="accountMenuName">—</span>
+            <span style="font-size:11.5px;color:var(--muted)" id="accountMenuEmail">—</span>
+          </div>
+          <button class="settings-item" id="signOutBtn" type="button">
+            <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></span> Sign Out
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </header>
