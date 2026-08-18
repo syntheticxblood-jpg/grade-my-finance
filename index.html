@@ -51,15 +51,15 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
 
 <style>
 :root{
-  --bg:#FAFAF8; --bg-2:#F3F5F2;
-  --surface:#FFFFFF; --surface-2:#F5F6F4;
-  --line: #E4E7E3;
-  --text:#1C2B28; --muted:#5B6D68; --muted-2:#8B9A95;
+  --bg:#F5F3EA; --bg-2:#ECEBDF;
+  --surface:#FFFFFF; --surface-2:#F1F0E6;
+  --line: #DEDCCE;
+  --text:#1A2620; --muted:#4E5F58; --muted-2:#78877F;
   --gold:#D99A2B; --gold-soft: rgba(245,185,66,.16); --gold-bright:#F5B942;
   --brand:#2E9C81; --brand-soft:rgba(46,156,129,.12); --brand-bright:#4FBF9F; --brand-text:#FFFFFF;
   --good:#22C55E; --good-2:#16A34A; --mid:#F5B942; --bad:#C1493D;
   --radius:14px; --radius-lg:20px;
-  --shadow: 0 20px 50px rgba(28,43,40,.09);
+  --shadow: 0 20px 50px rgba(28,43,40,.1);
   --header-h:76px;
   --font-display:'Space Grotesk',system-ui,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji';
   --font-body:'Inter',system-ui,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji';
@@ -67,13 +67,13 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
   --font-serif:'Fraunces',serif;
 }
 :root[data-theme="light"]{
-  --bg:#FAFAF8; --bg-2:#F3F5F2;
-  --surface:#FFFFFF; --surface-2:#F5F6F4;
-  --line: #E4E7E3;
-  --text:#1C2B28; --muted:#5B6D68; --muted-2:#8B9A95;
+  --bg:#F5F3EA; --bg-2:#ECEBDF;
+  --surface:#FFFFFF; --surface-2:#F1F0E6;
+  --line: #DEDCCE;
+  --text:#1A2620; --muted:#4E5F58; --muted-2:#78877F;
   --brand:#2E9C81; --brand-soft:rgba(46,156,129,.12); --brand-bright:#4FBF9F; --brand-text:#FFFFFF;
   --good:#22C55E; --good-2:#16A34A; --mid:#F5B942; --bad:#C1493D;
-  --shadow: 0 20px 50px rgba(28,43,40,.09);
+  --shadow: 0 20px 50px rgba(28,43,40,.1);
 }
 *{box-sizing:border-box}
 /* Removes the ~300ms tap-delay mobile browsers impose on clickable
@@ -97,7 +97,7 @@ img,svg{display:block;max-width:100%}
 /* ---------- Header ---------- */
 header.site{
   position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:50;
-  background:rgba(250,250,248,.82); backdrop-filter:blur(14px); border-bottom:1px solid var(--line);
+  background:rgba(245,243,234,.85); backdrop-filter:blur(14px); border-bottom:1px solid var(--line);
 }
 :root[data-theme="light"] header.site{ background:rgba(247,246,243,.78) }
 .hdr-row{ height:100%; display:flex; align-items:center; gap:14px; }
@@ -651,15 +651,15 @@ section.block{ padding:76px 0 }
      the app's real teal/gold light palette instead of the old purple/dark
      one, so this modal now matches the rest of the site instead of being
      its own separate world. */
-  --bg-2:#F3F5F2; --surface:#FFFFFF; --surface-2:#F5F6F4;
-  --line: #E4E7E3; --text:#1C2B28; --muted:#5B6D68; --muted-2:#8B9A95;
+  --bg-2:#ECEBDF; --surface:#FFFFFF; --surface-2:#F1F0E6;
+  --line: #DEDCCE; --text:#1A2620; --muted:#4E5F58; --muted-2:#78877F;
   --gold:#D99A2B; --gold-bright:#F5B942; --gold-soft: rgba(245,185,66,.16);
   --good:#22C55E; --good-2:#16A34A; --bad:#C1493D; --mid:#F5B942;
   --rc-grad-1:#2E9C81; --rc-grad-2:#4FBF9F; --rc-grad-3:#F5B942;
   --font-mono:'IBM Plex Mono',monospace; --font-serif:'Fraunces',serif;
   background: var(--bg-2);
   border:1px solid var(--line);
-  box-shadow: 0 24px 60px rgba(28,43,40,.18);
+  box-shadow: 0 24px 60px rgba(28,43,40,.2);
   color:var(--text);
 }
 .sheet-main{
@@ -1832,7 +1832,7 @@ body.is-pro .ad-slot{ display:none !important }
       <a href="#how">How it Works</a>
       <a href="#pricing">Pricing</a>
       <a href="about.html">About</a>
-      <a href="blog/index.html">Blog</a>
+      <a href="dashboard.html">Dashboard</a>
     </nav>
     <div class="hdr-right">
       <div class="settings-wrap">
@@ -1888,6 +1888,9 @@ body.is-pro .ad-slot{ display:none !important }
             <span style="font-weight:700;font-size:13px" id="accountMenuName">—</span>
             <span style="font-size:11.5px;color:var(--muted)" id="accountMenuEmail">—</span>
           </div>
+          <a class="settings-item" href="dashboard.html">
+            <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></span> Dashboard
+          </a>
           <button class="settings-item" id="signOutBtn" type="button">
             <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></span> Sign Out
           </button>
