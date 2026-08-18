@@ -1085,6 +1085,68 @@ body{
 }
 
 </style>
+
+<style id="gmf-dashboard-mobile-fix">
+:root{--gmf-safe-top:env(safe-area-inset-top,0px);--gmf-safe-bottom:env(safe-area-inset-bottom,0px)}
+body{padding-bottom:var(--gmf-safe-bottom)}
+header.site{height:calc(var(--header-h) + var(--gmf-safe-top));padding-top:var(--gmf-safe-top)}
+.hdr-row{height:var(--header-h)}
+@media(max-width:900px){
+  .main-area{margin-left:0 !important}
+  .sidebar{display:none !important}
+  main{padding-top:18px !important;padding-bottom:calc(70px + var(--gmf-safe-bottom)) !important}
+  .content-header{padding-top:8px !important}
+  .grade-ring-card{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    grid-template-rows:auto auto auto !important;
+    justify-items:center !important;
+    text-align:center !important;
+    gap:10px !important;
+    padding:18px !important;
+  }
+  .grade-ring-card .m-label{
+    grid-column:1 !important;grid-row:1 !important;
+    width:100%;margin:0 !important;text-align:center;align-self:auto;
+  }
+  .grade-ring-card .grade-ring-wrap{
+    grid-column:1 !important;grid-row:2 !important;
+    position:relative !important;width:108px !important;height:108px !important;
+    margin:0 auto !important;display:block !important;
+  }
+  .grade-ring-card .grade-ring{width:108px !important;height:108px !important;display:block !important}
+  .grade-ring-card .grade-ring-center{
+    position:absolute !important;inset:0 !important;
+    display:flex !important;align-items:center !important;justify-content:center !important;
+    width:100% !important;height:100% !important;
+  }
+  .grade-ring-card .grade-ring-center .dash-grade-badge{
+    display:flex !important;align-items:center !important;justify-content:center !important;
+    width:auto !important;height:auto !important;
+    margin:0 !important;padding:0 !important;border:0 !important;background:none !important;
+    line-height:1 !important;text-align:center !important;
+    transform:none !important;
+  }
+  .grade-ring-card .grade-ring-text{
+    grid-column:1 !important;grid-row:3 !important;
+    width:100% !important;min-width:0 !important;text-align:center !important;
+  }
+  .grade-ring-text .score-part,.grade-ring-text .grade-explain{max-width:100%;text-align:center}
+}
+@media(max-width:600px){
+  .container{padding-left:14px !important;padding-right:14px !important}
+  .content-header{gap:10px !important}
+  .content-header-left{min-width:0}
+  .content-header-right{width:100%;justify-content:stretch !important}
+  .content-header-right .btn{width:100%;flex:1}
+  .dash-nav{margin-left:-14px;margin-right:-14px;padding-left:14px;padding-right:14px}
+  .grade-ring-card{min-height:0 !important;padding:16px !important}
+  .grade-ring-card .grade-ring-wrap,.grade-ring-card .grade-ring{width:104px !important;height:104px !important}
+}
+@media(max-width:390px){
+  .grade-ring-card .grade-ring-wrap,.grade-ring-card .grade-ring{width:96px !important;height:96px !important}
+}
+</style>
 </head>
 <body>
 <script>
