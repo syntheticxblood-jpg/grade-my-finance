@@ -420,9 +420,10 @@
     document.getElementById(errorId).classList.toggle('show', show);
   }
 
-  // Redirect if already signed in
+  // Redirect if already signed in - everyone lands on the homepage, not
+  // the dashboard (see SIGN IN handler below for why).
   supabase.auth.getSession().then(({ data: { session } }) => {
-    if (session) window.location.href = 'dashboard.html';
+    if (session) window.location.href = 'index.html';
   });
 
   // SIGN IN
@@ -449,7 +450,11 @@
         : error.message, 'error');
       return;
     }
-    window.location.href = 'dashboard.html';
+    // Every sign-in lands on the homepage, not the dashboard - people can
+    // navigate to the dashboard themselves once they're in. This used to
+    // send straight to dashboard.html on every login, not just the first
+    // one after signup.
+    window.location.href = 'index.html';
   });
 
   // SIGN UP
@@ -541,8 +546,8 @@
     }
 
     if (data && data.session) {
-      // First-time signups land on the homepage, not the dashboard -
-      // dashboard.html is still where returning users go after sign in.
+      // Everyone lands on the homepage after signing in/up, not the
+      // dashboard - see the SIGN IN handler above for the same rule.
       window.location.href = 'index.html';
     } else {
       switchTab('signin');
