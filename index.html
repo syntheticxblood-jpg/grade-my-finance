@@ -7963,7 +7963,333 @@ function saveCanvasAsImage(canvas, filename, shareTitle, shareText, trackLabel){
       var win = window.open();
       if(win){
         win.document.write(
-          '<html><head><title>Your Grade My Finance report card</title></head>' +
+          '<html><head><title>Your Grade My Finance report card</title>
+<style id="gmf-mobile-polish-v2">
+/* =========================================================
+   GRADE MY FINANCE — MOBILE POLISH PASS
+   Fixes:
+   1. iPhone/Android safe-area overlap
+   2. Report-card grade centering
+   3. Report-card mobile sizing/scrolling
+   4. Header/action controls on small screens
+   5. Homepage spacing and hero clipping
+   ========================================================= */
+
+/* Respect the device status/navigation areas in both browser and
+   installed/PWA mode. */
+:root{
+  --gmf-safe-top: env(safe-area-inset-top, 0px);
+  --gmf-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+body{
+  padding-top: calc(var(--header-h) + var(--gmf-safe-top));
+  padding-bottom: var(--gmf-safe-bottom);
+}
+
+header.site{
+  height: calc(var(--header-h) + var(--gmf-safe-top));
+  padding-top: var(--gmf-safe-top);
+}
+
+header.site .hdr-row{
+  height: var(--header-h);
+  min-height: var(--header-h);
+}
+
+/* Homepage: keep the first content comfortably below the mobile header. */
+.hero{
+  padding-top: 34px;
+}
+
+@media (max-width: 640px){
+  .container{
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .hero{
+    padding-top: 28px;
+    padding-bottom: 34px;
+  }
+
+  .hero h1{
+    font-size: clamp(40px, 12vw, 50px) !important;
+    line-height: 1.02;
+  }
+
+  .hero p.lede{
+    font-size: 16px;
+    line-height: 1.55;
+    margin-top: 18px;
+    margin-bottom: 24px;
+  }
+
+  .hero-cta{
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero-cta .btn{
+    width: 100%;
+  }
+
+  .hero-ring-wrap{
+    padding: 18px 0 4px;
+    margin-top: 8px;
+    transform:none;
+  }
+
+  .hero-ring-stage{
+    width: min(290px, 82vw);
+  }
+
+  .hero-trust-row{
+    margin-top: 22px;
+    gap: 12px;
+  }
+}
+
+/* Report modal: use the actual dynamic viewport and device safe areas.
+   This prevents the top of the sheet/header from disappearing behind
+   iOS browser/PWA chrome. */
+#reportModal{
+  padding:
+    var(--gmf-safe-top)
+    var(--gmf-safe-bottom)
+    var(--gmf-safe-bottom);
+}
+
+#reportModal .sheet{
+  width: min(1360px, calc(100vw - 20px));
+  height: min(92dvh, calc(100dvh - var(--gmf-safe-top) - var(--gmf-safe-bottom) - 20px));
+  max-height: none;
+  margin: 10px;
+}
+
+@media (max-width: 760px){
+  #reportModal{
+    padding: var(--gmf-safe-top) 0 var(--gmf-safe-bottom);
+  }
+
+  #reportModal .sheet{
+    width: 100%;
+    height: calc(100dvh - var(--gmf-safe-top) - var(--gmf-safe-bottom));
+    max-height: none;
+    margin: 0;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    padding: 0;
+  }
+
+  #reportModal .dash-tabs{
+    flex: 0 0 auto;
+    padding:
+      8px
+      8px
+      calc(8px + env(safe-area-inset-bottom, 0px));
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  #reportModal .sheet-main{
+    min-height: 0;
+    padding: 16px 16px 18px;
+  }
+
+  #reportModal .sheet-header{
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  #reportModal .rc-header-titles{
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  #reportModal .rc-header-title{
+    font-size: 18px;
+    line-height: 1.15;
+  }
+
+  #reportModal .rc-header-sub{
+    font-size: 11.5px;
+    line-height: 1.35;
+  }
+
+  #reportModal .rc-header-actions{
+    flex: 0 0 auto;
+    width: auto;
+    flex-wrap: nowrap;
+    gap: 5px;
+  }
+
+  #reportModal .rc-header-actions .xbtn{
+    flex: 0 0 auto;
+    min-width: 0;
+    padding: 7px 8px;
+    font-size: 11px;
+  }
+
+  #reportModal .dash-panels{
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Make the grade a true, isolated centered component. */
+  #reportModal .dash-hero{
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding-bottom: 8px;
+    text-align: center;
+  }
+
+  #reportModal .dash-hero-grade{
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  #reportModal .dash-hero-grade .section-label{
+    text-align: center;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  #reportModal .rc-grade{
+    width: min(190px, 62vw);
+    height: min(190px, 62vw);
+    margin: 0 auto;
+  }
+
+  #reportModal .rc-grade .rc-grade-letter{
+    display:flex;
+    width:100%;
+    height:100%;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    line-height:.9;
+    font-size: clamp(72px, 23vw, 92px);
+    margin:0;
+    padding:0;
+    transform: translateX(0);
+  }
+
+  #reportModal .dash-score{
+    width:100%;
+    margin-top: 10px;
+    text-align:center;
+  }
+
+  #reportModal .rc-streak{
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  #reportModal .dash-hero-text{
+    width:100%;
+    max-width: 520px;
+    text-align:center;
+  }
+
+  #reportModal .dash-hero-text h2{
+    font-size: 23px;
+    line-height: 1.15;
+  }
+
+  /* Snapshot: prevent cramped five-column desktop assumptions. */
+  #reportModal .snapshot-grid{
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 10px;
+  }
+
+  #reportModal .dash-flow{
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 12px;
+  }
+
+  #reportModal .dash-flow-item{
+    min-width:0;
+  }
+
+  #reportModal .dash-flow-result{
+    grid-column: 1 / -1;
+  }
+
+  #reportModal .dash-top{
+    padding: 22px 16px 8px;
+    border-radius: 16px;
+  }
+
+  #reportModal .flow-panel{
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 16px;
+  }
+
+  #reportModal .flow-tabs{
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  #reportModal .sheet .card,
+  #reportModal .rc-bottom-card{
+    padding: 17px 16px;
+    border-radius: 14px;
+  }
+
+  /* Buttons/tabs should feel like native mobile controls. */
+  #reportModal button,
+  #reportModal a{
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #reportModal .dash-tab{
+    min-height: 38px;
+  }
+
+  /* Avoid content hiding behind the bottom of the viewport. */
+  #reportModal .dash-watermark{
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Very narrow phones: simplify the header rather than letting it wrap. */
+@media (max-width: 390px){
+  #reportModal .rc-header-sub{
+    display:none;
+  }
+
+  #reportModal .rc-header-title{
+    font-size: 17px;
+  }
+
+  #reportModal .rc-header-actions .xbtn{
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 10.5px;
+  }
+
+  #reportModal .dash-top{
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+}
+</style>
+
+</head>' +
           '<body style="margin:0;background:#0A0B0E;display:flex;align-items:center;justify-content:center;min-height:100vh">' +
           '<img src="'+dataUrl+'" style="max-width:100%;height:auto;display:block" alt="Your financial grade card">' +
           '</body></html>'
