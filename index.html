@@ -1964,6 +1964,383 @@ footer{background:#0b302a;}
 }
 
 </style>
+<style>
+
+/* =========================================================
+   GMF MODERN LANDING PAGE PASS
+   Inspired by the clean colorful reference layout.
+   ========================================================= */
+.site{
+  background:#073d32 !important;
+  color:#fff;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.site .brandmark,.site .wordmark,.site .primary a,.site .icon-btn{
+  color:#fff !important;
+}
+.site .primary a{font-weight:600;text-shadow:none;}
+.site .primary a:hover{color:#bdf3df !important;}
+
+.hero{
+  min-height:510px;
+  background:
+    radial-gradient(circle at 78% 28%,rgba(67,190,155,.20),transparent 26%),
+    radial-gradient(circle at 92% 82%,rgba(65,157,214,.12),transparent 24%),
+    #d7efe7 !important;
+  overflow:hidden;
+}
+.hero .hero-grid{align-items:center;}
+.hero-copy{padding-top:12px;}
+.hero .hero-badge-row{display:none;}
+.hero h1{
+  font-size:clamp(52px,6.3vw,86px) !important;
+  line-height:.95 !important;
+  letter-spacing:-.055em !important;
+  color:#092e28 !important;
+  margin:18px 0 20px !important;
+}
+.hero .hero-headline-accent{color:#149b7a !important;}
+.hero .lede{
+  max-width:590px;
+  font-size:18px !important;
+  line-height:1.5 !important;
+  color:#183d36 !important;
+}
+.hero .hero-cta{margin-top:24px;}
+.hero .btn.gold{
+  background:#087d61 !important;
+  border-color:#087d61 !important;
+  color:#fff !important;
+  box-shadow:0 10px 24px rgba(8,125,97,.22);
+}
+.hero .btn.gold:hover{background:#066b53 !important;}
+.hero .btn.ghost{
+  background:rgba(255,255,255,.58) !important;
+  border-color:rgba(7,61,50,.18) !important;
+  color:#073d32 !important;
+}
+.hero .hero-trust-row{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  padding:16px 0 0 !important;
+  gap:18px;
+}
+.hero .htr-item{
+  background:rgba(255,255,255,.58);
+  border:1px solid rgba(7,61,50,.10);
+  border-radius:12px;
+  padding:9px 12px;
+  backdrop-filter:blur(8px);
+}
+.hero .htr-item b{color:#073d32;}
+.hero .htr-item span{color:#42635c;}
+
+.live-counter-badge{
+  background:#fff !important;
+  color:#183d36 !important;
+  border:1px solid rgba(7,61,50,.10) !important;
+  box-shadow:0 8px 22px rgba(7,61,50,.10);
+}
+.live-counter-badge .lcb-count{color:#149b7a !important;}
+
+.hero-ring-wrap{transform:scale(1.08);}
+.hero-ring-example{color:#356057 !important;}
+
+.gmf-how-modern{
+  padding:18px 0 30px !important;
+  background:#f6f1df !important;
+}
+.gmf-feature-strip{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  background:#fffaf0;
+  border:1px solid #e2dbc8;
+  border-radius:24px;
+  padding:12px;
+  box-shadow:0 12px 32px rgba(49,61,52,.08);
+}
+.gmf-mini-card{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:18px 20px;
+  min-height:78px;
+}
+.gmf-mini-card + .gmf-mini-card{border-left:1px solid #e1ddcf;}
+.gmf-mini-card strong{display:block;color:#18352f;font-size:15px;}
+.gmf-mini-card span{display:block;color:#667b75;font-size:13px;margin-top:4px;}
+.gmf-mini-icon{
+  width:48px;height:48px;border-radius:14px;display:grid;place-items:center;
+  flex:none;font-size:25px;font-weight:800;
+}
+.gmf-mini-icon.mint{background:#bfe9da;color:#087d61;}
+.gmf-mini-icon.blue{background:#a9d5ef;color:#176ca2;}
+.gmf-mini-icon.green{background:#9bd8b3;color:#187343;}
+.gmf-mini-icon.gold{background:#f5ca58;color:#8c6100;}
+
+.block:nth-of-type(odd){background:#d2e9df !important;}
+.block:nth-of-type(even){background:#d8e1f5 !important;}
+#pricing{background:#f0d78f !important;}
+#guides{background:#ddd2f2 !important;}
+footer{background:#073d32 !important;}
+
+.card,.plan,.feature,.trust-inner{
+  box-shadow:0 12px 28px rgba(30,52,45,.07);
+}
+
+.trust-section{
+  background:#cfe7f2 !important;
+}
+.trust-inner{
+  border-radius:26px;
+  background:#e7f5fb !important;
+}
+.homepage-secondary{
+  background:#f0eee6 !important;
+}
+
+@media (max-width:900px){
+  .gmf-feature-strip{grid-template-columns:repeat(2,1fr);}
+  .gmf-mini-card:nth-child(3){border-left:0;}
+}
+@media (max-width:640px){
+  .hero{min-height:auto;padding-bottom:42px;}
+  .hero h1{font-size:50px !important;}
+  .hero-ring-wrap{transform:scale(.88);margin-top:-8px;}
+  .gmf-feature-strip{grid-template-columns:1fr;}
+  .gmf-mini-card + .gmf-mini-card{border-left:0;border-top:1px solid #e1ddcf;}
+  .hero .hero-trust-row{display:grid;grid-template-columns:1fr;}
+}
+
+</style>
+<style>
+
+/* =========================================================
+   FINAL LAYOUT + MOBILE PASS
+   ========================================================= */
+
+/* Header: force the dark brand bar and readable navigation */
+header.site{
+  background:#073d32 !important;
+  color:#fff !important;
+  min-height:72px;
+}
+header.site .hdr-row{min-height:72px;}
+header.site .brandmark,
+header.site .wordmark,
+header.site nav.primary a,
+header.site .icon-btn{
+  color:#fff !important;
+  opacity:1 !important;
+}
+header.site nav.primary a{
+  font-weight:600 !important;
+  text-shadow:none !important;
+}
+header.site nav.primary a:hover{color:#c5f3e4 !important;}
+header.site .pro-cta{
+  color:#18352f !important;
+  background:#fff !important;
+  border-color:#fff !important;
+}
+
+/* Hero: counter belongs above the headline, aligned to the same left edge */
+.hero-copy{
+  align-items:flex-start !important;
+  text-align:left !important;
+}
+.hero-badge-row{display:none !important;}
+.live-counter-badge{
+  align-self:flex-start !important;
+  margin:0 0 18px !important;
+  order:0;
+}
+.hero h1{order:1;}
+.hero .lede{order:2;}
+.hero .hero-cta{order:3;}
+.hero .hero-trust-row{order:4;}
+
+/* Keep the live counter in the exact visual hierarchy of the reference */
+.hero .hero-grid{
+  align-items:center;
+}
+.live-counter-badge{
+  position:relative;
+  z-index:3;
+}
+
+/* Better desktop balance */
+@media (min-width:981px){
+  .hero-copy{padding-left:4px;}
+  .hero-ring-wrap{margin-right:-12px;}
+}
+
+/* Tablet */
+@media (max-width:980px){
+  header.site .primary{display:none !important;}
+  .hero{
+    min-height:auto !important;
+    padding:48px 0 54px !important;
+  }
+  .hero .hero-grid{
+    grid-template-columns:1fr !important;
+    text-align:center !important;
+  }
+  .hero-copy{
+    align-items:center !important;
+    text-align:center !important;
+    max-width:760px;
+    margin:0 auto;
+  }
+  .live-counter-badge{
+    align-self:center !important;
+  }
+  .hero .hero-cta{justify-content:center !important;}
+  .hero .hero-trust-row{justify-content:center !important;}
+  .hero-ring-wrap{
+    margin:18px auto 0 !important;
+    transform:scale(.96) !important;
+  }
+}
+
+/* Phone */
+@media (max-width:640px){
+  header.site{min-height:62px;}
+  header.site .hdr-row{
+    min-height:62px;
+    padding:0 14px !important;
+  }
+  header.site .wordmark{
+    font-size:14px !important;
+    max-width:145px;
+  }
+  header.site .seal-lg{
+    width:38px !important;
+    height:38px !important;
+  }
+  header.site .hdr-right{
+    gap:6px !important;
+  }
+  header.site #upgradeBtnTop{
+    display:none !important;
+  }
+
+  .hero{
+    padding:34px 16px 42px !important;
+  }
+  .hero .hero-grid{
+    width:100%;
+  }
+  .hero-copy{
+    width:100%;
+  }
+  .live-counter-badge{
+    margin-bottom:16px !important;
+    padding:8px 13px !important;
+    gap:7px !important;
+    font-size:12px;
+  }
+  .lcb-count{font-size:15px !important;}
+  .lcb-label{font-size:11.5px !important;}
+
+  .hero h1{
+    font-size:clamp(42px,13vw,58px) !important;
+    line-height:.97 !important;
+    letter-spacing:-.05em !important;
+    margin:8px 0 16px !important;
+  }
+  .hero .lede{
+    font-size:16px !important;
+    line-height:1.45 !important;
+    margin:0 auto 20px !important;
+    max-width:470px;
+  }
+  .hero .hero-cta{
+    width:100%;
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .hero .hero-cta .btn{
+    width:100%;
+    justify-content:center;
+  }
+  .hero .hero-trust-row{
+    width:100%;
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+    margin-top:18px !important;
+  }
+  .hero .htr-item{
+    width:100%;
+    justify-content:flex-start;
+  }
+  .hero-ring-wrap{
+    transform:scale(.72) !important;
+    transform-origin:top center;
+    margin:-20px auto -70px !important;
+  }
+  .hero-ring-example{
+    display:none;
+  }
+
+  .gmf-how-modern{
+    padding:14px 14px 24px !important;
+  }
+  .gmf-feature-strip{
+    grid-template-columns:1fr !important;
+    border-radius:20px;
+    padding:6px;
+  }
+  .gmf-mini-card{
+    min-height:66px;
+    padding:14px 12px;
+  }
+  .gmf-mini-card + .gmf-mini-card{
+    border-left:0 !important;
+    border-top:1px solid #e1ddcf;
+  }
+  .gmf-mini-icon{
+    width:42px;height:42px;border-radius:12px;font-size:21px;
+  }
+}
+
+/* Very small phones */
+@media (max-width:390px){
+  header.site .wordmark{max-width:120px;font-size:13px !important;}
+  .hero h1{font-size:40px !important;}
+  .live-counter-badge{max-width:100%;white-space:nowrap;}
+}
+
+</style>
+<style>
+
+/* --- Live counter vertical position fix --- */
+.live-counter-badge{
+  position:relative !important;
+  top:0 !important;
+  transform:none !important;
+  margin-top:20px !important;
+  margin-bottom:18px !important;
+  z-index:5 !important;
+}
+@media (min-width:981px){
+  .hero-copy{padding-top:22px !important;}
+}
+@media (max-width:980px){
+  .hero-copy{padding-top:12px !important;}
+  .live-counter-badge{margin-top:0 !important;}
+}
+@media (max-width:640px){
+  .hero-copy{padding-top:8px !important;}
+  .live-counter-badge{
+    margin-top:4px !important;
+    margin-bottom:16px !important;
+  }
+}
+
+</style>
 </head>
 <body>
 <script>try{ if(localStorage.getItem("gmf_pro")==="true"){ document.body.classList.add("is-pro"); } }catch(e){}</script>
@@ -2134,9 +2511,9 @@ footer{background:#0b302a;}
         <span class="lcb-label" id="liveGradeCountHeroLabel">report cards graded</span>
       </div>
       <h1 class="hero-in" style="--d:.16s">Know your numbers.<br><span class="hero-headline-accent">Grade your life.</span></h1>
-      <p class="lede hero-in" style="--d:.26s">Get a personalized financial grade in 60 seconds and discover exactly where you stand — and how to level up.</p>
+      <p class="lede hero-in" style="--d:.26s">Get your financial grade in minutes. See where you stand and what to improve.</p>
       <div class="hero-cta hero-in" style="--d:.36s">
-        <button class="btn gold" id="gradeBtnHero" type="button">Get My Financial Grade →</button>
+        <button class="btn gold" id="gradeBtnHero" type="button">Get My Free Grade →</button>
         <button class="btn ghost" id="demoBtn" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> See How It Works</button>
       </div>
       <div class="hero-trust-row hero-in" style="--d:.44s">
@@ -2178,16 +2555,25 @@ footer{background:#0b302a;}
   </div>
 </section>
 
-<section class="block" id="how">
+<section class="block gmf-how-modern" id="how">
   <div class="container">
-    <div class="block-head center">
-      <span class="kicker">Simple. Fast. Powerful.</span>
-      <h2>How it works</h2>
-    </div>
-    <div class="steps">
-      <div class="step"><div class="idx mono">01</div><div class="step-icon c1"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><h3>Enter Your Numbers</h3><p>Answer a few simple questions about your income, spending, savings, and debt.</p></div>
-      <div class="step"><div class="idx mono">02</div><div class="step-icon c2"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M13 2 3 14h7l-1 8 11-14h-8l1-6z"/></svg></div><h3>We Crunch the Data</h3><p>Our algorithm analyzes your financial health and benchmarks you against others.</p></div>
-      <div class="step"><div class="idx mono">03</div><div class="step-icon c3"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a1 1 0 0 0-1 1 4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1 4 4 0 0 1-4 4"/></svg></div><h3>Get Your Grade</h3><p>See your personalized financial grade, a detailed breakdown, and how to improve it.</p></div>
+    <div class="gmf-feature-strip">
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon mint">▦</div>
+        <div><strong>Free Calculator</strong><span>Enter your numbers.</span></div>
+      </div>
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon blue">↗</div>
+        <div><strong>See Where You Stand</strong><span>Compare your progress.</span></div>
+      </div>
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon green">✓</div>
+        <div><strong>Get Your Plan</strong><span>Know what to do next.</span></div>
+      </div>
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon gold">↗</div>
+        <div><strong>Track Progress</strong><span>Keep getting better.</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -3621,7 +4007,7 @@ footer{background:#0b302a;}
   <div class="container" style="text-align:center; max-width:560px">
     <h2 style="font-size:clamp(24px,3.3vw,36px); margin-bottom:12px">Ready to see your financial grade?</h2>
     <p style="color:var(--muted); font-size:16px; margin-bottom:26px">It takes about 60 seconds, and your numbers never leave your browser.</p>
-    <button class="btn gold" id="gradeBtnFooterCta" type="button" style="font-size:16px; padding:16px 32px">Get My Financial Grade →</button>
+    <button class="btn gold" id="gradeBtnFooterCta" type="button" style="font-size:16px; padding:16px 32px">Get My Free Grade →</button>
   </div>
 </section>
 
