@@ -2417,10 +2417,20 @@ header.site #accountMenu #signOutBtn svg{
   color:#8b3d3d !important;
 }
 
-/* Keep the account pill usable on small screens */
+/* Keep the account pill usable on small screens. The header only has
+   room for the brand wordmark OR a full name like "Aaron Edwards" on
+   narrow phones, not both - so once someone's signed in, mobile drops
+   the wordmark (the logo mark stays) and gives the name the freed-up
+   space instead of clipping it hard. */
 @media (max-width:640px){
+  html.is-authed header.site .wordmark{
+    display:none;
+  }
+  html.is-authed header.site .brandmark{
+    gap:0;
+  }
   header.site #accountNameLabel{
-    max-width:82px !important;
+    max-width:160px !important;
   }
   header.site #accountMenu{
     min-width:230px !important;
@@ -2463,6 +2473,7 @@ header.site #accountMenu #signOutBtn svg{
     var displayName = fullName || email.split('@')[0];
 
     wrap.style.display = '';
+    document.documentElement.classList.add('is-authed');
     avatarEl.textContent = initialsFor(fullName || email);
     nameLabelEl.textContent = displayName;
     menuNameEl.textContent = displayName;
