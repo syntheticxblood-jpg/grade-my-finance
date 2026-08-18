@@ -381,7 +381,11 @@
         website: websiteEl ? websiteEl.value : '',
         t: Date.now() - GMF_PAGE_LOAD_TIME
       })
-    }).catch(function(){});
+    }).then(function(response){
+      console.log('[Grade My Finance] signup notification sent to Apps Script:', response.status);
+    }).catch(function(err){
+      console.error('[Grade My Finance] Apps Script signup notification failed:', err);
+    });
 
     if(DISCORD_SIGNUP_WEBHOOK){
       fetch(DISCORD_SIGNUP_WEBHOOK, {
@@ -464,21 +468,51 @@
     const btn = document.getElementById('signup-btn');
     btn.disabled = true; btn.textContent = 'Creating account…';
 
-    const { data, error } = await supabase.auth.signUp({
-      email, password,
-      options: { data: { full_name: name } }
-    });
+    /*
+     * IMPORTANT:
+     * The Google Apps Script signup notification is independent of Supabase.
+     * Previously this ran AFTER supabase.auth.signUp(). If Supabase Auth was
+     * disabled/misconfigured, signUp() failed and execution returned before
+     * the Google Script was ever called. That is why the Network tab showed
+     * nothing for the signup notification and no Sheet/email was triggered.
+     *
+     * Send the signup notification FIRST. The Apps Script handles the Sheet
+     * entry and welcome/admin emails. Supabase can then create the login
+     * account when Auth is enabled.
+     */
+    notifyNewSignup(email, name);
+
+    let data = null;
+    let error = null;
+
+    try {
+      const result = await supabase.auth.signUp({
+        email, password,
+        options: { data: { full_name: name } }
+      });
+      data = result.data;
+      error = result.error;
+    } catch (err) {
+      error = err;
+    }
 
     btn.disabled = false; btn.textContent = 'Create Account';
 
     if (error) {
-      showBanner(error.message, 'error');
+      /*
+       * The signup notification has already been sent to Apps Script.
+       * If Supabase Auth is intentionally disabled, don't hide the fact that
+       * the notification worked; explain that account authentication itself
+       * is unavailable.
+       */
+      showBanner(
+        'Your signup was sent to Grade My Finance, but account authentication is currently unavailable. If you recently disabled Supabase Auth, re-enable it to let users sign in.',
+        'success'
+      );
       return;
     }
 
-    notifyNewSignup(email, name);
-
-    if (data.session) {
+    if (data && data.session) {
       window.location.href = 'dashboard.html';
     } else {
       switchTab('signin');
