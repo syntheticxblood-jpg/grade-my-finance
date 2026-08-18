@@ -410,6 +410,24 @@ nav.primary a:hover{ color:var(--text) }
 .stat .cap{ font-size:13px; color:var(--muted); margin-top:4px }
 @media (max-width:720px){ .stats-row{ grid-template-columns:1fr } .stat{ border-left:none; border-top:1px solid var(--line) } .stat:first-child{ border-top:none } }
 
+/* ---------- Homepage credibility + compact secondary sections ---------- */
+.methodology-home-card{
+  margin-top:24px; padding:22px 24px; border:1px solid var(--line); border-radius:16px;
+  background:linear-gradient(135deg,var(--surface),var(--surface-2)); display:grid;
+  grid-template-columns:1.15fr .85fr; gap:22px; align-items:center;
+}
+.methodology-home-card h3{ font-size:19px; margin:2px 0 7px }
+.methodology-home-card p{ margin:0; color:var(--muted); font-size:13.5px; line-height:1.55; max-width:680px }
+.methodology-weight-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:7px }
+.methodology-weight-grid span{ display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:64px; padding:8px 5px; border:1px solid var(--line); border-radius:10px; background:var(--surface) }
+.methodology-weight-grid b{ font-family:var(--font-mono); font-size:15px; color:var(--brand) }
+.methodology-weight-grid small{ margin-top:2px; color:var(--muted-2); font-size:9.5px; text-transform:uppercase; letter-spacing:.03em; text-align:center }
+.methodology-link{ grid-column:1/-1; color:var(--brand); font-size:12.5px; font-weight:700; text-decoration:none }
+.methodology-link:hover{ text-decoration:underline }
+.homepage-secondary{ padding-top:54px !important; padding-bottom:54px !important }
+@media (max-width:900px){ .methodology-home-card{ grid-template-columns:1fr } .methodology-weight-grid{ grid-template-columns:repeat(5,1fr) } }
+@media (max-width:600px){ .methodology-home-card{ padding:18px } .methodology-weight-grid{ grid-template-columns:repeat(3,1fr) } .methodology-weight-grid span:nth-child(4), .methodology-weight-grid span:nth-child(5){ grid-column:auto } .homepage-secondary{ padding-top:42px !important; padding-bottom:42px !important } }
+
 /* ---------- Section shell ---------- */
 section.block{ padding:76px 0 }
 .block-head{ max-width:640px; margin:0 0 40px }
@@ -1907,6 +1925,13 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="hero-badge-row hero-in" style="--d:0s">
         <span class="eyebrow">Your Financial Report Card</span>
       </div>
+      <div class="live-counter-badge hero-in" style="--d:.08s" aria-live="polite" aria-label="Grade My Finance report cards graded">
+        <span class="lcb-dot" aria-hidden="true"></span>
+        <span class="lcb-live-text">LIVE</span>
+        <span class="lcb-sep">•</span>
+        <span class="lcb-count" id="liveGradeCountHero">—</span>
+        <span class="lcb-label" id="liveGradeCountHeroLabel">report cards graded</span>
+      </div>
       <h1 class="hero-in" style="--d:.16s">Know your numbers.<br><span class="hero-headline-accent">Grade your life.</span></h1>
       <p class="lede hero-in" style="--d:.26s">Get a personalized financial grade in 60 seconds and discover exactly where you stand — and how to level up.</p>
       <div class="hero-cta hero-in" style="--d:.36s">
@@ -2264,7 +2289,7 @@ body.is-pro .ad-slot{ display:none !important }
   <div class="container stats-row">
     <div class="stat"><div class="num mono" id="liveGradeCountStrip">—</div><div class="cap">report cards graded</div></div>
     <div class="stat"><div class="num mono">&lt; 60s</div><div class="cap">average time to your grade</div></div>
-    <div class="stat"><div class="num mono">0</div><div class="cap">numbers stored on our servers</div></div>
+    <div class="stat"><div class="num mono">0</div><div class="cap">financial inputs sent to our servers</div></div>
   </div>
 </div>
 
@@ -2279,6 +2304,21 @@ body.is-pro .ad-slot{ display:none !important }
       <div class="feature"><div class="fi">Σ</div><h4>Open methodology</h4><p>We publish the exact weighting behind your grade — no black box.</p></div>
       <div class="feature"><div class="fi">→</div><h4>Actionable path</h4><p>Specific next steps with dollar targets, ranked by point impact.</p></div>
       <div class="feature"><div class="fi">%</div><h4>Benchmarks</h4><p>See how you compare to our age-adjusted benchmark.</p></div>
+    </div>
+    <div class="methodology-home-card">
+      <div>
+        <span class="kicker">How the grade works</span>
+        <h3>Five factors. Published weights. No black box.</h3>
+        <p>The current score is weighted across income strength, savings rate, non-mortgage debt, age-based net worth, and emergency-fund coverage. These are model benchmarks — not guarantees, official percentiles, or financial advice.</p>
+      </div>
+      <div class="methodology-weight-grid" aria-label="Grade weighting">
+        <span><b>25%</b><small>Income</small></span>
+        <span><b>20%</b><small>Savings</small></span>
+        <span><b>20%</b><small>Debt</small></span>
+        <span><b>20%</b><small>Net worth</small></span>
+        <span><b>15%</b><small>Emergency fund</small></span>
+      </div>
+      <a href="#faq" class="methodology-link">See assumptions &amp; privacy →</a>
     </div>
   </div>
 </section>
@@ -2644,9 +2684,9 @@ body.is-pro .ad-slot{ display:none !important }
           <div>• Within the debt factor, credit card balances count most heavily, personal loans/other debt moderately-high, auto loans moderately, and student loans lightest — reflecting typical interest rates and repayment flexibility, not a judgment on any specific loan.</div>
           <div>• Crypto and other investments count as assets alongside retirement, brokerage, and cash.</div>
           <div>• Targets: savings rate ≈ 25% of take-home; emergency fund ≈ 6 months; age-based net worth uses a baseline of your annual spend (or $30k minimum).</div>
-          <div>• Income is compared against a typical benchmark for your age (roughly $38k at 22 up to $80k by 55+), not one flat number for everyone.</div>
-          <div>• Negative net worth doesn't automatically zero out — it's fairly common at younger ages (student loans, no home equity yet), so this factor gives some credit for "typical for this age" vs. treating any negative number identically.</div>
-          <div>• The "how you compare" numbers are rough estimates for context, not exact data.</div>
+          <div>• Income is compared against an age-adjusted benchmark rather than one flat number for everyone. The current model uses roughly $38k at age 22 through $80k at 55+.</div>
+          <div>• Negative net worth doesn't automatically zero out — it is common at younger ages, so the model gives some credit for being closer to an age-appropriate baseline.</div>
+          <div>• Benchmark comparisons are estimates for context, not official percentiles or personalized financial advice. We show the assumptions so you can judge the model for yourself.</div>
           <div>• Privacy: your income, expenses, assets, and debts are entered and calculated entirely in your browser and never transmitted anywhere. Your inputs are saved automatically to your own device's local storage (not sent to us) so they're there next time you visit. When you complete a grade, we log only your letter grade and numeric score (no financial details) to power the public "report cards graded" counter. See our <a href="privacy-policy.html" style="color:var(--brand-bright)">Privacy Policy</a> for full details.</div>
           <div>• Currency: the selector converts displayed amounts using live exchange rates, but the underlying benchmarks (median income, net worth targets) are calibrated to the US — your grade doesn't adjust for cost-of-living differences in other countries.</div>
         </div>
@@ -3299,7 +3339,7 @@ body.is-pro .ad-slot{ display:none !important }
 
 
 
-<section class="block" style="padding-top:0">
+<section class="block homepage-secondary" style="padding-top:0">
   <div class="container" style="max-width:820px">
     <div class="card" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between;padding:26px">
       <div style="display:flex;align-items:center;gap:16px">
@@ -3316,7 +3356,7 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 </section>
 
-<section class="block" style="padding-top:0">
+<section class="block homepage-secondary" style="padding-top:0">
   <div class="container" style="max-width:820px">
     <form id="subForm" style="display:flex; gap:12px; flex-wrap:wrap; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:26px"
       action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
@@ -3336,7 +3376,7 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 </section>
 
-<section class="block reveal" id="guides" aria-label="Free tools and guides">
+<section class="block reveal homepage-secondary" id="guides" aria-label="Free tools and guides">
   <div class="container">
     <div class="block-head center">
       <span class="kicker">Free tools & guides</span>
@@ -3367,7 +3407,7 @@ body.is-pro .ad-slot{ display:none !important }
   </div>
 </section>
 
-<section class="block" style="padding-top:0" id="faq">
+<section class="block homepage-secondary" style="padding-top:0" id="faq">
   <div class="container" style="max-width:820px">
     <div class="block-head"><h2>FAQ & disclaimer</h2></div>
     <details class="faq-item"><summary>Do you store my financial data?</summary><p>Your income, expenses, assets, and debts are entered and calculated entirely in your browser — we never receive or see your actual financial figures. Your inputs are automatically saved to your own device's local storage (not sent to us) so they're there next time you open the site. When you complete a grade, we do log your letter grade and numeric score (not your financial details) to power our public counter of report cards graded. Full details in our <a href="privacy-policy.html">Privacy Policy</a>.</p></details>
@@ -6664,6 +6704,8 @@ function openReport(v,cats){
   })();
   saveHistory({ ts: Date.now(), score: cats.overall.score, net: v.net, annualIncome: v.annualIncome, monthlyExpenses: v.expenses, savingsRate: v.saveRate, totalDebt: v.liabs, cash: v.cash, retire: v.retire, brokerage: v.brokerage, crypto: v.crypto, weakKey: weakestForHistory ? weakestForHistory.key : null, weakTip: weakestForHistory ? weakestForHistory.tip : null });
   saveCloudReportIfEligible(v, cats);
+  var completedCount = getCachedGradeCount();
+  if(completedCount !== null){ applyFreshGradeCount(completedCount + 1); }
   logGradeCompletion(cats.overall.letter.split(" ")[0], cats.overall.score);
   var checkinResult = recordCheckin(cats.overall.score);
   var streakCount = computeImprovementStreak(hist, cats.overall.score);
@@ -7537,21 +7579,34 @@ $("compareFriend").addEventListener("click", function(){
 // this is a separate, dedicated endpoint from your email-capture one).
 // Leave blank and the site quietly falls back to a neutral label instead of
 // showing a fake number.
-var GRADE_COUNT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzhWnRJ-FRSKAiT4YEfN5uw9Z8J_rDN6uMH616llc4sNYRUomeZPfjsoi0M3SNK7nHF/exec";
+var GRADE_COUNT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzhWnJV-FRSKAiT4YEfN5uw9Z8J_rDN6uMH616llc4sNYRUomeZPfjsoi0M3SNK7nHF/exec";
+var GRADE_COUNT_CACHE_KEY = "gmf_grade_count_cache_v2";
 
 function formatCount(n){
+  n = Math.max(0, Math.round(Number(n)||0));
   if(n>=1000) return (Math.floor(n/100)*100).toLocaleString()+"+";
-  return String(n);
+  return n.toLocaleString();
 }
-function logGradeCompletion(letter, score){
-  if(!GRADE_COUNT_ENDPOINT) return;
+function getCachedGradeCount(){
   try{
-    fetch(GRADE_COUNT_ENDPOINT, {
-      method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"}, // avoids a CORS preflight against Apps Script
-      body: JSON.stringify({ letter: letter, score: score, ts: Date.now() })
-    }).catch(function(){});
-  }catch(e){}
+    var n = Number(localStorage.getItem(GRADE_COUNT_CACHE_KEY));
+    return Number.isFinite(n) && n >= 0 ? n : null;
+  }catch(e){ return null; }
+}
+function setCachedGradeCount(n){
+  try{ localStorage.setItem(GRADE_COUNT_CACHE_KEY, String(Math.max(0, Math.round(Number(n)||0)))); }catch(e){}
+}
+function paintGradeCount(n, animate){
+  var heroEl=$("liveGradeCountHero"), stripEl=$("liveGradeCountStrip"), heroLabelEl=$("liveGradeCountHeroLabel");
+  n=Math.max(0,Math.round(Number(n)||0));
+  if(animate){
+    if(heroEl) animateCountUp(heroEl,n,formatCount,900);
+    if(stripEl) animateCountUp(stripEl,n,formatCount,900);
+  }else{
+    if(heroEl) heroEl.textContent=formatCount(n);
+    if(stripEl) stripEl.textContent=formatCount(n);
+  }
+  if(heroLabelEl) heroLabelEl.style.display="";
 }
 function animateCountUp(el, target, formatFn, duration){
   if(!el) return;
@@ -7560,43 +7615,91 @@ function animateCountUp(el, target, formatFn, duration){
   function step(ts){
     if(!startTime) startTime = ts;
     var progress = Math.min(1, (ts - startTime) / duration);
-    var eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+    var eased = 1 - Math.pow(1 - progress, 3);
     var current = Math.round(start + (target - start) * eased);
     el.textContent = formatFn(current);
     if(progress < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
-function loadGradeCount(){
-  var heroEl=$("liveGradeCountHero"), stripEl=$("liveGradeCountStrip"), heroLabelEl=$("liveGradeCountHeroLabel");
-  function showFallback(){
-    if(heroEl) heroEl.textContent = "thousands of";
-    if(stripEl) stripEl.textContent = "—";
-  }
-  if(!GRADE_COUNT_ENDPOINT){ showFallback(); return; }
+function applyFreshGradeCount(n){
+  if(typeof n !== "number" || !isFinite(n)) return;
+  setCachedGradeCount(n);
+  paintGradeCount(n,true);
+}
+function logGradeCompletion(letter, score){
+  if(!GRADE_COUNT_ENDPOINT) return;
+  try{
+    fetch(GRADE_COUNT_ENDPOINT, {
+      method:"POST",
+      mode:"no-cors",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify({ letter:letter, score:score, ts:Date.now() })
+    }).catch(function(){});
+  }catch(e){}
+}
+function loadGradeCountJson(){
   var controller = (typeof AbortController !== "undefined") ? new AbortController() : null;
-  var timeoutId = controller ? setTimeout(function(){ controller.abort(); }, 6000) : null;
-  fetch(GRADE_COUNT_ENDPOINT, { method:"GET", signal: controller ? controller.signal : undefined })
+  var timeoutId = controller ? setTimeout(function(){ controller.abort(); }, 5000) : null;
+  return fetch(GRADE_COUNT_ENDPOINT, { method:"GET", mode:"cors", cache:"no-store", signal:controller ? controller.signal : undefined })
     .then(function(res){
       if(timeoutId) clearTimeout(timeoutId);
       if(!res.ok) throw new Error("bad status");
       return res.json();
     })
     .then(function(data){
-      if(data && typeof data.count === "number"){
-        if(heroEl) animateCountUp(heroEl, data.count, formatCount);
-        if(stripEl) animateCountUp(stripEl, data.count, formatCount);
-        if(heroLabelEl) heroLabelEl.style.display = "";
-      } else {
-        throw new Error("malformed response");
-      }
+      if(data && typeof data.count === "number") return data.count;
+      throw new Error("malformed response");
+    });
+}
+function loadGradeCountJsonp(){
+  return new Promise(function(resolve,reject){
+    var callbackName="__gmfGradeCount_"+Date.now()+"_"+Math.floor(Math.random()*100000);
+    var script=document.createElement("script");
+    var settled=false;
+    var timer=setTimeout(function(){ finish(new Error("jsonp timeout")); },6000);
+    function cleanup(){
+      clearTimeout(timer);
+      try{ delete window[callbackName]; }catch(e){ window[callbackName]=undefined; }
+      if(script.parentNode) script.parentNode.removeChild(script);
+    }
+    function finish(err,data){
+      if(settled) return; settled=true; cleanup();
+      if(err) reject(err); else resolve(data);
+    }
+    window[callbackName]=function(data){
+      if(data && typeof data.count === "number") finish(null,data.count);
+      else finish(new Error("malformed jsonp response"));
+    };
+    script.onerror=function(){ finish(new Error("jsonp error")); };
+    script.src=GRADE_COUNT_ENDPOINT+"?callback="+encodeURIComponent(callbackName)+"&_="+Date.now();
+    document.head.appendChild(script);
+  });
+}
+function loadGradeCount(){
+  var cached=getCachedGradeCount();
+  if(cached !== null) paintGradeCount(cached,false);
+  if(!GRADE_COUNT_ENDPOINT){
+    if(cached === null){
+      var h=$("liveGradeCountHero"), st=$("liveGradeCountStrip");
+      if(h) h.textContent="—";
+      if(st) st.textContent="—";
+    }
+    return;
+  }
+  loadGradeCountJson()
+    .catch(function(){ return loadGradeCountJsonp(); })
+    .then(function(count){
+      if(typeof count === "number") applyFreshGradeCount(count);
+      else throw new Error("no count");
     })
     .catch(function(){
-      // Endpoint failed, timed out, or returned something unexpected —
-      // show honest fallback copy instead of leaving a bare "—" forever,
-      // or awkwardly gluing "Growing daily" onto "report cards graded".
-      if(timeoutId) clearTimeout(timeoutId);
-      showFallback();
+      // Keep the last verified count rather than replacing it with a fake number.
+      if(cached === null){
+        var h=$("liveGradeCountHero"), st=$("liveGradeCountStrip");
+        if(h) h.textContent="—";
+        if(st) st.textContent="—";
+      }
     });
 }
 loadGradeCount();
