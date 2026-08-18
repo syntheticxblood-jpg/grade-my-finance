@@ -95,4 +95,8 @@ var GMF_BLOG_POSTS = [
   { slug:"index-funds-vs-actively-managed-funds-fees", title:"Index Funds vs. Actively Managed Funds: What the Fees Actually Cost You", category:"Investing" }
 ,
   { slug:"portfolio-rebalancing-explained", title:"Portfolio Rebalancing: Why It Matters and How Often You Should Actually Do It", category:"Investing" }
+,
+  { slug:"tax-loss-harvesting-explained", title:"Tax-Loss Harvesting: How to Turn Investment Losses Into a Real Tax Break", category:"Investing" }
+,
+  { slug:"long-term-care-insurance-explained", title:"Long-Term Care Insurance: Do You Actually Need It, and When Should You Buy It?", category:"Insurance" }
 ];
