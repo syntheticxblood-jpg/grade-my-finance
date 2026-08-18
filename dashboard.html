@@ -430,6 +430,13 @@ main{ padding:28px 0 50px }
 </head>
 <body>
 <script>try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.dataset.theme="light"; } }catch(e){}</script>
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  window.gmfSupabase = createClient(
+    'https://pagqrjbsxcpfnpdbeanj.supabase.co',
+    'sb_publishable_ANjKwMyMxNUtJ0YX_bAkFw_T0Q-yF1A'
+  );
+</script>
 
 <div class="app-shell">
   <aside class="sidebar" id="appSidebar">
@@ -480,6 +487,17 @@ main{ padding:28px 0 50px }
 
   <div class="main-area">
     <main class="container">
+      <div id="freeTierState" style="display:none">
+        <div class="card" style="max-width:520px;margin:60px auto 0;text-align:center;padding:44px 30px">
+          <div class="dash-grade-badge" id="freeTierGradeBadge" style="margin:0 auto 18px">—</div>
+          <h1 style="font-size:20px;margin-bottom:6px">Your latest report</h1>
+          <div class="updated" id="freeTierUpdated" style="margin-bottom:22px">—</div>
+          <div class="metrics-row" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:26px" id="freeTierMetrics"></div>
+          <p style="color:var(--muted);font-size:13px;margin-bottom:18px;line-height:1.5">Upgrade to Pro to unlock full score history, net worth trends, goals, saved scenarios, and achievements.</p>
+          <a class="btn gold" href="index.html#pricing">Upgrade to Pro</a>
+        </div>
+      </div>
+
       <div id="lockedState" style="display:none">
         <div class="card" style="max-width:480px;margin:60px auto 0;text-align:center;padding:44px 30px">
           <div class="dash-grade-badge good" style="margin:0 auto 18px">A+</div>
@@ -2220,10 +2238,62 @@ function restoreFromUrlIfPresent(){
 }
 restoreFromUrlIfPresent();
 
+/* ================= FREE-TIER (signed in, not Pro) =================
+   Shows a single saved report pulled from Supabase — the local Pro
+   dashboard below is completely untouched and still reads only from
+   localStorage. */
+async function renderFreeTierDashboard(session){
+  var badge = $("freeTierGradeBadge"), updated = $("freeTierUpdated"), metricsEl = $("freeTierMetrics");
+  $("freeTierState").style.display = 'block';
+
+  var result = await window.gmfSupabase
+    .from('financial_profiles')
+    .select('*')
+    .eq('user_id', session.user.id)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  var row = result.data;
+  if(!row){
+    badge.textContent = "—";
+    updated.textContent = "No report saved yet.";
+    metricsEl.innerHTML = '<div class="metric-card"><div class="m-label">Get started</div><div class="m-val" style="font-size:15px">Complete a calculation on the homepage to save your first report here.</div></div>';
+    return;
+  }
+
+  var letter = (row.overall_grade || "—").split(" ")[0];
+  badge.textContent = letter;
+  badge.className = "dash-grade-badge " + gradeTier(letter);
+  updated.textContent = "Last updated " + formatDateFull(new Date(row.created_at).getTime());
+
+  var net = (row.total_savings || 0) + (row.total_investments || 0) - (row.total_debt || 0);
+  metricsEl.innerHTML =
+    '<div class="metric-card"><div class="m-label">Score</div><div class="m-val mono">' + (row.overall_score != null ? row.overall_score : '—') + '</div></div>' +
+    '<div class="metric-card"><div class="m-label">Net Worth</div><div class="m-val mono">' + money(net) + '</div></div>' +
+    '<div class="metric-card"><div class="m-label">Total Debt</div><div class="m-val mono">' + money(row.total_debt || 0) + '</div></div>';
+}
+
 /* ================= INIT ================= */
-function init(){
+async function init(){
   var isPro = localStorage.getItem('gmf_pro') === 'true';
-  if(!isPro){ $("lockedState").style.display = 'block'; return; }
+
+  if(!isPro){
+    var session = null;
+    if(window.gmfSupabase){
+      try{
+        var res = await window.gmfSupabase.auth.getSession();
+        session = res.data && res.data.session;
+      }catch(e){}
+    }
+    if(session){
+      await renderFreeTierDashboard(session);
+    } else {
+      $("lockedState").style.display = 'block';
+    }
+    return;
+  }
+
   $("dashboardContent").style.display = 'block';
   var chip = $("headerProChip"); if(chip) chip.style.display = 'inline-flex';
   // Note: under the current access model, non-Pro users never reach this
