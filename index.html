@@ -3267,7 +3267,7 @@ header.site #accountMenu #signOutBtn svg{
       </div>
 
       <div class="dash-panel" id="dashPanel-benchmarks">
-        <span class="section-label">Your score, factor by factor</span>
+        <span class="section-label">Your score, factor by factor</span><div class="small" style="margin-top:8px">Scoring uses a 4% withdrawal-rate benchmark for financial independence; age-based net-worth targets are income-multiple benchmarks. All benchmarks are estimates, not official percentiles or financial advice.</div>
         <p class="small" style="margin:6px 0 14px;color:var(--muted)">The 5 things that make up your overall grade, weighted by how much each one actually matters.</p>
         <div class="pro-blur-section" style="min-height:180px">
           <div class="pro-blur-content">
@@ -4163,7 +4163,7 @@ header.site #accountMenu #signOutBtn svg{
 <script>
 "use strict";
 var retirementSafe = 3000000;
-var withdrawalRate = 0.07;
+var withdrawalRate = 0.04;
 
 /* ================= CURRENCY DISPLAY (conversion only — all scoring math stays in USD) ================= */
 // Honest limitation: this converts the NUMBERS shown, but the underlying
@@ -4425,7 +4425,8 @@ function deriveFrom(raw){
   v.debtWeighted = v.cc*1.5 + v.otherDebt*1.2 + v.auto*1.0 + v.student*0.5;
   v.dtiWeighted = v.baseline > 0 ? v.debtWeighted / v.baseline : 0;
   v.nwTargetMultiple = targetNW(v.age || 30);
-  v.nwTargetAmount = v.nwTargetMultiple * v.baseline;
+  v.nwIncomeBase = Math.max(v.annualIncome, v.baseline);
+  v.nwTargetAmount = v.nwTargetMultiple * v.nwIncomeBase;
   if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) v.nwProgress = 1;
   else v.nwProgress = v.nwTargetAmount > 0 ? v.net / v.nwTargetAmount : 0;
   var ratio = v.annualIncome / incomeBenchmark(v.age || 30);
@@ -4531,8 +4532,8 @@ function categoryScores(v){
     components: [
       { key:"Savings rate", sub:"Toward 25% target", val:Math.round(v.saveRate*100)+"% of take-home", letter:letterFrom01(sSave), tip: v.saveRate<0.25 ? "Aim for 25%. You're short ~"+money(Math.max(0, v.income*0.25 - (v.income - v.expenses)))+"/mo" : "Keeping pace with your income — nice work." },
       { key:"Emergency fund", sub:"Goal 6 months", val:v.efMonths.toFixed(1)+" months", letter:letterFrom01(sEF), tip: v.efMonths<6 ? "Save ~"+money(Math.round((v.expenses*6 - v.cash)/6))+"/mo to reach 6 months." : "Solid cushion — keep it liquid." },
-      { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of baseline", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add ~"+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt load." },
-      { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× baseline", val:Math.round(clamp(v.nwProgress,0,1)*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+" to target." : "On track or ahead." },
+      { key:"Debt load (non-mort.)", sub:"Lower is better", val:Math.round(v.dtiNonMort*100)+"% of annual expenses", letter:letterFrom01(sDebt), tip: v.dtiNonMort>0.25 ? "Add ~"+money(Math.round(v.baseline*0.05))+"/mo to highest APR first." : "Healthy debt load." },
+      { key:"Age-based net worth", sub:"Target "+v.nwTargetMultiple.toFixed(2)+"× annual income", val:Math.round(clamp(v.nwProgress,0,1)*100)+"% of age target", letter:letterFrom01(sAgeNW), tip: v.nwProgress<1 ? "Gap ~"+money(Math.max(0, v.nwTargetAmount - v.net))+" to target." : "On track or ahead." },
       { key:"Income strength", sub:"vs age-adjusted benchmark", val:money(v.annualIncome)+"/yr", letter:v.incomeLetter, tip: v.annualIncome < incomeBenchmark(v.age||30)*1.15 ? "Plan skill/raise to reach "+money(Math.round(incomeBenchmark(v.age||30)*1.15))+"+." : "Automate investing + match." }
     ],
     overall: {
