@@ -105,10 +105,10 @@ header.site{
 .brandmark{ display:flex; align-items:center; gap:10px; text-decoration:none }
 .seal{
   position:relative; width:38px; height:38px; border-radius:10px; overflow:hidden; flex:none;
-  background:linear-gradient(165deg, #1a1607, #0E1015 65%);
-  border:1.5px solid rgba(201,162,39,.45);
+  background:linear-gradient(160deg, var(--brand-bright) 0%, var(--brand) 100%);
+  border:none;
   display:grid; place-items:center;
-  box-shadow: 0 0 0 1px rgba(201,162,39,.08), 0 6px 16px -4px rgba(201,162,39,.32), inset 0 1px 0 rgba(255,255,255,.06);
+  box-shadow: 0 4px 12px -3px rgba(46,156,129,.4), inset 0 1px 0 rgba(255,255,255,.15);
 }
 .seal::after{
   content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
@@ -698,10 +698,10 @@ section.block{ padding:76px 0 }
 .rc-logo-mark{ flex:none; display:block; filter:drop-shadow(0 3px 8px rgba(139,92,246,.4)) }
 .rc-seal-mark{
   position:relative; width:32px; height:32px; border-radius:9px; overflow:hidden; flex:none;
-  background:linear-gradient(165deg, #1a1607, #0E1015 65%);
-  border:1.5px solid rgba(201,162,39,.45);
+  background:linear-gradient(160deg, var(--brand-bright) 0%, var(--brand) 100%);
+  border:none;
   display:grid; place-items:center;
-  box-shadow: 0 0 0 1px rgba(201,162,39,.08), 0 5px 14px -4px rgba(201,162,39,.32);
+  box-shadow: 0 4px 12px -3px rgba(46,156,129,.35);
 }
 .rc-seal-mark span{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12px; color:#E4C24E }
 .gmf-logo-mark{ flex:none; display:block; filter:drop-shadow(0 3px 8px rgba(139,92,246,.4)) }
@@ -1825,7 +1825,7 @@ body.is-pro .ad-slot{ display:none !important }
 <header class="site">
   <div class="container hdr-row">
     <a class="brandmark" href="#top">
-      <span class="seal seal-lg"><svg width="28" height="28" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="22" cy="22" r="16" stroke="#F2F3F5" stroke-width="5"/><rect x="22" y="19" width="12" height="6" fill="#0E1015"/><path d="M22 6 A16 16 0 0 1 34 17 L28.3 20.2 A10 10 0 0 0 22 13 Z" fill="#F5B942"/></svg></span>
+      <span class="seal seal-lg"><svg width="28" height="28" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="22" cy="22" r="16" stroke="#fff" stroke-width="5"/><rect x="22" y="19" width="12" height="6" fill="#fff"/><path d="M22 6 A16 16 0 0 1 34 17 L28.3 20.2 A10 10 0 0 0 22 13 Z" fill="#F5B942"/></svg></span>
       <span class="wordmark">Grade My Finance</span>
     </a>
     <nav class="primary">
@@ -1932,7 +1932,7 @@ body.is-pro .ad-slot{ display:none !important }
               </linearGradient>
             </defs>
             <circle class="hero-ring-track" cx="120" cy="120" r="106"/>
-            <circle class="hero-ring-progress" cx="120" cy="120" r="106" style="stroke-dashoffset:53"/>
+            <circle class="hero-ring-progress" cx="120" cy="120" r="106" style="stroke-dashoffset:14"/>
             <circle class="hero-ring-head" cx="120" cy="14" r="5"/>
           </svg>
           <div class="hero-ring-inner">
@@ -2292,7 +2292,7 @@ body.is-pro .ad-slot{ display:none !important }
   <div class="sheet">
     <div class="dash-tabs" id="dashTabs">
       <div class="rc-sidebar-brand">
-        <span class="rc-seal-mark"><svg width="17" height="17" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="22" cy="22" r="16" stroke="#F2F3F5" stroke-width="5"/><rect x="22" y="19" width="12" height="6" fill="#0E1015"/><path d="M22 6 A16 16 0 0 1 34 17 L28.3 20.2 A10 10 0 0 0 22 13 Z" fill="#F5B942"/></svg></span>
+        <span class="rc-seal-mark"><svg width="17" height="17" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="22" cy="22" r="16" stroke="#fff" stroke-width="5"/><rect x="22" y="19" width="12" height="6" fill="#fff"/><path d="M22 6 A16 16 0 0 1 34 17 L28.3 20.2 A10 10 0 0 0 22 13 Z" fill="#F5B942"/></svg></span>
         <span class="rc-logo-word">Grade My Finance</span>
       </div>
       <button class="dash-tab active" data-dtab="overview" type="button"><span class="dash-tab-icon"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span><span class="dash-tab-label">Overview</span></button>
@@ -3421,7 +3421,7 @@ body.is-pro .ad-slot{ display:none !important }
 <footer class="site">
   <div class="container">
     <div class="foot-row">
-      <a class="brandmark" href="#top"><span class="seal"><svg width="20" height="20" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="22" cy="22" r="16" stroke="#F2F3F5" stroke-width="5"/><rect x="22" y="19" width="12" height="6" fill="#0E1015"/><path d="M22 6 A16 16 0 0 1 34 17 L28.3 20.2 A10 10 0 0 0 22 13 Z" fill="#F5B942"/></svg></span><span class="wordmark">Grade My Finance</span></a>
+      <a class="brandmark" href="#top"><span class="seal"><svg width="20" height="20" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="22" cy="22" r="16" stroke="#fff" stroke-width="5"/><rect x="22" y="19" width="12" height="6" fill="#fff"/><path d="M22 6 A16 16 0 0 1 34 17 L28.3 20.2 A10 10 0 0 0 22 13 Z" fill="#F5B942"/></svg></span><span class="wordmark">Grade My Finance</span></a>
       <div class="foot-links">
         <a href="about.html">About</a>
         <a href="net-worth-by-age.html">Net Worth by Age</a>
