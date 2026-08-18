@@ -500,15 +500,43 @@
 
     if (error) {
       /*
-       * The signup notification has already been sent to Apps Script.
-       * If Supabase Auth is intentionally disabled, don't hide the fact that
-       * the notification worked; explain that account authentication itself
-       * is unavailable.
+       * The signup notification has already been sent to Apps Script
+       * regardless of what happens here, so every message below can say
+       * so truthfully.
+       *
+       * Previously this showed one generic "you probably disabled
+       * Supabase Auth" banner for EVERY possible error - duplicate
+       * emails, bad API keys, rate limits, real network failures, and an
+       * actually-disabled Auth provider all looked identical to the
+       * user. That's misleading, since most signup errors have nothing
+       * to do with Auth being disabled. Show the real reason instead,
+       * and only fall back to the "check your Supabase config" message
+       * for the kinds of errors that genuinely look like a service/config
+       * problem rather than something the user did.
        */
-      showBanner(
-        'Your signup was sent to Grade My Finance, but account authentication is currently unavailable. If you recently disabled Supabase Auth, re-enable it to let users sign in.',
-        'success'
-      );
+      const msg = (error && error.message) ? error.message : '';
+      const lower = msg.toLowerCase();
+
+      if (lower.indexOf('already registered') > -1 || lower.indexOf('already exists') > -1 || lower.indexOf('user already') > -1) {
+        showBanner('An account with that email already exists. Try signing in instead, or use "Forgot password?" if you don\u2019t remember it.', 'error');
+      } else if (lower.indexOf('password') > -1) {
+        showBanner(msg, 'error');
+      } else if (lower.indexOf('rate limit') > -1 || lower.indexOf('too many') > -1 || lower.indexOf('after ') > -1) {
+        showBanner('Too many attempts — please wait a moment and try again.', 'error');
+      } else if (error instanceof TypeError || lower.indexOf('failed to fetch') > -1 || lower === '') {
+        // A real network-level failure (or an error with no message at
+        // all) is the case that actually looks like the Supabase project
+        // or Auth provider is unreachable/misconfigured.
+        showBanner(
+          'Your signup was sent to Grade My Finance, but account authentication is currently unavailable. If you recently disabled Supabase Auth (or the project is paused), re-enable it to let users sign in.',
+          'success'
+        );
+      } else {
+        // Any other Supabase-reported error: show it verbatim rather
+        // than guessing - it's the most accurate thing we can tell the
+        // user, and avoids blaming "Auth is disabled" for something else.
+        showBanner('Your signup was sent to Grade My Finance, but account creation failed: ' + msg, 'error');
+      }
       return;
     }
 
