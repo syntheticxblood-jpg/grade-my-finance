@@ -904,6 +904,126 @@ main{padding:30px 0 60px !important;}
 }
 
 </style>
+
+<style>
+/* =========================================================
+   GRADE MY FINANCE — COMMAND CENTER / PRODUCT LOOP PASS
+   Adds: strength, weakness, 90-day action plan, savings rate,
+   emergency fund, debt load, and a persistent action goal.
+   Uses only data already present in the dashboard history.
+   ========================================================= */
+.command-center{
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(280px,.75fr);
+  gap:14px;
+  margin:0 0 16px;
+}
+.command-card{
+  background:#0d5f4d;
+  color:#fff;
+  border:1px solid #0d5f4d;
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 12px 30px rgba(13,95,77,.16);
+  position:relative;
+  overflow:hidden;
+}
+.command-card::after{
+  content:"";
+  position:absolute;
+  width:220px;height:220px;border-radius:50%;
+  right:-90px;top:-110px;
+  background:rgba(255,255,255,.08);
+}
+.command-eyebrow{
+  font-size:10.5px;font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;color:#a9e2d0;
+}
+.command-title{
+  font-family:var(--font-display);font-size:23px;font-weight:800;
+  letter-spacing:-.035em;margin:5px 0 6px;
+}
+.command-copy{
+  color:#d8eee8;font-size:13px;line-height:1.55;
+  max-width:650px;margin:0;
+}
+.command-meta{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin-top:18px;
+}
+.command-stat{
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:11px;padding:10px 11px;
+}
+.command-stat span{
+  display:block;font-size:10px;text-transform:uppercase;
+  letter-spacing:.05em;color:#a9d8cc;
+}
+.command-stat b{
+  display:block;font-family:var(--font-mono);font-size:15px;margin-top:3px;color:#fff;
+}
+.command-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.command-actions .btn{border-color:rgba(255,255,255,.18)}
+.command-actions .btn.gold{background:#fff!important;color:#0d5f4d!important;border-color:#fff!important;box-shadow:none}
+.command-secondary{
+  background:#fff;border:1px solid #dfe7e2;border-radius:18px;
+  padding:20px;box-shadow:0 8px 24px rgba(25,52,46,.055);
+}
+.command-secondary .cs-row{
+  display:flex;align-items:flex-start;gap:11px;padding:11px 0;
+  border-bottom:1px solid #e7ece9;
+}
+.command-secondary .cs-row:last-child{border-bottom:0}
+.cs-dot{width:9px;height:9px;border-radius:50%;margin-top:5px;flex:none;background:#159a78}
+.cs-dot.warn{background:#d99a2b}.cs-dot.bad{background:#c1493d}
+.cs-label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#73827d;font-weight:800}
+.cs-value{font-family:var(--font-display);font-size:14px;font-weight:700;color:#183a33;margin-top:2px}
+.cs-sub{font-size:11.5px;color:#687a74;margin-top:2px;line-height:1.4}
+.action-plan-card{
+  background:#fff;border:1px solid #dfe7e2;border-radius:18px;
+  padding:20px;box-shadow:0 8px 24px rgba(25,52,46,.055);margin-bottom:16px;
+}
+.action-plan-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;flex-wrap:wrap}
+.action-plan-title{font-family:var(--font-display);font-size:18px;font-weight:800;color:#183a33}
+.action-plan-sub{font-size:12px;color:#6c7d77;margin-top:3px}
+.action-plan-progress{min-width:180px}
+.action-plan-progress-top{display:flex;justify-content:space-between;font-size:11px;color:#687a74;margin-bottom:6px}
+.action-plan-progress-top b{color:#159a78;font-family:var(--font-mono)}
+.action-plan-progress .progress-bar{height:9px}
+.action-plan-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;margin-top:16px}
+.action-main{
+  border:1px solid #cfe5dc;background:linear-gradient(145deg,#f7fcfa,#e8f6f1);
+  border-radius:14px;padding:17px;
+}
+.action-kicker{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#0c8a6b;font-weight:800}
+.action-main h3{font-family:var(--font-display);font-size:20px;color:#173a32;margin:5px 0 5px}
+.action-main p{font-size:12.5px;color:#536a62;margin:0;line-height:1.5}
+.action-target{
+  display:flex;align-items:end;justify-content:space-between;gap:10px;
+  margin-top:14px;padding-top:12px;border-top:1px solid #d6e8e1;
+}
+.action-target strong{font-family:var(--font-mono);font-size:18px;color:#159a78}
+.action-target span{display:block;font-size:10.5px;color:#6b7c75}
+.action-side{display:grid;gap:10px}
+.action-mini{
+  border:1px solid #e1e7e4;border-radius:13px;padding:13px;background:#fbfcfb;
+}
+.action-mini .am-label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#778680;font-weight:800}
+.action-mini .am-value{font-family:var(--font-mono);font-size:14px;font-weight:700;color:#193b34;margin-top:3px}
+.action-mini .am-sub{font-size:11px;color:#73827d;margin-top:2px}
+@media(max-width:900px){
+  .command-center,.action-plan-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .command-card,.command-secondary,.action-plan-card{padding:16px}
+  .command-title{font-size:20px}
+  .command-meta{grid-template-columns:1fr 1fr}
+  .command-meta .command-stat:last-child{grid-column:1/-1}
+  .action-plan-progress{width:100%;min-width:0}
+}
+</style>
+
 <style>
 
 /* =========================================================
@@ -1147,6 +1267,23 @@ header.site{height:calc(var(--header-h) + var(--gmf-safe-top));padding-top:var(-
   .grade-ring-card .grade-ring-wrap,.grade-ring-card .grade-ring{width:96px !important;height:96px !important}
 }
 </style>
+
+<style>
+#panel-overview > .command-metrics{
+  grid-template-columns:1.55fr repeat(4,1fr) !important;
+  gap:10px !important;
+}
+#panel-overview > .command-metrics .metric-card{min-width:0}
+#panel-overview > .command-metrics .m-val{font-size:24px}
+@media(max-width:1100px){
+  #panel-overview > .command-metrics{grid-template-columns:1.45fr 1fr 1fr 1fr !important}
+  #panel-overview > .command-metrics .grade-ring-card{grid-column:1/-1}
+}
+@media(max-width:700px){
+  #panel-overview > .command-metrics{grid-template-columns:1fr 1fr !important}
+  #panel-overview > .command-metrics .grade-ring-card{grid-column:1/-1}
+}
+</style>
 </head>
 <body>
 <script>
@@ -1299,7 +1436,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= OVERVIEW ================= -->
     <div class="dash-tab-panel active" id="panel-overview">
-      <div class="metrics-row">
+      <div class="metrics-row command-metrics">
         <div class="grade-ring-card">
           <span class="m-label">Financial Grade</span>
           <div class="grade-ring-wrap">
@@ -1315,11 +1452,34 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
             <a class="view-link" href="index.html#faq" id="howGradesWorkLink" style="margin-top:6px">How grades work →</a>
           </div>
         </div>
-        <div class="metric-card"><div class="m-card-head"><div class="m-label">Net Worth</div><div class="m-icon m-icon-good"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5a2.5 2.5 0 0 1 2.5-2.5h1a2.5 2.5 0 0 1 0 5h-1a2.5 2.5 0 0 0 0 5h1a2.5 2.5 0 0 0 2.5-2.5"/></svg></div></div><div class="m-val mono" id="mNetVal">—</div><div class="m-sub" id="mNetSub">—</div><svg class="m-spark" id="mNetSpark" width="100%" height="34" viewBox="0 0 200 34" preserveAspectRatio="none"></svg></div>
-        <div class="metric-card"><div class="m-card-head"><div class="m-label">Score Change</div><div class="m-icon m-icon-brand"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div></div><div class="m-val mono" id="mChangeVal" style="font-size:20px">—</div><svg class="m-spark" id="mScoreSpark" width="100%" height="34" viewBox="0 0 200 34" preserveAspectRatio="none"></svg></div>
-        <div class="metric-card"><div class="m-card-head"><div class="m-label">Check-ins</div><div class="m-icon m-icon-info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div></div><div class="m-val mono" id="mCheckinsVal" style="font-size:20px">—</div></div>
+        <div class="metric-card">
+          <div class="m-card-head"><div class="m-label">Net Worth</div><div class="m-icon m-icon-good">↗</div></div>
+          <div class="m-val mono" id="mNetVal">—</div>
+          <div class="m-sub" id="mNetSub">—</div>
+          <svg class="m-spark" id="mNetSpark" width="100%" height="34" viewBox="0 0 200 34" preserveAspectRatio="none"></svg>
+        </div>
+        <div class="metric-card">
+          <div class="m-card-head"><div class="m-label">Savings Rate</div><div class="m-icon m-icon-brand">%</div></div>
+          <div class="m-val mono" id="mSavingsVal">—</div>
+          <div class="m-sub" id="mSavingsSub">—</div>
+        </div>
+        <div class="metric-card">
+          <div class="m-card-head"><div class="m-label">Emergency Fund</div><div class="m-icon m-icon-info">◷</div></div>
+          <div class="m-val mono" id="mEmergencyVal">—</div>
+          <div class="m-sub" id="mEmergencySub">—</div>
+        </div>
+        <div class="metric-card">
+          <div class="m-card-head"><div class="m-label">Debt Load</div><div class="m-icon" style="background:#f8e5e2;color:#b9473b">−</div></div>
+          <div class="m-val mono" id="mDebtVal">—</div>
+          <div class="m-sub" id="mDebtSub">—</div>
+        </div>
         <span id="mScoreVal" style="display:none"></span><span id="mScoreGrade" style="display:none"></span>
+        <span id="mChangeVal" style="display:none"></span><span id="mCheckinsVal" style="display:none"></span>
+        <svg id="mScoreSpark" style="display:none"></svg>
       </div>
+
+      <div id="commandCenter"></div>
+      <div id="actionPlan"></div>
 
       <div class="ov-grid">
         <div class="ov-col">
@@ -1927,15 +2087,288 @@ function renderHeader(hist){
   }
 }
 
+/* ================= COMMAND CENTER / 90-DAY ACTION PLAN ================= */
+var ACTION_PLAN_KEY = 'gmf_action_plan_v1';
+
+function escHtml(v){
+  return String(v == null ? '' : v).replace(/[&<>"']/g, function(ch){
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]);
+  });
+}
+
+function getActionPlan(){
+  try{ return JSON.parse(localStorage.getItem(ACTION_PLAN_KEY)||'null'); }catch(_){ return null; }
+}
+function saveActionPlan(plan){
+  try{ localStorage.setItem(ACTION_PLAN_KEY, JSON.stringify(plan)); }catch(_){}
+}
+
+function deriveFinancialPriorities(latest){
+  var priorities = [];
+  if(!latest) return priorities;
+
+  var expenses = typeof latest.monthlyExpenses === 'number' ? latest.monthlyExpenses : null;
+  var cash = typeof latest.cash === 'number' ? latest.cash : null;
+  var debt = typeof latest.totalDebt === 'number' ? latest.totalDebt : null;
+  var cc = typeof latest.cc === 'number' ? latest.cc : null;
+  var savingsRate = typeof latest.savingsRate === 'number' ? latest.savingsRate : null;
+  var net = typeof latest.net === 'number' ? latest.net : null;
+
+  if(expenses !== null && expenses > 0 && cash !== null){
+    var months = cash / expenses;
+    if(months < 3){
+      var target = expenses * 3;
+      priorities.push({
+        key:'emergency',
+        title:'Build your emergency fund',
+        copy:'You have about '+months.toFixed(1)+' months of expenses in cash. A 3-month buffer would put you at a stronger starting point.',
+        current:cash, target:target,
+        action:'Save about '+money(Math.max(0,(target-cash)/3))+' per month for the next 90 days.',
+        metric:months.toFixed(1)+' mo',
+        metricSub:'cash runway'
+      });
+    }
+  }
+
+  if(cc !== null && cc > 0){
+    priorities.push({
+      key:'credit-card',
+      title:'Attack credit-card debt',
+      copy:'You have '+money(cc)+' of credit-card debt recorded. Reducing this balance can improve your financial flexibility.',
+      current:cc, target:0,
+      action:'Choose a fixed extra payment for the next 90 days and track the balance each check-in.',
+      metric:money(cc), metricSub:'card balance'
+    });
+  } else if(debt !== null && debt > 0){
+    priorities.push({
+      key:'debt',
+      title:'Reduce your debt balance',
+      copy:'Your dashboard currently records '+money(debt)+' of total debt. A lower balance gives your future cash flow more room.',
+      current:debt, target:Math.max(0,debt * .9),
+      action:'Set a concrete 90-day payoff target and make it visible in Goals.',
+      metric:money(debt), metricSub:'total debt'
+    });
+  }
+
+  if(savingsRate !== null && savingsRate < 15){
+    priorities.push({
+      key:'savings-rate',
+      title:'Raise your savings rate',
+      copy:'Your current savings rate is '+savingsRate.toFixed(1)+'%. A 15% target is a useful general benchmark for building momentum.',
+      current:savingsRate, target:15,
+      action:'Find one recurring expense to trim or automate an additional savings transfer.',
+      metric:savingsRate.toFixed(1)+'%', metricSub:'current rate'
+    });
+  }
+
+  if(net !== null && net < 0 && priorities.length === 0){
+    priorities.push({
+      key:'net-worth',
+      title:'Get net worth moving upward',
+      copy:'Your current net worth is '+money(net)+'. Focus the next 90 days on the highest-impact balance you can control.',
+      current:net, target:0,
+      action:'Track debt reduction and cash savings at every check-in.',
+      metric:money(net), metricSub:'current net worth'
+    });
+  }
+
+  if(!priorities.length){
+    priorities.push({
+      key:'score',
+      title:'Push your financial grade higher',
+      copy:'No major red flag is available from the current dashboard data. Your next move is to keep the habits that are already working.',
+      current:typeof latest.score === 'number' ? latest.score : 0,
+      target:Math.min(100,(typeof latest.score === 'number' ? latest.score : 0)+5),
+      action:'Set a 90-day score target and come back for a fresh check-in.',
+      metric:(typeof latest.score === 'number' ? latest.score.toFixed(1) : '—'),
+      metricSub:'current score'
+    });
+  }
+  return priorities;
+}
+
+function renderCommandCenter(hist){
+  var mount = $("commandCenter");
+  if(!mount) return;
+  var latest = hist.length ? hist[hist.length-1] : null;
+  if(!latest){
+    mount.innerHTML = '';
+    return;
+  }
+
+  var score = typeof latest.score === 'number' ? latest.score : 0;
+  var letter = overallLetter(Math.round(score));
+  var prev = hist.length > 1 ? hist[hist.length-2] : null;
+  var delta = prev ? score - prev.score : null;
+  var priorities = deriveFinancialPriorities(latest);
+  var priority = priorities[0];
+
+  var strength = [];
+  if(typeof latest.savingsRate === 'number' && latest.savingsRate >= 20) strength.push('Savings rate');
+  if(typeof latest.cc === 'number' && latest.cc === 0) strength.push('No credit-card balance');
+  if(typeof latest.net === 'number' && latest.net >= 0) strength.push('Positive net worth');
+  if(delta !== null && delta > 0) strength.push('Score momentum');
+  var strengthText = strength[0] || 'Your current score';
+
+  var weaknessText = priority.title.replace(/^Build your |^Attack your |^Reduce your |^Raise your /i,'');
+  var deltaText = delta === null ? 'First check-in' : (delta >= 0 ? '↑ '+delta.toFixed(1)+' pts' : '↓ '+Math.abs(delta).toFixed(1)+' pts');
+
+  mount.innerHTML =
+    '<div class="command-center">'+
+      '<div class="command-card">'+
+        '<div class="command-eyebrow">Your financial command center</div>'+
+        '<div class="command-title">'+letter+' · '+score.toFixed(1)+'/100</div>'+
+        '<p class="command-copy">You know where you stand. Now you have a clear next move: <b>'+escHtml(priority.title.toLowerCase())+'</b>.</p>'+
+        '<div class="command-meta">'+
+          '<div class="command-stat"><span>Grade change</span><b>'+escHtml(deltaText)+'</b></div>'+
+          '<div class="command-stat"><span>Biggest strength</span><b>'+escHtml(strengthText)+'</b></div>'+
+          '<div class="command-stat"><span>Biggest weakness</span><b>'+escHtml(weaknessText)+'</b></div>'+
+        '</div>'+
+        '<div class="command-actions">'+
+          '<button class="btn gold sm" id="commandActionBtn" type="button">Start my 90-day plan →</button>'+
+          '<button class="btn sm" id="commandUpdateBtn" type="button">Regrade my finances</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="command-secondary">'+
+        '<span class="section-label">At a glance</span>'+
+        '<div class="cs-row"><span class="cs-dot"></span><div><div class="cs-label">Current grade</div><div class="cs-value">'+letter+' · '+score.toFixed(1)+'</div><div class="cs-sub">Your latest recorded check-in</div></div></div>'+
+        '<div class="cs-row"><span class="cs-dot '+(priority.key==='score'?'':'warn')+'"></span><div><div class="cs-label">Priority</div><div class="cs-value">'+escHtml(priority.title)+'</div><div class="cs-sub">'+escHtml(priority.metric)+' · '+escHtml(priority.metricSub)+'</div></div></div>'+
+      '</div>'+
+    '</div>';
+
+  $("commandActionBtn").addEventListener("click", function(){
+    var plan = getActionPlan();
+    if(!plan || plan.key !== priority.key){
+      plan = { key:priority.key, title:priority.title, target:priority.target, start:Date.now(), current:priority.current };
+      saveActionPlan(plan);
+    }
+    var actionEl = $("actionPlan");
+    if(actionEl) actionEl.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+  $("commandUpdateBtn").addEventListener("click", function(){
+    window.location.href = "index.html#grade";
+  });
+}
+
+function renderActionPlan(hist){
+  var mount = $("actionPlan");
+  if(!mount) return;
+  var latest = hist.length ? hist[hist.length-1] : null;
+  if(!latest){ mount.innerHTML=''; return; }
+
+  var priorities = deriveFinancialPriorities(latest);
+  var priority = priorities[0];
+  var saved = getActionPlan();
+  if(!saved || saved.key !== priority.key){
+    saved = { key:priority.key, title:priority.title, target:priority.target, start:Date.now(), current:priority.current };
+    saveActionPlan(saved);
+  }
+
+  var days = Math.max(0, Math.floor((Date.now()-saved.start)/(24*60*60*1000)));
+  var progress = 0;
+  if(priority.key === 'emergency' && priority.target > 0){
+    progress = clamp((priority.current / priority.target)*100,0,100);
+  } else if(priority.key === 'credit-card' || priority.key === 'debt'){
+    progress = clamp((1 - (priority.current / Math.max(1,saved.current||priority.current)))*100,0,100);
+  } else if(priority.key === 'savings-rate'){
+    progress = clamp((priority.current / priority.target)*100,0,100);
+  } else if(priority.key === 'score'){
+    progress = clamp((priority.current / Math.max(1,priority.target))*100,0,100);
+  }
+
+  var remaining = Math.max(0, 90-days);
+  var goalText = priority.key === 'emergency'
+    ? money(Math.max(0,priority.target-priority.current))+' to reach 3 months'
+    : priority.key === 'savings-rate'
+      ? 'Target: '+priority.target.toFixed(0)+'% savings rate'
+      : priority.key === 'score'
+        ? 'Target: '+priority.target.toFixed(1)+' score'
+        : 'Target: '+money(priority.target);
+
+  mount.innerHTML =
+    '<div class="action-plan-card">'+
+      '<div class="action-plan-head">'+
+        '<div><div class="action-plan-title">Your 90-day action plan</div><div class="action-plan-sub">One priority. One measurable outcome. Come back and regrade.</div></div>'+
+        '<div class="action-plan-progress"><div class="action-plan-progress-top"><span>90-day progress</span><b>'+Math.min(days,90)+' / 90 days</b></div><div class="progress-bar"><div style="width:'+Math.min(100,(days/90)*100)+'%"></div></div></div>'+
+      '</div>'+
+      '<div class="action-plan-grid">'+
+        '<div class="action-main">'+
+          '<div class="action-kicker">#1 priority</div>'+
+          '<h3>'+escHtml(priority.title)+'</h3>'+
+          '<p>'+escHtml(priority.copy)+'</p>'+
+          '<div class="action-target"><div><span>90-day target</span><strong>'+escHtml(priority.metric)+'</strong></div><div style="text-align:right"><span>'+escHtml(goalText)+'</span></div></div>'+
+          '<p style="margin-top:12px"><b>Do this:</b> '+escHtml(priority.action)+'</p>'+
+          '<div class="command-actions"><button class="btn gold sm" id="actionGoalBtn" type="button">Add to Goals →</button><button class="btn sm" id="actionRegradeBtn" type="button">Regrade when ready</button></div>'+
+        '</div>'+
+        '<div class="action-side">'+
+          '<div class="action-mini"><div class="am-label">Current</div><div class="am-value">'+escHtml(priority.metric)+'</div><div class="am-sub">'+escHtml(priority.metricSub)+'</div></div>'+
+          '<div class="action-mini"><div class="am-label">Remaining</div><div class="am-value">'+escHtml(goalText)+'</div><div class="am-sub">Based on your latest check-in</div></div>'+
+          '<div class="action-mini"><div class="am-label">Plan status</div><div class="am-value">'+(days>=90?'Ready to regrade':'Day '+Math.min(90,days)+' of 90')+'</div><div class="am-sub">'+remaining+' days left in this cycle</div></div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+
+  $("actionGoalBtn").addEventListener("click", function(){
+    var goals = getGoals();
+    var exists = goals.some(function(g){ return g.type === 'action' && g.actionKey === priority.key; });
+    if(!exists){
+      goals.push({
+        id:'g_action_'+Date.now(),
+        type:'action',
+        actionKey:priority.key,
+        label:priority.title,
+        target:priority.target,
+        createdAt:Date.now(),
+        source:'90-day-action-plan'
+      });
+      saveGoals(goals);
+    }
+    window.__gotoDashTab("goals");
+    window.scrollTo({top:0,behavior:'smooth'});
+    renderGoals();
+  });
+  $("actionRegradeBtn").addEventListener("click", function(){
+    window.location.href = "index.html#grade";
+  });
+}
+
 /* ================= OVERVIEW TAB ================= */
 function renderOverview(hist, groups){
   var latest = hist.length ? hist[hist.length-1] : null;
   var withNet = hist.filter(function(h){ return typeof h.net === 'number'; });
   var latestNet = withNet.length ? withNet[withNet.length-1] : null;
 
+  renderCommandCenter(hist);
+  renderActionPlan(hist);
+
   $("mScoreVal").textContent = latest ? latest.score.toFixed(1) : "—";
   $("mScoreGrade").textContent = latest ? overallLetter(Math.round(latest.score)) : "—";
   $("mNetVal").textContent = latestNet ? formatCompact(latestNet.net) : "—";
+  var savingsEl = $("mSavingsVal"), savingsSub = $("mSavingsSub");
+  var emergencyEl = $("mEmergencyVal"), emergencySub = $("mEmergencySub");
+  var debtEl = $("mDebtVal"), debtSub = $("mDebtSub");
+  if(latest && typeof latest.savingsRate === 'number'){
+    savingsEl.textContent = latest.savingsRate.toFixed(1) + "%";
+    savingsSub.textContent = latest.savingsRate >= 20 ? "Strong savings pace" : latest.savingsRate >= 15 ? "On a solid track" : "Room to improve";
+    savingsSub.className = "m-sub " + (latest.savingsRate >= 15 ? "up" : "down");
+  } else {
+    savingsEl.textContent = "—"; savingsSub.textContent = "Not recorded"; savingsSub.className = "m-sub";
+  }
+  if(latest && typeof latest.cash === 'number' && typeof latest.monthlyExpenses === 'number' && latest.monthlyExpenses > 0){
+    var runway = latest.cash / latest.monthlyExpenses;
+    emergencyEl.textContent = runway.toFixed(1) + " mo";
+    emergencySub.textContent = runway >= 3 ? "3-month buffer reached" : "Target: 3.0 months";
+    emergencySub.className = "m-sub " + (runway >= 3 ? "up" : "down");
+  } else {
+    emergencyEl.textContent = "—"; emergencySub.textContent = "Need cash + expenses"; emergencySub.className = "m-sub";
+  }
+  if(latest && typeof latest.totalDebt === 'number'){
+    debtEl.textContent = money(latest.totalDebt);
+    debtSub.textContent = latest.totalDebt <= 0 ? "Debt free" : "Current balance";
+    debtSub.className = "m-sub " + (latest.totalDebt <= 0 ? "up" : "");
+  } else {
+    debtEl.textContent = "—"; debtSub.textContent = "Not recorded"; debtSub.className = "m-sub";
+  }
   if(latestNet && withNet.length >= 2){
     var change = latestNet.net - withNet[0].net;
     $("mNetSub").textContent = (change>=0?"↑ ":"↓ ")+formatCompact(Math.abs(change))+" all-time";
@@ -1943,11 +2376,12 @@ function renderOverview(hist, groups){
   } else { $("mNetSub").textContent = "—"; }
 
   var changeEl = $("mChangeVal");
-  if(hist.length >= 2){
-    var d = Math.round((latest.score - hist[0].score)*10)/10;
-    changeEl.textContent = (d>=0?"↑ +":"↓ ")+Math.abs(d)+" pts";
-    changeEl.style.color = d>=0 ? "var(--good)" : "var(--bad)";
-  } else { changeEl.textContent = "—"; changeEl.style.color = ""; }
+  if(changeEl){
+    if(hist.length >= 2){
+      var d = Math.round((latest.score - hist[0].score)*10)/10;
+      changeEl.textContent = (d>=0?"↑ +":"↓ ")+Math.abs(d)+" pts";
+    } else { changeEl.textContent = "—"; }
+  }
   $("mCheckinsVal").textContent = getCheckinCount() || "—";
 
   // Mini sparklines - purely decorative trend context, not touching any
