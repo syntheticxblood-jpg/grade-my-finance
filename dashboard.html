@@ -904,6 +904,187 @@ main{padding:30px 0 60px !important;}
 }
 
 </style>
+<style>
+
+/* =========================================================
+   GRADE MY FINANCE — FINAL VISUAL + FUNCTION PASS
+   Richer fixed-color background system, stronger hierarchy,
+   and safer mobile layouts.
+   ========================================================= */
+
+/* Richer page background */
+body{
+  background:#e7e5d9 !important;
+}
+.main-area{
+  background:#e7e5d9 !important;
+}
+.main-area::before{
+  opacity:.75 !important;
+  background:
+    linear-gradient(125deg,rgba(20,107,84,.13) 0%,transparent 28%),
+    linear-gradient(310deg,rgba(77,102,171,.10) 0%,transparent 32%),
+    radial-gradient(circle at 55% 10%,rgba(244,215,127,.18),transparent 35%) !important;
+}
+
+/* Strong fixed-color content bands */
+#panel-overview{
+  background:transparent !important;
+}
+#panel-score{
+  background:#dce9e4 !important;
+  border-radius:22px;
+  padding:18px !important;
+}
+#panel-networth{
+  background:#e3e9f4 !important;
+  border-radius:22px;
+  padding:18px !important;
+}
+#panel-goals{
+  background:#f2e1ad !important;
+  border-radius:22px;
+  padding:18px !important;
+}
+#panel-scenarios{
+  background:#e5dcf2 !important;
+  border-radius:22px;
+  padding:18px !important;
+}
+#panel-achievements{
+  background:#d9ece5 !important;
+  border-radius:22px;
+  padding:18px !important;
+}
+#panel-retirement{
+  background:#dce4f2 !important;
+  border-radius:22px;
+  padding:18px !important;
+}
+
+/* Overview top cards */
+#panel-overview > .metrics-row:first-child .grade-ring-card{
+  background:#d5eee5 !important;
+  border-color:#b5dacc !important;
+}
+#panel-overview > .metrics-row:first-child .metric-card:nth-child(2){
+  background:#e0f0e9 !important;
+  border-color:#c2dfd2 !important;
+}
+#panel-overview > .metrics-row:first-child .metric-card:nth-child(3){
+  background:#e6e0f5 !important;
+  border-color:#d0c5e8 !important;
+}
+#panel-overview > .metrics-row:first-child .metric-card:nth-child(4){
+  background:#e1e9f7 !important;
+  border-color:#c7d7ee !important;
+}
+
+/* Dashboard header */
+.content-header{
+  background:#f0efe7 !important;
+  border:1px solid #d8d8cc !important;
+  border-radius:18px !important;
+  padding:16px 18px !important;
+  box-shadow:0 8px 22px rgba(31,54,48,.05);
+}
+.content-header .dash-greeting-text{font-weight:800 !important;}
+
+/* More prominent "Next Best Move" */
+#nextMoveCard,
+.insight-card.next-move,
+.insight-card[data-insight="next"]{
+  background:#0d5f4d !important;
+  color:#fff !important;
+  border-color:#0d5f4d !important;
+}
+#nextMoveCard h4,
+.insight-card.next-move h4,
+.insight-card[data-insight="next"] h4{
+  color:#fff !important;
+}
+#nextMoveCard p,
+.insight-card.next-move p,
+.insight-card[data-insight="next"] p{
+  color:#d9f0e8 !important;
+}
+
+/* Cards inside colored panels stay crisp */
+#panel-score .card,
+#panel-networth .card,
+#panel-goals .card,
+#panel-scenarios .card,
+#panel-achievements .card,
+#panel-retirement .card,
+#panel-score .hero-card,
+#panel-networth .hero-card,
+#panel-goals .hero-card,
+#panel-scenarios .hero-card,
+#panel-achievements .hero-card,
+#panel-retirement .hero-card{
+  background:#fff !important;
+}
+
+/* Retirement assumptions badge */
+#panel-retirement .ret-scenario-card.primary{
+  background:#d8efe6 !important;
+  border-color:#8fcbb8 !important;
+}
+#panel-retirement .ret-scenario-card:not(.primary){
+  background:#fff !important;
+}
+#panel-retirement .ret-scenario-grid::after{
+  content:"Estimates use nominal annual returns before inflation, taxes, and fees.";
+  display:block;
+  grid-column:1/-1;
+  color:#687b74;
+  font-size:11px;
+  margin-top:8px;
+}
+
+/* Net-worth update preview */
+#nwUpdatePreview{
+  background:#e0f1ea !important;
+  border:1px solid #b9dbce !important;
+  border-radius:12px !important;
+  padding:12px !important;
+}
+
+/* Sidebar hard accent */
+.sidebar{
+  background:#fbfbf7 !important;
+}
+.sidebar .dash-nav-btn.active{
+  background:#cce9df !important;
+  color:#087c61 !important;
+}
+.sidebar-bottom{
+  background:#f1eee3 !important;
+  border-radius:14px 14px 0 0;
+  padding:12px !important;
+}
+
+/* Mobile: turn colored panels into full-width sections without horizontal overflow */
+@media (max-width:900px){
+  #panel-score,#panel-networth,#panel-goals,#panel-scenarios,
+  #panel-achievements,#panel-retirement{
+    border-radius:16px;
+    padding:12px !important;
+  }
+}
+@media (max-width:600px){
+  .content-header{
+    padding:14px !important;
+    border-radius:14px !important;
+  }
+  #panel-score,#panel-networth,#panel-goals,#panel-scenarios,
+  #panel-achievements,#panel-retirement{
+    padding:9px !important;
+    border-radius:14px;
+  }
+}
+
+</style>
 </head>
 <body>
 <script>
@@ -2225,21 +2406,25 @@ function setupNetWorthUpdateForm(){
     var retire = readFieldOrLastKnown("nwRetire", hist, "retire");
     var brokerage = readFieldOrLastKnown("nwBrokerage", hist, "brokerage");
     var crypto = readFieldOrLastKnown("nwCrypto", hist, "crypto");
-    // home/car/hsa/individual debt fields aren't stored per-entry in
-    // history (only cash/retire/brokerage/crypto/totalDebt are), so
-    // there's no "last known" to fall back to for these specifically -
-    // blank simply means 0 for these.
-    var home = parseFloat($("nwHome").value) || 0;
-    var car = parseFloat($("nwCar").value) || 0;
-    var hsa = parseFloat($("nwHsa").value) || 0;
-    var mortgage = parseFloat($("nwMortgage").value) || 0;
-    var student = parseFloat($("nwStudent").value) || 0;
-    var auto = parseFloat($("nwAuto").value) || 0;
-    var cc = parseFloat($("nwCc").value) || 0;
-    var otherDebt = parseFloat($("nwOtherDebt").value) || 0;
+    // Preserve the full asset/debt breakdown when a field is left blank.
+    // Older history entries may not contain these fields, so they safely
+    // fall back to 0 until the user records them once.
+    var home = readFieldOrLastKnown("nwHome", hist, "home");
+    var car = readFieldOrLastKnown("nwCar", hist, "car");
+    var hsa = readFieldOrLastKnown("nwHsa", hist, "hsa");
+    var mortgage = readFieldOrLastKnown("nwMortgage", hist, "mortgage");
+    var student = readFieldOrLastKnown("nwStudent", hist, "student");
+    var auto = readFieldOrLastKnown("nwAuto", hist, "auto");
+    var cc = readFieldOrLastKnown("nwCc", hist, "cc");
+    var otherDebt = readFieldOrLastKnown("nwOtherDebt", hist, "otherDebt");
     var assets = home+retire+brokerage+car+hsa+cash+crypto;
     var liabs = mortgage+student+auto+cc+otherDebt;
-    return { cash:cash, retire:retire, brokerage:brokerage, crypto:crypto, assets:assets, liabs:liabs, net:assets-liabs };
+    return {
+      cash:cash, retire:retire, brokerage:brokerage, crypto:crypto,
+      home:home, car:car, hsa:hsa,
+      mortgage:mortgage, student:student, auto:auto, cc:cc, otherDebt:otherDebt,
+      assets:assets, liabs:liabs, net:assets-liabs
+    };
   }
   function updatePreview(){
     var r = computeFromForm();
@@ -2259,10 +2444,15 @@ function setupNetWorthUpdateForm(){
     toggleBtn.textContent = isOpen ? "+ Add update" : "− Close";
     if(!isOpen){
       var last = hist[hist.length-1];
-      if(typeof last.cash === 'number') $("nwCash").value = last.cash;
-      if(typeof last.retire === 'number') $("nwRetire").value = last.retire;
-      if(typeof last.brokerage === 'number') $("nwBrokerage").value = last.brokerage;
-      if(typeof last.crypto === 'number') $("nwCrypto").value = last.crypto;
+      var lastFields = {
+        nwCash:'cash', nwRetire:'retire', nwBrokerage:'brokerage', nwCrypto:'crypto',
+        nwHome:'home', nwCar:'car', nwHsa:'hsa',
+        nwMortgage:'mortgage', nwStudent:'student', nwAuto:'auto', nwCc:'cc', nwOtherDebt:'otherDebt'
+      };
+      Object.keys(lastFields).forEach(function(id){
+        var key = lastFields[id];
+        if(typeof last[key] === 'number') $(id).value = last[key];
+      });
       updatePreview();
     }
   });
@@ -2290,6 +2480,14 @@ function setupNetWorthUpdateForm(){
       retire: r.retire,
       brokerage: r.brokerage,
       crypto: r.crypto,
+      home: r.home,
+      car: r.car,
+      hsa: r.hsa,
+      mortgage: r.mortgage,
+      student: r.student,
+      auto: r.auto,
+      cc: r.cc,
+      otherDebt: r.otherDebt,
       isNetWorthUpdate: true
     });
     if(hist.length>500) hist = hist.slice(hist.length-500);
@@ -2601,7 +2799,8 @@ function renderRetLive(){
     grid.appendChild(card);
   });
 
-  // Coast FI, computed off the moderate scenario
+  // Coast FI, computed off the moderate scenario.
+  // All scenario returns are nominal estimates before inflation, fees, and taxes.
   var coastCard = $("retCoastCard");
   if(yearsToRetire > 0){
     var coastNum = coastFINumber(target, 0.07, yearsToRetire);
