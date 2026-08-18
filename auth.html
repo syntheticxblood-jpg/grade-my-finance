@@ -362,9 +362,18 @@
     // JSON content-type here made the browser silently block the whole
     // request before it ever reached the script). The body is still real
     // JSON text; doPost parses it the same way either way.
+    //
+    // keepalive: true matters just as much here - this function fires
+    // right before window.location.href navigates the page away to
+    // dashboard.html. Without keepalive, the browser can (and does)
+    // cancel an in-flight fetch mid-request when the page unloads, which
+    // would silently kill this request every single time before it ever
+    // reaches Google's servers - regardless of how correct the rest of
+    // the request is.
     fetch(APPS_SCRIPT_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      keepalive: true,
       body: JSON.stringify({
         email: email,
         source: 'grademyfinance.com/signup',
@@ -378,6 +387,7 @@
       fetch(DISCORD_SIGNUP_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
         body: JSON.stringify({
           content: '🎉 New signup: **' + (name || 'Unknown') + '** — ' + email
         })
