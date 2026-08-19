@@ -3133,6 +3133,37 @@ body{
 }
 </style>
 
+
+<style id="gmf-blue-canvas-fix">
+html,body{background:#081b2b !important;color:#e8f3ff !important;}
+body{background:radial-gradient(ellipse 1200px 700px at 45% -10%,#153e5f 0%,#0b2438 42%,#071522 100%) !important;background-attachment:fixed !important;}
+.main-area{background:transparent !important;}
+.main-area::before{background:radial-gradient(ellipse 900px 600px at 35% 0%,rgba(43,132,190,.22),transparent 62%),radial-gradient(ellipse 700px 600px at 85% 25%,rgba(31,91,145,.18),transparent 65%),radial-gradient(ellipse 700px 700px at 50% 100%,rgba(12,65,105,.20),transparent 70%) !important;}
+.main-area .container{max-width:none !important;width:100% !important;padding-left:28px !important;padding-right:28px !important;}
+.sidebar{background:#07131f !important;border-right:1px solid #1d3a50 !important;}
+.sidebar .dash-nav-btn{color:#a9bfd0 !important;}
+.sidebar .dash-nav-btn:hover{background:#102b40 !important;color:#fff !important;}
+.sidebar .dash-nav-btn.active{background:#123e5a !important;color:#62c5ff !important;box-shadow:inset 3px 0 0 #38a9e8 !important;}
+.content-header .dash-greeting-text,.content-header .dash-greeting-sub,.content-header .dash-greeting-eyebrow,.content-header-right .updated{color:#e6f2fb !important;}
+.content-header .dash-greeting-sub,.content-header .dash-greeting-eyebrow,.content-header-right .updated{opacity:.72;}
+.card,.hero-card,.metric-card,.grade-ring-card,.insight-card,.scenario-card,.goal-card,.ret-scenario-card,.achv-item,.settings-panel{background:rgba(15,31,44,.94) !important;border-color:#24455c !important;color:#e8f3ff !important;box-shadow:0 10px 28px rgba(0,0,0,.22) !important;}
+.m-label,.section-label,.activity-row.activity-head,.section-sub,.m-sub,.hero-card .hv-sub,.insight-card p,.dash-nav-btn{color:#9eb5c6 !important;}
+.m-val,.hv,.insight-card h4,.activity-grade,.activity-score,.story-beat-text,.metric-card .m-val{color:#edf7ff !important;}
+.dash-nav{border-bottom-color:#24455c !important;}
+.dash-nav-btn.active{color:#54b9ef !important;border-bottom-color:#38a9e8 !important;}
+#panel-overview .ship-chart-card{background:linear-gradient(145deg,#102a3e,#0d2233) !important;border-color:#28506b !important;}
+.chart-time-filters,.chart-time-filters button.active{background:#132d41 !important;border-color:#284a61 !important;color:#b8d2e4 !important;}
+#panel-overview .ov-col:last-child .hero-card:first-child,.insight-card.goal-card-decorated,.insight-card.win,.insight-card:not(.win):not(.goal-card-decorated),#panel-overview > .metrics-row[style*="grid-template-columns:1fr 1fr"] .metric-card,#storyModeCard{background:linear-gradient(145deg,#102b40,#0b2132) !important;border-color:#28516b !important;}
+.composition-legend,.activity-date,.activity-score,.activity-change{color:#a7bdcc !important;}
+/* Keep charts fully visible instead of forcing an internal scroll/crop. */
+#panel-overview .ship-chart-wrap{min-height:300px !important;height:300px !important;overflow:visible !important;}
+#panel-overview .ship-chart-wrap svg{width:100% !important;height:100% !important;overflow:visible !important;}
+#compositionChart{min-height:190px !important;height:190px !important;overflow:visible !important;}
+.ret-share-canvas-wrap{width:260px !important;height:260px !important;}
+.ret-share-canvas-wrap canvas{width:260px !important;height:260px !important;}
+@media(max-width:1200px){.main-area .container{padding-left:22px !important;padding-right:22px !important;}#panel-overview .ship-chart-wrap{min-height:270px !important;height:270px !important;}}
+@media(max-width:900px){body{background:#081b2b !important;}.main-area .container{padding-left:16px !important;padding-right:16px !important;}#panel-overview .ship-chart-wrap{min-height:250px !important;height:250px !important;}.ret-share-canvas-wrap{width:220px !important;height:220px !important;}.ret-share-canvas-wrap canvas{width:220px !important;height:220px !important;}}
+</style>
 </head>
 <body>
 <script>
