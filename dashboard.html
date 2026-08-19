@@ -2532,9 +2532,14 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="card">
-        <span class="section-label">Manage net worth updates</span>
-        <p class="section-sub" style="margin-top:4px">Entered a number wrong or want to remove an old update? Delete individual entries below — this can't be undone.</p>
-        <div id="nwEntriesList"></div>
+        <div class="nw-update-header">
+          <div>
+            <span class="section-label" style="margin:0">Manage net worth updates</span>
+            <p class="section-sub" style="margin-top:4px;margin-bottom:0">Remove a single update or clear every quick net-worth update saved from this dashboard.</p>
+          </div>
+          <button class="btn sm danger-outline" id="nwDeleteAll" type="button">Delete all updates</button>
+        </div>
+        <div id="nwEntriesList" style="margin-top:14px"></div>
       </div>
       </div>
 
@@ -6832,7 +6837,32 @@ function renderNetWorthTab(hist){
 // array as the score check-ins, so re-render everything that depends on it.
 function renderNwEntriesList(withNet){
   var el2 = $("nwEntriesList");
+  var deleteAllBtn = $("nwDeleteAll");
   if(!el2) return;
+
+  /* Quick net-worth updates are marked separately when they are saved.
+     Keep full check-ins intact because they also power Grade & Progress. */
+  var quickUpdates = withNet.filter(function(entry){ return entry.isNetWorthUpdate === true; });
+
+  if(deleteAllBtn){
+    deleteAllBtn.disabled = quickUpdates.length === 0;
+    deleteAllBtn.title = quickUpdates.length
+      ? 'Delete '+quickUpdates.length+' quick net-worth update'+(quickUpdates.length===1?'':'s')
+      : 'No quick net-worth updates to delete';
+    deleteAllBtn.onclick = function(){
+      if(!quickUpdates.length) return;
+      if(!confirm('Delete all '+quickUpdates.length+' quick net-worth update'+(quickUpdates.length===1?'':'s')+'? This cannot be undone. Your full financial check-ins will stay intact.')) return;
+      var quickTs = {};
+      quickUpdates.forEach(function(entry){ quickTs[entry.ts] = true; });
+      var arr = getHistory().filter(function(h){ return !quickTs[h.ts]; });
+      localStorage.setItem('gmf_history_v2', JSON.stringify(arr));
+      var freshHist = getHistory();
+      renderNetWorthTab(freshHist);
+      renderOverview(freshHist, groupCheckins(freshHist));
+      renderScoreTab(freshHist);
+    };
+  }
+
   if(!withNet.length){
     el2.innerHTML = '<div class="empty-note">No net worth entries recorded yet.</div>';
     return;
@@ -7614,9 +7644,18 @@ init().then(function(){ try{ window.renderGmfCommandCenter(getHistory()); }catch
   function moneyTab(x){var p=id('panel-networth');if(!p)return;var l=x.l,pr=x.p;if(!l){addHead(p,'Money','Your balance sheet, cash flow, bills, credit, and portfolio in one place.',chip('Needs your first check-in',false));return}
     addHead(p,'Money','A single place to understand what you own, what you owe, and how money moves through your finances.',chip('Updated '+new Date(l.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}),true));
     var inv=['brokerage','crypto','retire','hsa'].reduce(function(a,k){return a+(typeof l[k]==='number'?l[k]:0)},0),cash=typeof l.cash==='number'?l.cash:null,debt=typeof l.totalDebt==='number'?l.totalDebt:null,net=typeof l.net==='number'?l.net:null,inc=typeof l.income==='number'?l.income:null,exp=typeof l.monthlyExpenses==='number'?l.monthlyExpenses:null,margin=inc!==null&&exp!==null?inc-exp:null;
-    setKpis(p,kpi('Net worth',money(net),pr&&typeof pr.net==='number'?delta(net-pr.net):'Latest balance',pr&&net<pr.net)+kpi('Cash',money(cash),exp>0&&cash!==null?(cash/exp).toFixed(1)+' months of expenses':'Liquidity')+kpi('Investments',money(inv),'Retirement + brokerage')+kpi('Monthly margin',money(margin),margin===null?'Income minus expenses':'Money left after expenses',margin!==null&&margin<0),q('#moneySubtabs',p));
+    var nav=q('#moneySubtabs',p);
+    setKpis(p,kpi('Net worth',money(net),pr&&typeof pr.net==='number'?delta(net-pr.net):'Latest balance',pr&&net<pr.net)+kpi('Cash',money(cash),exp>0&&cash!==null?(cash/exp).toFixed(1)+' months of expenses':'Liquidity')+kpi('Investments',money(inv),'Retirement + brokerage')+kpi('Monthly margin',money(margin),margin===null?'Income minus expenses':'Money left after expenses',margin!==null&&margin<0),nav);
     tool(p,'Choose a view','Start with your balance sheet, then move to cash flow when you want to understand the month.', '<a class="btn gold sm" href="index.html#grade">Update finances</a>');
     helper(p,'Balance sheet = what you own minus what you owe. Cash flow = what comes in versus what goes out.');
+    /* Keep the Money navigation at the top of the workspace so the selected
+       view is the first thing users can change, instead of burying the tabs
+       below KPI/helper content. */
+    if(nav){
+      var head=q(':scope > .gmf-page-head',p);
+      if(head) head.insertAdjacentElement('afterend',nav);
+      else p.insertBefore(nav,p.firstElementChild);
+    }
   }
   function goalsTab(x){var p=id('panel-goals');if(!p)return;var l=x.l;addHead(p,'Goals','Pick a small number of measurable outcomes. The point is progress you can check, not a long wish list.',l?chip('Current grade '+grade(l.score)+' · '+Number(l.score||0).toFixed(1),true):chip('Set your first target',false));
     tool(p,'Set one target','Add a score or net-worth target, then use the rest of the dashboard to see what will move it.','');
@@ -7873,6 +7912,237 @@ init().then(function(){ try{ window.renderGmfCommandCenter(getHistory()); }catch
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(sync,20)});
   else setTimeout(sync,20);
+})();
+</script>
+
+
+<style id="gmf-user-request-final-fix">
+/* =========================================================
+   USER REQUEST FINAL FIX
+   - No accidental blur on dashboard content
+   - Reliable Insights / Plan / Money inner tabs
+   - Money tabs stay at the top of the workspace
+   - Clear visual state for Delete All
+   ========================================================= */
+
+/* The dashboard should remain readable even when Pro is not enabled.
+   The previous Pro gate was visually obscuring the actual tab content. */
+.pro-blur-content{
+  filter:none !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+  user-select:auto !important;
+}
+.pro-blur-overlay{
+  display:none !important;
+}
+
+/* Inner navigation should remain visible while the selected section scrolls. */
+#moneySubtabs,
+#planSubtabs,
+#insightSubtabs{
+  position:sticky !important;
+  top:12px !important;
+  z-index:35 !important;
+  margin-top:0 !important;
+  margin-bottom:16px !important;
+  background:#edf2f0 !important;
+  box-shadow:0 6px 18px rgba(16,38,45,.08) !important;
+}
+
+/* Prevent the sticky bar from getting hidden under the sidebar/header on
+   narrower layouts. */
+@media (max-width:900px){
+  #moneySubtabs,
+  #planSubtabs,
+  #insightSubtabs{
+    top:8px !important;
+  }
+}
+
+/* Make the destructive control visually distinct without changing the
+   existing button system. */
+.danger-outline{
+  color:#b33f35 !important;
+  border-color:#e4b7b2 !important;
+  background:#fff7f6 !important;
+}
+.danger-outline:hover:not(:disabled){
+  background:#fff0ee !important;
+  border-color:#d98e87 !important;
+}
+.danger-outline:disabled{
+  opacity:.45 !important;
+  cursor:not-allowed !important;
+}
+
+/* Inner tab active states: don't rely on animation timing or inherited
+   display rules. */
+.money-subview,
+.plan-subview,
+.insight-subview,
+.proj-subpanel{
+  display:none !important;
+}
+.money-subview.active,
+.plan-subview.active,
+.insight-subview.active,
+.proj-subpanel.active{
+  display:block !important;
+  animation:gmfPanelIn .18s ease;
+}
+
+/* Money Flow's own nested tabs. */
+.flow-view{display:none !important;}
+.flow-view.active{display:block !important;}
+</style>
+
+<script id="gmf-user-request-final-fix-js">
+(function(){
+  'use strict';
+
+  function qs(s,r){ return (r || document).querySelector(s); }
+  function qsa(s,r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  function setGroup(buttonSelector, viewSelector, buttonKey, viewKey, value){
+    var buttons = qsa(buttonSelector);
+    var views = qsa(viewSelector);
+
+    buttons.forEach(function(btn){
+      btn.classList.toggle('active', btn.getAttribute('data-'+buttonKey) === value);
+      btn.setAttribute('aria-selected', btn.getAttribute('data-'+buttonKey) === value ? 'true' : 'false');
+    });
+
+    views.forEach(function(view){
+      view.classList.toggle('active', view.getAttribute('data-'+viewKey) === value);
+    });
+  }
+
+  /* Capture phase makes these controls authoritative before the older
+     delegated listeners can interfere with them. */
+  document.addEventListener('click', function(e){
+    var target = e.target;
+    if(!target || !target.closest) return;
+
+    var moneyBtn = target.closest('.money-subtab-btn');
+    if(moneyBtn){
+      e.preventDefault();
+      var moneyPanel = qs('#panel-networth');
+      if(!moneyPanel) return;
+      var value = moneyBtn.getAttribute('data-moneysub');
+      setGroup(
+        '.money-subtab-btn',
+        '.money-subview',
+        'moneysub',
+        'moneypanel',
+        value
+      );
+      var top = moneyPanel.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({top:Math.max(0, top - 10), behavior:'smooth'});
+      return;
+    }
+
+    var planBtn = target.closest('.plan-subtab-btn');
+    if(planBtn){
+      e.preventDefault();
+      var planPanel = qs('#panel-scenarios');
+      if(!planPanel) return;
+      var planValue = planBtn.getAttribute('data-plansub');
+      setGroup(
+        '.plan-subtab-btn',
+        '.plan-subview',
+        'plansub',
+        'planpanel',
+        planValue
+      );
+      var planTop = planPanel.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({top:Math.max(0, planTop - 10), behavior:'smooth'});
+      return;
+    }
+
+    var insightBtn = target.closest('.insight-subtab-btn');
+    if(insightBtn){
+      e.preventDefault();
+      var insightPanel = qs('#panel-insights');
+      if(!insightPanel) return;
+      var insightValue = insightBtn.getAttribute('data-insightsub');
+      setGroup(
+        '.insight-subtab-btn',
+        '.insight-subview',
+        'insightsub',
+        'insightpanel',
+        insightValue
+      );
+      var insightTop = insightPanel.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({top:Math.max(0, insightTop - 10), behavior:'smooth'});
+      return;
+    }
+
+    var projectionBtn = target.closest('.proj-subtab-btn');
+    if(projectionBtn){
+      e.preventDefault();
+      var projectionValue = projectionBtn.getAttribute('data-subtab');
+      setGroup(
+        '.proj-subtab-btn',
+        '.proj-subpanel',
+        'subtab',
+        'subpanel',
+        projectionValue
+      );
+      return;
+    }
+
+    var flowBtn = target.closest('.flow-tab');
+    if(flowBtn){
+      e.preventDefault();
+      var flowValue = flowBtn.getAttribute('data-view');
+      qsa('.flow-tab').forEach(function(btn){
+        btn.classList.toggle('active', btn.getAttribute('data-view') === flowValue);
+      });
+      qsa('.flow-view').forEach(function(view){
+        view.classList.toggle('active', view.id === flowValue);
+      });
+    }
+  }, true);
+
+  /* Re-assert a valid initial state after the dashboard's dynamic render pass. */
+  function normalize(){
+    var moneyActive = qs('.money-subtab-btn.active') || qs('.money-subtab-btn');
+    if(moneyActive){
+      setGroup('.money-subtab-btn','.money-subview','moneysub','moneypanel',
+        moneyActive.getAttribute('data-moneysub'));
+    }
+
+    var planActive = qs('.plan-subtab-btn.active') || qs('.plan-subtab-btn');
+    if(planActive){
+      setGroup('.plan-subtab-btn','.plan-subview','plansub','planpanel',
+        planActive.getAttribute('data-plansub'));
+    }
+
+    var insightActive = qs('.insight-subtab-btn.active') || qs('.insight-subtab-btn');
+    if(insightActive){
+      setGroup('.insight-subtab-btn','.insight-subview','insightsub','insightpanel',
+        insightActive.getAttribute('data-insightsub'));
+    }
+
+    var projectionActive = qs('.proj-subtab-btn.active') || qs('.proj-subtab-btn');
+    if(projectionActive){
+      setGroup('.proj-subtab-btn','.proj-subpanel','subtab','subpanel',
+        projectionActive.getAttribute('data-subtab'));
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){
+      setTimeout(normalize, 50);
+      setTimeout(normalize, 500);
+      setTimeout(normalize, 1500);
+    });
+  }else{
+    setTimeout(normalize, 50);
+    setTimeout(normalize, 500);
+    setTimeout(normalize, 1500);
+  }
 })();
 </script>
 
