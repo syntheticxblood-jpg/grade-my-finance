@@ -1996,22 +1996,9 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
             <div class="chart-wrap" style="display:none"><svg id="ovScoreChart" width="100%" height="90" viewBox="0 0 600 90" preserveAspectRatio="none"></svg><div class="chart-tooltip" id="ovScoreTooltip"></div></div>
             <button class="view-link" data-goto="score" type="button">View full history →</button>
           </div>
-
-          <div class="card">
-            <span class="section-label">Recent check-ins</span>
-            <div id="recentActivity"></div>
-            <button class="view-link" data-goto="score" type="button">View full history →</button>
-          </div>
         </div>
 
         <div class="ov-col">
-          <div class="hero-card">
-            <span class="section-label">Net worth</span>
-            <div class="hv mono" id="ovNetVal">—</div><div class="hv-sub" id="ovNetSub">—</div>
-            <div class="chart-wrap"><svg id="ovNetChart" width="100%" height="150" viewBox="0 0 400 150" preserveAspectRatio="none"></svg></div>
-            <button class="view-link" data-goto="networth" type="button">View full history →</button>
-          </div>
-
           <div class="insight-card" id="goalPreviewCard"></div>
           <div class="insight-card win" id="biggestWinCard" style="display:none"></div>
           <div class="insight-card" id="nextMoveCard" style="display:none"></div>
@@ -2024,54 +2011,11 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div id="insightFeedList"></div>
       </div>
 
-      <div class="metrics-row" style="margin-top:16px; grid-template-columns:1fr 1fr">
-        <div class="metric-card">
-          <div class="m-label">Momentum Score</div>
-          <div style="display:flex; align-items:center; gap:14px; margin-top:8px">
-            <div class="momentum-gauge-wrap">
-              <svg viewBox="0 0 80 80" width="60" height="60" aria-hidden="true">
-                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--surface-2)" stroke-width="7"/>
-                <circle id="momentumRingFg" cx="40" cy="40" r="33" fill="none" stroke="var(--brand)" stroke-width="7" stroke-linecap="round" stroke-dasharray="207.3" stroke-dashoffset="207.3" transform="rotate(-90 40 40)"/>
-              </svg>
-              <div class="momentum-gauge-num" id="momentumVal">—</div>
-            </div>
-            <div class="m-sub" id="momentumSub" style="margin-top:0">—</div>
-          </div>
-        </div>
-        <div class="metric-card">
-          <div class="m-label">Pace Projection</div>
-          <div class="m-val mono" id="paceVal" style="font-size:17px; margin-top:8px">—</div>
-          <div class="m-sub" id="paceSub">—</div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:16px">
-        <span class="section-label">Net worth vs. debt</span>
-        <p class="section-sub" style="margin-top:4px" id="compositionSub">—</p>
-        <div class="chart-wrap"><svg id="compositionChart" width="100%" height="140" viewBox="0 0 600 140" preserveAspectRatio="none"></svg></div>
-        <div class="composition-legend">
-          <span><span class="swatch" style="background:var(--brand-bright)"></span>Net worth</span>
-          <span><span class="swatch" style="background:var(--bad)"></span>Total debt</span>
-        </div>
-      </div>
-
       <div class="card" id="storyModeCard" style="margin-top:16px; display:none">
         <span class="section-label">Your financial story</span>
         <p class="section-sub" style="margin-top:4px">A quick narrative of your journey so far, built from your own check-ins.</p>
         <button class="view-link" id="storyModeToggle" type="button">View your story →</button>
         <div id="storyModeContent" style="display:none; margin-top:16px"></div>
-      </div>
-
-      <div class="card quick-tools-card" style="margin-top:16px">
-        <div class="quick-tools-head"><div><span class="section-label">Explore your money</span><p class="section-sub" style="margin-top:4px">Everything else lives here — without cluttering your main dashboard.</p></div></div>
-        <div class="quick-tools-grid">
-          <button class="quick-tool" data-goto="score" type="button"><span class="qt-icon">↗</span><span><b>Grade &amp; History</b><small>See your score trend and check-ins</small></span><span class="qt-arrow">→</span></button>
-          <button class="quick-tool" data-goto="networth" type="button"><span class="qt-icon">$</span><span><b>Money</b><small>Net worth, cash and debt updates</small></span><span class="qt-arrow">→</span></button>
-          <button class="quick-tool" data-goto="scenarios" type="button"><span class="qt-icon">◇</span><span><b>Your Plan</b><small>Explore what-if paths</small></span><span class="qt-arrow">→</span></button>
-          <button class="quick-tool" data-goto="goals" type="button"><span class="qt-icon">✓</span><span><b>Goals</b><small>Turn your next move into a target</small></span><span class="qt-arrow">→</span></button>
-          <button class="quick-tool" data-goto="retirement" type="button"><span class="qt-icon">◷</span><span><b>Retirement</b><small>Project your financial independence</small></span><span class="qt-arrow">→</span></button>
-          <button class="quick-tool" data-goto="achievements" type="button"><span class="qt-icon">★</span><span><b>Achievements</b><small>See the progress you've earned</small></span><span class="qt-arrow">→</span></button>
-        </div>
       </div>
     </div>
 
@@ -2194,6 +2138,16 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
       <div class="nw-breakdown" id="nwBreakdown"></div>
 
+      <div class="card" style="margin-top:16px">
+        <span class="section-label">Net worth vs. debt</span>
+        <p class="section-sub" style="margin-top:4px" id="compositionSub">—</p>
+        <div class="chart-wrap"><svg id="compositionChart" width="100%" height="140" viewBox="0 0 600 140" preserveAspectRatio="none"></svg></div>
+        <div class="composition-legend">
+          <span><span class="swatch" style="background:var(--brand-bright)"></span>Net worth</span>
+          <span><span class="swatch" style="background:var(--bad)"></span>Total debt</span>
+        </div>
+      </div>
+
       <div class="card">
         <span class="section-label">Manage net worth updates</span>
         <p class="section-sub" style="margin-top:4px">Entered a number wrong or want to remove an old update? Delete individual entries below — this can't be undone.</p>
@@ -2202,7 +2156,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="money-subview" data-moneypanel="moneyflow">
-        <div id="moneyFlowEmptyNote" class="empty-note" style="display:none">Run a check-in from the calculator to see your money flow here.</div>
+        <div id="moneyFlowEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your money flow</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="moneyFlowContent">
           <div class="pro-blur-section">
           <div class="pro-blur-content">
@@ -2249,7 +2203,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="money-subview" data-moneypanel="bills">
-        <div id="billsEmptyNoteWrap" style="display:none" class="empty-note">Run a check-in from the calculator to unlock the bills tracker.</div>
+        <div id="billsEmptyNoteWrap" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to unlock the bills tracker</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="billsContent" class="card">
           <div class="pro-blur-section" style="min-height:340px">
           <div class="pro-blur-content">
@@ -2275,7 +2229,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="money-subview" data-moneypanel="credit">
-        <div id="creditEmptyNoteWrap" style="display:none" class="empty-note">Run a check-in from the calculator to see your credit utilization here.</div>
+        <div id="creditEmptyNoteWrap" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your credit utilization</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="creditContent">
           <div class="pro-blur-section" style="min-height:360px">
           <div class="pro-blur-content">
@@ -2320,7 +2274,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="money-subview" data-moneypanel="allocation">
-        <div id="allocEmptyNoteWrap" style="display:none" class="empty-note">Run a check-in from the calculator to see your asset mix here.</div>
+        <div id="allocEmptyNoteWrap" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your asset mix</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="allocContent">
           <div class="pro-blur-section" style="min-height:400px">
           <div class="pro-blur-content">
@@ -2392,7 +2346,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="plan-subview active" data-planpanel="opportunities">
-        <div id="planOppEmptyNote" class="empty-note" style="display:none">Run a check-in from the calculator to see your opportunities here.</div>
+        <div id="planOppEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your opportunities</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="planOppContent">
           <div class="pro-blur-section" style="min-height:340px">
           <div class="pro-blur-content">
@@ -2414,7 +2368,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="plan-subview" data-planpanel="debtplan">
-        <div id="planDebtEmptyNote" class="empty-note" style="display:none">Run a check-in from the calculator to see your debt payoff plan here.</div>
+        <div id="planDebtEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your debt payoff plan</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="planDebtContent" class="card">
           <div class="pro-blur-section" style="min-height:320px">
           <div class="pro-blur-content">
@@ -2456,7 +2410,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="plan-subview" data-planpanel="projections">
-        <div id="planProjEmptyNote" class="empty-note" style="display:none">Run a check-in from the calculator to see your projections here.</div>
+        <div id="planProjEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your projections</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="planProjContent">
           <p class="section-sub" style="margin-bottom:14px">Quick What-If (the live slider that previews grade changes) still lives in your <a href="index.html?openReport=1">full Report Card →</a> — it needs the calculator form itself. Everything else is here.</p>
           <div class="proj-subtabs" id="projSubtabs">
@@ -2654,7 +2608,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="insight-subview active" data-insightpanel="benchmarks">
-        <div id="insightBenchEmptyNote" class="empty-note" style="display:none">Run a check-in from the calculator to see your benchmarks here.</div>
+        <div id="insightBenchEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your benchmarks</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="insightBenchContent">
           <div class="pro-blur-section">
           <div class="pro-blur-content">
@@ -2675,7 +2629,27 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="insight-subview" data-insightpanel="perspective">
-        <div id="insightPerspEmptyNote" class="empty-note" style="display:none">Run a check-in from the calculator to see this here.</div>
+        <div class="metrics-row" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
+          <div class="metric-card">
+            <div class="m-label">Momentum Score</div>
+            <div style="display:flex; align-items:center; gap:14px; margin-top:8px">
+              <div class="momentum-gauge-wrap">
+                <svg viewBox="0 0 80 80" width="60" height="60" aria-hidden="true">
+                  <circle cx="40" cy="40" r="33" fill="none" stroke="var(--surface-2)" stroke-width="7"/>
+                  <circle id="momentumRingFg" cx="40" cy="40" r="33" fill="none" stroke="var(--brand)" stroke-width="7" stroke-linecap="round" stroke-dasharray="207.3" stroke-dashoffset="207.3" transform="rotate(-90 40 40)"/>
+                </svg>
+                <div class="momentum-gauge-num" id="momentumVal">—</div>
+              </div>
+              <div class="m-sub" id="momentumSub" style="margin-top:0">—</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="m-label">Pace Projection</div>
+            <div class="m-val mono" id="paceVal" style="font-size:17px; margin-top:8px">—</div>
+            <div class="m-sub" id="paceSub">—</div>
+          </div>
+        </div>
+        <div id="insightPerspEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see this</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="insightPerspContent">
           <div class="pro-blur-section" style="min-height:320px">
           <div class="pro-blur-content">
@@ -2726,7 +2700,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="insight-subview" data-insightpanel="stresstest">
-        <div id="insightStressEmptyNote" class="empty-note" style="display:none">Run a check-in from the calculator to see your resilience simulation here.</div>
+        <div id="insightStressEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your resilience simulation</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="insightStressContent">
           <div class="pro-blur-section" style="min-height:400px">
           <div class="pro-blur-content">
@@ -5544,56 +5518,12 @@ function renderOverview(hist, groups){
     if(sliderMarker) sliderMarker.style.left = "0%";
   }
 
-  // Recent activity (grouped) - rendered as a real table with a Change
-  // column showing the score delta from the check-in immediately before
-  // it, computed from the full chronological group list before slicing
-  // to the most recent 5, so the very first displayed row can still show
-  // a real delta rather than a blank dash.
-  var activityEl = $("recentActivity");
-  activityEl.innerHTML = "";
-  if(!groups.length){
-    activityEl.innerHTML = '<div class="empty-note">No check-ins yet.</div>';
-  } else {
-    var withDeltas = groups.map(function(g, i){
-      var prev = i > 0 ? groups[i-1].score : null;
-      return { g:g, delta: prev !== null ? g.score - prev : null };
-    });
-    var recentWithDeltas = withDeltas.slice(-5).reverse();
-    var table = el("div", { className:"activity-table" });
-    table.innerHTML =
-      '<div class="activity-row activity-head"><span>Date</span><span>Score</span><span>Grade</span><span>Change</span></div>';
-    recentWithDeltas.forEach(function(item){
-      var g = item.g, delta = item.delta;
-      var deltaHtml = "—";
-      if(delta !== null){
-        if(Math.abs(delta) < 0.05) deltaHtml = '<span style="color:var(--muted-2)">—</span>';
-        else if(delta > 0) deltaHtml = '<span style="color:var(--good)">↑ '+delta.toFixed(1)+'</span>';
-        else deltaHtml = '<span style="color:var(--bad)">↓ '+Math.abs(delta).toFixed(1)+'</span>';
-      }
-      var row = el("div", { className:"activity-row" });
-      row.innerHTML =
-        '<span class="activity-date">'+formatDate(g.endTs)+'</span>'+
-        '<span class="activity-score mono">'+g.score.toFixed(1)+'</span>'+
-        '<span class="activity-grade">'+overallLetter(Math.round(g.score))+'</span>'+
-        '<span class="activity-change mono">'+deltaHtml+'</span>';
-      table.appendChild(row);
-    });
-    activityEl.appendChild(table);
-  }
-
-  // Net worth mini card
-  var nwEl = $("ovNetVal"), nwSub = $("ovNetSub");
-  if(latestNet){
-    nwEl.textContent = money(latestNet.net);
-    if(withNet.length >= 2){
-      var nChange = latestNet.net - withNet[0].net;
-      var pct = withNet[0].net !== 0 ? (nChange/Math.abs(withNet[0].net))*100 : null;
-      nwSub.innerHTML = (nChange>=0?'<span style="color:var(--good)">↑ ':'<span style="color:var(--bad)">↓ ')+formatCompact(Math.abs(nChange))+'</span>'+(pct!==null?' ('+(nChange>=0?'+':'')+pct.toFixed(1)+'%)':'')+' since first tracked';
-    } else { nwSub.textContent = "One entry tracked so far."; }
-    drawChart($("ovNetChart"), null, withNet.slice(-30).map(function(h){ return {v:h.net, ts:h.ts}; }), { w:400, h:150, formatter:formatCompact });
-  } else {
-    nwEl.textContent = "—"; nwSub.textContent = "Recorded automatically when you check in.";
-  }
+  // Recent check-ins and the small Net Worth trend card used to render
+  // here, but both duplicated content already shown elsewhere (Grade &
+  // History's check-in table; the Net Worth metric card up top and the
+  // full chart on the Money tab) - removed from Overview to cut down the
+  // scroll. renderGoalPreview/renderBiggestWin/renderNextMove below still
+  // use `withNet`/`latestNet` computed above this point.
 
   renderGoalPreview();
   renderBiggestWin(hist);
