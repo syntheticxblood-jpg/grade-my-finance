@@ -5309,259 +5309,252 @@ function renderNetWorthPaceGauge(v){
   captionEl.textContent = label + ' for your age — ' + money(v.net) + ' vs. a rough benchmark of ' + money(benchmark);
 }
 
-function renderEmergencyStressTest(v){
+function renderEmergencyStressTest(inputV){
+  /*
+   * GMF STRESS TEST — rebuilt as a self-contained simulator.
+   *
+   * The previous version depended on gmf_last_report being complete and on
+   * several other dashboard modules finishing successfully. This version's
+   * only source of truth is the latest financial snapshot, with a history
+   * fallback. It normalizes the data first, then owns the simulation, score,
+   * chart, scenarios, analysis, and comparison output from start to finish.
+   */
   var grid = $("stAssumptionsGrid");
   if(!grid) return;
 
-  var a = defaultStressAssumptions(v);
-  var employmentEl = $("stEmployment"), emergencyEl = $("stEmergency"), housingEl = $("stHousing");
+  function n(x, fallback){
+    var v = Number(x);
+    return isFinite(v) ? v : (fallback || 0);
+  }
+  function latestHistory(){
+    try{
+      var h = JSON.parse(localStorage.getItem('gmf_history_v2') || '[]');
+      return Array.isArray(h) && h.length ? h[h.length-1] : null;
+    }catch(e){ return null; }
+  }
 
-  var ASSUMPTION_FIELDS = [
-    { key:'income', label:'Monthly income' },
-    { key:'essential', label:'Essential expenses/mo' },
-    { key:'discretionary', label:'Discretionary expenses/mo' },
-    { key:'debtPayments', label:'Est. monthly debt payments' },
-    { key:'liquidCash', label:'Liquid cash (checking/savings)' },
-    { key:'brokerage', label:'Brokerage & other investments' },
-    { key:'retirement', label:'Retirement (401k/IRA/HSA)' },
-    { key:'unemploymentBenefit', label:'Unemployment benefit/mo' },
-    { key:'severance', label:'Severance (one-time)' },
-    { key:'monthsToFindJob', label:'Months to find new job' },
-    { key:'replacementPct', label:'New job pay, % of old (%)' },
-    { key:'expenseReductionPct', label:'Belt-tightening once in crisis (%)' }
-  ];
-  grid.innerHTML = ASSUMPTION_FIELDS.map(function(f){
-    return '<div class="stress-assumption-field"><label for="stA_'+f.key+'">'+f.label+'</label><input type="number" id="stA_'+f.key+'" value="'+a[f.key]+'"></div>';
-  }).join('');
+  var v = Object.assign({}, inputV || {});
+  var hLatest = latestHistory();
 
-  function readAssumptionsFromInputs(){
-    ASSUMPTION_FIELDS.forEach(function(f){
-      var el2 = $("stA_"+f.key);
-      if(el2){ var val = +el2.value; if(!isNaN(val)) a[f.key] = val; }
+  /* Fill missing/invalid report fields from the dashboard's actual history. */
+  if(hLatest){
+    [
+      'annualIncome','monthlyExpenses','expenses','income','cash','brokerage','crypto',
+      'retire','hsa','cc','otherDebt','auto','student','mortgage','net','totalDebt','age'
+    ].forEach(function(k){
+      var cur = Number(v[k]);
+      var hv = Number(hLatest[k]);
+      if(!isFinite(cur) && isFinite(hv)) v[k] = hv;
     });
   }
-  grid.querySelectorAll('input').forEach(function(inp){ inp.addEventListener('input', function(){ readAssumptionsFromInputs(); update(); }); });
+
+  var annualIncome = n(v.annualIncome, 0);
+  var income = n(v.income, annualIncome > 0 ? annualIncome/12 : 0);
+  if(!(income > 0) && hLatest) income = n(hLatest.income, n(hLatest.annualIncome)/12);
+  var expenses = n(v.expenses, n(v.monthlyExpenses, 0));
+  if(!(expenses > 0) && hLatest) expenses = n(hLatest.monthlyExpenses, n(hLatest.expenses,0));
+
+  var cash = Math.max(0, n(v.cash));
+  var brokerage = Math.max(0, n(v.brokerage) + n(v.crypto));
+  var retirement = Math.max(0, n(v.retire) + n(v.hsa));
+  var cc=n(v.cc), otherDebt=n(v.otherDebt), auto=n(v.auto), student=n(v.student);
+  var debtPayments = n(v.debtPayments);
+  if(!(debtPayments > 0)){
+    [cc,otherDebt,auto,student].forEach(function(b){
+      if(b>0) debtPayments += Math.min(Math.max(b*0.02,25),b);
+    });
+  }
+
+  var base = {
+    income: Math.max(0,income),
+    essential: Math.max(0,Math.round(expenses*0.70)),
+    discretionary: Math.max(0,Math.round(expenses*0.30)),
+    debtPayments: Math.max(0,Math.round(debtPayments)),
+    liquidCash: Math.round(cash),
+    brokerage: Math.round(brokerage),
+    retirement: Math.round(retirement),
+    unemploymentBenefit: Math.round(Math.min(Math.max(0,income)*0.40,2200)),
+    severance: Math.max(0,n(v.severance)),
+    monthsToFindJob: Math.max(1,Math.round(n(v.monthsToFindJob,4))),
+    replacementPct: Math.max(0,Math.min(100,n(v.replacementPct,85))),
+    expenseReductionPct: Math.max(0,Math.min(80,n(v.expenseReductionPct,15))),
+    monthlyInflationPct: Math.max(0,n(v.monthlyInflationPct,0.25))
+  };
+
+  var employmentEl=$("stEmployment"), emergencyEl=$("stEmergency"), housingEl=$("stHousing");
+  var scoreEl=$("rsScoreNum"), tierEl=$("rsScoreTier"), explainEl=$("rsExplain"), ringEl=$("rsRingFg");
+  var chartEl=$("stChart"), outcomesEl=$("stressOutcomesRow"), insightEl=$("stressInsightCard");
+  var detailEl=$("stDetailGrid"), breakEl=$("stBreakingPoint"), vulnEl=$("stVulnerability");
+  var compareEl=$("stCompareTable"), leversEl=$("stLevers");
+
+  var fields=[
+    ['income','Monthly income'],['essential','Essential expenses/mo'],['discretionary','Discretionary expenses/mo'],
+    ['debtPayments','Est. monthly debt payments'],['liquidCash','Liquid cash (checking/savings)'],
+    ['brokerage','Brokerage & other investments'],['retirement','Retirement (401k/IRA/HSA)'],
+    ['unemploymentBenefit','Unemployment benefit/mo'],['severance','Severance (one-time)'],
+    ['monthsToFindJob','Months to find new job'],['replacementPct','New job pay, % of old (%)'],
+    ['expenseReductionPct','Belt-tightening once in crisis (%)']
+  ];
+
+  function readInputs(){
+    fields.forEach(function(f){
+      var el=$("stA_"+f[0]);
+      if(el){ var val=Number(el.value); if(isFinite(val)) base[f[0]]=val; }
+    });
+  }
+  function money2(x){
+    x=n(x); var sign=x<0?'-':''; var a=Math.abs(x);
+    if(a>=1000000) return sign+'$'+(a/1000000).toFixed(a>=10000000?1:2)+'M';
+    if(a>=1000) return sign+'$'+Math.round(a/1000)+'k';
+    return sign+'$'+Math.round(a).toLocaleString();
+  }
+  function clamp2(x,a,b){return Math.max(a,Math.min(b,x));}
+
+  function simulate(scenario, months){
+    months=months||24;
+    var liquid=base.liquidCash, brokerage=base.brokerage, retirement=base.retirement;
+    var starting=liquid+brokerage, timeline=[], breaking=null, resume=null, recover=null;
+    var touchedRet=false, touchedBroker=false;
+    for(var m=0;m<=months;m++){
+      var inc=base.income;
+      if(scenario.employment==='jobloss'){
+        if(m===0) inc=base.severance;
+        else if(m<=base.monthsToFindJob) inc=base.unemploymentBenefit;
+        else { inc=base.income*(base.replacementPct/100); if(resume===null) resume=m; }
+      }else if(scenario.employment==='cut25') inc=base.income*.75;
+      else if(scenario.employment==='cut50') inc=base.income*.50;
+      else if(scenario.employment==='leave'){
+        if(m>=1 && m<=2) inc=0;
+        else if(m>2 && resume===null) resume=m;
+      }
+      var crisis=inc<base.income;
+      var essential=base.essential*Math.pow(1+base.monthlyInflationPct/100,m);
+      var discretionary=crisis ? base.discretionary*(1-base.expenseReductionPct/100) : base.discretionary;
+      var emergency=(m===1)?scenario.emergencyExpense:0;
+      var debt=base.debtPayments+scenario.housingIncrease;
+      var outflow=essential+discretionary+debt+emergency;
+      var net=inc-outflow;
+      if(net>=0) liquid+=net;
+      else{
+        var shortfall=-net;
+        var useL=Math.min(liquid,shortfall); liquid-=useL; shortfall-=useL;
+        var useB=Math.min(brokerage,shortfall); brokerage-=useB; shortfall-=useB; if(useB>0)touchedBroker=true;
+        var useR=Math.min(retirement,shortfall); retirement-=useR; shortfall-=useR; if(useR>0)touchedRet=true;
+      }
+      var accessible=liquid+brokerage;
+      if(breaking===null && accessible<=0) breaking=m;
+      if(breaking!==null && recover===null && accessible>=starting) recover=m;
+      timeline.push({month:m,income:inc,essential:essential,discretionary:discretionary,debt:debt,emergency:emergency,liquid:liquid,brokerage:brokerage,retirement:retirement,accessible:accessible});
+    }
+    return {timeline:timeline,startingAccessible:starting,finalAccessible:liquid+brokerage,breakingMonth:breaking,stabilizeMonth:resume,rebuildAccessibleMonth:recover,touchedRetirement:touchedRet,touchedBrokerage:touchedBroker};
+  }
+
+  function scoreFor(result){
+    var runway=result.breakingMonth===null?24:result.breakingMonth;
+    var runwayPts=clamp2(runway/6,0,1)*40;
+    var liquidityRatio=(base.liquidCash+base.brokerage)/Math.max(1,base.liquidCash+base.brokerage+base.retirement);
+    var liquidityPts=liquidityRatio*20;
+    var debtRatio=base.debtPayments/Math.max(1,base.income);
+    var debtPts=clamp2(1-debtRatio/.4,0,1)*20;
+    var expenseRatio=(base.essential+base.discretionary)/Math.max(1,base.income);
+    var expensePts=clamp2(1-expenseRatio,0,1)*20;
+    var score=Math.round(runwayPts+liquidityPts+debtPts+expensePts);
+    var tier=score>=80?'strong':score>=60?'watch':score>=40?'vulnerable':'critical';
+    var labels={strong:'Strong',watch:'Watch',vulnerable:'Vulnerable',critical:'Critical'};
+    var explains={strong:'You have substantial flexibility to absorb a real financial shock.',watch:'A prolonged disruption could create real pressure, though you have some cushion.',vulnerable:'Your current cash flow could become problematic fairly quickly under a real shock.',critical:'You may want to prioritize building an emergency cushion before anything else.'};
+    return {score:score,tier:tier,label:labels[tier],explain:explains[tier],liquidityRatio:liquidityRatio,debtRatio:debtRatio,expenseRatio:expenseRatio};
+  }
+
+  function renderChart(result){
+    if(!chartEl)return;
+    var vals=result.timeline.map(function(t){return t.accessible;});
+    var W=900,H=360,L=82,R=28,T=56,B=44, iw=W-L-R, ih=H-T-B;
+    var min=Math.min.apply(null,vals.concat([0]));
+    var max=Math.max.apply(null,vals.concat([1]));
+    if(max<=min)max=min+1;
+    function x(i){return L+(i/(vals.length-1))*iw;}
+    function y(v){return T+ih-((v-min)/(max-min))*ih;}
+    var html='';
+    html+='<rect x="0" y="0" width="900" height="360" rx="18" fill="#fbfdfc"/>';
+    [min,(min+max)/2,max].forEach(function(g){var gy=y(g);html+='<line x1="'+L+'" y1="'+gy+'" x2="'+(W-R)+'" y2="'+gy+'" stroke="#dce6e3" stroke-width="1"/>';html+='<text x="8" y="'+(gy+5)+'" fill="#70817f" font-size="13" font-family="Inter,Arial,sans-serif">'+money2(g)+'</text>';});
+    var zeroY=y(0); html+='<line x1="'+L+'" y1="'+zeroY+'" x2="'+(W-R)+'" y2="'+zeroY+'" stroke="#d9655c" stroke-width="1.5" stroke-dasharray="5 5"/>';
+    var path=''; for(var i=0;i<vals.length;i++)path+=(i?' L ':'M ')+x(i)+' '+y(vals[i]);
+    var area=path+' L '+x(vals.length-1)+' '+y(min)+' L '+x(0)+' '+y(min)+' Z';
+    html+='<path d="'+area+'" fill="#0f9f7a" opacity=".10"/>';
+    html+='<path d="'+path+'" fill="none" stroke="#0f9f7a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+    var lowI=0; for(var j=1;j<vals.length;j++)if(vals[j]<vals[lowI])lowI=j;
+    var marks=[{i:0,label:'START',c:'#c9932f'},{i:lowI,label:'LOWEST '+money2(vals[lowI]),c:vals[lowI]<=0?'#d9655c':'#c9932f'}];
+    if(result.stabilizeMonth!==null)marks.push({i:result.stabilizeMonth,label:'INCOME RESUMES',c:'#5b8def'});
+    if(result.rebuildAccessibleMonth!==null)marks.push({i:result.rebuildAccessibleMonth,label:'RECOVERED',c:'#0f9f7a'});
+    var used={}; marks=marks.filter(function(m){if(used[m.i])return false;used[m.i]=1;return true;}).sort(function(a,b){return a.i-b.i;});
+    marks.forEach(function(m){var px=x(m.i),py=y(vals[m.i]);html+='<line x1="'+px+'" y1="'+T+'" x2="'+px+'" y2="'+(H-B)+'" stroke="'+m.c+'" stroke-opacity=".16" stroke-dasharray="3 4"/>';html+='<circle cx="'+px+'" cy="'+py+'" r="6" fill="'+m.c+'" stroke="#fff" stroke-width="2"/><text x="'+px+'" y="25" text-anchor="middle" fill="'+m.c+'" font-size="12" font-weight="800" font-family="Inter,Arial,sans-serif">'+m.label+'</text>';});
+    var step=vals.length<=12?3:6;
+    for(var tm=0;tm<vals.length;tm+=step){var tx=x(tm);html+='<text x="'+tx+'" y="'+(H-14)+'" text-anchor="middle" fill="#71817f" font-size="12" font-family="Inter,Arial,sans-serif">Mo '+tm+'</text>';}
+    html+='<text x="'+(W-R)+'" y="'+(H-14)+'" text-anchor="end" fill="#71817f" font-size="12" font-family="Inter,Arial,sans-serif">24-month simulation</text>';
+    chartEl.setAttribute('viewBox','0 0 900 360'); chartEl.setAttribute('preserveAspectRatio','none'); chartEl.style.display='block'; chartEl.innerHTML=html;
+  }
 
   function currentScenario(){
-    return {
-      employment: employmentEl.value,
-      emergencyExpense: +emergencyEl.value || 0,
-      housingIncrease: +housingEl.value || 0
-    };
+    return {employment:employmentEl?employmentEl.value:'jobloss',emergencyExpense:emergencyEl?n(emergencyEl.value):0,housingIncrease:housingEl?n(housingEl.value):0};
   }
 
-  // Scenario presets - clicking one sets all three controls at once and
-  // recalculates immediately, so exploring a named "what if" takes one
-  // click instead of three separate menu choices.
-  var PRESETS = [
-    { key:'jobloss', label:'Job loss', employment:'jobloss', emergency:'0', housing:'0' },
-    { key:'medical', label:'Medical emergency', employment:'none', emergency:'10000', housing:'0' },
-    { key:'homerepair', label:'Home repair', employment:'none', emergency:'20000', housing:'0' },
-    { key:'leave', label:'Unpaid leave', employment:'leave', emergency:'0', housing:'0' },
-    { key:'cut25', label:'Income reduction', employment:'cut25', emergency:'0', housing:'0' },
-    { key:'recession', label:'Recession', employment:'cut50', emergency:'5000', housing:'200' }
+  grid.innerHTML=fields.map(function(f){return '<div class="stress-assumption-field"><label for="stA_'+f[0]+'">'+f[1]+'</label><input type="number" id="stA_'+f[0]+'" value="'+base[f[0]]+'" step="any"></div>';}).join('');
+  grid.querySelectorAll('input').forEach(function(el){el.addEventListener('input',function(){readInputs();update();});});
+
+  var presets=[
+    ['jobloss','Job loss','jobloss',0,0],['medical','Medical emergency','none',10000,0],['homerepair','Home repair','none',20000,0],
+    ['leave','Unpaid leave','leave',0,0],['cut25','Income reduction','cut25',0,0],['recession','Recession','cut50',5000,200]
   ];
-  var presetRow = $("stressPresetRow");
+  var presetRow=$("stressPresetRow");
   if(presetRow){
-    presetRow.innerHTML = PRESETS.map(function(p){
-      return '<button type="button" class="stress-preset-btn" data-preset="'+p.key+'">'+p.label+'</button>';
-    }).join('');
-    presetRow.querySelectorAll('.stress-preset-btn').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var p = PRESETS.filter(function(x){ return x.key===btn.dataset.preset; })[0];
-        if(!p) return;
-        employmentEl.value = p.employment;
-        emergencyEl.value = p.emergency;
-        housingEl.value = p.housing;
-        update();
-        __track('stress_preset_selected', { preset: p.key });
-      });
-    });
-  }
-  function syncPresetActiveState(){
-    if(!presetRow) return;
-    var emp=employmentEl.value, emg=emergencyEl.value, hou=housingEl.value;
-    presetRow.querySelectorAll('.stress-preset-btn').forEach(function(btn){
-      var p = PRESETS.filter(function(x){ return x.key===btn.dataset.preset; })[0];
-      btn.classList.toggle('active', !!p && p.employment===emp && p.emergency===emg && p.housing===hou);
-    });
-  }
-
-  // Real computed marginal-impact deltas for the "biggest levers" list -
-  // unchanged math, just pulled into its own function so both the insight
-  // narrative and the detailed-breakdown levers list can reuse it.
-  function computeLevers(assumptions, scenario, stressedResult){
-    var baseRunwayMonths = stressedResult.breakingMonth === null ? 24 : stressedResult.breakingMonth;
-    function deltaFor(modifiedAssumptions){
-      var r = simulateStress(modifiedAssumptions, scenario, 24);
-      var m = r.breakingMonth === null ? 24 : r.breakingMonth;
-      return m - baseRunwayMonths;
-    }
-    return [
-      { label:'+$5,000 emergency savings', delta: deltaFor(Object.assign({}, assumptions, { liquidCash: assumptions.liquidCash + 5000 })) },
-      { label:'-$500/mo discretionary spending', delta: deltaFor(Object.assign({}, assumptions, { discretionary: Math.max(0, assumptions.discretionary - 500) })) },
-      { label:'Find replacement income 1 month faster', delta: deltaFor(Object.assign({}, assumptions, { monthsToFindJob: Math.max(1, assumptions.monthsToFindJob - 1) })) },
-      { label:'-$300/mo debt payments', delta: deltaFor(Object.assign({}, assumptions, { debtPayments: Math.max(0, assumptions.debtPayments - 300) })) }
-    ].filter(function(l){ return l.delta > 0; }).sort(function(x,y){ return y.delta - x.delta; }).slice(0,3);
+    presetRow.innerHTML=presets.map(function(p){return '<button type="button" class="stress-preset-btn" data-preset="'+p[0]+'">'+p[1]+'</button>';}).join('');
+    presetRow.querySelectorAll('button').forEach(function(btn){btn.addEventListener('click',function(){var p=presets.filter(function(x){return x[0]===btn.dataset.preset;})[0];if(!p)return;if(employmentEl)employmentEl.value=p[2];if(emergencyEl)emergencyEl.value=p[3];if(housingEl)housingEl.value=p[4];update();});});
   }
 
   function update(){
-    var scenario = currentScenario();
-    syncPresetActiveState();
+    readInputs();
+    var scenario=currentScenario();
+    var result=simulate(scenario,24);
+    var rs=scoreFor(result);
+    if(scoreEl)scoreEl.textContent=String(rs.score);
+    if(tierEl){tierEl.textContent=rs.label.toUpperCase();tierEl.className='stress-tier-v2 '+rs.tier;}
+    if(explainEl)explainEl.textContent=rs.explain;
+    if(ringEl){var circ=2*Math.PI*52;ringEl.setAttribute('stroke-dasharray',circ.toFixed(1));ringEl.setAttribute('stroke-dashoffset',(circ*(1-rs.score/100)).toFixed(1));ringEl.setAttribute('stroke',rs.tier==='strong'?'#4FC28A':rs.tier==='watch'?'#E8B34A':rs.tier==='vulnerable'?'#E8A34A':'#E15B5B');}
+    renderChart(result);
 
-    var stressedResult = simulateStress(a, scenario, 24);
-    var vals = stressedResult.timeline.map(function(t){ return t.accessible; });
-    var lowIdx = 0; for(var li=1; li<vals.length; li++){ if(vals[li] < vals[lowIdx]) lowIdx = li; }
-    var lowestVal = vals[lowIdx];
+    var vals=result.timeline.map(function(t){return t.accessible;});
+    var low=Math.min.apply(null,vals), lowMonth=vals.indexOf(low);
+    if(outcomesEl)outcomesEl.innerHTML='<div class="stress-outcome-card"><div class="stress-outcome-num '+(low<=0?'bad':'')+'">'+money2(low)+'</div><div class="stress-outcome-label">Lowest liquidity · month '+lowMonth+'</div></div><div class="stress-outcome-card"><div class="stress-outcome-num">'+(result.stabilizeMonth===null?'No recovery yet':'Month '+result.stabilizeMonth)+'</div><div class="stress-outcome-label">Income resumes</div></div><div class="stress-outcome-card"><div class="stress-outcome-num '+(result.finalAccessible>=result.startingAccessible?'good':'')+'">'+money2(result.finalAccessible)+'</div><div class="stress-outcome-label">Ending liquidity</div></div>';
 
-    // Resilience score now reflects the CURRENT scenario (see note on the
-    // function itself) so the ring, tier, and factors always describe
-    // exactly what's shown in the rest of the simulator.
-    var rs = resilienceScore(a, scenario);
+    var strength=(rs.liquidityRatio>=.65?'Strong liquid reserves':rs.expenseRatio<=.7?'Healthy spending margin':'Some financial flexibility');
+    var vuln=rs.debtRatio>.2?'Debt obligations are a major fixed cost.':rs.liquidityRatio<.35?'Too much of your accessible wealth is tied up outside cash/brokerage.':result.breakingMonth!==null?'Accessible reserves reach zero during the scenario.':'Your largest exposure is the length of the income disruption.';
+    var lever=[];
+    function deltaScenario(mod){var r=simulate(mod,24);var a=result.breakingMonth===null?24:result.breakingMonth;var b=r.breakingMonth===null?24:r.breakingMonth;return b-a;}
+    lever=[
+      {label:'Add $5,000 to liquid savings',delta:deltaScenario(Object.assign({},base,{liquidCash:base.liquidCash+5000}))},
+      {label:'Cut $500/mo discretionary spending',delta:deltaScenario(Object.assign({},base,{discretionary:Math.max(0,base.discretionary-500)}))},
+      {label:'Find replacement income 1 month faster',delta:deltaScenario(Object.assign({},base,{monthsToFindJob:Math.max(1,base.monthsToFindJob-1)}))},
+      {label:'Reduce debt payments by $300/mo',delta:deltaScenario(Object.assign({},base,{debtPayments:Math.max(0,base.debtPayments-300)}))}
+    ].filter(function(x){return x.delta>0;}).sort(function(a,b){return b.delta-a.delta;}).slice(0,3);
+    if(insightEl)insightEl.innerHTML='<div class="stress-analysis-verdict">Your financial resilience is <b>'+rs.label.toLowerCase()+'</b> under the scenario shown.</div><div class="stress-analysis-facts"><div><div class="stress-analysis-fact-label">BIGGEST STRENGTH</div><div class="stress-analysis-fact-body">'+strength+'</div></div><div><div class="stress-analysis-fact-label">BIGGEST VULNERABILITY</div><div class="stress-analysis-fact-body">'+vuln+'</div></div><div><div class="stress-analysis-fact-label">MOST IMPACTFUL LEVER</div><div class="stress-analysis-fact-body">'+(lever.length?lever[0].label+' could extend the modeled runway by about '+lever[0].delta+' month'+(lever[0].delta===1?'':'s')+'.':'No single tested lever materially changes the modeled runway.')+'</div></div></div>';
 
-    var ringFg = $("rsRingFg");
-    if(ringFg){
-      var circumference = 2*Math.PI*52;
-      var offset = circumference * (1 - rs.score/100);
-      ringFg.setAttribute('stroke-dasharray', circumference.toFixed(1));
-      ringFg.setAttribute('stroke-dashoffset', offset.toFixed(1));
-      ringFg.setAttribute('stroke', rs.tier==='strong' ? '#4FC28A' : rs.tier==='watch' ? '#E8B34A' : rs.tier==='vulnerable' ? '#E8A34A' : '#E15B5B');
-    }
-    $("rsScoreNum").textContent = rs.score;
-    var tierEl = $("rsScoreTier");
-    tierEl.textContent = rs.tierLabel.toUpperCase();
-    tierEl.className = 'stress-tier-v2 ' + rs.tier;
-    $("rsExplain").textContent = rs.tierExplain;
+    var draw=Math.max(0,result.startingAccessible-low);
+    if(detailEl)detailEl.innerHTML=[['Starting liquid assets',money2(result.startingAccessible)],['Lowest liquid assets',money2(low)],['Total drawdown',money2(draw)],['Emergency expense',money2(scenario.emergencyExpense)],['Monthly cost increase',money2(scenario.housingIncrease)+'/mo'],['Final liquid assets',money2(result.finalAccessible)],['Net change',money2(result.finalAccessible-result.startingAccessible)],['Retirement touched',result.touchedRetirement?'Yes':'No']].map(function(d){return '<div class="stress-detail-item"><div class="stress-detail-label">'+d[0]+'</div><div class="stress-detail-val">'+d[1]+'</div></div>';}).join('');
+    if(breakEl)breakEl.innerHTML=result.breakingMonth===null?'<b>No breaking point in 24 months</b>Your accessible cash + brokerage never reach zero in this modeled window.':'<b>Breaking point: month '+result.breakingMonth+'</b>Your accessible cash + brokerage are exhausted under this scenario. Retirement assets would be the next funding source.';
+    if(vulnEl)vulnEl.innerHTML='<b>'+vuln+'</b> This is a modeled stress test, not a prediction.';
 
-    // What drives your score - the exact same weighted components behind
-    // the number above, just shown per-factor so the score is explained
-    // rather than just stated. Lives inside "View your full analysis" now,
-    // not on the main screen.
-    var driversEl = $("stressDrivers");
-    if(driversEl){
-      var DRIVER_EXPLANATIONS = {
-        liquidity: function(){ return 'You hold about '+Math.round(rs.liquidityRatio*100)+'% of your accessible net worth in cash or brokerage rather than retirement accounts.'; },
-        spending: function(){ return 'Essential and discretionary spending together use about '+Math.round(rs.expenseRatio*100)+'% of your income.'; },
-        debt: function(){ return 'Estimated debt payments run about '+Math.round(rs.debtRatio*100)+'% of your income.'; },
-        recovery: function(){ return rs.stressedRunway >= 24 ? 'Under a standard job-loss test, your reserves hold up for the full simulated window.' : 'Under a standard job-loss test, your reserves last about '+rs.stressedRunway+' months before running out.'; }
-      };
-      driversEl.innerHTML = rs.factors.map(function(f){
-        var strengthTier = f.pct>=80 ? 'strong' : f.pct>=60 ? 'good' : f.pct>=40 ? 'fair' : 'weak';
-        var strengthLabel = { strong:'Strong', good:'Good', fair:'Fair', weak:'Weak' }[strengthTier];
-        var explain = DRIVER_EXPLANATIONS[f.key] ? DRIVER_EXPLANATIONS[f.key]() : '';
-        return '<div class="stress-driver-row">' +
-          '<div class="stress-driver-head"><span class="stress-driver-name">'+f.label+'</span><span class="stress-driver-strength '+strengthTier+'">'+strengthLabel+'</span></div>' +
-          '<div class="stress-driver-bar-track"><div class="stress-driver-bar-fill '+strengthTier+'" style="width:'+f.pct+'%"></div></div>' +
-          '<div class="stress-driver-explain">'+explain+'</div>' +
-        '</div>';
-      }).join('');
-    }
-
-    // Three outcome numbers - the only always-visible results besides the
-    // score and chart. Everything else that used to live here (the old
-    // 4-card metric row, the story ticker) either duplicated what the
-    // chart already shows, or belongs in the full-analysis view instead.
-    var incomeResumesVal;
-    if(scenario.employment === 'none'){ incomeResumesVal = 'No disruption'; }
-    else if(stressedResult.stabilizeMonth !== null){ incomeResumesVal = 'Month '+stressedResult.stabilizeMonth; }
-    else { incomeResumesVal = 'Ongoing'; }
-    var outcomes = [
-      { label:'Lowest liquidity', val: money(lowestVal), cls: lowestVal<=0 ? 'bad' : '' },
-      { label:'Income resumes', val: incomeResumesVal },
-      { label:'Ending liquidity', val: money(stressedResult.finalAccessible), cls: stressedResult.finalAccessible >= stressedResult.startingAccessible ? 'good' : '' }
+    var cases=[
+      ['Base case',{employment:'cut25',emergencyExpense:5000,housingIncrease:0}],
+      ['Severe case',{employment:'jobloss',emergencyExpense:10000,housingIncrease:200}],
+      ['Worst reasonable',{employment:'jobloss',emergencyExpense:20000,housingIncrease:400}]
     ];
-    $("stressOutcomesRow").innerHTML = outcomes.map(function(o){
-      return '<div class="stress-outcome-card"><div class="stress-outcome-num '+(o.cls||'')+'">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';
-    }).join('');
-
-    renderStressChart($("stChart"), stressedResult, a.income);
-
-    var vuln = computeVulnerability(a);
-    var leverCandidates = computeLevers(a, scenario, stressedResult);
-    var insightEl = $("stressInsightCard");
-    // Pro Analysis: a one-sentence verdict plus 3 labeled facts (strength /
-    // vulnerability / what matters most) - deliberately a different shape
-    // from a flowing paragraph, built from the same real computed values
-    // (vulnerability diagnosis + top lever), not duplicated content.
-    var strongestFactor = rs.factors.slice().sort(function(x,y){ return y.pct-x.pct; })[0];
-    var STRENGTH_TEXT = {
-      liquidity: 'You maintain substantial liquid reserves relative to your modeled expenses.',
-      spending: 'Your monthly spending leaves real margin, even under this scenario.',
-      debt: 'Your debt obligations stay light relative to your income, even under stress.',
-      recovery: (stressedResult.breakingMonth === null) ? 'Your liquid assets never run out under this scenario.' : 'Your income recovery timeline keeps the disruption relatively short.'
-    };
-    var verdict = stressedResult.breakingMonth === null
-      ? ('Your financial resilience is <b>'+rs.tierLabel.toLowerCase()+'</b>, and your biggest exposure is <b>'+vuln.title.toLowerCase()+'</b>.')
-      : ('Your financial resilience is <b>'+rs.tierLabel.toLowerCase()+'</b>, but this scenario would meaningfully reduce your liquid reserves before you recover.');
-    var factsHtml =
-      '<div class="stress-analysis-facts">' +
-        '<div><div class="stress-analysis-fact-label">Your biggest strength</div><div class="stress-analysis-fact-body">'+(STRENGTH_TEXT[strongestFactor.key]||'')+'</div></div>' +
-        '<div><div class="stress-analysis-fact-label">Your biggest vulnerability</div><div class="stress-analysis-fact-body">'+vuln.detail+'</div></div>' +
-        (leverCandidates.length
-          ? '<div><div class="stress-analysis-fact-label">What matters most</div><div class="stress-analysis-fact-body">'+leverCandidates[0].label+' would extend your runway by about '+leverCandidates[0].delta+' months.</div></div>'
-          : '') +
-      '</div>';
-    insightEl.innerHTML = '<div class="stress-analysis-verdict">'+verdict+'</div>' + factsHtml;
-
-    var netDiff = stressedResult.finalAccessible - stressedResult.startingAccessible;
-    var detailEl = $("stDetailGrid");
-    var detailItems = [
-      { label:'Starting liquid assets', val: money(stressedResult.startingAccessible) },
-      { label:'Lowest liquid assets', val: money(lowestVal) },
-      { label:'Total drawdown', val: money(Math.max(0, stressedResult.startingAccessible - lowestVal)) },
-      { label:'Emergency expense', val: money(scenario.emergencyExpense) },
-      { label:'Monthly cost increase', val: money(scenario.housingIncrease)+'/mo' },
-      { label:'Final liquid assets', val: money(stressedResult.finalAccessible) },
-      { label:'Net change (window)', val: (netDiff>=0?'+':'')+money(netDiff) },
-      { label:'Touched retirement funds', val: stressedResult.touchedRetirement ? 'Yes' : 'No' }
-    ];
-    detailEl.innerHTML = detailItems.map(function(d){
-      return '<div class="stress-detail-item"><div class="stress-detail-label">'+d.label+'</div><div class="stress-detail-val">'+d.val+'</div></div>';
-    }).join('');
-
-    var bpEl = $("stBreakingPoint");
-    if(stressedResult.breakingMonth === null){
-      bpEl.innerHTML = '<b>No breaking point in this window</b>Your accessible reserves (cash + brokerage) never run out under this scenario.';
-    } else {
-      var lastMonth = stressedResult.timeline[stressedResult.breakingMonth];
-      var driverParts = [
-        { label:'essential expenses', val: lastMonth.essential },
-        { label:'discretionary spending', val: lastMonth.discretionary },
-        { label:'debt payments', val: lastMonth.debt },
-        { label:'the emergency expense', val: lastMonth.emergency }
-      ].sort(function(x,y){ return y.val - x.val; });
-      var incomeGap = Math.max(0, a.income - lastMonth.income);
-      bpEl.innerHTML = '<b>Around month '+stressedResult.breakingMonth+'</b>Your income drops by about '+money(incomeGap)+'/mo under this scenario, while '+driverParts[0].label+' ('+money(driverParts[0].val)+'/mo) makes up the largest share of what keeps going out.' + (stressedResult.touchedRetirement ? ' At this point you\u2019d need to tap retirement accounts - a real last resort.' : '');
-    }
-    $("stVulnerability").innerHTML = '<b>'+vuln.title+'</b>'+vuln.detail;
-
-    var CASES = [
-      { name:'Base Case', scenario:{ employment:'cut25', emergencyExpense:5000, housingIncrease:0 } },
-      { name:'Severe Case', scenario:{ employment:'jobloss', emergencyExpense:10000, housingIncrease:200 } },
-      { name:'Worst Reasonable Case', scenario:{ employment:'jobloss', emergencyExpense:20000, housingIncrease:400 } }
-    ];
-    var compareRows = CASES.map(function(c){
-      var worstAssumptions = a;
-      if(c.name === 'Worst Reasonable Case'){
-        worstAssumptions = Object.assign({}, a, { monthsToFindJob: a.monthsToFindJob + 3 });
-      }
-      var r = simulateStress(worstAssumptions, c.scenario, 24);
-      return { name:c.name, runway:runwayLabel(r), breaking: r.breakingMonth===null ? '\u2014' : 'Month '+r.breakingMonth, recovery: r.rebuildAccessibleMonth===null ? (r.breakingMonth===null?'\u2014':'24+ mo') : r.rebuildAccessibleMonth+' mo' };
-    });
-    $("stCompareTable").innerHTML =
-      '<table><thead><tr><th>Scenario</th><th>Runway</th><th>Breaking point</th><th>Recovery</th></tr></thead><tbody>' +
-      compareRows.map(function(r){ return '<tr><td>'+r.name+'</td><td>'+r.runway+'</td><td>'+r.breaking+'</td><td>'+r.recovery+'</td></tr>'; }).join('') +
-      '</tbody></table>';
-
-    var leversEl = $("stLevers");
-    leversEl.innerHTML = leverCandidates.length
-      ? leverCandidates.map(function(l){ return '<div class="tc-quick-item"><span>'+l.label+'</span><b>+'+l.delta+' mo</b></div>'; }).join('')
-      : '<div class="empty-note">Under this scenario, your reserves already don\u2019t run out within this window - no lever shows a further improvement to measure.</div>';
+    if(compareEl)compareEl.innerHTML='<table><thead><tr><th>Scenario</th><th>Lowest liquidity</th><th>Breaking point</th><th>Ending liquidity</th></tr></thead><tbody>'+cases.map(function(c){var r=simulate(c[1],24);var vv=r.timeline.map(function(t){return t.accessible;});var lo=Math.min.apply(null,vv);return '<tr><td>'+c[0]+'</td><td>'+money2(lo)+'</td><td>'+(r.breakingMonth===null?'None':'Month '+r.breakingMonth)+'</td><td>'+money2(r.finalAccessible)+'</td></tr>';}).join('')+'</tbody></table>';
+    if(leversEl)leversEl.innerHTML=lever.length?lever.map(function(l){return '<div class="tc-quick-item"><span>'+l.label+'</span><b>+'+l.delta+' mo</b></div>';}).join(''):'<div class="empty-note">No tested lever materially extends the modeled runway.</div>';
   }
 
-  employmentEl.onchange = update;
-  emergencyEl.onchange = update;
-  housingEl.onchange = update;
+  if(employmentEl)employmentEl.onchange=update;
+  if(emergencyEl)emergencyEl.onchange=update;
+  if(housingEl)housingEl.onchange=update;
   update();
 }
 
