@@ -4347,7 +4347,14 @@ function renderFlowRibbons(svgEl, sourceLabel, sourceAmount, destinations){
   var defs = '<defs>';
   bands.forEach(function(b, i){
     var gid = svgId + '-g' + i;
-    defs += '<linearGradient id="'+gid+'" x1="0" y1="0" x2="1" y2="0">' +
+    // userSpaceOnUse with explicit coordinates, not the default
+    // objectBoundingBox - a gradient using the default degenerates to
+    // invisible when the path it's applied to has a zero-height bounding
+    // box, which happens whenever there's exactly one destination (the
+    // ribbon is then a perfectly horizontal line, since sourceY and
+    // bandY are identical). That was the actual bug behind "the chart
+    // shows nothing" whenever someone had only one liability/asset type.
+    defs += '<linearGradient id="'+gid+'" gradientUnits="userSpaceOnUse" x1="'+startX+'" y1="'+b.bandY.toFixed(1)+'" x2="'+endX+'" y2="'+b.bandY.toFixed(1)+'">' +
               '<stop offset="0%" stop-color="#E8B34A" stop-opacity="0.5"/>' +
               '<stop offset="55%" stop-color="'+b.d.color+'" stop-opacity="0.55"/>' +
               '<stop offset="100%" stop-color="'+b.d.color+'" stop-opacity="0.9"/>' +
@@ -8836,7 +8843,7 @@ async function init(){
   // the initial render — redraw the share card once they're ready.
   if(document.fonts && document.fonts.ready){
     document.fonts.ready.then(function(){
-      if($("retResults").style.display !== 'none') renderRetLive();
+      if($("retResults") && $("retResults").style.display !== 'none') renderRetLive();
     });
   }
 }
@@ -9210,7 +9217,7 @@ Promise.resolve(init()).then(function(){
     var grid=id('rbDriverGrid');grid.innerHTML='';
     if(comps.length){comps.forEach(function(c,i){var v=typeof vals[i]==='number'?Math.max(0,Math.min(100,vals[i]*100)):null;var tier=v===null?'':v>=67?'good':v>=34?'mid':'bad';var d=document.createElement('div');d.className='gmf-driver';d.innerHTML='<div class="gmf-driver-head"><span class="gmf-driver-name">'+(labels[i]||c.key||'Factor')+'</span><span class="gmf-driver-grade">'+(c.letter||'—')+'</span></div><div class="gmf-driver-bar"><i style="width:'+(v===null?0:v)+'%;background:'+(tier==='bad'?'#d9655c':tier==='mid'?'#c9932f':'#20ae87')+'"></i></div><p>'+(c.tip||'This factor contributes to your overall grade.')+'</p>';grid.appendChild(d)})}
     else {grid.innerHTML='<div class="gmf-report-box" style="grid-column:1/-1"><p>Your detailed factor breakdown will appear after the calculator saves the latest report snapshot.</p></div>'}
-    var priority=a=pri(l);id('rbReportStrength').textContent=l.totalDebt===0?'Your balance sheet is currently debt free.':(l.net>0?'Your assets exceed your liabilities.':'Your next improvement should focus on strengthening your balance sheet.');id('rbReportWeak').textContent=priority?priority.copy:'Keep tracking until a clear priority emerges.';
+    var priority=pri(l);id('rbReportStrength').textContent=l.totalDebt===0?'Your balance sheet is currently debt free.':(l.net>0?'Your assets exceed your liabilities.':'Your next improvement should focus on strengthening your balance sheet.');id('rbReportWeak').textContent=priority?priority.copy:'Keep tracking until a clear priority emerges.';
     var sl=id('rbReportStrengthList'),wl=id('rbReportWeakList');sl.innerHTML='';wl.innerHTML='';
     var strongest=comps.slice().sort(function(a,b){var ia=comps.indexOf(a),ib=comps.indexOf(b);return (vals[ib]||0)-(vals[ia]||0)})[0];
     if(strongest)sl.innerHTML='<div><b>'+strongest.letter+' '+(labels[comps.indexOf(strongest)]||strongest.key)+'</b><span>Strongest driver</span></div>';
