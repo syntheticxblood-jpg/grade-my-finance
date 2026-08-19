@@ -2455,6 +2455,22 @@ header.site #accountMenu #signOutBtn svg{
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(46,156,129,.28);outline-offset:2px}
 @media(max-width:720px){.rc-90day-grid{grid-template-columns:1fr}.rc-90day-card{padding:16px}}
 </style>
+
+<style>
+.gmf-loop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px auto 18px;max-width:980px}
+.gmf-loop-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px;min-height:190px;box-shadow:var(--shadow)}
+.gmf-loop-card.featured{background:#0d5f4d;color:#fff;border-color:#0d5f4d;transform:translateY(-6px)}
+.gmf-loop-num{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:var(--muted-2);font-weight:700}
+.gmf-loop-card.featured .gmf-loop-num{color:#a9e2d0}
+.gmf-loop-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin:18px 0 13px;background:var(--brand-soft);color:var(--brand);font-family:var(--font-mono);font-size:20px;font-weight:800}
+.gmf-loop-card.featured .gmf-loop-icon{background:rgba(255,255,255,.12);color:#fff}
+.gmf-loop-card h3{font-size:18px;margin:0 0 6px}
+.gmf-loop-card p{font-size:12.5px;color:var(--muted);line-height:1.55;margin:0}
+.gmf-loop-card.featured p{color:#d8eee8}
+.gmf-loop-bottom{max-width:980px;margin:0 auto;background:var(--surface-2);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.gmf-loop-bottom div{display:flex;flex-direction:column;gap:3px}.gmf-loop-bottom strong{font-family:var(--font-display);font-size:16px}
+@media(max-width:760px){.gmf-loop-grid{grid-template-columns:1fr}.gmf-loop-card.featured{transform:none}.gmf-loop-bottom{flex-direction:column;align-items:stretch}.gmf-loop-bottom .btn{width:100%}}
+</style>
 </head>
 <body>
 <script>try{ if(localStorage.getItem("gmf_pro")==="true"){ document.body.classList.add("is-pro"); } }catch(e){}</script>
@@ -2838,6 +2854,41 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 </section>
 </div>
 
+
+
+<section class="block" id="money-loop" style="padding-top:34px;padding-bottom:34px">
+  <div class="container">
+    <div class="block-head center">
+      <span class="kicker">The Grade My Finance loop</span>
+      <h2>Know your number. Fix what matters. Watch it improve.</h2>
+      <p style="max-width:650px;margin:10px auto 0;color:var(--muted)">Your Financial Grade is the starting point — not the finish line. Grade My Finance turns your numbers into a simple path forward.</p>
+    </div>
+    <div class="gmf-loop-grid">
+      <div class="gmf-loop-card">
+        <div class="gmf-loop-num">01</div>
+        <div class="gmf-loop-icon">◎</div>
+        <h3>Get your grade</h3>
+        <p>See your overall financial health and the numbers behind it.</p>
+      </div>
+      <div class="gmf-loop-card featured">
+        <div class="gmf-loop-num">02</div>
+        <div class="gmf-loop-icon">→</div>
+        <h3>Find your next move</h3>
+        <p>Get one clear priority instead of a wall of generic financial advice.</p>
+      </div>
+      <div class="gmf-loop-card">
+        <div class="gmf-loop-num">03</div>
+        <div class="gmf-loop-icon">↗</div>
+        <h3>Come back & improve</h3>
+        <p>Regrade your finances and watch your score, goals, and net worth move.</p>
+      </div>
+    </div>
+    <div class="gmf-loop-bottom">
+      <div><span class="kicker">Built for progress</span><strong>Your dashboard remembers the journey.</strong></div>
+      <a class="btn gold" href="#pro-dashboard-preview">See the dashboard ↓</a>
+    </div>
+  </div>
+</section>
 
 <section class="block" id="pro-dashboard-preview" style="padding-top:38px">
   <div class="aurora" aria-hidden="true" style="opacity:.6"><span class="a1" style="top:20%"></span><span class="a2" style="top:10%"></span></div>
