@@ -4676,11 +4676,27 @@ function renderInsightExtras(){
   if(benchEmpty){ benchEmpty.style.display='none'; benchContent.style.display='block'; }
   if(perspEmpty){ perspEmpty.style.display='none'; perspContent.style.display='block'; }
   if(stressEmpty){ stressEmpty.style.display='none'; stressContent.style.display='block'; }
-  renderBenchmarksPanel(saved.v, saved.cats);
-  renderTimeCostTranslator(saved.v);
-  renderLifestyleInflationSimulator(saved.v);
-  renderNetWorthPaceGauge(saved.v);
-  renderEmergencyStressTest(saved.v);
+  // Render each Pro insight independently. A failure in an unrelated
+  // benchmark/perspective widget must NEVER prevent the Stress Test from
+  // calculating and drawing its score, data, and chart.
+  try{ renderBenchmarksPanel(saved.v, saved.cats); }catch(e){ console.warn('Benchmarks render failed:', e); }
+  try{ renderTimeCostTranslator(saved.v); }catch(e){ console.warn('Time-cost render failed:', e); }
+  try{ renderLifestyleInflationSimulator(saved.v); }catch(e){ console.warn('Lifestyle render failed:', e); }
+  try{ renderNetWorthPaceGauge(saved.v); }catch(e){ console.warn('Pace gauge render failed:', e); }
+  try{ renderEmergencyStressTest(saved.v); }catch(e){
+    console.error('Stress Test render failed:', e);
+    var stressContent = document.getElementById('insightStressContent');
+    if(stressContent){
+      var err = stressContent.querySelector('.gmf-stress-error');
+      if(!err){
+        err = document.createElement('div');
+        err.className = 'gmf-stress-error';
+        err.style.cssText = 'margin:14px 0;padding:14px 16px;border:1px solid #f0caca;border-radius:12px;background:#fff7f7;color:#8a2b2b;font-size:13px;';
+        err.innerHTML = '<b>Stress Test could not calculate.</b><br>Please refresh the dashboard. Your financial data has not been changed.';
+        stressContent.insertBefore(err, stressContent.firstChild);
+      }
+    }
+  }
 }
 
 /* ================= PHASE 4 PORTED (from index.html Report Card) =================
@@ -7948,7 +7964,16 @@ async function init(){
     });
   }
 }
-init().then(function(){ try{ window.renderGmfCommandCenter(getHistory()); }catch(e){ console.warn('Command center render failed',e); } });
+init().then(function(){
+  try{ window.renderGmfCommandCenter(getHistory()); }catch(e){ console.warn('Command center render failed',e); }
+  // Final Stress Test pass after the entire dashboard has rendered.
+  try{
+    var sr = getLastReport();
+    if(sr && sr.v && typeof renderEmergencyStressTest === 'function'){
+      setTimeout(function(){ try{ renderEmergencyStressTest(sr.v); }catch(e){ console.warn('Final Stress Test pass failed:', e); } }, 0);
+    }
+  }catch(e){}
+});
 </script>
 
 <script>
@@ -9510,6 +9535,9 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
   border-radius:18px!important;
   background:var(--modern-panel)!important;
 }
+#panel-insights .stress-chart-wrap{position:relative!important;display:block!important;min-height:310px!important;width:100%!important}
+#panel-insights #stChart{display:block!important;width:100%!important;height:310px!important;min-height:310px!important;overflow:visible!important}
+#panel-insights .stress-chart-tooltip{z-index:20!important}
 #panel-insights .stress-outcomes-row{
   display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:10px!important;margin:12px 0!important;
 }
