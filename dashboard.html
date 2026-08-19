@@ -2521,6 +2521,56 @@ svg text{fill:var(--ui-muted)}
   pointer-events:auto !important;
 }
 </style>
+
+<style id="gmf-all-money-subtabs-directly-below-final">
+/*
+ * FINAL MONEY NAVIGATION LAYOUT
+ * The selected Net Worth / Money Flow / Bills / Credit / Allocation workspace
+ * is physically adjacent to #moneySubtabs. Shared overview content is hidden
+ * while a sub-page is active so it cannot push the selected workspace down.
+ */
+#panel-networth.gmf-money-subview-focused > .gmf-money-context-hidden{
+  display:none !important;
+}
+
+#panel-networth.gmf-money-subview-focused > #moneySubtabs{
+  display:flex !important;
+  margin-bottom:8px !important;
+}
+
+#panel-networth.gmf-money-subview-focused > .money-subview:not(.gmf-money-context-hidden){
+  display:block !important;
+  margin-top:0 !important;
+  padding-top:0 !important;
+}
+
+#panel-networth.gmf-money-subview-focused > .money-subview:not(.gmf-money-context-hidden) .flow-tabs{
+  margin-top:0 !important;
+}
+
+#panel-networth.gmf-money-subview-focused > .money-subview:not(.gmf-money-context-hidden) .flow-panel{
+  margin-top:0 !important;
+}
+
+/* Prevent a nested sticky Flow tab bar from covering the chart. */
+#panel-networth.gmf-money-subview-focused.gmf-moneyflow-focused #flowTabs{
+  position:relative !important;
+  top:auto !important;
+  z-index:20 !important;
+}
+
+/* The selected Net Worth chart starts immediately below the outer Money tabs. */
+#panel-networth.gmf-money-subview-focused > .money-subview:not(.gmf-money-context-hidden) > :first-child{
+  margin-top:0 !important;
+}
+
+/* Mobile: same order, no extra vertical spacer. */
+@media(max-width:900px){
+  #panel-networth.gmf-money-subview-focused > #moneySubtabs{
+    margin-bottom:6px !important;
+  }
+}
+</style>
 </head>
 <body>
 <script>
@@ -4644,25 +4694,32 @@ function __track(){} // no-op if GA hasn't wired a custom tracker on this page
     views.forEach(function(v){v.classList.toggle('active',v.dataset.moneypanel===name)});
 
     /*
-     * Money Flow is a visualization workspace. When it is selected, put the
-     * entire Money Flow workspace immediately below the Money tabs. This
-     * prevents the KPI/intro cards from pushing the selected flow chart below
-     * the fold. The chart's own Assets/Liabilities/Income/Trend tabs already
-     * sit directly above their corresponding chart.
+     * Every Money workspace gets the same layout:
+     *
+     *   Money tabs
+     *   ↓
+     *   selected workspace
+     *
+     * The old layout left the shared Money heading/KPI/overview blocks between
+     * the tabs and the selected Net Worth/Bills/Credit/Allocation workspace.
+     * Move the selected workspace directly after the tabs and hide those
+     * unrelated siblings while a Money sub-page is active.
      */
-    if(nav && targetView && name==='moneyflow'){
+    if(nav && targetView){
       nav.insertAdjacentElement('afterend', targetView);
-      p.classList.add('gmf-moneyflow-focused');
-    }else{
-      p.classList.remove('gmf-moneyflow-focused');
-      if(nav){
-        var firstView=p.querySelector('.money-subview');
-        if(firstView && nav.nextElementSibling!==firstView){
-          /* Restore the normal document order: nav followed by the views. */
-          var anchor=nav;
-          views.forEach(function(v){ anchor.insertAdjacentElement('afterend',v); anchor=v; });
+      p.classList.add('gmf-money-subview-focused');
+      p.classList.toggle('gmf-moneyflow-focused', name==='moneyflow');
+
+      Array.prototype.forEach.call(p.children, function(child){
+        if(child === nav || child === targetView){
+          child.classList.remove('gmf-money-context-hidden');
+        }else if(child.classList.contains('money-subview')){
+          child.classList.add('gmf-money-context-hidden');
+        }else{
+          /* Shared Money heading / description / overview content. */
+          child.classList.add('gmf-money-context-hidden');
         }
-      }
+      });
     }
 
     if(scroll){
@@ -10249,6 +10306,53 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
     document.addEventListener('DOMContentLoaded', function(){ setTimeout(sync, 50); });
   }else{
     setTimeout(sync, 50);
+  }
+})();
+</script>
+
+<script id="gmf-money-tabs-final-order">
+(function(){
+  'use strict';
+  function enforce(){
+    var p=document.getElementById('panel-networth');
+    var nav=document.getElementById('moneySubtabs');
+    if(!p || !nav) return;
+    var active=p.querySelector('.money-subtab-btn.active') || p.querySelector('.money-subtab-btn');
+    if(!active) return;
+    var name=active.getAttribute('data-moneysub');
+    var target=p.querySelector('.money-subview[data-moneypanel="'+name+'"]');
+    if(!target) return;
+
+    if(nav.parentElement===p && nav.nextElementSibling!==target){
+      nav.insertAdjacentElement('afterend',target);
+    }
+    p.classList.add('gmf-money-subview-focused');
+    p.classList.toggle('gmf-moneyflow-focused',name==='moneyflow');
+
+    Array.prototype.forEach.call(p.children,function(child){
+      if(child===nav || child===target){
+        child.classList.remove('gmf-money-context-hidden');
+      }else{
+        child.classList.add('gmf-money-context-hidden');
+      }
+    });
+  }
+
+  function start(){
+    [0,50,250,750,1500,3000].forEach(function(ms){setTimeout(enforce,ms);});
+    try{
+      var p=document.getElementById('panel-networth');
+      if(!p) return;
+      var observer=new MutationObserver(function(){ enforce(); });
+      observer.observe(p,{childList:true,subtree:true});
+      setTimeout(function(){try{observer.disconnect();}catch(e){}},5000);
+    }catch(e){}
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',start,{once:true});
+  }else{
+    start();
   }
 })();
 </script>
