@@ -3227,7 +3227,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ship-chart-badge" id="shipPieBadge">CURRENT</div>
       </div>
       <div class="ship-modern-chart-wrap ship-pie-wrap">
-        <svg id="gmfModernPieChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth allocation pie chart"></svg>
+        <svg id="gmfFinalPieChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth allocation pie chart"></svg>
       </div>
       <div class="ship-modern-legend" id="shipPieLegend"></div>
     </div>
@@ -3241,7 +3241,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ship-chart-badge ship-chart-badge-green" id="shipBarBadge">MONTHLY</div>
       </div>
       <div class="ship-modern-chart-wrap ship-bar-wrap">
-        <svg id="gmfModernBarChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Monthly income and expenses bar chart"></svg>
+        <svg id="gmfFinalBarChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Monthly income and expenses bar chart"></svg>
       </div>
       <div class="ship-bar-summary" id="shipBarSummary"></div>
     </div>
@@ -11049,3 +11049,58 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
   .sidebar{background:#153F35 !important;border-top:1px solid #4A5A3A !important;border-right:0 !important}
 }
 </style>
+
+<style id="gmf-final-background-and-chart-fix">
+/* Stronger but still subtle premium blue/green canvas. */
+html,body,#app,.app-shell,.main,.content,.dashboard-page,.main-area{
+  background:
+    radial-gradient(900px 500px at 5% 0%, rgba(25,155,125,.105), transparent 62%),
+    radial-gradient(850px 520px at 100% 8%, rgba(70,125,220,.095), transparent 60%),
+    linear-gradient(135deg,#eef5f3 0%,#f4f7f8 48%,#eef4f6 100%) !important;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.34),transparent 58%);
+}
+.gmf-final-chart-card{
+  background:linear-gradient(145deg,#fbfefd 0%,#f2f8f6 55%,#f4f7fb 100%) !important;
+  border:1px solid #cfe0dc !important;
+  box-shadow:0 18px 48px rgba(28,72,66,.10), inset 0 1px 0 rgba(255,255,255,.95) !important;
+}
+</style>
+
+<script id="gmf-final-chart-renderer">
+(function(){
+  'use strict';
+  function q(id){return document.getElementById(id)}
+  function history(){try{return JSON.parse(localStorage.getItem('gmf_history_v2')||'[]')}catch(e){return[]}}
+  function n(v){var x=Number(v);return isFinite(x)?x:0}
+  function money(v){var a=Math.abs(v);if(a>=1e6)return '$'+(v/1e6).toFixed(1)+'M';if(a>=1e3)return '$'+Math.round(v/1e3)+'K';return '$'+Math.round(v).toLocaleString()}
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]})}
+  function arc(cx,cy,r,a1,a2){var x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2),large=(a2-a1)>Math.PI?1:0;return 'M '+cx+' '+cy+' L '+x1+' '+y1+' A '+r+' '+r+' 0 '+large+' 1 '+x2+' '+y2+' Z'}
+  function latest(){var h=history();return h.length?h[h.length-1]:null}
+  function get(k,l){return n(l&&l[k])}
+  function draw(){
+    var pie=q('gmfFinalPieChart'),bar=q('gmfFinalBarChart');if(!pie||!bar)return;
+    var l=latest();
+    if(!l){pie.innerHTML='<text x="380" y="175" text-anchor="middle" fill="#718984" font-size="15" font-family="Inter,Arial">Add a check-in to see your portfolio mix.</text>';bar.innerHTML='<text x="380" y="175" text-anchor="middle" fill="#718984" font-size="15" font-family="Inter,Arial">Add a check-in to see your monthly picture.</text>';return}
+    var items=[['Home',get('home',l),'#17a985'],['Retirement',get('retire',l),'#4c82ed'],['Brokerage',get('brokerage',l),'#8b64dc'],['Cash',get('cash',l),'#e3aa3d'],['Crypto / Other',get('crypto',l),'#e66b61'],['HSA',get('hsa',l),'#25aec0'],['Car',get('car',l),'#73839a']].filter(function(x){return x[1]>0});
+    var total=items.reduce(function(a,x){return a+x[1]},0); if(!total) total=Math.max(0,n(l.assets)||n(l.net));
+    if(items.length){
+      var d='<defs><filter id="gmfPieShadow2" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-opacity=".14"/></filter><radialGradient id="gmfPieCenter2"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e9f3f0"/></radialGradient></defs>';
+      var cx=190,cy=165,r=116,a=-Math.PI/2;items.forEach(function(x){var e=a+(x[1]/total)*Math.PI*2;d+='<path d="'+arc(cx,cy,r,a,e)+'" fill="'+x[2]+'" stroke="#f8fcfb" stroke-width="4" filter="url(#gmfPieShadow2)"/>';a=e});
+      d+='<circle cx="190" cy="165" r="72" fill="url(#gmfPieCenter2)" stroke="#d2e4df" stroke-width="2"/><text x="190" y="159" text-anchor="middle" fill="#173b3d" font-size="24" font-weight="800" font-family="IBM Plex Mono,monospace">'+money(total)+'</text><text x="190" y="180" text-anchor="middle" fill="#718984" font-size="10" font-weight="800" letter-spacing="1.5">TOTAL ASSETS</text>';
+      items.forEach(function(x,i){var y=65+i*34,p=x[1]/total*100;d+='<rect x="365" y="'+(y-9)+'" width="10" height="10" rx="3" fill="'+x[2]+'"/><text x="385" y="'+y+'" fill="#34534f" font-size="12" font-weight="700">'+esc(x[0])+'</text><text x="645" y="'+y+'" text-anchor="end" fill="'+x[2]+'" font-size="12" font-weight="800" font-family="IBM Plex Mono,monospace">'+money(x[1])+'</text><text x="670" y="'+y+'" fill="#7a918c" font-size="11" font-family="IBM Plex Mono,monospace">'+p.toFixed(0)+'%</text>'});
+      pie.innerHTML=d;
+    }else pie.innerHTML='<text x="380" y="175" text-anchor="middle" fill="#718984" font-size="15">No asset breakdown available yet.</text>';
+    var income=n(l.annualIncome)/12,expense=n(l.monthlyExpenses),margin=income-expense,max=Math.max(income,expense,Math.abs(margin),1),base=275,H=205,bw=135,xs=[95,315,535],vals=[['Income',income,'#17a985'],['Expenses',expense,'#e8665d'],['Monthly margin',margin,margin>=0?'#4c82ed':'#e3aa3d']];
+    var b='<defs><linearGradient id="gmfBar1" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#4ad6b3"/><stop offset="1" stop-color="#129778"/></linearGradient><linearGradient id="gmfBar2" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff8a80"/><stop offset="1" stop-color="#df5557"/></linearGradient><linearGradient id="gmfBar3" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#7ca8ff"/><stop offset="1" stop-color="#4b73d7"/></linearGradient></defs>';
+    [.25,.5,.75,1].forEach(function(t){var y=base-H*t;b+='<line x1="60" y1="'+y+'" x2="720" y2="'+y+'" stroke="#dce8e5" stroke-dasharray="3 7"/><text x="48" y="'+(y+4)+'" text-anchor="end" fill="#819692" font-size="10" font-family="IBM Plex Mono,monospace">'+money(max*t)+'</text>'});
+    vals.forEach(function(v,i){var h=Math.max(8,Math.abs(v[1])/max*H),y=base-h,grad=i===0?'url(#gmfBar1)':i===1?'url(#gmfBar2)':'url(#gmfBar3)';b+='<rect x="'+xs[i]+'" y="'+y+'" width="'+bw+'" height="'+h+'" rx="15" fill="'+grad+'"/><text x="'+(xs[i]+bw/2)+'" y="'+(y-12)+'" text-anchor="middle" fill="#173b3d" font-size="14" font-weight="800" font-family="IBM Plex Mono,monospace">'+(v[1]<0?'−':'')+money(Math.abs(v[1]))+'</text><text x="'+(xs[i]+bw/2)+'" y="'+(base+25)+'" text-anchor="middle" fill="#6f8782" font-size="11" font-weight="800">'+v[0].toUpperCase()+'</text>'});
+    bar.innerHTML=b;
+  }
+  function boot(){draw();setTimeout(draw,250);setTimeout(draw,1000);setTimeout(draw,2500)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+  window.addEventListener('storage',function(e){if(e.key==='gmf_history_v2')draw()});
+})();
+</script>
