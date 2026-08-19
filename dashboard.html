@@ -7799,5 +7799,82 @@ init().then(function(){ try{ window.renderGmfCommandCenter(getHistory()); }catch
 })();
 </script>
 
+
+<!-- GMF FINAL NAVIGATION FIX: sidebar tabs must replace the main workspace, not just the header -->
+<style id="gmf-final-tab-fix">
+  /* The overview rebuild had an ID-level display:grid rule that overrode
+     .dash-tab-panel { display:none }. Make visibility authoritative here. */
+  #dashboardContent > .dash-tab-panel,
+  .dash-tab-panel { display:none !important; }
+  #dashboardContent > .dash-tab-panel.active,
+  .dash-tab-panel.active { display:block !important; }
+  #dashboardContent > #panel-overview.active,
+  #panel-overview.active { display:grid !important; }
+</style>
+<script id="gmf-final-tab-fix-js">
+(function(){
+  'use strict';
+  function qs(s,r){return (r||document).querySelector(s)}
+  function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function show(name, scroll){
+    var panel=qs('#panel-'+name);
+    if(!panel) return false;
+    var panels=qsa('.dash-tab-panel');
+    panels.forEach(function(p){
+      var on=p===panel;
+      p.classList.toggle('active',on);
+      p.setAttribute('aria-hidden',on?'false':'true');
+    });
+    qsa('.dash-nav-btn[data-tab]').forEach(function(b){
+      var on=b.getAttribute('data-tab')===name;
+      b.classList.toggle('active',on);
+      b.setAttribute('aria-current',on?'page':'false');
+    });
+    var meta=(window.__dashTabMeta||{})[name];
+    var h=qs('#greetingText'), sub=qs('#greetingSub'), badge=qs('#tabFocusBadge');
+    if(meta){
+      if(h) h.textContent=meta.title;
+      if(sub) sub.textContent=meta.sub;
+      if(badge) badge.textContent=name==='overview'?'COMMAND CENTER':name==='score'?'EXPLAIN YOUR GRADE':name==='insights'?'DECISION SUPPORT':name.toUpperCase();
+    }
+    if(scroll){
+      var header=qs('.content-header');
+      var top=panel.getBoundingClientRect().top + window.scrollY;
+      if(header) top=Math.max(top,header.getBoundingClientRect().bottom + window.scrollY + 18);
+      window.scrollTo({top:Math.max(0,top-10),behavior:'smooth'});
+    }
+    return true;
+  }
+  window.__gmfShowTab=show;
+
+  /* Capture phase runs before the older listeners and guarantees the
+     selected workspace is visible even if another legacy handler fires. */
+  document.addEventListener('click',function(e){
+    var b=e.target.closest && e.target.closest('.dash-nav-btn[data-tab]');
+    if(!b) return;
+    var name=b.getAttribute('data-tab');
+    if(!name || !qs('#panel-'+name)) return;
+    show(name,true);
+  },true);
+
+  document.addEventListener('click',function(e){
+    var g=e.target.closest && e.target.closest('[data-goto]');
+    if(g){
+      var name=g.getAttribute('data-goto');
+      if(name && qs('#panel-'+name)){ show(name,true); }
+    }
+  },true);
+
+  function sync(){
+    var active=qs('.dash-nav-btn[data-tab].active');
+    var name=active ? active.getAttribute('data-tab') : 'overview';
+    if(!qs('#panel-'+name)) name='overview';
+    show(name,false);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(sync,20)});
+  else setTimeout(sync,20);
+})();
+</script>
+
 </body>
 </html>
