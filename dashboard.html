@@ -2825,6 +2825,143 @@ svg text{fill:var(--ui-muted)}
 /* Scrollbars */
 :root[data-theme="dark"] *{scrollbar-color:#29454b #081215}
 </style>
+
+<style id="gmf-modern-dashboard-charts">
+/* =========================================================
+   Modern dashboard charts — dark-first, crisp SVG visuals
+   ========================================================= */
+.ship-modern-charts{
+  grid-template-columns:1fr 1fr!important;
+  gap:16px!important;
+}
+.ship-modern-chart-card{
+  position:relative!important;
+  min-height:430px!important;
+  padding:22px!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 15% 5%, rgba(34,199,160,.09), transparent 34%),
+    linear-gradient(145deg,#0d1d21 0%,#0a171a 58%,#0d1b20 100%)!important;
+  border:1px solid #29454b!important;
+  box-shadow:0 20px 55px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+.ship-modern-chart-card:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(115deg,rgba(255,255,255,.025),transparent 35%,rgba(34,199,160,.025));
+}
+.ship-modern-chart-card .ship-card-head{
+  position:relative;
+  z-index:2;
+}
+.ship-chart-kicker{
+  display:block;
+  margin-bottom:6px;
+  color:#5fe0bd;
+  font:800 9px/1 var(--font-mono);
+  letter-spacing:.16em;
+}
+.ship-modern-chart-card .ship-card-head h3{
+  color:#eef8f5!important;
+  font-size:18px!important;
+  letter-spacing:-.02em;
+}
+.ship-modern-chart-card .ship-card-head p{
+  color:#8fa8a2!important;
+  font-size:11.5px!important;
+}
+.ship-chart-badge{
+  padding:7px 10px;
+  border:1px solid #29454b;
+  border-radius:999px;
+  background:rgba(255,255,255,.035);
+  color:#a6bdb7;
+  font:800 9px var(--font-mono);
+  letter-spacing:.08em;
+}
+.ship-chart-badge-green{
+  color:#5fe0bd;
+  border-color:rgba(34,199,160,.24);
+  background:rgba(34,199,160,.07);
+}
+.ship-modern-chart-wrap{
+  position:relative;
+  z-index:1;
+  height:300px!important;
+  margin-top:8px!important;
+}
+.ship-modern-chart-wrap svg{
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  overflow:visible!important;
+}
+.ship-modern-legend{
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px 16px;
+  margin-top:2px;
+  padding-top:13px;
+  border-top:1px solid #20373c;
+}
+.ship-modern-legend span{
+  color:#8ea7a1;
+  font:600 10.5px var(--font-body);
+}
+.ship-modern-legend i{
+  display:inline-block;
+  width:8px;
+  height:8px;
+  margin-right:6px;
+  border-radius:3px;
+  vertical-align:-1px;
+}
+.ship-modern-legend b{
+  color:#d7e9e4;
+  font-family:var(--font-mono);
+}
+.ship-legend-more{color:#5fe0bd!important}
+.ship-bar-summary{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:1px;
+}
+.ship-bar-summary>div{
+  padding:11px 13px;
+  border:1px solid #20373c;
+  border-radius:11px;
+  background:rgba(255,255,255,.025);
+}
+.ship-bar-summary span{
+  display:block;
+  color:#748d87;
+  font:800 8px var(--font-mono);
+  letter-spacing:.09em;
+}
+.ship-bar-summary b{
+  display:block;
+  margin-top:5px;
+  color:#e9f7f2;
+  font:800 14px var(--font-mono);
+}
+.ship-bar-summary b.positive{color:#5fe0bd}
+.ship-bar-summary b.negative{color:#ff8177}
+@media(max-width:1100px){
+  .ship-modern-charts{grid-template-columns:1fr!important}
+}
+@media(max-width:760px){
+  .ship-modern-chart-card{min-height:400px!important;padding:17px!important}
+  .ship-modern-chart-wrap{height:275px!important}
+  .ship-bar-summary{grid-template-columns:1fr 1fr}
+}
+</style>
 </head>
 <body>
 <script>
@@ -3035,15 +3172,34 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     </div>
   </section>
 
-  <section class="ship-lower-grid">
-    <div class="ship-chart-card">
-      <div class="ship-card-head"><div><h3>Net worth over time</h3><p>Tracked from your check-ins.</p></div><div class="ship-range" id="shipRange"><button data-n="6" type="button">6M</button><button data-n="12" class="active" type="button">12M</button><button data-n="all" type="button">All</button></div></div>
-      <div class="ship-chart-wrap"><svg id="shipNetWorthChart" viewBox="0 0 760 220" preserveAspectRatio="none"></svg></div>
+  <section class="ship-lower-grid ship-modern-charts">
+    <div class="ship-chart-card ship-modern-chart-card">
+      <div class="ship-card-head">
+        <div>
+          <span class="ship-chart-kicker">PORTFOLIO MIX</span>
+          <h3>Where your net worth lives</h3>
+          <p>Current allocation across your major assets.</p>
+        </div>
+        <div class="ship-chart-badge" id="shipPieBadge">CURRENT</div>
+      </div>
+      <div class="ship-modern-chart-wrap ship-pie-wrap">
+        <svg id="shipNetWorthChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth allocation pie chart"></svg>
+      </div>
+      <div class="ship-modern-legend" id="shipPieLegend"></div>
     </div>
-    <div class="ship-chart-card">
-      <div class="ship-card-head"><div><h3>Income vs. expenses</h3><p>Your monthly margin over time.</p></div></div>
-      <div class="ship-chart-wrap"><svg id="shipCashflowChart" viewBox="0 0 760 220" preserveAspectRatio="none"></svg></div>
-      <div class="ship-chart-legend"><span><i class="net"></i>Income</span><span><i class="debt"></i>Expenses</span></div>
+    <div class="ship-chart-card ship-modern-chart-card">
+      <div class="ship-card-head">
+        <div>
+          <span class="ship-chart-kicker">MONTHLY PICTURE</span>
+          <h3>Income vs. expenses</h3>
+          <p>See your monthly margin at a glance.</p>
+        </div>
+        <div class="ship-chart-badge ship-chart-badge-green" id="shipBarBadge">MONTHLY</div>
+      </div>
+      <div class="ship-modern-chart-wrap ship-bar-wrap">
+        <svg id="shipCashflowChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Monthly income and expenses bar chart"></svg>
+      </div>
+      <div class="ship-bar-summary" id="shipBarSummary"></div>
     </div>
   </section>
 
@@ -6847,18 +7003,132 @@ function shipLineChart(svg, rows, series){
 
   svg.innerHTML=out;
 }
-function renderShipNetWorthChart(hist, count){
-  var svg = $('shipNetWorthChart'); if(!svg) return;
-  var rows = hist.filter(function(h){ return typeof h.net === 'number'; });
-  if(count !== 'all') rows = rows.slice(-Number(count));
-  shipLineChart(svg, rows, [{key:'net', color:'#4389e8'}]);
+function shipArcPath(cx, cy, r, start, end){
+  var x1 = cx + r * Math.cos(start), y1 = cy + r * Math.sin(start);
+  var x2 = cx + r * Math.cos(end), y2 = cy + r * Math.sin(end);
+  var large = (end - start) > Math.PI ? 1 : 0;
+  return 'M '+cx+' '+cy+' L '+x1.toFixed(2)+' '+y1.toFixed(2)+' A '+r+' '+r+' 0 '+large+' 1 '+x2.toFixed(2)+' '+y2.toFixed(2)+' Z';
 }
-function renderShipCashflowChart(hist, count){
+function shipFmtCompact(n){
+  if(!isFinite(n)) return '—';
+  var a=Math.abs(n);
+  if(a>=1000000) return '$'+(n/1000000).toFixed(1)+'M';
+  if(a>=1000) return '$'+Math.round(n/1000)+'K';
+  return '$'+Math.round(n).toLocaleString();
+}
+function renderShipNetWorthChart(hist){
+  var svg = $('shipNetWorthChart'); if(!svg) return;
+  var latest = hist && hist.length ? hist[hist.length-1] : null;
+  if(!latest){
+    svg.innerHTML='<text x="380" y="165" text-anchor="middle" fill="#8da29d" font-size="16" font-family="Inter,Segoe UI,Arial,sans-serif">Add a financial check-in to see your net worth mix.</text>';
+    return;
+  }
+
+  var items=[
+    {label:'Home', value:num(latest.home), color:'#22c7a0'},
+    {label:'Retirement', value:num(latest.retire), color:'#4d8dff'},
+    {label:'Brokerage', value:num(latest.brokerage), color:'#9a72ff'},
+    {label:'Cash', value:num(latest.cash), color:'#f5b84b'},
+    {label:'Crypto / Other', value:num(latest.crypto), color:'#f4776a'},
+    {label:'HSA', value:num(latest.hsa), color:'#3bc6d8'},
+    {label:'Car', value:num(latest.car), color:'#7e8da5'}
+  ].filter(function(x){return x.value>0;});
+
+  var total=items.reduce(function(a,x){return a+x.value;},0);
+  if(total<=0){
+    total=Math.max(0,num(latest.assets)||num(latest.net));
+  }
+  if(!items.length){
+    svg.innerHTML='<text x="380" y="165" text-anchor="middle" fill="#8da29d" font-size="16" font-family="Inter,Segoe UI,Arial,sans-serif">No asset breakdown is available yet.</text>';
+    return;
+  }
+
+  var defs =
+    '<defs>'+
+      '<filter id="shipPieShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".30"/></filter>'+
+      '<radialGradient id="shipPieCenter" cx="50%" cy="40%"><stop offset="0%" stop-color="#17343a"/><stop offset="100%" stop-color="#0b171a"/></radialGradient>'+
+    '</defs>';
+
+  var cx=190, cy=165, r=112, start=-Math.PI/2, out=defs;
+  items.forEach(function(item,i){
+    var sweep=(item.value/total)*Math.PI*2;
+    var end=start+sweep;
+    out+='<path d="'+shipArcPath(cx,cy,r,start,end)+'" fill="'+item.color+'" stroke="#0b171a" stroke-width="4" filter="url(#shipPieShadow)" opacity=".96"/>';
+    start=end;
+  });
+  out+='<circle cx="'+cx+'" cy="'+cy+'" r="73" fill="url(#shipPieCenter)" stroke="#29454b" stroke-width="2"/>';
+  out+='<text x="'+cx+'" y="'+(cy-6)+'" text-anchor="middle" fill="#eaf8f3" font-size="25" font-weight="800" font-family="IBM Plex Mono,monospace">'+shipFmtCompact(total)+'</text>';
+  out+='<text x="'+cx+'" y="'+(cy+17)+'" text-anchor="middle" fill="#8fa7a2" font-size="11" font-weight="700" letter-spacing="1.5" font-family="Inter,Segoe UI,Arial,sans-serif">TOTAL ASSETS</text>';
+
+  var lx=365, ly=70;
+  items.forEach(function(item,i){
+    var pct=total?item.value/total*100:0;
+    var yy=ly+i*34;
+    out+='<rect x="'+lx+'" y="'+(yy-9)+'" width="10" height="10" rx="3" fill="'+item.color+'"/>';
+    out+='<text x="'+(lx+20)+'" y="'+yy+'" fill="#dcece7" font-size="12" font-weight="700" font-family="Inter,Segoe UI,Arial,sans-serif">'+esc(item.label)+'</text>';
+    out+='<text x="'+(lx+280)+'" y="'+yy+'" text-anchor="end" fill="'+item.color+'" font-size="12" font-weight="800" font-family="IBM Plex Mono,monospace">'+shipFmtCompact(item.value)+'</text>';
+    out+='<text x="'+(lx+300)+'" y="'+yy+'" fill="#829b95" font-size="11" font-weight="600" font-family="IBM Plex Mono,monospace">'+pct.toFixed(0)+'%</text>';
+  });
+  svg.innerHTML=out;
+
+  var legend=$('shipPieLegend');
+  if(legend){
+    legend.innerHTML=items.slice(0,5).map(function(item){
+      var pct=total?item.value/total*100:0;
+      return '<span><i style="background:'+item.color+'"></i>'+esc(item.label)+' <b>'+pct.toFixed(0)+'%</b></span>';
+    }).join('')+(items.length>5?'<span class="ship-legend-more">+'+(items.length-5)+' more</span>':'');
+  }
+}
+function renderShipCashflowChart(hist){
   var svg = $('shipCashflowChart'); if(!svg) return;
-  var rows = hist.map(function(h){ return { ts:h.ts, income: shipMonthlyIncome(h), expenses: typeof h.monthlyExpenses==='number'?h.monthlyExpenses:null }; })
-    .filter(function(r){ return r.income !== null || r.expenses !== null; });
-  if(count !== 'all') rows = rows.slice(-Number(count));
-  shipLineChart(svg, rows, [{key:'income', color:'#129b79'}, {key:'expenses', color:'#d65a52'}]);
+  var latest = hist && hist.length ? hist[hist.length-1] : null;
+  if(!latest){
+    svg.innerHTML='<text x="380" y="165" text-anchor="middle" fill="#8da29d" font-size="16" font-family="Inter,Segoe UI,Arial,sans-serif">Add a financial check-in to see your monthly picture.</text>';
+    return;
+  }
+  var income=shipMonthlyIncome(latest);
+  var expenses=typeof latest.monthlyExpenses==='number'?latest.monthlyExpenses:0;
+  income=Number(income)||0; expenses=Number(expenses)||0;
+  var surplus=income-expenses;
+  var max=Math.max(income,expenses,Math.abs(surplus),1);
+  var left=105, base=275, barW=135, gap=48, chartH=205;
+  var scale=function(v){return Math.max(4,(Math.abs(v)/max)*chartH);};
+  var vals=[
+    {label:'Income', value:income, color:'#22c7a0', x:left},
+    {label:'Expenses', value:expenses, color:'#ff6f61', x:left+barW+gap},
+    {label:'Monthly margin', value:surplus, color:surplus>=0?'#4d8dff':'#ffb84d', x:left+(barW+gap)*2}
+  ];
+  var out=
+    '<defs>'+
+      '<linearGradient id="shipBarIncome" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#43e0bd"/><stop offset="100%" stop-color="#129b79"/></linearGradient>'+
+      '<linearGradient id="shipBarExpense" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8a80"/><stop offset="100%" stop-color="#e4515b"/></linearGradient>'+
+      '<linearGradient id="shipBarMargin" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#78a7ff"/><stop offset="100%" stop-color="#4d72d9"/></linearGradient>'+
+      '<filter id="shipBarShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#000" flood-opacity=".25"/></filter>'+
+    '</defs>';
+
+  [0,.25,.5,.75,1].forEach(function(t){
+    var yy=base-chartH*t;
+    var val=max*(1-t);
+    out+='<line x1="58" y1="'+yy+'" x2="720" y2="'+yy+'" stroke="#20373c" stroke-width="1" stroke-dasharray="3 7"/>';
+    out+='<text x="45" y="'+(yy+4)+'" text-anchor="end" fill="#78918b" font-size="10" font-weight="600" font-family="IBM Plex Mono,monospace">'+shipFmtCompact(val)+'</text>';
+  });
+
+  vals.forEach(function(v){
+    var h=scale(v.value), y=base-h;
+    var grad=v.label==='Income'?'url(#shipBarIncome)':v.label==='Expenses'?'url(#shipBarExpense)':'url(#shipBarMargin)';
+    out+='<rect x="'+v.x+'" y="'+y.toFixed(1)+'" width="'+barW+'" height="'+h.toFixed(1)+'" rx="14" fill="'+grad+'" filter="url(#shipBarShadow)"/>';
+    out+='<text x="'+(v.x+barW/2)+'" y="'+(y-12)+'" text-anchor="middle" fill="#eaf8f3" font-size="14" font-weight="800" font-family="IBM Plex Mono,monospace">'+(v.value<0?'-':'')+shipFmtCompact(Math.abs(v.value))+'</text>';
+    out+='<text x="'+(v.x+barW/2)+'" y="'+(base+25)+'" text-anchor="middle" fill="#9ab0aa" font-size="11" font-weight="700" font-family="Inter,Segoe UI,Arial,sans-serif">'+esc(v.label.toUpperCase())+'</text>';
+  });
+
+  svg.innerHTML=out;
+  var summary=$('shipBarSummary');
+  if(summary){
+    var marginClass=surplus>=0?'positive':'negative';
+    summary.innerHTML=
+      '<div><span>MONTHLY MARGIN</span><b class="'+marginClass+'">'+(surplus>=0?'+':'−')+shipFmtCompact(Math.abs(surplus))+'</b></div>'+
+      '<div><span>SAVINGS RATE</span><b>'+ (income>0?Math.max(-999,Math.min(999,surplus/income*100)).toFixed(0):'0') +'%</b></div>';
+  }
 }
 
 /* ================= NEXT BEST MOVE + GOAL LINKING =================
@@ -6977,17 +7247,8 @@ function renderShipOverview(hist){
 
   shipSpark($('shipGradeSpark'), hist.map(function(h){ return h.score; }).slice(-18));
 
-  renderShipNetWorthChart(hist, '12');
-  renderShipCashflowChart(hist, '12');
-  document.querySelectorAll('#shipRange button').forEach(function(btn){
-    btn.onclick = function(){
-      document.querySelectorAll('#shipRange button').forEach(function(x){ x.classList.remove('active'); });
-      btn.classList.add('active');
-      renderShipNetWorthChart(hist, btn.dataset.n);
-      renderShipCashflowChart(hist, btn.dataset.n);
-    };
-  });
-
+  renderShipNetWorthChart(hist);
+  renderShipCashflowChart(hist);
   var changes = [
     ['Financial Grade', sd===null?'—':(sd>=0?'↑ '+sd.toFixed(0)+' points':'↓ '+Math.abs(sd).toFixed(0)+' points'), sd!==null&&sd<0],
     ['Net Worth', shipDeltaMoney(dn), dn!==null&&dn<0],
