@@ -9154,3 +9154,64 @@ add('panel-achievements','rays','Every improvement counts','Celebrate milestones
 </script>
 </body>
 </html>
+
+<!-- FINAL PRO TAB GATE: Dashboard stays free; all other workspaces are Pro -->
+<style id="gmf-pro-tab-gate">
+.gmf-pro-locked-tab{position:relative!important;min-height:620px!important;overflow:hidden!important}
+.gmf-pro-locked-tab > *:not(.gmf-pro-tab-gate-card){display:none!important}
+.gmf-pro-tab-gate-card{display:grid!important;place-items:center!important;min-height:620px!important;padding:28px!important;background:
+ radial-gradient(circle at 12% 15%,rgba(59,130,246,.16),transparent 28%),
+ radial-gradient(circle at 88% 18%,rgba(139,92,246,.16),transparent 26%),
+ radial-gradient(circle at 50% 100%,rgba(16,185,129,.16),transparent 35%),
+ linear-gradient(135deg,#f8fbff 0%,#f4f1ff 48%,#effcf7 100%)!important}
+:root[data-theme="dark"] .gmf-pro-tab-gate-card{background:radial-gradient(circle at 12% 15%,rgba(59,130,246,.2),transparent 28%),radial-gradient(circle at 88% 18%,rgba(139,92,246,.2),transparent 26%),radial-gradient(circle at 50% 100%,rgba(16,185,129,.16),transparent 35%),linear-gradient(135deg,#0f1720 0%,#151329 48%,#0d211d 100%)!important}
+.gmf-pro-gate-inner{width:min(680px,100%);text-align:center;padding:44px 34px;border:1px solid rgba(125,145,170,.25);border-radius:28px;background:rgba(255,255,255,.76);box-shadow:0 24px 70px rgba(45,70,100,.15);backdrop-filter:blur(18px)}
+:root[data-theme="dark"] .gmf-pro-gate-inner{background:rgba(18,29,36,.82);border-color:rgba(255,255,255,.1);box-shadow:0 24px 70px rgba(0,0,0,.35)}
+.gmf-pro-gate-orb{width:104px;height:104px;border-radius:50%;margin:0 auto 22px;display:grid;place-items:center;font-size:40px;color:white;background:conic-gradient(#28c59a 0 32%,#4f8cff 32% 57%,#9b6cff 57% 78%,#f2b84b 78% 100%);box-shadow:0 0 0 10px rgba(83,137,255,.08),0 18px 40px rgba(79,140,255,.28)}
+.gmf-pro-gate-orb span{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;background:#17212a}
+.gmf-pro-gate-kicker{font-size:11px;font-weight:900;letter-spacing:.16em;color:#7564d9;margin-bottom:12px}
+.gmf-pro-gate-inner h2{margin:0;font-size:clamp(26px,4vw,42px);letter-spacing:-.04em;color:var(--text)}
+.gmf-pro-gate-inner p{max-width:560px;margin:14px auto 22px;line-height:1.65;color:var(--muted);font-size:15px}
+.gmf-pro-gate-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;text-align:left;margin:24px auto;max-width:560px}
+.gmf-pro-gate-features div{padding:12px 14px;border-radius:13px;background:rgba(255,255,255,.58);border:1px solid rgba(100,120,150,.13);font-size:13px;font-weight:750;color:var(--text)}
+:root[data-theme="dark"] .gmf-pro-gate-features div{background:rgba(255,255,255,.05)}
+.gmf-pro-gate-features div:before{content:'✓';display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;margin-right:8px;background:rgba(39,183,143,.16);color:#16a57c;font-size:11px}
+.gmf-pro-gate-cta{display:inline-flex!important;align-items:center;justify-content:center;gap:8px;padding:14px 22px!important;border-radius:14px!important;font-size:15px!important;font-weight:900!important;text-decoration:none!important;box-shadow:0 14px 30px rgba(39,183,143,.2)}
+.gmf-pro-gate-note{margin-top:13px;font-size:11px;color:var(--muted-2)}
+.dash-nav-btn.gmf-nav-pro{position:relative!important}
+.dash-nav-btn.gmf-nav-pro:after{content:'PRO';font-size:8px;line-height:1;font-weight:900;letter-spacing:.06em;padding:4px 5px;border-radius:6px;background:rgba(242,184,75,.16);color:#c98b16;margin-left:auto}
+@media(max-width:650px){.gmf-pro-tab-gate-card{min-height:540px!important;padding:14px!important}.gmf-pro-gate-inner{padding:32px 20px}.gmf-pro-gate-features{grid-template-columns:1fr}.gmf-pro-locked-tab{min-height:540px!important}}
+</style>
+<script id="gmf-pro-tab-gate-js">
+(function(){
+  var proTabs=['networth','goals','scenarios','score','insights'];
+  var features={
+    networth:['Interactive net worth tracking','Colorful money & allocation charts','Cash flow and debt insights','Long-term wealth history'],
+    goals:['Unlimited financial goals','Progress tracking & milestones','Personalized goal planning','Goal-based recommendations'],
+    scenarios:['What-if financial scenarios','Retirement projections','Future wealth planning','Decision stress testing'],
+    score:['Full grade breakdown','Score drivers and history','Category-by-category analysis','Progress over time'],
+    insights:['Personalized financial insights','Benchmark comparisons','Momentum & trend analysis','Your highest-impact next moves']
+  };
+  function isPro(){return localStorage.getItem('gmf_pro')==='true';}
+  function titleFor(tab){return {networth:'Track your entire financial picture',goals:'Turn your goals into progress',scenarios:'See where your money can take you',score:'Understand what drives your grade',insights:'Unlock your personalized insights'}[tab]||'Unlock this Pro feature';}
+  function gate(tab){
+    var panel=document.getElementById('panel-'+tab); if(!panel) return;
+    var nav=document.querySelector('.dash-nav-btn[data-tab="'+tab+'"]');
+    if(isPro()){
+      panel.classList.remove('gmf-pro-locked-tab');
+      var old=panel.querySelector(':scope > .gmf-pro-tab-gate-card'); if(old) old.remove();
+      if(nav) nav.classList.remove('gmf-nav-pro');
+      return;
+    }
+    panel.classList.add('gmf-pro-locked-tab'); if(nav) nav.classList.add('gmf-nav-pro');
+    if(panel.querySelector(':scope > .gmf-pro-tab-gate-card')) return;
+    var card=document.createElement('div'); card.className='gmf-pro-tab-gate-card';
+    var list=(features[tab]||[]).map(function(x){return '<div>'+x+'</div>';}).join('');
+    card.innerHTML='<div class="gmf-pro-gate-inner"><div class="gmf-pro-gate-orb"><span>🔒</span></div><div class="gmf-pro-gate-kicker">GRADE MY FINANCE PRO</div><h2>'+titleFor(tab)+'</h2><p>This workspace is part of Pro. Upgrade to unlock the deeper tools, interactive charts, and personalized planning features built around your finances.</p><div class="gmf-pro-gate-features">'+list+'</div><a class="btn gold gmf-pro-gate-cta" href="index.html#pricing">Unlock Pro →</a><div class="gmf-pro-gate-note">Your free Dashboard and financial grade remain available.</div></div>';
+    panel.insertBefore(card,panel.firstChild);
+  }
+  function apply(){proTabs.forEach(gate);}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(apply,80);}); else setTimeout(apply,80);
+  window.addEventListener('storage',function(e){if(e.key==='gmf_pro') apply();});
+})();
+</script>
