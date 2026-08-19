@@ -2452,6 +2452,16 @@ svg text{fill:var(--ui-muted)}
   z-index:45 !important;
   margin:0 0 14px !important;
 }
+
+/* Money Flow is a local workspace. Its inner tabs must NOT float over the
+   visualization. Keep them in normal document flow so the chart starts
+   immediately underneath them. */
+#panel-networth.gmf-moneyflow-focused #flowTabs{
+  position:relative !important;
+  top:auto !important;
+  z-index:20 !important;
+  margin:0 0 8px !important;
+}
 #flowTabs{
   display:flex !important;
   gap:4px !important;
@@ -2473,6 +2483,10 @@ svg text{fill:var(--ui-muted)}
 @media(max-width:900px){
   #moneySubtabs, #planSubtabs, #insightSubtabs{top:6px !important}
   #flowTabs, #projSubtabs{top:64px !important}
+  #panel-networth.gmf-moneyflow-focused #flowTabs{
+    position:relative !important;
+    top:auto !important;
+  }
 }
 </style>
 
@@ -2484,19 +2498,27 @@ svg text{fill:var(--ui-muted)}
 #flowTabs + .flow-panel .flow-header{margin-top:0 !important;}
 </style>
 
-<style id="gmf-moneyflow-directly-below-tabs">
-#panel-networth.gmf-moneyflow-focused{
+<style id="gmf-flow-chart-visibility-final">
+#panel-networth.gmf-moneyflow-focused #moneyFlowContent .flow-panel{
   padding-top:0 !important;
 }
-#panel-networth.gmf-moneyflow-focused > .money-subview[data-moneypanel="moneyflow"]{
+#panel-networth.gmf-moneyflow-focused #moneyFlowContent .flow-view.active{
+  position:relative !important;
+  z-index:1 !important;
+  overflow:visible !important;
+  padding-top:4px !important;
+}
+#panel-networth.gmf-moneyflow-focused #moneyFlowContent .flow-view.active .flow-header{
   margin-top:0 !important;
 }
-#panel-networth.gmf-moneyflow-focused #moneyFlowContent{
+#panel-networth.gmf-moneyflow-focused #moneyFlowContent .flow-view.active svg{
+  display:block !important;
+  overflow:visible !important;
+  min-height:300px !important;
   margin-top:0 !important;
 }
-#panel-networth.gmf-moneyflow-focused #moneyFlowContent .pro-blur-section,
-#panel-networth.gmf-moneyflow-focused #moneyFlowContent .pro-blur-content{
-  margin-top:0 !important;
+#panel-networth.gmf-moneyflow-focused #flowTabs{
+  pointer-events:auto !important;
 }
 </style>
 </head>
@@ -4628,33 +4650,18 @@ function __track(){} // no-op if GA hasn't wired a custom tracker on this page
      * the fold. The chart's own Assets/Liabilities/Income/Trend tabs already
      * sit directly above their corresponding chart.
      */
-    /*
-     * Keep the selected Money workspace immediately below the Money tabs.
-     * The panel also contains shared overview/KPI/graphic elements that are
-     * useful on Net Worth but should NOT sit above Money Flow, Bills, Credit,
-     * or Allocation. Hide those siblings while a non-Net-Worth workspace is
-     * active so the selected content starts immediately under the tabs.
-     */
-    Array.prototype.forEach.call(p.children, function(child){
-      if(child === nav || child.classList.contains('money-subview')){
-        child.classList.remove('gmf-money-context-hidden');
-      }else{
-        child.classList.toggle('gmf-money-context-hidden', name !== 'networth');
-      }
-    });
-
-    if(nav && targetView && name !== 'networth'){
+    if(nav && targetView && name==='moneyflow'){
       nav.insertAdjacentElement('afterend', targetView);
       p.classList.add('gmf-moneyflow-focused');
     }else{
       p.classList.remove('gmf-moneyflow-focused');
       if(nav){
-        /* Restore the normal document order: nav followed by the views. */
-        var anchor=nav;
-        views.forEach(function(v){
-          anchor.insertAdjacentElement('afterend',v);
-          anchor=v;
-        });
+        var firstView=p.querySelector('.money-subview');
+        if(firstView && nav.nextElementSibling!==firstView){
+          /* Restore the normal document order: nav followed by the views. */
+          var anchor=nav;
+          views.forEach(function(v){ anchor.insertAdjacentElement('afterend',v); anchor=v; });
+        }
       }
     }
 
@@ -8948,23 +8955,6 @@ main{padding-top:16px !important;padding-bottom:42px !important}
   margin-top:0 !important;
 }
 
-/* When a Money sub-page is selected, show that sub-page immediately under
-   the Money navigation. The shared Money overview/KPI/graphic content is
-   hidden so it cannot push the selected chart down the page. */
-#panel-networth .gmf-money-context-hidden{
-  display:none !important;
-}
-#panel-networth.gmf-moneyflow-focused > .money-subview[data-moneypanel="moneyflow"]{
-  display:block !important;
-}
-#panel-networth.gmf-moneyflow-focused > .money-subview[data-moneypanel="moneyflow"] .flow-tabs{
-  margin-top:0 !important;
-}
-#panel-networth.gmf-moneyflow-focused > .money-subview[data-moneypanel="moneyflow"] .flow-panel{
-  margin-top:0 !important;
-}
-
-
 /* =========================================================
    CHART TYPOGRAPHY — READABLE / MODERN
    ========================================================= */
@@ -10178,6 +10168,88 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
     observer.observe(document.body, {childList:true, subtree:true});
     setTimeout(function(){ try{ observer.disconnect(); }catch(e){} }, 5000);
   }catch(e){}
+})();
+</script>
+
+<script id="gmf-flow-tabs-final-controller">
+(function(){
+  'use strict';
+
+  function activateFlowTab(tab, shouldScroll){
+    if(!tab) return;
+    var nav = document.getElementById('flowTabs');
+    if(!nav) return;
+
+    var id = tab.getAttribute('data-view');
+    if(!id) return;
+
+    var tabs = nav.querySelectorAll('.flow-tab');
+    var panel = nav.parentElement;
+    var views = panel ? panel.querySelectorAll('.flow-view') : document.querySelectorAll('.flow-view');
+
+    tabs.forEach(function(t){
+      var active = t === tab;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+
+    views.forEach(function(v){
+      var active = v.id === id;
+      v.classList.toggle('active', active);
+      v.setAttribute('aria-hidden', active ? 'false' : 'true');
+      if(active){
+        v.style.setProperty('display','block','important');
+      }else{
+        v.style.setProperty('display','none','important');
+      }
+    });
+
+    /* Re-render the selected visualization after it becomes visible. */
+    try{
+      var d = (typeof getLastReport === 'function') ? getLastReport() : null;
+      var v = d && d.v ? d.v : null;
+      if(v){
+        if(id === 'flowAssets' && typeof renderAssetsFlow === 'function') renderAssetsFlow(v);
+        if(id === 'flowLiabs' && typeof renderLiabilitiesFlow === 'function') renderLiabilitiesFlow(v);
+        if(id === 'flowIncome' && typeof renderIncomeSavingsFlow === 'function') renderIncomeSavingsFlow(v);
+        if(id === 'flowGrowth' && typeof renderNetWorthTrendTab === 'function') renderNetWorthTrendTab(v);
+      }
+    }catch(e){
+      console.warn('Flow tab selected-view render failed:', e);
+    }
+
+    if(shouldScroll){
+      var y = nav.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({top:Math.max(0,y-10),behavior:'smooth'});
+    }
+
+    try{
+      if(typeof __track === 'function') __track('flow_tab_view',{tab:id});
+    }catch(e){}
+  }
+
+  document.addEventListener('click', function(e){
+    var tab = e.target && e.target.closest ? e.target.closest('#flowTabs .flow-tab') : null;
+    if(!tab) return;
+
+    /* Stop every older flow-tab handler from fighting this state. */
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    activateFlowTab(tab, true);
+  }, true);
+
+  function sync(){
+    var nav = document.getElementById('flowTabs');
+    if(!nav) return;
+    var active = nav.querySelector('.flow-tab.active') || nav.querySelector('.flow-tab');
+    if(active) activateFlowTab(active, false);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(sync, 50); });
+  }else{
+    setTimeout(sync, 50);
+  }
 })();
 </script>
 </body>
