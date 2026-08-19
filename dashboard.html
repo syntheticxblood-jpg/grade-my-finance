@@ -9039,5 +9039,39 @@ function milestones(p,target,age){var levels=[.1,.25,.5,.75,1],names=['10% found
 $r('rsCalculate').addEventListener('click',calc);['rsAge','rsRetireAge','rsBalance','rsMonthly','rsSpending','rsReturn','rsInflation','rsWithdraw'].forEach(id=>$r(id).addEventListener('input',calc));$r('rsFillExample').addEventListener('click',function(){var x={rsAge:32,rsRetireAge:60,rsBalance:125000,rsMonthly:1800,rsSpending:60000};Object.keys(x).forEach(k=>$r(k).value=x[k]);calc()});
 })();
 </script>
+
+<style id="gmf-all-tabs-colorful-upgrade">
+/* ALL-TABS COLORFUL HD UPGRADE */
+#panel-score,#panel-networth,#panel-goals,#panel-scenarios,#panel-insights,#panel-achievements{position:relative}
+#panel-score:before,#panel-networth:before,#panel-goals:before,#panel-scenarios:before,#panel-insights:before,#panel-achievements:before{content:"";display:block;height:4px;border-radius:999px;margin:0 0 18px;background:linear-gradient(90deg,var(--brand),var(--gold-bright),#8b5cf6,#38bdf8)}
+#panel-score .hero-card:first-of-type{background:linear-gradient(135deg,#eef8f4,#e9f0ff)!important}
+#panel-networth .hero-card:first-of-type{background:linear-gradient(135deg,#ecfbf5,#fff5df)!important}
+#panel-goals .hero-card:first-of-type{background:linear-gradient(135deg,#fff6dc,#f1ecff)!important}
+#panel-scenarios .hero-card:first-of-type{background:linear-gradient(135deg,#edf6ff,#eefbf5)!important}
+#panel-insights .hero-card:first-of-type{background:linear-gradient(135deg,#f5efff,#e8fbf5)!important}
+#panel-achievements .hero-card:first-of-type{background:linear-gradient(135deg,#fff7e5,#eef5ff)!important}
+.gmf-tab-graphic{margin:14px 0 18px;border-radius:18px;padding:18px;overflow:hidden;position:relative;min-height:180px;border:1px solid var(--line);box-shadow:var(--shadow-sm)}
+.gmf-tab-graphic h3{margin:0 0 4px;font-size:18px}.gmf-tab-graphic p{margin:0;color:var(--muted);max-width:520px}.gmf-bars{height:90px;display:flex;align-items:end;gap:8px;margin-top:18px}.gmf-bars i{display:block;flex:1;border-radius:9px 9px 3px 3px;background:linear-gradient(180deg,var(--brand-bright),var(--brand));box-shadow:0 -8px 24px rgba(46,156,129,.15)}
+.gmf-donut{position:absolute;right:28px;bottom:18px;width:120px;height:120px;border-radius:50%;background:conic-gradient(var(--brand) 0 42%,var(--gold-bright) 42% 68%,#8b5cf6 68% 84%,#38bdf8 84% 100%);box-shadow:inset 0 0 0 22px var(--surface)}
+.gmf-donut:after{content:"LIVE";position:absolute;inset:38px 0 auto;text-align:center;font:700 12px var(--font-mono);color:var(--text)}
+.gmf-spark{position:absolute;right:24px;bottom:22px;width:240px;height:105px;opacity:.95}
+.gmf-goal-orbit{position:absolute;right:32px;bottom:24px;width:135px;height:135px;border:2px solid rgba(139,92,246,.25);border-radius:50%;box-shadow:0 0 0 18px rgba(46,156,129,.08),0 0 0 36px rgba(245,185,66,.08)}
+.gmf-goal-orbit:before{content:"✓";position:absolute;inset:32px;display:grid;place-items:center;border-radius:50%;background:var(--brand);color:#fff;font-size:30px;font-weight:800}
+.gmf-bubbles{position:absolute;right:28px;bottom:20px;width:220px;height:120px}.gmf-bubbles i{position:absolute;border-radius:50%;display:block;background:linear-gradient(135deg,var(--brand-soft),#fff)}.gmf-bubbles i:nth-child(1){width:86px;height:86px;left:20px;top:20px}.gmf-bubbles i:nth-child(2){width:58px;height:58px;left:105px;top:5px}.gmf-bubbles i:nth-child(3){width:42px;height:42px;left:160px;top:70px}.gmf-bubbles i:nth-child(4){width:28px;height:28px;left:4px;top:0px;background:var(--gold-soft)}
+.gmf-insight-rays{position:absolute;right:20px;bottom:-55px;width:220px;height:220px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(139,92,246,.14) 0 10deg,transparent 10deg 24deg)}
+@media(max-width:700px){.gmf-donut,.gmf-spark,.gmf-goal-orbit,.gmf-bubbles,.gmf-insight-rays{opacity:.28}.gmf-tab-graphic{min-height:155px}}
+</style>
+<script id="gmf-all-tabs-colorful-graphics">
+(function(){
+function add(panel,type,title,copy){var p=document.getElementById(panel);if(!p||p.querySelector('.gmf-tab-graphic'))return;var d=document.createElement('div');d.className='gmf-tab-graphic';var visual='';if(type==='bars'){visual='<div class="gmf-bars">'+[38,62,48,78,58,92,74,100].map(function(x){return '<i style="height:'+x+'%"></i>'}).join('')+'</div>'}else if(type==='donut'){visual='<div class="gmf-donut"></div>'}else if(type==='spark'){visual='<svg class="gmf-spark" viewBox="0 0 240 105"><defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#2e9c81"/><stop offset=".5" stop-color="#f5b942"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><path d="M4 88 C35 82 38 62 66 68 S100 42 128 50 S158 12 188 28 S218 18 236 4" fill="none" stroke="url(#g)" stroke-width="8" stroke-linecap="round"/></svg>'}else if(type==='goal'){visual='<div class="gmf-goal-orbit"></div>'}else if(type==='bubbles'){visual='<div class="gmf-bubbles"><i></i><i></i><i></i><i></i></div>'}else{visual='<div class="gmf-insight-rays"></div>'}d.innerHTML='<h3>'+title+'</h3><p>'+copy+'</p>'+visual;p.insertBefore(d,p.firstChild)}
+add('panel-score','bars','Your financial grade, visualized','Track how your score moves over time and turn every check-in into a clearer trend.');
+add('panel-networth','donut','Your money picture at a glance','Explore what you own, what you owe, and how each update changes your financial position.');
+add('panel-goals','goal','Goals with momentum','Turn priorities into measurable progress and keep the next milestone visible.');
+add('panel-scenarios','spark','See your future before you choose','Adjust the plan, compare outcomes, and watch the projected path change in real time.');
+add('panel-insights','bubbles','Find the signals in your numbers','Use your data to spot strengths, pressure points, tradeoffs, and the next best move.');
+add('panel-achievements','rays','Every improvement counts','Celebrate milestones as your habits and financial position get stronger.');
+})();
+</script>
+
 </body>
 </html>
