@@ -1152,8 +1152,18 @@ main{padding:30px 0 60px !important;}
 }
 .pro-blur-title{ font-weight:700; font-size:15px }
 .pro-blur-sub{ font-size:12.5px; color:var(--muted); max-width:320px; line-height:1.5 }
-body.is-pro .pro-blur-content{ filter:none; pointer-events:auto; user-select:auto; opacity:1 }
-body.is-pro .pro-blur-overlay{ display:none }
+/* Pro members must see the complete feature content. These rules intentionally
+   use !important because the later visual-redesign gate styles also use
+   !important for the default blur state. */
+body.is-pro .pro-blur-content{
+  filter:none !important;
+  pointer-events:auto !important;
+  user-select:auto !important;
+  opacity:1 !important;
+}
+body.is-pro .pro-blur-overlay{
+  display:none !important;
+}
 
 .pro-badge{ font-size:9px; padding:1px 5px }
 
@@ -2482,7 +2492,17 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     document.documentElement.style.visibility = '';
   })();
   try{
-    if(localStorage.getItem("gmf_pro")==="true"){ document.body.classList.add("is-pro"); }
+    var __gmfApplyAccess = function(){
+      try{
+        var __isPro = localStorage.getItem("gmf_pro")==="true";
+        if(document.body) document.body.classList.toggle("is-pro", __isPro);
+      }catch(e){}
+    };
+    if(document.body) __gmfApplyAccess();
+    else document.addEventListener("DOMContentLoaded", __gmfApplyAccess, {once:true});
+    window.addEventListener("storage", function(e){
+      if(e.key === "gmf_pro") __gmfApplyAccess();
+    });
     var __gmfTheme = localStorage.getItem("gmf_theme");
     if(__gmfTheme === "dark") document.documentElement.dataset.theme = "dark";
     else document.documentElement.dataset.theme = "light";
@@ -9879,6 +9899,35 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
 @media(max-width:760px){.gmf-stress-shell .stress-hero-v2{padding:24px 20px}.gmf-stress-shell .stress-chart-hero{margin:0 14px}.gmf-stress-shell .stress-outcomes-row{margin:0 14px;grid-template-columns:1fr}.gmf-stress-shell .report-section{margin:0 14px}.gmf-stress-shell .stress-full-analysis{margin:0 14px 16px}.gmf-stress-shell .stress-analysis-facts{grid-template-columns:1fr}.gmf-stress-shell .stress-detail-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:480px){.gmf-stress-shell .stress-preset-row{display:grid;grid-template-columns:1fr 1fr}.gmf-stress-shell .stress-preset-btn{width:100%}.gmf-stress-shell #stChart{height:250px}}
 </style>
+<script>
+(function(){
+  function syncGmfProAccess(){
+    try{
+      var isPro = localStorage.getItem('gmf_pro') === 'true';
+      document.body.classList.toggle('is-pro', isPro);
+      document.querySelectorAll('.pro-blur-content').forEach(function(el){
+        if(isPro){
+          el.style.setProperty('filter','none','important');
+          el.style.setProperty('opacity','1','important');
+          el.style.setProperty('pointer-events','auto','important');
+          el.style.setProperty('user-select','auto','important');
+        }
+      });
+      document.querySelectorAll('.pro-blur-overlay').forEach(function(el){
+        if(isPro) el.style.setProperty('display','none','important');
+      });
+    }catch(e){}
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', syncGmfProAccess);
+  }else{
+    syncGmfProAccess();
+  }
+  window.addEventListener('storage', function(e){
+    if(e.key === 'gmf_pro') syncGmfProAccess();
+  });
+})();
+</script>
 </body>
 </html>
 
