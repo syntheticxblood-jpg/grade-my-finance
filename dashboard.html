@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-/* Paint the final dashboard canvas immediately.  Do not use a separate
-   blue splash color here — that is what caused the blue flash on reload. */
-try{
-  document.documentElement.style.background = "#dfeaf6";
-}catch(e){}
-</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Dashboard | Grade My Finance</title>
@@ -513,7 +506,7 @@ main{ padding:28px 0 50px }
   --dash-ink:#16352f;
   --dash-muted:#63756f;
   --dash-line:#dfe7e2;
-  --dash-bg:#dfeaf6;
+  --dash-bg:#f4f3ea;
   --dash-card:#ffffff;
   --dash-mint:#dcefe8;
   --dash-blue:#e5edf8;
@@ -523,11 +516,8 @@ main{ padding:28px 0 50px }
 }
 
 /* Page atmosphere */
-html, body{
-  background:#dfeaf6 !important;
-}
 body{
-  background:linear-gradient(135deg,#dce9f6 0%,#e8f1fa 48%,#d5e4f2 100%) !important;
+  background:var(--dash-bg) !important;
   color:var(--dash-ink) !important;
 }
 .main-area{
@@ -535,9 +525,9 @@ body{
 }
 .main-area::before{
   background:
-    radial-gradient(ellipse 900px 560px at 18% 0%,rgba(73,137,205,.16),transparent 62%),
-    radial-gradient(ellipse 650px 520px at 88% 22%,rgba(117,166,220,.13),transparent 65%),
-    radial-gradient(ellipse 620px 600px at 78% 90%,rgba(54,113,180,.10),transparent 70%) !important;
+    radial-gradient(ellipse 850px 520px at 22% 0%,rgba(54,170,137,.12),transparent 62%),
+    radial-gradient(ellipse 560px 460px at 88% 22%,rgba(242,204,92,.10),transparent 65%),
+    radial-gradient(ellipse 500px 500px at 78% 90%,rgba(121,145,209,.07),transparent 70%) !important;
 }
 
 /* Sidebar */
@@ -3103,18 +3093,18 @@ body{
 <style id="gmf-blue-tinted-background">
 /* Slightly deeper cool blue background so every white card has visible separation. */
 :root[data-theme="light"] {
-  --bg: #d8e6ea !important;
-  --bg-2: #c9dde3 !important;
+  --bg: #e7f0f3 !important;
+  --bg-2: #dce9ed !important;
   --surface: #ffffff !important;
-  --surface-2: #f2f8fa !important;
-  --line: #b9d3d9 !important;
+  --surface-2: #f7fbfc !important;
+  --line: #cbdde1 !important;
 }
 :root[data-theme="light"] body {
-  background: #dbe9f5 !important;
+  background: #dfeaec !important;
   background-image:
-    radial-gradient(900px 520px at 18% 8%, rgba(61, 170, 151, .16), transparent 65%),
-    radial-gradient(850px 560px at 88% 18%, rgba(82, 139, 220, .16), transparent 68%),
-    linear-gradient(135deg, #e8f1f9 0%, #dbe9f5 48%, #e3eef7 100%) !important;
+    radial-gradient(900px 520px at 18% 8%, rgba(61, 170, 151, .12), transparent 65%),
+    radial-gradient(850px 560px at 88% 18%, rgba(82, 139, 220, .12), transparent 68%),
+    linear-gradient(135deg, #e2eef0 0%, #dce8eb 48%, #e1ebef 100%) !important;
 }
 :root[data-theme="light"] .main-area {
   background: transparent !important;
@@ -3133,37 +3123,6 @@ body{
 }
 </style>
 
-
-<style id="gmf-blue-canvas-fix">
-html,body{background:#081b2b !important;color:#e8f3ff !important;}
-body{background:radial-gradient(ellipse 1200px 700px at 45% -10%,#153e5f 0%,#0b2438 42%,#071522 100%) !important;background-attachment:fixed !important;}
-.main-area{background:transparent !important;}
-.main-area::before{background:radial-gradient(ellipse 900px 600px at 35% 0%,rgba(43,132,190,.22),transparent 62%),radial-gradient(ellipse 700px 600px at 85% 25%,rgba(31,91,145,.18),transparent 65%),radial-gradient(ellipse 700px 700px at 50% 100%,rgba(12,65,105,.20),transparent 70%) !important;}
-.main-area .container{max-width:none !important;width:100% !important;padding-left:28px !important;padding-right:28px !important;}
-.sidebar{background:#07131f !important;border-right:1px solid #1d3a50 !important;}
-.sidebar .dash-nav-btn{color:#a9bfd0 !important;}
-.sidebar .dash-nav-btn:hover{background:#102b40 !important;color:#fff !important;}
-.sidebar .dash-nav-btn.active{background:#123e5a !important;color:#62c5ff !important;box-shadow:inset 3px 0 0 #38a9e8 !important;}
-.content-header .dash-greeting-text,.content-header .dash-greeting-sub,.content-header .dash-greeting-eyebrow,.content-header-right .updated{color:#e6f2fb !important;}
-.content-header .dash-greeting-sub,.content-header .dash-greeting-eyebrow,.content-header-right .updated{opacity:.72;}
-.card,.hero-card,.metric-card,.grade-ring-card,.insight-card,.scenario-card,.goal-card,.ret-scenario-card,.achv-item,.settings-panel{background:rgba(15,31,44,.94) !important;border-color:#24455c !important;color:#e8f3ff !important;box-shadow:0 10px 28px rgba(0,0,0,.22) !important;}
-.m-label,.section-label,.activity-row.activity-head,.section-sub,.m-sub,.hero-card .hv-sub,.insight-card p,.dash-nav-btn{color:#9eb5c6 !important;}
-.m-val,.hv,.insight-card h4,.activity-grade,.activity-score,.story-beat-text,.metric-card .m-val{color:#edf7ff !important;}
-.dash-nav{border-bottom-color:#24455c !important;}
-.dash-nav-btn.active{color:#54b9ef !important;border-bottom-color:#38a9e8 !important;}
-#panel-overview .ship-chart-card{background:linear-gradient(145deg,#102a3e,#0d2233) !important;border-color:#28506b !important;}
-.chart-time-filters,.chart-time-filters button.active{background:#132d41 !important;border-color:#284a61 !important;color:#b8d2e4 !important;}
-#panel-overview .ov-col:last-child .hero-card:first-child,.insight-card.goal-card-decorated,.insight-card.win,.insight-card:not(.win):not(.goal-card-decorated),#panel-overview > .metrics-row[style*="grid-template-columns:1fr 1fr"] .metric-card,#storyModeCard{background:linear-gradient(145deg,#102b40,#0b2132) !important;border-color:#28516b !important;}
-.composition-legend,.activity-date,.activity-score,.activity-change{color:#a7bdcc !important;}
-/* Keep charts fully visible instead of forcing an internal scroll/crop. */
-#panel-overview .ship-chart-wrap{min-height:300px !important;height:300px !important;overflow:visible !important;}
-#panel-overview .ship-chart-wrap svg{width:100% !important;height:100% !important;overflow:visible !important;}
-#compositionChart{min-height:190px !important;height:190px !important;overflow:visible !important;}
-.ret-share-canvas-wrap{width:260px !important;height:260px !important;}
-.ret-share-canvas-wrap canvas{width:260px !important;height:260px !important;}
-@media(max-width:1200px){.main-area .container{padding-left:22px !important;padding-right:22px !important;}#panel-overview .ship-chart-wrap{min-height:270px !important;height:270px !important;}}
-@media(max-width:900px){body{background:#081b2b !important;}.main-area .container{padding-left:16px !important;padding-right:16px !important;}#panel-overview .ship-chart-wrap{min-height:250px !important;height:250px !important;}.ret-share-canvas-wrap{width:220px !important;height:220px !important;}.ret-share-canvas-wrap canvas{width:220px !important;height:220px !important;}}
-</style>
 </head>
 <body>
 <script>
@@ -3425,8 +3384,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     <!-- ================= SCORE HISTORY ================= -->
     <div class="dash-tab-panel" id="panel-score">
       <span class="section-label">Score history</span>
-      <p class="section-sub">Track how your financial health has changed over time. <a href="index.html?openReport=1" style="color:var(--brand-bright);font-weight:700;text-decoration:none">Open full report →</a></p>
-      <button class="btn sm" type="button" data-goto="achievements" style="margin-bottom:14px">Achievements →</button>
+      <p class="section-sub">Track how your financial health has changed over time.</p>
       <div class="hero-card">
         <div class="hero-card-top">
           <div><div class="hv mono" id="scHeroVal">—</div><div class="hv-sub" id="scHeroSub">—</div></div>
@@ -8862,7 +8820,7 @@ async function init(){
   // the initial render — redraw the share card once they're ready.
   if(document.fonts && document.fonts.ready){
     document.fonts.ready.then(function(){
-      if($("retResults") && $("retResults").style.display !== 'none') renderRetLive();
+      if($("retResults").style.display !== 'none') renderRetLive();
     });
   }
 }
@@ -9210,7 +9168,7 @@ Promise.resolve(init()).then(function(){
 
   function rebuildGoals(){
     var p=id('panel-goals');if(!p)return;var x=latest(),l=x.l,gs=goals();
-    var health=addOnce(p,'gmf-goal-health','<div class="box"><span>Active goals</span><b id="rbActiveGoals">0</b><em>Keep the list small enough to act on</em></div><div class="box"><span>Primary focus</span><b id="rbGoalFocus">—</b><em>Based on your latest financial priorities</em></div><div class="box"><span>Current grade</span><b id="rbGoalGrade">—</b><em>Your grade is the outcome, not the goal itself</em></div>',p.querySelector('.goal-form'));
+    var health=addOnce(p,'gmf-goal-health','<div class="gmf-goal-health"><div class="box"><span>Active goals</span><b id="rbActiveGoals">0</b><em>Keep the list small enough to act on</em></div><div class="box"><span>Primary focus</span><b id="rbGoalFocus">—</b><em>Based on your latest financial priorities</em></div><div class="box"><span>Current grade</span><b id="rbGoalGrade">—</b><em>Your grade is the outcome, not the goal itself</em></div></div>',p.querySelector('.goal-form'));
     if(health){id('rbActiveGoals').textContent=gs.length;var a=pri(l);id('rbGoalFocus').textContent=a?a.title.replace('your ',''):'Choose a target';id('rbGoalGrade').textContent=l?grade(l.score)+' · '+Number(l.score).toFixed(1):'—'}
     var form=q('.goal-form',p);if(form&&!q('.gmf-goal-presets',p)){}
   }
@@ -9236,7 +9194,7 @@ Promise.resolve(init()).then(function(){
     var grid=id('rbDriverGrid');grid.innerHTML='';
     if(comps.length){comps.forEach(function(c,i){var v=typeof vals[i]==='number'?Math.max(0,Math.min(100,vals[i]*100)):null;var tier=v===null?'':v>=67?'good':v>=34?'mid':'bad';var d=document.createElement('div');d.className='gmf-driver';d.innerHTML='<div class="gmf-driver-head"><span class="gmf-driver-name">'+(labels[i]||c.key||'Factor')+'</span><span class="gmf-driver-grade">'+(c.letter||'—')+'</span></div><div class="gmf-driver-bar"><i style="width:'+(v===null?0:v)+'%;background:'+(tier==='bad'?'#d9655c':tier==='mid'?'#c9932f':'#20ae87')+'"></i></div><p>'+(c.tip||'This factor contributes to your overall grade.')+'</p>';grid.appendChild(d)})}
     else {grid.innerHTML='<div class="gmf-report-box" style="grid-column:1/-1"><p>Your detailed factor breakdown will appear after the calculator saves the latest report snapshot.</p></div>'}
-    var priority=pri(l);id('rbReportStrength').textContent=l.totalDebt===0?'Your balance sheet is currently debt free.':(l.net>0?'Your assets exceed your liabilities.':'Your next improvement should focus on strengthening your balance sheet.');id('rbReportWeak').textContent=priority?priority.copy:'Keep tracking until a clear priority emerges.';
+    var priority=a=pri(l);id('rbReportStrength').textContent=l.totalDebt===0?'Your balance sheet is currently debt free.':(l.net>0?'Your assets exceed your liabilities.':'Your next improvement should focus on strengthening your balance sheet.');id('rbReportWeak').textContent=priority?priority.copy:'Keep tracking until a clear priority emerges.';
     var sl=id('rbReportStrengthList'),wl=id('rbReportWeakList');sl.innerHTML='';wl.innerHTML='';
     var strongest=comps.slice().sort(function(a,b){var ia=comps.indexOf(a),ib=comps.indexOf(b);return (vals[ib]||0)-(vals[ia]||0)})[0];
     if(strongest)sl.innerHTML='<div><b>'+strongest.letter+' '+(labels[comps.indexOf(strongest)]||strongest.key)+'</b><span>Strongest driver</span></div>';
@@ -9315,6 +9273,11 @@ Promise.resolve(init()).then(function(){
     var name=b.getAttribute('data-tab');
     if(!name || !qs('#panel-'+name)) return;
     show(name,true);
+    /* Make the sidebar navigation authoritative. Several legacy dashboard
+       scripts also listen for the same click and can otherwise immediately
+       re-render the overview or overwrite the selected panel. */
+    e.preventDefault();
+    e.stopImmediatePropagation();
   },true);
 
   document.addEventListener('click',function(e){
@@ -11162,6 +11125,189 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
   else setTimeout(boot,100);
 })();
 </script>
+
+<style id="gmf-redesign-v3">
+/* =========================================================
+   GRADE MY FINANCE — PREMIUM DASHBOARD REDESIGN
+   Larger, cleaner, blue/green-tinted canvas + reliable nav.
+   ========================================================= */
+:root{
+  --gmf-canvas:#e7f0f3;
+  --gmf-canvas-2:#edf4f6;
+  --gmf-card:#fbfdfd;
+  --gmf-card-green:#f4faf8;
+  --gmf-card-blue:#f5f7fc;
+  --gmf-border:#cbdde0;
+  --gmf-border-strong:#b9d0d5;
+  --gmf-ink:#102b35;
+  --gmf-muted:#5d7580;
+  --gmf-teal:#10a984;
+  --gmf-teal-dark:#087c69;
+  --gmf-blue:#4f83ed;
+  --gmf-purple:#8a68e8;
+  --gmf-gold:#e6aa31;
+  --gmf-red:#ef6461;
+  --gmf-shadow:0 14px 36px rgba(34,73,83,.09),0 2px 8px rgba(34,73,83,.05);
+}
+html,body{background:var(--gmf-canvas)!important;color:var(--gmf-ink)!important}
+body{font-size:15px!important;min-height:100vh}
+.app-shell{background:transparent!important;min-height:100vh}
+.main-area{margin-left:224px!important;background:transparent!important;min-height:100vh}
+.main-area::before{left:224px!important;right:0!important;top:0!important;height:100vh!important;background:
+ radial-gradient(900px 520px at 12% 0%,rgba(35,173,145,.14),transparent 62%),
+ radial-gradient(800px 560px at 94% 5%,rgba(73,126,224,.13),transparent 60%),
+ linear-gradient(135deg,#e4eef1 0%,#edf4f6 48%,#e7f0f4 100%)!important}
+.main-area .container{max-width:none!important;width:100%!important;padding:18px 28px 70px!important}
+
+/* Sidebar */
+.sidebar{width:224px!important;padding:18px 10px!important;background:#123f35!important;border-right:1px solid #28594e!important;box-shadow:10px 0 30px rgba(19,59,53,.10)!important}
+.sidebar-brand{padding:4px 9px 20px!important;margin-bottom:18px!important}
+.sidebar .wordmark{font-size:16px!important;line-height:1.1!important}
+.sidebar .dash-nav-btn{min-height:48px!important;padding:11px 13px!important;font-size:14px!important;border-radius:12px!important;position:relative!important;z-index:20!important}
+.sidebar .dash-nav-btn.active{background:#11775f!important;box-shadow:inset 3px 0 0 #59d7b1,0 5px 16px rgba(8,71,58,.18)!important}
+.sidebar .dash-nav-btn.gmf-nav-pro:after{font-size:8px!important;padding:4px 6px!important;background:#f1e5c5!important;color:#765f27!important;border-radius:999px!important}
+.sidebar .nav-section-label{font-size:9px!important;letter-spacing:.15em!important;margin:12px 8px 5px!important}
+.sidebar-bottom{padding-top:12px!important}
+.sidebar-bottom .icon-btn{font-size:13px!important}
+.sidebar-profile{padding:12px 8px 0!important}
+
+/* Header */
+.content-header{background:rgba(250,253,253,.94)!important;border:1px solid var(--gmf-border)!important;border-radius:18px!important;padding:18px 22px!important;margin:0 0 22px!important;box-shadow:var(--gmf-shadow)!important;min-height:112px!important;align-items:center!important}
+.content-header .dash-greeting-eyebrow{font-size:13px!important;color:#78909a!important}
+.content-header .dash-greeting-text{font-size:30px!important;line-height:1.05!important;color:#102b35!important}
+.content-header .dash-greeting-sub{font-size:14px!important;color:#55707b!important;margin-top:6px!important}
+.content-header-right{gap:10px!important}
+.content-header-right .updated{font-size:12px!important;color:#71858e!important}
+.content-header-right .btn{padding:11px 16px!important;border-radius:11px!important;font-size:13px!important}
+
+/* Panels / cards */
+.dash-tab-panel{width:100%!important}
+#panel-overview{max-width:1260px!important;margin:0 auto!important}
+.ship-grade-hero,.ship-glance-card,.ship-chart-card,.card,.metric-card,.grade-ring-card{border-color:var(--gmf-border)!important;box-shadow:var(--gmf-shadow)!important}
+.ship-grade-hero{min-height:205px!important;border-radius:20px!important;background:var(--gmf-card)!important}
+.ship-grade-main{padding:28px 30px!important}
+.ship-eyebrow,.ship-chart-kicker,.ship-panel-title{font-size:10px!important;letter-spacing:.16em!important}
+.ship-grade-letter{font-size:78px!important;line-height:.95!important}
+.ship-grade-score{font-size:30px!important}
+.ship-grade-trend{font-size:13px!important}
+.ship-trend-value{font-size:20px!important}
+.grade-pro-panel{min-width:310px!important;padding:25px 26px!important;background:linear-gradient(150deg,#07584b,#0a6d5b)!important}
+.grade-pro-panel h3{font-size:20px!important;margin:9px 0 6px!important}
+.grade-pro-panel p{font-size:13px!important;line-height:1.5!important}
+.grade-pro-cta{padding:11px 16px!important;border-radius:10px!important}
+.ship-glance-card{margin-top:18px!important;border-radius:18px!important;background:var(--gmf-card)!important;padding:15px 18px!important}
+.ship-glance-grid{gap:0!important}
+.ship-glance-item{padding:10px 18px!important;min-height:62px!important}
+.ship-glance-item b{font-size:18px!important}
+.ship-glance-item>div>span{font-size:10px!important;text-transform:uppercase!important;letter-spacing:.08em!important}
+.ship-lower-grid{margin-top:18px!important;gap:18px!important;grid-template-columns:1.25fr .95fr!important}
+.ship-chart-card{min-height:405px!important;border-radius:18px!important;padding:20px 22px!important}
+.ship-modern-chart-card:first-child{background:linear-gradient(145deg,#fbfefd,#f0f8f5)!important}
+.ship-modern-chart-card:last-child{background:linear-gradient(145deg,#fbfbff,#f3f4fc)!important}
+.ship-card-head h3{font-size:18px!important;margin-top:4px!important}
+.ship-card-head p{font-size:12px!important}
+.ship-modern-chart-wrap{min-height:280px!important}
+#gmfFinalPieChart,#gmfFinalBarChart{width:100%!important;height:310px!important;display:block!important}
+.ship-modern-legend{font-size:12px!important}
+
+/* Every other workspace gets a comfortable readable width */
+.dash-tab-panel:not(#panel-overview){max-width:1260px!important;margin:0 auto!important}
+.dash-tab-panel:not(#panel-overview) .card,
+.dash-tab-panel:not(#panel-overview) .hero-card,
+.dash-tab-panel:not(#panel-overview) .scenario-card,
+.dash-tab-panel:not(#panel-overview) .ret-scenario-card{border-color:var(--gmf-border)!important;box-shadow:var(--gmf-shadow)!important;border-radius:18px!important}
+
+/* Force readable canvas behind all legacy components */
+#dashboardContent{position:relative!important;z-index:2!important}
+#dashboardContent .dash-tab-panel{position:relative!important}
+
+/* Strong panel state — JS also sets inline display */
+#dashboardContent > .dash-tab-panel{display:none!important}
+#dashboardContent > .dash-tab-panel.active{display:block!important}
+
+/* Reliable clickable sidebar */
+.sidebar,.sidebar *{pointer-events:auto!important}
+.sidebar .dash-nav-btn{cursor:pointer!important;user-select:none!important}
+
+@media(max-width:1100px){
+ .main-area .container{padding:14px 18px 80px!important}
+ .ship-lower-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:900px){
+ .main-area{margin-left:0!important}
+ .main-area::before{left:0!important}
+ .main-area .container{padding:12px 12px 82px!important}
+ .content-header{min-height:auto!important}
+ .content-header-right{width:100%!important}
+ .content-header-right .btn{flex:1!important}
+ .ship-grade-hero{display:block!important}
+ .grade-pro-panel{min-width:0!important}
+}
+</style>
+
+
+<script id="gmf-redesign-nav-v3">
+(function(){
+ 'use strict';
+ var names={
+  overview:{title:'Dashboard',sub:'Your financial command center — see what matters, what changed, and what to do next.'},
+  networth:{title:'Money',sub:'Understand what you own, what you owe, and where your cash is going.'},
+  goals:{title:'Goals',sub:'Turn your financial goals into measurable progress.'},
+  scenarios:{title:'Plan',sub:'Stress-test decisions and see where your finances can go.'},
+  score:{title:'Grade Report',sub:'Understand what is driving your financial grade.'},
+  insights:{title:'Insights',sub:'Go beyond the headline with financial context and decision support.'}
+ };
+ function allButtons(){return Array.prototype.slice.call(document.querySelectorAll('.sidebar .dash-nav-btn[data-tab]'));}
+ function allPanels(){return Array.prototype.slice.call(document.querySelectorAll('#dashboardContent > .dash-tab-panel'));}
+ function show(name,scroll){
+   var panel=document.getElementById('panel-'+name); if(!panel) return false;
+   allButtons().forEach(function(b){
+     var on=b.getAttribute('data-tab')===name;
+     b.classList.toggle('active',on);
+     b.setAttribute('aria-current',on?'page':'false');
+     b.setAttribute('aria-selected',on?'true':'false');
+   });
+   allPanels().forEach(function(p){
+     var on=p===panel;
+     p.classList.toggle('active',on);
+     p.style.display=on?'block':'none';
+     p.setAttribute('aria-hidden',on?'false':'true');
+   });
+   var meta=names[name]||names.overview;
+   var h=document.getElementById('greetingText'),sub=document.getElementById('greetingSub'),badge=document.getElementById('tabFocusBadge');
+   if(h) h.textContent=meta.title;
+   if(sub) sub.textContent=meta.sub;
+   if(badge) badge.textContent=name==='overview'?'COMMAND CENTER':name==='score'?'EXPLAIN YOUR GRADE':name==='insights'?'DECISION SUPPORT':name.toUpperCase();
+   if(scroll){
+     var header=document.querySelector('.content-header');
+     var y=panel.getBoundingClientRect().top+window.scrollY;
+     if(header) y=Math.max(y,header.getBoundingClientRect().bottom+window.scrollY+16);
+     window.scrollTo({top:Math.max(0,y-8),behavior:'smooth'});
+   }
+   return true;
+ }
+ window.gmfNav=show;
+ window.__gmfShowTab=show;
+ function wire(){
+   allButtons().forEach(function(b){
+     var tab=b.getAttribute('data-tab');
+     b.onclick=function(ev){ev.preventDefault();ev.stopPropagation();show(tab,true);return false;};
+   });
+   document.addEventListener('click',function(ev){
+     var b=ev.target.closest&&ev.target.closest('.sidebar .dash-nav-btn[data-tab]');
+     if(b){ev.preventDefault();ev.stopImmediatePropagation();show(b.getAttribute('data-tab'),true);}
+   },true);
+   document.addEventListener('click',function(ev){
+     var g=ev.target.closest&&ev.target.closest('[data-goto]');
+     if(g){var t=g.getAttribute('data-goto');if(t&&document.getElementById('panel-'+t)){ev.preventDefault();show(t,true);}}
+   },true);
+   var active=document.querySelector('.sidebar .dash-nav-btn[data-tab].active');
+   show(active?active.getAttribute('data-tab'):'overview',false);
+ }
+ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(wire,30);}); else setTimeout(wire,30);
+})();
+</script>
+
 </body>
 </html>
 
@@ -11289,49 +11435,6 @@ body::before{
 }
 </style>
 
-<style id="gmf-bigger-content-final">
-/* Placed last on purpose: this file has many earlier !important blocks
-   touching these same properties, and for tied specificity the LAST
-   declaration in the document wins. An earlier attempt at this same
-   change (higher up in the file) was silently losing to rules further
-   down. Also written without a [data-theme="light"] dependency so it
-   applies regardless of how/whether that attribute gets set. */
-#panel-overview .ship-modern-chart-card{ min-height:500px !important; padding:26px !important; }
-#panel-overview .ship-modern-chart-wrap{ height:380px !important; margin-top:14px !important; }
-#panel-overview .ship-modern-chart-card .ship-card-head h3{ font-size:20px !important; }
-#panel-overview .ship-modern-chart-card .ship-card-head p{ font-size:12.5px !important; }
-#panel-overview .ship-chart-kicker{ font-size:10px !important; }
-#panel-overview .ship-modern-legend{ font-size:12.5px !important; margin-top:14px !important; }
-
-#panel-overview .ship-glance-card{ padding:20px 24px !important; }
-#panel-overview .ship-glance-item{ padding:14px 18px !important; }
-#panel-overview .ship-glance-icon{ width:38px !important; height:38px !important; font-size:15px !important; }
-#panel-overview .ship-glance-item>div span{ font-size:10px !important; }
-#panel-overview .ship-glance-item>div b{ font-size:20px !important; margin-top:4px !important; }
-#panel-overview .ship-glance-item em{ font-size:11px !important; }
-
-#panel-overview .ship-grade-letter{ font-size:104px !important; }
-#panel-overview .ship-grade-score{ font-size:30px !important; }
-#panel-overview .ship-grade-main{ padding:30px 32px 28px !important; }
-#panel-overview .ship-message-title{ font-size:19px !important; }
-
-html:not([data-theme="dark"]), body:not([data-theme="dark"]){ background:#dbe9f5 !important; }
-:root:not([data-theme="dark"]) body{
-  background:#dbe9f5 !important;
-  background-image:
-    radial-gradient(900px 520px at 18% 8%, rgba(61, 170, 151, .16), transparent 65%),
-    radial-gradient(850px 560px at 88% 18%, rgba(82, 139, 220, .16), transparent 68%),
-    linear-gradient(135deg, #e8f1f9 0%, #dbe9f5 48%, #e3eef7 100%) !important;
-}
-:root:not([data-theme="dark"]) .main-area{ background:transparent !important; }
-:root:not([data-theme="dark"]) .main-area::before{ display:none !important; }
-
-@media(max-width:1100px){
-  #panel-overview .ship-modern-chart-wrap{ height:300px !important; }
-  #panel-overview .ship-grade-letter{ font-size:84px !important; }
-}
-</style>
-
 <script id="gmf-final-chart-renderer">
 (function(){
   'use strict';
@@ -11366,16 +11469,4 @@ html:not([data-theme="dark"]), body:not([data-theme="dark"]){ background:#dbe9f5
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
   window.addEventListener('storage',function(e){if(e.key==='gmf_history_v2')draw()});
 })();
-</script>
-
-<script id="gmf-force-blue-canvas">
-(function(){
-  // Belt-and-suspenders fix for the light-canvas color. This file has
-  // accumulated many !important background rules across many past edits,
-  // and a purely CSS fix (however late in the stylesheet) can still lose
-  // if there's a rule somewhere that hasn't been found yet, or if a
-  // cached older stylesheet is being served. Setting the color via
-  // inline style beats every external stylesheet rule regardless of
-  // specificity or order, so this is the strongest fix available short
-  // of removing the old rules entirely.
 </script>
