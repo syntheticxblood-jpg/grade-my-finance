@@ -25,7 +25,7 @@ gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true });
   --line: #DEDCCE; --text:#1A2620; --muted:#4E5F58; --muted-2:#78877F;
   --gold:#D99A2B; --gold-soft: rgba(245,185,66,.16); --gold-bright:#F5B942;
   --brand:#2E9C81; --brand-soft:rgba(46,156,129,.12); --brand-bright:#4FBF9F; --brand-text:#FFFFFF;
-  --good:#22C55E; --good-soft:rgba(34,197,94,.10); --bad:#C1493D; --bad-soft:rgba(193,73,61,.10);
+  --good:#22C55E; --good-2:#16A34A; --good-soft:rgba(34,197,94,.10); --bad:#C1493D; --bad-soft:rgba(193,73,61,.10); --mid:#F5B942;
   --warn:#D99A2B; --warn-soft:rgba(245,185,66,.14);
   --shadow-sm: 0 1px 2px rgba(28,43,40,.05), 0 1px 3px rgba(28,43,40,.06); --shadow-md: 0 8px 24px rgba(28,43,40,.11);
   --radius:12px; --radius-lg:16px; --header-h:64px;
@@ -36,7 +36,7 @@ gtag('config', 'G-H6223HYVS6', { 'anonymize_ip': true });
   --bg:#F5F3EA; --bg-2:#ECEBDF; --surface:#FFFFFF; --surface-2:#F1F0E6;
   --line: #DEDCCE; --text:#1A2620; --muted:#4E5F58; --muted-2:#78877F;
   --brand:#2E9C81; --brand-soft:rgba(46,156,129,.12); --brand-bright:#4FBF9F; --brand-text:#FFFFFF;
-  --good:#22C55E; --good-soft:rgba(34,197,94,.10); --bad:#C1493D; --bad-soft:rgba(193,73,61,.10);
+  --good:#22C55E; --good-2:#16A34A; --good-soft:rgba(34,197,94,.10); --bad:#C1493D; --bad-soft:rgba(193,73,61,.10); --mid:#F5B942;
   --warn:#D99A2B; --warn-soft:rgba(245,185,66,.14);
   --shadow-sm: 0 1px 2px rgba(28,43,40,.05), 0 1px 3px rgba(28,43,40,.06);
   --shadow-md: 0 8px 24px rgba(28,43,40,.11);
@@ -58,6 +58,7 @@ header.site{ position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:8
 
 .wordmark{ font-weight:700; font-size:15px }
 .pro-chip{ display:inline-flex; align-items:center; gap:4px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:800; font-size:10px; letter-spacing:.03em; padding:2px 8px; border-radius:99px; margin-left:2px }
+.lock-tag{ display:inline-flex; align-items:center; background:var(--surface-2); color:var(--muted); font-weight:700; font-size:10px; letter-spacing:.03em; padding:3px 9px; border-radius:99px; border:1px solid var(--line) }
 .hdr-right{ margin-left:auto; display:flex; align-items:center; gap:8px }
 .btn{ appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--text); font-weight:600; font-size:13px; padding:9px 15px; border-radius:9px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; text-decoration:none; transition:filter .12s ease, border-color .12s ease, background .12s ease }
 .btn:hover{ filter:brightness(1.08); border-color:rgba(201,162,39,.35) }
@@ -1022,6 +1023,196 @@ main{padding:30px 0 60px !important;}
   .command-meta .command-stat:last-child{grid-column:1/-1}
   .action-plan-progress{width:100%;min-width:0}
 }
+
+/* ===== Ported from index.html Report Card: flow / pro-blur / stress-tool shared styles (Phase 2) ===== */
+.flow-panel{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:6px 24px 22px; margin:16px 0 }
+
+.flow-summary-cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px }
+@media (max-width:640px){ .flow-summary-cards{ grid-template-columns:1fr } }
+.flow-summary-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+  display:flex; flex-direction:column; gap:6px; border-top:3px solid var(--line);
+}
+.flow-summary-card.income{ border-top-color:var(--good) }
+.flow-summary-card.expenses{ border-top-color:var(--bad) }
+.flow-summary-card.net{ border-top-color:var(--brand-bright) }
+.flow-summary-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:600 }
+.flow-summary-val{ font-family:var(--font-serif); font-weight:700; font-size:22px }
+.flow-summary-card.income .flow-summary-val{ color:var(--good) }
+.flow-summary-card.expenses .flow-summary-val{ color:var(--bad) }
+.flow-summary-card.net .flow-summary-val{ color:var(--brand-bright) }
+.flow-tabs{ display:flex; gap:4px; border-bottom:1px solid var(--line); margin:0 -24px 18px; padding:0 24px; overflow-x:auto }
+.flow-tab{
+  background:none; border:none; cursor:pointer; white-space:nowrap;
+  color:var(--muted); font-family:var(--font-body); font-size:13px; font-weight:600;
+  padding:14px 4px; margin-right:22px; border-bottom:2px solid transparent;
+  transition:color .15s ease, border-color .15s ease; position:relative; top:1px;
+  display:flex; align-items:center; gap:6px;
+}
+.flow-tab:hover{ color:var(--text) }
+.flow-tab.active{ color:var(--text); border-bottom-color:var(--brand) }
+.lock-tag{ font-size:9px; background:var(--gold-soft); color:var(--gold-bright); padding:2px 6px; border-radius:99px; font-family:var(--font-mono); font-weight:700; margin-left:4px }
+.flow-view{ display:none }
+.flow-view.active{ display:block; animation:flowFadeIn .25s ease }
+@keyframes flowFadeIn{ from{ opacity:0; transform:translateY(4px) } to{ opacity:1; transform:none } }
+.flow-header{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:6px }
+.flow-header h3{ font-family:var(--font-serif); font-weight:600; font-size:16px; margin:0 }
+.flow-header .flow-sub{ font-size:11px; color:var(--muted); font-family:var(--font-mono) }
+.flow-legend{ display:flex; gap:16px; margin:12px 0 0; flex-wrap:wrap }
+.flow-legend-item{ display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted) }
+.flow-legend-swatch{ width:9px; height:9px; border-radius:2px; flex:none }
+
+.pro-blur-section{ position:relative; min-height:180px }
+.pro-blur-content{ filter:blur(6px); pointer-events:none; user-select:none; opacity:.55 }
+.pro-blur-overlay{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:9px;
+  text-align:center; padding:20px; background:linear-gradient(180deg, transparent, var(--surface) 62%);
+}
+.pro-blur-title{ font-weight:700; font-size:15px }
+.pro-blur-sub{ font-size:12.5px; color:var(--muted); max-width:320px; line-height:1.5 }
+body.is-pro .pro-blur-content{ filter:none; pointer-events:auto; user-select:auto; opacity:1 }
+body.is-pro .pro-blur-overlay{ display:none }
+
+.pro-badge{ font-size:9px; padding:1px 5px }
+
+.tc-quick-list{ display:grid; gap:8px; margin-top:14px }
+.tc-quick-item{ display:flex; justify-content:space-between; font-size:13px; padding:9px 0; border-bottom:1px solid var(--line) }
+.tc-quick-item:last-child{ border-bottom:none }
+.tc-quick-item b{ font-family:var(--font-mono); color:var(--brand-bright) }
+
+.stress-score-block{ display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding:32px 0 8px }
+.rs-ring-wrap{ position:relative; flex:none; width:130px; height:130px }
+.rs-ring{ display:block }
+.rs-ring circle{ transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1), stroke .3s ease }
+.rs-ring-num{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:2px;
+  font-family:var(--font-display); font-weight:700;
+}
+.rs-ring-num span:first-child{ font-size:38px; color:var(--text) }
+.rs-ring-max{ font-size:14px; color:var(--muted); font-weight:500 }
+.stress-score-text{ text-align:left; max-width:340px }
+.stress-tier-v2{
+  font-family:var(--font-mono); font-weight:700; font-size:20px; letter-spacing:.03em; margin-bottom:8px;
+}
+.stress-tier-v2.strong{ color:var(--good) }
+.stress-tier-v2.watch{ color:var(--brand-bright) }
+.stress-tier-v2.vulnerable{ color:#E8A34A }
+.stress-tier-v2.critical{ color:var(--bad) }
+.stress-explain-v2{ margin:0; color:var(--muted); font-size:14.5px; line-height:1.6 }
+
+.stress-outcomes-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; padding:10px 0 8px; text-align:center }
+@media (max-width:560px){ .stress-outcomes-row{ grid-template-columns:1fr; gap:20px } }
+.stress-outcome-card{ display:flex; flex-direction:column; gap:4px }
+.stress-outcome-num{ font-family:var(--font-serif); font-weight:700; font-size:28px; color:var(--text) }
+.stress-outcome-num.good{ color:var(--good) }
+.stress-outcome-num.bad{ color:var(--bad) }
+.stress-outcome-label{ font-size:12.5px; color:var(--muted) }
+
+.stress-builder-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:6px }
+@media (max-width:640px){ .stress-builder-grid{ grid-template-columns:1fr } }
+.stress-builder-col{ display:flex; flex-direction:column; gap:6px }
+.stress-builder-label{ font-size:12px; color:var(--text); font-weight:700 }
+.stress-builder-col select{
+  padding:12px 13px; border-radius:10px; border:1px solid var(--line); background:var(--surface-2); color:var(--text);
+  font-family:var(--font-body); font-size:13.5px; font-weight:600; cursor:pointer;
+  transition:border-color .15s ease;
+}
+.stress-builder-col select:focus{ outline:none; border-color:var(--brand-bright) }
+.stress-builder-caption{ font-size:11.5px; color:var(--muted-2); line-height:1.4 }
+
+.stress-callout{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px;
+  font-size:13px; color:var(--text); line-height:1.55;
+}
+.stress-callout b{ display:block; margin-bottom:4px; font-size:14px; color:var(--brand-bright) }
+
+.stress-drivers{ display:grid; gap:16px; margin-top:10px }
+.stress-driver-row{ display:grid; gap:6px }
+.stress-driver-head{ display:flex; justify-content:space-between; align-items:baseline; gap:10px }
+.stress-driver-name{ font-size:13.5px; font-weight:700; color:var(--text) }
+.stress-driver-strength{ font-family:var(--font-mono); font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em }
+.stress-driver-strength.strong{ color:var(--good) }
+.stress-driver-strength.good{ color:#8FCB9E }
+.stress-driver-strength.fair{ color:var(--mid) }
+.stress-driver-strength.weak{ color:var(--bad) }
+.stress-driver-bar-track{ height:8px; border-radius:99px; background:var(--surface-2); overflow:hidden }
+.stress-driver-bar-fill{ height:100%; border-radius:99px; transition:width .8s cubic-bezier(.2,.8,.2,1) }
+.stress-driver-bar-fill.strong{ background:linear-gradient(90deg,var(--good-2),var(--good)) }
+.stress-driver-bar-fill.good{ background:linear-gradient(90deg,#3AA173,#8FCB9E) }
+.stress-driver-bar-fill.fair{ background:linear-gradient(90deg,var(--mid),var(--mid)) }
+.stress-driver-bar-fill.weak{ background:linear-gradient(90deg,#a34141,var(--bad)) }
+.stress-driver-explain{ font-size:12.5px; color:var(--muted); line-height:1.5 }
+
+/* ===== Ported from index.html Report Card: Opportunities + Debt Plan (Phase 3) ===== */
+.report-section{ margin:32px 0; padding-top:26px; border-top:1px solid var(--line) }
+.opp-cards-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:14px }
+.opp-card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:8px }
+.opp-card.weakest{ border-color:rgba(226,87,76,.4); background:linear-gradient(155deg, rgba(226,87,76,.06), transparent) }
+.opp-card-top{ display:flex; justify-content:space-between; align-items:center }
+.opp-card-title{ font-weight:700; font-size:14px }
+.opp-card-grade{ font-family:var(--font-serif); font-weight:700; font-size:16px; padding:2px 9px; border-radius:7px }
+.opp-card-grade.good{ color:var(--good); background:rgba(79,194,138,.14) }
+.opp-card-grade.mid{ color:var(--mid); background:rgba(232,179,74,.14) }
+.opp-card-grade.bad{ color:var(--bad); background:rgba(226,87,76,.14) }
+.opp-card-tip{ font-size:12.5px; color:var(--muted); margin:0; line-height:1.45 }
+.opp-card-pts{ font-family:var(--font-mono); font-size:12px; font-weight:700; color:var(--brand-bright) }
+.opp-card-pts.good{ color:var(--good) }
+.opp-card .opp-cta{ margin-top:2px; align-self:flex-start }
+.moves-list{ list-style:none; margin:0; padding:0; display:grid; gap:12px; counter-reset:move }
+.moves-list li{ display:flex; gap:14px; align-items:flex-start; counter-increment:move; position:relative; padding-left:30px }
+.moves-list li::before{
+  content:counter(move); position:absolute; left:0; top:0; width:22px; height:22px; border-radius:50%;
+  background:var(--brand-soft); color:var(--brand-bright); font-family:var(--font-mono); font-weight:700; font-size:11.5px;
+  display:flex; align-items:center; justify-content:center;
+}
+.moves-list .pts{ color:var(--brand-bright); font-family:var(--font-mono); font-weight:600; font-size:12.5px }
+.weakest-link-pill{
+  display:inline-flex; align-items:center; gap:8px; background:var(--brand-soft);
+  border:1px solid rgba(201,162,39,.4); border-radius:999px; padding:8px 16px;
+  font-size:13.5px; font-weight:600; margin:0 0 14px;
+}
+.weakest-link-pill b{ color:var(--brand-bright) }
+
+.segmented{ display:inline-flex; border:1px solid var(--line); border-radius:10px; padding:4px; background:var(--surface-2) }
+.segmented button{ appearance:none; border:none; background:transparent; color:var(--muted); font-family:var(--font-body); font-weight:600; font-size:13.5px; padding:8px 16px; border-radius:7px; cursor:pointer }
+.segmented button.active{ background:var(--surface); color:var(--text); box-shadow:0 1px 0 rgba(0,0,0,.2) }
+.debt-race{ display:grid; gap:10px; margin:10px 0 }
+.debt-race-row{ display:grid; gap:4px }
+.debt-race-label{ display:flex; justify-content:space-between; font-size:12px; color:var(--muted) }
+.debt-race-track{ height:14px; border-radius:99px; background:var(--surface-2); overflow:hidden }
+.debt-race-fill{ height:100%; border-radius:99px; transition:width 1.1s cubic-bezier(.2,.8,.2,1) }
+.debt-race-fill.min{ background:linear-gradient(90deg,#5D636F,#8B93A3) }
+.debt-race-fill.plan{ background:linear-gradient(90deg,var(--good-2),var(--good)) }
+
+
+/* Outer Money-page sub-nav (Net Worth / Money Flow / Bills / Credit / Allocation) -
+   visually matches .flow-tabs but kept as separate classes so its click handler
+   doesn't collide with the Money Flow tab's own internal .flow-tab group. */
+.money-subtabs{ display:flex; gap:4px; border-bottom:1px solid var(--line); margin:14px 0 18px; overflow-x:auto }
+.money-subtab-btn{
+  appearance:none; background:none; border:none; border-bottom:2px solid transparent; color:var(--muted);
+  font-family:var(--font-body); font-size:13px; font-weight:700; padding:10px 14px; cursor:pointer; white-space:nowrap;
+}
+.money-subtab-btn:hover{ color:var(--text) }
+.money-subtab-btn.active{ color:var(--text); border-bottom-color:var(--brand) }
+.money-subview{ display:none }
+.money-subview.active{ display:block; animation:flowFadeIn .25s ease }
+/* Your Plan uses its own subtab classes (same look) so its click handler
+   never collides with the Money page's subtab group via a shared class. */
+.plan-subtab-btn{
+  appearance:none; background:none; border:none; border-bottom:2px solid transparent; color:var(--muted);
+  font-family:var(--font-body); font-size:13px; font-weight:700; padding:10px 14px; cursor:pointer; white-space:nowrap;
+}
+.plan-subtab-btn:hover{ color:var(--text) }
+.plan-subtab-btn.active{ color:var(--text); border-bottom-color:var(--brand) }
+.plan-subview{ display:none }
+.plan-subview.active{ display:block; animation:flowFadeIn .25s ease }
+.explain-item{ display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--line) }
+.explain-item:last-child{ border-bottom:none }
+.explain-item .ei-dot{ width:9px; height:9px; border-radius:50%; flex:none; margin-top:5px }
+.explain-item b{ display:block; font-size:13.5px }
+.explain-item span{ display:block; font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.45 }
+
 </style>
 
 <style>
@@ -1357,17 +1548,21 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
   }
 
   (async function gateAuth(){
+    // This used to hard-redirect to auth.html whenever there was no
+    // Supabase session, which blocked every anonymous/free user from ever
+    // reaching the dashboard - directly contradicting "no sign-up
+    // required" on the free tier. Signing in is now optional here: it
+    // still wires the account chip and cloud features when a session
+    // exists, but an anonymous visitor just proceeds to init(), which
+    // renders from local check-in history the same way index.html does.
     try{
       var res = await supabase.auth.getSession();
       var session = res.data && res.data.session;
-      if(!session){
-        window.location.replace('auth.html');
-        return; // stay hidden, we're navigating away
-      }
-      wireAccountChip(session);
-    }catch(e){ console.warn('Auth gate check failed:', e); }
+      if(session) wireAccountChip(session);
+    }catch(e){ console.warn('Auth session check failed:', e); }
     document.documentElement.style.visibility = '';
   })();
+  try{ if(localStorage.getItem("gmf_pro")==="true"){ document.body.classList.add("is-pro"); } }catch(e){}
 </script>
 
 <div class="app-shell">
@@ -1394,11 +1589,12 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <button class="dash-nav-btn active" data-tab="overview" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
       <div class="nav-section-label">MONEY</div>
       <button class="dash-nav-btn" data-tab="networth" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 9.5 4h5L16 7"/></svg>Money</button>
-      <div class="nav-section-label">PLANNING</div>
       <button class="dash-nav-btn" data-tab="goals" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>Goals</button>
-      <button class="dash-nav-btn" data-tab="scenarios" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>Plans</button>
+      <div class="nav-section-label">PLANNING</div>
+      <button class="dash-nav-btn" data-tab="scenarios" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>Your Plan</button>
       <div class="nav-section-label">INSIGHTS</div>
       <button class="dash-nav-btn" data-tab="score" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg>Grade &amp; History</button>
+      <button class="dash-nav-btn" data-tab="insights" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Insights</button>
     </nav>
 
     <div class="sidebar-bottom">
@@ -1445,10 +1641,10 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
       <div id="lockedState" style="display:none">
         <div class="card" style="max-width:480px;margin:60px auto 0;text-align:center;padding:44px 30px">
-          <div class="dash-grade-badge good" style="margin:0 auto 18px">A+</div>
-          <h1 style="font-size:20px;margin-bottom:8px">Your Financial Dashboard is a Pro feature</h1>
-          <p style="color:var(--muted);font-size:13px;margin-bottom:18px">Track how your financial life is changing over time — score history, net worth trends, goals, saved what-if scenarios, and achievements, all in one place.</p>
-          <a class="btn gold" href="index.html#pricing">Upgrade to Pro</a>
+          <div class="dash-grade-badge good" style="margin:0 auto 18px">?</div>
+          <h1 style="font-size:20px;margin-bottom:8px">Let's get your first grade</h1>
+          <p style="color:var(--muted);font-size:13px;margin-bottom:18px">Your dashboard fills in as soon as you complete a check-in — score history, net worth trends, goals, plans, and achievements, all in one place.</p>
+          <a class="btn gold" href="index.html#grade">Get My Report Card</a>
         </div>
       </div>
 
@@ -1602,7 +1798,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="quick-tools-grid">
           <button class="quick-tool" data-goto="score" type="button"><span class="qt-icon">↗</span><span><b>Grade &amp; History</b><small>See your score trend and check-ins</small></span><span class="qt-arrow">→</span></button>
           <button class="quick-tool" data-goto="networth" type="button"><span class="qt-icon">$</span><span><b>Money</b><small>Net worth, cash and debt updates</small></span><span class="qt-arrow">→</span></button>
-          <button class="quick-tool" data-goto="scenarios" type="button"><span class="qt-icon">◇</span><span><b>Plans</b><small>Explore what-if paths</small></span><span class="qt-arrow">→</span></button>
+          <button class="quick-tool" data-goto="scenarios" type="button"><span class="qt-icon">◇</span><span><b>Your Plan</b><small>Explore what-if paths</small></span><span class="qt-arrow">→</span></button>
           <button class="quick-tool" data-goto="goals" type="button"><span class="qt-icon">✓</span><span><b>Goals</b><small>Turn your next move into a target</small></span><span class="qt-arrow">→</span></button>
           <button class="quick-tool" data-goto="retirement" type="button"><span class="qt-icon">◷</span><span><b>Retirement</b><small>Project your financial independence</small></span><span class="qt-arrow">→</span></button>
           <button class="quick-tool" data-goto="achievements" type="button"><span class="qt-icon">★</span><span><b>Achievements</b><small>See the progress you've earned</small></span><span class="qt-arrow">→</span></button>
@@ -1614,6 +1810,16 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     <div class="dash-tab-panel" id="panel-score">
       <span class="section-label">Score history</span>
       <p class="section-sub">Track how your financial health has changed over time.</p>
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+        <div>
+          <span class="section-label" style="margin:0">Full report card</span>
+          <p class="section-sub" style="margin-top:4px">The detailed breakdown behind your grade — category-by-category scoring, opportunities, and your written summary.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a class="btn gold" href="index.html?openReport=1">View Full Grade Report →</a>
+          <button class="btn" type="button" data-goto="achievements">Achievements →</button>
+        </div>
+      </div>
       <div class="hero-card">
         <div class="hero-card-top">
           <div><div class="hv mono" id="scHeroVal">—</div><div class="hv-sub" id="scHeroSub">—</div></div>
@@ -1638,9 +1844,18 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= NET WORTH ================= -->
     <div class="dash-tab-panel" id="panel-networth">
-      <span class="section-label">Net worth</span>
-      <p class="section-sub">This is the spot to keep your numbers current — log an update any time your accounts change, right from here.</p>
+      <span class="section-label">Money</span>
+      <p class="section-sub">Everything about where your money is and where it moves — updated from your latest check-in.</p>
 
+      <div class="money-subtabs" id="moneySubtabs">
+        <button class="money-subtab-btn active" data-moneysub="networth" type="button">Net Worth</button>
+        <button class="money-subtab-btn" data-moneysub="moneyflow" type="button">Money Flow</button>
+        <button class="money-subtab-btn" data-moneysub="bills" type="button">Bills</button>
+        <button class="money-subtab-btn" data-moneysub="credit" type="button">Credit</button>
+        <button class="money-subtab-btn" data-moneysub="allocation" type="button">Allocation</button>
+      </div>
+
+      <div class="money-subview active" data-moneypanel="networth">
       <div class="card" id="nwUpdateCard">
         <div class="nw-update-header">
           <span class="section-label" style="margin:0">Log a net worth update</span>
@@ -1692,6 +1907,128 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <p class="section-sub" style="margin-top:4px">Entered a number wrong or want to remove an old update? Delete individual entries below — this can't be undone.</p>
         <div id="nwEntriesList"></div>
       </div>
+      </div>
+
+      <div class="money-subview" data-moneypanel="moneyflow">
+        <div id="moneyFlowEmptyNote" class="empty-note" style="display:none">Run a check-in from the calculator to see your money flow here.</div>
+        <div id="moneyFlowContent">
+          <div class="flow-summary-cards" id="flowSummaryCards">
+            <div class="flow-summary-card income"><span class="flow-summary-label">Total Income</span><span class="flow-summary-val" id="flowSumIncome">—</span></div>
+            <div class="flow-summary-card expenses"><span class="flow-summary-label">Total Expenses</span><span class="flow-summary-val" id="flowSumExpenses">—</span></div>
+            <div class="flow-summary-card net"><span class="flow-summary-label">Net Income</span><span class="flow-summary-val" id="flowSumNet">—</span></div>
+          </div>
+          <div class="flow-panel" style="margin:0">
+            <div class="flow-tabs" id="flowTabs">
+              <button class="flow-tab active" data-view="flowAssets" type="button">Assets Flow</button>
+              <button class="flow-tab" data-view="flowLiabs" type="button">Liabilities Flow</button>
+              <button class="flow-tab" data-view="flowIncome" type="button">Income &amp; Savings</button>
+              <button class="flow-tab" data-view="flowGrowth" type="button">Net Worth Trend</button>
+            </div>
+            <div class="flow-view active" id="flowAssets">
+              <div class="flow-header"><h3>Assets Flow</h3><div class="flow-sub" id="flowAssetsSub">—</div></div>
+              <svg id="flowAssetsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Assets flow diagram"></svg>
+              <div class="flow-legend" id="flowAssetsLegend"></div>
+            </div>
+            <div class="flow-view" id="flowLiabs">
+              <div class="flow-header"><h3>Liabilities Flow</h3><div class="flow-sub" id="flowLiabsSub">—</div></div>
+              <svg id="flowLiabsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Liabilities flow diagram"></svg>
+              <div class="flow-legend" id="flowLiabsLegend"></div>
+            </div>
+            <div class="flow-view" id="flowIncome">
+              <div class="flow-header"><h3>Income &amp; Savings Flow</h3><div class="flow-sub" id="flowIncomeSub">—</div></div>
+              <svg id="flowIncomeSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Income and savings flow diagram"></svg>
+              <div class="flow-legend" id="flowIncomeLegend"></div>
+            </div>
+            <div class="flow-view" id="flowGrowth">
+              <div class="flow-header"><h3>Net Worth Trend</h3><div class="flow-sub" id="flowGrowthSub">—</div></div>
+              <svg id="flowGrowthSvg" width="100%" height="280" viewBox="0 0 900 280" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth trend chart"></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="money-subview" data-moneypanel="bills">
+        <div id="billsEmptyNoteWrap" style="display:none" class="empty-note">Run a check-in from the calculator to unlock the bills tracker.</div>
+        <div id="billsContent" class="card">
+          <span class="section-label">Bills &amp; subscriptions</span>
+          <p class="small" style="margin:6px 0 16px">Add your recurring bills and subscriptions to see the real total, and how much of your monthly expenses they actually make up. Saved on this device.</p>
+          <div class="stress-outcomes-row" id="billsOutcomesRow"></div>
+          <div class="stress-builder-grid" style="margin-top:20px">
+            <div class="stress-builder-col"><label class="stress-builder-label" for="billName">Name</label><input type="text" id="billName" placeholder="e.g. Netflix" maxlength="40" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px"></div>
+            <div class="stress-builder-col"><label class="stress-builder-label" for="billAmount">Monthly amount</label><input type="number" id="billAmount" min="0" step="1" placeholder="0" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px"></div>
+            <div class="stress-builder-col"><label class="stress-builder-label" for="billDay">Due day of month</label><input type="number" id="billDay" min="1" max="31" placeholder="1" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px"></div>
+          </div>
+          <button class="btn gold sm" id="billAddBtn" type="button" style="margin-top:12px">Add bill</button>
+          <div id="billsList" style="display:grid;gap:8px;margin-top:20px"></div>
+          <div id="billsEmptyNote" class="empty-note" style="display:none">No bills added yet — add your first one above.</div>
+        </div>
+      </div>
+
+      <div class="money-subview" data-moneypanel="credit">
+        <div id="creditEmptyNoteWrap" style="display:none" class="empty-note">Run a check-in from the calculator to see your credit utilization here.</div>
+        <div id="creditContent">
+          <div class="card">
+            <span class="section-label">Credit utilization</span>
+            <p class="small" style="margin:6px 0 18px">We don't have access to your real credit score (no credit bureau connects here) — but utilization, the amount you owe versus your available credit, is the one factor you can see and act on directly. It's also the single biggest lever you actually control, at 30% of a real FICO score.</p>
+            <div class="stress-score-block" style="padding:16px 0 8px">
+              <div class="rs-ring-wrap">
+                <svg class="rs-ring" viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+                  <circle id="creditRingFg" cx="60" cy="60" r="52" fill="none" stroke="#4FC28A" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+                </svg>
+                <div class="rs-ring-num"><span id="creditUtilNum">—</span><span class="rs-ring-max">%</span></div>
+              </div>
+              <div class="stress-score-text">
+                <div class="stress-tier-v2" id="creditUtilTier">—</div>
+                <p class="stress-explain-v2" id="creditUtilExplain">—</p>
+              </div>
+            </div>
+            <div class="stress-builder-grid" style="margin-top:8px">
+              <div class="stress-builder-col"><label class="stress-builder-label" for="creditLimit">Total available credit limit</label><input type="number" id="creditLimit" min="100" step="500" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px;font-weight:600"><span class="stress-builder-caption">Add up the limits across all your credit cards</span></div>
+              <div class="stress-builder-col"><label class="stress-builder-label" for="creditPaydown">Hypothetical paydown</label><input type="range" id="creditPaydown" min="0" max="10000" step="100" value="0"><span class="stress-builder-caption" id="creditPaydownCaption">$0 extra paid toward balances</span></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:12px">
+            <span class="section-label">What actually makes up a credit score</span>
+            <p class="small" style="margin:6px 0 14px">General FICO methodology — not calculated from your specific data, since that requires a real credit bureau. Utilization is the only factor above we can actually show you in real time.</p>
+            <div class="stress-drivers" id="creditFactorBars"></div>
+          </div>
+          <div class="card" style="margin-top:12px">
+            <span class="section-label">Your biggest levers</span>
+            <div id="creditLevers" class="tc-quick-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="money-subview" data-moneypanel="allocation">
+        <div id="allocEmptyNoteWrap" style="display:none" class="empty-note">Run a check-in from the calculator to see your asset mix here.</div>
+        <div id="allocContent">
+          <div class="card">
+            <span class="section-label">Your asset mix</span>
+            <p class="small" style="margin:6px 0 16px">Where your money actually sits right now — computed directly from what you entered, no assumptions needed for this part.</p>
+            <div class="stress-outcomes-row" id="allocMixRow"></div>
+            <div id="allocConcentrationCallout" class="stress-callout" style="margin-top:16px"></div>
+          </div>
+          <div class="card" style="margin-top:12px">
+            <span class="section-label">Stocks vs. bonds, vs. your age</span>
+            <p class="small" style="margin:6px 0 16px">This app has no visibility into how your retirement and brokerage accounts are actually invested internally — that detail lives with your account provider, not here. Estimate your split below and we'll compare it to a common age-based guideline.</p>
+            <div class="stress-builder-col" style="margin-bottom:18px"><label class="stress-builder-label" for="allocStockPct">Estimated % in stocks / growth investments</label><input type="range" id="allocStockPct" min="0" max="100" step="5" value="80"><span class="stress-builder-caption" id="allocStockPctCaption">80% stocks / 20% bonds &amp; conservative</span></div>
+            <div class="stress-score-block" style="padding:8px 0">
+              <div class="rs-ring-wrap">
+                <svg class="rs-ring" viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+                  <circle id="allocRingFg" cx="60" cy="60" r="52" fill="none" stroke="#5B8DEF" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+                </svg>
+                <div class="rs-ring-num"><span id="allocStockNum">—</span><span class="rs-ring-max">%</span></div>
+              </div>
+              <div class="stress-score-text">
+                <div class="stress-tier-v2" id="allocTier">—</div>
+                <p class="stress-explain-v2" id="allocExplain">—</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ================= GOALS ================= -->
@@ -1708,9 +2045,73 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= WHAT-IF SCENARIOS ================= -->
     <div class="dash-tab-panel" id="panel-scenarios">
-      <span class="section-label">What-if scenarios</span>
-      <p class="section-sub">Explore different financial futures and save the ones you want to remember.</p>
-      <div id="scenariosContainer"></div>
+      <span class="section-label">Your Plan</span>
+      <p class="section-sub">Your biggest opportunities, a real debt payoff plan, and what-if scenarios — all built from your latest check-in.</p>
+
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+        <div>
+          <span class="section-label" style="margin:0">Retirement &amp; financial independence</span>
+          <p class="section-sub" style="margin-top:4px">Project when you'll hit FI and what moves that date.</p>
+        </div>
+        <button class="btn gold" type="button" data-goto="retirement">Open Retirement →</button>
+      </div>
+
+      <div class="money-subtabs" id="planSubtabs">
+        <button class="plan-subtab-btn active" data-plansub="opportunities" type="button">Opportunities</button>
+        <button class="plan-subtab-btn" data-plansub="debtplan" type="button">Debt Plan</button>
+        <button class="plan-subtab-btn" data-plansub="scenarios" type="button">Scenarios</button>
+        <button class="plan-subtab-btn" data-plansub="projections" type="button">Projections</button>
+      </div>
+
+      <div class="plan-subview active" data-planpanel="opportunities">
+        <div id="planOppEmptyNote" class="empty-note" style="display:none">Run a check-in from the calculator to see your opportunities here.</div>
+        <div id="planOppContent">
+          <div class="weakest-link-pill" id="weakestLinkPill">Weakest link: <b id="weakestLinkPillText">—</b></div>
+          <div class="opp-cards-grid" id="opportunityCardsGrid"></div>
+          <div class="report-section" style="margin-top:16px">
+            <span class="section-label">Your specific next moves</span>
+            <ol id="planPathList" class="moves-list"></ol>
+            <div class="small">Est. point gains are approximate based on our weighting.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="plan-subview" data-planpanel="debtplan">
+        <div id="planDebtEmptyNote" class="empty-note" style="display:none">Run a check-in from the calculator to see your debt payoff plan here.</div>
+        <div id="planDebtContent" class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <span class="section-label" style="margin:0">Debt payoff planner</span>
+            <span id="dppCaption" class="small">—</span>
+          </div>
+          <div id="dppBox">
+            <div class="segmented" style="margin-bottom:8px">
+              <button id="dppAvalanche" type="button">Avalanche</button>
+              <button id="dppSnowball" type="button">Snowball</button>
+            </div>
+            <div id="dppStrategyExplainer" class="small" style="margin-bottom:14px;color:var(--muted)"></div>
+            <div id="dppSameOrderNote" class="small" style="display:none;margin-bottom:10px;color:var(--muted)"></div>
+            <div id="dppRatesWrap" style="display:grid;gap:8px;margin-bottom:14px"></div>
+            <label style="display:grid;gap:6px;margin-bottom:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span>Extra monthly payment (beyond minimums)</span><strong class="mono" id="dppExtraVal">$0</strong></div>
+              <input id="dppExtra" type="range" min="0" max="1000" step="25" value="0" aria-label="Extra monthly debt payment">
+            </label>
+            <div id="dppSummary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px"></div>
+            <span class="section-label" style="margin-top:6px">Payoff race — minimum payments vs. your plan</span>
+            <div id="dppRace" class="debt-race"></div>
+            <div id="dppTimeline" style="display:grid;gap:8px;margin-top:12px"></div>
+            <div id="dppNoDebt" class="small" style="display:none;padding:16px;text-align:center">No non-mortgage debt entered — nothing to plan here.</div>
+            <div class="small" style="margin-top:10px">Rates default to typical averages (credit cards ~24%, auto loans ~7%, student loans ~6%) — edit them above with your real rates for a more accurate comparison. A simplified estimate either way, not an exact payoff date. Mortgage isn't included.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="plan-subview" data-planpanel="scenarios">
+        <div id="scenariosContainer"></div>
+      </div>
+
+      <div class="plan-subview" data-planpanel="projections">
+        <p class="section-sub">Net Worth projection, Life Events, and Freedom # are moving here next — for now they're in your <a href="index.html?openReport=1">full Report Card →</a>.</p>
+      </div>
     </div>
 
     <!-- ================= ACHIEVEMENTS ================= -->
@@ -1796,6 +2197,30 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
     </div>
 
+    <!-- ================= INSIGHTS ================= -->
+    <div class="dash-tab-panel" id="panel-insights">
+      <span class="section-label">Insights</span>
+      <p class="section-sub">Deeper context on your grade — how you compare, how it feels day-to-day, and how you'd hold up in a tough month.</p>
+      <div class="stats-grid" style="gap:14px">
+        <div class="card">
+          <span class="section-label" style="margin:0">Benchmarks</span>
+          <p class="section-sub" style="margin-top:4px">See how your numbers compare to others in your age range.</p>
+          <span class="lock-tag" style="display:inline-block;margin-top:6px">Coming soon</span>
+        </div>
+        <div class="card">
+          <span class="section-label" style="margin:0">Perspective</span>
+          <p class="section-sub" style="margin-top:4px">A grounded look at what your grade actually means for your day-to-day life.</p>
+          <span class="lock-tag" style="display:inline-block;margin-top:6px">Coming soon</span>
+        </div>
+        <div class="card">
+          <span class="section-label" style="margin:0">Stress Test</span>
+          <p class="section-sub" style="margin-top:4px">Model how a job loss or emergency expense would affect your finances.</p>
+          <span class="lock-tag" style="display:inline-block;margin-top:6px">Coming soon</span>
+        </div>
+      </div>
+      <p class="section-sub" style="margin-top:16px">These three are being moved over from your full Report Card next — for now you can still find them there: <a href="index.html?openReport=1">open the full Report Card →</a></p>
+    </div>
+
   </div>
 </main>
     <footer class="site">
@@ -1848,6 +2273,713 @@ function getCheckinCount(){ return parseInt(localStorage.getItem('gmf_checkin_co
 function getBestScore(){ var v = parseFloat(localStorage.getItem('gmf_best_score')||''); return isNaN(v) ? null : v; }
 function getUnlockedAchievements(){ try{ return JSON.parse(localStorage.getItem('gmf_achievements')||'{}'); }catch(_){ return {}; } }
 function getScenarios(){ try{ return JSON.parse(localStorage.getItem('gmf_scenarios')||'[]'); }catch(_){ return []; } }
+
+/* ================= PHASE 2 PORTED HELPERS (from index.html Report Card) =================
+   Same functions, same localStorage keys - not a second calculation engine,
+   just the same bills/escaping/projection logic now also available here. */
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
+}
+var BILLS_KEY = 'gmf_bills_v1';
+function getBills(){ try{ return JSON.parse(localStorage.getItem(BILLS_KEY)||'[]'); }catch(_){ return []; } }
+function saveBills(arr){ localStorage.setItem(BILLS_KEY, JSON.stringify(arr)); }
+
+function projectNetWorth(startNet, monthlyContribution, annualRatePct, years){
+  var r = annualRatePct/100/12;
+  var points = [];
+  var balance = startNet;
+  points.push(balance);
+  for(var y=1;y<=years;y++){
+    for(var m=0;m<12;m++){ balance = balance*(1+r) + monthlyContribution; }
+    points.push(balance);
+  }
+  return points;
+}
+function drawProjectionLine(svgEl, points, milestoneYears){
+  var w=640, h=200, padL=64, padR=32, padT=14, padB=26;
+  var innerW=w-padL-padR, innerH=h-padT-padB;
+  var minV=Math.min.apply(null, points.concat([0])), maxV=Math.max.apply(null, points);
+  if(maxV===minV) maxV=minV+1;
+  function x(i){ return padL + (i/(points.length-1))*innerW; }
+  function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
+  var html='';
+  if(minV<0 && maxV>0){
+    var zy=y(0);
+    html+='<line x1="'+padL+'" y1="'+zy+'" x2="'+(w-padR)+'" y2="'+zy+'" stroke="rgba(255,255,255,.18)" stroke-dasharray="3 5"/>';
+  }
+  [minV, (minV+maxV)/2, maxV].forEach(function(gv){
+    var gy=y(gv);
+    html+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.045)" stroke-width="1"/>';
+    html+='<text font-weight="700" x="6" y="'+(gy+4)+'" fill="#A3ABBD" font-size="13" font-family=\'IBM Plex Mono\'>'+money(gv)+'</text>';
+  });
+  var pathD=''; for(var i=0;i<points.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(points[i]); }
+  var areaD = pathD + ' L ' + x(points.length-1) + ' ' + y(minV) + ' L ' + x(0) + ' ' + y(minV) + ' Z';
+  html += '<path d="'+areaD+'" fill="rgba(201,162,39,.12)"></path>';
+  html += '<path d="'+pathD+'" fill="none" stroke="#C9A227" stroke-width="2.5"></path>';
+  (milestoneYears||[]).forEach(function(yr){
+    if(yr>=points.length) return;
+    var cx=x(yr), cy=y(points[yr]);
+    html += '<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#E4C24E" stroke="#0A0B0E" stroke-width="1.5"></circle>';
+    html += '<text font-weight="600" x="'+cx+'" y="'+(h-6)+'" text-anchor="middle" fill="#8B93A3" font-size="11.5" font-family=\'IBM Plex Mono\'>Yr '+yr+'</text>';
+  });
+  setHTML(svgEl, html);
+}
+
+function renderFlowRibbons(svgEl, sourceLabel, sourceAmount, destinations){
+  if(!svgEl) return;
+  if(!destinations.length){
+    svgEl.setAttribute("viewBox", "0 0 900 340");
+    svgEl.setAttribute("height", "300");
+    setHTML(svgEl, '<text x="450" y="170" fill="var(--muted)" font-size="13" text-anchor="middle">Nothing to show here yet</text>');
+    return;
+  }
+  var minLabelGap = 42;
+  var contentHeight = Math.max(300, destinations.length*minLabelGap + 80);
+  var top = 40, bottom = contentHeight - 40, bandH = bottom - top;
+  var total = destinations.reduce(function(a,b){ return a+b.amount; }, 0) || 1;
+  var cum = 0;
+  var bands = destinations.map(function(d){
+    var h = Math.max(8, (d.amount/total)*bandH);
+    var bandY = top + cum + h/2;
+    cum += h;
+    return { d:d, bandY:bandY, h:h };
+  });
+  var labelYs = [], prevY = -Infinity;
+  bands.forEach(function(b){
+    var y = Math.max(b.bandY, prevY + minLabelGap);
+    labelYs.push(y);
+    prevY = y;
+  });
+  var padTop = top + 14, padBottom = bottom - 14;
+  if(labelYs[labelYs.length-1] > padBottom || labelYs[0] < padTop){
+    var firstY = labelYs[0], lastY = labelYs[labelYs.length-1];
+    var span = (lastY - firstY) || 1;
+    labelYs = labelYs.map(function(y){ return padTop + (y-firstY) * (padBottom-padTop)/span; });
+  }
+  var startX=40, midX=330, endX=620, html='';
+  var svgId = (svgEl.id || 'flow') + '-' + Math.random().toString(36).slice(2,7);
+  var sourceY = (top + bottom) / 2;
+  var defs = '<defs>';
+  bands.forEach(function(b, i){
+    var gid = svgId + '-g' + i;
+    defs += '<linearGradient id="'+gid+'" x1="0" y1="0" x2="1" y2="0">' +
+              '<stop offset="0%" stop-color="#E8B34A" stop-opacity="0.5"/>' +
+              '<stop offset="55%" stop-color="'+b.d.color+'" stop-opacity="0.55"/>' +
+              '<stop offset="100%" stop-color="'+b.d.color+'" stop-opacity="0.85"/>' +
+            '</linearGradient>';
+  });
+  defs += '</defs>';
+  html += defs;
+  html += '<rect x="'+(startX-6)+'" y="'+(sourceY-26)+'" width="6" height="52" rx="3" fill="#E8B34A" fill-opacity="0.85"/>';
+  bands.forEach(function(b, i){
+    var gid = svgId + '-g' + i;
+    var path = 'M'+startX+','+sourceY.toFixed(1)+' C'+midX+','+sourceY.toFixed(1)+' '+midX+','+b.bandY.toFixed(1)+' '+endX+','+b.bandY.toFixed(1);
+    html += '<path d="'+path+'" fill="none" stroke="url(#'+gid+')" stroke-width="'+b.h.toFixed(1)+'" stroke-linecap="round"/>';
+  });
+  bands.forEach(function(b, i){
+    var labelY = labelYs[i], pct = Math.round((b.d.amount/total)*100);
+    if(Math.abs(labelY - b.bandY) > 4){
+      html += '<path d="M'+endX+','+b.bandY.toFixed(1)+' C'+(endX+16)+','+b.bandY.toFixed(1)+' '+(endX+16)+','+labelY.toFixed(1)+' '+(endX+30)+','+labelY.toFixed(1)+'" fill="none" stroke="'+b.d.color+'" stroke-opacity="0.5" stroke-width="1.5"/>';
+    }
+    html += '<rect x="'+(endX+30)+'" y="'+(labelY-6).toFixed(1)+'" width="9" height="9" rx="2" fill="'+b.d.color+'"/>';
+    html += '<text x="'+(endX+45)+'" y="'+(labelY-9).toFixed(1)+'" fill="var(--text)" font-size="13" font-weight="600" text-anchor="start">'+b.d.label+'</text>';
+    html += '<text x="'+(endX+45)+'" y="'+(labelY+10).toFixed(1)+'" fill="var(--muted)" font-size="11" text-anchor="start">'+money(b.d.amount)+' \u00b7 '+pct+'%</text>';
+  });
+  html += '<text x="45" y="162" fill="var(--text)" font-size="13" font-weight="600">'+sourceLabel+'</text>';
+  html += '<text x="45" y="180" fill="var(--muted)" font-size="11">'+money(sourceAmount)+'</text>';
+  svgEl.setAttribute("viewBox", "0 0 900 "+contentHeight);
+  svgEl.setAttribute("height", Math.min(460, contentHeight));
+  setHTML(svgEl, html);
+}
+function renderFlowLegend(container, items){
+  if(!container) return;
+  container.innerHTML='';
+  items.forEach(function(d){
+    var item=el('div',{className:'flow-legend-item'});
+    var dot=el('span',{className:'flow-legend-swatch'}); dot.style.background=d.color;
+    item.appendChild(dot); item.appendChild(document.createTextNode(d.label));
+    container.appendChild(item);
+  });
+}
+function renderAssetsFlow(v){
+  var svgEl=$("flowAssetsSvg"); if(!svgEl) return;
+  var dests = [
+    {label:'Home', amount:v.home, color:'#E8B34A'},
+    {label:'Retirement', amount:v.retire, color:'#4FC28A'},
+    {label:'Brokerage', amount:v.brokerage, color:'#5B8DEF'},
+    {label:'Cash', amount:v.cash, color:'#45C4D6'},
+    {label:'Crypto / Other', amount:v.crypto, color:'#A78BFA'},
+    {label:'HSA', amount:v.hsa, color:'#F0866B'},
+    {label:'Car', amount:v.car, color:'#8B93A3'}
+  ].filter(function(d){ return d.amount>0; });
+  if($("flowAssetsSub")) $("flowAssetsSub").textContent = dests.length ? (dests.length+" categories \u00b7 "+money(v.assets)+" total") : "No assets entered yet";
+  renderFlowRibbons(svgEl, 'Total Assets', v.assets, dests);
+  renderFlowLegend($("flowAssetsLegend"), dests);
+}
+function renderLiabilitiesFlow(v){
+  var svgEl=$("flowLiabsSvg"); if(!svgEl) return;
+  var dests = [
+    {label:'Mortgage', amount:v.mortgage, color:'#E15B5B'},
+    {label:'Student loans', amount:v.student, color:'#5B8DEF'},
+    {label:'Auto loan', amount:v.auto, color:'#E8B34A'},
+    {label:'Credit cards', amount:v.cc, color:'#A78BFA'},
+    {label:'Personal / other', amount:v.otherDebt, color:'#45C4D6'}
+  ].filter(function(d){ return d.amount>0; });
+  if($("flowLiabsSub")) $("flowLiabsSub").textContent = dests.length ? (dests.length+" categories \u00b7 "+money(v.liabs)+" total") : "Debt-free \u2014 nothing to show here \ud83c\udf89";
+  renderFlowRibbons(svgEl, 'Total Debt', v.liabs, dests);
+  renderFlowLegend($("flowLiabsLegend"), dests);
+}
+function renderIncomeSavingsFlow(v){
+  var svgEl=$("flowIncomeSvg"); if(!svgEl) return;
+  var surplus = Math.max(0, v.income - v.expenses);
+  var overspend = Math.max(0, v.expenses - v.income);
+  var dests = [
+    {label:'Expenses', amount:Math.min(v.expenses, v.income), color:'#E15B5B'},
+    {label:'Savings surplus', amount:surplus, color:'#4FC28A'}
+  ];
+  if(overspend > 0) dests.push({label:'Shortfall (over income)', amount:overspend, color:'#A78BFA'});
+  dests = dests.filter(function(d){ return d.amount>0; });
+  if($("flowIncomeSub")) $("flowIncomeSub").textContent = money(v.income)+"/mo income";
+  renderFlowRibbons(svgEl, 'Monthly Income', v.income, dests);
+  renderFlowLegend($("flowIncomeLegend"), dests);
+}
+function renderNetWorthTrendTab(v){
+  var svgEl=$("flowGrowthSvg"); if(!svgEl) return;
+  var monthlyContribution = Math.max(0, v.income - v.expenses);
+  var points = projectNetWorth(v.net, monthlyContribution, 7, 30);
+  drawProjectionLine(svgEl, points, [5,10,20,30]);
+  if($("flowGrowthSub")) $("flowGrowthSub").textContent = "Assuming "+money(monthlyContribution)+"/mo invested at 7%";
+}
+function renderFlowSummaryCards(v){
+  var incomeEl = $("flowSumIncome"), expensesEl = $("flowSumExpenses"), netEl = $("flowSumNet");
+  if(!incomeEl) return;
+  var annualExpenses = v.expenses * 12;
+  var netAnnual = v.annualIncome - annualExpenses;
+  incomeEl.textContent = money(v.annualIncome);
+  expensesEl.textContent = money(annualExpenses);
+  netEl.textContent = (netAnnual >= 0 ? '+' : '') + money(netAnnual);
+}
+function drawMoneyFlowCharts(v){
+  renderFlowSummaryCards(v);
+  renderAssetsFlow(v);
+  renderLiabilitiesFlow(v);
+  renderIncomeSavingsFlow(v);
+  renderNetWorthTrendTab(v);
+}
+
+function renderBillsTracker(v){
+  var nameEl=$("billName"), amountEl=$("billAmount"), dayEl=$("billDay"), addBtn=$("billAddBtn");
+  var listEl=$("billsList"), emptyEl=$("billsEmptyNote"), outcomesEl=$("billsOutcomesRow");
+  if(!listEl) return;
+
+  function render(){
+    var bills = getBills();
+    bills.sort(function(a,b){ return (a.day||99) - (b.day||99); });
+    var total = bills.reduce(function(sum,b){ return sum + (b.amount||0); }, 0);
+    var pctOfExpenses = v.expenses > 0 ? (total/v.expenses)*100 : 0;
+    outcomesEl.innerHTML = [
+      { label:'Bills tracked', val: String(bills.length) },
+      { label:'Total monthly', val: money(total) },
+      { label:'% of your expenses', val: v.expenses>0 ? Math.round(pctOfExpenses)+'%' : '\u2014' }
+    ].map(function(o){
+      return '<div class="stress-outcome-card"><div class="stress-outcome-num">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';
+    }).join('');
+    if(bills.length === 0){
+      listEl.innerHTML = '';
+      if(emptyEl) emptyEl.style.display = 'block';
+      return;
+    }
+    if(emptyEl) emptyEl.style.display = 'none';
+    listEl.innerHTML = bills.map(function(b){
+      return '<div class="card" style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px">'+
+        '<div style="min-width:0"><div style="font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escapeHtml(b.name)+'</div>'+
+        '<div class="small" style="color:var(--muted)">Due day '+b.day+'</div></div>'+
+        '<div style="display:flex;align-items:center;gap:10px;flex:none">'+
+        '<div class="mono" style="font-weight:700;color:var(--brand-bright)">'+money(b.amount)+'/mo</div>'+
+        '<button type="button" class="bill-delete-btn" data-id="'+b.id+'" aria-label="Delete '+escapeHtml(b.name)+'" style="background:none;border:none;color:var(--muted-2);cursor:pointer;padding:4px;display:flex"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg></button>'+
+        '</div></div>';
+    }).join('');
+    listEl.querySelectorAll('.bill-delete-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.dataset.id;
+        var updated = getBills().filter(function(b){ return String(b.id) !== id; });
+        saveBills(updated);
+        render();
+      });
+    });
+  }
+
+  if(addBtn && !addBtn._wired){
+    addBtn._wired = true;
+    addBtn.addEventListener('click', function(){
+      var name = (nameEl.value||'').trim();
+      var amount = Math.max(0, +amountEl.value || 0);
+      var day = clamp(Math.round(+dayEl.value || 1), 1, 31);
+      if(!name){ nameEl.focus(); return; }
+      if(amount <= 0){ amountEl.focus(); return; }
+      var bills = getBills();
+      bills.push({ id: Date.now()+'_'+Math.random().toString(36).slice(2,7), name:name, amount:amount, day:day });
+      saveBills(bills);
+      nameEl.value=''; amountEl.value=''; dayEl.value='';
+      render();
+    });
+  }
+  render();
+}
+
+function renderAssetAllocation(v){
+  var stockPctEl = $("allocStockPct"), stockPctCaptionEl = $("allocStockPctCaption");
+  if(!stockPctEl) return;
+  var investable = Math.max(0, v.retire) + Math.max(0, v.brokerage) + Math.max(0, v.crypto);
+  var cryptoPct = investable > 0 ? (Math.max(0,v.crypto)/investable)*100 : 0;
+  $("allocMixRow").innerHTML = [
+    { label:'Liquid cash', val: money(v.cash) },
+    { label:'Investable assets', val: money(investable) },
+    { label:'Crypto exposure', val: Math.round(cryptoPct)+'% of that', cls: cryptoPct>=20 ? 'bad' : '' }
+  ].map(function(o){
+    return '<div class="stress-outcome-card"><div class="stress-outcome-num '+(o.cls||'')+'">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';
+  }).join('');
+  var concEl = $("allocConcentrationCallout");
+  if(concEl){
+    if(investable <= 0){
+      concEl.innerHTML = '<b>Nothing to assess yet</b>No retirement, brokerage, or crypto balance entered, so there\'s no investable mix to check here.';
+    } else if(cryptoPct >= 20){
+      concEl.innerHTML = '<b>High concentration risk</b>Crypto makes up '+Math.round(cryptoPct)+'% of your investable assets. Concentrating a large share of your portfolio in one volatile asset class is a real, specific risk - not necessarily wrong, but worth being a deliberate choice rather than an accident.';
+    } else if(cryptoPct >= 8){
+      concEl.innerHTML = '<b>Moderate crypto exposure</b>Crypto is about '+Math.round(cryptoPct)+'% of your investable assets - a meaningful but not extreme share.';
+    } else {
+      concEl.innerHTML = '<b>No major concentration flag</b>Your investable assets aren\'t heavily concentrated in a single volatile asset class right now.';
+    }
+  }
+  function update(){
+    var stockPct = clamp(+stockPctEl.value || 0, 0, 100);
+    stockPctCaptionEl.textContent = stockPct+'% stocks / '+(100-stockPct)+'% bonds & conservative';
+    var age = v.age || 30;
+    var benchmarkStock = clamp(110 - age, 20, 90);
+    var gap = stockPct - benchmarkStock;
+    var ringFg = $("allocRingFg");
+    if(ringFg){
+      var circumference = 2*Math.PI*52;
+      var offset = circumference * (1 - stockPct/100);
+      ringFg.setAttribute('stroke-dasharray', circumference.toFixed(1));
+      ringFg.setAttribute('stroke-dashoffset', offset.toFixed(1));
+      var color = Math.abs(gap)<=10 ? '#4FC28A' : Math.abs(gap)<=25 ? '#E8B34A' : '#E15B5B';
+      ringFg.setAttribute('stroke', color);
+    }
+    $("allocStockNum").textContent = stockPct;
+    var tierEl = $("allocTier");
+    var tier, label;
+    if(Math.abs(gap) <= 10){ tier='strong'; label='On target for your age'; }
+    else if(gap > 10){ tier = Math.abs(gap)<=25 ? 'fair' : 'critical'; label='More aggressive than typical for your age'; }
+    else { tier = Math.abs(gap)<=25 ? 'fair' : 'critical'; label='More conservative than typical for your age'; }
+    tierEl.textContent = label;
+    tierEl.className = 'stress-tier-v2 ' + tier;
+    $("allocExplain").textContent = 'A common guideline for age '+age+' is roughly '+benchmarkStock+'% in stocks. This compares your own estimate to that benchmark - it isn\'t a recommendation to match it exactly, since your actual risk tolerance and timeline matter too.';
+  }
+  stockPctEl.oninput = update;
+  update();
+}
+
+function renderCreditUtilization(v){
+  var limitEl = $("creditLimit"), paydownEl = $("creditPaydown"), paydownCaptionEl = $("creditPaydownCaption");
+  if(!limitEl) return;
+  var currentCCBalance = Math.max(0, v.cc || 0);
+  var defaultLimit = currentCCBalance > 0 ? Math.round(currentCCBalance / 0.30 / 100) * 100 : 10000;
+  limitEl.value = defaultLimit;
+  function tierFor(pct){
+    if(pct <= 10) return { tier:'strong', label:'Excellent' };
+    if(pct <= 30) return { tier:'good', label:'Good' };
+    if(pct <= 50) return { tier:'fair', label:'Fair' };
+    return { tier:'critical', label:'High' };
+  }
+  var FICO_FACTORS = [
+    { label:'Payment history', weight:'35% of score', note:'On-time payments over time. This tool has no way to see your payment record - that data lives with the credit bureaus, not here.' },
+    { label:'Length of credit history', weight:'15% of score', note:'How long your accounts have been open. Generally improves on its own; closing your oldest account can actually hurt this.' },
+    { label:'New credit', weight:'10% of score', note:'Recent applications and hard inquiries. Several new applications in a short window can temporarily lower this.' },
+    { label:'Credit mix', weight:'10% of score', note:'Having a mix of account types. A minor factor - not worth opening new debt just to diversify it.' }
+  ];
+  function update(){
+    var limit = Math.max(1, +limitEl.value || 1);
+    var paydown = +paydownEl.value || 0;
+    paydownCaptionEl.textContent = '$'+paydown.toLocaleString()+' extra paid toward balances';
+    var effectiveBalance = Math.max(0, currentCCBalance - paydown);
+    var utilPct = clamp((effectiveBalance/limit)*100, 0, 999);
+    var t = tierFor(utilPct);
+    var ringFg = $("creditRingFg");
+    if(ringFg){
+      var circumference = 2*Math.PI*52;
+      var displayPct = clamp(utilPct, 0, 100);
+      var offset = circumference * (1 - displayPct/100);
+      ringFg.setAttribute('stroke-dasharray', circumference.toFixed(1));
+      ringFg.setAttribute('stroke-dashoffset', offset.toFixed(1));
+      var color = t.tier==='strong' ? '#4FC28A' : t.tier==='good' ? '#8FCB9E' : t.tier==='fair' ? '#E8B34A' : '#E15B5B';
+      ringFg.setAttribute('stroke', color);
+    }
+    $("creditUtilNum").textContent = Math.round(utilPct);
+    var tierEl = $("creditUtilTier");
+    tierEl.textContent = t.label;
+    tierEl.className = 'stress-tier-v2 ' + t.tier;
+    $("creditUtilExplain").textContent = utilPct <= 30
+      ? 'Generally considered a healthy range for this factor.'
+      : 'Above the commonly cited 30% threshold - paying this down is one of the fastest ways to help this specific factor.';
+    var factorsEl = $("creditFactorBars");
+    if(factorsEl){
+      var utilStrengthTier = utilPct<=10?'strong':utilPct<=30?'good':utilPct<=50?'fair':'weak';
+      var utilStrengthLabel = { strong:'Strong', good:'Good', fair:'Fair', weak:'Weak' }[utilStrengthTier];
+      var rows = '<div class="stress-driver-row">' +
+        '<div class="stress-driver-head"><span class="stress-driver-name">Credit utilization <span style="color:var(--muted-2);font-weight:500">(30% of score)</span></span><span class="stress-driver-strength '+utilStrengthTier+'">'+utilStrengthLabel+'</span></div>' +
+        '<div class="stress-driver-bar-track"><div class="stress-driver-bar-fill '+utilStrengthTier+'" style="width:'+clamp(100-utilPct,0,100)+'%"></div></div>' +
+        '<div class="stress-driver-explain">The one factor above computed from your real numbers - '+Math.round(utilPct)+'% utilization right now.</div>' +
+      '</div>';
+      rows += FICO_FACTORS.map(function(f){
+        return '<div class="stress-driver-row">' +
+          '<div class="stress-driver-head"><span class="stress-driver-name">'+f.label+' <span style="color:var(--muted-2);font-weight:500">('+f.weight+')</span></span><span class="small" style="color:var(--muted-2)">Not shown here</span></div>' +
+          '<div class="stress-driver-explain">'+f.note+'</div>' +
+        '</div>';
+      }).join('');
+      factorsEl.innerHTML = rows;
+    }
+    var leversEl = $("creditLevers");
+    if(leversEl){
+      var leverAmounts = [500, 1000, 2000];
+      var leverCandidates = leverAmounts.map(function(amt){
+        var newBal = Math.max(0, currentCCBalance - paydown - amt);
+        var newUtil = clamp((newBal/limit)*100, 0, 999);
+        var delta = utilPct - newUtil;
+        return { label:'Pay off an extra $'+amt.toLocaleString(), delta: delta, newUtil: newUtil };
+      }).filter(function(l){ return l.delta > 0.05; });
+      leversEl.innerHTML = leverCandidates.length ? leverCandidates.map(function(l){
+        return '<div class="tc-quick-item"><span>'+l.label+'</span><b>-'+l.delta.toFixed(0)+' pts \u2192 '+l.newUtil.toFixed(0)+'%</b></div>';
+      }).join('') : '<div class="empty-note">Your utilization is already at 0% here - nothing left to pay down.</div>';
+    }
+  }
+  limitEl.oninput = update;
+  paydownEl.oninput = update;
+  update();
+}
+
+/* ================= PHASE 3 PORTED (from index.html Report Card): Opportunities + Debt Plan =================
+   Same functions/constants, not a second scoring engine - buildPath() is
+   the exact same "what should I do next" logic used in the Report Card. */
+function roundNice(n){
+  if(n < 1000) return Math.round(n/10)*10;
+  if(n < 10000) return Math.round(n/100)*100;
+  if(n < 100000) return Math.round(n/500)*500;
+  return Math.round(n/1000)*1000;
+}
+function map01(x,a,b){ return clamp((x-a)/(b-a),0,1); }
+var INCOME_BENCHMARK_CURVE=[[22,38000],[25,45000],[30,55000],[35,65000],[40,72000],[45,76000],[50,78000],[55,80000],[60,80000]];
+function incomeBenchmark(age){
+  if(age<=INCOME_BENCHMARK_CURVE[0][0]) return INCOME_BENCHMARK_CURVE[0][1];
+  if(age>=INCOME_BENCHMARK_CURVE[INCOME_BENCHMARK_CURVE.length-1][0]) return INCOME_BENCHMARK_CURVE[INCOME_BENCHMARK_CURVE.length-1][1];
+  for(var i=1;i<INCOME_BENCHMARK_CURVE.length;i++){
+    var a0=INCOME_BENCHMARK_CURVE[i-1][0], b0=INCOME_BENCHMARK_CURVE[i-1][1], a1=INCOME_BENCHMARK_CURVE[i][0], b1=INCOME_BENCHMARK_CURVE[i][1];
+    if(age<=a1){ var t=(age-a0)/(a1-a0); return b0+(b1-b0)*t; }
+  }
+  return INCOME_BENCHMARK_CURVE[INCOME_BENCHMARK_CURVE.length-1][1];
+}
+function nextLetterTarget(score){
+  var bounds=[60,63,67,70,73,77,80,83,87,90,93,97];
+  for(var i=0;i<bounds.length;i++){ if(score<bounds[i]) return bounds[i]; }
+  return null;
+}
+function buildPath(v,cats){
+  var goal = nextLetterTarget(cats.overall.score);
+  var items=[];
+  function push(txt, pts){ items.push({txt:txt, pts:Math.max(0, Math.round(pts))}); }
+  if(goal===null){ return [{txt:"You're already at A+. Keep compounding and maintaining your buffers!", pts:0}]; }
+  if(v.saveRate < 0.25){
+    var dSave=(1 - map01(v.saveRate,0,0.25))*0.20*100;
+    var need = Math.max(0, v.income*0.25 - Math.max(0, v.monthlySurplus));
+    push("Boost savings to 25% (set aside about "+money(roundNice(need))+"/mo).", dSave);
+  }
+  if(v.efMonths < 6){
+    var dEF=(1 - map01(v.efMonths,0,6))*0.15*100;
+    var efNeed = Math.max(0, v.expenses*6 - v.cash);
+    push("Build emergency fund to 6 months (save ~"+money(roundNice(efNeed/6))+"/mo for 6 months).", dEF);
+  }
+  if(v.dtiWeighted > 0.30){
+    var sDebtNow = clamp(1 - v.dtiWeighted/0.60,0,1), sDebtGoal = clamp(1 - 0.30/0.60,0,1);
+    var dDebt=(sDebtGoal - sDebtNow)*0.20*100;
+    var targetWeighted = Math.round(v.annualIncome*0.30), weightedPaydown = Math.max(0, v.debtWeighted - targetWeighted);
+    var debtTip;
+    if(v.cc > 0) debtTip = "Pay down credit cards first (they weigh heaviest on this score) — reduce about "+money(roundNice(Math.min(v.cc, weightedPaydown/1.5)))+".";
+    else if(v.otherDebt > 0) debtTip = "Pay down personal loans / other debt — reduce about "+money(roundNice(Math.min(v.otherDebt, weightedPaydown/1.2)))+".";
+    else if(v.auto > 0) debtTip = "Pay down your auto loan — reduce about "+money(roundNice(Math.min(v.auto, weightedPaydown)))+".";
+    else debtTip = "Chip away at student loans — reduce about "+money(roundNice(weightedPaydown/0.5))+" (weighted lightly, but still adds up).";
+    push(debtTip, dDebt);
+  }
+  if(v.nwProgress < 1){
+    var sAgeNow=Math.pow(clamp(v.nwProgress,0,1),0.85), sAgeGoal=1;
+    var dAge=(sAgeGoal - sAgeNow)*0.20*100;
+    var gap = Math.max(0, v.nwTargetAmount - v.net);
+    var surplus = Math.max(0, v.income - v.expenses);
+    var realisticMonthly = Math.min(gap/36, Math.max(surplus*0.5, 25));
+    var monthsNeeded = realisticMonthly > 0 ? Math.ceil(gap/realisticMonthly) : null;
+    var timeframeText = !monthsNeeded ? "a pace that fits your budget"
+      : monthsNeeded<=60 ? "~"+monthsNeeded+" months"
+      : "~"+Math.round(monthsNeeded/12)+" years";
+    push("Close the age-based net worth gap (~"+money(roundNice(gap))+"). Consider investing ~"+money(roundNice(realisticMonthly))+"/mo — "+timeframeText+" at that pace.", dAge);
+  }
+  var ratio = v.annualIncome/incomeBenchmark(v.age||30);
+  if(ratio < 1.15){
+    var sIncNow = clamp(0.5 + 0.5*Math.tanh((ratio-1)*1.2),0,1);
+    var sIncGoal = clamp(0.5 + 0.5*Math.tanh((1.15-1)*1.2),0,1);
+    var dInc=(sIncGoal - sIncNow)*0.25*100;
+    var targetAnnual = Math.round(incomeBenchmark(v.age||30)*1.15), delta = Math.max(0, targetAnnual - v.annualIncome);
+    push("Grow income toward "+money(roundNice(targetAnnual))+"/yr (≈ "+money(roundNice(delta/12))+"/mo via raise or side income).", dInc);
+  }
+  items.sort(function(a,b){ return b.pts - a.pts; });
+  return items.slice(0,3);
+}
+
+function renderOpportunities(v, cats){
+  var explainList = $("explainList");
+  var factorScores = { "Savings rate":cats.s.sSave, "Emergency fund":cats.s.sEF, "Debt load (non-mort.)":cats.s.sDebt, "Age-based net worth":cats.s.sAgeNW, "Income strength":cats.s.sInc };
+  var headlines = {
+    "Savings rate": { good:"Strong savings rate", mid:"Decent savings rate", bad:"Low savings rate" },
+    "Emergency fund": { good:"Solid emergency fund", mid:"Building emergency fund", bad:"Thin emergency fund" },
+    "Debt load (non-mort.)": { good:"Manageable debt", mid:"Moderate debt load", bad:"High-interest debt load" },
+    "Age-based net worth": { good:"Healthy net worth", mid:"Net worth on pace", bad:"Net worth behind pace" },
+    "Income strength": { good:"Strong income", mid:"Solid income", bad:"Income below benchmark" }
+  };
+  if(explainList){
+    explainList.innerHTML = "";
+    cats.components.forEach(function(c){
+      var s = factorScores[c.key];
+      var tier = s < 0.34 ? "bad" : (s < 0.67 ? "mid" : "good");
+      var h = (headlines[c.key] && headlines[c.key][tier]) || c.key;
+      var item = el("div", { className:"explain-item" });
+      item.innerHTML = '<span class="ei-dot" style="background:'+(tier==='good'?'var(--good)':tier==='mid'?'var(--mid)':'var(--bad)')+'"></span><div><b>'+h+'</b><span>'+c.tip+'</span></div>';
+      explainList.appendChild(item);
+    });
+  }
+  var oppGrid = $("opportunityCardsGrid");
+  var weakestKeyOut = null;
+  if(oppGrid){
+    oppGrid.innerHTML = "";
+    var weights = { "Income strength":0.25, "Savings rate":0.20, "Debt load (non-mort.)":0.20, "Age-based net worth":0.20, "Emergency fund":0.15 };
+    var oppHeadlines = { "Savings rate":"Savings", "Emergency fund":"Emergency Fund", "Debt load (non-mort.)":"Debt", "Age-based net worth":"Net Worth", "Income strength":"Income" };
+    var oppLinksToPlanning = { "Debt load (non-mort.)":true, "Age-based net worth":true };
+    var scored = cats.components.map(function(c){
+      var s = factorScores[c.key];
+      var potentialPts = Math.round(weights[c.key] * (1 - s) * 100 * 10) / 10;
+      return { key:c.key, tip:c.tip, score:s, potentialPts:potentialPts, letter:c.letter };
+    }).sort(function(a,b){ return a.score - b.score; });
+    var weakestKey = scored[0].key;
+    weakestKeyOut = weakestKey;
+    var weakestPillTextEl = $("weakestLinkPillText");
+    if(weakestPillTextEl) weakestPillTextEl.textContent = oppHeadlines[weakestKey] || weakestKey;
+    scored.forEach(function(o){
+      var tier = o.score < 0.34 ? "bad" : (o.score < 0.67 ? "mid" : "good");
+      var card = el("div", { className:"opp-card" + (o.key === weakestKey ? " weakest" : "") });
+      var ctaHtml = "";
+      if(oppLinksToPlanning[o.key] && o.potentialPts > 0.2){
+        var targetSub = (o.key === "Debt load (non-mort.)") ? "debtplan" : "projections";
+        ctaHtml = '<button class="btn sm opp-cta" type="button" data-target-plansub="'+targetSub+'">'+(o.key === "Debt load (non-mort.)" ? "See debt payoff plan →" : "See net worth projection →")+'</button>';
+      }
+      card.innerHTML =
+        '<div class="opp-card-top"><span class="opp-card-title">'+(oppHeadlines[o.key]||o.key)+'</span><span class="opp-card-grade '+tier+'">'+o.letter+'</span></div>'+
+        '<p class="opp-card-tip">'+o.tip+'</p>'+
+        (o.potentialPts > 0.2 ? '<div class="opp-card-pts">+'+o.potentialPts.toFixed(1)+' pts potential</div>' : '<div class="opp-card-pts good">Already strong here</div>')+
+        ctaHtml;
+      oppGrid.appendChild(card);
+    });
+    oppGrid.querySelectorAll("[data-target-plansub]").forEach(function(btn){
+      btn.addEventListener("click", function(){ if(window.__switchPlanSubtab) window.__switchPlanSubtab(btn.dataset.targetPlansub); });
+    });
+  }
+  var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; }})();
+  var pathList = $("planPathList");
+  if(pathList){
+    pathList.innerHTML="";
+    if(actions.length === 0){
+      var emptyLi = document.createElement("li");
+      emptyLi.style.listStyle = "none"; emptyLi.style.marginLeft = "-22px";
+      emptyLi.innerHTML = '<div class="small" style="color:var(--muted)">Every factor is already performing well — there\'s no single obvious next step right now. Keep doing what you\'re doing, and check back as your numbers change.</div>';
+      pathList.appendChild(emptyLi);
+    }
+    actions.forEach(function(a){
+      var li=document.createElement("li");
+      li.innerHTML = a.txt + ' <span class="pts">≈ +' + a.pts + ' pts</span>';
+      pathList.appendChild(li);
+    });
+  }
+  return weakestKeyOut;
+}
+
+/* ---- Debt Plan ---- */
+var DEBT_ASSUMED_RATES = { cc: 24, otherDebt: 12, auto: 7, student: 6 };
+function simulateDebtPayoff(debtList, extraMonthly, order){
+  var d = debtList.map(function(x){ return { key:x.key, label:x.label, balance:x.balance, rate:x.rate, paidMonth:null }; });
+  var fixedMinPay = {};
+  d.forEach(function(x){ fixedMinPay[x.key] = Math.max(x.balance*0.02, 25); });
+  var totalInterest = 0, month = 0, maxMonths = 600;
+  while(d.some(function(x){ return x.balance > 0.5; }) && month < maxMonths){
+    month++;
+    d.forEach(function(x){ if(x.balance>0){ var interest = x.balance*(x.rate/100/12); totalInterest += interest; x.balance += interest; } });
+    d.forEach(function(x){
+      if(x.balance<=0) return;
+      var minPay = Math.min(fixedMinPay[x.key], x.balance);
+      x.balance -= minPay;
+    });
+    var remaining = extraMonthly;
+    for(var i=0; i<order.length && remaining>0.01; i++){
+      var debt = d[order[i]];
+      if(debt.balance<=0) continue;
+      var pay = Math.min(remaining, debt.balance);
+      debt.balance -= pay;
+      remaining -= pay;
+    }
+    d.forEach(function(x){ if(x.balance<=0.5 && x.paidMonth===null) x.paidMonth = month; });
+  }
+  return {
+    months: month,
+    totalInterest: totalInterest,
+    hitCap: month>=maxMonths,
+    timeline: d.filter(function(x){ return x.paidMonth!==null; }).sort(function(a,b){ return a.paidMonth-b.paidMonth; })
+  };
+}
+function renderDebtPayoffPlanner(v){
+  var box=$("dppBox"), noDebtEl=$("dppNoDebt"), caption=$("dppCaption");
+  var extraEl=$("dppExtra"), extraVal=$("dppExtraVal");
+  var summaryEl=$("dppSummary"), timelineEl=$("dppTimeline");
+  var avalancheBtn=$("dppAvalanche"), snowballBtn=$("dppSnowball");
+  if(!box) return;
+  var rawDebts = [
+    { key:'cc', label:'Credit cards', balance:v.cc, rate:DEBT_ASSUMED_RATES.cc },
+    { key:'otherDebt', label:'Personal loans / other', balance:v.otherDebt, rate:DEBT_ASSUMED_RATES.otherDebt },
+    { key:'auto', label:'Auto loan', balance:v.auto, rate:DEBT_ASSUMED_RATES.auto },
+    { key:'student', label:'Student loans', balance:v.student, rate:DEBT_ASSUMED_RATES.student }
+  ].filter(function(x){ return x.balance > 0; });
+  if(rawDebts.length===0){
+    box.style.display='none';
+    noDebtEl.style.display='block';
+    caption.textContent='Debt-free';
+    return;
+  }
+  box.style.display=''; noDebtEl.style.display='none';
+  var strategy = 'avalanche';
+  var monthlySurplus = Math.max(0, v.income - v.expenses);
+  extraEl.max = String(Math.max(200, Math.min(2000, Math.round(monthlySurplus))));
+  var ratesWrap = $("dppRatesWrap");
+  if(ratesWrap){
+    ratesWrap.innerHTML = '<div class="small" style="color:var(--muted-2);text-transform:uppercase;letter-spacing:.04em;font-size:11px">Interest rates (edit with your real rates)</div>';
+    rawDebts.forEach(function(debt, idx){
+      var row = el('div', { style:'display:flex;justify-content:space-between;align-items:center;gap:10px' });
+      var label = el('span', { className:'small' });
+      label.textContent = debt.label;
+      var inputWrap = el('div', { style:'display:flex;align-items:center;gap:4px' });
+      var input = document.createElement('input');
+      input.type = 'number'; input.min = '0'; input.max = '50'; input.step = '0.1';
+      input.value = debt.rate;
+      input.style.cssText = 'width:70px;padding:6px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:inherit;font-size:13px;text-align:right';
+      input.setAttribute('aria-label', debt.label + ' interest rate');
+      var pct = el('span', { className:'small' }); pct.textContent = '%';
+      input.addEventListener('input', function(){
+        var val = parseFloat(input.value);
+        rawDebts[idx].rate = isNaN(val) ? 0 : Math.max(0, val);
+        update();
+      });
+      inputWrap.append(input, pct);
+      row.append(label, inputWrap);
+      ratesWrap.appendChild(row);
+    });
+  }
+  function getOrder(){
+    var indices = rawDebts.map(function(_,i){ return i; });
+    if(strategy==='avalanche') indices.sort(function(a,b){ return rawDebts[b].rate - rawDebts[a].rate; });
+    else indices.sort(function(a,b){ return rawDebts[a].balance - rawDebts[b].balance; });
+    return indices;
+  }
+  function fmtMonths(m){
+    var yrs = Math.floor(m/12), mo = m%12;
+    if(yrs===0) return mo+" mo";
+    if(mo===0) return yrs+" yr";
+    return yrs+"y "+mo+"mo";
+  }
+  function update(){
+    var extra = +extraEl.value;
+    extraVal.textContent = money(extra);
+    var order = getOrder();
+    var explainerEl = document.getElementById('dppStrategyExplainer');
+    if(explainerEl){
+      explainerEl.innerHTML = strategy==='avalanche'
+        ? '<strong>Avalanche:</strong> pay minimums on everything, then throw extra money at whichever debt has the <em>highest interest rate</em> first — minimizes total interest paid.'
+        : '<strong>Snowball:</strong> pay minimums on everything, then throw extra money at whichever debt has the <em>smallest balance</em> first — quick wins to help you stick with it.';
+    }
+    var altIndices = rawDebts.map(function(_,i){ return i; });
+    if(strategy==='avalanche') altIndices.sort(function(a,b){ return rawDebts[a].balance - rawDebts[b].balance; });
+    else altIndices.sort(function(a,b){ return rawDebts[b].rate - rawDebts[a].rate; });
+    var sameOrderAsOtherStrategy = JSON.stringify(order) === JSON.stringify(altIndices);
+    var sameNoteEl = document.getElementById('dppSameOrderNote');
+    if(sameNoteEl){
+      if(sameOrderAsOtherStrategy && rawDebts.length > 1){
+        sameNoteEl.style.display = 'block';
+        sameNoteEl.textContent = 'ℹ️ For your specific debts, avalanche and snowball pick the same order right now (one debt happens to have both the highest rate and the smallest balance) — that won\'t always be true, but it is here.';
+      } else {
+        sameNoteEl.style.display = 'none';
+      }
+    }
+    var result = simulateDebtPayoff(rawDebts, extra, order);
+    var baseline = simulateDebtPayoff(rawDebts, 0, order);
+    var interestSaved = Math.max(0, baseline.totalInterest - result.totalInterest);
+    var monthsSaved = Math.max(0, baseline.months - result.months);
+    caption.textContent = fmtMonths(result.months)+" to debt-free";
+    summaryEl.innerHTML='';
+    [
+      { label:'Debt-free in', val: fmtMonths(result.months) },
+      { label:'Total interest paid', val: money(result.totalInterest) },
+      { label:'Interest saved vs. min. only', val: money(interestSaved) }
+    ].forEach(function(s){
+      var card=el('div',{className:'card', style:'padding:10px;text-align:center'});
+      card.innerHTML='<div class="small">'+s.label+'</div><div class="mono" style="font-weight:700;font-size:15px;color:var(--brand-bright)">'+s.val+'</div>';
+      summaryEl.appendChild(card);
+    });
+    var raceEl = $("dppRace");
+    if(raceEl){
+      var maxMonths = Math.max(baseline.months, result.months, 1);
+      var minPct = Math.round((baseline.months/maxMonths)*100);
+      var planPct = Math.round((result.months/maxMonths)*100);
+      raceEl.innerHTML =
+        '<div class="debt-race-row">'+
+          '<div class="debt-race-label"><span>Minimum payments only</span><span>'+fmtMonths(baseline.months)+'</span></div>'+
+          '<div class="debt-race-track"><div class="debt-race-fill min" style="width:0%" data-target="'+minPct+'"></div></div>'+
+        '</div>'+
+        '<div class="debt-race-row">'+
+          '<div class="debt-race-label"><span>Your plan</span><span>'+fmtMonths(result.months)+'</span></div>'+
+          '<div class="debt-race-track"><div class="debt-race-fill plan" style="width:0%" data-target="'+planPct+'"></div></div>'+
+        '</div>';
+      requestAnimationFrame(function(){
+        raceEl.querySelectorAll('.debt-race-fill').forEach(function(bar){ bar.style.width = bar.dataset.target + '%'; });
+      });
+    }
+    timelineEl.innerHTML='';
+    result.timeline.forEach(function(t, idx){
+      var row=el('div',{className:'card', style:'padding:10px 12px;display:flex;justify-content:space-between;align-items:center'});
+      row.innerHTML='<div><b style="font-size:13px">'+(idx+1)+'. '+t.label+'</b></div><div class="mono small">paid off in '+fmtMonths(t.paidMonth)+'</div>';
+      timelineEl.appendChild(row);
+    });
+    if(result.hitCap){
+      var warn=el('div',{className:'small'}); warn.style.color='var(--bad)';
+      warn.textContent = 'At this payment level, payoff would take 50+ years — try increasing the extra monthly payment.';
+      timelineEl.appendChild(warn);
+    }
+    if(monthsSaved>0 && extra>0){
+      var savedNote=el('div',{className:'small', style:'margin-top:4px;color:var(--good)'});
+      savedNote.textContent = '↑ '+fmtMonths(monthsSaved)+' faster than paying minimums only.';
+      timelineEl.appendChild(savedNote);
+    }
+  }
+  avalancheBtn.classList.add('active'); snowballBtn.classList.remove('active');
+  avalancheBtn.onclick = function(){ strategy='avalanche'; avalancheBtn.classList.add('active'); snowballBtn.classList.remove('active'); update(); __track('debt_payoff_strategy',{strategy:'avalanche'}); };
+  snowballBtn.onclick = function(){ strategy='snowball'; snowballBtn.classList.add('active'); avalancheBtn.classList.remove('active'); update(); __track('debt_payoff_strategy',{strategy:'snowball'}); };
+  extraEl.oninput = update;
+  extraEl.value = 0;
+  update();
+}
 
 // Goals: migrated from the old single-goal object to a multi-goal array,
 // without ever deleting the legacy key — if anything goes wrong with the
@@ -2091,6 +3223,113 @@ function __track(){} // no-op if GA hasn't wired a custom tracker on this page
   });
   window.__gotoDashTab = activate;
 })();
+
+/* Outer Money-page sub-nav */
+(function setupMoneySubtabs(){
+  var buttons = document.querySelectorAll(".money-subtab-btn");
+  var views = document.querySelectorAll(".money-subview");
+  if(!buttons.length) return;
+  buttons.forEach(function(b){
+    b.addEventListener("click", function(){
+      buttons.forEach(function(x){ x.classList.toggle("active", x===b); });
+      views.forEach(function(v){ v.classList.toggle("active", v.dataset.moneypanel===b.dataset.moneysub); });
+      __track('money_subtab_view', {tab: b.dataset.moneysub});
+    });
+  });
+})();
+/* Inner Money Flow tabs (Assets / Liabilities / Income / Growth) - ported from index.html */
+(function setupFlowTabs(){
+  var tabs = document.querySelectorAll(".flow-tab");
+  var views = document.querySelectorAll(".flow-view");
+  if(!tabs.length) return;
+  tabs.forEach(function(tab){
+    tab.addEventListener("click", function(){
+      tabs.forEach(function(t){ t.classList.remove("active"); });
+      views.forEach(function(v){ v.classList.remove("active"); });
+      tab.classList.add("active");
+      var target = document.getElementById(tab.dataset.view);
+      if(target) target.classList.add("active");
+      __track('flow_tab_view', {tab: tab.dataset.view});
+    });
+  });
+})();
+
+/* Your Plan sub-nav (Opportunities / Debt Plan / Scenarios / Projections) */
+(function setupPlanSubtabs(){
+  var buttons = document.querySelectorAll(".plan-subtab-btn");
+  var views = document.querySelectorAll(".plan-subview");
+  if(!buttons.length) return;
+  function activate(name){
+    buttons.forEach(function(x){ x.classList.toggle("active", x.dataset.plansub===name); });
+    views.forEach(function(v){ v.classList.toggle("active", v.dataset.planpanel===name); });
+    __track('plan_subtab_view', {tab: name});
+  }
+  buttons.forEach(function(b){ b.addEventListener("click", function(){ activate(b.dataset.plansub); }); });
+  window.__switchPlanSubtab = function(name){
+    activate(name);
+    var panelEl = document.getElementById("panel-scenarios");
+    if(panelEl) panelEl.scrollIntoView({behavior:'smooth', block:'start'});
+  };
+})();
+
+/* ================= PHASE 2: Money Flow / Bills / Credit / Allocation =================
+   These need the full category breakdown (v), not just {ts,score,net} from
+   history - so they read the same gmf_last_report snapshot the Report Card
+   drill-down link uses. If nothing's saved yet (pre-update history, or the
+   old report was never opened after this update), each shows an honest
+   empty state instead of guessing at numbers. */
+function getLastReport(){
+  try{
+    var saved = JSON.parse(localStorage.getItem('gmf_last_report') || 'null');
+    return (saved && saved.v && saved.cats) ? saved : null;
+  }catch(_){ return null; }
+}
+function renderPlanExtras(){
+  var saved = getLastReport();
+  var oppEmpty = $("planOppEmptyNote"), oppContent = $("planOppContent");
+  var debtEmpty = $("planDebtEmptyNote"), debtContent = $("planDebtContent");
+  if(!saved){
+    if(oppEmpty){ oppEmpty.style.display='block'; oppContent.style.display='none'; }
+    if(debtEmpty){ debtEmpty.style.display='block'; debtContent.style.display='none'; }
+    return;
+  }
+  if(oppEmpty){ oppEmpty.style.display='none'; oppContent.style.display='block'; }
+  if(debtEmpty){ debtEmpty.style.display='none'; debtContent.style.display='block'; }
+  renderOpportunities(saved.v, saved.cats);
+  renderDebtPayoffPlanner(saved.v);
+}
+
+function getLastReportV(){
+  try{
+    var saved = JSON.parse(localStorage.getItem('gmf_last_report') || 'null');
+    return (saved && saved.v) ? saved.v : null;
+  }catch(_){ return null; }
+}
+function renderMoneyExtras(){
+  var v = getLastReportV();
+
+  var flowEmpty = $("moneyFlowEmptyNote"), flowContent = $("moneyFlowContent");
+  var billsEmpty = $("billsEmptyNoteWrap"), billsContent = $("billsContent");
+  var creditEmpty = $("creditEmptyNoteWrap"), creditContent = $("creditContent");
+  var allocEmpty = $("allocEmptyNoteWrap"), allocContent = $("allocContent");
+
+  if(!v){
+    if(flowEmpty){ flowEmpty.style.display='block'; flowContent.style.display='none'; }
+    if(billsEmpty){ billsEmpty.style.display='block'; billsContent.style.display='none'; }
+    if(creditEmpty){ creditEmpty.style.display='block'; creditContent.style.display='none'; }
+    if(allocEmpty){ allocEmpty.style.display='block'; allocContent.style.display='none'; }
+    return;
+  }
+  if(flowEmpty){ flowEmpty.style.display='none'; flowContent.style.display='block'; }
+  if(billsEmpty){ billsEmpty.style.display='none'; billsContent.style.display='block'; }
+  if(creditEmpty){ creditEmpty.style.display='none'; creditContent.style.display='block'; }
+  if(allocEmpty){ allocEmpty.style.display='none'; allocContent.style.display='block'; }
+
+  drawMoneyFlowCharts(v);
+  renderBillsTracker(v);
+  renderCreditUtilization(v);
+  renderAssetAllocation(v);
+}
 
 /* ================= HEADER ================= */
 function renderHeader(hist){
@@ -3644,8 +4883,17 @@ async function renderFreeTierDashboard(session){
 /* ================= INIT ================= */
 async function init(){
   var isPro = localStorage.getItem('gmf_pro') === 'true';
+  var hist = getHistory();
 
-  if(!isPro){
+  // The dashboard used to be a hard Pro paywall for anyone without a local
+  // check-in in this browser. That's wrong now that the calculator on the
+  // homepage redirects everyone here after grading - free users need to
+  // land on a working dashboard, not a paywall. So: anyone with local
+  // history (Pro or not) gets the full dashboard, gated per-feature via
+  // pro-only-hide/pro-blur-section instead of a page-level lock. The old
+  // freeTierState/lockedState screens now only cover the genuine edge
+  // case of a brand new visitor with nothing saved on this device yet.
+  if(!hist.length){
     var session = null;
     if(window.gmfSupabase){
       try{
@@ -3662,16 +4910,9 @@ async function init(){
   }
 
   $("dashboardContent").style.display = 'block';
-  var chip = $("headerProChip"); if(chip) chip.style.display = 'inline-flex';
-  // Note: under the current access model, non-Pro users never reach this
-  // point at all (they see lockedState above and the function returns
-  // early) - so pro-only-hide elements here only ever run for Pro users,
-  // meaning they'll always end up hidden. Wiring this correctly now so
-  // the mechanism is ready if the dashboard's access model changes to
-  // show a free preview instead of a hard lock.
-  document.querySelectorAll(".pro-only-hide").forEach(function(el){ el.style.display = "none"; });
+  var chip = $("headerProChip"); if(chip) chip.style.display = isPro ? 'inline-flex' : 'none';
+  document.querySelectorAll(".pro-only-hide").forEach(function(el){ el.style.display = isPro ? "none" : ""; });
 
-  var hist = getHistory();
   var groups = groupCheckins(hist);
 
   renderGreeting(hist);
@@ -3679,6 +4920,8 @@ async function init(){
   renderOverview(hist, groups);
   renderScoreTab(hist);
   renderNetWorthTab(hist);
+  renderMoneyExtras();
+  renderPlanExtras();
   renderGoals();
   renderScenariosTab();
   renderAchievementsTab();
