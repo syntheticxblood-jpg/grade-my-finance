@@ -424,10 +424,6 @@ main{ padding:28px 0 50px }
   .main-area{ margin-left:0; padding-bottom:64px }
   .content-header{ margin-bottom:18px }
 }
-
-/* ===== DASHBOARD 41: SIMPLE FINANCIAL PRODUCT PASS ===== */
-:root{--surface:#ffffff;--surface-soft:#f7f8f8;--line:#e3e7e5;--ink:#15221f;--muted:#66736f;--brand:#167a68;--brand-dark:#0e4f46}
-.dash-tab-panel{max-width:1240px;margin:0 auto;padding:34px 34px 56px}.section-label{letter-spacing:.11em}.section-sub{max-width:760px;line-height:1.6}.card,.hero-card,.metric-card{border:1px solid var(--line)!important;box-shadow:0 1px 2px rgba(16,24,20,.03)!important}.money-subtabs{background:#f3f5f4;padding:5px;border-radius:12px;display:flex;gap:4px;width:max-content;max-width:100%;overflow:auto;margin:22px 0}.money-subtab-btn,.plan-subtab-btn,.insight-subtab-btn{border:0!important;background:transparent!important;border-radius:8px!important;padding:9px 13px!important;white-space:nowrap}.money-subtab-btn.active,.plan-subtab-btn.active,.insight-subtab-btn.active{background:#fff!important;color:var(--brand-dark)!important;box-shadow:0 1px 3px rgba(0,0,0,.08)!important}.product-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:4px}.product-intro h2{margin:4px 0 0;font-size:28px;letter-spacing:-.03em}.utility-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}.utility-item{background:var(--surface-soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px}.utility-item span{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}.utility-item b{display:block;margin-top:6px;font-size:15px}.goal-form{background:#f7f8f8;border:1px solid var(--line);border-radius:14px;padding:18px;align-items:end}.goals-grid{margin-top:18px}.plan-subview,.insight-subview{padding-top:2px}.dash-tab-panel .hero-card{background:#fff}.dash-tab-panel .stats-grid{margin-top:14px}.quick-goals{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.quick-goal{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-size:12px;font-weight:700;color:var(--ink);cursor:pointer}.quick-goal:hover{border-color:var(--brand);color:var(--brand)}.clean-callout{background:linear-gradient(135deg,#f4faf7,#fff);border:1px solid #d8e8e1;border-radius:14px;padding:18px 20px;margin:20px 0}.clean-callout b{display:block;font-size:16px;margin-bottom:4px}.clean-callout p{margin:0;color:var(--muted);font-size:13px}.score-summary{display:flex;gap:18px;align-items:center;margin:18px 0}.score-summary .score-pill{background:var(--brand-dark);color:#fff;border-radius:12px;padding:16px 20px;min-width:120px}.score-summary .score-pill small{display:block;opacity:.7;text-transform:uppercase;letter-spacing:.1em;font-size:9px}.score-summary .score-pill b{font-size:27px;display:block;margin-top:4px}.dash-tab-panel .btn.gold{background:var(--brand)!important;color:#fff!important;border-color:var(--brand)!important}@media(max-width:760px){.dash-tab-panel{padding:24px 16px 44px}.product-intro{display:block}.utility-strip{grid-template-columns:1fr}.money-subtabs{width:100%}.score-summary{align-items:stretch}.goal-form{grid-template-columns:1fr!important}}
 </style>
 <style>
 
@@ -2110,6 +2106,38 @@ label{font-size:11px!important;font-weight:700!important;color:#5d7077!important
 @media(max-width:1000px){.opp-cards-grid{grid-template-columns:1fr 1fr!important}.gmf-tab-kpis{grid-template-columns:1fr 1fr!important}.ship-grade-hero{grid-template-columns:1fr!important}}
 @media(max-width:700px){.gmf-page-head{align-items:flex-start;flex-direction:column}.gmf-page-meta{justify-content:flex-start}.goal-form{grid-template-columns:1fr!important}.goals-grid{grid-template-columns:1fr!important}.opp-cards-grid{grid-template-columns:1fr!important}.gmf-tab-kpis{grid-template-columns:1fr 1fr!important}.gmf-action-bar{align-items:flex-start;flex-direction:column}.money-subtabs,.proj-subtabs,#insightSubtabs{width:100%}}
 @media(max-width:420px){.gmf-tab-kpis{grid-template-columns:1fr!important}.gmf-page-head h2{font-size:24px}}
+</style>
+
+
+<style id="gmf-ui-5-css">
+/* =========================================================
+   GMF UI 5 — simplified product navigation and utility-first tabs
+   ========================================================= */
+:root{--gmf-ink:#13242b;--gmf-muted:#6d7d82;--gmf-line:#dfe7e4;--gmf-surface:#fff;--gmf-soft:#f4f7f6;--gmf-green:#0f8b6d;--gmf-green-soft:#eaf6f2;--gmf-amber:#b87a19}
+.main-area .container{max-width:1320px!important}
+.dash-tab-panel{padding-bottom:36px!important}
+.gmf-page-head{padding:4px 0 18px!important;border-bottom:1px solid var(--gmf-line);margin-bottom:18px!important}
+.gmf-page-head h2{font-size:24px!important;letter-spacing:-.035em!important;color:var(--gmf-ink)!important}
+.gmf-page-head p{max-width:720px!important;font-size:13px!important;line-height:1.55!important;color:var(--gmf-muted)!important}
+.gmf-tab-kpis{grid-template-columns:repeat(4,1fr)!important;border:1px solid var(--gmf-line)!important;background:var(--gmf-surface)!important;border-radius:12px!important;overflow:hidden!important;margin:0 0 14px!important}
+.gmf-tab-kpi{min-height:94px!important;padding:16px 18px!important;border-right:1px solid var(--gmf-line)!important}
+.gmf-tab-kpi:last-child{border-right:0!important}.gmf-tab-kpi span{font-size:9px!important}.gmf-tab-kpi b{font-size:17px!important;letter-spacing:-.02em!important}.gmf-tab-kpi em{font-size:10px!important}
+.gmf-section-tools{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 16px;padding:12px 14px;background:var(--gmf-soft);border:1px solid var(--gmf-line);border-radius:11px}
+.gmf-section-tools strong{display:block;font-size:12px;color:var(--gmf-ink)}.gmf-section-tools span{display:block;font-size:11px;color:var(--gmf-muted);margin-top:3px}
+.gmf-tab-helper{font-size:11px;color:var(--gmf-muted);margin:-7px 0 16px;min-height:16px}
+.money-subtabs,.proj-subtabs,#insightSubtabs{background:#f2f5f4!important;border:1px solid var(--gmf-line)!important;border-radius:10px!important;padding:4px!important;gap:2px!important}
+.money-subtab-btn,.plan-subtab-btn,.proj-subtab-btn,.insight-subtab-btn{font-size:11px!important;padding:8px 11px!important;border-radius:7px!important;color:#607075!important;white-space:nowrap}
+.money-subtab-btn.active,.plan-subtab-btn.active,.proj-subtab-btn.active,.insight-subtab-btn.active{background:#fff!important;color:#173038!important;box-shadow:0 1px 4px rgba(13,30,35,.08)!important}
+.gmf-action-bar{background:#103a35!important;border:0!important;border-radius:12px!important;box-shadow:none!important;margin:0 0 16px!important}.gmf-action-bar strong{font-size:14px!important}.gmf-action-bar span{color:#b9d0ca!important}.gmf-action-bar .btn{border-radius:8px!important}
+.gmf-goal-presets{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}.gmf-goal-preset{border:1px solid var(--gmf-line);background:#fff;color:#405158;padding:8px 11px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer}.gmf-goal-preset:hover{border-color:#8ecfbe;background:var(--gmf-green-soft);color:#087257}
+#panel-goals .goal-form{background:#fff;border:1px solid var(--gmf-line);border-radius:12px;padding:14px;margin:0!important;box-shadow:none!important}.goals-grid{margin-top:16px!important}
+#panel-score .hero-card,#panel-networth .hero-card{border-radius:12px!important;box-shadow:none!important;border:1px solid var(--gmf-line)!important}
+#panel-score .card,#panel-networth .card,#panel-goals .card,#panel-scenarios .card,#panel-insights .card{border-radius:12px!important;box-shadow:none!important}
+.gmf-simple-callout{border-left:3px solid var(--gmf-green);background:#f7fbf9;padding:13px 15px;border-radius:0 9px 9px 0;margin:0 0 16px}.gmf-simple-callout b{font-size:12px;color:#173038}.gmf-simple-callout span{display:block;font-size:11px;color:var(--gmf-muted);margin-top:3px}
+.gmf-goal-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border:1px solid var(--gmf-line);background:#fff;border-radius:12px;margin:0 0 14px}.gmf-goal-summary b{font-size:13px}.gmf-goal-summary span{font-size:11px;color:var(--gmf-muted)}
+.gmf-plan-map{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 16px}.gmf-plan-map div{padding:10px 12px;background:#fff;border:1px solid var(--gmf-line);border-radius:10px}.gmf-plan-map b{display:block;font-size:10px;color:var(--gmf-ink)}.gmf-plan-map span{display:block;font-size:10px;color:var(--gmf-muted);margin-top:3px;line-height:1.35}
+@media(max-width:900px){.gmf-tab-kpis{grid-template-columns:1fr 1fr!important}.gmf-tab-kpi:nth-child(2){border-right:0!important}.gmf-tab-kpi:nth-child(n+3){border-top:1px solid var(--gmf-line)!important}.gmf-plan-map{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.gmf-tab-kpis{grid-template-columns:1fr!important}.gmf-tab-kpi{border-right:0!important;border-bottom:1px solid var(--gmf-line)!important}.gmf-tab-kpi:last-child{border-bottom:0!important}.gmf-section-tools,.gmf-goal-summary{align-items:flex-start;flex-direction:column}.gmf-plan-map{grid-template-columns:1fr}.gmf-page-head h2{font-size:22px!important}}
 </style>
 
 </head>
@@ -7299,122 +7327,61 @@ init().then(function(){ try{ window.renderGmfCommandCenter(getHistory()); }catch
 })();
 </script>
 
-<script id="gmf-ui-4-js">
+<script id="gmf-ui-5-js">
 (function(){
   'use strict';
-  function q(s){return document.querySelector(s)}
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function id(s){return document.getElementById(s)}
   function hist(){try{return JSON.parse(localStorage.getItem('gmf_history_v2')||'[]')}catch(e){return[]}}
-  function money(v){if(typeof v!=='number'||!isFinite(v))return '—';var a=Math.abs(v),s=v<0?'-':'';if(a>=1000000)return s+'$'+(a/1000000).toFixed(a>=10000000?1:2)+'M';if(a>=1000)return s+'$'+Math.round(a).toLocaleString();return s+'$'+Math.round(a).toLocaleString()}
-  function pct(v){return typeof v==='number'&&isFinite(v)?v.toFixed(1)+'%':'—'}
+  function money(v){if(typeof v!=='number'||!isFinite(v))return '—';var a=Math.abs(v),sg=v<0?'-':'';if(a>=1e6)return sg+'$'+(a/1e6).toFixed(a>=1e7?1:2)+'M';if(a>=1e3)return sg+'$'+Math.round(a/1e3)+'k';return sg+'$'+Math.round(a).toLocaleString()}
   function grade(v){v=Number(v||0);if(v>=93)return'A+';if(v>=90)return'A';if(v>=87)return'A-';if(v>=83)return'B+';if(v>=80)return'B';if(v>=77)return'B-';if(v>=73)return'C+';if(v>=70)return'C';if(v>=67)return'C-';if(v>=63)return'D+';if(v>=60)return'D';return'F'}
-  function delta(v,suffix){if(typeof v!=='number'||!isFinite(v))return'—';return(v>=0?'↑ +':'↓ ')+(Math.abs(v)<10?Math.abs(v).toFixed(1):Math.round(Math.abs(v)).toLocaleString())+(suffix||'')}
-  function latest(){var h=hist();return{h:h,l:h.length?h[h.length-1]:null,p:h.length>1?h[h.length-2]:null}}
-  function addHead(panel,title,copy,meta){
-    if(!panel||panel.querySelector(':scope > .gmf-page-head'))return;
-    var el=document.createElement('div');el.className='gmf-page-head';
-    el.innerHTML='<div><h2>'+title+'</h2><p>'+copy+'</p></div><div class="gmf-page-meta">'+(meta||'')+'</div>';
-    panel.insertBefore(el,panel.firstElementChild);
+  function delta(v,s){if(typeof v!=='number'||!isFinite(v))return '—';return(v>=0?'↑ +':'↓ ')+(Math.abs(v)<10?Math.abs(v).toFixed(1):Math.round(Math.abs(v)))+(s||'')}
+  function priority(l){try{return typeof deriveFinancialPriorities==='function'?(deriveFinancialPriorities(l)||[])[0]||null:null}catch(e){return null}}
+  function addHead(p,title,copy,meta){if(!p)return;var old=q(':scope > .gmf-page-head',p);if(old)old.remove();var h=document.createElement('div');h.className='gmf-page-head';h.innerHTML='<div><h2>'+title+'</h2><p>'+copy+'</p></div><div class="gmf-page-meta">'+(meta||'')+'</div>';p.insertBefore(h,p.firstElementChild)}
+  function chip(t,ok){return'<span class="gmf-status-chip"><i class="gmf-status-dot" style="background:'+(ok?'#159a78':'#c78a2c')+'"></i>'+t+'</span>'}
+  function kpi(a,b,c,down){return'<div class="gmf-tab-kpi"><span>'+a+'</span><b>'+b+'</b><em class="'+(down?'down':'')+'">'+(c||'')+'</em></div>'}
+  function setKpis(p,html,before){var old=q(':scope > .gmf-tab-kpis',p);if(old)old.remove();var el=document.createElement('div');el.className='gmf-tab-kpis';el.innerHTML=html;p.insertBefore(el,before||q('.money-subtabs,.card',p)||null)}
+  function helper(p,text){var old=q(':scope > .gmf-tab-helper',p);if(old)old.remove();var el=document.createElement('div');el.className='gmf-tab-helper';el.textContent=text;var nav=q('.money-subtabs',p);if(nav)nav.insertAdjacentElement('afterend',el)}
+  function tool(p,title,copy,actionHtml){var old=q(':scope > .gmf-section-tools',p);if(old)old.remove();var el=document.createElement('div');el.className='gmf-section-tools';el.innerHTML='<div><strong>'+title+'</strong><span>'+copy+'</span></div>'+(actionHtml||'');var nav=q('.money-subtabs',p);if(nav)p.insertBefore(el,nav);else p.insertBefore(el,q('.goal-form,.card',p)||null)}
+  function relabel(){
+    var nav=q('#moneySubtabs');if(nav){var map=['Balance sheet','Cash flow','Bills','Credit','Portfolio'];qa('button',nav).forEach(function(b,i){if(map[i])b.textContent=map[i]})}
+    nav=q('#planSubtabs');if(nav){var map2=['Improve grade','Debt payoff','What if','Long-term'];qa('button',nav).forEach(function(b,i){if(map2[i])b.textContent=map2[i]})}
+    nav=q('#insightSubtabs');if(nav){var map3=['Score drivers','Perspective','Stress test'];qa('button',nav).forEach(function(b,i){if(map3[i])b.textContent=map3[i]})}
+    var side=q('[data-tab="score"]');if(side)side.lastChild.nodeValue=' Grade & Progress';
   }
-  function chip(text,good){return'<span class="gmf-status-chip"><i class="gmf-status-dot" style="background:'+(good?'#159a78':'#d59a35')+'"></i>'+text+'</span>'}
-  function kpi(label,value,change,down){return'<div class="gmf-tab-kpi"><span>'+label+'</span><b>'+value+'</b><em class="'+(down?'down':'')+'">'+(change||'')+'</em></div>'}
-  function priorities(l){try{return typeof deriveFinancialPriorities==='function'?deriveFinancialPriorities(l)||[]:[]}catch(e){return[]}}
-
-  function enhanceMoney(x){
-    var p=id('panel-networth');if(!p||!x.l)return;
-    addHead(p,'Money','A clearer view of your balance sheet, cash position, and financial activity.',chip('Latest check-in '+new Date(x.l.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}),true));
-    if(!p.querySelector('.gmf-tab-kpis')){
-      var inv=['brokerage','crypto','retire','hsa'].reduce(function(a,k){return a+(typeof x.l[k]==='number'?x.l[k]:0)},0);
-      var cash=typeof x.l.cash==='number'?x.l.cash:null,debt=typeof x.l.totalDebt==='number'?x.l.totalDebt:null,net=typeof x.l.net==='number'?x.l.net:null;
-      var dnet=x.p&&net!==null&&typeof x.p.net==='number'?delta(net-x.p.net):'Your latest balance';
-      var dDebt=x.p&&debt!==null&&typeof x.p.totalDebt==='number'?delta(debt-x.p.totalDebt):'Total recorded debt';
-      var dCash=x.p&&cash!==null&&typeof x.p.cash==='number'?delta(cash-x.p.cash):'Liquid savings';
-      var dSave=x.p&&typeof x.l.savingsRate==='number'&&typeof x.p.savingsRate==='number'?delta(x.l.savingsRate-x.p.savingsRate,' pts'):'Current rate';
-      var wrap=document.createElement('div');wrap.className='gmf-tab-kpis';wrap.innerHTML=kpi('Net worth',money(net),dnet,(x.p&&net<x.p.net))+kpi('Liquid cash',money(cash),dCash,(x.p&&cash<x.p.cash))+kpi('Investments',money(inv),'Retirement + brokerage',false)+kpi('Debt',money(debt),dDebt,(x.p&&debt>x.p.totalDebt));
-      p.insertBefore(wrap,p.querySelector('.money-subtabs'));
-    }
+  function moneyTab(x){var p=id('panel-networth');if(!p)return;var l=x.l,pr=x.p;if(!l){addHead(p,'Money','Your balance sheet, cash flow, bills, credit, and portfolio in one place.',chip('Needs your first check-in',false));return}
+    addHead(p,'Money','A single place to understand what you own, what you owe, and how money moves through your finances.',chip('Updated '+new Date(l.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}),true));
+    var inv=['brokerage','crypto','retire','hsa'].reduce(function(a,k){return a+(typeof l[k]==='number'?l[k]:0)},0),cash=typeof l.cash==='number'?l.cash:null,debt=typeof l.totalDebt==='number'?l.totalDebt:null,net=typeof l.net==='number'?l.net:null,inc=typeof l.income==='number'?l.income:null,exp=typeof l.monthlyExpenses==='number'?l.monthlyExpenses:null,margin=inc!==null&&exp!==null?inc-exp:null;
+    setKpis(p,kpi('Net worth',money(net),pr&&typeof pr.net==='number'?delta(net-pr.net):'Latest balance',pr&&net<pr.net)+kpi('Cash',money(cash),exp>0&&cash!==null?(cash/exp).toFixed(1)+' months of expenses':'Liquidity')+kpi('Investments',money(inv),'Retirement + brokerage')+kpi('Monthly margin',money(margin),margin===null?'Income minus expenses':'Money left after expenses',margin!==null&&margin<0),q('#moneySubtabs',p));
+    tool(p,'Choose a view','Start with your balance sheet, then move to cash flow when you want to understand the month.', '<a class="btn gold sm" href="index.html#grade">Update finances</a>');
+    helper(p,'Balance sheet = what you own minus what you owe. Cash flow = what comes in versus what goes out.');
   }
-
-  function enhanceGoals(x){
-    var p=id('panel-goals');if(!p)return;
-    addHead(p,'Goals','Turn the financial grade into measurable targets you can actually track.',x.l?chip(grade(x.l.score)+' · '+Number(x.l.score||0).toFixed(1)+'/100',true):chip('No check-in yet',false));
-    if(!p.querySelector('.gmf-goal-presets')){
-      var form=q('#panel-goals .goal-form');if(form){
-        var presets=document.createElement('div');presets.className='gmf-goal-presets';presets.innerHTML='<button class="gmf-goal-preset" data-goal-preset="score90" type="button">Target score 90</button><button class="gmf-goal-preset" data-goal-preset="score95" type="button">Target score 95</button><button class="gmf-goal-preset" data-goal-preset="net50" type="button">Net worth $50k</button><button class="gmf-goal-preset" data-goal-preset="net100" type="button">Net worth $100k</button>';
-        form.insertAdjacentElement('afterend',presets);
-        presets.querySelectorAll('button').forEach(function(b){b.onclick=function(){var v=b.dataset.goalPreset; if(v.indexOf('score')===0){id('goalType').value='score';id('goalTarget').value=v==='score90'?90:95}else{id('goalType').value='networth';id('goalTarget').value=v==='net50'?50000:100000}id('goalTarget').focus()}});
-      }
-    }
+  function goalsTab(x){var p=id('panel-goals');if(!p)return;var l=x.l;addHead(p,'Goals','Pick a small number of measurable outcomes. The point is progress you can check, not a long wish list.',l?chip('Current grade '+grade(l.score)+' · '+Number(l.score||0).toFixed(1),true):chip('Set your first target',false));
+    tool(p,'Set one target','Add a score or net-worth target, then use the rest of the dashboard to see what will move it.','');
+    if(!q('.gmf-goal-summary',p)){var s=document.createElement('div');s.className='gmf-goal-summary';s.innerHTML='<div><b>Keep goals connected to your next move.</b><span>Your plan can suggest a priority; add it here when you want to track it.</span></div><button class="btn sm" type="button" data-goto="scenarios">View my plan</button>';p.insertBefore(s,q('.goal-form',p));q('[data-goto="scenarios"]',s).onclick=function(){var b=q('[data-tab="scenarios"]');if(b)b.click()}}
+    if(!q('.gmf-goal-presets',p)){var form=q('.goal-form',p),el=document.createElement('div');el.className='gmf-goal-presets';el.innerHTML='<button class="gmf-goal-preset" data-k="score:85" type="button">Reach score 85</button><button class="gmf-goal-preset" data-k="score:90" type="button">Reach score 90</button><button class="gmf-goal-preset" data-k="networth:50000" type="button">Build $50k net worth</button><button class="gmf-goal-preset" data-k="networth:100000" type="button">Build $100k net worth</button>';form.insertAdjacentElement('afterend',el);qa('button',el).forEach(function(b){b.onclick=function(){var a=b.dataset.k.split(':');id('goalType').value=a[0];id('goalTarget').value=a[1];id('goalTarget').focus()}})}
   }
-
-  function enhancePlan(x){
-    var p=id('panel-scenarios');if(!p)return;
-    var pri=x.l?priorities(x.l)[0]:null;
-    addHead(p,'Your Plan','A practical sequence of actions, payoff strategies, and what-if decisions built from your latest numbers.',pri?chip('Priority: '+pri.title,true):chip('Update your finances to personalize this',false));
-    if(!p.querySelector('.gmf-action-bar')){
-      var bar=document.createElement('div');bar.className='gmf-action-bar';
-      bar.innerHTML='<div><strong>'+(pri?('Next best move: '+pri.title):'Your next best move')+'</strong><span>'+(pri?(pri.action||pri.copy||'Make this your next measurable improvement.'):'Complete a check-in so Grade My Finance can build a plan from your real numbers.')+'</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" data-goto="goals">Add as goal</button><a class="btn gold" href="index.html#grade">Update finances</a></div>';
-      var tabs=p.querySelector('.money-subtabs');p.insertBefore(bar,tabs);
-      bar.querySelector('[data-goto="goals"]').onclick=function(){var b=q('[data-tab="goals"]');if(b)b.click()};
-    }
+  function planTab(x){var p=id('panel-scenarios');if(!p)return;var l=x.l,pri=l?priority(l):null;addHead(p,'Your Plan','Use this page to decide what to improve next, model tradeoffs, and see longer-term consequences.',pri?chip('Priority: '+pri.title,true):chip('Complete a check-in to personalize this',false));
+    var old=q(':scope > .gmf-plan-map',p);if(old)old.remove();var map=document.createElement('div');map.className='gmf-plan-map';map.innerHTML='<div><b>1 · Improve grade</b><span>See the highest-impact opportunities first.</span></div><div><b>2 · Debt payoff</b><span>Turn balances into a payoff strategy.</span></div><div><b>3 · What if</b><span>Test decisions before making them.</span></div><div><b>4 · Long-term</b><span>Explore projections and financial independence.</span></div>';p.insertBefore(map,q('#planSubtabs',p));
+    var oldBar=q(':scope > .gmf-action-bar',p);if(oldBar)oldBar.remove();var bar=document.createElement('div');bar.className='gmf-action-bar';bar.innerHTML='<div><strong>'+(pri?'Next best move: '+pri.title:'Start with your latest check-in')+'</strong><span>'+(pri?(pri.action||pri.copy||'Make one measurable improvement before your next check-in.'):'Complete your finances so your plan can use real numbers.')+'</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" id="gmfAddPriority">Add to goals</button><a class="btn gold" href="index.html#grade">Update finances</a></div>';p.insertBefore(bar,q('#planSubtabs',p));q('#gmfAddPriority',bar).onclick=function(){if(pri&&typeof getGoals==='function'&&typeof saveGoals==='function'){var gs=getGoals();if(!gs.some(function(g){return g.type==='action'&&g.actionKey===pri.key})){gs.push({id:'g_plan_'+Date.now(),type:'action',actionKey:pri.key,label:pri.title,target:pri.target,createdAt:Date.now(),source:'plan'});saveGoals(gs)}}var b=q('[data-tab="goals"]');if(b)b.click()};helper(p,'Each section answers a different question: what should I fix, how do I pay debt, what happens if I change something, and where could I be headed?');
   }
-
-  function enhanceScore(x){
-    var p=id('panel-score');if(!p||!x.l)return;
-    addHead(p,'Grade & History','Your grade is calculated on the main report; this page shows the evidence, trend, and milestones behind it.',chip(grade(x.l.score)+' · '+Number(x.l.score).toFixed(1)+'/100',true));
-    if(!p.querySelector('.gmf-tab-kpis')){
-      var best=Math.max.apply(null,x.h.map(function(h){return Number(h.score||0)}));
-      var d=x.p?Number(x.l.score||0)-Number(x.p.score||0):null;
-      var wrap=document.createElement('div');wrap.className='gmf-tab-kpis';wrap.innerHTML=kpi('Current grade',grade(x.l.score)+' · '+Number(x.l.score).toFixed(1),d===null?'First check-in':delta(d,' pts'),d<0)+kpi('Personal best',Number(best).toFixed(1),'Highest recorded score',false)+kpi('Starting score',Number(x.h[0].score||0).toFixed(1),delta(Number(x.l.score||0)-Number(x.h[0].score||0),' pts'),Number(x.l.score)<Number(x.h[0].score))+kpi('Check-ins',String(x.h.length),'Builds your history',false);
-      p.insertBefore(wrap,p.querySelector('.card'));
-    }
+  function scoreTab(x){var p=id('panel-score');if(!p)return;var l=x.l,pr=x.p;if(!l){addHead(p,'Grade & Progress','Your Financial Grade comes from the report. This page becomes useful as you build check-in history.',chip('No history yet',false));return}
+    addHead(p,'Grade & Progress','The grade is the headline. Everything below explains whether you are improving and what changed over time.',chip(grade(l.score)+' · '+Number(l.score).toFixed(1)+'/100',true));var best=Math.max.apply(null,x.h.map(function(h){return Number(h.score||0)})),d=pr?Number(l.score)-Number(pr.score):null;
+    setKpis(p,kpi('Current grade',grade(l.score)+' · '+Number(l.score).toFixed(1),d===null?'First check-in':delta(d,' pts'),d!==null&&d<0)+kpi('Personal best',best.toFixed(1),'Highest recorded score')+kpi('Starting score',Number(x.h[0].score||0).toFixed(1),delta(Number(l.score)-Number(x.h[0].score),' pts'),Number(l.score)<Number(x.h[0].score))+kpi('Check-ins',String(x.h.length),'More check-ins = better trends'),q('.card',p));
+    tool(p,'Use the trend, not just the grade','A single score is a snapshot. Two or more check-ins start showing direction.','<a class="btn gold sm" href="index.html?openReport=1">Open full report</a>');
   }
-
-  function enhanceInsights(x){
-    var p=id('panel-insights');if(!p)return;
-    var pri=x.l?priorities(x.l)[0]:null;
-    addHead(p,'Insights','Context that helps you understand why the grade moved and what could matter next.',pri?chip('Focus: '+pri.title,true):chip('Needs a check-in',false));
-    if(x.l&&!p.querySelector('.gmf-tab-kpis')){
-      var debt=typeof x.l.totalDebt==='number'?x.l.totalDebt:null,net=typeof x.l.net==='number'?x.l.net:null,cash=typeof x.l.cash==='number'?x.l.cash:null,exp=typeof x.l.monthlyExpenses==='number'?x.l.monthlyExpenses:null;
-      var runway=cash!==null&&exp>0?cash/exp:null;
-      var strength=debt===0?'Debt free':net>0?'Positive net worth':'Cash position';
-      var weakness=pri?pri.title:'Complete more data';
-      var wrap=document.createElement('div');wrap.className='gmf-tab-kpis';wrap.innerHTML=kpi('Financial grade',grade(x.l.score)+' · '+Number(x.l.score).toFixed(1),'Calculated in your report',false)+kpi('Biggest strength',strength,'Based on latest check-in',false)+kpi('Biggest opportunity',weakness,'Your next improvement area',false)+kpi('Cash runway',runway===null?'—':runway.toFixed(1)+' mo',runway===null?'Add cash + expenses':'Cash ÷ monthly expenses',runway!==null&&runway<3);
-      p.insertBefore(wrap,p.querySelector('.money-subtabs'));
-    }
+  function insightsTab(x){var p=id('panel-insights');if(!p)return;var l=x.l,pri=l?priority(l):null;addHead(p,'Insights','Use these tools when you want context: what drives your grade, how your choices translate in real life, and how resilient your finances are.',pri?chip('Focus: '+pri.title,true):chip('Needs your latest numbers',false));
+    if(l){var cash=typeof l.cash==='number'?l.cash:null,exp=typeof l.monthlyExpenses==='number'?l.monthlyExpenses:null,run=cash!==null&&exp>0?cash/exp:null,str=l.totalDebt===0?'Debt free':l.net>0?'Positive net worth':'Balance sheet';setKpis(p,kpi('Grade',grade(l.score)+' · '+Number(l.score).toFixed(1),'From your report')+kpi('Strength',str,'Latest check-in')+kpi('Focus',pri?pri.title:'Keep tracking','Next improvement')+kpi('Cash runway',run===null?'—':run.toFixed(1)+' mo',run===null?'Add cash + expenses':'Cash ÷ monthly expenses',run!==null&&run<3),q('#insightSubtabs',p))}
+    tool(p,'Pick the question you want answered','Score drivers explains the grade. Perspective translates money into tradeoffs. Stress test shows how a tough scenario could affect you.','');helper(p,'Keep this page for analysis—not daily data entry. Your Money and Plan tabs are where you update and act.');
   }
-
-  function normalizeSubtabs(){
-    document.querySelectorAll('.money-subtabs,.proj-subtabs,#insightSubtabs').forEach(function(nav){nav.setAttribute('role','tablist')});
-    document.querySelectorAll('.money-subtab-btn,.plan-subtab-btn,.proj-subtab-btn,.insight-subtab-btn').forEach(function(b){b.setAttribute('role','tab')});
-  }
-  function enhance(){
-    var x=latest();
-    enhanceMoney(x);enhanceGoals(x);enhancePlan(x);enhanceScore(x);enhanceInsights(x);normalizeSubtabs();
-  }
-  function bind(){
-    document.querySelectorAll('.dash-nav-btn[data-tab]').forEach(function(b){b.addEventListener('click',function(){setTimeout(enhance,40)})});
-    document.addEventListener('click',function(e){var b=e.target.closest('.plan-subtab-btn,.money-subtab-btn,.proj-subtab-btn,.insight-subtab-btn');if(b)setTimeout(enhance,30)});
-  }
-  function start(){enhance();bind();setTimeout(enhance,500);setTimeout(enhance,1400)}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+  function updateHelper(e){var p=e.target.closest('.dash-tab-panel');if(!p)return;var h=q(':scope > .gmf-tab-helper',p);if(!h)return;var b=e.target.closest('.money-subtab-btn,.plan-subtab-btn,.insight-subtab-btn,.proj-subtab-btn');if(!b)return;var m={'Balance sheet':'Review what you own, what you owe, and how net worth has changed.','Cash flow':'Compare income, spending, and where money is going.','Bills':'Keep recurring obligations visible and plan around due dates.','Credit':'Check utilization and see the impact of paying balances down.','Portfolio':'Review where assets sit and concentration at a high level.','Improve grade':'Start with the highest-impact improvement from your latest check-in.','Debt payoff':'Turn debt balances into a payoff sequence and timeline.','What if':'Change assumptions before you make a real-world decision.','Long-term':'Explore net-worth projections and financial independence.','Score drivers':'See which factors are pulling the grade up or down.','Perspective':'Translate financial numbers into real-world tradeoffs and pace.','Stress test':'Test how your finances could hold up under a difficult scenario.'};h.textContent=m[b.textContent.trim()]||h.textContent}
+  function run(){var h=hist(),x={h:h,l:h.length?h[h.length-1]:null,p:h.length>1?h[h.length-2]:null};relabel();moneyTab(x);goalsTab(x);planTab(x);scoreTab(x);insightsTab(x);qa('.money-subtabs,.proj-subtabs,#insightSubtabs').forEach(function(n){n.setAttribute('role','tablist')});qa('.money-subtab-btn,.plan-subtab-btn,.proj-subtab-btn,.insight-subtab-btn').forEach(function(b){b.setAttribute('role','tab')})}
+  document.addEventListener('click',updateHelper);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){run();setTimeout(run,400);setTimeout(run,1300)});else{run();setTimeout(run,400)}
+  qa('.dash-nav-btn').forEach(function(b){b.addEventListener('click',function(){setTimeout(run,30)})});
 })();
 </script>
 
-
-<script>
-(function(){
- function intro(panel,label,title,desc){var el=document.querySelector(panel);if(!el||el.querySelector('.product-intro'))return;var first=el.firstElementChild;var wrap=document.createElement('div');wrap.className='product-intro';wrap.innerHTML='<div><span class="section-label">'+label+'</span><h2>'+title+'</h2><p class="section-sub">'+desc+'</p></div>';el.insertBefore(wrap,first);var oldLabel=wrap.nextElementSibling,oldSub=oldLabel&&oldLabel.nextElementSibling;if(oldLabel&&oldLabel.matches('span.section-label'))oldLabel.remove();if(oldSub&&oldSub.matches('p.section-sub'))oldSub.remove();}
- intro('#panel-networth','MONEY','Know where your money stands.','Your balance sheet, monthly cash flow, bills and debt in one place. Start with the big picture, then drill in only when you need to.');
- intro('#panel-goals','GOALS','Turn priorities into measurable progress.','Keep a small number of meaningful financial targets and track the distance between today and the outcome you want.');
- intro('#panel-scenarios','YOUR PLAN','Decide what to do next.','Start with the highest-impact opportunity, then use payoff and scenario tools when you need a deeper answer.');
- intro('#panel-score','GRADE & HISTORY','See whether your financial health is improving.','Your grade is the headline. History explains the trend and the full report explains why.');
- intro('#panel-insights','INSIGHTS','Understand the numbers behind the grade.','Compare your position, see your strongest and weakest areas, and test how resilient your finances are.');
- var goals=document.querySelector('#panel-goals');if(goals&&!goals.querySelector('.quick-goals')){var form=goals.querySelector('.goal-form');var q=document.createElement('div');q.className='quick-goals';q.innerHTML='<button class="quick-goal" data-type="score" data-target="90">Reach a 90 score</button><button class="quick-goal" data-type="score" data-target="80">Get to a B</button><button class="quick-goal" data-type="networth" data-target="100000">Build $100k net worth</button>';goals.insertBefore(q,form);q.addEventListener('click',function(e){var b=e.target.closest('.quick-goal');if(!b)return;var t=document.getElementById('goalType'),v=document.getElementById('goalTarget');if(t&&v){t.value=b.dataset.type;v.value=b.dataset.target;v.focus();}})}
- var score=document.querySelector('#panel-score');if(score&&!score.querySelector('.score-summary')){var hero=score.querySelector('.hero-card');var x=document.createElement('div');x.className='score-summary';x.innerHTML='<div class="score-pill"><small>Current score</small><b id="scoreQuickValue">—</b></div><div><b>Your financial grade over time</b><p class="section-sub" style="margin:4px 0 0">Use this trend to judge progress, not a single check-in.</p></div>';score.insertBefore(x,hero);var sync=function(){var v=document.getElementById('scHeroVal'),o=document.getElementById('scoreQuickValue');if(v&&o)o.textContent=v.textContent;};setTimeout(sync,100);setTimeout(sync,1000)}
- var plan=document.querySelector('#panel-scenarios');if(plan&&!plan.querySelector('.clean-callout')){var tabs=plan.querySelector('#planSubtabs');var c=document.createElement('div');c.className='clean-callout';c.innerHTML='<b>Start with Opportunities</b><p>That is your recommended starting point. Debt planning, scenarios and projections are decision tools when you have a specific question.</p>';plan.insertBefore(c,tabs)}
- var insights=document.querySelector('#panel-insights');if(insights&&!insights.querySelector('.clean-callout')){var tabs=insights.querySelector('#insightSubtabs');var c=document.createElement('div');c.className='clean-callout';c.innerHTML='<b>Use insights to answer a question</b><p>Benchmarks show where you stand. Perspective adds context. Stress Test shows what happens when life does not go to plan.</p>';insights.insertBefore(c,tabs)}
-})();
-</script>
 </body>
 </html>
