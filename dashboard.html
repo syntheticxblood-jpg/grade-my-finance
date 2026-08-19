@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Your Dashboard | Grade My Finance</title>
-<meta name="description" content="Track your financial grade over time, saved scenarios, achievements, and personal goals — a Pro feature on Grade My Finance.">
+<title>Dashboard | Grade My Finance</title>
+<meta name="description" content="Your financial command center — grade, money, goals, plans, and progress in one place.">
 <meta name="theme-color" content="#0A0B0E">
 <meta name="robots" content="noindex,follow">
 <link rel="canonical" href="https://grademyfinance.com/dashboard.html">
@@ -1284,6 +1284,36 @@ header.site{height:calc(var(--header-h) + var(--gmf-safe-top));padding-top:var(-
   #panel-overview > .command-metrics .grade-ring-card{grid-column:1/-1}
 }
 </style>
+
+<style>
+.nav-section-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;color:var(--muted-2);font-weight:700;padding:14px 10px 5px}
+.sidebar .nav-section-label:first-child{padding-top:4px}
+@media(max-width:900px){.nav-section-label{display:none}}
+</style>
+
+<style>
+/* Dashboard 2.1 — unified product loop */
+.content-header{align-items:flex-end}
+.content-header-right{flex-wrap:wrap}
+.grade-card-links{display:flex;flex-direction:column;gap:2px;margin-top:8px}
+.grade-card-links .view-link{width:max-content}
+.whats-changed-card{margin:16px 0;display:none;border:1px solid rgba(46,156,129,.22);background:linear-gradient(135deg,rgba(46,156,129,.10),rgba(245,185,66,.10));border-radius:16px;padding:16px 18px}
+.whats-changed-card.show{display:block}
+.wc-head{display:flex;justify-content:space-between;gap:18px;align-items:center}
+.wc-title{font-family:var(--font-display);font-weight:700;font-size:15px}
+.wc-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.wc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.wc-item{background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+.wc-item span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-2);font-family:var(--font-mono)}
+.wc-item b{display:block;margin-top:3px;font-family:var(--font-mono);font-size:15px}
+.quick-tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.quick-tool{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:13px;padding:13px;display:flex;align-items:center;gap:11px;text-align:left;color:var(--text);cursor:pointer;font-family:var(--font-body);transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.quick-tool:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm);border-color:rgba(46,156,129,.35)}
+.qt-icon{width:34px;height:34px;border-radius:10px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;font-family:var(--font-mono);font-weight:700;flex:none}
+.quick-tool:nth-child(3n) .qt-icon{background:var(--gold-soft);color:var(--gold)}
+.quick-tool b{display:block;font-size:13px}.quick-tool small{display:block;color:var(--muted-2);font-size:11px;margin-top:2px}.qt-arrow{margin-left:auto;color:var(--muted-2);font-size:16px}
+@media(max-width:700px){.wc-grid,.quick-tools-grid{grid-template-columns:1fr}.content-header{align-items:stretch}.content-header-right{display:grid;grid-template-columns:1fr 1fr}.content-header-right .updated{grid-column:1/-1}}
+</style>
 </head>
 <body>
 <script>
@@ -1360,13 +1390,15 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     </div>
 
     <nav class="dash-nav" id="dashNav">
-      <button class="dash-nav-btn active" data-tab="overview" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Overview</button>
-      <button class="dash-nav-btn" data-tab="score" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg>Score History</button>
-      <button class="dash-nav-btn" data-tab="networth" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 9.5 4h5L16 7"/></svg>Net Worth</button>
+      <div class="nav-section-label">OVERVIEW</div>
+      <button class="dash-nav-btn active" data-tab="overview" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
+      <div class="nav-section-label">MONEY</div>
+      <button class="dash-nav-btn" data-tab="networth" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 9.5 4h5L16 7"/></svg>Money</button>
+      <div class="nav-section-label">PLANNING</div>
       <button class="dash-nav-btn" data-tab="goals" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>Goals</button>
-      <button class="dash-nav-btn" data-tab="scenarios" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>What-If Scenarios</button>
-      <button class="dash-nav-btn" data-tab="achievements" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a1 1 0 0 0-1 1 4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1 4 4 0 0 1-4 4"/></svg>Achievements</button>
-      <button class="dash-nav-btn" data-tab="retirement" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>Retirement</button>
+      <button class="dash-nav-btn" data-tab="scenarios" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>Plans</button>
+      <div class="nav-section-label">INSIGHTS</div>
+      <button class="dash-nav-btn" data-tab="score" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg>Grade &amp; History</button>
     </nav>
 
     <div class="sidebar-bottom">
@@ -1430,6 +1462,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
           </div>
           <div class="content-header-right">
             <div class="updated" id="dashHeaderUpdated">—</div>
+            <button class="btn" type="button" data-goto="score">View Grade Report</button>
             <a class="btn gold" href="index.html#grade">Update My Finances</a>
           </div>
         </div>
@@ -1449,7 +1482,10 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
           <div class="grade-ring-text">
             <div class="score-part mono" id="dashHeaderScore">—</div>
             <div class="grade-explain" id="dashContextLine">—</div>
-            <a class="view-link" href="index.html#faq" id="howGradesWorkLink" style="margin-top:6px">How grades work →</a>
+            <div class="grade-card-links">
+              <button class="view-link" data-goto="score" type="button">View full grade report →</button>
+              <a class="view-link" href="index.html#faq" id="howGradesWorkLink">How grades work →</a>
+            </div>
           </div>
         </div>
         <div class="metric-card">
@@ -1480,6 +1516,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
       <div id="commandCenter"></div>
       <div id="actionPlan"></div>
+      <div id="whatsChanged" class="whats-changed-card"></div>
 
       <div class="ov-grid">
         <div class="ov-col">
@@ -1558,6 +1595,18 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <p class="section-sub" style="margin-top:4px">A quick narrative of your journey so far, built from your own check-ins.</p>
         <button class="view-link" id="storyModeToggle" type="button">View your story →</button>
         <div id="storyModeContent" style="display:none; margin-top:16px"></div>
+      </div>
+
+      <div class="card quick-tools-card" style="margin-top:16px">
+        <div class="quick-tools-head"><div><span class="section-label">Explore your money</span><p class="section-sub" style="margin-top:4px">Everything else lives here — without cluttering your main dashboard.</p></div></div>
+        <div class="quick-tools-grid">
+          <button class="quick-tool" data-goto="score" type="button"><span class="qt-icon">↗</span><span><b>Grade &amp; History</b><small>See your score trend and check-ins</small></span><span class="qt-arrow">→</span></button>
+          <button class="quick-tool" data-goto="networth" type="button"><span class="qt-icon">$</span><span><b>Money</b><small>Net worth, cash and debt updates</small></span><span class="qt-arrow">→</span></button>
+          <button class="quick-tool" data-goto="scenarios" type="button"><span class="qt-icon">◇</span><span><b>Plans</b><small>Explore what-if paths</small></span><span class="qt-arrow">→</span></button>
+          <button class="quick-tool" data-goto="goals" type="button"><span class="qt-icon">✓</span><span><b>Goals</b><small>Turn your next move into a target</small></span><span class="qt-arrow">→</span></button>
+          <button class="quick-tool" data-goto="retirement" type="button"><span class="qt-icon">◷</span><span><b>Retirement</b><small>Project your financial independence</small></span><span class="qt-arrow">→</span></button>
+          <button class="quick-tool" data-goto="achievements" type="button"><span class="qt-icon">★</span><span><b>Achievements</b><small>See the progress you've earned</small></span><span class="qt-arrow">→</span></button>
+        </div>
       </div>
     </div>
 
@@ -2332,6 +2381,28 @@ function renderActionPlan(hist){
   });
 }
 
+/* ================= WHAT CHANGED ================= */
+function renderWhatsChanged(hist){
+  var mount = $("whatsChanged");
+  if(!mount) return;
+  if(hist.length < 2){ mount.classList.remove('show'); mount.innerHTML=''; return; }
+  var a=hist[hist.length-2], b=hist[hist.length-1];
+  var scoreDelta=(b.score||0)-(a.score||0);
+  var netDelta=(typeof a.net==='number' && typeof b.net==='number') ? b.net-a.net : null;
+  var saveDelta=(typeof a.savingsRate==='number' && typeof b.savingsRate==='number') ? b.savingsRate-a.savingsRate : null;
+  var debtDelta=(typeof a.totalDebt==='number' && typeof b.totalDebt==='number') ? b.totalDebt-a.totalDebt : null;
+  function signedPts(v){return v>=0?'↑ +'+v.toFixed(1):'↓ '+Math.abs(v).toFixed(1);}
+  function signedMoney(v){return v>=0?'↑ '+formatCompact(Math.abs(v)):'↓ '+formatCompact(Math.abs(v));}
+  var positive=scoreDelta>=0;
+  mount.innerHTML='<div class="wc-head"><div><div class="wc-title">Since your last check-in</div><div class="wc-sub">Your dashboard is now about progress, not just a snapshot.</div></div><div class="command-stat"><span>Grade</span><b style="color:'+(positive?'var(--good)':'var(--bad)')+'">'+signedPts(scoreDelta)+'</b></div></div>'+
+    '<div class="wc-grid">'+
+      '<div class="wc-item"><span>Net worth</span><b>'+ (netDelta===null?'—':signedMoney(netDelta)) +'</b></div>'+
+      '<div class="wc-item"><span>Savings rate</span><b>'+ (saveDelta===null?'—':(saveDelta>=0?'↑ +':'↓ ')+Math.abs(saveDelta).toFixed(1)+' pts') +'</b></div>'+
+      '<div class="wc-item"><span>Total debt</span><b>'+ (debtDelta===null?'—':(debtDelta<=0?'↓ ':'↑ ')+formatCompact(Math.abs(debtDelta))) +'</b></div>'+
+    '</div>';
+  mount.classList.add('show');
+}
+
 /* ================= OVERVIEW TAB ================= */
 function renderOverview(hist, groups){
   var latest = hist.length ? hist[hist.length-1] : null;
@@ -2340,6 +2411,7 @@ function renderOverview(hist, groups){
 
   renderCommandCenter(hist);
   renderActionPlan(hist);
+  renderWhatsChanged(hist);
 
   $("mScoreVal").textContent = latest ? latest.score.toFixed(1) : "—";
   $("mScoreGrade").textContent = latest ? overallLetter(Math.round(latest.score)) : "—";
