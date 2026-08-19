@@ -205,6 +205,21 @@
     .legend{width:100%}
   }
 </style>
+
+<style>
+  .page-view{width:100%;max-width:1260px;margin:16px auto 0}
+  .page-hero{background:#fff;border:1px solid var(--card-border);border-radius:18px;padding:30px;box-shadow:0 10px 26px rgba(25,65,70,.08)}
+  .page-hero h2{font-family:Georgia,serif;font-size:32px;margin:4px 0 8px}
+  .page-hero p{color:var(--muted);font-size:14px;margin:0}
+  .page-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+  .info-card{background:#fff;border:1px solid var(--card-border);border-radius:16px;padding:22px;box-shadow:0 8px 22px rgba(25,65,70,.07)}
+  .info-card h3{margin:0 0 7px;font-size:16px}.info-card .big{font-size:25px;font-weight:900}.info-card p{font-size:12px;color:var(--muted);line-height:1.5}
+  .pro-lock{display:flex;align-items:center;justify-content:center;min-height:280px;text-align:center;background:linear-gradient(135deg,#fff,#edf7f6);border:1px solid var(--card-border);border-radius:18px;padding:30px;box-shadow:0 10px 26px rgba(25,65,70,.08)}
+  .pro-lock h2{font-family:Georgia,serif;font-size:28px;margin:12px 0 8px}.pro-lock p{color:var(--muted);max-width:560px;margin:0 auto 18px;font-size:13px}.lock-button{border:0;background:#0aa481;color:#fff;border-radius:9px;padding:11px 17px;font-weight:900;cursor:pointer}
+  .modal-backdrop{position:fixed;inset:0;background:rgba(7,35,38,.48);display:none;align-items:center;justify-content:center;z-index:100}
+  .modal-backdrop.show{display:flex}.modal{width:min(440px,calc(100vw - 32px));background:#fff;border:1px solid var(--card-border);border-radius:18px;padding:26px;box-shadow:0 24px 70px rgba(0,0,0,.25);text-align:center}.modal .pro-badge{margin-bottom:8px}.modal h3{font-family:Georgia,serif;font-size:25px;margin:8px 0}.modal p{font-size:13px;color:var(--muted);line-height:1.5}.modal-actions{display:flex;gap:9px;justify-content:center;margin-top:18px}.modal-close{background:#fff;border:1px solid #cbdadb;border-radius:9px;padding:10px 14px;font-weight:800;cursor:pointer}
+  @media(max-width:760px){.page-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -226,24 +241,24 @@
     <nav>
       <div class="nav-section">
         <div class="nav-title">OVERVIEW</div>
-        <a class="nav-item active" href="#"><span class="nav-icon">⌘</span>Dashboard</a>
+        <a class="nav-item active" href="#" data-page="dashboard"><span class="nav-icon">⌘</span>Dashboard</a>
       </div>
 
       <div class="nav-section">
         <div class="nav-title">MONEY</div>
-        <a class="nav-item" href="#"><span class="nav-icon">▢</span>Money<span class="nav-spacer"></span><span class="pro-badge">PRO</span></a>
-        <a class="nav-item" href="#"><span class="nav-icon">◎</span>Goals</a>
+        <a class="nav-item" href="#" data-page="money" data-pro="true"><span class="nav-icon">▢</span>Money<span class="nav-spacer"></span><span class="pro-badge">PRO</span></a>
+        <a class="nav-item" href="#" data-page="goals"><span class="nav-icon">◎</span>Goals</a>
       </div>
 
       <div class="nav-section">
         <div class="nav-title">PLANNING</div>
-        <a class="nav-item" href="#"><span class="nav-icon">⌁</span>Plan</a>
+        <a class="nav-item" href="#" data-page="plan"><span class="nav-icon">⌁</span>Plan</a>
       </div>
 
       <div class="nav-section">
         <div class="nav-title">INSIGHTS</div>
-        <a class="nav-item" href="#"><span class="nav-icon">↗</span>Grade Report</a>
-        <a class="nav-item" href="#"><span class="nav-icon">◉</span>Insights<span class="nav-spacer"></span><span class="pro-badge">PRO</span></a>
+        <a class="nav-item" href="#" data-page="grade"><span class="nav-icon">↗</span>Grade Report</a>
+        <a class="nav-item" href="#" data-page="insights"><span class="nav-icon">◉</span>Insights<span class="nav-spacer"></span><span class="pro-badge">PRO</span></a>
       </div>
     </nav>
 
@@ -419,5 +434,52 @@
     </div>
   </main>
 </div>
+
+<div class="modal-backdrop" id="proModal" aria-hidden="true">
+  <div class="modal">
+    <span class="pro-badge">PRO</span>
+    <h3>Money is a Pro feature</h3>
+    <p>Upgrade to Pro to unlock the full Money center, including cash flow, assets, liabilities, allocation, and financial trend tools.</p>
+    <div class="modal-actions"><button class="modal-close" id="closePro">Close</button><button class="lock-button" id="upgradePro">Explore Pro</button></div>
+  </div>
+</div>
+<script>
+(function(){
+  const content=document.querySelector('.content');
+  const dashboardHTML=content.innerHTML;
+  const navItems=[...document.querySelectorAll('.nav-item[data-page]')];
+  const modal=document.getElementById('proModal');
+  const closePro=document.getElementById('closePro');
+  const upgradePro=document.getElementById('upgradePro');
+
+  const pages={
+    goals:{title:'Goals',subtitle:'Set targets, track progress, and keep your money moving toward what matters.',cards:[['Emergency fund','18.2 months','You are well ahead of a typical cash-reserve target.'],['Retirement','$650K','Keep building long-term assets while maintaining flexibility.'],['Debt payoff','$50K','Track balances and see how extra payments change your timeline.']]},
+    plan:{title:'Plan',subtitle:'Turn your financial picture into a clear set of next steps.',cards:[['Next best move','Invest & protect','Keep your monthly margin positive while continuing long-term investing.'],['Monthly margin','+$2,400/mo','Available cash after recorded monthly expenses.'],['Cash runway','18.2 mo','Your current cash could cover recorded expenses for this long.']]},
+    grade:{title:'Grade Report',subtitle:'See what is driving your financial grade and where the biggest opportunities are.',cards:[['Financial grade','A+ / 100','Your current score is excellent.'],['Grade change','↑ 16 points','Your score has improved since the last check-in.'],['Top strength','Net worth','Your asset base is the strongest part of your current profile.']]},
+    insights:{title:'Insights',subtitle:'Turn your financial data into decisions you can act on.',cards:[['Net worth trend','$910,544','Your current net worth and recent change.'],['Cash flow','+$2,400/mo','Positive monthly cash flow gives you room to save and invest.'],['Opportunity','Allocation','Review concentration and diversification as your assets grow.']]},
+    money:{title:'Money',subtitle:'Understand what you own, what you owe, and where your cash is going.'}
+  };
+
+  function setActive(item){navItems.forEach(x=>x.classList.remove('active'));item.classList.add('active');}
+  function renderPage(page){
+    const d=pages[page];
+    if(page==='money'){
+      content.innerHTML=`<div class="page-view"><div class="pro-lock"><div><span class="pro-badge">PRO</span><h2>Unlock your Money center</h2><p>Get the complete view of your assets, liabilities, income, savings, allocation, and net worth trends with Pro.</p><button class="lock-button" onclick="document.getElementById('proModal').classList.add('show')">Explore Pro</button></div></div></div>`;
+      return;
+    }
+    content.innerHTML=`<div class="page-view"><section class="page-hero"><div class="eyebrow">${page==='grade'?'YOUR FINANCIAL GRADE':'FINANCIAL COMMAND CENTER'}</div><h2>${d.title}</h2><p>${d.subtitle}</p></section><section class="page-grid">${d.cards.map(c=>`<article class="info-card"><div class="eyebrow">${c[0].toUpperCase()}</div><div class="big">${c[1]}</div><p>${c[2]}</p></article>`).join('')}</section></div>`;
+  }
+  navItems.forEach(item=>item.addEventListener('click',function(e){
+    e.preventDefault();
+    const page=item.dataset.page;
+    setActive(item);
+    if(page==='dashboard'){content.innerHTML=dashboardHTML;return;}
+    renderPage(page);
+  }));
+  closePro.addEventListener('click',()=>modal.classList.remove('show'));
+  modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
+  upgradePro.addEventListener('click',()=>modal.classList.remove('show'));
+})();
+</script>
 </body>
 </html>
