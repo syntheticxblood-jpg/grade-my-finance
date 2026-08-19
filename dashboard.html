@@ -9112,5 +9112,45 @@ add('panel-achievements','rays','Every improvement counts','Celebrate milestones
 #nwChart{min-height:260px;display:block;position:relative;z-index:1}
 #panel-networth .nw-cell{background:linear-gradient(135deg,#ffffff,#f6fbff)!important;border-color:#dbe7f0!important}
 </style>
+
+<style id="gmf-home-color-upgrade">
+/* Colorful command-center visual for the Dashboard home */
+#panel-overview .gmf-overview-visual{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;padding:18px;border-radius:18px;border:1px solid #d9e8e4;background:linear-gradient(135deg,#ecfaf6 0%,#f2f7ff 52%,#fff7e7 100%);box-shadow:0 12px 30px rgba(38,72,64,.08);overflow:hidden;position:relative}
+#panel-overview .gmf-overview-visual:before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-90px;top:-120px;background:radial-gradient(circle,rgba(117,97,255,.18),rgba(117,97,255,0));pointer-events:none}
+.gmf-pulse-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;position:relative;z-index:1}.gmf-pulse-kicker{font:800 9px var(--font-mono);letter-spacing:.12em;color:#617976}.gmf-pulse-title{font:800 24px var(--font-display);color:#163c38;margin-top:5px}.gmf-pulse-copy{font-size:11px;line-height:1.5;color:#667c79;margin-top:4px;max-width:580px}
+.gmf-pulse-score{display:flex;align-items:center;gap:10px;padding:8px 11px;border-radius:13px;background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.92);box-shadow:0 8px 20px rgba(60,90,84,.08)}.gmf-pulse-score b{font:900 28px var(--font-display);color:#087e66}.gmf-pulse-score span{font:800 9px var(--font-mono);color:#6f8380;text-transform:uppercase}
+.gmf-pulse-bars{display:grid;gap:12px;margin-top:18px;position:relative;z-index:1}.gmf-pulse-row{display:grid;grid-template-columns:90px 1fr 72px;align-items:center;gap:9px}.gmf-pulse-row span{font:800 9px var(--font-mono);text-transform:uppercase;letter-spacing:.06em;color:#607773}.gmf-pulse-track{height:12px;border-radius:99px;background:rgba(255,255,255,.68);overflow:hidden;box-shadow:inset 0 1px 3px rgba(26,62,56,.06)}.gmf-pulse-fill{height:100%;border-radius:99px;min-width:5px;box-shadow:0 5px 14px rgba(38,80,70,.12)}.gmf-pulse-fill.net{background:linear-gradient(90deg,#19c79a,#48d7b5)}.gmf-pulse-fill.cash{background:linear-gradient(90deg,#4c8df6,#77b1ff)}.gmf-pulse-fill.invest{background:linear-gradient(90deg,#9a6cff,#c49cff)}.gmf-pulse-fill.debt{background:linear-gradient(90deg,#ff9d4d,#ffcb69)}.gmf-pulse-row b{text-align:right;font:800 11px var(--font-mono);color:#24433e}
+.gmf-pulse-right{display:grid;place-items:center;position:relative;min-height:250px;z-index:1}.gmf-pulse-orbit{width:220px;height:220px;border-radius:50%;background:conic-gradient(#19c79a 0 31%,#4c8df6 31% 55%,#9a6cff 55% 78%,#ffb14f 78% 100%);padding:14px;box-shadow:0 20px 35px rgba(63,85,137,.14),inset 0 0 25px rgba(255,255,255,.3);position:relative}.gmf-pulse-orbit:before{content:"";position:absolute;inset:14px;border-radius:50%;background:#f9fffd}.gmf-pulse-center{position:absolute;inset:14px;display:grid;place-content:center;text-align:center;border-radius:50%}.gmf-pulse-center b{font:900 42px var(--font-display);color:#163c38;line-height:1}.gmf-pulse-center span{font:800 9px var(--font-mono);letter-spacing:.1em;color:#6b7d79;margin-top:5px}.gmf-pulse-legend{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px;width:100%}.gmf-pulse-legend div{display:flex;align-items:center;gap:6px;padding:7px 8px;border-radius:9px;background:rgba(255,255,255,.68);font-size:9px;font-weight:800;color:#4e6761}.gmf-pulse-dot{width:8px;height:8px;border-radius:50%;display:inline-block}.gmf-pulse-dot.net{background:#19c79a}.gmf-pulse-dot.cash{background:#4c8df6}.gmf-pulse-dot.invest{background:#9a6cff}.gmf-pulse-dot.debt{background:#ffb14f}
+@media(max-width:900px){#panel-overview .gmf-overview-visual{grid-template-columns:1fr}.gmf-pulse-right{min-height:auto}.gmf-pulse-orbit{width:190px;height:190px}.gmf-pulse-row{grid-template-columns:76px 1fr 64px}}
+@media(max-width:560px){.gmf-pulse-head{flex-direction:column}.gmf-pulse-title{font-size:21px}.gmf-pulse-row{grid-template-columns:70px 1fr 55px;gap:6px}.gmf-pulse-row span,.gmf-pulse-row b{font-size:8px}.gmf-pulse-orbit{width:175px;height:175px}.gmf-pulse-center b{font-size:34px}}
+</style>
+<script id="gmf-home-color-upgrade-js">
+(function(){
+  function fmt(v){if(typeof v!=="number"||!isFinite(v))return "—";var a=Math.abs(v),s=v<0?"-":"";if(a>=1000000)return s+"$"+(a/1000000).toFixed(1)+"M";if(a>=1000)return s+"$"+Math.round(a/1000)+"k";return s+"$"+Math.round(a)}
+  function pct(v,max){if(!(max>0))return 8;return Math.max(8,Math.min(100,Math.round(Math.abs(v)/max*100)))}
+  function render(){
+    var p=document.getElementById('panel-overview'); if(!p) return;
+    var old=p.querySelector(':scope > .gmf-overview-visual');
+    var h=[];try{h=JSON.parse(localStorage.getItem('gmf_history_v2')||'[]')}catch(e){}
+    var l=h.length?h[h.length-1]:null;
+    var score=l&&typeof l.score==='number'?l.score:0;
+    var net=l&&typeof l.net==='number'?l.net:0;
+    var cash=l&&typeof l.cash==='number'?l.cash:0;
+    var invest=l?['retire','brokerage','hsa','crypto'].reduce(function(a,k){return a+(typeof l[k]==='number'?l[k]:0)},0):0;
+    var debt=l?(typeof l.totalDebt==='number'?l.totalDebt:['mortgage','student','auto','cc','otherDebt'].reduce(function(a,k){return a+(typeof l[k]==='number'?l[k]:0)},0)):0;
+    var max=Math.max(Math.abs(net),cash,invest,debt,1);
+    var html='<div class="gmf-pulse-left"><div class="gmf-pulse-head"><div><div class="gmf-pulse-kicker">YOUR FINANCIAL PULSE</div><div class="gmf-pulse-title">A more colorful look at your money.</div><div class="gmf-pulse-copy">This visual turns your latest snapshot into a quick financial mix so the home screen feels alive instead of like a wall of white cards.</div></div><div class="gmf-pulse-score"><b>'+ (l?score.toFixed(0):'—') +'</b><span>financial<br>score</span></div></div><div class="gmf-pulse-bars">'+
+      '<div class="gmf-pulse-row"><span>Net worth</span><div class="gmf-pulse-track"><div class="gmf-pulse-fill net" style="width:'+pct(net,max)+'%"></div></div><b>'+fmt(net)+'</b></div>'+ 
+      '<div class="gmf-pulse-row"><span>Cash</span><div class="gmf-pulse-track"><div class="gmf-pulse-fill cash" style="width:'+pct(cash,max)+'%"></div></div><b>'+fmt(cash)+'</b></div>'+ 
+      '<div class="gmf-pulse-row"><span>Invested</span><div class="gmf-pulse-track"><div class="gmf-pulse-fill invest" style="width:'+pct(invest,max)+'%"></div></div><b>'+fmt(invest)+'</b></div>'+ 
+      '<div class="gmf-pulse-row"><span>Debt</span><div class="gmf-pulse-track"><div class="gmf-pulse-fill debt" style="width:'+pct(debt,max)+'%"></div></div><b>'+fmt(debt)+'</b></div></div></div>'+ 
+      '<div class="gmf-pulse-right"><div class="gmf-pulse-orbit"><div class="gmf-pulse-center"><b>'+ (l?score.toFixed(1):'—') +'</b><span>GRADE SCORE</span></div></div><div class="gmf-pulse-legend"><div><i class="gmf-pulse-dot net"></i>Net worth</div><div><i class="gmf-pulse-dot cash"></i>Cash</div><div><i class="gmf-pulse-dot invest"></i>Investments</div><div><i class="gmf-pulse-dot debt"></i>Debt</div></div></div>';
+    if(!old){old=document.createElement('section');old.className='gmf-overview-visual';var anchor=p.querySelector('.gmf-overview-rebuild');if(anchor&&anchor.nextSibling)p.insertBefore(old,anchor.nextSibling);else p.appendChild(old)}
+    old.innerHTML=html;
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(render,90)});else setTimeout(render,90);
+  window.addEventListener('storage',function(e){if(e.key==='gmf_history_v2')render()});
+})();
+</script>
 </body>
 </html>
