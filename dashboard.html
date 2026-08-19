@@ -4880,6 +4880,11 @@ function attachDualChartHover(svgEl){
 }
 
 function defaultStressAssumptions(v){
+  /* Normalize partial/legacy report snapshots so missing balance-sheet fields
+     become zero instead of preventing the Stress Test from rendering. */
+  v=v||{};
+  var num=function(x){ var n=Number(x); return isFinite(n)?n:0; };
+  ['income','expenses','cash','brokerage','crypto','retire','hsa','cc','otherDebt','auto','student'].forEach(function(k){ v[k]=num(v[k]); });
   var essential = Math.round(v.expenses * 0.7);
   var discretionary = Math.max(0, Math.round(v.expenses) - essential);
   var debtPayments = Math.round([v.cc, v.otherDebt, v.auto, v.student]
@@ -7938,23 +7943,29 @@ async function init(){
 
   var groups = groupCheckins(hist);
 
-  renderGreeting(hist);
-  renderHeader(hist);
-  renderOverviewSupplementals(hist);
-  renderScoreTab(hist);
-  renderProgressPanel(hist);
-  renderNetWorthTab(hist);
-  renderMoneyExtras();
-  renderPlanExtras();
-  renderPlanNextBestMove(hist);
-  renderInsightExtras();
-  renderGoals();
-  renderScenariosTab();
-  renderAchievementsTab();
+  /* Isolate dashboard modules so one unrelated widget cannot prevent the
+     Pro Stress Test from rendering. */
+  var __safeRender = function(label, fn){
+    try{ fn(); }catch(e){ console.warn('Dashboard module failed ['+label+']:', e); }
+  };
+  __safeRender('greeting', function(){ renderGreeting(hist); });
+  __safeRender('header', function(){ renderHeader(hist); });
+  __safeRender('overview', function(){ renderOverviewSupplementals(hist); });
+  __safeRender('score', function(){ renderScoreTab(hist); });
+  __safeRender('progress', function(){ renderProgressPanel(hist); });
+  __safeRender('money', function(){ renderMoneyExtras(); });
 
-  loadRetFormFromStorage();
-  wireRetForm();
-  renderRetirementTab();
+  /* Insights first: Stress Test is a core Pro feature and must not be
+     blocked by malformed legacy data in planning/projection widgets. */
+  __safeRender('insights', function(){ renderInsightExtras(); });
+  __safeRender('plan', function(){ renderPlanExtras(); });
+  __safeRender('plan-next-move', function(){ renderPlanNextBestMove(hist); });
+  __safeRender('goals', function(){ renderGoals(); });
+  __safeRender('scenarios', function(){ renderScenariosTab(); });
+  __safeRender('achievements', function(){ renderAchievementsTab(); });
+  __safeRender('retirement-form', function(){ loadRetFormFromStorage(); });
+  __safeRender('retirement-wiring', function(){ wireRetForm(); });
+  __safeRender('retirement', function(){ renderRetirementTab(); });
 
   // Canvas text needs the webfonts actually loaded, which can lag behind
   // the initial render — redraw the share card once they're ready.
@@ -7964,15 +7975,38 @@ async function init(){
     });
   }
 }
-init().then(function(){
+Promise.resolve(init()).then(function(){
   try{ window.renderGmfCommandCenter(getHistory()); }catch(e){ console.warn('Command center render failed',e); }
-  // Final Stress Test pass after the entire dashboard has rendered.
-  try{
-    var sr = getLastReport();
-    if(sr && sr.v && typeof renderEmergencyStressTest === 'function'){
-      setTimeout(function(){ try{ renderEmergencyStressTest(sr.v); }catch(e){ console.warn('Final Stress Test pass failed:', e); } }, 0);
+}).catch(function(e){
+  console.error('Dashboard init recovered from error:', e);
+}).finally(function(){
+  /* Guaranteed final Stress Test pass, even if another dashboard module
+     rejected during initialization. */
+  setTimeout(function(){
+    try{
+      var sr = getLastReport();
+      if(sr && sr.v && typeof renderEmergencyStressTest === 'function'){
+        renderEmergencyStressTest(sr.v);
+      }else{
+        var empty = document.getElementById('insightStressEmptyNote');
+        var content = document.getElementById('insightStressContent');
+        if(empty && content){ empty.style.display='block'; content.style.display='none'; }
+      }
+    }catch(e){
+      console.error('Guaranteed Stress Test pass failed:', e);
+      var content = document.getElementById('insightStressContent');
+      if(content){
+        var err = content.querySelector('.gmf-stress-error');
+        if(!err){
+          err=document.createElement('div');
+          err.className='gmf-stress-error';
+          err.style.cssText='margin:14px;padding:16px;border:1px solid #e5baba;border-radius:12px;background:#fff7f7;color:#7d2424;font-size:13px;';
+          err.innerHTML='<b>Stress Test could not load.</b><br>Your financial data was not changed. Refresh the dashboard and try again.';
+          content.insertBefore(err,content.firstChild);
+        }
+      }
     }
-  }catch(e){}
+  },0);
 });
 </script>
 
