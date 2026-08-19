@@ -357,12 +357,10 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:2
 }
 .sidebar-brand{ display:flex; align-items:center; gap:9px; text-decoration:none; padding:0 8px 22px; border-bottom:1px solid var(--line); margin-bottom:18px }
 .seal{
-  position:relative; flex:none; width:36px; height:36px; border-radius:10px; overflow:hidden;
-  background:linear-gradient(165deg, #1a1607, #0E1015 65%);
-  border:1.5px solid rgba(245,185,66,.45);
+  position:relative; flex:none; width:34px; height:34px; border-radius:50%; overflow:hidden;
   display:grid; place-items:center;
-  box-shadow: 0 0 0 1px rgba(245,185,66,.08), 0 6px 16px -4px rgba(245,185,66,.28), inset 0 1px 0 rgba(255,255,255,.06);
 }
+.seal img{ width:100%; height:100%; object-fit:cover; display:block }
 .seal svg{ display:block }
 .sidebar .dash-nav{ display:flex; flex-direction:column; gap:2px; border-bottom:none; margin-bottom:0; overflow:visible }
 .sidebar .dash-nav-btn{
@@ -548,7 +546,7 @@ main{padding:30px 0 60px !important;}
 /* Overview metric strip */
 #panel-overview > .metrics-row:first-child{
   display:grid !important;
-  grid-template-columns:1.65fr 1fr 1fr .9fr !important;
+  grid-template-columns:1.55fr 1fr 1fr 1fr 1fr !important;
   gap:12px !important;
   margin-bottom:14px !important;
 }
@@ -1024,7 +1022,22 @@ main{padding:30px 0 60px !important;}
   .action-plan-progress{width:100%;min-width:0}
 }
 
-/* ===== Ported from index.html Report Card: flow / pro-blur / stress-tool shared styles (Phase 2) ===== */
+/* ===== Visual refresh to match reference design (darker command center) ===== */
+.command-card{ background:#00342E !important; border-color:#00342E !important }
+.command-actions .btn.gold{
+  background:#12A47C !important; color:#fff !important; border-color:#12A47C !important;
+}
+.command-actions .btn:not(.gold){ background:transparent !important; color:#fff !important; border-color:rgba(255,255,255,.35) !important }
+.command-actions .btn:not(.gold):hover{ background:rgba(255,255,255,.08) !important }
+
+/* PRO badge - muted gold pill matching the reference (softer than the
+   bright gold gradient used for the sidebar upsell button) */
+.pro-chip{
+  background:#EDE3CE !important; color:#8A6D2F !important;
+  background-image:none !important; font-weight:700 !important;
+}
+
+
 .flow-panel{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:6px 24px 22px; margin:16px 0 }
 
 .flow-summary-cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px }
@@ -1559,6 +1572,10 @@ body{
   background:#e1e9f7 !important;
   border-color:#c7d7ee !important;
 }
+#panel-overview > .metrics-row:first-child .metric-card:nth-child(5){
+  background:#fdecec !important;
+  border-color:#f7d5d5 !important;
+}
 
 /* Dashboard header */
 .content-header{
@@ -1837,7 +1854,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 <div class="app-shell">
   <aside class="sidebar" id="appSidebar">
     <a class="brandmark sidebar-brand" href="index.html">
-      <span class="seal"><svg width="19" height="19" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="22" cy="22" r="16" stroke="#fff" stroke-width="5"/><rect x="22" y="19" width="12" height="6" fill="#fff"/><path d="M22 6 A16 16 0 0 1 34 17 L28.3 20.2 A10 10 0 0 0 22 13 Z" fill="#F5B942"/></svg></span>
+      <span class="seal"><img src="logo.png" width="26" height="26" alt="" style="display:block;border-radius:50%"></span>
       <span class="wordmark">Grade My Finance</span>
       <span class="pro-chip" id="headerProChip" style="display:none">PRO</span>
     </a>
