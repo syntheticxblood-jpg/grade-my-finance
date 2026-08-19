@@ -3089,22 +3089,52 @@ body{
 }
 </style>
 
+<style id="gmf-bigger-content">
+/* Requested: fill the space better, less empty room in the two chart
+   cards and the at-a-glance strip. Chart SVGs use preserveAspectRatio
+   with a fixed viewBox, so growing the wrap height scales the whole
+   drawing up proportionally rather than just leaving more blank space
+   around a same-size graphic. */
+#panel-overview .ship-modern-chart-card{ min-height:500px !important; padding:26px !important; }
+#panel-overview .ship-modern-chart-wrap{ height:380px !important; margin-top:14px !important; }
+#panel-overview .ship-modern-chart-card .ship-card-head h3{ font-size:20px !important; }
+#panel-overview .ship-modern-chart-card .ship-card-head p{ font-size:12.5px !important; }
+#panel-overview .ship-chart-kicker{ font-size:10px !important; }
+#panel-overview .ship-modern-legend{ font-size:12.5px !important; margin-top:14px !important; }
+
+#panel-overview .ship-glance-card{ padding:20px 24px !important; }
+#panel-overview .ship-glance-item{ padding:14px 18px !important; }
+#panel-overview .ship-glance-icon{ width:38px !important; height:38px !important; font-size:15px !important; }
+#panel-overview .ship-glance-item>div span{ font-size:10px !important; }
+#panel-overview .ship-glance-item>div b{ font-size:20px !important; margin-top:4px !important; }
+#panel-overview .ship-glance-item em{ font-size:11px !important; }
+
+#panel-overview .ship-grade-letter{ font-size:104px !important; }
+#panel-overview .ship-grade-score{ font-size:30px !important; }
+#panel-overview .ship-grade-main{ padding:30px 32px 28px !important; }
+#panel-overview .ship-message-title{ font-size:19px !important; }
+@media(max-width:1100px){
+  #panel-overview .ship-modern-chart-wrap{ height:300px !important; }
+  #panel-overview .ship-grade-letter{ font-size:84px !important; }
+}
+</style>
+
 
 <style id="gmf-blue-tinted-background">
 /* Slightly deeper cool blue background so every white card has visible separation. */
 :root[data-theme="light"] {
-  --bg: #e7f0f3 !important;
-  --bg-2: #dce9ed !important;
+  --bg: #d8e6ea !important;
+  --bg-2: #c9dde3 !important;
   --surface: #ffffff !important;
-  --surface-2: #f7fbfc !important;
-  --line: #cbdde1 !important;
+  --surface-2: #f2f8fa !important;
+  --line: #b9d3d9 !important;
 }
 :root[data-theme="light"] body {
-  background: #dfeaec !important;
+  background: #cfe1e6 !important;
   background-image:
-    radial-gradient(900px 520px at 18% 8%, rgba(61, 170, 151, .12), transparent 65%),
-    radial-gradient(850px 560px at 88% 18%, rgba(82, 139, 220, .12), transparent 68%),
-    linear-gradient(135deg, #e2eef0 0%, #dce8eb 48%, #e1ebef 100%) !important;
+    radial-gradient(900px 520px at 18% 8%, rgba(61, 170, 151, .16), transparent 65%),
+    radial-gradient(850px 560px at 88% 18%, rgba(82, 139, 220, .16), transparent 68%),
+    linear-gradient(135deg, #d3e4e7 0%, #c9dbdf 48%, #d1e0e5 100%) !important;
 }
 :root[data-theme="light"] .main-area {
   background: transparent !important;
