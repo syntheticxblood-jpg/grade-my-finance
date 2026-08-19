@@ -9152,6 +9152,682 @@ add('panel-achievements','rays','Every improvement counts','Celebrate milestones
   window.addEventListener('storage',function(e){if(e.key==='gmf_history_v2')render()});
 })();
 </script>
+
+<style id="gmf-modern-analytics-pass">
+/* =========================================================
+   GRADE MY FINANCE — MODERN ANALYTICS PASS
+   Rebuilds Money + Insights without changing the data model.
+   ========================================================= */
+:root{
+  --modern-green:#16a37d;
+  --modern-green-2:#39c9a2;
+  --modern-blue:#4f7cff;
+  --modern-purple:#8b5cf6;
+  --modern-orange:#f3a83b;
+  --modern-red:#ef5b61;
+  --modern-cyan:#22b8cf;
+  --modern-radius:20px;
+  --modern-shadow:0 14px 40px rgba(22,52,48,.08);
+}
+:root[data-theme="light"]{
+  --modern-canvas:#f6f8f7;
+  --modern-panel:#ffffff;
+  --modern-panel-2:#f7faf9;
+  --modern-border:#dce8e3;
+  --modern-text:#17352f;
+  --modern-muted:#6c817a;
+  --modern-grid:#e7efeb;
+}
+:root[data-theme="dark"]{
+  --modern-canvas:#0b1115;
+  --modern-panel:#111b20;
+  --modern-panel-2:#152228;
+  --modern-border:#263a41;
+  --modern-text:#edf7f3;
+  --modern-muted:#91a49e;
+  --modern-grid:#23343a;
+}
+
+/* Clean shell in both themes */
+body{background:var(--modern-canvas)!important;color:var(--modern-text)!important}
+.main-area{background:transparent!important}
+.main-area::before{
+  background:
+    radial-gradient(700px 420px at 16% 0%,rgba(22,163,125,.11),transparent 65%),
+    radial-gradient(600px 430px at 88% 12%,rgba(79,124,255,.09),transparent 65%),
+    radial-gradient(520px 460px at 78% 88%,rgba(139,92,246,.07),transparent 70%)!important;
+}
+.sidebar{
+  background:var(--modern-panel)!important;
+  border-right:1px solid var(--modern-border)!important;
+  box-shadow:10px 0 40px rgba(0,0,0,.06)!important;
+}
+:root[data-theme="light"] .sidebar{background:#fff!important;color:var(--modern-text)!important}
+:root[data-theme="dark"] .sidebar{background:#0e171c!important;color:var(--modern-text)!important}
+.sidebar .dash-nav-btn{color:var(--modern-muted)!important}
+.sidebar .dash-nav-btn:hover{background:var(--modern-panel-2)!important;color:var(--modern-text)!important}
+.sidebar .dash-nav-btn.active{
+  background:linear-gradient(135deg,rgba(22,163,125,.16),rgba(79,124,255,.08))!important;
+  color:var(--modern-green)!important;
+  box-shadow:inset 3px 0 0 var(--modern-green)!important;
+}
+:root[data-theme="dark"] .sidebar .dash-nav-btn.active{color:#5ee4bd!important}
+.sidebar-pro-card{
+  background:linear-gradient(135deg,rgba(243,168,59,.14),rgba(139,92,246,.08))!important;
+  border-color:rgba(243,168,59,.28)!important;
+}
+.sidebar-profile{border-color:var(--modern-border)!important}
+
+/* ---------- Money page ---------- */
+#panel-networth{
+  --ui-line:var(--modern-border);
+}
+#panel-networth > .section-label,
+#panel-insights > .section-label{
+  color:var(--modern-green)!important;
+}
+#panel-networth > .section-sub,
+#panel-insights > .section-sub{color:var(--modern-muted)!important;max-width:760px}
+
+/* Modern sub-navigation */
+#moneySubtabs,#insightSubtabs{
+  display:flex!important;
+  gap:7px!important;
+  padding:6px!important;
+  margin:0 0 18px!important;
+  border:1px solid var(--modern-border)!important;
+  border-radius:15px!important;
+  background:var(--modern-panel-2)!important;
+  box-shadow:none!important;
+  overflow-x:auto!important;
+}
+#moneySubtabs .money-subtab-btn,#insightSubtabs .insight-subtab-btn{
+  border:0!important;
+  border-radius:10px!important;
+  padding:10px 15px!important;
+  color:var(--modern-muted)!important;
+  background:transparent!important;
+  font-size:12.5px!important;
+  font-weight:800!important;
+  letter-spacing:.01em!important;
+}
+#moneySubtabs .money-subtab-btn:hover,#insightSubtabs .insight-subtab-btn:hover{
+  background:rgba(22,163,125,.08)!important;
+  color:var(--modern-text)!important;
+}
+#moneySubtabs .money-subtab-btn.active,#insightSubtabs .insight-subtab-btn.active{
+  background:var(--modern-panel)!important;
+  color:var(--modern-green)!important;
+  box-shadow:0 3px 12px rgba(18,52,45,.08)!important;
+  border:1px solid var(--modern-border)!important;
+}
+
+/* Wealth snapshot injected by the modern JS */
+.gmf-wealth-snapshot{
+  display:grid;
+  grid-template-columns:minmax(240px,1.35fr) repeat(3,minmax(140px,.75fr));
+  gap:12px;
+  margin:0 0 14px;
+}
+.gmf-wealth-hero,.gmf-wealth-stat{
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--modern-border);
+  border-radius:var(--modern-radius);
+  background:var(--modern-panel);
+  box-shadow:var(--modern-shadow);
+}
+.gmf-wealth-hero{
+  padding:22px;
+  background:
+    radial-gradient(240px 180px at 100% 0%,rgba(22,163,125,.16),transparent 65%),
+    linear-gradient(135deg,var(--modern-panel),var(--modern-panel-2));
+}
+.gmf-wealth-eyebrow{font:800 10px var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--modern-green)}
+.gmf-wealth-number{font:800 clamp(30px,4vw,42px) var(--font-display);letter-spacing:-.05em;margin-top:5px;color:var(--modern-text)}
+.gmf-wealth-change{font:700 12px var(--font-mono);margin-top:6px}
+.gmf-wealth-note{font-size:11.5px;color:var(--modern-muted);margin-top:7px}
+.gmf-wealth-stat{padding:18px}
+.gmf-wealth-stat .ws-icon{
+  width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  font-size:15px;margin-bottom:14px;
+}
+.gmf-wealth-stat .ws-label{font-size:11px;color:var(--modern-muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.gmf-wealth-stat .ws-value{font:800 21px var(--font-mono);margin-top:6px;color:var(--modern-text)}
+.gmf-wealth-stat .ws-sub{font-size:10.5px;color:var(--modern-muted);margin-top:5px}
+.gmf-wealth-stat.cash .ws-icon{background:rgba(22,163,125,.13);color:var(--modern-green)}
+.gmf-wealth-stat.invest .ws-icon{background:rgba(79,124,255,.13);color:var(--modern-blue)}
+.gmf-wealth-stat.debt .ws-icon{background:rgba(239,91,97,.12);color:var(--modern-red)}
+.gmf-wealth-stat.rate .ws-icon{background:rgba(139,92,246,.13);color:var(--modern-purple)}
+
+/* Original net worth area */
+#panel-networth .hero-card,
+#panel-networth .card{
+  background:var(--modern-panel)!important;
+  border-color:var(--modern-border)!important;
+  box-shadow:var(--modern-shadow)!important;
+  border-radius:var(--modern-radius)!important;
+}
+#panel-networth .hero-card:first-of-type{
+  background:
+    radial-gradient(500px 220px at 100% 0%,rgba(79,124,255,.11),transparent 65%),
+    radial-gradient(420px 260px at 0% 100%,rgba(22,163,125,.08),transparent 65%),
+    var(--modern-panel)!important;
+}
+#panel-networth .hv{font-size:34px!important;color:var(--modern-text)!important}
+#panel-networth .hv-sub{color:var(--modern-muted)!important}
+#panel-networth .chart-time-filters{
+  background:var(--modern-panel-2)!important;border-color:var(--modern-border)!important;border-radius:10px!important;
+}
+#panel-networth .chart-time-filters button{color:var(--modern-muted)!important}
+#panel-networth .chart-time-filters button.active{
+  color:var(--modern-green)!important;background:var(--modern-panel)!important;
+}
+#panel-networth .nw-breakdown{
+  gap:12px!important;background:transparent!important;border:0!important;overflow:visible!important;
+}
+#panel-networth .nw-cell{
+  border:1px solid var(--modern-border)!important;
+  border-radius:15px!important;
+  background:var(--modern-panel-2)!important;
+  box-shadow:none!important;
+}
+#panel-networth .nw-cell .n-label{color:var(--modern-muted)!important}
+#panel-networth .nw-cell .n-val{color:var(--modern-text)!important}
+#panel-networth .nw-cell .n-delta.up{color:var(--modern-green)!important}
+#panel-networth .nw-cell .n-delta.down{color:var(--modern-red)!important}
+#nwUpdateCard{
+  background:linear-gradient(135deg,rgba(22,163,125,.06),rgba(79,124,255,.04))!important;
+}
+#nwUpdateCard .btn.gold{background:linear-gradient(135deg,var(--modern-green),var(--modern-green-2))!important}
+
+/* Allocation / insight bars */
+.gmf-allocation-panel{
+  margin-top:14px;
+  padding:20px;
+  border:1px solid var(--modern-border);
+  border-radius:var(--modern-radius);
+  background:var(--modern-panel);
+  box-shadow:var(--modern-shadow);
+}
+.gmf-allocation-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:16px}
+.gmf-allocation-head h3{font-size:18px}
+.gmf-allocation-head p{margin:3px 0 0;color:var(--modern-muted);font-size:11.5px}
+.gmf-alloc-row{display:grid;grid-template-columns:100px 1fr 90px;gap:12px;align-items:center;margin:10px 0}
+.gmf-alloc-label{font-size:11.5px;font-weight:700;color:var(--modern-text)}
+.gmf-alloc-track{height:9px;border-radius:99px;background:var(--modern-panel-2);overflow:hidden;border:1px solid var(--modern-border)}
+.gmf-alloc-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--modern-green),var(--modern-blue))}
+.gmf-alloc-value{text-align:right;font:700 11px var(--font-mono);color:var(--modern-muted)}
+
+/* ---------- Insights: product-grade redesign ---------- */
+#panel-insights .insights-pro-banner{
+  border:1px solid rgba(139,92,246,.24)!important;
+  border-radius:22px!important;
+  padding:22px!important;
+  background:
+    radial-gradient(420px 220px at 100% 0%,rgba(139,92,246,.20),transparent 68%),
+    radial-gradient(380px 240px at 0% 100%,rgba(22,163,125,.14),transparent 68%),
+    var(--modern-panel)!important;
+  box-shadow:var(--modern-shadow)!important;
+}
+#panel-insights .insights-pro-title{color:var(--modern-text)!important;font-size:26px!important;letter-spacing:-.04em!important}
+#panel-insights .insights-pro-sub{color:var(--modern-muted)!important}
+#panel-insights .insights-pro-points span{
+  background:var(--modern-panel-2)!important;border-color:var(--modern-border)!important;color:var(--modern-text)!important;
+}
+#panel-insights .insights-free-preview{gap:12px!important;margin:14px 0 18px!important}
+#panel-insights .insights-free-card{
+  border:1px solid var(--modern-border)!important;
+  background:var(--modern-panel)!important;
+  border-radius:16px!important;
+  box-shadow:0 8px 24px rgba(18,52,45,.05)!important;
+}
+#panel-insights .insights-free-card:nth-child(1){border-top:3px solid var(--modern-green)!important}
+#panel-insights .insights-free-card:nth-child(2){border-top:3px solid var(--modern-orange)!important}
+#panel-insights .insights-free-card:nth-child(3){border-top:3px solid var(--modern-purple)!important}
+#panel-insights .if-label{color:var(--modern-muted)!important}
+#panel-insights .if-value{color:var(--modern-text)!important}
+
+/* Subview shells */
+#panel-insights .insight-subview.active{
+  animation:modernIn .24s ease;
+}
+@keyframes modernIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+#panel-insights .insight-subview > .card,
+#panel-insights .insight-subview .metric-card,
+#panel-insights .insight-subview .pro-blur-section{
+  border-color:var(--modern-border)!important;
+  border-radius:var(--modern-radius)!important;
+}
+#panel-insights .insight-subview .metric-card{
+  background:var(--modern-panel)!important;
+  box-shadow:var(--modern-shadow)!important;
+}
+#panel-insights .insight-subview .metric-card .m-label{color:var(--modern-muted)!important}
+#panel-insights .insight-subview .metric-card .m-val{color:var(--modern-text)!important}
+
+/* Benchmark cards */
+.gmf-benchmark-board{
+  display:grid;
+  grid-template-columns:minmax(220px,.8fr) 1.2fr;
+  gap:14px;
+  margin-bottom:14px;
+}
+.gmf-benchmark-score{
+  position:relative;overflow:hidden;padding:22px;border-radius:20px;
+  background:linear-gradient(145deg,#163f35,#126d58);
+  color:#fff;border:1px solid rgba(57,201,162,.35);
+  box-shadow:0 18px 40px rgba(16,110,88,.18);
+}
+.gmf-benchmark-score:after{
+  content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-70px;top:-80px;
+  background:radial-gradient(circle,rgba(57,201,162,.35),transparent 68%);
+}
+.gmf-benchmark-kicker{font:800 10px var(--font-mono);letter-spacing:.12em;opacity:.75}
+.gmf-benchmark-number{font:800 44px var(--font-display);letter-spacing:-.06em;margin-top:10px}
+.gmf-benchmark-title{font-weight:800;font-size:14px;margin-top:2px}
+.gmf-benchmark-copy{font-size:11.5px;line-height:1.5;opacity:.78;margin-top:7px;max-width:310px}
+.gmf-benchmark-list{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+.gmf-bench-mini{
+  padding:15px;border:1px solid var(--modern-border);border-radius:15px;background:var(--modern-panel);
+}
+.gmf-bench-mini .bm-label{font-size:10px;color:var(--modern-muted);text-transform:uppercase;letter-spacing:.06em;font-weight:800}
+.gmf-bench-mini .bm-value{font:800 18px var(--font-mono);margin-top:5px;color:var(--modern-text)}
+.gmf-bench-mini .bm-bar{height:7px;border-radius:99px;background:var(--modern-panel-2);overflow:hidden;margin-top:10px}
+.gmf-bench-mini .bm-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--modern-blue),var(--modern-green))}
+.gmf-bench-mini .bm-copy{font-size:10.5px;color:var(--modern-muted);margin-top:5px}
+
+/* Perspective: visible decision lab */
+.gmf-decision-lab{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;
+}
+.gmf-lab-card{
+  padding:20px;border:1px solid var(--modern-border);border-radius:20px;background:var(--modern-panel);box-shadow:var(--modern-shadow);
+}
+.gmf-lab-card.featured{
+  background:
+    radial-gradient(280px 180px at 100% 0%,rgba(79,124,255,.13),transparent 68%),
+    var(--modern-panel);
+}
+.gmf-lab-kicker{font:800 10px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--modern-blue)}
+.gmf-lab-card h3{font-size:19px;margin-top:5px}
+.gmf-lab-card p{font-size:11.5px;color:var(--modern-muted);line-height:1.5;margin:5px 0 15px}
+.gmf-purchase-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gmf-purchase-grid label{font-size:10.5px;color:var(--modern-muted);font-weight:700}
+.gmf-purchase-grid input,.gmf-lab-card select{
+  width:100%;margin-top:5px;padding:10px 11px;border-radius:10px;border:1px solid var(--modern-border);
+  background:var(--modern-panel-2);color:var(--modern-text);font:700 12px var(--font-mono);
+}
+.gmf-purchase-result{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;
+}
+.gmf-purchase-result div{padding:12px;border-radius:12px;background:var(--modern-panel-2);border:1px solid var(--modern-border)}
+.gmf-purchase-result span{display:block;font-size:9.5px;color:var(--modern-muted);text-transform:uppercase;font-weight:800}
+.gmf-purchase-result b{display:block;font:800 16px var(--font-mono);margin-top:4px;color:var(--modern-text)}
+.gmf-raise-card{
+  margin-bottom:14px;padding:18px 20px;border:1px solid rgba(22,163,125,.24);border-radius:20px;
+  background:linear-gradient(135deg,rgba(22,163,125,.08),rgba(79,124,255,.06),var(--modern-panel));
+}
+.gmf-raise-head{display:flex;justify-content:space-between;gap:15px;align-items:center}
+.gmf-raise-head h3{font-size:18px}
+.gmf-raise-head span{font:800 18px var(--font-mono);color:var(--modern-green)}
+.gmf-raise-track{width:100%;accent-color:var(--modern-green);margin-top:12px}
+.gmf-raise-result{font-size:12px;color:var(--modern-muted);margin-top:7px}
+.gmf-raise-result b{color:var(--modern-text)}
+
+/* Stress test: make it feel like a simulator, not a document */
+#panel-insights .stress-hero-v2{
+  padding:22px!important;
+  border-radius:20px!important;
+  background:
+    radial-gradient(330px 220px at 100% 0%,rgba(239,91,97,.14),transparent 65%),
+    radial-gradient(330px 240px at 0% 100%,rgba(22,163,125,.13),transparent 65%),
+    linear-gradient(135deg,#142a2b,#172a37)!important;
+  border:1px solid rgba(80,180,160,.24)!important;
+}
+#panel-insights .stress-hero-v2 .section-label{color:#70e0c0!important}
+#panel-insights .stress-hero-sub{color:#b6cbc5!important;font-size:13px!important}
+#panel-insights .stress-score-block{margin-top:16px!important}
+#panel-insights .stress-chart-hero{
+  padding:14px!important;
+  margin-top:10px!important;
+  border:1px solid var(--modern-border)!important;
+  border-radius:18px!important;
+  background:var(--modern-panel)!important;
+}
+#panel-insights .stress-outcomes-row{
+  display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:10px!important;margin:12px 0!important;
+}
+#panel-insights .stress-outcome-card{
+  padding:15px!important;border:1px solid var(--modern-border)!important;border-radius:14px!important;
+  background:var(--modern-panel)!important;box-shadow:none!important;
+}
+#panel-insights .stress-outcome-card:nth-child(1){border-top:3px solid var(--modern-red)!important}
+#panel-insights .stress-outcome-card:nth-child(2){border-top:3px solid var(--modern-orange)!important}
+#panel-insights .stress-outcome-card:nth-child(3){border-top:3px solid var(--modern-green)!important}
+#panel-insights .stress-outcome-num{font:800 19px var(--font-mono)!important;color:var(--modern-text)!important}
+#panel-insights .stress-outcome-label{font-size:10px!important;color:var(--modern-muted)!important}
+#panel-insights .stress-preset-row{
+  display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:8px!important;margin-top:10px!important;
+}
+#panel-insights .stress-preset-btn{
+  min-height:62px!important;padding:10px!important;border:1px solid var(--modern-border)!important;border-radius:12px!important;
+  background:var(--modern-panel-2)!important;color:var(--modern-text)!important;
+}
+#panel-insights .stress-preset-btn:hover{
+  border-color:rgba(22,163,125,.5)!important;transform:translateY(-1px);
+}
+#panel-insights .stress-preset-btn.active{
+  border-color:var(--modern-green)!important;
+  background:rgba(22,163,125,.10)!important;
+  box-shadow:0 0 0 2px rgba(22,163,125,.08)!important;
+}
+#panel-insights .stress-adjust-details,#panel-insights .stress-full-analysis{
+  border:1px solid var(--modern-border)!important;border-radius:14px!important;background:var(--modern-panel-2)!important;
+}
+#panel-insights .stress-adjust-details summary,#panel-insights .stress-full-analysis summary{padding:13px 15px!important;color:var(--modern-text)!important}
+#panel-insights .stress-adjust-body,#panel-insights .stress-full-analysis-body{border-top:1px solid var(--modern-border)!important}
+#panel-insights .stress-section{border-bottom-color:var(--modern-border)!important}
+#panel-insights .stress-callout{border-radius:12px!important;background:var(--modern-panel-2)!important;border-color:var(--modern-border)!important}
+
+/* Pro blur should look like intentional preview */
+#panel-insights .pro-blur-section{
+  background:var(--modern-panel)!important;
+  border-color:var(--modern-border)!important;
+}
+#panel-insights .pro-blur-content{filter:blur(2.2px)!important;opacity:.58!important}
+#panel-insights .pro-blur-overlay{
+  background:linear-gradient(180deg,rgba(255,255,255,.05),var(--modern-panel) 78%)!important;
+}
+:root[data-theme="dark"] #panel-insights .pro-blur-overlay{
+  background:linear-gradient(180deg,rgba(17,27,32,.05),rgba(17,27,32,.96) 78%)!important;
+}
+
+/* Mobile */
+@media(max-width:900px){
+  .gmf-wealth-snapshot{grid-template-columns:1fr 1fr}
+  .gmf-wealth-hero{grid-column:1/-1}
+  .gmf-benchmark-board,.gmf-decision-lab{grid-template-columns:1fr}
+  #panel-insights .stress-preset-row{grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:600px){
+  .gmf-wealth-snapshot{grid-template-columns:1fr}
+  .gmf-wealth-hero{grid-column:auto}
+  .gmf-benchmark-list{grid-template-columns:1fr}
+  .gmf-purchase-grid,.gmf-purchase-result{grid-template-columns:1fr}
+  .gmf-alloc-row{grid-template-columns:82px 1fr 70px}
+  #panel-insights .stress-outcomes-row{grid-template-columns:1fr!important}
+  #panel-insights .stress-preset-row{grid-template-columns:1fr 1fr!important}
+}
+</style>
+
+<script id="gmf-modern-analytics-js">
+(function(){
+  'use strict';
+
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function id(s){return document.getElementById(s)}
+  function safeMoney(n){
+    if(typeof n!=='number' || !isFinite(n)) return '—';
+    return new Intl.NumberFormat(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Math.round(n));
+  }
+  function num(v){return typeof v==='number' && isFinite(v) ? v : 0}
+  function hist(){
+    try{return JSON.parse(localStorage.getItem('gmf_history_v2')||'[]')}catch(e){return[]}
+  }
+  function latest(){
+    var h=hist();
+    return {h:h,l:h.length?h[h.length-1]:null,p:h.length>1?h[h.length-2]:null};
+  }
+  function normalizeEntry(h){
+    if(!h) return null;
+    var d=Object.assign({},h);
+    var assetKeys=['home','retire','brokerage','cash','crypto','hsa','car'];
+    var debtKeys=['mortgage','student','auto','cc','otherDebt'];
+    var assets=assetKeys.reduce(function(s,k){return s+Math.max(0,num(d[k]))},0);
+    var debts=debtKeys.reduce(function(s,k){return s+Math.max(0,num(d[k]))},0);
+    if(typeof d.assets!=='number') d.assets=assets;
+    if(typeof d.liabs!=='number') d.liabs=debts;
+    if(typeof d.totalDebt!=='number') d.totalDebt=debts;
+    if(typeof d.net!=='number' || !isFinite(d.net)) d.net=d.assets-d.liabs;
+    if(typeof d.monthlyExpenses!=='number' && typeof d.expenses==='number') d.monthlyExpenses=d.expenses;
+    if(typeof d.annualIncome!=='number' && typeof d.income==='number') d.annualIncome=d.income*12;
+    if(typeof d.savingsRate!=='number' && typeof d.annualIncome==='number' && d.annualIncome>0 && typeof d.monthlyExpenses==='number'){
+      d.savingsRate=Math.max(0,Math.min(100,((d.annualIncome-d.monthlyExpenses*12)/d.annualIncome)*100));
+    }
+    return d;
+  }
+
+  function allNormalized(){
+    return hist().map(normalizeEntry).filter(function(x){return x && typeof x.ts==='number'});
+  }
+
+  /* ---------- Net worth repair ---------- */
+  function renderModernNetWorth(){
+    var panel=id('panel-networth');
+    if(!panel) return;
+    var rows=allNormalized();
+    var current=rows.length?rows[rows.length-1]:null;
+    var prev=rows.length>1?rows[rows.length-2]:null;
+
+    /* The original renderer only accepted h.net. Older snapshots can have
+       the component fields without a saved net value. Normalize those first. */
+    if(typeof window.renderNetWorthTab==='function'){
+      try{ window.renderNetWorthTab(rows); }catch(e){}
+    }
+
+    var old=panel.querySelector('.gmf-wealth-snapshot');
+    if(old) old.remove();
+
+    var before=panel.querySelector('#nwUpdateCard');
+    if(!before) return;
+
+    var snap=document.createElement('div');
+    snap.className='gmf-wealth-snapshot';
+
+    if(!current){
+      snap.innerHTML=
+        '<div class="gmf-wealth-hero"><div class="gmf-wealth-eyebrow">WEALTH SNAPSHOT</div><div class="gmf-wealth-number">Add your first check-in</div><div class="gmf-wealth-note">Once your numbers are saved, this area will show net worth, cash runway, investments and debt at a glance.</div></div>'+
+        '<div class="gmf-wealth-stat cash"><div class="ws-icon">◷</div><div class="ws-label">Cash</div><div class="ws-value">—</div><div class="ws-sub">Waiting for data</div></div>'+
+        '<div class="gmf-wealth-stat invest"><div class="ws-icon">↗</div><div class="ws-label">Invested</div><div class="ws-value">—</div><div class="ws-sub">Retirement + brokerage</div></div>'+
+        '<div class="gmf-wealth-stat debt"><div class="ws-icon">−</div><div class="ws-label">Debt</div><div class="ws-value">—</div><div class="ws-sub">All liabilities</div></div>';
+      panel.insertBefore(snap,before);
+      return;
+    }
+
+    var change=prev ? current.net-prev.net : null;
+    var runway=current.monthlyExpenses>0 ? current.cash/current.monthlyExpenses : null;
+    var invested=current.retire+current.brokerage+current.hsa+current.crypto;
+    var rate=typeof current.savingsRate==='number'?current.savingsRate:null;
+    var changeHtml=change===null?'First tracked snapshot':(change>=0?'↑ ':'↓ ')+safeMoney(Math.abs(change))+' since last check-in';
+    var changeColor=change===null?'var(--modern-muted)':change>=0?'var(--modern-green)':'var(--modern-red)';
+
+    snap.innerHTML=
+      '<div class="gmf-wealth-hero">'+
+        '<div class="gmf-wealth-eyebrow">CURRENT NET WORTH</div>'+
+        '<div class="gmf-wealth-number">'+safeMoney(current.net)+'</div>'+
+        '<div class="gmf-wealth-change" style="color:'+changeColor+'">'+changeHtml+'</div>'+
+        '<div class="gmf-wealth-note">'+(current.assets>0?safeMoney(current.assets)+' in assets · '+safeMoney(current.totalDebt)+' in debt':'Add asset values to complete your balance sheet')+'</div>'+
+      '</div>'+
+      '<div class="gmf-wealth-stat cash"><div class="ws-icon">◷</div><div class="ws-label">Cash runway</div><div class="ws-value">'+(runway===null?'—':runway.toFixed(1)+' mo')+'</div><div class="ws-sub">'+safeMoney(current.cash)+' cash on hand</div></div>'+
+      '<div class="gmf-wealth-stat invest"><div class="ws-icon">↗</div><div class="ws-label">Invested</div><div class="ws-value">'+safeMoney(invested)+'</div><div class="ws-sub">Retirement + brokerage + HSA</div></div>'+
+      '<div class="gmf-wealth-stat debt"><div class="ws-icon">−</div><div class="ws-label">Total debt</div><div class="ws-value">'+safeMoney(current.totalDebt)+'</div><div class="ws-sub">'+(rate===null?'Savings rate unavailable':rate.toFixed(0)+'% savings rate')+'</div></div>';
+
+    panel.insertBefore(snap,before);
+
+    /* Add a lightweight asset allocation view once, based entirely on the
+       values already entered in the check-in. */
+    var alloc=panel.querySelector('.gmf-allocation-panel');
+    if(alloc) alloc.remove();
+    var categories=[
+      ['Home',current.home,'var(--modern-purple)'],
+      ['Retirement',current.retire,'var(--modern-blue)'],
+      ['Brokerage',current.brokerage,'var(--modern-green)'],
+      ['Cash',current.cash,'var(--modern-cyan)'],
+      ['HSA / other',current.hsa+current.crypto+current.car,'var(--modern-orange)']
+    ].filter(function(x){return x[1]>0});
+    if(categories.length){
+      var total=categories.reduce(function(s,x){return s+x[1]},0);
+      alloc=document.createElement('div');
+      alloc.className='gmf-allocation-panel';
+      var rowsHtml=categories.map(function(x){
+        var pct=total?x[1]/total*100:0;
+        return '<div class="gmf-alloc-row"><div class="gmf-alloc-label">'+x[0]+'</div><div class="gmf-alloc-track"><div class="gmf-alloc-fill" style="width:'+pct.toFixed(1)+'%;background:'+x[2]+'"></div></div><div class="gmf-alloc-value">'+safeMoney(x[1])+' · '+pct.toFixed(0)+'%</div></div>';
+      }).join('');
+      alloc.innerHTML='<div class="gmf-allocation-head"><div><h3>Where your assets sit</h3><p>A clearer balance-sheet view of your latest check-in.</p></div><strong class="mono">'+safeMoney(total)+'</strong></div>'+rowsHtml;
+      var comp=panel.querySelector('.nw-breakdown');
+      if(comp) comp.parentNode.insertBefore(alloc,comp);
+      else panel.appendChild(alloc);
+    }
+  }
+
+  /* ---------- Benchmark summary ---------- */
+  function renderBenchmarkBoard(){
+    var view=q('[data-insightpanel="benchmarks"]');
+    if(!view) return;
+    var old=view.querySelector('.gmf-benchmark-board');
+    if(old) old.remove();
+    var d=latest().l;
+    if(!d) return;
+    d=normalizeEntry(d);
+
+    var income=d.annualIncome||0;
+    var nw=d.net;
+    var debt=d.totalDebt;
+    var expenses=d.monthlyExpenses||0;
+    var cash=d.cash||0;
+    var savings=typeof d.savingsRate==='number'?d.savingsRate:(income>0?Math.max(0,Math.min(100,((income-expenses*12)/income)*100)):0);
+    var runway=expenses>0?cash/expenses:0;
+    var debtRatio=income>0?debt/income*100:0;
+    var nwMultiple=income>0?nw/income:0;
+
+    /* Benchmarks are intentionally framed as simple planning reference
+       points, not official percentile data. */
+    var metrics=[
+      {label:'Savings rate',value:savings,score:Math.min(100,savings/20*100),copy:'20% is a strong planning reference.'},
+      {label:'Cash runway',value:runway,score:Math.min(100,runway/6*100),copy:'6 months is a conservative reference.'},
+      {label:'Debt / income',value:debtRatio,score:Math.max(0,100-Math.min(100,debtRatio/50*100)),copy:'Lower is generally more resilient.'},
+      {label:'Net worth / income',value:nwMultiple,score:Math.min(100,Math.max(0,nwMultiple/3*100)),copy:'3× annual income is a simple long-term reference.'}
+    ];
+    var strongest=metrics.slice().sort(function(a,b){return b.score-a.score})[0];
+    var avg=metrics.reduce(function(s,x){return s+x.score},0)/metrics.length;
+
+    var board=document.createElement('div');
+    board.className='gmf-benchmark-board';
+    board.innerHTML=
+      '<div class="gmf-benchmark-score"><div class="gmf-benchmark-kicker">FINANCIAL POSITION</div><div class="gmf-benchmark-number">'+Math.round(avg)+'</div><div class="gmf-benchmark-title">Benchmark readiness</div><div class="gmf-benchmark-copy">A simple planning score built from your current savings, liquidity, debt load and net-worth multiple. It is a reference tool — not a percentile.</div></div>'+
+      '<div class="gmf-benchmark-list">'+metrics.map(function(m){
+        var display=m.label==='Savings rate'?m.value.toFixed(0)+'%':m.label==='Cash runway'?m.value.toFixed(1)+' mo':m.label==='Debt / income'?m.value.toFixed(0)+'%':m.value.toFixed(1)+'×';
+        return '<div class="gmf-bench-mini"><div class="bm-label">'+m.label+'</div><div class="bm-value">'+display+'</div><div class="bm-bar"><div class="bm-fill" style="width:'+Math.max(4,Math.min(100,m.score))+'%"></div></div><div class="bm-copy">'+m.copy+'</div></div>';
+      }).join('')+'</div>';
+
+    var anchor=view.querySelector('#insightBenchEmptyNote')||view.firstElementChild;
+    view.insertBefore(board,anchor);
+  }
+
+  /* ---------- Perspective decision lab ---------- */
+  function renderPerspectiveLab(){
+    var view=q('[data-insightpanel="perspective"]');
+    if(!view) return;
+    var old=view.querySelector('.gmf-decision-lab');
+    if(old) old.remove();
+    var oldRaise=view.querySelector('.gmf-raise-card');
+    if(oldRaise) oldRaise.remove();
+
+    var d=latest().l;
+    if(!d) return;
+    d=normalizeEntry(d);
+
+    var income=d.annualIncome||0;
+    var expenses=d.monthlyExpenses||0;
+    var hourly=income>0?income/2080:0;
+    var savingsRate=typeof d.savingsRate==='number'?d.savingsRate:0;
+
+    var lab=document.createElement('div');
+    lab.className='gmf-decision-lab';
+    lab.innerHTML=
+      '<div class="gmf-lab-card featured">'+
+        '<div class="gmf-lab-kicker">DECISION LAB</div><h3>What does a purchase really cost?</h3>'+
+        '<p>Translate a purchase into work hours and the amount you would need to earn before tax to replace it.</p>'+
+        '<div class="gmf-purchase-grid"><label>Purchase amount<input id="gmfPurchaseAmount" type="number" min="0" step="25" value="500"></label><label>Keep / save instead<select id="gmfPurchaseSave"><option value="0">Spend it</option><option value=".25">Save 25%</option><option value=".5" selected>Save 50%</option><option value=".75">Save 75%</option><option value="1">Save 100%</option></select></label></div>'+
+        '<div class="gmf-purchase-result"><div><span>Work required</span><b id="gmfPurchaseHours">—</b></div><div><span>After-tax equivalent</span><b id="gmfPurchaseEarn">—</b></div></div>'+
+      '</div>'+
+      '<div class="gmf-lab-card">'+
+        '<div class="gmf-lab-kicker">MARGIN CHECK</div><h3>Your money has a job</h3>'+
+        '<p>See how much monthly room you have before lifestyle spending consumes the income you are trying to turn into wealth.</p>'+
+        '<div class="gmf-purchase-result"><div><span>Monthly margin</span><b id="gmfMarginVal">'+safeMoney(income/12-expenses)+'</b></div><div><span>Savings rate</span><b>'+savingsRate.toFixed(0)+'%</b></div></div>'+
+        '<div class="gmf-wealth-note" style="margin-top:14px">'+(income/12-expenses>0?'Positive margin gives you room to invest, build cash or attack debt.':'Your current spending is at or above income — this is the first lever to address.')+'</div>'+
+      '</div>';
+
+    view.insertBefore(lab,view.querySelector('#insightPerspEmptyNote')||view.firstElementChild);
+
+    function updatePurchase(){
+      var amount=parseFloat(id('gmfPurchaseAmount')&&id('gmfPurchaseAmount').value)||0;
+      var hours=hourly>0?amount/hourly:0;
+      var gross=amount/Math.max(.5,1-(Math.max(0,Math.min(100,savingsRate))/100));
+      if(id('gmfPurchaseHours')) id('gmfPurchaseHours').textContent=hourly>0?hours.toFixed(1)+' hrs':'—';
+      if(id('gmfPurchaseEarn')) id('gmfPurchaseEarn').textContent=income>0?safeMoney(gross):'—';
+    }
+    if(id('gmfPurchaseAmount')) id('gmfPurchaseAmount').addEventListener('input',updatePurchase);
+    if(id('gmfPurchaseSave')) id('gmfPurchaseSave').addEventListener('change',updatePurchase);
+    updatePurchase();
+
+    var raise=document.createElement('div');
+    raise.className='gmf-raise-card';
+    raise.innerHTML='<div class="gmf-raise-head"><div><h3>Give your next raise a job</h3><div class="gmf-raise-result">If income rises, how much of the increase would you keep instead of letting lifestyle expand?</div></div><span id="gmfRaisePct">50%</span></div><input class="gmf-raise-track" id="gmfRaiseRange" type="range" min="0" max="100" step="5" value="50"><div class="gmf-raise-result" id="gmfRaiseResult"></div>';
+    var insertBefore=view.querySelector('#insightPerspEmptyNote')||view.firstElementChild;
+    view.insertBefore(raise,insertBefore);
+    function updateRaise(){
+      var pct=Number(id('gmfRaiseRange').value);
+      var annualRaise=income*.05;
+      var saved=annualRaise*pct/100;
+      var spent=annualRaise-saved;
+      id('gmfRaisePct').textContent=pct+'%';
+      id('gmfRaiseResult').innerHTML='On a hypothetical 5% raise, that is <b>'+safeMoney(saved)+'</b> kept for wealth and <b>'+safeMoney(spent)+'</b> available for lifestyle.';
+    }
+    id('gmfRaiseRange').addEventListener('input',updateRaise);
+    updateRaise();
+  }
+
+  /* Give stress test presets a stronger visual hierarchy without changing
+     the simulator's existing calculation engine. */
+  function enhanceStress(){
+    var row=id('stressPresetRow');
+    if(!row) return;
+    row.setAttribute('aria-label','Stress test scenarios');
+    qa('.stress-preset-btn',row).forEach(function(btn){
+      btn.addEventListener('click',function(){
+        setTimeout(function(){document.documentElement.classList.add('gmf-stress-active');},30);
+      });
+    });
+  }
+
+  function run(){
+    try{renderModernNetWorth()}catch(e){}
+    try{renderBenchmarkBoard()}catch(e){}
+    try{renderPerspectiveLab()}catch(e){}
+    try{enhanceStress()}catch(e){}
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(run,120);setTimeout(run,700);});
+  }else{
+    setTimeout(run,120);setTimeout(run,700);
+  }
+
+  /* Re-render when the dashboard changes theme or a net-worth update is
+     saved through the existing controls. */
+  document.addEventListener('click',function(e){
+    if(e.target.closest('#nwSaveUpdate,#nwDeleteAll,[data-del-nw-entry]')){
+      setTimeout(run,120);
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
 
