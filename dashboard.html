@@ -3704,15 +3704,52 @@ function renderAssetsFlow(v){
 }
 function renderLiabilitiesFlow(v){
   var svgEl=$("flowLiabsSvg"); if(!svgEl) return;
+
+  function n(x){
+    x=Number(x);
+    return isFinite(x) && x>0 ? x : 0;
+  }
+
+  var mortgage=n(v.mortgage);
+  var student=n(v.student);
+  var auto=n(v.auto);
+  var cc=n(v.cc);
+  var other=n(v.otherDebt);
+
+  var breakdownTotal=mortgage+student+auto+cc+other;
+  var recordedTotal=n(v.totalDebt);
+
+  /*
+   * Some check-ins/report calculations save the combined debt number but do
+   * not save each individual debt category. Do not lose that number.
+   */
+  var total = breakdownTotal>0 ? breakdownTotal : recordedTotal;
+
   var dests = [
-    {label:'Mortgage', amount:v.mortgage, color:'#E15B5B'},
-    {label:'Student loans', amount:v.student, color:'#5B8DEF'},
-    {label:'Auto loan', amount:v.auto, color:'#E8B34A'},
-    {label:'Credit cards', amount:v.cc, color:'#A78BFA'},
-    {label:'Personal / other', amount:v.otherDebt, color:'#45C4D6'}
+    {label:'Mortgage', amount:mortgage, color:'#E15B5B'},
+    {label:'Student loans', amount:student, color:'#5B8DEF'},
+    {label:'Auto loan', amount:auto, color:'#E8B34A'},
+    {label:'Credit cards', amount:cc, color:'#A78BFA'},
+    {label:'Personal / other', amount:other, color:'#45C4D6'}
   ].filter(function(d){ return d.amount>0; });
-  if($("flowLiabsSub")) $("flowLiabsSub").textContent = dests.length ? (dests.length+" categories \u00b7 "+money(v.liabs)+" total") : "Debt-free \u2014 nothing to show here \ud83c\udf89";
-  renderFlowRibbons(svgEl, 'Total Debt', v.liabs, dests);
+
+  if(!dests.length && total>0){
+    dests=[{
+      label:'Recorded debt',
+      amount:total,
+      color:'#E15B5B'
+    }];
+  }
+
+  if($("flowLiabsSub")){
+    $("flowLiabsSub").textContent = total>0
+      ? (dests.length===1 && dests[0].label==='Recorded debt'
+          ? money(total)+" total debt recorded"
+          : dests.length+" categories · "+money(total)+" total")
+      : "No debt recorded yet";
+  }
+
+  renderFlowRibbons(svgEl, 'Total Debt', total, dests);
   renderFlowLegend($("flowLiabsLegend"), dests);
 }
 function renderIncomeSavingsFlow(v){
@@ -8725,6 +8762,36 @@ main{padding-top:16px !important;padding-bottom:42px !important}
   display:block;
   min-height:260px;
 }
+
+/* =========================================================
+   CHART TYPOGRAPHY — READABLE / MODERN
+   ========================================================= */
+#shipNetWorthChart,
+#shipCashflowChart,
+#flowGrowthSvg {
+  font-family: Inter, "Segoe UI", Arial, sans-serif !important;
+}
+
+#shipNetWorthChart text,
+#shipCashflowChart text,
+#flowGrowthSvg text {
+  font-family: Inter, "Segoe UI", Arial, sans-serif !important;
+  text-rendering: geometricPrecision;
+}
+
+.chart-axis-label,
+.chart-value-label {
+  font-family: Inter, "Segoe UI", Arial, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+}
+
+.chart-date-label {
+  font-family: Inter, "Segoe UI", Arial, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 550 !important;
+}
 </style>
 
 <script id="gmf-final-data-renderer">
@@ -8750,7 +8817,20 @@ main{padding-top:16px !important;padding-bottom:42px !important}
   }
   function latestData(){
     var h=readHistory(), l=h.length?h[h.length-1]:null;
-    if(!l) return {history:h, data:null};
+    var reportV=null;
+    try{
+      var saved=JSON.parse(localStorage.getItem("gmf_last_report")||"null");
+      reportV=saved && saved.v ? saved.v : null;
+    }catch(e){}
+    if(!l && !reportV) return {history:h, data:null};
+    if(!l) l={};
+    // Prefer explicit history values, then fill missing fields from the
+    // report snapshot where the original calculation saved them.
+    if(reportV){
+      Object.keys(reportV).forEach(function(k){
+        if(l[k]===undefined || l[k]===null) l[k]=reportV[k];
+      });
+    }
     var income=typeof l.income==="number"?l.income:
       (typeof l.annualIncome==="number"?l.annualIncome/12:0);
     var expenses=typeof l.monthlyExpenses==="number"?l.monthlyExpenses:
@@ -8766,9 +8846,10 @@ main{padding-top:16px !important;padding-bottom:42px !important}
       net:num(l.net), totalDebt:num(l.totalDebt)
     };
     d.assets=d.home+d.retire+d.brokerage+d.cash+d.crypto+d.hsa+d.car;
-    d.liabs=d.mortgage+d.student+d.auto+d.cc+d.otherDebt;
+    var liabilityBreakdown=d.mortgage+d.student+d.auto+d.cc+d.otherDebt;
+    d.totalDebt = typeof l.totalDebt==="number" ? num(l.totalDebt) : liabilityBreakdown;
+    d.liabs=liabilityBreakdown>0 ? liabilityBreakdown : d.totalDebt;
     if(typeof l.net==="number") d.net=l.net; else d.net=d.assets-d.liabs;
-    if(typeof l.totalDebt==="number") d.totalDebt=l.totalDebt; else d.totalDebt=d.liabs;
     return {history:h,data:d};
   }
 
@@ -8793,7 +8874,7 @@ main{padding-top:16px !important;padding-bottom:42px !important}
     items=items.filter(function(x){return x.value>0;});
     if(!items.length){
       svg.innerHTML='<text x="450" y="155" text-anchor="middle" fill="#7a8a90" font-size="15" font-family="Inter,Arial,sans-serif">No balances entered in this category yet</text>'+
-                    '<text x="450" y="180" text-anchor="middle" fill="#9aa8ac" font-size="11" font-family="Inter,Arial,sans-serif">'+source+' · '+money(sourceValue)+'</text>';
+                    '<text x="450" y="180" text-anchor="middle" fill="#66777c" font-size="13" font-family="Inter,Segoe UI,Arial,sans-serif">'+source+' · '+money(sourceValue)+'</text>';
       return;
     }
     var colors=["#13a77f","#4d91ee","#8a6be0","#e8a83e","#e7655c","#32b8c8","#6d7b84"];
@@ -8829,8 +8910,8 @@ main{padding-top:16px !important;padding-bottom:42px !important}
     var rows=history.filter(function(h){return typeof h.net==="number";});
     if(rows.length<2){
       var latest=rows.length?rows[rows.length-1].net:0;
-      svg.innerHTML='<text x="450" y="145" text-anchor="middle" fill="#7a8a90" font-size="14" font-family="Inter,Arial,sans-serif">Your net worth is '+money(latest)+' today</text>'+
-        '<text x="450" y="170" text-anchor="middle" fill="#9aa8ac" font-size="11" font-family="Inter,Arial,sans-serif">Add another check-in to see the trend.</text>';
+      svg.innerHTML='<text x="450" y="145" text-anchor="middle" fill="#34484d" font-size="17" font-weight="650" font-family="Inter,Segoe UI,Arial,sans-serif">Your net worth is '+money(latest)+' today</text>'+
+        '<text x="450" y="170" text-anchor="middle" fill="#66777c" font-size="13" font-family="Inter,Segoe UI,Arial,sans-serif">Add another check-in to see the trend.</text>';
       return;
     }
     var vals=rows.map(function(r){return num(r.net);});
@@ -8844,7 +8925,7 @@ main{padding-top:16px !important;padding-bottom:42px !important}
     [0,.25,.5,.75,1].forEach(function(t){
       var v=max-(max-min)*t, yy=y(v);
       out+='<line x1="70" y1="'+yy+'" x2="840" y2="'+yy+'" stroke="#dfe8e5" stroke-dasharray="3 5"/>';
-      out+='<text x="10" y="'+(yy+4)+'" fill="#617278" font-size="11" font-family="IBM Plex Mono,monospace">'+money(v)+'</text>';
+      out+='<text x="10" y="'+(yy+4)+'" fill="#34484d" class="chart-axis-label">'+money(v)+'</text>';
     });
     out+='<path d="'+d+' L840 250 L70 250 Z" fill="url(#ntf)"/>';
     out+='<path d="'+d+'" fill="none" stroke="#13a77f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
@@ -8865,8 +8946,8 @@ main{padding-top:16px !important;padding-bottom:42px !important}
     }).filter(function(r){return r.income!==null||r.expenses!==null;});
     if(rows.length<2){
       var r=rows.length?rows[rows.length-1]:{income:0,expenses:0};
-      svg.innerHTML='<text x="450" y="145" text-anchor="middle" fill="#7a8a90" font-size="14" font-family="Inter,Arial,sans-serif">Income '+money(r.income)+' · Expenses '+money(r.expenses)+'</text>'+
-        '<text x="450" y="170" text-anchor="middle" fill="#9aa8ac" font-size="11" font-family="Inter,Arial,sans-serif">Add another check-in to see the cash-flow trend.</text>';
+      svg.innerHTML='<text x="450" y="145" text-anchor="middle" fill="#34484d" font-size="17" font-weight="650" font-family="Inter,Segoe UI,Arial,sans-serif">Income '+money(r.income)+' · Expenses '+money(r.expenses)+'</text>'+
+        '<text x="450" y="170" text-anchor="middle" fill="#66777c" font-size="13" font-family="Inter,Segoe UI,Arial,sans-serif">Add another check-in to see the cash-flow trend.</text>';
       return;
     }
     var vals=[];rows.forEach(function(r){if(r.income!==null)vals.push(r.income);if(r.expenses!==null)vals.push(r.expenses);});
@@ -8876,7 +8957,7 @@ main{padding-top:16px !important;padding-bottom:42px !important}
     var x=function(i){return 70+i/(rows.length-1)*770};
     var y=function(v){return 250-(v-min)/(max-min)*190};
     var out="";
-    [0,.25,.5,.75,1].forEach(function(t){var v=max-(max-min)*t,yy=y(v);out+='<line x1="70" y1="'+yy+'" x2="840" y2="'+yy+'" stroke="#dfe8e5" stroke-dasharray="3 5"/><text x="10" y="'+(yy+4)+'" fill="#617278" font-size="11" font-family="IBM Plex Mono,monospace">'+money(v)+'</text>';});
+    [0,.25,.5,.75,1].forEach(function(t){var v=max-(max-min)*t,yy=y(v);out+='<line x1="70" y1="'+yy+'" x2="840" y2="'+yy+'" stroke="#dfe8e5" stroke-dasharray="3 5"/><text x="10" y="'+(yy+4)+'" fill="#34484d" class="chart-axis-label">'+money(v)+'</text>';});
     [["income","#13a77f"],["expenses","#e7655c"]].forEach(function(pair){
       var key=pair[0], color=pair[1];
       var pts=rows.filter(function(r){return r[key]!==null;});
@@ -8905,10 +8986,14 @@ main{padding-top:16px !important;padding-bottom:42px !important}
       {label:"Home",value:d.home},{label:"Retirement",value:d.retire},{label:"Brokerage",value:d.brokerage},
       {label:"Cash",value:d.cash},{label:"Crypto / Other",value:d.crypto},{label:"HSA",value:d.hsa},{label:"Car",value:d.car}
     ]);
-    drawFlow("flowLiabsSvg","Total Debt",d.liabs,[
+    var liabilityItems=[
       {label:"Mortgage",value:d.mortgage},{label:"Student Loans",value:d.student},{label:"Auto Loan",value:d.auto},
       {label:"Credit Cards",value:d.cc},{label:"Personal / Other",value:d.otherDebt}
-    ]);
+    ];
+    if(!liabilityItems.some(function(x){return x.value>0;}) && d.totalDebt>0){
+      liabilityItems=[{label:"Recorded Debt",value:d.totalDebt}];
+    }
+    drawFlow("flowLiabsSvg","Total Debt",d.liabs,liabilityItems);
     drawFlow("flowIncomeSvg","Monthly Income",d.income,[
       {label:"Expenses",value:Math.min(d.expenses,d.income)},{label:"Savings Surplus",value:Math.max(0,d.income-d.expenses)},
       {label:"Shortfall",value:Math.max(0,d.expenses-d.income)}
@@ -8940,6 +9025,27 @@ main{padding-top:16px !important;padding-bottom:42px !important}
   else boot();
 
   window.__gmfFinalPaint=paint;
+})();
+</script>
+
+
+<script id="gmf-readable-chart-finalizer">
+(function(){
+  function upgrade(){
+    ["shipNetWorthChart","shipCashflowChart","flowGrowthSvg"].forEach(function(id){
+      var svg=document.getElementById(id);
+      if(!svg)return;
+      svg.querySelectorAll("text").forEach(function(t){
+        t.style.fontFamily='Inter, "Segoe UI", Arial, sans-serif';
+        t.style.fontWeight='600';
+        t.style.fontSize='15px';
+      });
+    });
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",function(){
+    upgrade(); setTimeout(upgrade,200); setTimeout(upgrade,900); setTimeout(upgrade,2000);
+  });
+  else { upgrade(); setTimeout(upgrade,200); setTimeout(upgrade,900); setTimeout(upgrade,2000); }
 })();
 </script>
 
