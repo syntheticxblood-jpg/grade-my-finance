@@ -9169,7 +9169,7 @@ Promise.resolve(init()).then(function(){
 
   function rebuildGoals(){
     var p=id('panel-goals');if(!p)return;var x=latest(),l=x.l,gs=goals();
-    var health=addOnce(p,'gmf-goal-health','<div class="gmf-goal-health"><div class="box"><span>Active goals</span><b id="rbActiveGoals">0</b><em>Keep the list small enough to act on</em></div><div class="box"><span>Primary focus</span><b id="rbGoalFocus">—</b><em>Based on your latest financial priorities</em></div><div class="box"><span>Current grade</span><b id="rbGoalGrade">—</b><em>Your grade is the outcome, not the goal itself</em></div></div>',p.querySelector('.goal-form'));
+    var health=addOnce(p,'gmf-goal-health','<div class="box"><span>Active goals</span><b id="rbActiveGoals">0</b><em>Keep the list small enough to act on</em></div><div class="box"><span>Primary focus</span><b id="rbGoalFocus">—</b><em>Based on your latest financial priorities</em></div><div class="box"><span>Current grade</span><b id="rbGoalGrade">—</b><em>Your grade is the outcome, not the goal itself</em></div>',p.querySelector('.goal-form'));
     if(health){id('rbActiveGoals').textContent=gs.length;var a=pri(l);id('rbGoalFocus').textContent=a?a.title.replace('your ',''):'Choose a target';id('rbGoalGrade').textContent=l?grade(l.score)+' · '+Number(l.score).toFixed(1):'—'}
     var form=q('.goal-form',p);if(form&&!q('.gmf-goal-presets',p)){}
   }
