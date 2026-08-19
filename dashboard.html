@@ -8726,5 +8726,222 @@ main{padding-top:16px !important;padding-bottom:42px !important}
   min-height:260px;
 }
 </style>
+
+<script id="gmf-final-data-renderer">
+(function(){
+  "use strict";
+
+  function readHistory(){
+    try{
+      var h=JSON.parse(localStorage.getItem("gmf_history_v2")||"[]");
+      return Array.isArray(h)?h:[];
+    }catch(e){ return []; }
+  }
+  function num(v){
+    v=Number(v);
+    return isFinite(v)?v:0;
+  }
+  function money(v){
+    v=num(v);
+    var a=Math.abs(v), s=v<0?"-":"";
+    if(a>=1000000) return s+"$"+(a/1000000).toFixed(1)+"M";
+    if(a>=1000) return s+"$"+Math.round(a/1000)+"K";
+    return s+"$"+Math.round(a).toLocaleString();
+  }
+  function latestData(){
+    var h=readHistory(), l=h.length?h[h.length-1]:null;
+    if(!l) return {history:h, data:null};
+    var income=typeof l.income==="number"?l.income:
+      (typeof l.annualIncome==="number"?l.annualIncome/12:0);
+    var expenses=typeof l.monthlyExpenses==="number"?l.monthlyExpenses:
+      (typeof l.expenses==="number"?l.expenses:0);
+
+    var d={
+      income:num(income), annualIncome:num(l.annualIncome||income*12),
+      expenses:num(expenses),
+      cash:num(l.cash), home:num(l.home), retire:num(l.retire),
+      brokerage:num(l.brokerage), crypto:num(l.crypto), hsa:num(l.hsa),
+      car:num(l.car), mortgage:num(l.mortgage), student:num(l.student),
+      auto:num(l.auto), cc:num(l.cc), otherDebt:num(l.otherDebt),
+      net:num(l.net), totalDebt:num(l.totalDebt)
+    };
+    d.assets=d.home+d.retire+d.brokerage+d.cash+d.crypto+d.hsa+d.car;
+    d.liabs=d.mortgage+d.student+d.auto+d.cc+d.otherDebt;
+    if(typeof l.net==="number") d.net=l.net; else d.net=d.assets-d.liabs;
+    if(typeof l.totalDebt==="number") d.totalDebt=l.totalDebt; else d.totalDebt=d.liabs;
+    return {history:h,data:d};
+  }
+
+  function set(id,v){
+    var e=document.getElementById(id);
+    if(e) e.textContent=v;
+  }
+
+  function svgClear(id){
+    var s=document.getElementById(id);
+    if(!s) return null;
+    s.innerHTML="";
+    s.setAttribute("viewBox","0 0 900 340");
+    s.setAttribute("width","100%");
+    s.setAttribute("height","300");
+    s.style.display="block";
+    return s;
+  }
+
+  function drawFlow(id, source, sourceValue, items){
+    var svg=svgClear(id); if(!svg)return;
+    items=items.filter(function(x){return x.value>0;});
+    if(!items.length){
+      svg.innerHTML='<text x="450" y="155" text-anchor="middle" fill="#7a8a90" font-size="15" font-family="Inter,Arial,sans-serif">No balances entered in this category yet</text>'+
+                    '<text x="450" y="180" text-anchor="middle" fill="#9aa8ac" font-size="11" font-family="Inter,Arial,sans-serif">'+source+' · '+money(sourceValue)+'</text>';
+      return;
+    }
+    var colors=["#13a77f","#4d91ee","#8a6be0","#e8a83e","#e7655c","#32b8c8","#6d7b84"];
+    var total=items.reduce(function(a,x){return a+x.value},0)||1;
+    var leftX=70,rightX=610,sourceY=170;
+    var gap=Math.max(44,Math.min(66,260/items.length));
+    var start=170-(items.length-1)*gap/2;
+    var defs='<defs>';
+    items.forEach(function(x,i){
+      var idd="fg"+Math.random().toString(36).slice(2);
+      x.g=idd;
+      defs+='<linearGradient id="'+idd+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0e9f7b" stop-opacity=".28"/><stop offset="100%" stop-color="'+colors[i%colors.length]+'" stop-opacity=".8"/></linearGradient>';
+    });
+    defs+='</defs>';
+    var out=defs;
+    out+='<text x="'+leftX+'" y="32" fill="#102a2c" font-size="13" font-weight="800" font-family="Inter,Arial,sans-serif">'+source+'</text>';
+    out+='<text x="'+leftX+'" y="51" fill="#617278" font-size="11" font-family="IBM Plex Mono,monospace">'+money(sourceValue)+'</text>';
+    out+='<rect x="'+(leftX-5)+'" y="'+(sourceY-25)+'" width="8" height="50" rx="4" fill="#13a77f"/>';
+    items.forEach(function(x,i){
+      var yy=start+i*gap;
+      var thickness=Math.max(7,Math.min(34,(x.value/total)*190));
+      var path="M"+leftX+","+sourceY+" C260,"+sourceY+" 420,"+yy+" "+rightX+","+yy;
+      out+='<path d="'+path+'" fill="none" stroke="url(#'+x.g+')" stroke-width="'+thickness.toFixed(1)+'" stroke-linecap="round"/>';
+      out+='<circle cx="'+rightX+'" cy="'+yy+'" r="5" fill="'+colors[i%colors.length]+'"/>';
+      out+='<text x="'+(rightX+20)+'" y="'+(yy-5)+'" fill="#102a2c" font-size="13" font-weight="800" font-family="Inter,Arial,sans-serif">'+x.label+'</text>';
+      out+='<text x="'+(rightX+20)+'" y="'+(yy+14)+'" fill="#68797e" font-size="11" font-family="IBM Plex Mono,monospace">'+money(x.value)+' · '+Math.round(x.value/total*100)+'%</text>';
+    });
+    svg.innerHTML=out;
+  }
+
+  function drawTrend(id, history){
+    var svg=svgClear(id); if(!svg)return;
+    var rows=history.filter(function(h){return typeof h.net==="number";});
+    if(rows.length<2){
+      var latest=rows.length?rows[rows.length-1].net:0;
+      svg.innerHTML='<text x="450" y="145" text-anchor="middle" fill="#7a8a90" font-size="14" font-family="Inter,Arial,sans-serif">Your net worth is '+money(latest)+' today</text>'+
+        '<text x="450" y="170" text-anchor="middle" fill="#9aa8ac" font-size="11" font-family="Inter,Arial,sans-serif">Add another check-in to see the trend.</text>';
+      return;
+    }
+    var vals=rows.map(function(r){return num(r.net);});
+    var min=Math.min.apply(null,vals.concat([0])), max=Math.max.apply(null,vals.concat([0]));
+    if(max===min)max=min+1;
+    var pad=(max-min)*.12; min-=pad; max+=pad;
+    var x=function(i){return 70+i/(rows.length-1)*770};
+    var y=function(v){return 250-(v-min)/(max-min)*190};
+    var d=rows.map(function(r,i){return(i?"L":"M")+x(i).toFixed(1)+" "+y(r.net).toFixed(1)}).join(" ");
+    var out='<defs><linearGradient id="ntf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#13a77f" stop-opacity=".24"/><stop offset="100%" stop-color="#13a77f" stop-opacity="0"/></linearGradient></defs>';
+    [0,.25,.5,.75,1].forEach(function(t){
+      var v=max-(max-min)*t, yy=y(v);
+      out+='<line x1="70" y1="'+yy+'" x2="840" y2="'+yy+'" stroke="#dfe8e5" stroke-dasharray="3 5"/>';
+      out+='<text x="10" y="'+(yy+4)+'" fill="#617278" font-size="11" font-family="IBM Plex Mono,monospace">'+money(v)+'</text>';
+    });
+    out+='<path d="'+d+' L840 250 L70 250 Z" fill="url(#ntf)"/>';
+    out+='<path d="'+d+'" fill="none" stroke="#13a77f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+    rows.forEach(function(r,i){
+      var cx=x(i),cy=y(r.net);
+      out+='<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#fff" stroke="#13a77f" stroke-width="2.5"/>';
+    });
+    var last=rows[rows.length-1],lx=x(rows.length-1),ly=y(last.net);
+    out+='<rect x="'+Math.max(70,lx-108)+'" y="'+Math.max(20,ly-40)+'" width="98" height="28" rx="8" fill="#fff" stroke="#d6e2de"/>';
+    out+='<text x="'+Math.max(70,lx-59)+'" y="'+Math.max(20,ly-40)+19+'" text-anchor="middle" fill="#0d8f70" font-size="12" font-weight="800" font-family="IBM Plex Mono,monospace">'+money(last.net)+'</text>';
+    svg.innerHTML=out;
+  }
+
+  function drawCashflow(id,history){
+    var svg=svgClear(id); if(!svg)return;
+    var rows=history.map(function(h){
+      return {ts:h.ts,income:typeof h.income==="number"?h.income:(typeof h.annualIncome==="number"?h.annualIncome/12:null),expenses:typeof h.monthlyExpenses==="number"?h.monthlyExpenses:null};
+    }).filter(function(r){return r.income!==null||r.expenses!==null;});
+    if(rows.length<2){
+      var r=rows.length?rows[rows.length-1]:{income:0,expenses:0};
+      svg.innerHTML='<text x="450" y="145" text-anchor="middle" fill="#7a8a90" font-size="14" font-family="Inter,Arial,sans-serif">Income '+money(r.income)+' · Expenses '+money(r.expenses)+'</text>'+
+        '<text x="450" y="170" text-anchor="middle" fill="#9aa8ac" font-size="11" font-family="Inter,Arial,sans-serif">Add another check-in to see the cash-flow trend.</text>';
+      return;
+    }
+    var vals=[];rows.forEach(function(r){if(r.income!==null)vals.push(r.income);if(r.expenses!==null)vals.push(r.expenses);});
+    var min=Math.min.apply(null,vals.concat([0])),max=Math.max.apply(null,vals.concat([0]));
+    if(max===min)max=min+1;
+    var pad=(max-min)*.12;min=Math.max(0,min-pad);max+=pad;
+    var x=function(i){return 70+i/(rows.length-1)*770};
+    var y=function(v){return 250-(v-min)/(max-min)*190};
+    var out="";
+    [0,.25,.5,.75,1].forEach(function(t){var v=max-(max-min)*t,yy=y(v);out+='<line x1="70" y1="'+yy+'" x2="840" y2="'+yy+'" stroke="#dfe8e5" stroke-dasharray="3 5"/><text x="10" y="'+(yy+4)+'" fill="#617278" font-size="11" font-family="IBM Plex Mono,monospace">'+money(v)+'</text>';});
+    [["income","#13a77f"],["expenses","#e7655c"]].forEach(function(pair){
+      var key=pair[0], color=pair[1];
+      var pts=rows.filter(function(r){return r[key]!==null;});
+      if(pts.length<1)return;
+      var d=pts.map(function(r){var idx=rows.indexOf(r);return(idx?"L":"M")+x(idx).toFixed(1)+" "+y(r[key]).toFixed(1)}).join(" ");
+      out+='<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+      pts.forEach(function(r){var idx=rows.indexOf(r);out+='<circle cx="'+x(idx)+'" cy="'+y(r[key])+'" r="4" fill="#fff" stroke="'+color+'" stroke-width="2.5"/>';});
+    });
+    svg.innerHTML=out;
+  }
+
+  function paint(){
+    var pack=latestData(), h=pack.history, d=pack.data;
+    if(!d)return;
+
+    // Main overview graphs.
+    drawTrend("shipNetWorthChart",h);
+    drawCashflow("shipCashflowChart",h);
+
+    // Money Flow summary.
+    set("flowSumIncome",money(d.annualIncome));
+    set("flowSumExpenses",money(d.expenses*12));
+    set("flowSumNet",(d.income-d.expenses>=0?"+":"-")+money(Math.abs(d.income-d.expenses))+" /mo");
+
+    drawFlow("flowAssetsSvg","Total Assets",d.assets,[
+      {label:"Home",value:d.home},{label:"Retirement",value:d.retire},{label:"Brokerage",value:d.brokerage},
+      {label:"Cash",value:d.cash},{label:"Crypto / Other",value:d.crypto},{label:"HSA",value:d.hsa},{label:"Car",value:d.car}
+    ]);
+    drawFlow("flowLiabsSvg","Total Debt",d.liabs,[
+      {label:"Mortgage",value:d.mortgage},{label:"Student Loans",value:d.student},{label:"Auto Loan",value:d.auto},
+      {label:"Credit Cards",value:d.cc},{label:"Personal / Other",value:d.otherDebt}
+    ]);
+    drawFlow("flowIncomeSvg","Monthly Income",d.income,[
+      {label:"Expenses",value:Math.min(d.expenses,d.income)},{label:"Savings Surplus",value:Math.max(0,d.income-d.expenses)},
+      {label:"Shortfall",value:Math.max(0,d.expenses-d.income)}
+    ]);
+    drawTrend("flowGrowthSvg",h);
+
+    set("flowAssetsSub",money(d.assets)+" total across your assets");
+    set("flowLiabsSub",money(d.liabs)+" total debt");
+    set("flowIncomeSub",money(d.income)+"/mo income");
+    set("flowGrowthSub","Latest net worth: "+money(d.net));
+
+    // Re-run the richer existing renderers too, but never allow one module to
+    // stop the others.
+    try{ if(typeof renderBillsTracker==="function") renderBillsTracker(d); }catch(e){}
+    try{ if(typeof renderCreditUtilization==="function") renderCreditUtilization(d); }catch(e){}
+    try{ if(typeof renderAssetAllocation==="function") renderAssetAllocation(d); }catch(e){}
+  }
+
+  function boot(){
+    paint();
+    // Existing dashboard scripts may finish/rebuild their panels after init.
+    // Paint again after those mutations so the actual SVGs never remain blank.
+    setTimeout(paint,150);
+    setTimeout(paint,800);
+    setTimeout(paint,1800);
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot);
+  else boot();
+
+  window.__gmfFinalPaint=paint;
+})();
+</script>
+
 </body>
 </html>
