@@ -10024,6 +10024,58 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
   });
 })();
 </script>
+<style id="gmf-tabs-first-final">
+/* FINAL NAVIGATION RULE: every in-page tab strip is physically first in its
+   workspace, not merely sticky. This reduces scrolling and makes the tabs
+   immediately available when a page opens. */
+#moneySubtabs, #planSubtabs, #insightSubtabs, #projSubtabs, #flowTabs {
+  scroll-margin-top: 8px !important;
+}
+</style>
+<script id="gmf-tabs-first-final-script">
+(function(){
+  'use strict';
+  var selectors = [
+    '#moneySubtabs',
+    '#planSubtabs',
+    '#insightSubtabs',
+    '#projSubtabs',
+    '#flowTabs'
+  ];
+
+  function moveTabsToTop(){
+    selectors.forEach(function(sel){
+      var nav = document.querySelector(sel);
+      if(!nav || !nav.parentElement) return;
+      /* prepend() makes the navigation the literal first child of its
+         workspace. It does not clone or recreate the buttons, so all existing
+         click handlers and active state remain intact. */
+      if(nav.parentElement.firstElementChild !== nav){
+        nav.parentElement.insertBefore(nav, nav.parentElement.firstElementChild);
+      }
+    });
+  }
+
+  function schedule(){
+    moveTabsToTop();
+    [50, 200, 600, 1200, 2500].forEach(function(ms){ setTimeout(moveTabsToTop, ms); });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', schedule, {once:true});
+  }else{
+    schedule();
+  }
+
+  /* Some dashboard modules render after the initial page load. Keep the
+     navigation at the top whenever one of those modules inserts content. */
+  try{
+    var observer = new MutationObserver(function(){ moveTabsToTop(); });
+    observer.observe(document.body, {childList:true, subtree:true});
+    setTimeout(function(){ try{ observer.disconnect(); }catch(e){} }, 5000);
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
 
