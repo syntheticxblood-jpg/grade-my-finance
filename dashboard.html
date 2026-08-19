@@ -3089,6 +3089,40 @@ body{
 }
 </style>
 
+
+<style id="gmf-blue-tinted-background">
+/* Slightly deeper cool blue background so every white card has visible separation. */
+:root[data-theme="light"] {
+  --bg: #e7f0f3 !important;
+  --bg-2: #dce9ed !important;
+  --surface: #ffffff !important;
+  --surface-2: #f7fbfc !important;
+  --line: #cbdde1 !important;
+}
+:root[data-theme="light"] body {
+  background: #dfeaec !important;
+  background-image:
+    radial-gradient(900px 520px at 18% 8%, rgba(61, 170, 151, .12), transparent 65%),
+    radial-gradient(850px 560px at 88% 18%, rgba(82, 139, 220, .12), transparent 68%),
+    linear-gradient(135deg, #e2eef0 0%, #dce8eb 48%, #e1ebef 100%) !important;
+}
+:root[data-theme="light"] .main-area {
+  background: transparent !important;
+}
+:root[data-theme="light"] .main-area::before {
+  background:
+    radial-gradient(ellipse 900px 560px at 15% 0%, rgba(39, 183, 143, .08), transparent 64%),
+    radial-gradient(ellipse 720px 520px at 92% 10%, rgba(91, 141, 239, .09), transparent 68%) !important;
+}
+:root[data-theme="light"] .card,
+:root[data-theme="light"] .panel,
+:root[data-theme="light"] .chart-card,
+:root[data-theme="light"] .summary-card,
+:root[data-theme="light"] .dashboard-card {
+  border-color: #cbdde1 !important;
+}
+</style>
+
 </head>
 <body>
 <script>
