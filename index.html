@@ -7220,6 +7220,11 @@ function openReport(v,cats){
   var modal=$("reportModal");
   window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score };
   window.__lastFullReport = { v: v, cats: cats };
+  // Saved locally only (same privacy model as everything else here) so the
+  // Dashboard's "View Full Grade Report" can reopen this exact breakdown
+  // later without the calculator form still being filled in. Overwritten
+  // on every new check-in, same as the history entry.
+  try{ localStorage.setItem('gmf_last_report', JSON.stringify({ v: v, cats: cats, ts: Date.now() })); }catch(e){}
 
   (function animateScoreReveal(){
     var target = cats.overall.score, startTime = null, duration = 900;
@@ -7735,7 +7740,13 @@ document.addEventListener("click", function(e){
   }
 });
 
-$("closeReport").addEventListener("click",function(){ $("reportModal").classList.remove("show"); unlockBodyScroll(); });
+$("closeReport").addEventListener("click",function(){
+  // The report modal is now reached as a drill-down from the dashboard
+  // (via ?openReport=1) rather than shown in place right after grading -
+  // grading itself redirects straight to dashboard.html. So closing it
+  // should return to the dashboard rather than reveal a bare homepage.
+  window.location.href = "dashboard.html";
+});
 // Header Export/Share buttons delegate to the existing, real
 // download/share buttons in the action bar below - reusing that proven
 // logic rather than duplicating it, since both need to stay in sync
@@ -7818,7 +7829,11 @@ function gradeNow(){
   if(raw.age<18 || raw.age>100){ toastMsg("Enter an age between 18 and 100."); return; }
   if(raw.income<=0){ toastMsg("Enter your monthly take-home income."); return; }
   if(raw.expenses<=0){ toastMsg("Enter your average monthly expenses."); return; }
-  runWithLoader(function(){ var v=values(); var cats=categoryScores(v); openReport(v,cats); });
+  runWithLoader(function(){
+    var v=values(); var cats=categoryScores(v);
+    openReport(v,cats); // persists history, streaks, achievements, cloud save - unchanged
+    window.location.href = "dashboard.html";
+  });
 }
 function openCalcModal(location){
   __track('click_open_calculator',{location:location});
@@ -8712,6 +8727,23 @@ function runWithLoader(fnDone){
     if(i>=total){ clearInterval(t); overlay.classList.remove("show"); try { fnDone(); } catch(err){ console.error(err); } }
   }, interval);
 }
+
+// Coming from the Dashboard's "View Full Grade Report" link: reopen the
+// exact last report using the saved snapshot, instead of asking the
+// person to redo the calculator. Falls through quietly if nothing is
+// saved yet (e.g. a stale/shared link) - the page just behaves normally.
+(function openReportFromDashboard(){
+  var params;
+  try{ params = new URLSearchParams(window.location.search); }catch(e){ return; }
+  if(params.get("openReport") !== "1") return;
+  try{
+    var saved = JSON.parse(localStorage.getItem("gmf_last_report") || "null");
+    if(saved && saved.v && saved.cats){
+      openReport(saved.v, saved.cats);
+      history.replaceState(null, "", window.location.pathname + window.location.hash);
+    }
+  }catch(e){ console.error(e); }
+})();
 
 })();
 </script>
