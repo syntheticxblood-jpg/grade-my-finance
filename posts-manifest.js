@@ -99,4 +99,8 @@ var GMF_BLOG_POSTS = [
   { slug:"tax-loss-harvesting-explained", title:"Tax-Loss Harvesting: How to Turn Investment Losses Into a Real Tax Break", category:"Investing" }
 ,
   { slug:"long-term-care-insurance-explained", title:"Long-Term Care Insurance: Do You Actually Need It, and When Should You Buy It?", category:"Insurance" }
+,
+  { slug:"when-does-refinancing-your-mortgage-make-sense", title:"Mortgage Refinancing: When It Actually Makes Sense (and When It Doesn't)", category:"Housing" }
+,
+  { slug:"how-to-remove-pmi", title:"Private Mortgage Insurance (PMI): How to Get Rid of It Sooner", category:"Housing" }
 ];
