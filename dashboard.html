@@ -11025,6 +11025,67 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
   }
 })();
 </script>
+
+<script id="gmf-money-pro-lock-final">
+(function(){
+  /* FINAL MONEY PRO GATE: Money is a Pro workspace.  Several legacy render
+     functions rebuild #panel-networth after page load, so the gate must be
+     reapplied after those renders rather than only once at DOMContentLoaded. */
+  var moneyFeatures = [
+    'Interactive net worth tracking',
+    'Money flow, bills, credit & allocation',
+    'Colorful financial charts and trends',
+    'Cash runway and debt insights'
+  ];
+  function isPro(){ return localStorage.getItem('gmf_pro') === 'true'; }
+  function applyMoneyGate(){
+    var panel=document.getElementById('panel-networth');
+    var nav=document.querySelector('.dash-nav-btn[data-tab="networth"]');
+    if(!panel) return;
+    if(isPro()){
+      panel.classList.remove('gmf-pro-locked-tab');
+      if(nav) nav.classList.remove('gmf-nav-pro');
+      var old=panel.querySelector(':scope > .gmf-money-pro-gate');
+      if(old) old.remove();
+      return;
+    }
+    panel.classList.add('gmf-pro-locked-tab');
+    if(nav) nav.classList.add('gmf-nav-pro');
+    if(panel.querySelector(':scope > .gmf-money-pro-gate')) return;
+    var card=document.createElement('div');
+    card.className='gmf-pro-tab-gate-card gmf-money-pro-gate';
+    card.innerHTML='<div class="gmf-pro-gate-inner">'
+      +'<div class="gmf-pro-gate-orb"><span>🔒</span></div>'
+      +'<div class="gmf-pro-gate-kicker">GRADE MY FINANCE PRO</div>'
+      +'<h2>Unlock your complete Money workspace</h2>'
+      +'<p>Money is a Pro feature. Upgrade to unlock your net worth, money flow, bills, credit, allocation, charts and deeper financial insights.</p>'
+      +'<div class="gmf-pro-gate-features">'
+      +moneyFeatures.map(function(x){return '<div>'+x+'</div>';}).join('')
+      +'</div>'
+      +'<a class="btn gold gmf-pro-gate-cta" href="index.html#pricing">Unlock Pro →</a>'
+      +'<div class="gmf-pro-gate-note">Your free Dashboard and financial grade remain available.</div>'
+      +'</div>';
+    panel.insertBefore(card,panel.firstChild);
+  }
+  function boot(){
+    applyMoneyGate();
+    var panel=document.getElementById('panel-networth');
+    if(panel){
+      var observer=new MutationObserver(function(){
+        if(!isPro() && !panel.querySelector(':scope > .gmf-money-pro-gate')) applyMoneyGate();
+      });
+      observer.observe(panel,{childList:true});
+    }
+    window.addEventListener('storage',function(e){ if(e.key==='gmf_pro') applyMoneyGate(); });
+    document.addEventListener('click',function(e){
+      var b=e.target.closest && e.target.closest('.dash-nav-btn[data-tab="networth"]');
+      if(b) setTimeout(applyMoneyGate,0);
+    },true);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(boot,100);});
+  else setTimeout(boot,100);
+})();
+</script>
 </body>
 </html>
 
