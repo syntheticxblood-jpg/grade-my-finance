@@ -2,14 +2,10 @@
 <html lang="en">
 <head>
 <script>
-// Runs before any CSS or other script - closes the "flash of white before
-// the blue background applies" window entirely, since it's the very
-// first thing the browser executes. Checks theme first so dark-theme
-// users aren't forced into the light-mode blue.
+/* Paint the final dashboard canvas immediately.  Do not use a separate
+   blue splash color here — that is what caused the blue flash on reload. */
 try{
-  if(localStorage.getItem("gmf_theme") !== "dark"){
-    document.documentElement.style.setProperty("background", "#5f8ba3", "important");
-  }
+  document.documentElement.style.background = "#dfeaf6";
 }catch(e){}
 </script>
 <meta charset="utf-8" />
@@ -517,7 +513,7 @@ main{ padding:28px 0 50px }
   --dash-ink:#16352f;
   --dash-muted:#63756f;
   --dash-line:#dfe7e2;
-  --dash-bg:#f4f3ea;
+  --dash-bg:#dfeaf6;
   --dash-card:#ffffff;
   --dash-mint:#dcefe8;
   --dash-blue:#e5edf8;
@@ -527,8 +523,11 @@ main{ padding:28px 0 50px }
 }
 
 /* Page atmosphere */
+html, body{
+  background:#dfeaf6 !important;
+}
 body{
-  background:var(--dash-bg) !important;
+  background:linear-gradient(135deg,#dce9f6 0%,#e8f1fa 48%,#d5e4f2 100%) !important;
   color:var(--dash-ink) !important;
 }
 .main-area{
@@ -536,9 +535,9 @@ body{
 }
 .main-area::before{
   background:
-    radial-gradient(ellipse 850px 520px at 22% 0%,rgba(54,170,137,.12),transparent 62%),
-    radial-gradient(ellipse 560px 460px at 88% 22%,rgba(242,204,92,.10),transparent 65%),
-    radial-gradient(ellipse 500px 500px at 78% 90%,rgba(121,145,209,.07),transparent 70%) !important;
+    radial-gradient(ellipse 900px 560px at 18% 0%,rgba(73,137,205,.16),transparent 62%),
+    radial-gradient(ellipse 650px 520px at 88% 22%,rgba(117,166,220,.13),transparent 65%),
+    radial-gradient(ellipse 620px 600px at 78% 90%,rgba(54,113,180,.10),transparent 70%) !important;
 }
 
 /* Sidebar */
@@ -3111,11 +3110,11 @@ body{
   --line: #b9d3d9 !important;
 }
 :root[data-theme="light"] body {
-  background: #5f8ba3 !important;
+  background: #dbe9f5 !important;
   background-image:
     radial-gradient(900px 520px at 18% 8%, rgba(61, 170, 151, .16), transparent 65%),
     radial-gradient(850px 560px at 88% 18%, rgba(82, 139, 220, .16), transparent 68%),
-    linear-gradient(135deg, #6a95ac 0%, #557f99 48%, #6291a8 100%) !important;
+    linear-gradient(135deg, #e8f1f9 0%, #dbe9f5 48%, #e3eef7 100%) !important;
 }
 :root[data-theme="light"] .main-area {
   background: transparent !important;
@@ -11285,13 +11284,13 @@ body::before{
 #panel-overview .ship-grade-main{ padding:30px 32px 28px !important; }
 #panel-overview .ship-message-title{ font-size:19px !important; }
 
-html:not([data-theme="dark"]), body:not([data-theme="dark"]){ background:#5f8ba3 !important; }
+html:not([data-theme="dark"]), body:not([data-theme="dark"]){ background:#dbe9f5 !important; }
 :root:not([data-theme="dark"]) body{
-  background:#5f8ba3 !important;
+  background:#dbe9f5 !important;
   background-image:
     radial-gradient(900px 520px at 18% 8%, rgba(61, 170, 151, .16), transparent 65%),
     radial-gradient(850px 560px at 88% 18%, rgba(82, 139, 220, .16), transparent 68%),
-    linear-gradient(135deg, #6a95ac 0%, #557f99 48%, #6291a8 100%) !important;
+    linear-gradient(135deg, #e8f1f9 0%, #dbe9f5 48%, #e3eef7 100%) !important;
 }
 :root:not([data-theme="dark"]) .main-area{ background:transparent !important; }
 :root:not([data-theme="dark"]) .main-area::before{ display:none !important; }
@@ -11348,21 +11347,4 @@ html:not([data-theme="dark"]), body:not([data-theme="dark"]){ background:#5f8ba3
   // inline style beats every external stylesheet rule regardless of
   // specificity or order, so this is the strongest fix available short
   // of removing the old rules entirely.
-  function apply(){
-    if(document.documentElement.dataset.theme === 'dark') return;
-    document.documentElement.style.setProperty('background', '#5f8ba3', 'important');
-    document.body.style.setProperty('background',
-      'radial-gradient(900px 520px at 18% 8%, rgba(61,170,151,.16), transparent 65%), ' +
-      'radial-gradient(850px 560px at 88% 18%, rgba(82,139,220,.16), transparent 68%), ' +
-      'linear-gradient(135deg, #6a95ac 0%, #557f99 48%, #6291a8 100%)',
-      'important'
-    );
-  }
-  apply();
-  document.addEventListener('DOMContentLoaded', apply);
-  setTimeout(apply, 300);
-  setTimeout(apply, 1200);
-  // Re-apply if the theme toggle changes data-theme after load.
-  new MutationObserver(apply).observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
-})();
 </script>
