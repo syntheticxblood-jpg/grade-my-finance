@@ -11326,3 +11326,32 @@ html:not([data-theme="dark"]), body:not([data-theme="dark"]){ background:#cfe1e6
   window.addEventListener('storage',function(e){if(e.key==='gmf_history_v2')draw()});
 })();
 </script>
+
+<script id="gmf-force-blue-canvas">
+(function(){
+  // Belt-and-suspenders fix for the light-canvas color. This file has
+  // accumulated many !important background rules across many past edits,
+  // and a purely CSS fix (however late in the stylesheet) can still lose
+  // if there's a rule somewhere that hasn't been found yet, or if a
+  // cached older stylesheet is being served. Setting the color via
+  // inline style beats every external stylesheet rule regardless of
+  // specificity or order, so this is the strongest fix available short
+  // of removing the old rules entirely.
+  function apply(){
+    if(document.documentElement.dataset.theme === 'dark') return;
+    document.documentElement.style.setProperty('background', '#cfe1e6', 'important');
+    document.body.style.setProperty('background',
+      'radial-gradient(900px 520px at 18% 8%, rgba(61,170,151,.16), transparent 65%), ' +
+      'radial-gradient(850px 560px at 88% 18%, rgba(82,139,220,.16), transparent 68%), ' +
+      'linear-gradient(135deg, #d3e4e7 0%, #c9dbdf 48%, #d1e0e5 100%)',
+      'important'
+    );
+  }
+  apply();
+  document.addEventListener('DOMContentLoaded', apply);
+  setTimeout(apply, 300);
+  setTimeout(apply, 1200);
+  // Re-apply if the theme toggle changes data-theme after load.
+  new MutationObserver(apply).observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
+})();
+</script>
