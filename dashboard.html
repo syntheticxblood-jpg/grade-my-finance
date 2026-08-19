@@ -2571,6 +2571,260 @@ svg text{fill:var(--ui-muted)}
   }
 }
 </style>
+
+<style id="gmf-true-dark-mode">
+/* =========================================================
+   TRUE DARK MODE — no white webpage surfaces in dark theme
+   ========================================================= */
+:root[data-theme="dark"]{
+  --bg:#050b0d!important;
+  --bg-2:#081215!important;
+  --surface:#0b171a!important;
+  --surface-2:#101f23!important;
+  --line:#20373c!important;
+  --text:#edf7f3!important;
+  --muted:#91aaa4!important;
+  --muted-2:#66817b!important;
+  --ui-ink:#edf7f3!important;
+  --ui-muted:#91aaa4!important;
+  --ui-soft:#0b171a!important;
+  --ui-line:#20373c!important;
+}
+
+:root[data-theme="dark"] html,
+:root[data-theme="dark"] body{
+  background:#050b0d!important;
+  color:#edf7f3!important;
+}
+:root[data-theme="dark"] .main-area,
+:root[data-theme="dark"] .main-area .container,
+:root[data-theme="dark"] .content-area,
+:root[data-theme="dark"] .page-content{
+  background:#050b0d!important;
+  color:#edf7f3!important;
+}
+
+/* Headers / page shells */
+:root[data-theme="dark"] .content-header,
+:root[data-theme="dark"] .page-header,
+:root[data-theme="dark"] .section-header,
+:root[data-theme="dark"] .hero-card,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .metric-card,
+:root[data-theme="dark"] .insight-card,
+:root[data-theme="dark"] .goal-card,
+:root[data-theme="dark"] .scenario-card,
+:root[data-theme="dark"] .action-plan-card,
+:root[data-theme="dark"] .command-secondary,
+:root[data-theme="dark"] .ret-scenario-card,
+:root[data-theme="dark"] .pro-blur-section,
+:root[data-theme="dark"] .pro-blur-content,
+:root[data-theme="dark"] .money-subview,
+:root[data-theme="dark"] .plan-subview,
+:root[data-theme="dark"] .proj-subpanel,
+:root[data-theme="dark"] .insight-subview{
+  background:#0b171a!important;
+  color:#edf7f3!important;
+  border-color:#20373c!important;
+  box-shadow:0 8px 28px rgba(0,0,0,.28)!important;
+}
+
+/* ALL navigation bars / tabs */
+:root[data-theme="dark"] .money-subtabs,
+:root[data-theme="dark"] .plan-subtabs,
+:root[data-theme="dark"] .proj-subtabs,
+:root[data-theme="dark"] #insightSubtabs,
+:root[data-theme="dark"] #flowTabs,
+:root[data-theme="dark"] #moneySubtabs,
+:root[data-theme="dark"] .flow-tabs,
+:root[data-theme="dark"] .tab-bar,
+:root[data-theme="dark"] .tabs,
+:root[data-theme="dark"] nav.tabs{
+  background:#081215!important;
+  border-color:#20373c!important;
+  box-shadow:none!important;
+}
+:root[data-theme="dark"] .money-subtab-btn,
+:root[data-theme="dark"] .plan-subtab-btn,
+:root[data-theme="dark"] .proj-subtab-btn,
+:root[data-theme="dark"] .insight-subtab-btn,
+:root[data-theme="dark"] .flow-tab,
+:root[data-theme="dark"] .tab-btn,
+:root[data-theme="dark"] .tab-button{
+  background:transparent!important;
+  color:#91aaa4!important;
+  border-color:transparent!important;
+}
+:root[data-theme="dark"] .money-subtab-btn:hover,
+:root[data-theme="dark"] .plan-subtab-btn:hover,
+:root[data-theme="dark"] .proj-subtab-btn:hover,
+:root[data-theme="dark"] .insight-subtab-btn:hover,
+:root[data-theme="dark"] .flow-tab:hover,
+:root[data-theme="dark"] .tab-btn:hover,
+:root[data-theme="dark"] .tab-button:hover{
+  background:#12262a!important;
+  color:#edf7f3!important;
+}
+:root[data-theme="dark"] .money-subtab-btn.active,
+:root[data-theme="dark"] .plan-subtab-btn.active,
+:root[data-theme="dark"] .proj-subtab-btn.active,
+:root[data-theme="dark"] .insight-subtab-btn.active,
+:root[data-theme="dark"] .flow-tab.active,
+:root[data-theme="dark"] .tab-btn.active,
+:root[data-theme="dark"] .tab-button.active{
+  background:#102a27!important;
+  color:#49d0a8!important;
+  border-color:#24594d!important;
+  box-shadow:0 1px 5px rgba(0,0,0,.35)!important;
+}
+
+/* Buttons and controls */
+:root[data-theme="dark"] .btn,
+:root[data-theme="dark"] button:not(.dash-nav-btn):not(.money-subtab-btn):not(.plan-subtab-btn):not(.proj-subtab-btn):not(.insight-subtab-btn):not(.flow-tab){
+  background:#0f2024!important;
+  color:#e7f2ee!important;
+  border-color:#29454b!important;
+  box-shadow:none!important;
+}
+:root[data-theme="dark"] .btn:hover,
+:root[data-theme="dark"] button:not(.dash-nav-btn):hover{background:#153036!important}
+:root[data-theme="dark"] .btn.gold,
+:root[data-theme="dark"] .btn.primary,
+:root[data-theme="dark"] button.primary{
+  background:#0f9274!important;
+  color:#fff!important;
+  border-color:#0f9274!important;
+}
+
+/* Inputs / selects / date fields */
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] option{
+  background:#081519!important;
+  color:#edf7f3!important;
+  border-color:#29454b!important;
+}
+
+/* Common white utility blocks */
+:root[data-theme="dark"] .gmf-simple-callout,
+:root[data-theme="dark"] .gmf-goal-summary,
+:root[data-theme="dark"] .gmf-plan-map div,
+:root[data-theme="dark"] .insights-free-card,
+:root[data-theme="dark"] .theme-choice,
+:root[data-theme="dark"] .settings-panel,
+:root[data-theme="dark"] .settings-actions,
+:root[data-theme="dark"] .goal-form,
+:root[data-theme="dark"] .flow-panel,
+:root[data-theme="dark"] .flow-view,
+:root[data-theme="dark"] .money-flow-card{
+  background:#0b171a!important;
+  color:#edf7f3!important;
+  border-color:#20373c!important;
+}
+
+/* Text that was hard-coded dark for light mode */
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] h4,
+:root[data-theme="dark"] h5,
+:root[data-theme="dark"] h6,
+:root[data-theme="dark"] .title,
+:root[data-theme="dark"] .card-title,
+:root[data-theme="dark"] .section-label,
+:root[data-theme="dark"] .gmf-simple-callout b,
+:root[data-theme="dark"] .gmf-plan-map b,
+:root[data-theme="dark"] label{
+  color:#edf7f3!important;
+}
+:root[data-theme="dark"] p,
+:root[data-theme="dark"] .section-sub,
+:root[data-theme="dark"] .section-copy,
+:root[data-theme="dark"] .muted,
+:root[data-theme="dark"] .m-sub,
+:root[data-theme="dark"] .m-label,
+:root[data-theme="dark"] .updated,
+:root[data-theme="dark"] .gmf-simple-callout span,
+:root[data-theme="dark"] .gmf-plan-map span{
+  color:#91aaa4!important;
+}
+
+/* Dashboard metric cards */
+:root[data-theme="dark"] .metric-card,
+:root[data-theme="dark"] .gmf-tab-kpi,
+:root[data-theme="dark"] .gmf-tab-kpis,
+:root[data-theme="dark"] .metrics-row .metric-card{
+  background:#0b171a!important;
+  border-color:#20373c!important;
+}
+:root[data-theme="dark"] .metric-card .m-val,
+:root[data-theme="dark"] .hv,
+:root[data-theme="dark"] .gmf-tab-kpi strong,
+:root[data-theme="dark"] .gmf-tab-kpi .value{
+  color:#edf7f3!important;
+}
+
+/* Chart wrappers: no white rectangles around visualizations */
+:root[data-theme="dark"] .chart-card,
+:root[data-theme="dark"] .chart-wrap,
+:root[data-theme="dark"] .chart-container,
+:root[data-theme="dark"] .chart-panel,
+:root[data-theme="dark"] .graph-card,
+:root[data-theme="dark"] .flow-chart-card{
+  background:#0b171a!important;
+  border-color:#20373c!important;
+}
+
+/* SVG chart backgrounds and labels */
+:root[data-theme="dark"] svg rect[fill="#fff"],
+:root[data-theme="dark"] svg rect[fill="#FFFFFF"],
+:root[data-theme="dark"] svg rect[fill="#f2f3f5"],
+:root[data-theme="dark"] svg rect[fill="#F2F3F5"]{
+  fill:#0b171a!important;
+}
+:root[data-theme="dark"] svg text{fill:#91aaa4!important}
+:root[data-theme="dark"] svg .axis text,
+:root[data-theme="dark"] svg .tick text{fill:#91aaa4!important}
+:root[data-theme="dark"] svg line,
+:root[data-theme="dark"] svg .grid-line{stroke:#20373c!important}
+
+/* Tooltips / popovers */
+:root[data-theme="dark"] .tooltip,
+:root[data-theme="dark"] .chart-tooltip,
+:root[data-theme="dark"] .popover,
+:root[data-theme="dark"] .dropdown-menu,
+:root[data-theme="dark"] .modal-content{
+  background:#0b171a!important;
+  color:#edf7f3!important;
+  border-color:#29454b!important;
+  box-shadow:0 16px 45px rgba(0,0,0,.55)!important;
+}
+
+/* White decorative surfaces / cards commonly introduced by later UI passes */
+:root[data-theme="dark"] [style*="background:#fff"],
+:root[data-theme="dark"] [style*="background: #fff"],
+:root[data-theme="dark"] [style*="background:#ffffff"],
+:root[data-theme="dark"] [style*="background: #ffffff"]{
+  background:#0b171a!important;
+}
+
+/* Keep green / gold accents, but eliminate pale light-mode pills */
+:root[data-theme="dark"] .tab-focus-badge,
+:root[data-theme="dark"] .insights-pro-points span,
+:root[data-theme="dark"] .insights-pro-nav{
+  background:#102a27!important;
+  color:#49d0a8!important;
+  border-color:#24594d!important;
+}
+:root[data-theme="dark"] .insights-pro-banner{
+  background:linear-gradient(135deg,#141a17,#0d1b1a)!important;
+  border-color:#3d4634!important;
+}
+
+/* Scrollbars */
+:root[data-theme="dark"] *{scrollbar-color:#29454b #081215}
+</style>
 </head>
 <body>
 <script>
