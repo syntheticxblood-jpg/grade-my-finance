@@ -7831,7 +7831,18 @@ function gradeNow(){
   if(raw.expenses<=0){ toastMsg("Enter your average monthly expenses."); return; }
   runWithLoader(function(){
     var v=values(); var cats=categoryScores(v);
-    openReport(v,cats); // persists history, streaks, achievements, cloud save - unchanged
+    // openReport() shows the modal and kicks off a requestAnimationFrame
+    // score-reveal animation as a side effect of its normal (in-page)
+    // behavior. Setting location.href right after doesn't stop the
+    // browser from painting that frame first, which is what caused the
+    // brief flash of the old report card before landing on the
+    // dashboard. Forcing the modal hidden here - overriding its own
+    // classList changes - means openReport() still runs exactly as
+    // before (all the persistence: history, streaks, achievements,
+    // cloud save) but nothing it does to the modal can ever paint.
+    var modalEl = document.getElementById("reportModal");
+    if(modalEl) modalEl.style.setProperty("display", "none", "important");
+    openReport(v,cats);
     window.location.href = "dashboard.html";
   });
 }
