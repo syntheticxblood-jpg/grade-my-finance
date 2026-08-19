@@ -5820,10 +5820,93 @@ function renderProgressPanel(hist){
 
 
 function getLastReportV(){
+  /*
+   * Money Flow used to depend entirely on gmf_last_report. That snapshot can
+   * legitimately be missing after history is restored, older check-ins are
+   * loaded, or the user clears the report snapshot. The dashboard itself
+   * already has the same financial fields in gmf_history_v2, so use the
+   * latest history entry as the source of truth when the report snapshot is
+   * unavailable or incomplete.
+   */
+  var savedV = null;
   try{
     var saved = JSON.parse(localStorage.getItem('gmf_last_report') || 'null');
-    return (saved && saved.v) ? saved.v : null;
-  }catch(_){ return null; }
+    if(saved && saved.v) savedV = saved.v;
+  }catch(_){}
+
+  var hist = getHistory();
+  var latest = hist.length ? hist[hist.length-1] : null;
+  if(!savedV && !latest) return null;
+
+  var v = savedV ? Object.assign({}, savedV) : {};
+
+  if(latest){
+    function fill(key, value){
+      if((v[key] === undefined || v[key] === null || Number.isNaN(Number(v[key]))) &&
+         typeof value === 'number' && isFinite(value)){
+        v[key] = value;
+      }
+    }
+
+    fill('annualIncome', latest.annualIncome);
+    fill('monthlyExpenses', latest.monthlyExpenses);
+    fill('expenses', latest.monthlyExpenses);
+    fill('income', typeof latest.annualIncome === 'number' ? latest.annualIncome/12 : null);
+    fill('savingsRate', latest.savingsRate);
+    fill('totalDebt', latest.totalDebt);
+    fill('cash', latest.cash);
+    fill('retire', latest.retire);
+    fill('brokerage', latest.brokerage);
+    fill('crypto', latest.crypto);
+    fill('home', latest.home);
+    fill('car', latest.car);
+    fill('hsa', latest.hsa);
+    fill('mortgage', latest.mortgage);
+    fill('student', latest.student);
+    fill('auto', latest.auto);
+    fill('cc', latest.cc);
+    fill('otherDebt', latest.otherDebt);
+    fill('net', latest.net);
+    fill('age', latest.age);
+  }
+
+  // Normalize the names expected by the Money Flow renderers.
+  if(typeof v.annualIncome !== 'number' && typeof v.income === 'number'){
+    v.annualIncome = v.income * 12;
+  }
+  if(typeof v.expenses !== 'number' && typeof v.monthlyExpenses === 'number'){
+    v.expenses = v.monthlyExpenses;
+  }
+  if(typeof v.income !== 'number' && typeof v.annualIncome === 'number'){
+    v.income = v.annualIncome / 12;
+  }
+
+  var assetKeys = ['home','retire','brokerage','cash','crypto','hsa','car'];
+  var debtKeys = ['mortgage','student','auto','cc','otherDebt'];
+
+  if(typeof v.assets !== 'number'){
+    v.assets = assetKeys.reduce(function(sum,k){
+      return sum + (typeof v[k] === 'number' ? Math.max(0,v[k]) : 0);
+    },0);
+  }
+  if(typeof v.liabs !== 'number'){
+    v.liabs = debtKeys.reduce(function(sum,k){
+      return sum + (typeof v[k] === 'number' ? Math.max(0,v[k]) : 0);
+    },0);
+  }
+  if(typeof v.net !== 'number') v.net = v.assets - v.liabs;
+  if(typeof v.totalDebt !== 'number') v.totalDebt = v.liabs;
+
+  // Ensure all numeric fields used by the visualizers are safe.
+  [
+    'annualIncome','expenses','income','cash','retire','brokerage','crypto',
+    'home','car','hsa','mortgage','student','auto','cc','otherDebt',
+    'assets','liabs','net','totalDebt','savingsRate'
+  ].forEach(function(k){
+    if(typeof v[k] !== 'number' || !isFinite(v[k])) v[k] = 0;
+  });
+
+  return v;
 }
 function renderMoneyExtras(){
   var v = getLastReportV();
@@ -8618,6 +8701,29 @@ main{padding-top:16px !important;padding-bottom:42px !important}
 :root[data-theme="light"] .sidebar-profile .muted,
 :root[data-theme="light"] .sidebar-profile .edit-name-link{
   color:#a9c0b8 !important;
+}
+
+/* === MONEY FLOW DATA VISIBILITY FIX ===
+   The charts are real dashboard data, not placeholder content. */
+#moneyFlowContent .pro-blur-content{
+  filter:none!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+#moneyFlowContent .pro-blur-overlay{
+  display:none!important;
+}
+#moneyFlowContent .flow-panel,
+#moneyFlowContent .flow-summary-cards{
+  position:relative;
+  z-index:1;
+}
+#moneyFlowContent .flow-view{
+  min-height:340px;
+}
+#moneyFlowContent .flow-view svg{
+  display:block;
+  min-height:260px;
 }
 </style>
 </body>
