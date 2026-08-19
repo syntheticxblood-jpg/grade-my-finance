@@ -2475,6 +2475,14 @@ svg text{fill:var(--ui-muted)}
   #flowTabs, #projSubtabs{top:64px !important}
 }
 </style>
+
+<style id="gmf-flow-tabs-chart-adjacency">
+/* Money Flow: navigation first, then the selected visualization immediately below it. */
+#flowTabs{margin-bottom:8px !important;}
+#flowTabs + .flow-panel{margin-top:0 !important;}
+#flowTabs + .flow-panel .flow-view.active{margin-top:0 !important;}
+#flowTabs + .flow-panel .flow-header{margin-top:0 !important;}
+</style>
 </head>
 <body>
 <script>
@@ -2850,11 +2858,6 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div id="moneyFlowContent">
           <div class="pro-blur-section">
           <div class="pro-blur-content">
-          <div class="flow-summary-cards" id="flowSummaryCards">
-            <div class="flow-summary-card income"><span class="flow-summary-label">Total Income</span><span class="flow-summary-val" id="flowSumIncome">—</span></div>
-            <div class="flow-summary-card expenses"><span class="flow-summary-label">Total Expenses</span><span class="flow-summary-val" id="flowSumExpenses">—</span></div>
-            <div class="flow-summary-card net"><span class="flow-summary-label">Net Income</span><span class="flow-summary-val" id="flowSumNet">—</span></div>
-          </div>
           <div class="flow-tabs" id="flowTabs">
             <button class="flow-tab active" data-view="flowAssets" type="button">Assets Flow</button>
             <button class="flow-tab" data-view="flowLiabs" type="button">Liabilities Flow</button>
@@ -2882,6 +2885,12 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
               <svg id="flowGrowthSvg" width="100%" height="280" viewBox="0 0 900 280" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth trend chart"></svg>
             </div>
           </div>
+          <div class="flow-summary-cards" id="flowSummaryCards">
+            <div class="flow-summary-card income"><span class="flow-summary-label">Total Income</span><span class="flow-summary-val" id="flowSumIncome">—</span></div>
+            <div class="flow-summary-card expenses"><span class="flow-summary-label">Total Expenses</span><span class="flow-summary-val" id="flowSumExpenses">—</span></div>
+            <div class="flow-summary-card net"><span class="flow-summary-label">Net Income</span><span class="flow-summary-val" id="flowSumNet">—</span></div>
+          </div>
+
         </div>
           <div class="pro-blur-overlay">
             <div class="pro-blur-title">🔒 See where your money actually flows</div>
