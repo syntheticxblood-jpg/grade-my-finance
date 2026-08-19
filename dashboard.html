@@ -1964,6 +1964,150 @@ body{background:#f7f8f7!important;color:var(--ship-ink)!important}.main-area{mar
 @media(max-width:1100px){.ship-grade-hero,.ship-lower-grid,.ship-bottom-grid{grid-template-columns:1fr}.ship-grade-main{border-right:0;border-bottom:1px solid var(--ship-line)}.ship-metric-strip{grid-template-columns:repeat(3,1fr)}.ship-metric:nth-child(3){border-right:0}.ship-metric:nth-child(n+4){border-top:1px solid var(--ship-line)}}
 @media(max-width:760px){.main-area{margin-left:0!important}.main-area .container{padding-left:16px!important;padding-right:16px!important}.content-header{align-items:flex-start!important}.ship-grade-row{grid-template-columns:auto 1fr}.ship-grade-trend{grid-column:1/-1;border-left:0;border-top:1px solid var(--ship-line);padding:14px 0 0}.ship-strength-opps{grid-template-columns:1fr}.ship-strength-opps>div+div{border-left:0;border-top:1px solid var(--ship-line);padding:14px 0 0}.ship-glance-grid{grid-template-columns:1fr 1fr}.ship-glance-item:nth-child(2){border-right:0}.ship-glance-item:nth-child(n+3){border-top:1px solid var(--ship-line)}.ship-metric-strip{grid-template-columns:1fr 1fr}.ship-metric:nth-child(odd){border-right:1px solid var(--ship-line)}.ship-metric:nth-child(even){border-right:0}.ship-metric:nth-child(n+3){border-top:1px solid var(--ship-line)}.ship-chart-wrap{height:230px}.ship-grade-letter{font-size:74px}.ship-grade-score{font-size:22px}}
 </style>
+
+<style id="gmf-ui-4">
+/* =========================================================
+   GRADE MY FINANCE — UI 4.0
+   Serious financial-product shell for every dashboard surface.
+   ========================================================= */
+:root{
+  --ui-ink:#14242b; --ui-muted:#687980; --ui-soft:#f3f6f5; --ui-line:#dfe6e4;
+  --ui-green:#0f9274; --ui-green-dark:#08715c; --ui-green-soft:#e8f5f1;
+  --ui-red:#c94f47; --ui-red-soft:#fff0ee; --ui-gold:#c89432; --ui-gold-soft:#fbf5e6;
+  --ui-blue:#3f78c8; --ui-blue-soft:#eef4ff;
+}
+body{background:#f5f7f6!important;color:var(--ui-ink)!important}
+.main-area{background:#f5f7f6!important}
+.main-area .container{max-width:1380px!important}
+.content-header{background:#fff!important;border:1px solid var(--ui-line)!important;border-radius:16px!important;padding:18px 20px!important;box-shadow:0 5px 18px rgba(17,39,45,.035)!important}
+
+/* Navigation: product-like, not webpage-like */
+.sidebar{background:#0d1720!important;border-right:1px solid #26343b!important;color:#dce6e8!important}
+.sidebar .dash-nav{border:0!important;display:grid!important;gap:4px!important;margin:0!important;overflow:visible!important}
+.sidebar .dash-nav-btn{border:0!important;border-radius:9px!important;padding:10px 11px!important;color:#b7c6ca!important;background:transparent!important;text-align:left!important;width:100%!important}
+.sidebar .dash-nav-btn:hover{background:#16262f!important;color:#fff!important}
+.sidebar .dash-nav-btn.active{background:#0a4e42!important;color:#fff!important;box-shadow:inset 3px 0 #20b58f!important}
+.sidebar .nav-section-label{padding:16px 10px 5px!important;color:#8ca0a6!important}
+
+/* Tab panels become a consistent app surface */
+.dash-tab-panel{background:transparent!important;border:0!important;border-radius:0!important;padding:0!important}
+.dash-tab-panel>.section-label:first-child{font:800 10px var(--font-mono)!important;letter-spacing:.12em!important;color:#74848a!important;margin:2px 0 5px!important}
+.dash-tab-panel>.section-sub{font-size:13px!important;color:#738188!important;margin:0 0 18px!important;max-width:820px!important}
+.card,.metric-card,.hero-card,.goal-card,.scenario-card,.insight-card{background:#fff!important;border:1px solid var(--ui-line)!important;box-shadow:0 4px 16px rgba(18,39,46,.035)!important;border-radius:14px!important}
+.card{padding:20px!important}
+.card+.card{margin-top:14px}
+.btn{border-color:#d7e0dd!important;border-radius:8px!important;background:#fff!important;color:#21353c!important}
+.btn.gold{background:var(--ui-green)!important;border-color:var(--ui-green)!important;color:#fff!important;box-shadow:0 4px 12px rgba(15,146,116,.14)!important}
+.btn.gold:hover{background:var(--ui-green-dark)!important}
+
+/* All inner navigation bars */
+.money-subtabs,.proj-subtabs,#insightSubtabs{display:flex!important;gap:3px!important;align-items:center!important;border:1px solid #dfe6e4!important;border-radius:10px!important;padding:4px!important;background:#edf2f0!important;margin:0 0 16px!important;overflow:auto!important}
+.money-subtab-btn,.plan-subtab-btn,.proj-subtab-btn,.insight-subtab-btn{appearance:none!important;border:0!important;border-bottom:0!important;background:transparent!important;color:#6c7b80!important;font:700 11px var(--font-mono)!important;letter-spacing:.01em!important;padding:9px 13px!important;border-radius:7px!important;white-space:nowrap!important;cursor:pointer!important;transition:.15s ease!important}
+.money-subtab-btn:hover,.plan-subtab-btn:hover,.proj-subtab-btn:hover,.insight-subtab-btn:hover{color:#17323a!important;background:#f8faf9!important}
+.money-subtab-btn.active,.plan-subtab-btn.active,.proj-subtab-btn.active,.insight-subtab-btn.active{background:#fff!important;color:var(--ui-green-dark)!important;box-shadow:0 1px 4px rgba(16,38,45,.09)!important}
+.money-subview,.plan-subview,.proj-subpanel,.insight-subview{animation:gmfPanelIn .18s ease}
+@keyframes gmfPanelIn{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
+
+/* Inputs / forms */
+input,select,textarea{font:500 13px var(--font-body)!important;color:#193039!important;background:#fff!important;border:1px solid #d6dfdc!important;border-radius:9px!important;min-height:40px!important;padding:9px 11px!important;box-shadow:none!important}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:#39a98b!important;box-shadow:0 0 0 3px rgba(15,146,116,.09)!important}
+label{font-size:11px!important;font-weight:700!important;color:#5d7077!important;letter-spacing:.01em!important}
+.goal-form{background:#f7faf9!important;border:1px solid var(--ui-line)!important;border-radius:14px!important;padding:16px!important;display:grid!important;grid-template-columns:1fr 1fr auto!important;align-items:end!important;gap:12px!important;margin-bottom:16px!important}
+
+/* Goals */
+.goals-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.goal-card{padding:18px!important;position:relative!important;overflow:hidden!important}
+.goal-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#159a78}
+.goal-card .g-type{font:800 9px var(--font-mono)!important;letter-spacing:.1em!important;color:#75868b!important;text-transform:uppercase!important}
+.goal-card .g-progress-num{font:700 25px var(--font-mono)!important;color:#16333b!important;margin:9px 0!important}
+.goal-card .progress-bar{height:9px!important;background:#edf2f0!important;border-radius:99px!important;overflow:hidden!important}
+.goal-card .progress-bar>div{background:linear-gradient(90deg,#0f9274,#45b997)!important;border-radius:99px!important}
+.goal-card .g-remaining{font-size:11px!important;color:#718087!important;margin-top:8px!important}
+.goal-card .g-actions{margin-top:13px!important;padding-top:11px!important;border-top:1px solid #edf0ef!important}
+.gmf-goal-presets{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.gmf-goal-preset{border:1px solid #d9e2df;background:#fff;border-radius:8px;padding:7px 9px;font:700 10px var(--font-mono);color:#5d7076;cursor:pointer}
+.gmf-goal-preset:hover{border-color:#77c9b1;color:#08715c;background:#f4faf8}
+
+/* Money */
+#panel-networth .hero-card{padding:20px!important;margin-top:0!important}
+#panel-networth .nw-breakdown{gap:10px!important}
+#panel-networth .nw-cell{background:#fff!important;border:1px solid var(--ui-line)!important;border-radius:12px!important;box-shadow:none!important}
+.flow-summary-cards{gap:10px!important}
+.flow-summary-card{background:#fff!important;border:1px solid var(--ui-line)!important;border-radius:12px!important;box-shadow:none!important}
+.bill-card,.bill-row,.credit-card,.allocation-card{border-color:var(--ui-line)!important;background:#fff!important;border-radius:12px!important}
+
+/* Plan */
+#panel-scenarios{position:relative!important}
+#panel-scenarios .card{box-shadow:none!important}
+#panel-scenarios .money-subtabs{margin-top:0!important}
+.opp-cards-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+.opp-card{min-height:185px!important;padding:17px!important;background:#fff!important;border:1px solid var(--ui-line)!important;border-radius:13px!important;box-shadow:0 3px 12px rgba(16,38,45,.035)!important}
+.opp-card.weakest{border-color:#e8c9c4!important;background:linear-gradient(145deg,#fff8f7,#fff)!important}
+.opp-card-title{color:#1a333b!important}
+.opp-card-tip{color:#708087!important}
+.weakest-link-pill{background:#fff8e8!important;border:1px solid #ead7a5!important;color:#6c5a28!important;margin:0 0 14px!important}
+.moves-list{gap:8px!important;margin-top:12px!important}
+.moves-list li{background:#f7faf9;border:1px solid #e2e9e6;border-radius:10px;padding:11px 12px 11px 42px!important;align-items:center!important}
+.moves-list li::before{left:11px!important;top:11px!important;background:#e5f4ef!important;color:#08715c!important}
+.debt-race-track{background:#edf2f0!important}
+
+/* Pro gates should look intentional, not broken */
+.pro-blur-section{border:1px solid var(--ui-line)!important;border-radius:14px!important;overflow:hidden!important;background:#fff!important}
+.pro-blur-content{filter:blur(3px)!important;opacity:.48!important}
+.pro-blur-overlay{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.96) 68%)!important}
+.pro-blur-title{font-size:14px!important;color:#1a343c!important}
+.pro-blur-sub{color:#708087!important}
+
+/* Grade & history */
+#panel-score .hero-card{padding:20px!important}
+#panel-score .hv{font-size:38px!important;color:#12323a!important}
+#panel-score .stats-grid{gap:10px!important}
+#panel-score .stat-cell{background:#fff!important;border:1px solid var(--ui-line)!important;border-radius:11px!important;padding:14px!important}
+#panel-score .stat-cell .s-label{color:#7b898e!important;font:800 9px var(--font-mono)!important;text-transform:uppercase!important;letter-spacing:.08em!important}
+#panel-score .stat-cell .s-val{color:#18343c!important;font-size:18px!important;margin-top:5px!important}
+#panel-score .scenario-card{padding:13px 15px!important}
+#panel-score .chart-time-filters{background:#edf2f0!important;border:1px solid #dde5e2!important;border-radius:8px!important;padding:3px!important}
+#panel-score .chart-time-filters button{border-radius:6px!important;padding:6px 8px!important}
+
+/* Insights */
+#panel-insights .metrics-row{grid-template-columns:1fr 1fr!important;gap:12px!important}
+#panel-insights .metric-card{padding:18px!important}
+#panel-insights .stress-hero-v2{background:#102a32!important;color:#fff!important;border-radius:12px!important;padding:20px!important}
+#panel-insights .stress-hero-v2 .section-label{color:#9acfc0!important}
+#panel-insights .stress-hero-sub{color:#c5d4d7!important}
+#panel-insights .stress-chart-hero{background:#fff!important;border:1px solid var(--ui-line)!important;border-radius:12px!important;padding:12px!important;margin-top:12px!important}
+#panel-insights .stress-builder-col{background:#f7faf9!important;border:1px solid #e1e9e6!important;border-radius:11px!important;padding:13px!important}
+
+/* Common data cards */
+.section-label{color:#6d7d82!important}
+.small,.m-sub,.section-sub{color:#738188!important}
+.mono{color:#16333b}
+.empty-note,.gmf-empty{border:1px dashed #cfdad6!important;background:#f8faf9!important;border-radius:12px!important;color:#738188!important;padding:22px!important}
+
+/* Injected section headers */
+.gmf-page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:0 0 18px;padding:2px 2px 0}
+.gmf-page-head h2{font:700 27px var(--font-display);letter-spacing:-.03em;color:#132b33}
+.gmf-page-head p{margin:4px 0 0;color:#718087;font-size:12px}
+.gmf-page-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.gmf-status-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 9px;border:1px solid #dce5e2;background:#fff;border-radius:8px;font:700 10px var(--font-mono);color:#607177}
+.gmf-status-dot{width:7px;height:7px;border-radius:50%;background:#159a78}
+.gmf-tab-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.gmf-tab-kpi{background:#fff;border:1px solid var(--ui-line);border-radius:12px;padding:14px 15px;min-width:0}
+.gmf-tab-kpi span{display:block;font:800 9px var(--font-mono);letter-spacing:.08em;color:#7b8a8f;text-transform:uppercase}
+.gmf-tab-kpi b{display:block;font:700 20px var(--font-mono);color:#18333b;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gmf-tab-kpi em{display:block;font:700 10px var(--font-mono);font-style:normal;color:#159a78;margin-top:3px}
+.gmf-tab-kpi em.down{color:#c94f47}
+.gmf-action-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#102a32;color:#fff;border-radius:13px;padding:15px 17px;margin-bottom:14px}
+.gmf-action-bar strong{display:block;font-size:13px}
+.gmf-action-bar span{display:block;color:#b8c9cc;font-size:11px;margin-top:2px}
+.gmf-action-bar .btn{background:transparent!important;border-color:#557179!important;color:#fff!important}
+.gmf-action-bar .btn.gold{background:#129b79!important;border-color:#129b79!important}
+
+@media(max-width:1000px){.opp-cards-grid{grid-template-columns:1fr 1fr!important}.gmf-tab-kpis{grid-template-columns:1fr 1fr!important}.ship-grade-hero{grid-template-columns:1fr!important}}
+@media(max-width:700px){.gmf-page-head{align-items:flex-start;flex-direction:column}.gmf-page-meta{justify-content:flex-start}.goal-form{grid-template-columns:1fr!important}.goals-grid{grid-template-columns:1fr!important}.opp-cards-grid{grid-template-columns:1fr!important}.gmf-tab-kpis{grid-template-columns:1fr 1fr!important}.gmf-action-bar{align-items:flex-start;flex-direction:column}.money-subtabs,.proj-subtabs,#insightSubtabs{width:100%}}
+@media(max-width:420px){.gmf-tab-kpis{grid-template-columns:1fr!important}.gmf-page-head h2{font-size:24px}}
+</style>
+
 </head>
 <body>
 <script>
@@ -7150,5 +7294,108 @@ init().then(function(){ try{ window.renderGmfCommandCenter(getHistory()); }catch
   window.renderGmfCommandCenter=render;
 })();
 </script>
+
+<script id="gmf-ui-4-js">
+(function(){
+  'use strict';
+  function q(s){return document.querySelector(s)}
+  function id(s){return document.getElementById(s)}
+  function hist(){try{return JSON.parse(localStorage.getItem('gmf_history_v2')||'[]')}catch(e){return[]}}
+  function money(v){if(typeof v!=='number'||!isFinite(v))return '—';var a=Math.abs(v),s=v<0?'-':'';if(a>=1000000)return s+'$'+(a/1000000).toFixed(a>=10000000?1:2)+'M';if(a>=1000)return s+'$'+Math.round(a).toLocaleString();return s+'$'+Math.round(a).toLocaleString()}
+  function pct(v){return typeof v==='number'&&isFinite(v)?v.toFixed(1)+'%':'—'}
+  function grade(v){v=Number(v||0);if(v>=93)return'A+';if(v>=90)return'A';if(v>=87)return'A-';if(v>=83)return'B+';if(v>=80)return'B';if(v>=77)return'B-';if(v>=73)return'C+';if(v>=70)return'C';if(v>=67)return'C-';if(v>=63)return'D+';if(v>=60)return'D';return'F'}
+  function delta(v,suffix){if(typeof v!=='number'||!isFinite(v))return'—';return(v>=0?'↑ +':'↓ ')+(Math.abs(v)<10?Math.abs(v).toFixed(1):Math.round(Math.abs(v)).toLocaleString())+(suffix||'')}
+  function latest(){var h=hist();return{h:h,l:h.length?h[h.length-1]:null,p:h.length>1?h[h.length-2]:null}}
+  function addHead(panel,title,copy,meta){
+    if(!panel||panel.querySelector(':scope > .gmf-page-head'))return;
+    var el=document.createElement('div');el.className='gmf-page-head';
+    el.innerHTML='<div><h2>'+title+'</h2><p>'+copy+'</p></div><div class="gmf-page-meta">'+(meta||'')+'</div>';
+    panel.insertBefore(el,panel.firstElementChild);
+  }
+  function chip(text,good){return'<span class="gmf-status-chip"><i class="gmf-status-dot" style="background:'+(good?'#159a78':'#d59a35')+'"></i>'+text+'</span>'}
+  function kpi(label,value,change,down){return'<div class="gmf-tab-kpi"><span>'+label+'</span><b>'+value+'</b><em class="'+(down?'down':'')+'">'+(change||'')+'</em></div>'}
+  function priorities(l){try{return typeof deriveFinancialPriorities==='function'?deriveFinancialPriorities(l)||[]:[]}catch(e){return[]}}
+
+  function enhanceMoney(x){
+    var p=id('panel-networth');if(!p||!x.l)return;
+    addHead(p,'Money','A clearer view of your balance sheet, cash position, and financial activity.',chip('Latest check-in '+new Date(x.l.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}),true));
+    if(!p.querySelector('.gmf-tab-kpis')){
+      var inv=['brokerage','crypto','retire','hsa'].reduce(function(a,k){return a+(typeof x.l[k]==='number'?x.l[k]:0)},0);
+      var cash=typeof x.l.cash==='number'?x.l.cash:null,debt=typeof x.l.totalDebt==='number'?x.l.totalDebt:null,net=typeof x.l.net==='number'?x.l.net:null;
+      var dnet=x.p&&net!==null&&typeof x.p.net==='number'?delta(net-x.p.net):'Your latest balance';
+      var dDebt=x.p&&debt!==null&&typeof x.p.totalDebt==='number'?delta(debt-x.p.totalDebt):'Total recorded debt';
+      var dCash=x.p&&cash!==null&&typeof x.p.cash==='number'?delta(cash-x.p.cash):'Liquid savings';
+      var dSave=x.p&&typeof x.l.savingsRate==='number'&&typeof x.p.savingsRate==='number'?delta(x.l.savingsRate-x.p.savingsRate,' pts'):'Current rate';
+      var wrap=document.createElement('div');wrap.className='gmf-tab-kpis';wrap.innerHTML=kpi('Net worth',money(net),dnet,(x.p&&net<x.p.net))+kpi('Liquid cash',money(cash),dCash,(x.p&&cash<x.p.cash))+kpi('Investments',money(inv),'Retirement + brokerage',false)+kpi('Debt',money(debt),dDebt,(x.p&&debt>x.p.totalDebt));
+      p.insertBefore(wrap,p.querySelector('.money-subtabs'));
+    }
+  }
+
+  function enhanceGoals(x){
+    var p=id('panel-goals');if(!p)return;
+    addHead(p,'Goals','Turn the financial grade into measurable targets you can actually track.',x.l?chip(grade(x.l.score)+' · '+Number(x.l.score||0).toFixed(1)+'/100',true):chip('No check-in yet',false));
+    if(!p.querySelector('.gmf-goal-presets')){
+      var form=q('#panel-goals .goal-form');if(form){
+        var presets=document.createElement('div');presets.className='gmf-goal-presets';presets.innerHTML='<button class="gmf-goal-preset" data-goal-preset="score90" type="button">Target score 90</button><button class="gmf-goal-preset" data-goal-preset="score95" type="button">Target score 95</button><button class="gmf-goal-preset" data-goal-preset="net50" type="button">Net worth $50k</button><button class="gmf-goal-preset" data-goal-preset="net100" type="button">Net worth $100k</button>';
+        form.insertAdjacentElement('afterend',presets);
+        presets.querySelectorAll('button').forEach(function(b){b.onclick=function(){var v=b.dataset.goalPreset; if(v.indexOf('score')===0){id('goalType').value='score';id('goalTarget').value=v==='score90'?90:95}else{id('goalType').value='networth';id('goalTarget').value=v==='net50'?50000:100000}id('goalTarget').focus()}});
+      }
+    }
+  }
+
+  function enhancePlan(x){
+    var p=id('panel-scenarios');if(!p)return;
+    var pri=x.l?priorities(x.l)[0]:null;
+    addHead(p,'Your Plan','A practical sequence of actions, payoff strategies, and what-if decisions built from your latest numbers.',pri?chip('Priority: '+pri.title,true):chip('Update your finances to personalize this',false));
+    if(!p.querySelector('.gmf-action-bar')){
+      var bar=document.createElement('div');bar.className='gmf-action-bar';
+      bar.innerHTML='<div><strong>'+(pri?('Next best move: '+pri.title):'Your next best move')+'</strong><span>'+(pri?(pri.action||pri.copy||'Make this your next measurable improvement.'):'Complete a check-in so Grade My Finance can build a plan from your real numbers.')+'</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" data-goto="goals">Add as goal</button><a class="btn gold" href="index.html#grade">Update finances</a></div>';
+      var tabs=p.querySelector('.money-subtabs');p.insertBefore(bar,tabs);
+      bar.querySelector('[data-goto="goals"]').onclick=function(){var b=q('[data-tab="goals"]');if(b)b.click()};
+    }
+  }
+
+  function enhanceScore(x){
+    var p=id('panel-score');if(!p||!x.l)return;
+    addHead(p,'Grade & History','Your grade is calculated on the main report; this page shows the evidence, trend, and milestones behind it.',chip(grade(x.l.score)+' · '+Number(x.l.score).toFixed(1)+'/100',true));
+    if(!p.querySelector('.gmf-tab-kpis')){
+      var best=Math.max.apply(null,x.h.map(function(h){return Number(h.score||0)}));
+      var d=x.p?Number(x.l.score||0)-Number(x.p.score||0):null;
+      var wrap=document.createElement('div');wrap.className='gmf-tab-kpis';wrap.innerHTML=kpi('Current grade',grade(x.l.score)+' · '+Number(x.l.score).toFixed(1),d===null?'First check-in':delta(d,' pts'),d<0)+kpi('Personal best',Number(best).toFixed(1),'Highest recorded score',false)+kpi('Starting score',Number(x.h[0].score||0).toFixed(1),delta(Number(x.l.score||0)-Number(x.h[0].score||0),' pts'),Number(x.l.score)<Number(x.h[0].score))+kpi('Check-ins',String(x.h.length),'Builds your history',false);
+      p.insertBefore(wrap,p.querySelector('.card'));
+    }
+  }
+
+  function enhanceInsights(x){
+    var p=id('panel-insights');if(!p)return;
+    var pri=x.l?priorities(x.l)[0]:null;
+    addHead(p,'Insights','Context that helps you understand why the grade moved and what could matter next.',pri?chip('Focus: '+pri.title,true):chip('Needs a check-in',false));
+    if(x.l&&!p.querySelector('.gmf-tab-kpis')){
+      var debt=typeof x.l.totalDebt==='number'?x.l.totalDebt:null,net=typeof x.l.net==='number'?x.l.net:null,cash=typeof x.l.cash==='number'?x.l.cash:null,exp=typeof x.l.monthlyExpenses==='number'?x.l.monthlyExpenses:null;
+      var runway=cash!==null&&exp>0?cash/exp:null;
+      var strength=debt===0?'Debt free':net>0?'Positive net worth':'Cash position';
+      var weakness=pri?pri.title:'Complete more data';
+      var wrap=document.createElement('div');wrap.className='gmf-tab-kpis';wrap.innerHTML=kpi('Financial grade',grade(x.l.score)+' · '+Number(x.l.score).toFixed(1),'Calculated in your report',false)+kpi('Biggest strength',strength,'Based on latest check-in',false)+kpi('Biggest opportunity',weakness,'Your next improvement area',false)+kpi('Cash runway',runway===null?'—':runway.toFixed(1)+' mo',runway===null?'Add cash + expenses':'Cash ÷ monthly expenses',runway!==null&&runway<3);
+      p.insertBefore(wrap,p.querySelector('.money-subtabs'));
+    }
+  }
+
+  function normalizeSubtabs(){
+    document.querySelectorAll('.money-subtabs,.proj-subtabs,#insightSubtabs').forEach(function(nav){nav.setAttribute('role','tablist')});
+    document.querySelectorAll('.money-subtab-btn,.plan-subtab-btn,.proj-subtab-btn,.insight-subtab-btn').forEach(function(b){b.setAttribute('role','tab')});
+  }
+  function enhance(){
+    var x=latest();
+    enhanceMoney(x);enhanceGoals(x);enhancePlan(x);enhanceScore(x);enhanceInsights(x);normalizeSubtabs();
+  }
+  function bind(){
+    document.querySelectorAll('.dash-nav-btn[data-tab]').forEach(function(b){b.addEventListener('click',function(){setTimeout(enhance,40)})});
+    document.addEventListener('click',function(e){var b=e.target.closest('.plan-subtab-btn,.money-subtab-btn,.proj-subtab-btn,.insight-subtab-btn');if(b)setTimeout(enhance,30)});
+  }
+  function start(){enhance();bind();setTimeout(enhance,500);setTimeout(enhance,1400)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+
 </body>
 </html>
