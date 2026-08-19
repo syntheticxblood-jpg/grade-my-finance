@@ -7212,33 +7212,65 @@ function setupNetWorthUpdateForm(){
 }
 setupNetWorthUpdateForm();
 
-function renderNetWorthTab(hist){
-  var withNet = hist.filter(function(h){ return typeof h.net === 'number'; });
-  var heroVal = $("nwHeroVal"), heroSub = $("nwHeroSub");
-  if(!withNet.length){
-    heroVal.textContent = "—"; heroSub.textContent = "No net worth history yet.";
-    $("nwChart").innerHTML = ""; $("nwBreakdown").innerHTML = "";
-    renderNwEntriesList(withNet);
-    return;
+function renderColorfulNetWorthChart(svgEl, tooltipEl, points){
+  if(!svgEl) return;
+  var w=900,h=260,pad={l:24,r:24,t:26,b:34},iw=w-pad.l-pad.r,ih=h-pad.t-pad.b;
+  svgEl.setAttribute('viewBox','0 0 '+w+' '+h);
+  if(tooltipEl) tooltipEl.style.display='none';
+  var hasData=points && points.length;
+  var vals=hasData?points.map(function(p){return Number(p.v)||0;}):[0,1800,4200,7600,10400,13800];
+  var demo=!hasData;
+  var min=Math.min.apply(null,vals),max=Math.max.apply(null,vals);
+  if(min===max){min-=Math.max(1,Math.abs(min)*.15);max+=Math.max(1,Math.abs(max)*.15);}
+  var spread=max-min; min-=spread*.12; max+=spread*.12;
+  function x(i){return vals.length===1?pad.l+iw*.5:pad.l+(i/(vals.length-1))*iw;}
+  function y(v){return pad.t+ih-((v-min)/(max-min))*ih;}
+  var line='M '+x(0)+' '+y(vals[0]);
+  for(var i=1;i<vals.length;i++) line+=' L '+x(i)+' '+y(vals[i]);
+  if(vals.length===1){
+    var cx=x(0),cy=y(vals[0]);
+    line='M '+(cx-150)+' '+(cy+35)+' C '+(cx-70)+' '+(cy-55)+' '+(cx+70)+' '+(cy+55)+' '+(cx+150)+' '+(cy-35);
   }
-  var latest = withNet[withNet.length-1];
-  heroVal.textContent = money(latest.net);
-  if(withNet.length >= 2){
-    var change = latest.net - withNet[0].net;
-    var pct = withNet[0].net !== 0 ? (change/Math.abs(withNet[0].net))*100 : null;
-    heroSub.innerHTML = (change>=0?'<span style="color:var(--good)">↑ ':'<span style="color:var(--bad)">↓ ')+money(Math.abs(change))+'</span>'+(pct!==null?' ('+(change>=0?'+':'')+pct.toFixed(1)+'%)':'')+' since first tracked';
-  } else { heroSub.textContent = "One entry tracked so far."; }
+  var baseline=pad.t+ih;
+  var area=line+' L '+(x(vals.length-1))+' '+baseline+' L '+x(0)+' '+baseline+' Z';
+  var html='<defs>'+
+    '<linearGradient id="nwCoolGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#7c3aed"/><stop offset="45%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#10b981"/></linearGradient>'+
+    '<linearGradient id="nwCoolArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06b6d4" stop-opacity=".38"/><stop offset="55%" stop-color="#8b5cf6" stop-opacity=".14"/><stop offset="100%" stop-color="#10b981" stop-opacity="0"/></linearGradient>'+
+    '<filter id="nwGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+  [0,.25,.5,.75,1].forEach(function(f){var gy=pad.t+ih*f;html+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(w-pad.r)+'" y2="'+gy+'" stroke="#dbe7f0" stroke-width="1" stroke-dasharray="4 8"/>';});
+  html+='<path d="'+area+'" fill="url(#nwCoolArea)"/>';
+  html+='<path d="'+line+'" fill="none" stroke="url(#nwCoolGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".18" filter="url(#nwGlow)"/>';
+  html+='<path d="'+line+'" fill="none" stroke="url(#nwCoolGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  if(demo){
+    html+='<text x="'+(w/2)+'" y="'+(pad.t+32)+'" text-anchor="middle" fill="#53677a" font-size="13" font-weight="700">YOUR NET WORTH STORY STARTS HERE</text>';
+    html+='<text x="'+(w/2)+'" y="'+(pad.t+53)+'" text-anchor="middle" fill="#8292a3" font-size="11">Add your first update to replace this preview with your real trend</text>';
+  }
+  vals.forEach(function(v,i){var px=x(i),py=y(v);html+='<circle class="nw-cool-pt" data-i="'+i+'" cx="'+px+'" cy="'+py+'" r="8" fill="#fff" stroke="url(#nwCoolGrad)" stroke-width="3"/><circle cx="'+px+'" cy="'+py+'" r="3" fill="#10b981"/>';});
+  svgEl.innerHTML=html;
+  if(tooltipEl && hasData){svgEl.querySelectorAll('.nw-cool-pt').forEach(function(c){c.addEventListener('mouseenter',function(){var i=+c.getAttribute('data-i'),pt=points[i];tooltipEl.style.display='block';tooltipEl.innerHTML='<b>'+money(pt.v)+'</b><br><span>'+formatDateFull(pt.ts)+'</span>';var r=svgEl.getBoundingClientRect();tooltipEl.style.left=Math.max(8,Math.min(r.width-120,(x(i)/w)*r.width-55))+'px';tooltipEl.style.top=Math.max(8,(y(pt.v)/h)*r.height-56)+'px';});c.addEventListener('mouseleave',function(){tooltipEl.style.display='none';});});}
+}
 
-  var filtered = filterByRange(withNet, nwRange, 'ts');
-  drawChart($("nwChart"), $("nwTooltip"), filtered.map(function(h){ return {v:h.net, ts:h.ts}; }), { formatter:money });
-
-  // Breakdown: current net worth only (assets/liabilities aren't stored
-  // historically, only the net figure) — show what's honestly available.
-  var breakdownEl = $("nwBreakdown");
-  breakdownEl.innerHTML = '<div class="nw-cell"><div class="n-label">Net Worth</div><div class="n-val mono">'+money(latest.net)+'</div>' +
-    (withNet.length >= 2 ? '<div class="n-delta '+((latest.net-withNet[withNet.length-2].net)>=0?'up':'down')+'">'+((latest.net-withNet[withNet.length-2].net)>=0?'+':'')+money(latest.net-withNet[withNet.length-2].net)+' since previous check-in</div>' : '') +
-    '</div>';
-
+function renderNetWorthTab(hist){
+  hist=hist||[];
+  var withNet=hist.filter(function(h){return typeof h.net==='number' && isFinite(h.net);});
+  var heroVal=$("nwHeroVal"),heroSub=$("nwHeroSub"),chart=$("nwChart"),breakdown=$("nwBreakdown");
+  if(!withNet.length){
+    if(heroVal) heroVal.textContent='Start tracking';
+    if(heroSub) heroSub.textContent='Add your first update to build your personal net worth trend.';
+    renderColorfulNetWorthChart(chart,$("nwTooltip"),[]);
+    if(breakdown) breakdown.innerHTML='<div class="nw-cell"><div class="n-label">NEXT STEP</div><div class="n-val" style="font-size:18px">Add your numbers</div><div class="n-delta up">Your colorful trend will appear here</div></div><div class="nw-cell"><div class="n-label">WHAT YOU\'LL SEE</div><div class="n-val" style="font-size:18px">Growth over time</div><div class="n-delta up">Track every update and milestone</div></div>';
+    renderNwEntriesList(withNet); return;
+  }
+  var latest=withNet[withNet.length-1];
+  if(heroVal) heroVal.textContent=money(latest.net);
+  if(heroSub){
+    if(withNet.length>=2){var change=latest.net-withNet[0].net,pct=withNet[0].net!==0?(change/Math.abs(withNet[0].net))*100:null;heroSub.innerHTML='<span style="color:'+(change>=0?'#10b981':'#ef4444')+';font-weight:800">'+(change>=0?'↑ ':'↓ ')+money(Math.abs(change))+'</span>'+(pct!==null?' · '+(change>=0?'+':'')+pct.toFixed(1)+'%':'')+' since first tracked';}
+    else heroSub.textContent='First data point saved — add another update to reveal your trend.';
+  }
+  var filtered=filterByRange(withNet,nwRange,'ts');
+  if(!filtered.length && withNet.length) filtered=[latest];
+  renderColorfulNetWorthChart(chart,$("nwTooltip"),filtered.map(function(h){return {v:h.net,ts:h.ts};}));
+  if(breakdown){var prev=withNet.length>=2?withNet[withNet.length-2]:null,deltaVal=prev?latest.net-prev.net:null;breakdown.innerHTML='<div class="nw-cell"><div class="n-label">NET WORTH</div><div class="n-val mono">'+money(latest.net)+'</div><div class="n-delta '+(deltaVal===null||deltaVal>=0?'up':'down')+'">'+(deltaVal===null?'Latest recorded value':(deltaVal>=0?'+':'')+money(deltaVal)+' since previous update')+'</div></div><div class="nw-cell"><div class="n-label">UPDATES</div><div class="n-val mono">'+withNet.length+'</div><div class="n-delta up">Your financial timeline is growing</div></div>';}
   renderNwEntriesList(withNet);
 }
 
@@ -9073,5 +9105,12 @@ add('panel-achievements','rays','Every improvement counts','Celebrate milestones
 })();
 </script>
 
+
+<style id="gmf-networth-color-boost">
+#panel-networth .hero-card{background:linear-gradient(135deg,#f6f2ff 0%,#eefbff 48%,#effdf5 100%)!important;border:1px solid #d9e5ef!important;overflow:hidden;position:relative}
+#panel-networth .hero-card:after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;right:-70px;top:-120px;background:radial-gradient(circle,rgba(139,92,246,.18),rgba(6,182,212,.08) 55%,transparent 70%);pointer-events:none}
+#nwChart{min-height:260px;display:block;position:relative;z-index:1}
+#panel-networth .nw-cell{background:linear-gradient(135deg,#ffffff,#f6fbff)!important;border-color:#dbe7f0!important}
+</style>
 </body>
 </html>
