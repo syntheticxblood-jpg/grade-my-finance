@@ -2483,6 +2483,22 @@ svg text{fill:var(--ui-muted)}
 #flowTabs + .flow-panel .flow-view.active{margin-top:0 !important;}
 #flowTabs + .flow-panel .flow-header{margin-top:0 !important;}
 </style>
+
+<style id="gmf-moneyflow-directly-below-tabs">
+#panel-networth.gmf-moneyflow-focused{
+  padding-top:0 !important;
+}
+#panel-networth.gmf-moneyflow-focused > .money-subview[data-moneypanel="moneyflow"]{
+  margin-top:0 !important;
+}
+#panel-networth.gmf-moneyflow-focused #moneyFlowContent{
+  margin-top:0 !important;
+}
+#panel-networth.gmf-moneyflow-focused #moneyFlowContent .pro-blur-section,
+#panel-networth.gmf-moneyflow-focused #moneyFlowContent .pro-blur-content{
+  margin-top:0 !important;
+}
+</style>
 </head>
 <body>
 <script>
@@ -4612,18 +4628,33 @@ function __track(){} // no-op if GA hasn't wired a custom tracker on this page
      * the fold. The chart's own Assets/Liabilities/Income/Trend tabs already
      * sit directly above their corresponding chart.
      */
-    if(nav && targetView && name==='moneyflow'){
+    /*
+     * Keep the selected Money workspace immediately below the Money tabs.
+     * The panel also contains shared overview/KPI/graphic elements that are
+     * useful on Net Worth but should NOT sit above Money Flow, Bills, Credit,
+     * or Allocation. Hide those siblings while a non-Net-Worth workspace is
+     * active so the selected content starts immediately under the tabs.
+     */
+    Array.prototype.forEach.call(p.children, function(child){
+      if(child === nav || child.classList.contains('money-subview')){
+        child.classList.remove('gmf-money-context-hidden');
+      }else{
+        child.classList.toggle('gmf-money-context-hidden', name !== 'networth');
+      }
+    });
+
+    if(nav && targetView && name !== 'networth'){
       nav.insertAdjacentElement('afterend', targetView);
       p.classList.add('gmf-moneyflow-focused');
     }else{
       p.classList.remove('gmf-moneyflow-focused');
       if(nav){
-        var firstView=p.querySelector('.money-subview');
-        if(firstView && nav.nextElementSibling!==firstView){
-          /* Restore the normal document order: nav followed by the views. */
-          var anchor=nav;
-          views.forEach(function(v){ anchor.insertAdjacentElement('afterend',v); anchor=v; });
-        }
+        /* Restore the normal document order: nav followed by the views. */
+        var anchor=nav;
+        views.forEach(function(v){
+          anchor.insertAdjacentElement('afterend',v);
+          anchor=v;
+        });
       }
     }
 
@@ -8916,6 +8947,23 @@ main{padding-top:16px !important;padding-bottom:42px !important}
 #panel-networth.gmf-moneyflow-focused #moneyFlowContent .flow-panel{
   margin-top:0 !important;
 }
+
+/* When a Money sub-page is selected, show that sub-page immediately under
+   the Money navigation. The shared Money overview/KPI/graphic content is
+   hidden so it cannot push the selected chart down the page. */
+#panel-networth .gmf-money-context-hidden{
+  display:none !important;
+}
+#panel-networth.gmf-moneyflow-focused > .money-subview[data-moneypanel="moneyflow"]{
+  display:block !important;
+}
+#panel-networth.gmf-moneyflow-focused > .money-subview[data-moneypanel="moneyflow"] .flow-tabs{
+  margin-top:0 !important;
+}
+#panel-networth.gmf-moneyflow-focused > .money-subview[data-moneypanel="moneyflow"] .flow-panel{
+  margin-top:0 !important;
+}
+
 
 /* =========================================================
    CHART TYPOGRAPHY — READABLE / MODERN
