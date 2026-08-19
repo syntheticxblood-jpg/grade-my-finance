@@ -1557,6 +1557,20 @@ body.is-pro .pro-blur-overlay{
 .money-subtab-btn:hover{ color:var(--text) }
 .money-subtab-btn.active{ color:var(--text); border-bottom-color:var(--brand) }
 .bill-type-badge{display:inline-flex;align-items:center;margin-left:7px;padding:3px 7px;border-radius:999px;border:1px solid rgba(19,167,127,.18);background:rgba(19,167,127,.07);color:var(--brand-bright);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.liability-bill-map{margin-top:14px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,var(--surface),var(--surface-2));box-shadow:0 5px 16px rgba(17,45,39,.04)}
+.liability-bill-map-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;margin-bottom:2px;border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.08em;font-weight:800;color:var(--muted)}
+.liability-bill-map-head b{font-family:var(--font-mono);font-size:12px;color:var(--brand)}
+.liability-bill-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 2px;border-bottom:1px solid var(--line)}
+.liability-bill-row:last-child{border-bottom:0;padding-bottom:2px}
+.liability-bill-main{display:flex;align-items:center;gap:10px;min-width:0}
+.liability-bill-dot{width:9px;height:9px;border-radius:3px;flex:none}
+.liability-bill-main div{min-width:0}
+.liability-bill-main strong{display:block;font-size:12.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.liability-bill-main small{display:block;margin-top:2px;font-size:10.5px;color:var(--muted)}
+.liability-bill-amount{font-family:var(--font-mono);font-weight:700;font-size:12px;color:var(--brand-bright);white-space:nowrap}
+.liability-bill-empty{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
+.liability-bill-empty strong{color:var(--text)}
+
 
 .money-subview{ display:none }
 .money-subview.active{ display:block; animation:flowFadeIn .25s ease }
@@ -3582,7 +3596,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         </div>
           <div class="pro-blur-overlay">
             <div class="pro-blur-title">🔒 See your real recurring spend</div>
-            <div class="pro-blur-sub">Track every subscription and bill in one place, and see the actual monthly total.</div>
+            <div class="pro-blur-sub">Track every subscription and bill in one place. Debt bills can be linked directly to the matching liability in the Liabilities Flow.</div>
             <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
           </div>
         </div>
@@ -4304,9 +4318,9 @@ function renderFlowRibbons(svgEl, sourceLabel, sourceAmount, destinations){
     setHTML(svgEl, '<text x="450" y="170" fill="var(--muted)" font-size="13" text-anchor="middle">Nothing to show here yet</text>');
     return;
   }
-  var minLabelGap = 42;
-  var contentHeight = Math.max(300, destinations.length*minLabelGap + 80);
-  var top = 40, bottom = contentHeight - 40, bandH = bottom - top;
+  var minLabelGap = 58;
+  var contentHeight = Math.max(320, destinations.length*minLabelGap + 90);
+  var top = 40, bottom = contentHeight - 44, bandH = bottom - top;
   var total = destinations.reduce(function(a,b){ return a+b.amount; }, 0) || 1;
   var cum = 0;
   var bands = destinations.map(function(d){
@@ -4321,7 +4335,7 @@ function renderFlowRibbons(svgEl, sourceLabel, sourceAmount, destinations){
     labelYs.push(y);
     prevY = y;
   });
-  var padTop = top + 14, padBottom = bottom - 14;
+  var padTop = top + 16, padBottom = bottom - 12;
   if(labelYs[labelYs.length-1] > padBottom || labelYs[0] < padTop){
     var firstY = labelYs[0], lastY = labelYs[labelYs.length-1];
     var span = (lastY - firstY) || 1;
@@ -4336,7 +4350,7 @@ function renderFlowRibbons(svgEl, sourceLabel, sourceAmount, destinations){
     defs += '<linearGradient id="'+gid+'" x1="0" y1="0" x2="1" y2="0">' +
               '<stop offset="0%" stop-color="#E8B34A" stop-opacity="0.5"/>' +
               '<stop offset="55%" stop-color="'+b.d.color+'" stop-opacity="0.55"/>' +
-              '<stop offset="100%" stop-color="'+b.d.color+'" stop-opacity="0.85"/>' +
+              '<stop offset="100%" stop-color="'+b.d.color+'" stop-opacity="0.9"/>' +
             '</linearGradient>';
   });
   defs += '</defs>';
@@ -4352,16 +4366,22 @@ function renderFlowRibbons(svgEl, sourceLabel, sourceAmount, destinations){
     if(Math.abs(labelY - b.bandY) > 4){
       html += '<path d="M'+endX+','+b.bandY.toFixed(1)+' C'+(endX+16)+','+b.bandY.toFixed(1)+' '+(endX+16)+','+labelY.toFixed(1)+' '+(endX+30)+','+labelY.toFixed(1)+'" fill="none" stroke="'+b.d.color+'" stroke-opacity="0.5" stroke-width="1.5"/>';
     }
-    html += '<rect x="'+(endX+30)+'" y="'+(labelY-6).toFixed(1)+'" width="9" height="9" rx="2" fill="'+b.d.color+'"/>';
-    html += '<text x="'+(endX+45)+'" y="'+(labelY-9).toFixed(1)+'" fill="var(--text)" font-size="13" font-weight="600" text-anchor="start">'+b.d.label+'</text>';
-    html += '<text x="'+(endX+45)+'" y="'+(labelY+10).toFixed(1)+'" fill="var(--muted)" font-size="11" text-anchor="start">'+money(b.d.amount)+' \u00b7 '+pct+'%'+(b.d.payment ? ' \u00b7 '+money(b.d.payment)+'/mo' : '')+'</text>';
+    html += '<rect x="'+(endX+30)+'" y="'+(labelY-8).toFixed(1)+'" width="10" height="10" rx="2" fill="'+b.d.color+'"/>';
+    html += '<text x="'+(endX+47)+'" y="'+(labelY-10).toFixed(1)+'" fill="var(--text)" font-size="13" font-weight="700" text-anchor="start">'+b.d.label+'</text>';
+    html += '<text x="'+(endX+47)+'" y="'+(labelY+8).toFixed(1)+'" fill="var(--muted)" font-size="11" text-anchor="start">'+money(b.d.amount)+' · '+pct+'%'+(b.d.payment ? ' · '+money(b.d.payment)+'/mo payment' : '')+'</text>';
+    if(b.d.billNames){
+      html += '<text x="'+(endX+47)+'" y="'+(labelY+24).toFixed(1)+'" fill="var(--brand)" font-size="10.5" font-weight="600" text-anchor="start">Bill: '+b.d.billNames+'</text>';
+    }else if(b.d.payment){
+      html += '<text x="'+(endX+47)+'" y="'+(labelY+24).toFixed(1)+'" fill="var(--muted-2)" font-size="10.5" text-anchor="start">No bill linked yet</text>';
+    }
   });
-  html += '<text x="45" y="162" fill="var(--text)" font-size="13" font-weight="600">'+sourceLabel+'</text>';
+  html += '<text x="45" y="162" fill="var(--text)" font-size="13" font-weight="700">'+sourceLabel+'</text>';
   html += '<text x="45" y="180" fill="var(--muted)" font-size="11">'+money(sourceAmount)+'</text>';
   svgEl.setAttribute("viewBox", "0 0 900 "+contentHeight);
-  svgEl.setAttribute("height", Math.min(460, contentHeight));
+  svgEl.setAttribute("height", Math.min(500, contentHeight));
   setHTML(svgEl, html);
 }
+
 function renderFlowLegend(container, items){
   if(!container) return;
   container.innerHTML='';
@@ -4390,23 +4410,77 @@ function renderAssetsFlow(v){
 function renderLiabilitiesFlow(v){
   var svgEl=$("flowLiabsSvg"); if(!svgEl) return;
   function n(x){x=Number(x);return isFinite(x)&&x>0?x:0;}
+  function inferBillType(b){
+    var raw=String((b&&((b.type&&b.type!=='other'&&b.type)||b.name))||'').toLowerCase();
+    if(/mortgage|home loan|house loan/.test(raw)) return 'mortgage';
+    if(/student|student loan|school loan/.test(raw)) return 'student';
+    if(/auto|car loan|vehicle loan|truck loan/.test(raw)) return 'auto';
+    if(/credit card|visa|mastercard|amex|discover/.test(raw)) return 'cc';
+    if(/personal loan|personal debt|other debt|line of credit/.test(raw)) return 'otherDebt';
+    return (b&&b.type)||'other';
+  }
   var mortgage=n(v.mortgage), student=n(v.student), auto=n(v.auto), cc=n(v.cc), other=n(v.otherDebt);
   var breakdownTotal=mortgage+student+auto+cc+other, recordedTotal=n(v.totalDebt), total=breakdownTotal>0?breakdownTotal:recordedTotal;
   var payments={mortgage:0,student:0,auto:0,cc:0,otherDebt:0};
-  try{getBills().forEach(function(b){var t=b.type||'other';if(Object.prototype.hasOwnProperty.call(payments,t))payments[t]+=n(b.amount);});}catch(e){}
-  var dests=[
-    {label:'Mortgage',amount:mortgage,payment:payments.mortgage,color:'#E15B5B'},
-    {label:'Student loans',amount:student,payment:payments.student,color:'#5B8DEF'},
-    {label:'Auto loan',amount:auto,payment:payments.auto,color:'#E8B34A'},
-    {label:'Credit cards',amount:cc,payment:payments.cc,color:'#A78BFA'},
-    {label:'Personal / other',amount:other,payment:payments.otherDebt,color:'#45C4D6'}
-  ].filter(function(d){return d.amount>0;});
-  if(!dests.length&&total>0)dests=[{label:'Recorded debt',amount:total,color:'#E15B5B'}];
+  var billNames={mortgage:[],student:[],auto:[],cc:[],otherDebt:[]};
+  var allBills=[];
+  try{
+    allBills=getBills()||[];
+    allBills.forEach(function(b){
+      var t=inferBillType(b);
+      if(Object.prototype.hasOwnProperty.call(payments,t)){
+        payments[t]+=n(b.amount);
+        if(b.name) billNames[t].push(String(b.name));
+      }
+    });
+  }catch(e){}
+  var colors={mortgage:'#E15B5B',student:'#5B8DEF',auto:'#E8B34A',cc:'#A78BFA',otherDebt:'#45C4D6'};
+  var labels={mortgage:'Mortgage',student:'Student loans',auto:'Auto loan',cc:'Credit cards',otherDebt:'Personal / other debt'};
+  var balances={mortgage:mortgage,student:student,auto:auto,cc:cc,otherDebt:other};
+  var dests=Object.keys(labels).map(function(key){
+    var names=billNames[key]||[];
+    var unique=[];
+    names.forEach(function(name){if(unique.indexOf(name)<0)unique.push(name);});
+    var displayNames=unique.slice(0,2).map(escapeHtml).join(' · ')+(unique.length>2?' · +'+(unique.length-2)+' more':'');
+    return {label:labels[key],amount:balances[key],payment:payments[key],billNames:displayNames,color:colors[key]};
+  }).filter(function(d){return d.amount>0;});
+  if(!dests.length&&total>0)dests=[{label:'Recorded debt',amount:total,payment:0,color:'#E15B5B'}];
   var tracked=Object.keys(payments).reduce(function(a,k){return a+payments[k]},0);
-  if($("flowLiabsSub"))$("flowLiabsSub").textContent=total>0?(tracked>0?money(total)+' total debt · '+money(tracked)+'/mo tracked payments':money(total)+' total debt'):(tracked>0?money(tracked)+'/mo linked debt payments · no balance recorded':'No debt recorded yet');
+  var linkedCount=Object.keys(payments).reduce(function(a,k){return a+((billNames[k]||[]).length?1:0)},0);
+  if($("flowLiabsSub")){
+    if(total>0){
+      $("flowLiabsSub").textContent=tracked>0 ? money(total)+' total debt · '+money(tracked)+'/mo in linked bills' : money(total)+' total debt · add bills to show monthly payments';
+    }else{
+      $("flowLiabsSub").textContent=tracked>0 ? money(tracked)+'/mo in linked debt bills · no balance recorded' : 'No debt recorded yet';
+    }
+  }
   renderFlowRibbons(svgEl,'Total Debt',total,dests);
   renderFlowLegend($("flowLiabsLegend"),dests);
+
+  /* Add a clearly labeled payment map directly under the liabilities chart.
+     This makes the bill tracker and liabilities flow visibly share the same data. */
+  var host=svgEl.parentElement;
+  var paymentMap=host ? host.querySelector('.liability-bill-map') : null;
+  if(!paymentMap && host){
+    paymentMap=document.createElement('div');
+    paymentMap.className='liability-bill-map';
+    host.insertBefore(paymentMap, $("flowLiabsLegend"));
+  }
+  if(paymentMap){
+    var linkedBills=allBills.filter(function(b){return inferBillType(b)!=='other' && n(b.amount)>0;}).map(function(b){return {name:escapeHtml(b.name),amount:n(b.amount),type:inferBillType(b),day:b.day};});
+    if(linkedBills.length){
+      paymentMap.innerHTML='<div class="liability-bill-map-head"><span>MONTHLY LIABILITY PAYMENTS</span><b>'+money(tracked)+'/mo</b></div>'+
+        linkedBills.map(function(b){
+          return '<div class="liability-bill-row"><div class="liability-bill-main"><span class="liability-bill-dot" style="background:'+colors[b.type]+'"></span><div><strong>'+b.name+'</strong><small>'+labels[b.type]+' · Due day '+b.day+'</small></div></div><span class="liability-bill-amount">'+money(b.amount)+'/mo</span></div>';
+        }).join('');
+    }else if(total>0){
+      paymentMap.innerHTML='<div class="liability-bill-empty"><strong>No liability bills linked yet.</strong><span>Add a bill in Bills &amp; Subscriptions and choose which liability it coordinates with.</span></div>';
+    }else{
+      paymentMap.innerHTML='';
+    }
+  }
 }
+
 function renderIncomeSavingsFlow(v){
   var svgEl=$("flowIncomeSvg"); if(!svgEl) return;
   var surplus = Math.max(0, v.income - v.expenses);
@@ -4450,14 +4524,24 @@ function renderBillsTracker(v){
   var listEl=$("billsList"),emptyEl=$("billsEmptyNote"),outcomesEl=$("billsOutcomesRow"); if(!listEl)return;
   var labels={mortgage:'Mortgage',student:'Student loan',auto:'Auto loan',cc:'Credit card',otherDebt:'Other debt',other:'Recurring bill'};
   function render(){
-    var bills=getBills(); bills.forEach(function(b){if(!b.type)b.type='other';});
+    var bills=getBills(); bills.forEach(function(b){
+      if(!b.type || b.type==='other'){
+        var raw=String(b.name||'').toLowerCase();
+        if(/mortgage|home loan|house loan/.test(raw)) b.type='mortgage';
+        else if(/student|student loan|school loan/.test(raw)) b.type='student';
+        else if(/auto|car loan|vehicle loan|truck loan/.test(raw)) b.type='auto';
+        else if(/credit card|visa|mastercard|amex|discover/.test(raw)) b.type='cc';
+        else if(/personal loan|personal debt|other debt|line of credit/.test(raw)) b.type='otherDebt';
+        else b.type='other';
+      }
+    });
     saveBills(bills); bills.sort(function(a,b){return(a.day||99)-(b.day||99);});
     var total=bills.reduce(function(sum,b){return sum+(b.amount||0)},0);
     var debtPayments=bills.filter(function(b){return b.type!=='other';}).reduce(function(sum,b){return sum+(b.amount||0)},0);
     outcomesEl.innerHTML=[{label:'Bills tracked',val:String(bills.length)},{label:'Total monthly',val:money(total)},{label:'Debt payments linked',val:money(debtPayments)+'/mo'}].map(function(o){return '<div class="stress-outcome-card"><div class="stress-outcome-num">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';}).join('');
     if(!bills.length){listEl.innerHTML='';if(emptyEl)emptyEl.style.display='block';return;}
     if(emptyEl)emptyEl.style.display='none';
-    listEl.innerHTML=bills.map(function(b){var linked=b.type!=='other';return '<div class="card" style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px"><div style="min-width:0"><div style="font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escapeHtml(b.name)+'<span class="bill-type-badge">'+escapeHtml(labels[b.type]||labels.other)+'</span></div><div class="small" style="color:var(--muted)">Due day '+b.day+(linked?' · Linked to liabilities flow':'')+'</div></div><div style="display:flex;align-items:center;gap:10px;flex:none"><div class="mono" style="font-weight:700;color:var(--brand-bright)">'+money(b.amount)+'/mo</div><button type="button" class="bill-delete-btn" data-id="'+b.id+'" aria-label="Delete '+escapeHtml(b.name)+'" style="background:none;border:none;color:var(--muted-2);cursor:pointer;padding:4px;display:flex"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg></button></div></div>';}).join('');
+    listEl.innerHTML=bills.map(function(b){var linked=b.type!=='other';return '<div class="card" style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px"><div style="min-width:0"><div style="font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escapeHtml(b.name)+'<span class="bill-type-badge">'+escapeHtml(labels[b.type]||labels.other)+'</span></div><div class="small" style="color:var(--muted)">Due day '+b.day+(linked?' · Linked to '+escapeHtml(labels[b.type]||labels.other)+' in liabilities flow':'')+'</div></div><div style="display:flex;align-items:center;gap:10px;flex:none"><div class="mono" style="font-weight:700;color:var(--brand-bright)">'+money(b.amount)+'/mo</div><button type="button" class="bill-delete-btn" data-id="'+b.id+'" aria-label="Delete '+escapeHtml(b.name)+'" style="background:none;border:none;color:var(--muted-2);cursor:pointer;padding:4px;display:flex"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg></button></div></div>';}).join('');
     listEl.querySelectorAll('.bill-delete-btn').forEach(function(btn){btn.addEventListener('click',function(){saveBills(getBills().filter(function(b){return String(b.id)!==String(btn.dataset.id)}));render();try{renderLiabilitiesFlow(v)}catch(e){}});});
   }
   if(addBtn&&!addBtn._wired){addBtn._wired=true;addBtn.addEventListener('click',function(){var name=(nameEl.value||'').trim(),amount=Math.max(0,+amountEl.value||0),day=clamp(Math.round(+dayEl.value||1),1,31),type=(typeEl&&typeEl.value)||'other';if(!name){nameEl.focus();return;}if(amount<=0){amountEl.focus();return;}var bills=getBills();bills.push({id:Date.now()+'_'+Math.random().toString(36).slice(2,7),name:name,amount:amount,day:day,type:type});saveBills(bills);nameEl.value='';amountEl.value='';dayEl.value='';if(typeEl)typeEl.value='other';render();try{renderLiabilitiesFlow(v)}catch(e){}});}
