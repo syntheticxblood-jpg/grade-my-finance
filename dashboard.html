@@ -2158,6 +2158,31 @@ label{font-size:11px!important;font-weight:700!important;color:#5d7077!important
 /* Add a small Pro marker to Insights without making navigation noisy. */
 .insights-pro-nav{margin-left:auto;font:800 8px var(--font-mono);letter-spacing:.05em;color:#8a6d2f;background:#ede3ce;border-radius:999px;padding:3px 6px}
 </style>
+<style id="gmf-tab-focus-pro">
+.tab-focus-badge{display:inline-flex;align-items:center;margin-top:8px;padding:5px 8px;border-radius:999px;background:#edf7f3;color:#0f8067;border:1px solid #cfe9df;font:800 8px var(--font-mono);letter-spacing:.12em}
+.ship-grade-hero-v2{display:grid!important;grid-template-columns:minmax(0,1fr) 330px!important;overflow:hidden!important}
+.grade-pro-panel{padding:22px 22px 20px;border-left:1px solid rgba(16,42,44,.10);background:linear-gradient(145deg,#f3fbf7 0%,#e6f5ef 100%);display:flex;flex-direction:column;justify-content:center;min-height:180px}
+.grade-pro-panel-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.grade-pro-pill{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#d4a43a;color:#fff;font:900 8px var(--font-mono);letter-spacing:.1em}
+.grade-pro-status{font:700 9px var(--font-mono);letter-spacing:.04em;color:#55736b}
+.grade-pro-panel h3{margin:0 0 6px;font:800 18px var(--font-display);color:#153b34}
+.grade-pro-panel p{margin:0;color:#607570;font-size:11.5px;line-height:1.45;max-width:280px}
+.grade-pro-features{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.grade-pro-features span{font-size:9.5px;font-weight:800;color:#315b50;background:rgba(255,255,255,.75);border:1px solid #cfe5dc;border-radius:999px;padding:5px 7px}
+.grade-pro-cta{align-self:flex-start;text-decoration:none;background:#0f9f7a;color:#fff;border-radius:8px;padding:8px 11px;font-size:10.5px;font-weight:800;box-shadow:0 5px 12px rgba(15,159,122,.18)}
+.grade-pro-panel.is-pro{background:linear-gradient(145deg,#073e35 0%,#0b5c4c 100%);border-left-color:rgba(255,255,255,.12)}
+.grade-pro-panel.is-pro .grade-pro-status{color:#a9d9cb}
+.grade-pro-panel.is-pro h3{color:#fff}
+.grade-pro-panel.is-pro p{color:#c2ddd6}
+.grade-pro-panel.is-pro .grade-pro-features span{color:#d9eee8;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
+.grade-pro-panel.is-pro .grade-pro-cta{background:#35c79f;color:#07352e}
+@media(max-width:900px){.ship-grade-hero-v2{grid-template-columns:1fr!important}.grade-pro-panel{border-left:0;border-top:1px solid rgba(16,42,44,.10)}}
+:root[data-theme="dark"] .tab-focus-badge{background:rgba(39,183,143,.12);border-color:rgba(39,183,143,.22);color:#65d4b3}
+:root[data-theme="dark"] .grade-pro-panel{background:linear-gradient(145deg,#102a2b,#143d36);border-color:#274844}
+:root[data-theme="dark"] .grade-pro-panel h3{color:#eef8f4}
+:root[data-theme="dark"] .grade-pro-panel p{color:#a9beb8}
+:root[data-theme="dark"] .grade-pro-features span{background:#17302e;border-color:#31504b;color:#c7dfd8}
+</style>
 </head>
 <body>
 <script>
@@ -2319,6 +2344,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
             <div class="dash-greeting-eyebrow" id="greetingEyebrow" style="display:none">Welcome back,</div>
             <h1 class="dash-greeting-text" id="greetingText">Welcome</h1>
             <div class="dash-greeting-sub" id="greetingSub">Here's how your finances look today.</div>
+            <div class="tab-focus-badge" id="tabFocusBadge">COMMAND CENTER</div>
           </div>
           <div class="content-header-right">
             <div class="updated" id="dashHeaderUpdated">—</div>
@@ -2329,7 +2355,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= OVERVIEW ================= -->
     <div class="dash-tab-panel active" id="panel-overview">
-  <section class="ship-grade-hero">
+  <section class="ship-grade-hero ship-grade-hero-v2">
     <div class="ship-grade-main">
       <div class="ship-eyebrow">YOUR FINANCIAL GRADE</div>
       <div class="ship-grade-row">
@@ -2338,6 +2364,13 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ship-grade-trend"><div class="ship-trend-value" id="shipGradeDelta">—</div><div>since last check-in</div><svg id="shipGradeSpark" viewBox="0 0 180 48" preserveAspectRatio="none"></svg><button class="ship-link" data-goto="score" type="button">View grade history →</button></div>
       </div>
     </div>
+    <aside class="grade-pro-panel" id="gradeProPanel">
+      <div class="grade-pro-panel-top"><span class="grade-pro-pill" id="gradeProPill">PRO</span><span class="grade-pro-status" id="gradeProStatus">Upgrade your financial view</span></div>
+      <h3 id="gradeProTitle">Go deeper with Pro.</h3>
+      <p id="gradeProCopy">Unlock the analysis behind your grade — benchmarks, projections, stress tests, and deeper financial insights.</p>
+      <div class="grade-pro-features" id="gradeProFeatures"><span>✓ Grade drivers</span><span>✓ Personal benchmarks</span><span>✓ Projections</span></div>
+      <a class="grade-pro-cta" id="gradeProCta" href="index.html#pricing">Unlock Pro →</a>
+    </aside>
   </section>
 
   <section class="ship-glance-card">
@@ -4215,32 +4248,59 @@ function filterByRange(entries, range, tsKey){
 /* ================= TAB NAVIGATION ================= */
 function __track(){} // no-op if GA hasn't wired a custom tracker on this page
 (function setupTabs(){
-  var buttons = document.querySelectorAll(".dash-nav-btn");
-  var panels = document.querySelectorAll(".dash-tab-panel");
-  function activate(name){
-    buttons.forEach(function(b){ b.classList.toggle("active", b.dataset.tab === name); });
-    panels.forEach(function(p){ p.classList.toggle("active", p.id === "panel-"+name); });
-    __track('dash_tab_view', {tab:name});
+  var meta={
+    overview:{title:'Dashboard',sub:'Your financial command center — see what matters, what changed, and what to do next.'},
+    networth:{title:'Money',sub:'Understand what you own, what you owe, and where your cash is going.'},
+    goals:{title:'Goals',sub:'Turn your financial priorities into measurable targets you can actually track.'},
+    scenarios:{title:'Your Plan',sub:'Choose the next move, build a plan, and see what changes before you commit.'},
+    score:{title:'Grade Report',sub:'Understand exactly what is driving your Financial Grade and how it can improve.'},
+    insights:{title:'Insights',sub:'Go beyond the headline with financial context, benchmarks, and decision tools.'}
+  };
+  function buttons(){return document.querySelectorAll('.dash-nav-btn[data-tab]')}
+  function panels(){return document.querySelectorAll('.dash-tab-panel')}
+  function updateFocus(name){
+    var m=meta[name]||meta.overview;
+    var h=document.getElementById('greetingText'),sub=document.getElementById('greetingSub');
+    if(h) h.textContent=m.title;
+    if(sub) sub.textContent=m.sub;
+    var badge=document.getElementById('tabFocusBadge');
+    if(badge) badge.textContent=name==='overview'?'COMMAND CENTER':name==='score'?'EXPLAIN YOUR GRADE':name==='insights'?'DECISION SUPPORT':name.toUpperCase();
   }
-  buttons.forEach(function(b){ b.addEventListener("click", function(){ activate(b.dataset.tab); }); });
-  document.querySelectorAll("[data-goto]").forEach(function(b){
-    b.addEventListener("click", function(){ activate(b.dataset.goto); window.scrollTo({top:0, behavior:'smooth'}); });
+  function activate(name,shouldScroll){
+    if(!name || !document.getElementById('panel-'+name)) return;
+    buttons().forEach(function(b){ b.classList.toggle('active', b.dataset.tab === name); });
+    panels().forEach(function(p){ p.classList.toggle('active', p.id === 'panel-'+name); });
+    updateFocus(name);
+    __track('dash_tab_view',{tab:name});
+    if(shouldScroll!==false){
+      var header=document.querySelector('.content-header');
+      var y=header ? header.getBoundingClientRect().top + window.scrollY : 0;
+      window.scrollTo({top:Math.max(0,y-12),behavior:'smooth'});
+    }
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.dash-nav-btn[data-tab]');
+    if(b){e.preventDefault();activate(b.dataset.tab,true);return;}
+    var g=e.target.closest('[data-goto]');
+    if(g){var target=g.dataset.goto;if(target) activate(target,true);}
   });
-  window.__gotoDashTab = activate;
+  window.__gotoDashTab=activate;
+  window.__dashTabMeta=meta;
+  updateFocus('overview');
 })();
 
-/* Outer Money-page sub-nav */
+/* Outer Money-page sub-nav — delegated so tabs remain reliable after dynamic renders. */
 (function setupMoneySubtabs(){
-  var buttons = document.querySelectorAll(".money-subtab-btn");
-  var views = document.querySelectorAll(".money-subview");
-  if(!buttons.length) return;
-  buttons.forEach(function(b){
-    b.addEventListener("click", function(){
-      buttons.forEach(function(x){ x.classList.toggle("active", x===b); });
-      views.forEach(function(v){ v.classList.toggle("active", v.dataset.moneypanel===b.dataset.moneysub); });
-      __track('money_subtab_view', {tab: b.dataset.moneysub});
-    });
-  });
+  function activate(name,scroll){
+    var p=document.getElementById('panel-networth'); if(!p)return;
+    var buttons=p.querySelectorAll('.money-subtab-btn'), views=p.querySelectorAll('.money-subview');
+    buttons.forEach(function(b){b.classList.toggle('active',b.dataset.moneysub===name)});
+    views.forEach(function(v){v.classList.toggle('active',v.dataset.moneypanel===name)});
+    if(scroll){var y=p.getBoundingClientRect().top+window.scrollY;window.scrollTo({top:Math.max(0,y-12),behavior:'smooth'})}
+    __track('money_subtab_view',{tab:name});
+  }
+  document.addEventListener('click',function(e){var b=e.target.closest('.money-subtab-btn');if(b){e.preventDefault();activate(b.dataset.moneysub,true)}});
+  window.__switchMoneySubtab=activate;
 })();
 /* Inner Money Flow tabs (Assets / Liabilities / Income / Growth) - ported from index.html */
 (function setupFlowTabs(){
@@ -4259,51 +4319,44 @@ function __track(){} // no-op if GA hasn't wired a custom tracker on this page
   });
 })();
 
-/* Your Plan sub-nav (Opportunities / Debt Plan / Scenarios / Projections) */
+/* Your Plan sub-nav — reliable delegated navigation. */
 (function setupPlanSubtabs(){
-  var buttons = document.querySelectorAll(".plan-subtab-btn");
-  var views = document.querySelectorAll(".plan-subview");
-  if(!buttons.length) return;
-  function activate(name){
-    buttons.forEach(function(x){ x.classList.toggle("active", x.dataset.plansub===name); });
-    views.forEach(function(v){ v.classList.toggle("active", v.dataset.planpanel===name); });
-    __track('plan_subtab_view', {tab: name});
+  function activate(name,scroll){
+    var p=document.getElementById('panel-scenarios');if(!p)return;
+    var buttons=p.querySelectorAll('.plan-subtab-btn'),views=p.querySelectorAll('.plan-subview');
+    buttons.forEach(function(b){b.classList.toggle('active',b.dataset.plansub===name)});
+    views.forEach(function(v){v.classList.toggle('active',v.dataset.planpanel===name)});
+    if(scroll){var y=p.getBoundingClientRect().top+window.scrollY;window.scrollTo({top:Math.max(0,y-12),behavior:'smooth'})}
+    __track('plan_subtab_view',{tab:name});
   }
-  buttons.forEach(function(b){ b.addEventListener("click", function(){ activate(b.dataset.plansub); }); });
-  window.__switchPlanSubtab = function(name){
-    activate(name);
-    var panelEl = document.getElementById("panel-scenarios");
-    if(panelEl) panelEl.scrollIntoView({behavior:'smooth', block:'start'});
-  };
+  document.addEventListener('click',function(e){var b=e.target.closest('.plan-subtab-btn');if(b){e.preventDefault();activate(b.dataset.plansub,true)}});
+  window.__switchPlanSubtab=function(name){activate(name,true)};
 })();
-
-/* Insights sub-nav (Benchmarks / Perspective / Stress Test) */
+/* Insights sub-nav — reliable delegated navigation. */
 (function setupInsightSubtabs(){
-  var buttons = document.querySelectorAll(".insight-subtab-btn");
-  var views = document.querySelectorAll(".insight-subview");
-  if(!buttons.length) return;
-  buttons.forEach(function(b){
-    b.addEventListener("click", function(){
-      buttons.forEach(function(x){ x.classList.toggle("active", x===b); });
-      views.forEach(function(v){ v.classList.toggle("active", v.dataset.insightpanel===b.dataset.insightsub); });
-      __track('insight_subtab_view', {tab: b.dataset.insightsub});
-    });
-  });
+  function activate(name,scroll){
+    var p=document.getElementById('panel-insights');if(!p)return;
+    var buttons=p.querySelectorAll('.insight-subtab-btn'),views=p.querySelectorAll('.insight-subview');
+    buttons.forEach(function(b){b.classList.toggle('active',b.dataset.insightsub===name)});
+    views.forEach(function(v){v.classList.toggle('active',v.dataset.insightpanel===name)});
+    if(scroll){var y=p.getBoundingClientRect().top+window.scrollY;window.scrollTo({top:Math.max(0,y-12),behavior:'smooth'})}
+    __track('insight_subtab_view',{tab:name});
+  }
+  document.addEventListener('click',function(e){var b=e.target.closest('.insight-subtab-btn');if(b){e.preventDefault();activate(b.dataset.insightsub,true)}});
+  window.__switchInsightSubtab=activate;
 })();
-/* Projections' own inner sub-tabs (Net Worth / Life Events / Freedom #) - ported from index.html */
+/* Projections' own inner sub-tabs. */
 (function setupProjectionSubtabs(){
-  var buttons = document.querySelectorAll(".proj-subtab-btn");
-  var panels = document.querySelectorAll(".proj-subpanel");
-  if(!buttons.length) return;
-  buttons.forEach(function(btn){
-    btn.addEventListener("click", function(){
-      buttons.forEach(function(b){ b.classList.toggle("active", b===btn); });
-      panels.forEach(function(p){ p.classList.toggle("active", p.dataset.subpanel===btn.dataset.subtab); });
-      __track('projections_subtab_view', {subtab: btn.dataset.subtab});
-    });
-  });
+  function activate(name){
+    var p=document.getElementById('panel-scenarios');if(!p)return;
+    var buttons=p.querySelectorAll('.proj-subtab-btn'),panels=p.querySelectorAll('.proj-subpanel');
+    buttons.forEach(function(b){b.classList.toggle('active',b.dataset.subtab===name)});
+    panels.forEach(function(v){v.classList.toggle('active',v.dataset.subpanel===name)});
+    __track('projections_subtab_view',{subtab:name});
+  }
+  document.addEventListener('click',function(e){var b=e.target.closest('.proj-subtab-btn');if(b){e.preventDefault();activate(b.dataset.subtab)}});
+  window.__switchProjectionSubtab=activate;
 })();
-
 /* ================= PHASE 2: Money Flow / Bills / Credit / Allocation =================
    These need the full category breakdown (v), not just {ts,score,net} from
    history - so they read the same gmf_last_report snapshot the Report Card
@@ -7348,6 +7401,23 @@ async function init(){
   $("dashboardContent").style.display = 'block';
   var chip = $("headerProChip"); if(chip) chip.style.display = isPro ? 'inline-flex' : 'none';
   document.querySelectorAll(".pro-only-hide").forEach(function(el){ el.style.display = isPro ? "none" : ""; });
+  (function syncGradePro(){
+    var panel=document.getElementById('gradeProPanel');
+    if(!panel) return;
+    var status=document.getElementById('gradeProStatus'),title=document.getElementById('gradeProTitle'),copy=document.getElementById('gradeProCopy'),cta=document.getElementById('gradeProCta');
+    panel.classList.toggle('is-pro',isPro);
+    if(isPro){
+      if(status) status.textContent="You're on Pro";
+      if(title) title.textContent='Your Pro financial command center.';
+      if(copy) copy.textContent='You have the deeper tools to understand your grade, test decisions, and track where your finances are headed.';
+      if(cta){cta.textContent='Explore Pro insights →';cta.href='#';cta.onclick=function(e){e.preventDefault();if(window.__gotoDashTab)window.__gotoDashTab('insights',true);};}
+    }else{
+      if(status) status.textContent='Upgrade your financial view';
+      if(title) title.textContent='Go deeper with Pro.';
+      if(copy) copy.textContent='Unlock the analysis behind your grade — benchmarks, projections, stress tests, and deeper financial insights.';
+      if(cta){cta.textContent='Unlock Pro →';cta.href='index.html#pricing';cta.onclick=null;}
+    }
+  })();
 
   var groups = groupCheckins(hist);
 
