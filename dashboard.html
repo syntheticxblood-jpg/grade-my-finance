@@ -3155,81 +3155,41 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= RETIREMENT / FI ================= -->
     <div class="dash-tab-panel" id="panel-retirement">
-      <span class="section-label">Retirement &amp; financial independence</span>
-      <p class="section-sub">Add a few numbers to see when you're projected to hit financial independence — and what moves that date.</p>
-
-      <div class="card">
-        <span class="section-label">Your numbers</span>
-        <div class="ret-form-grid">
-          <div><label for="retAge">Current age</label><input id="retAge" type="number" min="14" max="99" placeholder="e.g. 32"></div>
-          <div><label for="retTargetAge">Target retirement age</label><input id="retTargetAge" type="number" min="15" max="100" placeholder="e.g. 60"></div>
-          <div><label for="retMonthly">Monthly savings / investing</label><input id="retMonthly" type="number" min="0" placeholder="e.g. 800"></div>
-          <div><label for="retSpending">Annual spending in retirement</label><input id="retSpending" type="number" min="0" placeholder="e.g. 48000"></div>
-          <div class="ret-target-toggle">
-            <input type="checkbox" id="retUseCustom">
-            <label for="retUseCustom">Use a custom target instead of the 4% rule</label>
-          </div>
-          <div id="retCustomTargetWrap" style="display:none"><label for="retCustomTarget">Custom target ($)</label><input id="retCustomTarget" type="number" min="0" placeholder="e.g. 1500000"></div>
-        </div>
-      </div>
-
-      <div id="retResults" style="display:none">
-
-        <div class="hero-card" style="margin-top:16px">
-          <div class="hero-card-top">
-            <div>
-              <span class="section-label">Your FI number</span>
-              <div class="hv mono" id="retTargetVal">—</div>
-              <div class="hv-sub" id="retTargetSub">—</div>
-            </div>
-          </div>
-          <div class="progress-bar" style="margin-top:14px"><div id="retProgressBar" style="width:0%"></div></div>
-          <div class="g-remaining" id="retProgressLabel" style="margin-top:8px">—</div>
-        </div>
-
-        <span class="section-label" style="margin-top:20px;display:block">Projected retirement age by market scenario</span>
-        <div class="ret-scenario-grid" id="retScenarioGrid"></div>
-        <p class="section-sub" style="margin-top:-6px">Simplified projections assuming a constant annual return and steady monthly contributions — not a guarantee of future performance, and not financial advice.</p>
-
-        <div class="insight-card" id="retCoastCard"></div>
-
-        <div class="card" style="margin-top:16px">
-          <span class="section-label">What if?</span>
-          <p class="section-sub">Drag to see how a raise, side income, or trimming your retirement budget shifts your target date. These don't save — they're just for exploring.</p>
-
-          <div class="ret-slider-block">
-            <div class="ret-slider-top"><span class="rs-label">Extra monthly savings (raise / side income)</span><span class="rs-val" id="retExtraVal">+$0/mo</span></div>
-            <input type="range" id="retExtraSlider" min="0" max="2000" step="25" value="0">
-          </div>
-
-          <div class="ret-slider-block">
-            <div class="ret-slider-top"><span class="rs-label">Lower retirement spending</span><span class="rs-val" id="retCutVal">−0%</span></div>
-            <input type="range" id="retCutSlider" min="0" max="40" step="5" value="0">
-          </div>
-
-          <div class="g-remaining" id="retWhatIfSummary" style="margin-top:6px"></div>
-        </div>
-
-        <div class="card" style="margin-top:16px">
-          <span class="section-label">Milestone card</span>
-          <p class="section-sub">A shareable snapshot of your progress toward financial independence.</p>
-          <div class="ret-share-wrap">
-            <div class="ret-share-canvas-wrap"><canvas id="retShareCanvas" width="1000" height="1000"></canvas></div>
-            <div>
-              <button class="btn sm gold" id="retDownloadBtn" type="button">Download image</button>
-              <p style="font-size:11.5px;color:var(--muted-2);margin-top:10px;max-width:220px">Generated locally in your browser — nothing here is uploaded anywhere.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="empty-note" id="retEmptyNote">
-        <b>Add your numbers above to see your projection</b>
-        We'll calculate your FI target, projected retirement age across three market scenarios, your Coast FI number, and a shareable progress card.
-      </div>
+  <div class="retirement-studio">
+    <div class="ret-hero">
+      <div><span class="ret-kicker">RETIREMENT LAB</span><h2>Build your path to <span>financial freedom.</span></h2><p>Enter your numbers below. Your projection updates instantly with colorful charts, scenarios, milestones, and clear next steps.</p></div>
+      <div class="ret-hero-badge"><b id="rsScore">—</b><span>FI progress</span></div>
     </div>
-
+    <div class="ret-input-card">
+      <div class="ret-card-title"><div><span class="section-label">Your complete retirement picture</span><h3>Let's run the numbers</h3></div><span class="ret-live">● LIVE</span></div>
+      <div class="ret-studio-grid">
+        <label>Current age<input id="rsAge" type="number" min="18" max="100" placeholder="32"></label>
+        <label>Target retirement age<input id="rsRetireAge" type="number" min="19" max="100" placeholder="60"></label>
+        <label>Current invested balance<input id="rsBalance" type="number" min="0" placeholder="125000"></label>
+        <label>Monthly contribution<input id="rsMonthly" type="number" min="0" placeholder="1500"></label>
+        <label>Annual retirement spending<input id="rsSpending" type="number" min="1" placeholder="60000"></label>
+        <label>Expected annual return<select id="rsReturn"><option value="0.05">5% · Conservative</option><option value="0.07" selected>7% · Moderate</option><option value="0.09">9% · Growth</option></select></label>
+        <label>Inflation assumption<select id="rsInflation"><option value="0.02">2%</option><option value="0.03" selected>3%</option><option value="0.04">4%</option></select></label>
+        <label>Withdrawal rate<select id="rsWithdraw"><option value="0.035">3.5%</option><option value="0.04" selected>4.0%</option><option value="0.045">4.5%</option></select></label>
+      </div>
+      <div class="ret-action-row"><button class="btn gold" id="rsCalculate" type="button">Calculate my retirement plan →</button><button class="btn" id="rsFillExample" type="button">Try an example</button><span id="rsStatus">Add your numbers to unlock your projection.</span></div>
+    </div>
+    <div id="rsResults" style="display:none">
+      <div class="ret-metric-grid">
+        <div class="ret-metric purple"><span>Financial independence target</span><strong id="rsTarget">—</strong><small>Based on your spending and withdrawal rate</small></div>
+        <div class="ret-metric mint"><span>Projected portfolio at retirement</span><strong id="rsPortfolio">—</strong><small id="rsPortfolioSub">—</small></div>
+        <div class="ret-metric gold"><span>Projected FI age</span><strong id="rsFiAge">—</strong><small id="rsFiSub">—</small></div>
+        <div class="ret-metric blue"><span>Monthly gap</span><strong id="rsGap">—</strong><small id="rsGapSub">—</small></div>
+      </div>
+      <div class="ret-charts-grid">
+        <div class="ret-chart-card"><div class="ret-chart-head"><div><span class="section-label">Portfolio growth</span><h3>Your wealth over time</h3></div><div class="ret-legend"><i></i>Portfolio <i class="target"></i>FI target</div></div><svg id="rsGrowthChart" viewBox="0 0 900 330" preserveAspectRatio="none"></svg></div>
+        <div class="ret-chart-card"><span class="section-label">At a glance</span><h3>Retirement readiness</h3><div class="ret-donut-wrap"><svg id="rsDonut" viewBox="0 0 180 180"><circle cx="90" cy="90" r="68" fill="none" stroke="#e7ece9" stroke-width="18"/><circle id="rsDonutFg" cx="90" cy="90" r="68" fill="none" stroke="#19b58e" stroke-width="18" stroke-linecap="round" transform="rotate(-90 90 90)"/></svg><div><b id="rsDonutPct">0%</b><span>to FI</span></div></div><div id="rsReadinessText" class="ret-readiness"></div></div>
+      </div>
+      <div class="ret-chart-card" style="margin-top:16px"><span class="section-label">Scenario explorer</span><h3>How different market outcomes change your path</h3><div id="rsScenarioBars" class="ret-scenario-bars"></div></div>
+      <div class="ret-bottom-grid"><div class="ret-chart-card"><span class="section-label">Milestones</span><h3>Your roadmap</h3><div id="rsMilestones"></div></div><div class="ret-chart-card ret-next"><span class="section-label">Smart next move</span><h3 id="rsAdviceTitle">—</h3><p id="rsAdvice">—</p></div></div>
+    </div>
+  </div>
+</div>
     <!-- ================= INSIGHTS ================= -->
     <div class="dash-tab-panel" id="panel-insights">
       <span class="section-label">Insights</span>
@@ -9049,5 +9009,35 @@ main{padding-top:16px !important;padding-bottom:42px !important}
 })();
 </script>
 
+
+<style id="retirement-studio-css">
+#panel-retirement .retirement-studio{padding-bottom:40px}.ret-hero{background:linear-gradient(135deg,#103c35,#126b5a 55%,#19a98a);color:#fff;border-radius:24px;padding:30px;display:flex;justify-content:space-between;gap:25px;align-items:center;overflow:hidden;position:relative}.ret-hero:after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;right:-140px;top:-220px;background:radial-gradient(circle,rgba(255,215,110,.55),transparent 65%)}.ret-kicker{font:700 11px var(--font-mono);letter-spacing:.16em;color:#b9f4df}.ret-hero h2{font-size:clamp(27px,4vw,43px);max-width:600px;margin:8px 0}.ret-hero h2 span{color:#ffe08a}.ret-hero p{max-width:620px;color:#d8f2ea;margin:0}.ret-hero-badge{position:relative;z-index:1;min-width:140px;height:140px;border-radius:50%;display:grid;place-content:center;text-align:center;background:rgba(255,255,255,.13);border:8px solid rgba(255,255,255,.16);backdrop-filter:blur(8px)}.ret-hero-badge b{font:800 34px var(--font-display)}.ret-hero-badge span{font-size:11px;color:#d8f2ea}.ret-input-card,.ret-chart-card{background:#fff;border:1px solid #dfe9e5;border-radius:20px;box-shadow:0 12px 35px rgba(20,60,51,.07)}.ret-input-card{margin-top:16px;padding:22px}.ret-card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.ret-card-title h3,.ret-chart-card h3{margin:2px 0 0;font-size:20px}.ret-live{font:700 11px var(--font-mono);color:#0f9b79;background:#e2f8ef;padding:6px 9px;border-radius:99px}.ret-studio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.ret-studio-grid label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#60746e;font-weight:700}.ret-studio-grid input,.ret-studio-grid select{display:block;width:100%;margin-top:7px;padding:12px;border:1px solid #dbe5e1;border-radius:11px;background:#f8fbfa;color:#183a33;font:600 14px var(--font-mono)}.ret-action-row{display:flex;align-items:center;gap:10px;margin-top:18px;flex-wrap:wrap}.ret-action-row #rsStatus{font-size:12px;color:#72817d}.ret-metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}.ret-metric{padding:18px;border-radius:18px;border:1px solid #e1e7e4}.ret-metric span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:#62736e}.ret-metric strong{display:block;font:700 28px var(--font-display);margin:7px 0;color:#153a32}.ret-metric small{color:#72817d;font-size:11px}.ret-metric.mint{background:linear-gradient(135deg,#e7f8f1,#fff)}.ret-metric.purple{background:linear-gradient(135deg,#eee9ff,#fff)}.ret-metric.gold{background:linear-gradient(135deg,#fff5d8,#fff)}.ret-metric.blue{background:linear-gradient(135deg,#e9f2ff,#fff)}.ret-charts-grid{display:grid;grid-template-columns:1.65fr .8fr;gap:16px;margin-top:16px}.ret-chart-card{padding:20px}.ret-chart-head{display:flex;justify-content:space-between;gap:10px;align-items:start}.ret-legend{font-size:11px;color:#60746e}.ret-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;background:#19b58e;margin:0 5px}.ret-legend .target{background:#f1b933}.ret-chart-card svg{width:100%;height:280px;margin-top:12px}.ret-donut-wrap{height:235px;position:relative;display:grid;place-items:center}.ret-donut-wrap svg{width:190px;height:190px;margin:0}.ret-donut-wrap>div{position:absolute;text-align:center}.ret-donut-wrap b{display:block;font:700 30px var(--font-display)}.ret-donut-wrap span{font-size:11px;color:#70817c}.ret-readiness{font-size:12px;text-align:center;color:#62736e}.ret-scenario-bars{display:grid;gap:14px;margin-top:20px}.rs-bar-row{display:grid;grid-template-columns:145px 1fr 90px;gap:12px;align-items:center;font-size:12px}.rs-bar{height:14px;border-radius:99px;background:#edf2ef;overflow:hidden}.rs-bar div{height:100%;border-radius:99px;background:linear-gradient(90deg,#3a7ee8,#8b6be8)}.rs-bar-row:nth-child(2) .rs-bar div{background:linear-gradient(90deg,#159a78,#47c8a7)}.rs-bar-row:nth-child(3) .rs-bar div{background:linear-gradient(90deg,#e6a52d,#f6d369)}.ret-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.ret-milestone{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #edf1ef}.ret-milestone:last-child{border:none}.ret-dot{width:11px;height:11px;border-radius:50%;background:#19b58e;margin-top:4px}.ret-milestone b{font-size:13px}.ret-milestone span{display:block;font-size:11px;color:#71817d;margin-top:2px}.ret-next{background:linear-gradient(135deg,#123f37,#177f6a);color:#fff}.ret-next .section-label,.ret-next p{color:#c6eee3!important}.ret-next p{font-size:13px;line-height:1.6}@media(max-width:900px){.ret-studio-grid,.ret-metric-grid{grid-template-columns:1fr 1fr}.ret-charts-grid,.ret-bottom-grid{grid-template-columns:1fr}}@media(max-width:560px){.ret-hero{padding:22px}.ret-hero-badge{display:none}.ret-studio-grid,.ret-metric-grid{grid-template-columns:1fr}.rs-bar-row{grid-template-columns:100px 1fr 65px}}
+</style>
+
+<script id="retirement-studio-js">
+(function(){
+function $r(id){return document.getElementById(id)} function money(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v||0)}
+function val(id){return parseFloat($r(id).value)||0}
+function calc(){
+ var age=val('rsAge'), retire=val('rsRetireAge'), bal=val('rsBalance'), mo=val('rsMonthly'), spend=val('rsSpending'), rate=val('rsReturn'), inf=val('rsInflation'), wd=val('rsWithdraw');
+ if(!age||retire<=age||spend<=0){$r('rsStatus').textContent='Enter a valid current age, target age, and annual retirement spending.';return}
+ $r('rsStatus').textContent='Projection updated instantly as you change your plan.';
+ var target=spend/wd, years=retire-age, monthlyRate=Math.pow(1+rate,1/12)-1, targetInfl=target*Math.pow(1+inf,years);
+ var points=[], portfolio=bal, fiYear=null;
+ for(var y=0;y<=70;y++){if(y>0){portfolio=portfolio*Math.pow(1+monthlyRate,12)+mo*12*((Math.pow(1+monthlyRate,12)-1)/monthlyRate)} points.push({y:y,v:portfolio}); if(fiYear===null&&portfolio>=target*Math.pow(1+inf,y))fiYear=y}
+ var atRet=points[Math.min(years,points.length-1)].v, progress=Math.min(100,bal/target*100), fiAge=fiYear===null?'70+':(age+fiYear).toFixed(1), gap=Math.max(0,(targetInfl-atRet)/Math.max(1,years*12));
+ $r('rsResults').style.display='block';$r('rsScore').textContent=progress.toFixed(0)+'%';$r('rsTarget').textContent=money(target);$r('rsPortfolio').textContent=money(atRet);$r('rsPortfolioSub').textContent=years+' years until age '+retire;$r('rsFiAge').textContent=fiAge;$r('rsFiSub').textContent=fiYear===null?'Target not reached in projection':'About '+fiYear.toFixed(1)+' years from now';$r('rsGap').textContent=gap?money(gap)+'/mo':'On track';$r('rsGapSub').textContent=gap?'Estimated extra monthly amount to close target-age gap':'Your current plan reaches the target by your goal age';
+ var c=2*Math.PI*68;$r('rsDonutFg').style.strokeDasharray=c;$r('rsDonutFg').style.strokeDashoffset=c*(1-progress/100);$r('rsDonutPct').textContent=progress.toFixed(1)+'%';$r('rsReadinessText').textContent=progress>=25?'You have a meaningful foundation. Compounding has room to work.':'Your contribution rate is doing the heavy lifting now — building the starting balance is the first big milestone.';
+ draw(points,target,age);
+ scenarios([.05,.07,.09],age,bal,mo,target,inf);
+ milestones(points,target,age);
+ var title,advice;if(atRet>=targetInfl){title='You are on track for your target age.';advice='Your current savings plan is projected to cover your inflation-adjusted FI target. The biggest lever now is consistency: keep contributions automated and review your plan annually.'}else if(fiYear!==null){title='You can reach FI — just later than planned.';advice='Your strongest lever is increasing monthly investing. Even a few hundred dollars more per month can pull the FI date forward because every extra contribution gets years to compound.'}else{title='Your current plan needs a bigger lever.';advice='Consider a combination of higher monthly investing, a later retirement age, or lower planned retirement spending. Explore each input above to see which change moves the needle most.'}$r('rsAdviceTitle').textContent=title;$r('rsAdvice').textContent=advice;
+}
+function draw(p,target,age){var svg=$r('rsGrowthChart'),W=900,H=330,pad=45,max=Math.max(target,...p.slice(0,46).map(x=>x.v))*1.08;function xy(x,v){return [pad+x/45*(W-pad*2),H-pad-v/max*(H-pad*2)]}var grid='';for(var i=0;i<5;i++){var y=pad+i*(H-pad*2)/4,amt=max*(1-i/4);grid+='<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+y+'" y2="'+y+'" stroke="#e7efeb"/><text x="4" y="'+(y+4)+'" font-size="11" fill="#778782">'+money(amt)+'</text>'}var path=p.slice(0,46).map((x,i)=>{var q=xy(x.y,x.v);return(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join(' '),ty=xy(0,target)[1];svg.innerHTML=grid+'<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+ty+'" y2="'+ty+'" stroke="#f1b933" stroke-width="3" stroke-dasharray="9 7"/><path d="'+path+'" fill="none" stroke="#19b58e" stroke-width="5" stroke-linecap="round"/><text x="'+(W-150)+'" y="'+(ty-8)+'" font-size="12" fill="#bd850d">FI target</text>'; }
+function scenarios(rates,age,bal,mo,target,inf){var el=$r('rsScenarioBars');var rows=rates.map(function(rate){var p=bal,mr=Math.pow(1+rate,1/12)-1,hit=null;for(var m=1;m<=840;m++){p=p*(1+mr)+mo;if(p>=target*Math.pow(1+inf,m/12)){hit=m;break}}return {label:(rate*100).toFixed(0)+'% return',age:hit?age+hit/12:null,months:hit}});var max=Math.max.apply(null,rows.map(x=>x.months||840));el.innerHTML=rows.map(x=>'<div class="rs-bar-row"><b>'+x.label+'</b><div class="rs-bar"><div style="width:'+Math.max(8,100*(1-(x.months||840)/max))+'%"></div></div><span>'+ (x.age?'Age '+x.age.toFixed(1):'70+ yrs')+'</span></div>').join('')}
+function milestones(p,target,age){var levels=[.1,.25,.5,.75,1],names=['10% foundation','25% momentum','Halfway to FI','75% stretch','Financial independence'];var html='';levels.forEach(function(l,i){var hit=p.find(x=>x.v>=target*l);html+='<div class="ret-milestone"><i class="ret-dot"></i><div><b>'+names[i]+'</b><span>'+ (hit?'Projected at age '+(age+hit.y).toFixed(1)+' · '+money(target*l):'Beyond this projection')+'</span></div></div>'});$r('rsMilestones').innerHTML=html}
+$r('rsCalculate').addEventListener('click',calc);['rsAge','rsRetireAge','rsBalance','rsMonthly','rsSpending','rsReturn','rsInflation','rsWithdraw'].forEach(id=>$r(id).addEventListener('input',calc));$r('rsFillExample').addEventListener('click',function(){var x={rsAge:32,rsRetireAge:60,rsBalance:125000,rsMonthly:1800,rsSpending:60000};Object.keys(x).forEach(k=>$r(k).value=x[k]);calc()});
+})();
+</script>
 </body>
 </html>
