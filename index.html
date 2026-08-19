@@ -50,6 +50,12 @@ window.__track = function(event, params){ try { gtag('event', event, params || {
 </script>
 
 <style>
+/* Cross-document view transitions: opt-in only, morphs the shared
+   view-transition-name'd grade badge between this page and dashboard.html
+   on browsers that support it (Chromium-based, as of 2024+). Browsers
+   without support just navigate normally - nothing else depends on it. */
+@view-transition{ navigation:auto; }
+
 :root{
   --bg:#F5F3EA; --bg-2:#ECEBDF;
   --surface:#FFFFFF; --surface-2:#F1F0E6;
@@ -657,6 +663,36 @@ section.block{ padding:76px 0 }
 .load-row{ display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:13px; margin-bottom:10px; color:var(--muted) }
 .bar{ height:10px; border-radius:99px; overflow:hidden; border:1px solid var(--line); background:var(--bg-2) }
 .bar .fill{ height:100%; width:0; background:linear-gradient(90deg,var(--brand),var(--brand-bright)); transition:width .25s ease }
+
+/* Grade Reveal - shown once right after calculating, before the dashboard */
+.grade-reveal-overlay{
+  position:fixed; inset:0; display:none; place-items:center; z-index:85;
+  background:rgba(10,13,12,.72); backdrop-filter:blur(4px); padding:24px;
+}
+.grade-reveal-overlay.show{ display:grid }
+.grade-reveal-card{
+  width:480px; max-width:100%; background:var(--surface); border:1px solid var(--line);
+  border-radius:22px; padding:38px 34px 30px; box-shadow:0 30px 80px -20px rgba(0,0,0,.5), var(--shadow);
+  text-align:center; animation:revealCardIn .45s cubic-bezier(.19,1,.22,1);
+}
+@keyframes revealCardIn{ from{ opacity:0; transform:translateY(18px) scale(.97) } to{ opacity:1; transform:none } }
+@media (prefers-reduced-motion: reduce){ .grade-reveal-card{ animation:none } }
+.grade-reveal-eyebrow{ font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted) }
+.grade-reveal-badge-wrap{ display:flex; justify-content:center; margin:16px 0 6px }
+.grade-reveal-badge-wrap .rc-grade{ width:132px; height:132px }
+.grade-reveal-badge-wrap .rc-grade .rc-grade-letter{ font-size:56px }
+.grade-reveal-score{ font-family:var(--font-mono); font-size:22px; font-weight:700; color:var(--text); margin-top:4px }
+.grade-reveal-score small{ font-size:13px; font-weight:500; color:var(--muted) }
+.grade-reveal-delta{ font-family:var(--font-mono); font-size:13px; font-weight:600; margin-top:6px; color:var(--muted) }
+.grade-reveal-delta.up{ color:var(--good) }
+.grade-reveal-delta.down{ color:var(--bad) }
+.grade-reveal-rows{ text-align:left; margin:22px 0 6px; border-top:1px solid var(--line) }
+.grade-reveal-row{ padding:13px 2px; border-bottom:1px solid var(--line); display:flex; flex-direction:column; gap:2px }
+.grr-label{ font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted-2) }
+.grr-value{ font-size:13.5px; color:var(--text); line-height:1.45 }
+.grade-reveal-row.strength .grr-label{ color:var(--good) }
+.grade-reveal-row.opportunity .grr-label{ color:var(--gold-bright) }
+.grade-reveal-cta{ width:100%; margin-top:18px; padding:13px; font-size:14.5px; font-weight:700 }
 
 /* ---------- Report modal — modern dashboard treatment ---------- */
 .modal{ position:fixed; inset:0; display:none; z-index:100; background:rgba(6,7,9,.68) }
@@ -3146,8 +3182,34 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
   <div class="loader">
-    <div class="load-row"><strong id="loadMsg">Crunching numbers…</strong><span id="pct">0%</span></div>
+    <div class="load-row"><strong id="loadMsg">Calculating your Financial Grade…</strong><span id="pct">0%</span></div>
     <div class="bar"><div class="fill" id="barFill"></div></div>
+  </div>
+</div>
+
+<div id="gradeRevealOverlay" class="grade-reveal-overlay" role="dialog" aria-modal="true" aria-labelledby="revealEyebrow">
+  <div class="grade-reveal-card">
+    <div class="grade-reveal-eyebrow" id="revealEyebrow">Your Financial Grade</div>
+    <div class="grade-reveal-badge-wrap">
+      <div id="revealRing" class="rc-grade"><span id="revealLetter" class="rc-grade-letter">—</span></div>
+    </div>
+    <div class="grade-reveal-score"><span id="revealScore">—</span><small> / 100</small></div>
+    <div id="revealDelta" class="grade-reveal-delta">—</div>
+    <div class="grade-reveal-rows">
+      <div class="grade-reveal-row strength">
+        <span class="grr-label">Biggest strength</span>
+        <span id="revealStrength" class="grr-value">—</span>
+      </div>
+      <div class="grade-reveal-row opportunity">
+        <span class="grr-label">Biggest opportunity</span>
+        <span id="revealOpportunity" class="grr-value">—</span>
+      </div>
+      <div class="grade-reveal-row action">
+        <span class="grr-label">Next recommended action</span>
+        <span id="revealAction" class="grr-value">—</span>
+      </div>
+    </div>
+    <button id="revealCta" class="btn gold grade-reveal-cta" type="button">View My Financial Dashboard →</button>
   </div>
 </div>
 
@@ -7223,6 +7285,67 @@ function animateRingFill(el, targetPct){
   requestAnimationFrame(step);
 }
 
+// The premium "Grade Reveal" shown right after calculating, before the
+// dashboard. Deliberately separate from openReport()'s full report modal
+// (18+ tabs) - this is a fast, focused summary. Everything below reads
+// from v/cats/prevHistory that are already fully computed elsewhere
+// (categoryScores, buildPath) - no new scoring logic, no new questions,
+// no AI calls, just picking out and formatting values that already exist.
+function showGradeReveal(v, cats, prevHistory){
+  var letterClean = cats.overall.letter.split(" ")[0];
+  var tier = letterClean === "F" ? "grade-f"
+           : ["A+","A","A-","B+"].indexOf(letterClean)>-1 ? "good"
+           : ["B","B-","C+","C","C-"].indexOf(letterClean)>-1 ? "mid" : "bad";
+
+  var ring = $("revealRing");
+  ring.className = "rc-grade " + tier;
+  $("revealLetter").textContent = letterClean;
+  $("revealScore").textContent = cats.overall.score.toFixed(1);
+  animateRingFill(ring, cats.overall.score);
+
+  var deltaEl = $("revealDelta");
+  var prev = (prevHistory && prevHistory.length) ? prevHistory[prevHistory.length-1] : null;
+  if(prev && typeof prev.score === "number"){
+    var d = Math.round((cats.overall.score - prev.score)*10)/10;
+    if(Math.abs(d) < 0.05){ deltaEl.textContent = "Same as your last check-in"; deltaEl.className = "grade-reveal-delta"; }
+    else if(d > 0){ deltaEl.textContent = "↑ +"+d+" pts since your last check-in"; deltaEl.className = "grade-reveal-delta up"; }
+    else { deltaEl.textContent = "↓ "+d+" pts since your last check-in"; deltaEl.className = "grade-reveal-delta down"; }
+  } else {
+    deltaEl.textContent = "Your first check-in — future ones will show your trend.";
+    deltaEl.className = "grade-reveal-delta";
+  }
+
+  // Same strongest/weakest derivation used in buildGradeSummaryParagraph,
+  // so this always agrees with the rest of the report.
+  var scores = { "Savings rate":cats.s.sSave, "Emergency fund":cats.s.sEF, "Debt load (non-mort.)":cats.s.sDebt, "Age-based net worth":cats.s.sAgeNW, "Income strength":cats.s.sInc };
+  var labels = { "Savings rate":"Savings rate", "Emergency fund":"Emergency fund", "Debt load (non-mort.)":"Debt load", "Age-based net worth":"Net worth", "Income strength":"Income" };
+  var sortedKeys = Object.keys(scores).sort(function(a,b){ return scores[b]-scores[a]; });
+  var strongestKey = sortedKeys[0], weakestKey = sortedKeys[sortedKeys.length-1];
+  var strongestComp = cats.components.filter(function(c){ return c.key===strongestKey; })[0];
+  var weakestComp = cats.components.filter(function(c){ return c.key===weakestKey; })[0];
+  $("revealStrength").textContent = labels[strongestKey] + " — " + strongestComp.val;
+  $("revealOpportunity").textContent = weakestKey === strongestKey
+    ? "Nothing stands out — every factor is landing in a similar place"
+    : labels[weakestKey] + " — " + weakestComp.tip;
+
+  var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; } })();
+  $("revealAction").textContent = actions.length ? actions[0].txt : "Keep doing what you're doing — consistency compounds from here.";
+
+  var overlayEl = $("gradeRevealOverlay");
+  overlayEl.classList.add("show");
+  var cta = $("revealCta");
+  cta.onclick = function(){
+    // Cross-document View Transition: if the browser supports it (both
+    // pages opt in via @view-transition{navigation:auto}), this element
+    // and dashboard.html's grade badge share a view-transition-name, so
+    // the browser morphs one into the other during navigation instead of
+    // a hard cut. Unsupported browsers just navigate normally - nothing
+    // here depends on it working.
+    ring.style.viewTransitionName = "gmf-grade-hero";
+    window.location.href = "dashboard.html";
+  };
+}
+
 function openReport(v,cats){
   var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), pathList=$("pathList");
   var modal=$("reportModal");
@@ -7839,19 +7962,18 @@ function gradeNow(){
   if(raw.expenses<=0){ toastMsg("Enter your average monthly expenses."); return; }
   runWithLoader(function(){
     var v=values(); var cats=categoryScores(v);
+    var prevHistory = getHistory(); // snapshot before openReport()'s saveHistory() adds the new entry
     // openReport() shows the modal and kicks off a requestAnimationFrame
     // score-reveal animation as a side effect of its normal (in-page)
-    // behavior. Setting location.href right after doesn't stop the
-    // browser from painting that frame first, which is what caused the
-    // brief flash of the old report card before landing on the
-    // dashboard. Forcing the modal hidden here - overriding its own
+    // behavior. Forcing the modal hidden here - overriding its own
     // classList changes - means openReport() still runs exactly as
     // before (all the persistence: history, streaks, achievements,
-    // cloud save) but nothing it does to the modal can ever paint.
+    // cloud save) but nothing it does to the modal can ever paint. The
+    // Grade Reveal below is the actual visible next step now.
     var modalEl = document.getElementById("reportModal");
     if(modalEl) modalEl.style.setProperty("display", "none", "important");
     openReport(v,cats);
-    window.location.href = "dashboard.html";
+    showGradeReveal(v, cats, prevHistory);
   });
 }
 function openCalcModal(location){
@@ -8737,14 +8859,17 @@ function initProjections(vBase, catsBase){
 
 var overlay=$("overlay"), bar=$("barFill"), pct=$("pct"), loadMsg=$("loadMsg");
 function runWithLoader(fnDone){
-  var steps=["Checking savings rate…","Measuring emergency fund runway…","Comparing net worth vs age…","Weighing debt load…","Factoring income strength…"];
-  var i=0, total=steps.length+2, interval=2000/total;
-  overlay.classList.add("show"); bar.style.width="0%"; pct.textContent="0%"; loadMsg.textContent="Crunching numbers…";
-  var t=setInterval(function(){
-    var prog=Math.min(100,Math.round(((i+1)/total)*100));
-    bar.style.width=prog+"%"; pct.textContent=prog+"%"; loadMsg.textContent = steps[i] || "Finalizing…"; i++;
-    if(i>=total){ clearInterval(t); overlay.classList.remove("show"); try { fnDone(); } catch(err){ console.error(err); } }
-  }, interval);
+  // Used to cycle through 5+ fake "measuring" messages over ~2s. Per
+  // request: one honest message, ~1s total - long enough to read as
+  // deliberate/trustworthy, short enough to not feel like padding.
+  overlay.classList.add("show"); bar.style.width="0%"; pct.textContent="0%";
+  loadMsg.textContent="Calculating your Financial Grade…";
+  requestAnimationFrame(function(){ bar.style.width="100%"; });
+  setTimeout(function(){
+    pct.textContent="100%";
+    overlay.classList.remove("show");
+    try { fnDone(); } catch(err){ console.error(err); }
+  }, 900);
 }
 
 // Coming from the Dashboard's "View Full Grade Report" link: reopen the
