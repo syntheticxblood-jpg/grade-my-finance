@@ -120,6 +120,14 @@ header.site{
 .seal span{ font-family:var(--font-mono); font-weight:700; font-size:13px; color:var(--gold-bright) }
 .seal-lg{ width:52px; height:52px; border-radius:14px }
 .seal-lg span{ font-size:19px }
+/* Real header/footer brandmark uses the actual logo image now - drop the
+   gradient box + shimmer (that treatment was built for the old SVG mark)
+   and just show the image's own circular art cleanly. Scoped to
+   .brandmark specifically so the marketing mockup's .seal (a different,
+   decorative illustration) keeps its original look. */
+.brandmark .seal{ background:none; box-shadow:none; border-radius:50% }
+.brandmark .seal::after{ display:none }
+.brandmark .seal img{ width:100%; height:100%; object-fit:cover; display:block }
 .wordmark{ font-weight:700; font-size:17px; letter-spacing:-.01em; white-space:nowrap }
 @media (max-width:420px){ .wordmark{ font-size:14.5px } }
 nav.primary{ display:flex; align-items:center; gap:26px; margin-left:24px; flex-shrink:1; min-width:0; overflow:hidden; }
@@ -2570,7 +2578,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <header class="site">
   <div class="container hdr-row">
     <a class="brandmark" href="#top">
-      <span class="seal seal-lg"><svg width="28" height="28" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="22" cy="22" r="16" stroke="#fff" stroke-width="5"/><rect x="22" y="19" width="12" height="6" fill="#fff"/><path d="M22 6 A16 16 0 0 1 34 17 L28.3 20.2 A10 10 0 0 0 22 13 Z" fill="#F5B942"/></svg></span>
+      <span class="seal seal-lg"><img src="logo.png" width="30" height="30" alt="" style="display:block;border-radius:50%"></span>
       <span class="wordmark">Grade My Finance</span>
     </a>
     <nav class="primary">
@@ -4284,7 +4292,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <footer class="site">
   <div class="container">
     <div class="foot-row">
-      <a class="brandmark" href="#top"><span class="seal"><svg width="20" height="20" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="22" cy="22" r="16" stroke="#fff" stroke-width="5"/><rect x="22" y="19" width="12" height="6" fill="#fff"/><path d="M22 6 A16 16 0 0 1 34 17 L28.3 20.2 A10 10 0 0 0 22 13 Z" fill="#F5B942"/></svg></span><span class="wordmark">Grade My Finance</span></a>
+      <a class="brandmark" href="#top"><span class="seal"><img src="logo.png" width="26" height="26" alt="" style="display:block;border-radius:50%"></span><span class="wordmark">Grade My Finance</span></a>
       <div class="foot-links">
         <a href="about.html">About</a>
         <a href="net-worth-by-age.html">Net Worth by Age</a>
