@@ -3006,6 +3006,89 @@ html, body{
 .ship-bar-summary b{color:#21423f!important}
 .ship-modern-chart-wrap{background:transparent!important}
 </style>
+
+<style id="matching-screenshot-fix">
+/* =========================================================
+   FINAL VISUAL MATCH — Grade My Finance dashboard
+   Brighter cards + clearly tinted cool mint/blue canvas.
+   ========================================================= */
+:root{
+  --match-bg:#edf6f4;
+  --match-line:#d5e3df;
+  --match-card:#ffffff;
+  --match-ink:#16352f;
+  --match-green:#159a78;
+}
+html,body{background:var(--match-bg)!important;}
+body{
+  background:
+    radial-gradient(900px 520px at 17% 8%, rgba(54,170,137,.14), transparent 62%),
+    radial-gradient(800px 520px at 92% 18%, rgba(102,145,220,.13), transparent 64%),
+    linear-gradient(135deg,#eef8f5 0%,#edf6f4 48%,#eef3fa 100%) !important;
+  color:var(--match-ink)!important;
+}
+.main-area{
+  background:transparent!important;
+}
+.main-area::before{display:none!important;}
+
+/* Deep command-center sidebar */
+.sidebar{
+  background:#0d4036!important;
+  border-right:1px solid #1d554b!important;
+  box-shadow:10px 0 35px rgba(13,64,54,.12)!important;
+  color:#eaf5f1!important;
+}
+.sidebar-brand{border-bottom-color:#28584f!important;}
+.sidebar .dash-nav-btn{color:#c9ddd8!important;}
+.sidebar .dash-nav-btn:hover{background:#154d42!important;color:#fff!important;}
+.sidebar .dash-nav-btn.active{
+  background:#08785f!important;
+  color:#fff!important;
+  box-shadow:inset 3px 0 0 #42c7a4!important;
+}
+.sidebar .nav-section-label,.sidebar .nav-label,.sidebar small{color:#8fb6ac!important;}
+.sidebar .nav-icon{color:#a9c9c1!important;}
+.sidebar .dash-nav-btn.active .nav-icon{color:#6ee7c3!important;}
+.sidebar-bottom{border-top-color:#28584f!important;}
+.sidebar-bottom .icon-btn{color:#dcece8!important;}
+.sidebar-bottom .icon-btn:hover{background:#154d42!important;}
+.sidebar-profile{color:#eaf5f1!important;}
+.sidebar-profile .muted{color:#8faea6!important;}
+
+/* Main cards have enough contrast to show their outlines */
+.card,.hero-card,.insight-card,.grade-ring-card,.metric-card,
+.content-header,.metrics-strip,.ship-chart-card{
+  background:#fff!important;
+  border-color:var(--match-line)!important;
+  box-shadow:0 8px 28px rgba(26,62,55,.07)!important;
+}
+.content-header{background:rgba(255,255,255,.94)!important;}
+
+/* Chart cards: subtle individual tints */
+#panel-overview .ship-chart-card:nth-child(1),
+#panel-overview .chart-card:nth-child(1){
+  background:linear-gradient(135deg,#ffffff 0%,#f4fbf9 100%)!important;
+}
+#panel-overview .ship-chart-card:nth-child(2),
+#panel-overview .chart-card:nth-child(2){
+  background:linear-gradient(135deg,#ffffff 0%,#f7f5fc 100%)!important;
+}
+
+/* Keep all major rounded boxes visibly separated from the canvas */
+.grade-ring-card,.metric-card,.hero-card,.card,.insight-card,
+.content-header,.metrics-strip{border:1px solid #d5e3df!important;}
+
+/* Modern chart palette */
+:root{
+  --chart-blue:#4b82e8;
+  --chart-green:#43c5a4;
+  --chart-purple:#8a62d9;
+  --chart-amber:#e9a72f;
+  --chart-red:#ef6666;
+}
+</style>
+
 </head>
 <body>
 <script>
