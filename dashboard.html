@@ -7066,26 +7066,41 @@ function renderNwEntriesList(withNet){
   var deleteAllBtn = $("nwDeleteAll");
   if(!el2) return;
 
-  /* Quick net-worth updates are marked separately when they are saved.
-     Keep full check-ins intact because they also power Grade & Progress. */
-  var quickUpdates = withNet.filter(function(entry){ return entry.isNetWorthUpdate === true; });
-
+  /* Delete All means exactly that for this section: remove every saved
+     net-worth update, including older entries that were not marked with
+     isNetWorthUpdate. The user explicitly asked for a full clear, so do not
+     silently leave older net-worth records behind. */
   if(deleteAllBtn){
-    deleteAllBtn.disabled = quickUpdates.length === 0;
-    deleteAllBtn.title = quickUpdates.length
-      ? 'Delete '+quickUpdates.length+' quick net-worth update'+(quickUpdates.length===1?'':'s')
-      : 'No quick net-worth updates to delete';
+    deleteAllBtn.disabled = withNet.length === 0;
+    deleteAllBtn.title = withNet.length
+      ? 'Delete all '+withNet.length+' saved net-worth update'+(withNet.length===1?'':'s')
+      : 'No net-worth updates to delete';
     deleteAllBtn.onclick = function(){
-      if(!quickUpdates.length) return;
-      if(!confirm('Delete all '+quickUpdates.length+' quick net-worth update'+(quickUpdates.length===1?'':'s')+'? This cannot be undone. Your full financial check-ins will stay intact.')) return;
-      var quickTs = {};
-      quickUpdates.forEach(function(entry){ quickTs[entry.ts] = true; });
-      var arr = getHistory().filter(function(h){ return !quickTs[h.ts]; });
-      localStorage.setItem('gmf_history_v2', JSON.stringify(arr));
+      var count = getHistory().filter(function(entry){ return typeof entry.net === 'number'; }).length;
+      if(!count) return;
+
+      var warning =
+        'WARNING: This will permanently erase ALL '+count+' saved net-worth update'+(count===1?'':'s')+' and the financial history attached to them.\n\n' +
+        'This cannot be undone. Any numbers you entered for net worth, assets, debts, income, expenses, and related check-ins stored in your financial history will be removed.\n\n' +
+        'Are you sure you want to erase everything?';
+
+      if(!confirm(warning)) return;
+
+      // Clear the complete financial history, not just the newest/quick entries.
+      localStorage.removeItem('gmf_history_v2');
+      localStorage.removeItem('gmf_checkin_count');
+      localStorage.removeItem('gmf_best_score');
+      localStorage.removeItem('gmf_achievements');
+
       var freshHist = getHistory();
       renderNetWorthTab(freshHist);
       renderOverview(freshHist, groupCheckins(freshHist));
       renderScoreTab(freshHist);
+      if(typeof renderDashboard === 'function') renderDashboard(freshHist);
+
+      // Keep the button state and message in sync immediately.
+      deleteAllBtn.disabled = true;
+      deleteAllBtn.title = 'No net-worth updates to delete';
     };
   }
 
