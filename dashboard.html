@@ -2434,6 +2434,47 @@ svg text{fill:var(--ui-muted)}
 }
 </style>
 
+
+<style id="gmf-tabs-top-navigation">
+/* Keep every secondary tab strip at the top of its workspace so users can
+   switch views without scrolling back through the current view. */
+#moneySubtabs, #planSubtabs, #insightSubtabs{
+  position:sticky !important;
+  top:8px !important;
+  z-index:50 !important;
+  margin:0 0 16px !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+}
+#flowTabs, #projSubtabs{
+  position:sticky !important;
+  top:72px !important;
+  z-index:45 !important;
+  margin:0 0 14px !important;
+}
+#flowTabs{
+  display:flex !important;
+  gap:4px !important;
+  align-items:center !important;
+  overflow-x:auto !important;
+  padding:4px !important;
+  border:1px solid var(--ui-line, #dfe6e4) !important;
+  border-radius:10px !important;
+  background:var(--ui-card2, #edf2f0) !important;
+  box-shadow:0 5px 16px rgba(16,38,45,.07) !important;
+}
+#flowTabs .flow-tab{white-space:nowrap !important}
+#projSubtabs{
+  width:100% !important;
+  box-sizing:border-box !important;
+  background:var(--ui-card2, #edf2f0) !important;
+  box-shadow:0 5px 16px rgba(16,38,45,.07) !important;
+}
+@media(max-width:900px){
+  #moneySubtabs, #planSubtabs, #insightSubtabs{top:6px !important}
+  #flowTabs, #projSubtabs{top:64px !important}
+}
+</style>
 </head>
 <body>
 <script>
@@ -2814,13 +2855,13 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
             <div class="flow-summary-card expenses"><span class="flow-summary-label">Total Expenses</span><span class="flow-summary-val" id="flowSumExpenses">—</span></div>
             <div class="flow-summary-card net"><span class="flow-summary-label">Net Income</span><span class="flow-summary-val" id="flowSumNet">—</span></div>
           </div>
+          <div class="flow-tabs" id="flowTabs">
+            <button class="flow-tab active" data-view="flowAssets" type="button">Assets Flow</button>
+            <button class="flow-tab" data-view="flowLiabs" type="button">Liabilities Flow</button>
+            <button class="flow-tab" data-view="flowIncome" type="button">Income &amp; Savings</button>
+            <button class="flow-tab" data-view="flowGrowth" type="button">Net Worth Trend</button>
+          </div>
           <div class="flow-panel" style="margin:0">
-            <div class="flow-tabs" id="flowTabs">
-              <button class="flow-tab active" data-view="flowAssets" type="button">Assets Flow</button>
-              <button class="flow-tab" data-view="flowLiabs" type="button">Liabilities Flow</button>
-              <button class="flow-tab" data-view="flowIncome" type="button">Income &amp; Savings</button>
-              <button class="flow-tab" data-view="flowGrowth" type="button">Net Worth Trend</button>
-            </div>
             <div class="flow-view active" id="flowAssets">
               <div class="flow-header"><h3>Assets Flow</h3><div class="flow-sub" id="flowAssetsSub">—</div></div>
               <svg id="flowAssetsSvg" width="100%" height="300" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Assets flow diagram"></svg>
@@ -2979,6 +3020,13 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <span class="section-label">Plan</span>
       <p class="section-sub">Your next move, your biggest opportunities, a real debt payoff plan, and what-if scenarios — all built from your latest check-in.</p>
 
+      <div class="money-subtabs" id="planSubtabs">
+        <button class="plan-subtab-btn active" data-plansub="opportunities" type="button">Opportunities</button>
+        <button class="plan-subtab-btn" data-plansub="debtplan" type="button">Debt Plan</button>
+        <button class="plan-subtab-btn" data-plansub="scenarios" type="button">Scenarios</button>
+        <button class="plan-subtab-btn" data-plansub="projections" type="button">Projections</button>
+      </div>
+
       <div class="ship-nextmove-card" style="margin-bottom:18px">
         <div class="ship-card-head"><div><h3 style="font:800 15px var(--font-display);color:#18323b">Your next best move</h3><p style="font-size:11px;color:#7a898e;margin-top:3px">The single highest-impact thing to focus on right now.</p></div></div>
         <div id="planNextMove"></div>
@@ -2990,13 +3038,6 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
           <p class="section-sub" style="margin-top:4px">Project when you'll hit FI and what moves that date.</p>
         </div>
         <button class="btn gold" type="button" data-goto="retirement">Open Retirement →</button>
-      </div>
-
-      <div class="money-subtabs" id="planSubtabs">
-        <button class="plan-subtab-btn active" data-plansub="opportunities" type="button">Opportunities</button>
-        <button class="plan-subtab-btn" data-plansub="debtplan" type="button">Debt Plan</button>
-        <button class="plan-subtab-btn" data-plansub="scenarios" type="button">Scenarios</button>
-        <button class="plan-subtab-btn" data-plansub="projections" type="button">Projections</button>
       </div>
 
       <div class="plan-subview active" data-planpanel="opportunities">
@@ -3066,12 +3107,12 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="plan-subview" data-planpanel="projections">
         <div id="planProjEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your projections</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="planProjContent">
-          <p class="section-sub" style="margin-bottom:14px">Quick What-If is available in this Plan area. Use the sliders below to test assumptions before you change anything in real life. The grade itself remains the score from your latest check-in.</p>
           <div class="proj-subtabs" id="projSubtabs">
             <button class="proj-subtab-btn active" data-subtab="networth" type="button">Net Worth</button>
             <button class="proj-subtab-btn" data-subtab="lifeevents" type="button">Life Events</button>
             <button class="proj-subtab-btn" data-subtab="freedom" type="button">Freedom #</button>
           </div>
+          <p class="section-sub" style="margin-bottom:14px">Quick What-If is available in this Plan area. Use the sliders below to test assumptions before you change anything in real life. The grade itself remains the score from your latest check-in.</p>
 
           <div class="proj-subpanel active" data-subpanel="networth">
             <div class="pro-blur-section">
@@ -3215,6 +3256,12 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <span class="section-label">Insights</span>
       <p class="section-sub">Deeper context on your grade — how you compare, how it feels day-to-day, and how you'd hold up in a tough month.</p>
 
+      <div class="money-subtabs" id="insightSubtabs">
+        <button class="insight-subtab-btn active" data-insightsub="benchmarks" type="button">Benchmarks</button>
+        <button class="insight-subtab-btn" data-insightsub="perspective" type="button">Perspective</button>
+        <button class="insight-subtab-btn" data-insightsub="stresstest" type="button">Stress Test</button>
+      </div>
+
       <div class="insights-pro-banner" id="insightsProBanner">
         <div class="insights-pro-copy">
           <div class="insights-pro-kicker">Grade My Finance Pro</div>
@@ -3228,12 +3275,6 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="insights-free-card"><div class="if-label">What is helping</div><div class="if-value" id="insightFreeStrength">—</div><div class="if-copy">Your strongest current financial area.</div></div>
         <div class="insights-free-card"><div class="if-label">What needs attention</div><div class="if-value" id="insightFreeFocus">—</div><div class="if-copy">The highest-impact opportunity from your latest check-in.</div></div>
         <div class="insights-free-card"><div class="if-label">What Pro adds</div><div class="if-value">Deeper answers</div><div class="if-copy">See the numbers, scenarios, and benchmarks behind the recommendation.</div></div>
-      </div>
-
-      <div class="money-subtabs" id="insightSubtabs">
-        <button class="insight-subtab-btn active" data-insightsub="benchmarks" type="button">Benchmarks</button>
-        <button class="insight-subtab-btn" data-insightsub="perspective" type="button">Perspective</button>
-        <button class="insight-subtab-btn" data-insightsub="stresstest" type="button">Stress Test</button>
       </div>
 
       <div class="insight-subview active" data-insightpanel="benchmarks">
