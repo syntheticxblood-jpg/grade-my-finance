@@ -6201,6 +6201,13 @@ function shipLineChart(svg, rows, series){
     return;
   }
 
+  // Keep chart rendering self-contained. Do not depend on helpers
+  // declared in later script blocks.
+  var chartEsc=function(v){
+    return String(v==null?'':v).replace(/[&<>\"']/g,function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'})[c];
+    });
+  };
   var dark=document.documentElement.dataset.theme==='dark';
   var w=900,h=270,pL=72,pR=24,pT=24,pB=42,iw=w-pL-pR,ih=h-pT-pB;
   var C={
@@ -6255,7 +6262,7 @@ function shipLineChart(svg, rows, series){
     var gt=gi/4,gv=max-(max-min)*gt,gy=y(gv);
     var zero=Math.abs(gv)<Math.max(1,Math.abs(max-min)*.002);
     out+='<line x1="'+pL+'" y1="'+gy.toFixed(1)+'" x2="'+(w-pR)+'" y2="'+gy.toFixed(1)+'" stroke="'+(zero?C.zero:C.grid)+'" stroke-width="'+(zero?1.4:1)+'" '+(zero?'':'stroke-dasharray="2 5"')+'/>';
-    out+='<text x="8" y="'+(gy+5).toFixed(1)+'" fill="'+C.axis+'" font-size="12" font-weight="650" font-family="Inter,Arial,sans-serif">'+esc(fmt(gv))+'</text>';
+    out+='<text x="8" y="'+(gy+5).toFixed(1)+'" fill="'+C.axis+'" font-size="12" font-weight="650" font-family="Inter,Arial,sans-serif">'+chartEsc(fmt(gv))+'</text>';
   }
 
   // Up to six evenly spaced date labels.
@@ -6266,7 +6273,7 @@ function shipLineChart(svg, rows, series){
     if(!dt||isNaN(dt.getTime())) continue;
     var lab=dt.toLocaleDateString(undefined,{month:'short',year:'2-digit'});
     var anchor=li===0?'start':(li===labelCount-1?'end':'middle');
-    out+='<text x="'+x(idx).toFixed(1)+'" y="'+(h-12)+'" text-anchor="'+anchor+'" fill="'+C.muted+'" font-size="11" font-weight="600" font-family="Inter,Arial,sans-serif">'+esc(lab)+'</text>';
+    out+='<text x="'+x(idx).toFixed(1)+'" y="'+(h-12)+'" text-anchor="'+anchor+'" fill="'+C.muted+'" font-size="11" font-weight="600" font-family="Inter,Arial,sans-serif">'+chartEsc(lab)+'</text>';
   }
 
   series.forEach(function(s,si){
