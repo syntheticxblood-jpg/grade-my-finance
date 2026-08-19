@@ -4600,9 +4600,38 @@ function __track(){} // no-op if GA hasn't wired a custom tracker on this page
   function activate(name,scroll){
     var p=document.getElementById('panel-networth'); if(!p)return;
     var buttons=p.querySelectorAll('.money-subtab-btn'), views=p.querySelectorAll('.money-subview');
+    var nav=document.getElementById('moneySubtabs');
+    var targetView=p.querySelector('.money-subview[data-moneypanel="'+name+'"]');
     buttons.forEach(function(b){b.classList.toggle('active',b.dataset.moneysub===name)});
     views.forEach(function(v){v.classList.toggle('active',v.dataset.moneypanel===name)});
-    if(scroll){var y=p.getBoundingClientRect().top+window.scrollY;window.scrollTo({top:Math.max(0,y-12),behavior:'smooth'})}
+
+    /*
+     * Money Flow is a visualization workspace. When it is selected, put the
+     * entire Money Flow workspace immediately below the Money tabs. This
+     * prevents the KPI/intro cards from pushing the selected flow chart below
+     * the fold. The chart's own Assets/Liabilities/Income/Trend tabs already
+     * sit directly above their corresponding chart.
+     */
+    if(nav && targetView && name==='moneyflow'){
+      nav.insertAdjacentElement('afterend', targetView);
+      p.classList.add('gmf-moneyflow-focused');
+    }else{
+      p.classList.remove('gmf-moneyflow-focused');
+      if(nav){
+        var firstView=p.querySelector('.money-subview');
+        if(firstView && nav.nextElementSibling!==firstView){
+          /* Restore the normal document order: nav followed by the views. */
+          var anchor=nav;
+          views.forEach(function(v){ anchor.insertAdjacentElement('afterend',v); anchor=v; });
+        }
+      }
+    }
+
+    if(scroll){
+      var topTarget = name==='moneyflow' ? nav : p;
+      var y=topTarget.getBoundingClientRect().top+window.scrollY;
+      window.scrollTo({top:Math.max(0,y-8),behavior:'smooth'});
+    }
     __track('money_subtab_view',{tab:name});
   }
   document.addEventListener('click',function(e){var b=e.target.closest('.money-subtab-btn');if(b){e.preventDefault();activate(b.dataset.moneysub,true)}});
@@ -8868,6 +8897,24 @@ main{padding-top:16px !important;padding-bottom:42px !important}
 #moneyFlowContent .flow-view svg{
   display:block;
   min-height:260px;
+}
+#moneyFlowContent .flow-view svg{
+  display:block;
+  min-height:260px;
+}
+
+/* Money Flow focus mode: tabs -> selected flow workspace -> chart. */
+#panel-networth.gmf-moneyflow-focused > .money-subview[data-moneypanel="moneyflow"]{
+  margin-top:0 !important;
+}
+#panel-networth.gmf-moneyflow-focused #moneyFlowContent{
+  margin-top:0 !important;
+}
+#panel-networth.gmf-moneyflow-focused #moneyFlowContent .flow-tabs{
+  margin-top:0 !important;
+}
+#panel-networth.gmf-moneyflow-focused #moneyFlowContent .flow-panel{
+  margin-top:0 !important;
 }
 
 /* =========================================================
