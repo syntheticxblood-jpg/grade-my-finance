@@ -2962,6 +2962,50 @@ svg text{fill:var(--ui-muted)}
   .ship-bar-summary{grid-template-columns:1fr 1fr}
 }
 </style>
+
+<style id="gmf-flavored-light-background">
+/* A warmer, greener-blue "white" instead of sterile pure white. */
+html, body{
+  background:
+    radial-gradient(circle at 8% 0%, rgba(35,199,160,.055), transparent 28%),
+    radial-gradient(circle at 92% 10%, rgba(77,141,255,.055), transparent 30%),
+    linear-gradient(135deg,#f4f8f7 0%,#f7f9fb 52%,#f3f7f8 100%) !important;
+}
+#app, .app-shell, .main, .content, .dashboard-page{
+  background:transparent !important;
+}
+.ship-modern-chart-card{
+  background:
+    radial-gradient(circle at 12% 8%,rgba(34,199,160,.075),transparent 34%),
+    radial-gradient(circle at 92% 18%,rgba(77,141,255,.055),transparent 32%),
+    linear-gradient(145deg,#f9fcfb 0%,#f3f8f7 58%,#f6f8fb 100%) !important;
+  border:1px solid #d4e3df !important;
+  box-shadow:0 14px 38px rgba(23,65,61,.08), inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+.ship-modern-chart-card .ship-card-head h3{color:#173b3d!important}
+.ship-modern-chart-card .ship-card-head p{color:#6d8884!important}
+.ship-chart-kicker{color:#119b7d!important}
+.ship-chart-badge{
+  background:rgba(255,255,255,.72)!important;
+  border-color:#cfe0dc!important;
+  color:#607b76!important;
+}
+.ship-chart-badge-green{
+  background:rgba(34,199,160,.08)!important;
+  color:#078d70!important;
+  border-color:rgba(34,199,160,.25)!important;
+}
+.ship-modern-legend{border-top-color:#dbe7e4!important}
+.ship-modern-legend span{color:#66807b!important}
+.ship-modern-legend b{color:#234542!important}
+.ship-bar-summary>div{
+  background:rgba(255,255,255,.58)!important;
+  border-color:#dbe7e4!important;
+}
+.ship-bar-summary span{color:#708984!important}
+.ship-bar-summary b{color:#21423f!important}
+.ship-modern-chart-wrap{background:transparent!important}
+</style>
 </head>
 <body>
 <script>
@@ -3183,7 +3227,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ship-chart-badge" id="shipPieBadge">CURRENT</div>
       </div>
       <div class="ship-modern-chart-wrap ship-pie-wrap">
-        <svg id="shipNetWorthChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth allocation pie chart"></svg>
+        <svg id="gmfModernPieChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth allocation pie chart"></svg>
       </div>
       <div class="ship-modern-legend" id="shipPieLegend"></div>
     </div>
@@ -3197,7 +3241,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ship-chart-badge ship-chart-badge-green" id="shipBarBadge">MONTHLY</div>
       </div>
       <div class="ship-modern-chart-wrap ship-bar-wrap">
-        <svg id="shipCashflowChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Monthly income and expenses bar chart"></svg>
+        <svg id="gmfModernBarChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Monthly income and expenses bar chart"></svg>
       </div>
       <div class="ship-bar-summary" id="shipBarSummary"></div>
     </div>
@@ -7017,21 +7061,27 @@ function shipFmtCompact(n){
   return '$'+Math.round(n).toLocaleString();
 }
 function renderShipNetWorthChart(hist){
-  var svg = $('shipNetWorthChart'); if(!svg) return;
+  var svg = $('gmfModernPieChart'); if(!svg) return;
   var latest = hist && hist.length ? hist[hist.length-1] : null;
   if(!latest){
     svg.innerHTML='<text x="380" y="165" text-anchor="middle" fill="#8da29d" font-size="16" font-family="Inter,Segoe UI,Arial,sans-serif">Add a financial check-in to see your net worth mix.</text>';
     return;
   }
 
+  var report = getLastReportV ? getLastReportV() : null;
+  var source = report || latest;
+  var valueOf = function(key){
+    var v = Number(source && source[key]);
+    return isFinite(v) && v > 0 ? v : 0;
+  };
   var items=[
-    {label:'Home', value:num(latest.home), color:'#22c7a0'},
-    {label:'Retirement', value:num(latest.retire), color:'#4d8dff'},
-    {label:'Brokerage', value:num(latest.brokerage), color:'#9a72ff'},
-    {label:'Cash', value:num(latest.cash), color:'#f5b84b'},
-    {label:'Crypto / Other', value:num(latest.crypto), color:'#f4776a'},
-    {label:'HSA', value:num(latest.hsa), color:'#3bc6d8'},
-    {label:'Car', value:num(latest.car), color:'#7e8da5'}
+    {label:'Home', value:valueOf('home'), color:'#20b993'},
+    {label:'Retirement', value:valueOf('retire'), color:'#4f88ee'},
+    {label:'Brokerage', value:valueOf('brokerage'), color:'#8b68df'},
+    {label:'Cash', value:valueOf('cash'), color:'#e6aa38'},
+    {label:'Crypto / Other', value:valueOf('crypto'), color:'#e56b60'},
+    {label:'HSA', value:valueOf('hsa'), color:'#25afc1'},
+    {label:'Car', value:valueOf('car'), color:'#718097'}
   ].filter(function(x){return x.value>0;});
 
   var total=items.reduce(function(a,x){return a+x.value;},0);
@@ -7049,7 +7099,7 @@ function renderShipNetWorthChart(hist){
       '<radialGradient id="shipPieCenter" cx="50%" cy="40%"><stop offset="0%" stop-color="#17343a"/><stop offset="100%" stop-color="#0b171a"/></radialGradient>'+
     '</defs>';
 
-  var cx=190, cy=165, r=112, start=-Math.PI/2, out=defs;
+  var cx=185, cy=165, r=116, start=-Math.PI/2, out=defs;
   items.forEach(function(item,i){
     var sweep=(item.value/total)*Math.PI*2;
     var end=start+sweep;
@@ -7060,7 +7110,7 @@ function renderShipNetWorthChart(hist){
   out+='<text x="'+cx+'" y="'+(cy-6)+'" text-anchor="middle" fill="#eaf8f3" font-size="25" font-weight="800" font-family="IBM Plex Mono,monospace">'+shipFmtCompact(total)+'</text>';
   out+='<text x="'+cx+'" y="'+(cy+17)+'" text-anchor="middle" fill="#8fa7a2" font-size="11" font-weight="700" letter-spacing="1.5" font-family="Inter,Segoe UI,Arial,sans-serif">TOTAL ASSETS</text>';
 
-  var lx=365, ly=70;
+  var lx=365, ly=63;
   items.forEach(function(item,i){
     var pct=total?item.value/total*100:0;
     var yy=ly+i*34;
@@ -7080,7 +7130,7 @@ function renderShipNetWorthChart(hist){
   }
 }
 function renderShipCashflowChart(hist){
-  var svg = $('shipCashflowChart'); if(!svg) return;
+  var svg = $('gmfModernBarChart'); if(!svg) return;
   var latest = hist && hist.length ? hist[hist.length-1] : null;
   if(!latest){
     svg.innerHTML='<text x="380" y="165" text-anchor="middle" fill="#8da29d" font-size="16" font-family="Inter,Segoe UI,Arial,sans-serif">Add a financial check-in to see your monthly picture.</text>';
@@ -10868,6 +10918,27 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
     document.addEventListener('DOMContentLoaded',start,{once:true});
   }else{
     start();
+  }
+})();
+</script>
+
+<script id="gmf-modern-chart-final-paint">
+(function(){
+  function paintModernCharts(){
+    try{
+      var hist = typeof getHistory==='function' ? getHistory() : [];
+      if(typeof renderShipNetWorthChart==='function') renderShipNetWorthChart(hist);
+      if(typeof renderShipCashflowChart==='function') renderShipCashflowChart(hist);
+    }catch(e){
+      console.warn('Modern dashboard charts could not render:',e);
+    }
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){
+      [100,500,1200,2200].forEach(function(ms){setTimeout(paintModernCharts,ms);});
+    },{once:true});
+  }else{
+    [100,500,1200,2200].forEach(function(ms){setTimeout(paintModernCharts,ms);});
   }
 })();
 </script>
