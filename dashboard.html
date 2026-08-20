@@ -3222,17 +3222,21 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
   }
 
   (async function gateAuth(){
-    // This used to hard-redirect to auth.html whenever there was no
-    // Supabase session, which blocked every anonymous/free user from ever
-    // reaching the dashboard - directly contradicting "no sign-up
-    // required" on the free tier. Signing in is now optional here: it
-    // still wires the account chip and cloud features when a session
-    // exists, but an anonymous visitor just proceeds to init(), which
-    // renders from local check-in history the same way index.html does.
+    // Dashboard requires an account. The homepage/calculator stays fully
+    // open (see index.html) — this is the one place sign-up is enforced,
+    // matching the funnel: free grade → "Go to Dashboard" → create account.
+    var onLiveDomain = /(^|\.)grademyfinance\.com$/.test(window.location.hostname);
     try{
       var res = await supabase.auth.getSession();
       var session = res.data && res.data.session;
-      if(session) wireAccountChip(session);
+      if(!session){
+        if(onLiveDomain){
+          window.location.replace('auth.html?redirect=dashboard.html');
+          return; // stay hidden, we're navigating away
+        }
+      } else {
+        wireAccountChip(session);
+      }
     }catch(e){ console.warn('Auth session check failed:', e); }
     document.documentElement.style.visibility = '';
   })();
@@ -6111,34 +6115,6 @@ function attachDualChartHover(svgEl){
   });
 }
 
-function defaultStressAssumptions(v){
-  /* Normalize partial/legacy report snapshots so missing balance-sheet fields
-     become zero instead of preventing the Stress Test from rendering. */
-  v=v||{};
-  var num=function(x){ var n=Number(x); return isFinite(n)?n:0; };
-  ['income','expenses','cash','brokerage','crypto','retire','hsa','cc','otherDebt','auto','student'].forEach(function(k){ v[k]=num(v[k]); });
-  var essential = Math.round(v.expenses * 0.7);
-  var discretionary = Math.max(0, Math.round(v.expenses) - essential);
-  var debtPayments = Math.round([v.cc, v.otherDebt, v.auto, v.student]
-    .filter(function(b){ return b > 0; })
-    .reduce(function(sum, b){ return sum + Math.min(Math.max(b*0.02, 25), b); }, 0));
-  return {
-    income: Math.round(v.income),
-    essential: essential,
-    discretionary: discretionary,
-    debtPayments: debtPayments,
-    liquidCash: Math.round(Math.max(0, v.cash)),
-    brokerage: Math.round(Math.max(0, v.brokerage + v.crypto)),
-    retirement: Math.round(Math.max(0, v.retire + v.hsa)),
-    replacementPct: 85,
-    unemploymentBenefit: Math.round(Math.min(v.income*0.4, 2200)),
-    severance: 0,
-    monthsToFindJob: 4,
-    expenseReductionPct: 15,
-    monthlyInflationPct: 0.25
-  };
-}
-
 function drawDualProjectionLine(svgEl, baselinePoints, eventPoints, events, labels){
   labels = labels || { line1:'Current path', line2:'With these events' };
   var w=640, h=220, padL=64, padR=32, padT=14, padB=34;
@@ -6187,146 +6163,6 @@ function drawDualProjectionLine(svgEl, baselinePoints, eventPoints, events, labe
 function getLifeEvents(){ try{ return JSON.parse(localStorage.getItem(LIFE_EVENTS_KEY)||'[]'); }catch(_){ return []; } }
 
 function saveLifeEvents(arr){ localStorage.setItem(LIFE_EVENTS_KEY, JSON.stringify(arr)); }
-
-function resilienceScore(a, scenario){
-  // Accepts the CURRENT scenario being explored (falls back to a standard
-  // job-loss test if none given, e.g. for any old caller). This is a
-  // deliberate, disclosed behavior change from the previous version: the
-  // score used to always run against a fixed hidden scenario regardless
-  // of what was shown elsewhere on screen, which meant the score and the
-  // rest of the simulator could tell two different stories. Now they're
-  // always describing the same thing.
-  var s = scenario || { employment:'jobloss', emergencyExpense:0, housingIncrease:0 };
-  var stress = simulateStress(a, s, 24);
-  var stressedRunway = stress.breakingMonth === null ? 24 : stress.breakingMonth;
-  var runwayPts = clamp(stressedRunway/6, 0, 1) * 40;
-  var liquidityRatio = (a.liquidCash + a.brokerage) / Math.max(1, a.liquidCash + a.brokerage + a.retirement);
-  var liquidityPts = liquidityRatio * 20;
-  var debtRatio = a.debtPayments / Math.max(1, a.income);
-  var debtPts = clamp(1 - debtRatio/0.4, 0, 1) * 20;
-  var expenseRatio = (a.essential + a.discretionary) / Math.max(1, a.income);
-  var expensePts = clamp(1 - expenseRatio, 0, 1) * 20;
-  var score = Math.round(runwayPts + liquidityPts + debtPts + expensePts);
-  score = clamp(score, 0, 100);
-  var tier = score>=80 ? 'strong' : score>=60 ? 'watch' : score>=40 ? 'vulnerable' : 'critical';
-  var tierLabel = { strong:'Strong', watch:'Watch', vulnerable:'Vulnerable', critical:'Critical' }[tier];
-  var tierExplain = {
-    strong: 'You have substantial flexibility to absorb a real financial shock.',
-    watch: 'A prolonged disruption could create real pressure, though you have some cushion.',
-    vulnerable: 'Your current cash flow could become problematic fairly quickly under a real shock.',
-    critical: 'You may want to prioritize building an emergency cushion before anything else.'
-  }[tier];
-  var riskLevel = { strong:'Low Risk', watch:'Moderate Risk', vulnerable:'High Risk', critical:'Severe Risk' }[tier];
-  return {
-    score:score, tier:tier, tierLabel:tierLabel, tierExplain:tierExplain, stressedRunway:stressedRunway,
-    liquidityRatio:liquidityRatio, debtRatio:debtRatio, expenseRatio:expenseRatio, riskLevel:riskLevel,
-    // Exact same weighted components that produce the score above, just
-    // surfaced as 0-100 "strength" percentages per factor so the UI can
-    // explain WHY the score landed where it did without re-deriving or
-    // approximating anything.
-    factors: [
-      { key:'liquidity', label:'Liquidity', pct: Math.round(liquidityRatio*100) },
-      { key:'spending', label:'Monthly spending', pct: Math.round(clamp(1 - expenseRatio, 0, 1)*100) },
-      { key:'debt', label:'Debt obligations', pct: Math.round(clamp(1 - debtRatio/0.4, 0, 1)*100) },
-      { key:'recovery', label:'Income recovery', pct: Math.round(clamp(stressedRunway/6, 0, 1)*100) }
-    ]
-  };
-}
-
-function runwayLabel(result){
-  if(result.breakingMonth !== null) return result.breakingMonth + (result.breakingMonth===1 ? ' month' : ' months');
-  var trendUp = result.finalAccessible >= result.startingAccessible;
-  return trendUp ? '36+ mo (growing)' : '36+ mo (declining)';
-}
-
-function simulateStress(a, scenario, months){
-  months = months || 36;
-  var liquid = a.liquidCash, brokerage = a.brokerage, retirement = a.retirement;
-  var baseIncome = Math.max(0, a.income);
-  var startingAccessible = liquid + brokerage;
-  var timeline = [];
-  var touchedBrokerage = false, touchedRetirement = false;
-  var breakingMonth = null, stabilizeMonth = null, rebuildAccessibleMonth = null, rebuildLiquidMonth = null;
-
-  for(var m=0; m<=months; m++){
-    var income = baseIncome;
-    if(scenario.employment==='jobloss'){
-      if(m===0){ income = a.severance; }
-      else if(m <= a.monthsToFindJob){ income = a.unemploymentBenefit; }
-      else { income = baseIncome * (a.replacementPct/100); if(stabilizeMonth===null) stabilizeMonth = m; }
-    } else if(scenario.employment==='cut25'){ income = baseIncome*0.75; }
-    else if(scenario.employment==='cut50'){ income = baseIncome*0.50; }
-    else if(scenario.employment==='leave'){
-      if(m>=1 && m<=2){ income = 0; }
-      else if(m>2 && stabilizeMonth===null){ stabilizeMonth = m; }
-    }
-
-    var inCrisis = income < baseIncome;
-    var essentialNow = a.essential * Math.pow(1 + a.monthlyInflationPct/100, m);
-    var discretionaryNow = inCrisis ? a.discretionary * (1 - a.expenseReductionPct/100) : a.discretionary;
-    var emergencyNow = (m===1) ? scenario.emergencyExpense : 0;
-    var debtNow = a.debtPayments + scenario.housingIncrease;
-
-    var outflow = essentialNow + discretionaryNow + debtNow + emergencyNow;
-    var net = income - outflow;
-
-    if(net >= 0){
-      liquid += net;
-    } else {
-      var shortfall = -net;
-      var fromLiquid = Math.min(liquid, shortfall);
-      liquid -= fromLiquid; shortfall -= fromLiquid;
-      if(shortfall > 0){
-        var fromBrokerage = Math.min(brokerage, shortfall);
-        brokerage -= fromBrokerage; shortfall -= fromBrokerage;
-        if(fromBrokerage > 0) touchedBrokerage = true;
-      }
-      if(shortfall > 0){
-        var fromRetirement = Math.min(retirement, shortfall);
-        retirement -= fromRetirement; shortfall -= fromRetirement;
-        if(fromRetirement > 0) touchedRetirement = true;
-      }
-    }
-
-    var accessible = liquid + brokerage;
-    if(breakingMonth===null && accessible <= 0) breakingMonth = m;
-    if(rebuildAccessibleMonth===null && breakingMonth!==null && accessible >= startingAccessible) rebuildAccessibleMonth = m;
-    if(rebuildLiquidMonth===null && breakingMonth!==null && liquid >= a.liquidCash) rebuildLiquidMonth = m;
-
-    timeline.push({ month:m, income:income, essential:essentialNow, discretionary:discretionaryNow, debt:debtNow, emergency:emergencyNow, liquid:liquid, brokerage:brokerage, retirement:retirement, accessible:accessible });
-  }
-
-  return {
-    timeline: timeline,
-    breakingMonth: breakingMonth,
-    stabilizeMonth: stabilizeMonth,
-    rebuildAccessibleMonth: rebuildAccessibleMonth,
-    rebuildLiquidMonth: rebuildLiquidMonth,
-    touchedBrokerage: touchedBrokerage,
-    touchedRetirement: touchedRetirement,
-    startingAccessible: startingAccessible,
-    finalAccessible: timeline[timeline.length-1].accessible
-  };
-}function renderNetWorthProjection(v){
-  var box=$("nwpBox"), rateEl=$("nwpRate"), rateVal=$("nwpRateVal"), chart=$("nwpChart"), caption=$("nwpCaption"), milestonesEl=$("nwpMilestones");
-  if(!box) return;
-  var monthlyContribution = Math.max(0, v.income - v.expenses);
-  function update(){
-    var rate = +rateEl.value;
-    rateVal.textContent = rate.toFixed(1)+"%";
-    var points = projectNetWorth(v.net, monthlyContribution, rate, 30);
-    drawProjectionLine(chart, points, [5,10,20,30]);
-    caption.textContent = "Contributing "+money(monthlyContribution)+"/mo";
-    milestonesEl.innerHTML='';
-    [5,10,20,30].forEach(function(yr){
-      var card=el('div',{className:'card', style:'padding:10px;text-align:center'});
-      card.innerHTML='<div class="small">In '+yr+' yrs</div><div class="mono" style="font-weight:700;font-size:15px;color:var(--brand-bright)">'+money(points[yr])+'</div>';
-      milestonesEl.appendChild(card);
-    });
-  }
-  rateEl.oninput = update;
-  update();
-}
 
 function renderLifeEventsSimulator(v){
   var box = $("lifeEventsBox"), caption = $("lifeEventsCaption"), chart = $("lifeEventsChart");
@@ -6790,140 +6626,6 @@ function renderEmergencyStressTest(inputV){
   update();
 }
 
-function computeVulnerability(a){
-  var income = Math.max(1, a.income);
-  var liquidityRatio = (a.liquidCash + a.brokerage) / Math.max(1, a.liquidCash + a.brokerage + a.retirement);
-  var expenseRatio = (a.essential + a.discretionary + a.debtPayments) / income;
-  var debtRatio = a.debtPayments / income;
-  var standardStress = simulateStress(a, { employment:'jobloss', emergencyExpense:0, housingIncrease:0 }, 24);
-  var jobLossRunway = standardStress.breakingMonth === null ? 36 : standardStress.breakingMonth;
-
-  var candidates = [
-    { key:'liquidity', score: liquidityRatio, title:'Limited emergency liquidity', detail:'Only '+Math.round(liquidityRatio*100)+'% of your accessible net worth is liquid or brokerage - the rest sits in retirement accounts, which come with real costs and penalties to tap early.' },
-    { key:'expenses', score: 1 - clamp(expenseRatio - 0.5, 0, 1), title:'High fixed & essential expenses', detail:'Your essential expenses, discretionary spending, and debt payments together run about '+Math.round(expenseRatio*100)+'% of your income, leaving thin margin to absorb a shock.' },
-    { key:'debt', score: 1 - clamp(debtRatio/0.3, 0, 1), title:'High debt obligations', detail:'Estimated debt payments run about '+Math.round(debtRatio*100)+'% of your income - a fixed cost that keeps going even if income drops.' },
-    { key:'income', score: clamp(jobLossRunway/12, 0, 1), title:'Heavy dependence on employment income', detail:'Under a standard job-loss scenario, your accessible reserves would run out in about '+jobLossRunway+' months - there\'s little built-in cushion against losing your income specifically.' }
-  ];
-  candidates.sort(function(x,y){ return x.score - y.score; });
-  return candidates[0];
-}
-
-function renderStressChart(svgEl, result, baseIncome){
-  var w=640, h=340, padL=66, padR=20, padT=56, padB=32;
-  var innerW=w-padL-padR, innerH=h-padT-padB;
-  var vals = result.timeline.map(function(t){ return t.accessible; });
-  var minV = Math.min.apply(null, vals.concat([0])), maxV = Math.max.apply(null, vals.concat([1]));
-  if(maxV===minV) maxV = minV+1;
-  function x(i){ return padL + (i/(vals.length-1))*innerW; }
-  function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
-  var html = '';
-
-  var monthlyOutflowApprox = Math.max(1, result.timeline[0].essential + result.timeline[0].discretionary + result.timeline[0].debt);
-  var cautionThreshold = clamp(monthlyOutflowApprox, 0, maxV);
-  var y0 = y(0), yCaution = y(cautionThreshold), yTop = padT;
-  html += '<rect x="'+padL+'" y="'+y0+'" width="'+innerW+'" height="'+Math.max(0,(padT+innerH-y0))+'" fill="#E15B5B" opacity="0.05"/>';
-  html += '<rect x="'+padL+'" y="'+yCaution+'" width="'+innerW+'" height="'+Math.max(0,y0-yCaution)+'" fill="#E8B34A" opacity="0.05"/>';
-  html += '<rect x="'+padL+'" y="'+yTop+'" width="'+innerW+'" height="'+Math.max(0,yCaution-yTop)+'" fill="#4FC28A" opacity="0.04"/>';
-
-  var zy = y(0);
-  html += '<line x1="'+padL+'" y1="'+zy+'" x2="'+(w-padR)+'" y2="'+zy+'" stroke="#E15B5B" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.7"/>';
-  [minV, (minV+maxV)/2, maxV].forEach(function(gv){
-    var gy = y(gv);
-    html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,.045)" stroke-width="1"/>';
-    html += '<text font-weight="700" x="6" y="'+(gy+4)+'" fill="#A3ABBD" font-size="13" font-family="IBM Plex Mono, monospace">'+money(gv)+'</text>';
-  });
-  var monthCount = vals.length - 1;
-  var tickInterval = monthCount <= 12 ? 3 : 6;
-  for(var tm = 0; tm <= monthCount; tm += tickInterval){
-    var tx = x(tm);
-    html += '<line x1="'+tx+'" y1="'+padT+'" x2="'+tx+'" y2="'+(h-padB)+'" stroke="rgba(255,255,255,.04)"/>';
-    html += '<text font-weight="600" x="'+tx+'" y="'+(h-10)+'" text-anchor="middle" fill="#8B93A3" font-size="11.5" font-family="IBM Plex Mono, monospace">Mo '+tm+'</text>';
-  }
-  var pathD = ''; for(var i=0;i<vals.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(vals[i]); }
-  var areaD = pathD + ' L ' + x(vals.length-1) + ' ' + y(minV) + ' L ' + x(0) + ' ' + y(minV) + ' Z';
-  html += '<path d="'+areaD+'" fill="rgba(79,194,138,.10)"></path>';
-  html += '<path d="'+pathD+'" fill="none" stroke="#4FC28A" stroke-width="2.5"></path>';
-
-  // Annotation markers (START, LOWEST, INCOME RESUMES, RECOVERED) - a
-  // real problem with placing each label directly above its own dot is
-  // that in any scenario where the crisis happens quickly (most job-loss
-  // scenarios), several of these events land within just a few months of
-  // each other, so their labels collide and overlap into an unreadable
-  // mess. Fixed here the way real data-viz tools handle dense clusters:
-  // every label lives on ONE clean row at a fixed height, evenly spaced
-  // out with a guaranteed minimum gap (same greedy spacing + rescale
-  // technique already used for the flow-diagram category labels
-  // elsewhere in this file), each connected back to its actual point on
-  // the line with a thin leader line - so nothing ever overlaps, no
-  // matter how compressed the real events are in time.
-  var lowIdx = 0; for(var li=1; li<vals.length; li++){ if(vals[li] < vals[lowIdx]) lowIdx = li; }
-  var markers = [];
-  markers.push({ month:0, color:'#F0C168', label:'START' });
-  markers.push({ month:lowIdx, color: vals[lowIdx]<=0.5 ? '#E15B5B' : '#E8B34A', label:'LOWEST '+money(vals[lowIdx]) });
-  if(result.stabilizeMonth !== null && result.stabilizeMonth < vals.length){
-    markers.push({ month:result.stabilizeMonth, color:'#5B8DEF', label:'INCOME RESUMES' });
-  }
-  if(result.rebuildAccessibleMonth !== null && result.rebuildAccessibleMonth < vals.length){
-    markers.push({ month:result.rebuildAccessibleMonth, color:'#4FC28A', label:'RECOVERED' });
-  }
-  // Two events can genuinely land on the exact same month (e.g. the
-  // crisis is instant, so month 0 is both the start and the low point) -
-  // keep only the first label for any given month rather than stacking
-  // two dots and two labels on identical coordinates.
-  var seenMonths = {};
-  markers = markers.filter(function(m){
-    if(seenMonths[m.month]) return false;
-    seenMonths[m.month] = true;
-    return true;
-  });
-  markers.sort(function(a,b){ return a.month - b.month; });
-
-  var minLabelGap = 108;
-  var labelXs = [], prevLabelX = -Infinity;
-  markers.forEach(function(m){
-    var naturalX = x(m.month);
-    var lx2 = Math.max(naturalX, prevLabelX + minLabelGap);
-    labelXs.push(lx2);
-    prevLabelX = lx2;
-  });
-  var maxAllowedX = w - padR - 6;
-  if(labelXs.length && labelXs[labelXs.length-1] > maxAllowedX){
-    var firstX = labelXs[0], lastX = labelXs[labelXs.length-1];
-    var span = (lastX - firstX) || 1;
-    var minAllowedX = padL + 6;
-    labelXs = labelXs.map(function(lx3){ return minAllowedX + (lx3-firstX) * (maxAllowedX-minAllowedX) / span; });
-  }
-
-  var labelY = 20;
-  markers.forEach(function(m, i){
-    var dotX = x(m.month), dotY = y(vals[m.month]);
-    var labX = labelXs[i];
-    if(Math.abs(labX - dotX) > 4 || Math.abs((labelY+10) - dotY) > 20){
-      html += '<line x1="'+labX+'" y1="'+(labelY+10)+'" x2="'+dotX+'" y2="'+dotY+'" stroke="'+m.color+'" stroke-opacity="0.4" stroke-width="1" stroke-dasharray="2 3"/>';
-    }
-    html += '<text x="'+labX+'" y="'+labelY+'" text-anchor="middle" fill="'+m.color+'" font-size="11.5" font-weight="700" font-family="IBM Plex Mono, monospace">'+m.label+'</text>';
-    html += '<circle cx="'+dotX+'" cy="'+dotY+'" r="'+(m.label.indexOf('LOWEST')===0 ? 5 : 4)+'" fill="'+m.color+'" stroke="#0A0B0E" stroke-width="1.5"/>';
-  });
-
-  // END marker - no label needed, its value already appears in the hero
-  // metrics and story ticker above the chart.
-  var endIdx = vals.length-1;
-  html += '<circle cx="'+x(endIdx)+'" cy="'+y(vals[endIdx])+'" r="4" fill="#F2F3F5" stroke="#0A0B0E" stroke-width="1.5"/>';
-
-  // Empty group, always present, that the hover handler below repaints
-  // on its own (crosshair + highlighted dot) without re-rendering the
-  // whole chart on every mouse move.
-  html += '<g id="stHoverLayer"></g>';
-  setHTML(svgEl, html);
-
-  // Data the hover handler needs, stored directly on the element so it
-  // always reads the CURRENT chart's numbers even though this function
-  // re-runs (and this data gets overwritten) every time the scenario
-  // changes - the listener itself is only attached once, see below.
-  svgEl._chartData = { vals:vals, timeline:result.timeline, w:w, h:h, padL:padL, padR:padR, padT:padT, padB:padB, innerW:innerW, innerH:innerH, minV:minV, maxV:maxV, baseIncome: baseIncome||0 };
-  attachStressChartHover(svgEl);
-}
-
 function projectNetWorthWithEvents(startNet, baseMonthlyContribution, annualRatePct, years, events){
   var r = annualRatePct/100/12;
   var points = [];
@@ -6942,16 +6644,6 @@ function projectNetWorthWithEvents(startNet, baseMonthlyContribution, annualRate
   return points;
 }
 
-function barCompare(svgEl, leftLabel, leftValue, rightLabel, rightValue){
-  var max = Math.max(leftValue, rightValue, 1);
-  var L = Math.round((leftValue/max)*480), R = Math.round((rightValue/max)*480);
-  var html = ''
-  + '<rect x="20" y="30" width="'+L+'" height="26" rx="6" fill="#34d399"></rect>'
-  + '<rect x="20" y="84" width="'+R+'" height="26" rx="6" fill="#f16565"></rect>'
-  + '<text x="20" y="24" fill="#8B92A0" font-size="12">'+leftLabel+' ('+leftValue.toLocaleString()+')</text>'
-  + '<text x="20" y="78" fill="#8B92A0" font-size="12">'+rightLabel+' ('+rightValue.toLocaleString()+')</text>';
-  setHTML(svgEl, html);
-}
 /* ---- Benchmarks (built from the same hbars/estimatePercentiles logic as the Report Card) ---- */
 function renderBenchmarksPanel(v, cats){
   var weakWrap = $("weakWrap"), benchRows = $("benchRows");
@@ -7510,7 +7202,6 @@ function renderWhatsChanged(hist){
 
 function shipMoney(v){ return typeof v === 'number' ? money(v) : '—'; }
 function shipDeltaMoney(v){ if(typeof v !== 'number') return '—'; return (v>=0?'↑ ':'↓ ')+formatCompact(Math.abs(v)); }
-function shipDeltaPct(v){ if(typeof v !== 'number') return '—'; return (v>=0?'↑ +':'↓ ')+Math.abs(v).toFixed(1)+' pp'; }
 function shipMonthlyIncome(entry){
   // History entries store annualIncome, not a monthly `income` field -
   // this was the actual source of a pre-existing bug where "Monthly
@@ -7533,124 +7224,6 @@ function shipSpark(svg, vals, stroke){
 // Expenses charts - one series (Net Worth) or two series (Income /
 // Expenses) plotted on their own scale, same visual language as the
 // rest of the dashboard's charts.
-function shipLineChart(svg, rows, series){
-  if(!svg) return;
-  if(rows.length < 2){
-    svg.innerHTML='<text x="450" y="145" text-anchor="middle" fill="#7b8a91" font-size="13" font-family="Inter,Arial,sans-serif">Complete another check-in to build this chart.</text>';
-    return;
-  }
-
-  // Keep chart rendering self-contained. Do not depend on helpers
-  // declared in later script blocks.
-  var chartEsc=function(v){
-    return String(v==null?'':v).replace(/[&<>\"']/g,function(c){
-      return ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'})[c];
-    });
-  };
-  var dark=document.documentElement.dataset.theme==='dark';
-  var w=900,h=270,pL=72,pR=24,pT=24,pB=42,iw=w-pL-pR,ih=h-pT-pB;
-  var C={
-    grid:dark?'rgba(177,198,205,.11)':'#dfe8e5',
-    axis:dark?'#a7b9c1':'#53656c',
-    muted:dark?'#8398a1':'#7b8a91',
-    zero:dark?'rgba(255,255,255,.18)':'#cbd9d5',
-    green:'#18b889', blue:'#4d9df5', purple:'#8b6ee8', red:'#ef6a5b',
-    card:dark?'#0b151b':'#ffffff'
-  };
-
-  var allVals=[];
-  series.forEach(function(s){
-    rows.forEach(function(r){
-      if(typeof r[s.key]==='number'&&isFinite(r[s.key])) allVals.push(r[s.key]);
-    });
-  });
-  if(!allVals.length){
-    svg.innerHTML='<text x="450" y="145" text-anchor="middle" fill="'+C.muted+'" font-size="13" font-family="Inter,Arial,sans-serif">No chart data yet.</text>';
-    return;
-  }
-
-  var min=Math.min.apply(null,allVals.concat([0]));
-  var max=Math.max.apply(null,allVals.concat([0]));
-  if(max===min){max=min+1;}
-  var range=max-min||1;
-  if(min>=0) max+=range*.08;
-  else {min-=range*.06;max+=range*.06;}
-
-  var x=function(i){return pL+(i/Math.max(1,rows.length-1))*iw;};
-  var y=function(v){return pT+ih-((v-min)/(max-min))*ih;};
-  var fmt=function(v){
-    if(typeof formatCompact==='function') return formatCompact(v);
-    var a=Math.abs(v),s=v<0?'-':'';
-    if(a>=1000000)return s+'$'+(a/1000000).toFixed(1)+'M';
-    if(a>=1000)return s+'$'+Math.round(a/1000)+'k';
-    return s+'$'+Math.round(a).toLocaleString();
-  };
-
-  var baseId=svg.id+'-'+Math.floor(Math.random()*1000000);
-  var defs='<defs>'+
-    '<linearGradient id="'+baseId+'Net" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#18b889"/><stop offset="52%" stop-color="#4d9df5"/><stop offset="100%" stop-color="#8b6ee8"/></linearGradient>'+
-    '<linearGradient id="'+baseId+'Fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#18b889" stop-opacity="'+(dark?.28:.20)+'"/><stop offset="65%" stop-color="#4d9df5" stop-opacity="'+(dark?.10:.08)+'"/><stop offset="100%" stop-color="#8b6ee8" stop-opacity="0"/></linearGradient>'+
-    '<linearGradient id="'+baseId+'IncomeFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#18b889" stop-opacity="'+(dark?.18:.14)+'"/><stop offset="100%" stop-color="#18b889" stop-opacity="0"/></linearGradient>'+
-    '<filter id="'+baseId+'Glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
-  '</defs>';
-
-  var out=defs;
-
-  // Five readable horizontal levels instead of only three.
-  for(var gi=0;gi<5;gi++){
-    var gt=gi/4,gv=max-(max-min)*gt,gy=y(gv);
-    var zero=Math.abs(gv)<Math.max(1,Math.abs(max-min)*.002);
-    out+='<line x1="'+pL+'" y1="'+gy.toFixed(1)+'" x2="'+(w-pR)+'" y2="'+gy.toFixed(1)+'" stroke="'+(zero?C.zero:C.grid)+'" stroke-width="'+(zero?1.4:1)+'" '+(zero?'':'stroke-dasharray="2 5"')+'/>';
-    out+='<text x="8" y="'+(gy+5).toFixed(1)+'" fill="'+C.axis+'" font-size="12" font-weight="650" font-family="Inter,Arial,sans-serif">'+chartEsc(fmt(gv))+'</text>';
-  }
-
-  // Up to six evenly spaced date labels.
-  var labelCount=Math.min(6,rows.length);
-  for(var li=0;li<labelCount;li++){
-    var idx=Math.round(li*(rows.length-1)/Math.max(1,labelCount-1));
-    var dt=rows[idx].ts?new Date(rows[idx].ts):null;
-    if(!dt||isNaN(dt.getTime())) continue;
-    var lab=dt.toLocaleDateString(undefined,{month:'short',year:'2-digit'});
-    var anchor=li===0?'start':(li===labelCount-1?'end':'middle');
-    out+='<text x="'+x(idx).toFixed(1)+'" y="'+(h-12)+'" text-anchor="'+anchor+'" fill="'+C.muted+'" font-size="11" font-weight="600" font-family="Inter,Arial,sans-serif">'+chartEsc(lab)+'</text>';
-  }
-
-  series.forEach(function(s,si){
-    var pts=rows.map(function(r,i){
-      return typeof r[s.key]==='number'&&isFinite(r[s.key])?[i,r[s.key]]:null;
-    }).filter(Boolean);
-    if(pts.length<2)return;
-
-    var d=pts.map(function(pt,i){return(i?'L':'M')+x(pt[0]).toFixed(1)+' '+y(pt[1]).toFixed(1);}).join(' ');
-    var stroke=si===0?(series.length===1?'url(#'+baseId+'Net)':C.green):(s.color||C.red);
-
-    if(si===0){
-      var firstX=x(pts[0][0]),lastX=x(pts[pts.length-1][0]),base=y(Math.max(0,min));
-      out+='<path d="'+d+' L '+lastX.toFixed(1)+' '+base.toFixed(1)+' L '+firstX.toFixed(1)+' '+base.toFixed(1)+' Z" fill="url(#'+baseId+(series.length===1?'Fill':'IncomeFill')+')"/>';
-    }
-
-    out+='<path d="'+d+'" fill="none" stroke="'+stroke+'" stroke-width="'+(si===0?4:3)+'" stroke-linecap="round" stroke-linejoin="round" filter="'+(si===0?'url(#'+baseId+'Glow)':'none')+'"/>';
-
-    pts.forEach(function(pt,i){
-      var cx=x(pt[0]),cy=y(pt[1]),last=i===pts.length-1;
-      if(pts.length<=18||last){
-        if(last) out+='<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="8" fill="'+(si===0?C.green:stroke)+'" opacity=".14"/>';
-        out+='<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+(last?5:3.5)+'" fill="'+C.card+'" stroke="'+(si===0?C.green:stroke)+'" stroke-width="'+(last?3:2)+'"/>';
-      }
-    });
-
-    // Persistent latest-value badge keeps the important number visible.
-    var lp=pts[pts.length-1],lx=x(lp[0]),ly=y(lp[1]),bw=92,bh=28;
-    var bx=Math.max(pL,Math.min(w-pR-bw,lx-bw-10));
-    var by=Math.max(pT,Math.min(h-pB-bh,ly-38));
-    out+='<g>'+
-      '<rect x="'+bx.toFixed(1)+'" y="'+by.toFixed(1)+'" width="'+bw+'" height="'+bh+'" rx="8" fill="'+(dark?'#13232a':'#ffffff')+'" stroke="'+(dark?'rgba(255,255,255,.12)':'#dbe5e2')+'"/>'+
-      '<text x="'+(bx+bw/2).toFixed(1)+'" y="'+(by+19).toFixed(1)+'" text-anchor="middle" fill="'+(si===0?C.green:stroke)+'" font-size="12" font-weight="800" font-family="IBM Plex Mono,monospace">'+esc(fmt(lp[1]))+'</text>'+
-    '</g>';
-  });
-
-  svg.innerHTML=out;
-}
 function shipArcPath(cx, cy, r, start, end){
   var x1 = cx + r * Math.cos(start), y1 = cy + r * Math.sin(start);
   var x2 = cx + r * Math.cos(end), y2 = cy + r * Math.sin(end);
@@ -8869,242 +8442,6 @@ function renderAchievementsTab(){
    compounding across three fixed market scenarios — deliberately simple
    and clearly labeled as estimates, not a promise of future returns. */
 var RET_KEY = 'gmf_retirement_inputs';
-var RET_SCENARIOS = [
-  { key:'conservative', label:'Conservative', rate:0.05 },
-  { key:'moderate', label:'Moderate', rate:0.07 },
-  { key:'aggressive', label:'Aggressive', rate:0.09 }
-];
-
-function getRetInputs(){ try{ return JSON.parse(localStorage.getItem(RET_KEY)||'null') || {}; }catch(_){ return {}; } }
-function saveRetInputs(obj){ try{ localStorage.setItem(RET_KEY, JSON.stringify(obj)); }catch(_){} }
-
-function currentNetWorthValue(){
-  var hist = getHistory();
-  var withNet = hist.filter(function(h){ return typeof h.net === 'number'; });
-  return withNet.length ? withNet[withNet.length-1].net : 0;
-}
-
-// Simulates month-by-month compounding with a fixed monthly contribution
-// until the balance crosses `target`. Returns months elapsed, 0 if already
-// there, or null if not reached within maxMonths (kept honest — no
-// fabricated "someday" date when the math genuinely doesn't get there).
-function simulateMonthsToTarget(startNW, monthlyContribution, annualRate, target, maxMonths){
-  maxMonths = maxMonths || 840; // 70 years
-  if(target <= 0) return 0;
-  if(startNW >= target) return 0;
-  var r = annualRate / 12, bal = startNW;
-  for(var m = 1; m <= maxMonths; m++){
-    bal = bal * (1 + r) + monthlyContribution;
-    if(bal >= target) return m;
-  }
-  return null;
-}
-
-// The amount you'd need right now such that growth alone (no further
-// contributions) reaches `target` by the time you hit retirement age.
-function coastFINumber(target, annualRate, yearsToRetirement){
-  if(yearsToRetirement <= 0) return target;
-  return target / Math.pow(1 + annualRate, yearsToRetirement);
-}
-
-function retTargetFromInputs(inp){
-  if(inp.useCustom && inp.customTarget > 0) return inp.customTarget;
-  if(inp.spending > 0) return inp.spending * 25;
-  return null;
-}
-
-function readRetForm(){
-  return {
-    age: parseFloat($("retAge").value),
-    retireAge: parseFloat($("retTargetAge").value),
-    monthly: parseFloat($("retMonthly").value),
-    spending: parseFloat($("retSpending").value),
-    useCustom: $("retUseCustom").checked,
-    customTarget: parseFloat($("retCustomTarget").value)
-  };
-}
-
-function loadRetFormFromStorage(){
-  var inp = getRetInputs();
-  if(inp.age) $("retAge").value = inp.age;
-  if(inp.retireAge) $("retTargetAge").value = inp.retireAge;
-  if(typeof inp.monthly === 'number' && !isNaN(inp.monthly)) $("retMonthly").value = inp.monthly;
-  if(typeof inp.spending === 'number' && !isNaN(inp.spending)) $("retSpending").value = inp.spending;
-  if(inp.useCustom){ $("retUseCustom").checked = true; $("retCustomTargetWrap").style.display = 'block'; }
-  if(typeof inp.customTarget === 'number' && !isNaN(inp.customTarget)) $("retCustomTarget").value = inp.customTarget;
-}
-
-function onRetFormChange(){
-  saveRetInputs(readRetForm());
-  renderRetirementTab();
-}
-
-function wireRetForm(){
-  ['retAge','retTargetAge','retMonthly','retSpending','retCustomTarget'].forEach(function(id){
-    $(id).addEventListener('input', onRetFormChange);
-  });
-  $("retUseCustom").addEventListener('change', function(){
-    $("retCustomTargetWrap").style.display = this.checked ? 'block' : 'none';
-    onRetFormChange();
-  });
-  $("retExtraSlider").addEventListener('input', renderRetLive);
-  $("retCutSlider").addEventListener('input', renderRetLive);
-  $("retDownloadBtn").addEventListener('click', downloadRetShareCard);
-}
-
-function retHasEnoughInputs(inp){
-  return inp.age > 0 && inp.retireAge > inp.age && inp.monthly >= 0 && !isNaN(inp.monthly) &&
-    (inp.spending > 0 || (inp.useCustom && inp.customTarget > 0));
-}
-
-function renderRetirementTab(){
-  var inp = readRetForm();
-  var ready = retHasEnoughInputs(inp);
-  $("retEmptyNote").style.display = ready ? 'none' : 'block';
-  $("retResults").style.display = ready ? 'block' : 'none';
-  if(!ready) return;
-  renderRetLive();
-}
-
-function renderRetLive(){
-  var inp = readRetForm();
-  var target = retTargetFromInputs(inp);
-  if(!target) return;
-  var startNW = Math.max(0, currentNetWorthValue());
-  var yearsToRetire = inp.retireAge - inp.age;
-
-  var extra = parseFloat($("retExtraSlider").value) || 0;
-  var cutPct = parseFloat($("retCutSlider").value) || 0;
-  $("retExtraVal").textContent = "+" + money(extra) + "/mo";
-  $("retCutVal").textContent = "\u2212" + cutPct + "%";
-
-  $("retTargetVal").textContent = money(target);
-  $("retTargetSub").textContent = inp.useCustom ? "Your custom target" : "Based on the 4% rule (" + money(inp.spending) + "/yr \u00d7 25)";
-  var pct = target > 0 ? Math.min(100, (startNW / target) * 100) : 0;
-  $("retProgressBar").style.width = pct.toFixed(1) + "%";
-  $("retProgressLabel").textContent = money(startNW) + " of " + money(target) + " (" + pct.toFixed(1) + "% there)";
-
-  // Scenario grid uses the BASE numbers (no what-if sliders applied)
-  var grid = $("retScenarioGrid");
-  grid.innerHTML = "";
-  var baseMonthsByScenario = {};
-  RET_SCENARIOS.forEach(function(sc){
-    var months = simulateMonthsToTarget(startNW, inp.monthly, sc.rate, target);
-    baseMonthsByScenario[sc.key] = months;
-    var ageLabel, dateLabel;
-    if(months === null){
-      ageLabel = "70+ yrs out"; dateLabel = "Try increasing monthly savings";
-    } else if(months === 0){
-      ageLabel = "Already there"; dateLabel = "Your net worth already covers this";
-    } else {
-      var years = months / 12;
-      ageLabel = "Age " + (inp.age + years).toFixed(1);
-      dateLabel = "~" + (new Date().getFullYear() + Math.floor(years)) + " \u00b7 " + (Math.round(years * 10) / 10) + " yrs away";
-    }
-    var card = el("div", { className: "ret-scenario-card" + (sc.key === 'moderate' ? " primary" : "") });
-    card.innerHTML = '<div class="rs-rate">' + sc.label + ' \u00b7 ' + (sc.rate * 100).toFixed(0) + '%/yr</div><div class="rs-age">' + ageLabel + '</div><div class="rs-date">' + dateLabel + '</div>';
-    grid.appendChild(card);
-  });
-
-  // Coast FI, computed off the moderate scenario.
-  // All scenario returns are nominal estimates before inflation, fees, and taxes.
-  var coastCard = $("retCoastCard");
-  if(yearsToRetire > 0){
-    var coastNum = coastFINumber(target, 0.07, yearsToRetire);
-    if(startNW >= coastNum){
-      coastCard.innerHTML = '<span class="section-label" style="color:var(--good)">Coast FI</span><h4>You could stop contributing today</h4><p>At a 7%/yr average return, your current ' + money(startNW) + ' alone is projected to grow to your ' + money(target) + ' target by age ' + inp.retireAge + ' \u2014 even with $0 in future contributions.</p>';
-    } else {
-      var monthsToCoast = simulateMonthsToTarget(startNW, inp.monthly, 0.07, coastNum);
-      coastCard.innerHTML = '<span class="section-label">Coast FI</span><h4>Coast FI number: ' + money(coastNum) + '</h4><p>Once your net worth reaches this amount, growth alone (at 7%/yr) is projected to carry you to your target by age ' + inp.retireAge + ' \u2014 no further contributions required.' +
-        (monthsToCoast !== null ? ' At your current savings rate, that\u2019s roughly ' + (Math.round(monthsToCoast / 12 * 10) / 10) + ' years away.' : '') + '</p>';
-    }
-  } else {
-    coastCard.innerHTML = '';
-  }
-
-  // What-if sliders — always compared at the moderate (7%) rate
-  var summaryEl = $("retWhatIfSummary");
-  if(extra === 0 && cutPct === 0){
-    summaryEl.textContent = "";
-  } else {
-    var effectiveMonthly = inp.monthly + extra;
-    var effectiveTarget = target * (1 - cutPct / 100);
-    var baseMonths = baseMonthsByScenario.moderate;
-    var whatIfMonths = simulateMonthsToTarget(startNW, effectiveMonthly, 0.07, effectiveTarget);
-    var text;
-    if(whatIfMonths === null){
-      text = "Still beyond 70 years at a moderate return \u2014 try a bigger change.";
-    } else if(baseMonths === null){
-      text = "This gets you to a reachable target: age " + (inp.age + whatIfMonths / 12).toFixed(1) + " (moderate scenario).";
-    } else {
-      var diffMonths = baseMonths - whatIfMonths;
-      if(diffMonths <= 0){
-        text = "About the same timeline as your base plan \u2014 age " + (inp.age + whatIfMonths / 12).toFixed(1) + ".";
-      } else {
-        var yrsSooner = Math.round(diffMonths / 12 * 10) / 10;
-        text = "Retire " + yrsSooner + " years sooner \u2014 age " + (inp.age + whatIfMonths / 12).toFixed(1) + " instead of " + (inp.age + baseMonths / 12).toFixed(1) + " (moderate scenario).";
-      }
-    }
-    summaryEl.textContent = text;
-  }
-
-  drawRetShareCard(pct, target, startNW);
-}
-
-function drawRetShareCard(pct, target, startNW){
-  var canvas = $("retShareCanvas");
-  if(!canvas || !canvas.getContext) return;
-  var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
-
-  var grad = ctx.createLinearGradient(0, 0, W, H);
-  grad.addColorStop(0, '#0A0B0E');
-  grad.addColorStop(1, '#14110a');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
-
-  ctx.strokeStyle = 'rgba(201,162,39,.35)';
-  ctx.lineWidth = 3;
-  ctx.strokeRect(20, 20, W - 40, H - 40);
-
-  ctx.fillStyle = '#E4C24E';
-  ctx.font = '700 32px "Space Grotesk", sans-serif';
-  ctx.textAlign = 'left';
-  ctx.fillText('GRADE MY FINANCE', 60, 100);
-
-  ctx.fillStyle = '#F2F3F5';
-  ctx.font = '700 190px "Fraunces", serif';
-  ctx.textAlign = 'center';
-  ctx.fillText(Math.round(Math.min(100, pct)) + '%', W / 2, 470);
-
-  ctx.fillStyle = '#8B92A0';
-  ctx.font = '500 32px "Inter", sans-serif';
-  ctx.fillText('of the way to Financial Independence', W / 2, 540);
-
-  ctx.textAlign = 'left';
-  ctx.fillStyle = '#5D636F';
-  ctx.font = '600 22px "IBM Plex Mono", monospace';
-  ctx.fillText('TARGET', 60, 700);
-  ctx.fillText('CURRENT', 60, 780);
-  ctx.fillStyle = '#F2F3F5';
-  ctx.font = '600 34px "IBM Plex Mono", monospace';
-  ctx.fillText(money(target), 60, 740);
-  ctx.fillText(money(startNW), 60, 820);
-
-  ctx.fillStyle = '#5D636F';
-  ctx.font = '500 20px "Inter", sans-serif';
-  ctx.textAlign = 'right';
-  ctx.fillText('grademyfinance.com', W - 60, H - 60);
-}
-
-function downloadRetShareCard(){
-  var canvas = $("retShareCanvas");
-  if(!canvas) return;
-  var url = canvas.toDataURL('image/png');
-  var a = document.createElement('a');
-  a.href = url; a.download = 'grademyfinance-fi-progress.png';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-}
 
 /* ================= TIME FILTERS ================= */
 function wireTimeFilters(containerId, applyFn, setter){
@@ -9302,20 +8639,18 @@ async function init(){
   __safeRender('goals', function(){ renderGoals(); });
   __safeRender('scenarios', function(){ renderScenariosTab(); });
   __safeRender('achievements', function(){ renderAchievementsTab(); });
-  __safeRender('retirement-form', function(){ loadRetFormFromStorage(); });
-  __safeRender('retirement-wiring', function(){ wireRetForm(); });
-  __safeRender('retirement', function(){ renderRetirementTab(); });
-
-  // Canvas text needs the webfonts actually loaded, which can lag behind
-  // the initial render — redraw the share card once they're ready.
-  if(document.fonts && document.fonts.ready){
-    document.fonts.ready.then(function(){
-      if($("retResults") && $("retResults").style.display !== 'none') renderRetLive();
-    });
-  }
+  // Note: the old retirement form wiring (which used retAge/retMonthly/etc
+  // IDs) was removed here, and the dead functions themselves have since
+  // been deleted from the file entirely — the Retirement tab now runs
+  // widget (rsAge/rsCalculate/etc), which wires itself up independently
+  // further down this file. Calling the old functions was throwing null-
+  // reference warnings on every load since those old elements no longer exist.
 }
 Promise.resolve(init()).then(function(){
-  try{ window.renderGmfCommandCenter(getHistory()); }catch(e){ console.warn('Command center render failed',e); }
+  // The Overview tab is fully rendered elsewhere in init() already.
+  // (A dead "Command Center" render pass targeting an older, since-removed
+  // Overview layout used to run here — deleted along with the rest of that
+  // orphaned code.)
 }).catch(function(e){
   console.error('Dashboard init recovered from error:', e);
 }).finally(function(){
@@ -9349,143 +8684,6 @@ Promise.resolve(init()).then(function(){
 });
 </script>
 
-<script>
-/* ================= DASHBOARD 3.0 COMMAND CENTER ================= */
-(function(){
-  function g(id){return document.getElementById(id)}
-  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]})}
-  function moneyShort(v){
-    if(typeof v!=='number' || !isFinite(v)) return '—';
-    var sign=v<0?'-':'', n=Math.abs(v);
-    if(n>=1000000) return sign+'$'+(n/1000000).toFixed(n>=10000000?1:2)+'M';
-    if(n>=1000) return sign+'$'+Math.round(n/1000)+'k';
-    return sign+'$'+Math.round(n).toLocaleString();
-  }
-  function signed(v, suffix){
-    if(typeof v!=='number' || !isFinite(v)) return '—';
-    var s=v>0?'↑ +':v<0?'↓ ':'→ ';
-    return s+(Math.abs(v)<10?v.toFixed(1):Math.round(Math.abs(v)).toLocaleString())+(suffix||'');
-  }
-  function letter(score){
-    if(score>=93)return'A+'; if(score>=90)return'A'; if(score>=87)return'A-';
-    if(score>=83)return'B+'; if(score>=80)return'B'; if(score>=77)return'B-';
-    if(score>=73)return'C+'; if(score>=70)return'C'; if(score>=67)return'C-';
-    if(score>=63)return'D+'; if(score>=60)return'D'; return'F';
-  }
-  function pointsFromHistory(hist,key,n){
-    var rows=hist.filter(function(h){return typeof h[key]==='number';});
-    if(n!=='all') rows=rows.slice(-Number(n));
-    return rows;
-  }
-  function lineChart(el, rows, keys, labels, formatter){
-    if(!el)return;
-    if(rows.length<2){
-      el.innerHTML='<div class="gmf-empty"><div><b>Not enough history yet</b>Complete another check-in to unlock this trend.</div></div>';
-      return;
-    }
-    var w=720,h=235,pL=44,pR=16,pT=18,pB=28;
-    var vals=[];
-    keys.forEach(function(k){rows.forEach(function(r){if(typeof r[k]==='number')vals.push(r[k])})});
-    vals.push(0);
-    var min=Math.min.apply(null,vals),max=Math.max.apply(null,vals);
-    if(min===max){min-=1;max+=1}
-    var x=function(i){return pL+(i/(rows.length-1))*(w-pL-pR)};
-    var y=function(v){return pT+(h-pT-pB)-((v-min)/(max-min))*(h-pT-pB)};
-    var grid='',pathMap=[];
-    [0,.5,1].forEach(function(t){
-      var gy=pT+(h-pT-pB)*t, val=max-(max-min)*t;
-      grid+='<line x1="'+pL+'" y1="'+gy+'" x2="'+(w-pR)+'" y2="'+gy+'" stroke="#e8eeeb" stroke-width="1"/>';
-      grid+='<text x="2" y="'+(gy+4)+'" fill="#8a9893" font-size="10" font-family="IBM Plex Mono">'+esc(formatter(val))+'</text>';
-    });
-    keys.forEach(function(k,ki){
-      var pts=rows.map(function(r,i){return [x(i),y(typeof r[k]==='number'?r[k]:min)]});
-      var d=pts.map(function(pt,i){return(i?'L':'M')+' '+pt[0].toFixed(1)+' '+pt[1].toFixed(1)}).join(' ');
-      var stroke=ki===0?'#159a78':'#c1493d';
-      pathMap.push('<path d="'+d+'" fill="none" stroke="'+stroke+'" stroke-width="'+(ki===0?3:2.2)+'" stroke-linecap="round" stroke-linejoin="round" '+(ki?'stroke-dasharray="6 5"':'')+'/>');
-      var last=pts[pts.length-1];
-      pathMap.push('<circle cx="'+last[0]+'" cy="'+last[1]+'" r="4" fill="#fff" stroke="'+stroke+'" stroke-width="2"/>');
-    });
-    var firstDate=rows[0].ts?new Date(rows[0].ts):null,lastDate=rows[rows.length-1].ts?new Date(rows[rows.length-1].ts):null;
-    var labelsSvg='';
-    if(firstDate) labelsSvg+='<text x="'+pL+'" y="'+(h-5)+'" fill="#8a9893" font-size="10">'+firstDate.toLocaleDateString(undefined,{month:'short',year:'2-digit'})+'</text>';
-    if(lastDate) labelsSvg+='<text x="'+(w-pR)+'" y="'+(h-5)+'" text-anchor="end" fill="#8a9893" font-size="10">'+lastDate.toLocaleDateString(undefined,{month:'short',year:'2-digit'})+'</text>';
-    el.innerHTML='<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" aria-label="Financial trend chart">'+grid+pathMap.join('')+labelsSvg+'</svg>';
-  }
-  function render(hist){
-    if(!hist || !hist.length)return;
-    var latest=hist[hist.length-1], prev=hist.length>1?hist[hist.length-2]:null;
-    var score=Number(latest.score||0);
-    var save=typeof latest.savingsRate==='number'?latest.savingsRate:null;
-    var net=typeof latest.net==='number'?latest.net:null;
-    var debt=typeof latest.totalDebt==='number'?latest.totalDebt:null;
-    var cash=typeof latest.cash==='number'?latest.cash:null;
-    var expenses=typeof latest.monthlyExpenses==='number'?latest.monthlyExpenses:null;
-    var runway=(cash!==null&&expenses>0)?cash/expenses:null;
-
-    g('gmfHeroScore').textContent=score.toFixed(1);
-    g('gmfHeroGrade').textContent=letter(score);
-    g('gmfHeroChange').textContent=prev?'Since last check-in: '+signed(score-Number(prev.score||0),' pts'):'First check-in — trend starts here.';
-    g('gmfHeroTitle').textContent=score>=80?'You have a solid base. Now let’s improve it.':score>=70?'You’re in the middle — a few fixes can move the needle.':'There are clear opportunities to strengthen your finances.';
-
-    var priority = (typeof deriveFinancialPriorities==='function' ? (deriveFinancialPriorities(latest)||[])[0] : null);
-    if(priority){
-      g('gmfPriorityTitle').textContent=priority.title;
-      g('gmfPriorityCopy').textContent=priority.copy;
-      g('gmfPriorityAction').textContent=priority.action;
-      g('gmfPriorityBtn').onclick=function(){
-        try{
-          var goals=getGoals(); var exists=goals.some(function(x){return x.type==='action'&&x.actionKey===priority.key});
-          if(!exists){goals.push({id:'gmf_action_'+Date.now(),type:'action',actionKey:priority.key,label:priority.title,target:priority.target,createdAt:Date.now(),source:'command-center'});saveGoals(goals)}
-        }catch(_){}
-        if(window.__gotoDashTab)window.__gotoDashTab('goals');
-        window.scrollTo({top:0,behavior:'smooth'});
-      };
-    }else{
-      g('gmfPriorityTitle').textContent='Keep building your financial baseline';
-      g('gmfPriorityCopy').textContent='Complete another check-in so the dashboard can identify the highest-impact improvement.';
-      g('gmfPriorityAction').textContent='Recheck your finances and track the change.';
-    }
-
-    g('gmfNet').textContent=moneyShort(net);
-    g('gmfNetSub').textContent=prev&&typeof prev.net==='number'?signed(net-prev.net):'Your latest recorded net worth';
-    g('gmfSave').textContent=save===null?'—':save.toFixed(1)+'%';
-    g('gmfSaveSub').textContent=prev&&typeof prev.savingsRate==='number'?signed(save-prev.savingsRate,' pts'):'Share of income saved';
-    g('gmfCash').textContent=runway===null?'—':runway.toFixed(1)+' mo';
-    g('gmfCashSub').textContent=cash===null?'Add cash savings to track runway':'Based on cash ÷ monthly expenses';
-    g('gmfDebt').textContent=moneyShort(debt);
-    g('gmfDebtSub').textContent=prev&&typeof prev.totalDebt==='number'?signed(debt-prev.totalDebt):'Total recorded debt';
-
-    g('gmfMove1').textContent=priority?priority.title:'Complete your next check-in';
-    g('gmfMove1Copy').textContent=priority?priority.action:'The more check-ins you complete, the more useful your trends become.';
-
-    if(prev){
-      var ds=score-Number(prev.score||0), dn=(net!==null&&typeof prev.net==='number')?net-prev.net:null;
-      var dsv=(save!==null&&typeof prev.savingsRate==='number')?save-prev.savingsRate:null;
-      var dd=(debt!==null&&typeof prev.totalDebt==='number')?debt-prev.totalDebt:null;
-      [['gmfDeltaScore',ds,' pts'],['gmfDeltaNet',dn,'' ],['gmfDeltaSave',dsv,' pts'],['gmfDeltaDebt',dd,'']].forEach(function(a){
-        var el=g(a[0]);el.textContent=a[1]===null?'—':signed(a[1],a[2]);el.className=a[1]>0?'up':a[1]<0?'down':'';
-      });
-      var wins=[];
-      if(ds>0)wins.push('your grade improved'); if(dn!==null&&dn>0)wins.push('net worth increased'); if(dsv!==null&&dsv>0)wins.push('your savings rate rose'); if(dd!==null&&dd<0)wins.push('debt decreased');
-      g('gmfBottomNote').textContent=wins.length?'Good signs: '+wins.join(', ')+'. Keep the next move focused rather than trying to fix everything at once.':'No major improvement showed between the last two check-ins yet. That is useful information — pick one measurable change and recheck.';
-    }
-
-    var ranges=document.querySelectorAll('.gmf-range button');
-    ranges.forEach(function(btn){
-      btn.onclick=function(){
-        var parent=btn.parentElement, n=btn.dataset.n;
-        parent.querySelectorAll('button').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');
-        if(parent.dataset.chart==='score') lineChart(g('gmfScoreChart'),pointsFromHistory(hist,'score',n),['score'],['Score'],function(v){return Number(v).toFixed(0)});
-        else lineChart(g('gmfMoneyChart'),hist.filter(function(h){return typeof h.net==='number'||typeof h.totalDebt==='number'}).slice(n==='all'?0:-Number(n)),['net','totalDebt'],['Net worth','Debt'],moneyShort);
-      };
-    });
-    lineChart(g('gmfScoreChart'),pointsFromHistory(hist,'score',12),['score'],['Score'],function(v){return Number(v).toFixed(0)});
-    lineChart(g('gmfMoneyChart'),hist.filter(function(h){return typeof h.net==='number'||typeof h.totalDebt==='number'}).slice(-12),['net','totalDebt'],['Net worth','Debt'],moneyShort);
-    g('gmfScoreChartNote').textContent=hist.length<2?'Complete another check-in to build your trend.':hist.length+' check-ins tracked';
-  }
-  window.renderGmfCommandCenter=render;
-})();
-</script>
 
 <script id="gmf-ui-5-js">
 (function(){
@@ -11774,53 +10972,184 @@ body{font-size:15px!important;min-height:100vh}
 })();
 </script>
 
+<style id="gmf-theme-repaint-final">
+/* =========================================================
+   FINAL THEME REPAINT — single source of truth for dark/light.
+   Placed last on purpose so it wins over the older, conflicting
+   theme layers earlier in this file (same source-order convention
+   already used throughout this codebase). Dark values are sampled
+   directly from the reference screenshot: near-black navy base,
+   teal-green brand accent, purple secondary accent, lavender PRO chip.
+   ========================================================= */
+
+/* ---------- DARK ---------- */
+:root[data-theme="dark"]{
+  --bg:#070b15; --bg-2:#04070f; --surface:#0d1420; --surface-2:#101827;
+  --line:#1c2536; --text:#eef2f8; --muted:#93a0b4; --muted-2:#68748a;
+  --brand:#1f9c78; --brand-soft:rgba(34,197,148,.14); --brand-bright:#2fd6a0; --brand-text:#06120f;
+  --gold:#e2ad45; --gold-soft:rgba(226,173,69,.14); --gold-bright:#f3c866;
+  --good:#34d399; --good-2:#1f9c78; --good-soft:rgba(52,211,153,.12); --bad:#f06d63; --bad-soft:rgba(240,109,99,.12); --mid:#f3c866;
+}
+:root[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}
+:root[data-theme="dark"] .main-area{background:linear-gradient(180deg,#070b15,#04070f)!important}
+:root[data-theme="dark"] .main-area::before{background:none!important}
+
+:root[data-theme="dark"] .sidebar{background:#04070f!important;border-right:1px solid #161d2c!important;box-shadow:none!important;color:#c7cfdc!important}
+:root[data-theme="dark"] .sidebar-brand{border-bottom-color:#161d2c!important}
+:root[data-theme="dark"] .sidebar .wordmark,
+:root[data-theme="dark"] .sidebar .nav-section-label{color:#eef2f8!important}
+:root[data-theme="dark"] .sidebar .nav-section-label{opacity:.5!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn{color:#94a0b4!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn:hover{background:#0e1420!important;color:#fff!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn.active{background:rgba(31,156,120,.18)!important;color:#34d399!important;box-shadow:inset 3px 0 0 #22c58f!important}
+:root[data-theme="dark"] .sidebar .nav-icon{color:#7c879c!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn.active .nav-icon{color:#34d399!important}
+:root[data-theme="dark"] .sidebar-bottom{border-top-color:#161d2c!important}
+:root[data-theme="dark"] .sidebar .icon-btn{background:#0d1420!important;color:#c7cfdc!important}
+
+:root[data-theme="dark"] .sidebar-pro-card{background:#12142e!important;border:1px solid #262a4a!important;color:#e7e6f5!important;box-shadow:none!important}
+:root[data-theme="dark"] .sidebar-pro-card p{color:#a6a8c4!important}
+:root[data-theme="dark"] .sidebar-pro-card .btn.gold{background:#8b5cf6!important;border-color:#8b5cf6!important;color:#fff!important}
+:root[data-theme="dark"] .sidebar-pro-icon{background:#1e2148!important;color:#c4b5fd!important}
+
+:root[data-theme="dark"] .content-header,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .metric-card,
+:root[data-theme="dark"] .hero-card,
+:root[data-theme="dark"] .insight-card,
+:root[data-theme="dark"] .command-secondary,
+:root[data-theme="dark"] .action-plan-card,
+:root[data-theme="dark"] .goal-card,
+:root[data-theme="dark"] .scenario-card,
+:root[data-theme="dark"] .ret-scenario-card,
+:root[data-theme="dark"] .settings-panel,
+:root[data-theme="dark"] .pro-blur-section{
+  background:#0d1420!important; border-color:#1c2536!important; color:#eef2f8!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.28)!important;
+}
+:root[data-theme="dark"] .metric-card .m-val,
+:root[data-theme="dark"] .hv,
+:root[data-theme="dark"] .action-plan-title,
+:root[data-theme="dark"] .command-secondary .cs-value,
+:root[data-theme="dark"] .insight-card h4{color:#eef2f8!important}
+:root[data-theme="dark"] .section-sub,
+:root[data-theme="dark"] .m-label,
+:root[data-theme="dark"] .m-sub,
+:root[data-theme="dark"] .hv-sub,
+:root[data-theme="dark"] .updated,
+:root[data-theme="dark"] .command-secondary .cs-sub{color:#8b96ab!important}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea{background:#0a0f19!important;color:#eef2f8!important;border-color:#232d42!important}
+
+/* PRO chips: light lavender pill, matches the reference screenshot's badge */
+:root[data-theme="dark"] .insights-pro-nav,
+:root[data-theme="dark"] .grade-pro-pill,
+:root[data-theme="dark"] .pro-badge-filled{
+  background:#f3e8ff!important; color:#7c3aed!important; border:none!important;
+}
+
+/* Sidebar sub-elements missed on first pass: profile name, edit-name link,
+   settings panel, and theme switcher buttons. Without these, they kept
+   whatever black/dark text an older rule left them with, unreadable
+   against the new dark sidebar background. */
+:root[data-theme="dark"] .sidebar-profile-name{color:#eef2f8!important}
+:root[data-theme="dark"] .sidebar .edit-name-link{color:#93a0b4!important}
+:root[data-theme="dark"] .sidebar .settings-panel{background:#0d1420!important;border-color:#1c2536!important;color:#eef2f8!important}
+:root[data-theme="dark"] .sidebar .settings-title{color:#eef2f8!important}
+:root[data-theme="dark"] .sidebar .settings-sub{color:#93a0b4!important}
+:root[data-theme="dark"] .sidebar .theme-choice{background:#0a0f19!important;color:#c7cfdc!important;border-color:#232d42!important}
+:root[data-theme="dark"] .sidebar .theme-choice.active{background:rgba(31,156,120,.18)!important;color:#34d399!important;border-color:#22c58f!important}
+
+svg .brand-bright, .brand-fill{fill:#2fd6a0}
+
+/* ---------- LIGHT (true opposite of dark: white base, same accents) ---------- */
+:root[data-theme="light"]{
+  --bg:#f7f8fb; --bg-2:#eef1f6; --surface:#ffffff; --surface-2:#f3f5f9;
+  --line:#e3e7f0; --text:#10131c; --muted:#5b6472; --muted-2:#8791a1;
+  --brand:#1f9c78; --brand-soft:rgba(34,197,148,.10); --brand-bright:#22c58f; --brand-text:#ffffff;
+  --gold:#c98b16; --gold-soft:rgba(226,173,69,.14); --gold-bright:#e2ad45;
+  --good:#1f9c78; --good-2:#0f8b6d; --good-soft:rgba(31,156,120,.10); --bad:#c1493d; --bad-soft:rgba(193,73,61,.10); --mid:#c98b16;
+}
+:root[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}
+:root[data-theme="light"] .main-area{background:linear-gradient(180deg,#f7f8fb,#eef1f6)!important}
+:root[data-theme="light"] .main-area::before{background:none!important}
+
+:root[data-theme="light"] .sidebar{background:#ffffff!important;border-right:1px solid #e3e7f0!important;box-shadow:2px 0 14px rgba(20,30,50,.04)!important;color:#3c4454!important}
+:root[data-theme="light"] .sidebar-brand{border-bottom-color:#e3e7f0!important}
+:root[data-theme="light"] .sidebar .wordmark,
+:root[data-theme="light"] .sidebar .nav-section-label{color:#10131c!important}
+:root[data-theme="light"] .sidebar .nav-section-label{opacity:.55!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn{color:#5b6472!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn:hover{background:#f3f5f9!important;color:#10131c!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn.active{background:rgba(31,156,120,.10)!important;color:#0f8b6d!important;box-shadow:inset 3px 0 0 #1f9c78!important}
+:root[data-theme="light"] .sidebar .nav-icon{color:#8791a1!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn.active .nav-icon{color:#0f8b6d!important}
+:root[data-theme="light"] .sidebar-bottom{border-top-color:#e3e7f0!important}
+:root[data-theme="light"] .sidebar .icon-btn{background:#f3f5f9!important;color:#3c4454!important}
+
+:root[data-theme="light"] .sidebar-pro-card{background:linear-gradient(145deg,#f6f2ff,#ffffff)!important;border:1px solid #e6ddfb!important;color:#2c2440!important;box-shadow:none!important}
+:root[data-theme="light"] .sidebar-pro-card p{color:#6b6482!important}
+:root[data-theme="light"] .sidebar-pro-card .btn.gold{background:#8b5cf6!important;border-color:#8b5cf6!important;color:#fff!important}
+:root[data-theme="light"] .sidebar-pro-icon{background:#f0e9fe!important;color:#7c3aed!important}
+
+:root[data-theme="light"] .content-header,
+:root[data-theme="light"] .card,
+:root[data-theme="light"] .metric-card,
+:root[data-theme="light"] .hero-card,
+:root[data-theme="light"] .insight-card,
+:root[data-theme="light"] .command-secondary,
+:root[data-theme="light"] .action-plan-card,
+:root[data-theme="light"] .goal-card,
+:root[data-theme="light"] .scenario-card,
+:root[data-theme="light"] .ret-scenario-card,
+:root[data-theme="light"] .settings-panel,
+:root[data-theme="light"] .pro-blur-section{
+  background:#ffffff!important; border-color:#e3e7f0!important; color:#10131c!important;
+  box-shadow:0 6px 18px rgba(20,30,50,.06)!important;
+}
+:root[data-theme="light"] .metric-card .m-val,
+:root[data-theme="light"] .hv,
+:root[data-theme="light"] .action-plan-title,
+:root[data-theme="light"] .command-secondary .cs-value,
+:root[data-theme="light"] .insight-card h4{color:#10131c!important}
+:root[data-theme="light"] .section-sub,
+:root[data-theme="light"] .m-label,
+:root[data-theme="light"] .m-sub,
+:root[data-theme="light"] .hv-sub,
+:root[data-theme="light"] .updated,
+:root[data-theme="light"] .command-secondary .cs-sub{color:#5b6472!important}
+
+:root[data-theme="light"] input,
+:root[data-theme="light"] select,
+:root[data-theme="light"] textarea{background:#ffffff!important;color:#10131c!important;border-color:#e3e7f0!important}
+
+:root[data-theme="light"] .insights-pro-nav,
+:root[data-theme="light"] .grade-pro-pill,
+:root[data-theme="light"] .pro-badge-filled{
+  background:#f3e8ff!important; color:#7c3aed!important; border:none!important;
+}
+
+:root[data-theme="light"] .sidebar-profile-name{color:#10131c!important}
+:root[data-theme="light"] .sidebar .edit-name-link{color:#5b6472!important}
+:root[data-theme="light"] .sidebar .settings-panel{background:#ffffff!important;border-color:#e3e7f0!important;color:#10131c!important}
+:root[data-theme="light"] .sidebar .settings-title{color:#10131c!important}
+:root[data-theme="light"] .sidebar .settings-sub{color:#5b6472!important}
+:root[data-theme="light"] .sidebar .theme-choice{background:#f3f5f9!important;color:#3c4454!important;border-color:#e3e7f0!important}
+:root[data-theme="light"] .sidebar .theme-choice.active{background:rgba(31,156,120,.10)!important;color:#0f8b6d!important;border-color:#1f9c78!important}
+</style>
+
 </body>
 </html>
 
 
-<style id="gmf-olive-sidebar-final">
-/* FINAL SIDEBAR DIRECTION: Dark Olive Green in BOTH themes */
-.sidebar,
-:root[data-theme="light"] .sidebar,
-:root[data-theme="dark"] .sidebar{
-  background:#153F35 !important;
-  border-right:1px solid #4A5A3A !important;
-  color:#F1F4EA !important;
-  box-shadow:8px 0 30px rgba(20,30,14,.10) !important;
-}
-.sidebar-brand{border-bottom-color:#4A5A3A !important}
-.sidebar .wordmark{color:#F5F7EF !important}
-.sidebar .nav-section-label{color:#BFCAB0 !important;opacity:1 !important}
-.sidebar .dash-nav-btn{color:#D8E0D0 !important}
-.sidebar .dash-nav-btn:hover{background:#1B4A3E !important;color:#FFFFFF !important}
-.sidebar .dash-nav-btn.active{
-  background:#245B4C !important;
-  color:#FFFFFF !important;
-  box-shadow:inset 3px 0 0 #B8D48A !important;
-}
-.sidebar .nav-icon{color:#C8D4BA !important}
-.sidebar .dash-nav-btn.active .nav-icon{color:#D7F29B !important}
-.sidebar-bottom{border-top-color:#4A5A3A !important}
-.sidebar-bottom .icon-btn{color:#D8E0D0 !important}
-.sidebar-bottom .icon-btn:hover{background:#1B4A3E !important;color:#FFFFFF !important}
-.sidebar .settings-panel,
-.sidebar .pro-card,
-.sidebar .upgrade-card{
-  background:#2B3823 !important;
-  border-color:#4A5A3A !important;
-  color:#EEF3E8 !important;
-}
-.sidebar .settings-panel *{color:inherit !important}
-.sidebar .pro-card p,
-.sidebar .upgrade-card p{color:#B8C5AE !important}
-.sidebar .profile-card,
-.sidebar .sidebar-profile{border-color:#4A5A3A !important;color:#EEF3E8 !important}
-.sidebar .profile-card .muted,
-.sidebar .sidebar-profile .muted{color:#AEBCA4 !important}
-@media(max-width:900px){
-  .sidebar{background:#153F35 !important;border-top:1px solid #4A5A3A !important;border-right:0 !important}
-}
-</style>
+<!-- gmf-olive-sidebar-final removed: it forced the same olive-green sidebar
+     for both light and dark themes, at the same CSS specificity as
+     gmf-theme-repaint-final above but positioned after it — so it was
+     winning the tie-break and silently overriding the real theme colors.
+     gmf-theme-repaint-final already covers every selector this block did,
+     correctly split per theme, so nothing is lost by removing this. -->
 
 <style id="gmf-final-background-and-chart-fix">
 /* Stronger but still subtle premium blue/green canvas. */
