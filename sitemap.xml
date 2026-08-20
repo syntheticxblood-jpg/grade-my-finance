@@ -585,4 +585,14 @@ This XML file does not appear to have any style information associated with it. 
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
+<url>
+<loc>https://grademyfinance.com/blog/series-i-savings-bonds-explained.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://grademyfinance.com/blog/sep-ira-vs-solo-401k-self-employed.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
 </urlset>

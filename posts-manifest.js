@@ -103,4 +103,8 @@ var GMF_BLOG_POSTS = [
   { slug:"when-does-refinancing-your-mortgage-make-sense", title:"Mortgage Refinancing: When It Actually Makes Sense (and When It Doesn't)", category:"Housing" }
 ,
   { slug:"how-to-remove-pmi", title:"Private Mortgage Insurance (PMI): How to Get Rid of It Sooner", category:"Housing" }
+,
+  { slug:"series-i-savings-bonds-explained", title:"Series I Savings Bonds: How They Work and When They're Worth Buying", category:"Savings" }
+,
+  { slug:"sep-ira-vs-solo-401k-self-employed", title:"SEP IRA vs. Solo 401(k): Which Retirement Plan Actually Wins for the Self-Employed?", category:"Retirement" }
 ];
