@@ -3688,6 +3688,20 @@ body{
   else wire();
 })();
 </script>
+
+<style id="gmf-exact-stress-redesign">
+/* Exact light SaaS stress-test layout */
+#panel-insights .gmf-target-stress{display:flex!important;flex-direction:column!important;gap:8px!important;margin:12px 0 0!important;max-width:none!important}
+#panel-insights .gmf-target-stress .gmf-stress-hero{height:194px;box-sizing:border-box;border-radius:18px;background:linear-gradient(135deg,#102f2f 0%,#153d3a 58%,#1c4b43 100%);color:#fff;padding:24px 26px;display:flex;align-items:center;justify-content:space-between;gap:28px;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(14,49,43,.12)}
+.gmf-stress-hero:after{content:"";position:absolute;width:260px;height:260px;right:-90px;bottom:-175px;border:32px solid rgba(255,255,255,.07);border-radius:50%}
+.gmf-stress-hero-copy{position:relative;z-index:1;max-width:650px}.gmf-kicker{font-size:10px;line-height:1;letter-spacing:.13em;font-weight:800;color:#5bd2ad;margin-bottom:10px}.gmf-kicker.dark{color:#2d9079}.gmf-stress-hero h2{margin:0 0 8px;font-size:18px;line-height:1.2;letter-spacing:-.02em;color:#fff;font-family:var(--font-body,Inter,Arial,sans-serif)}.gmf-stress-hero p{margin:0;color:rgba(255,255,255,.67);font-size:12px;line-height:1.5;max-width:560px}
+.gmf-stress-score{position:relative;z-index:1;display:flex;align-items:center;gap:18px;min-width:350px}.gmf-score-ring{position:relative;width:104px;height:104px;flex:none}.gmf-score-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:2px}.gmf-score-center strong{font-size:28px;line-height:1;font-weight:800;color:#fff}.gmf-score-center span{font-size:10px;color:rgba(255,255,255,.55);margin-top:11px}.gmf-score-copy{max-width:220px}.gmf-score-tier{font-size:17px;font-weight:800;letter-spacing:.01em;color:#f0b43c;margin-bottom:5px}.gmf-score-copy p{font-size:11px;line-height:1.5;color:rgba(255,255,255,.58);margin:0}
+.gmf-stress-chart-card{border:1px solid #d5e2e1;border-radius:16px;background:#fff;padding:14px 16px 10px;box-shadow:0 6px 18px rgba(17,45,39,.045)}.gmf-chart-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:5px}.gmf-chart-head h3{margin:4px 0 0;font-size:13px;color:#122b2a;font-weight:800}.gmf-chart-legend{display:flex;gap:14px;align-items:center}.gmf-chart-legend span{font-size:9px;color:#6a7d7d;display:flex;align-items:center;gap:5px}.gmf-chart-legend i{width:18px;height:3px;border-radius:2px;display:inline-block}.gmf-chart-legend .green{background:#0aa681}.gmf-chart-legend .gold{background:#d89b22}.gmf-chart-legend .red{background:#df625e;border-top:2px dashed #df625e;height:0}.gmf-chart-wrap{height:245px;overflow:hidden}.gmf-chart-wrap svg{display:block;width:100%;height:245px}
+.gmf-stress-outcomes{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:8px!important;margin:0!important;padding:0!important}.gmf-stress-outcomes .st2-impact-card{min-height:66px!important;padding:9px 10px!important;border:1px solid #d7e4e2!important;border-radius:12px!important;background:#fff!important;box-shadow:0 3px 10px rgba(17,45,39,.035)!important}.gmf-stress-outcomes .st2-impact-num{font-size:18px!important;margin-bottom:2px}.gmf-stress-outcomes .st2-impact-label{font-size:9px!important;line-height:1.2!important;margin-bottom:4px}.gmf-stress-outcomes .st2-impact-badge{font-size:8px!important;padding:2px 6px!important}
+.gmf-stress-tabs{height:34px;display:flex;gap:4px;border-bottom:1px solid #d7e3e2;align-items:flex-end}.gmf-stress-tab{border:1px solid transparent;background:transparent;color:#607272;font-size:10px;font-weight:750;padding:7px 13px;border-radius:9px 9px 0 0;cursor:pointer}.gmf-stress-tab.active{background:#fff;color:#0a8c71;border-color:#d7e3e2;border-bottom-color:#fff;margin-bottom:-1px}.gmf-stress-tabpanel{display:none;border:1px solid #d7e3e2;border-top:0;border-radius:0 0 12px 12px;background:#fff;padding:11px 13px}.gmf-stress-tabpanel.active{display:block}.gmf-overview-line{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:10px;color:#687b7a}.gmf-mini-action{border:0;background:none;color:#078d73;font-size:10px;font-weight:800;cursor:pointer}.gmf-scenario-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.gmf-scenario-control{min-width:0}.gmf-scenario-control label{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:10px;font-weight:750;color:#18302f;margin-bottom:6px}.gmf-scenario-control label b{color:#078d73;white-space:nowrap}.gmf-scenario-control input[type=range]{width:100%;accent-color:#0aa681}.gmf-scenario-control select{font-size:10px;border:1px solid #ccdedd;border-radius:7px;padding:4px 7px;background:#f7faf9;color:#17302e}.gmf-scenario-control p{font-size:9px;color:#7a8a89;margin:5px 0 0}.gmf-inline-number{width:42px!important;height:20px!important;border:1px solid #ccdedd!important;border-radius:5px!important;background:#f7faf9!important;color:#17302e!important;text-align:center!important;font:700 10px var(--font-mono,monospace)!important;padding:0 2px!important}.gmf-scenario-actions{display:flex;gap:7px;justify-content:flex-end;margin-top:9px}.gmf-scenario-actions .btn{font-size:10px;padding:5px 9px}.gmf-quick-row{margin-top:9px;display:flex;align-items:center;gap:9px}.gmf-quick-row>#st2QuickList{display:flex;gap:5px;flex-wrap:wrap}.gmf-quick-row .st2-quick-item{padding:5px 8px!important;width:auto!important;border:1px solid #d7e3e2!important;border-radius:7px!important;background:#f8fbfa!important}.gmf-quick-row .st2-quick-icon{display:none}.gmf-quick-row .st2-quick-label{font-size:9px!important}.gmf-quick-row .st2-impact-pill{display:none}.gmf-insight-grid{display:grid;grid-template-columns:1.5fr 1fr 1.2fr;gap:12px}.gmf-insight-grid>div{border:1px solid #e0e9e8;border-radius:9px;padding:9px 11px;background:#fbfdfc}.gmf-insight-grid p{font-size:10px;line-height:1.45;color:#586c6b;margin:5px 0 0}.gmf-insight-grid b{color:#18312f}.gmf-target-stress+.st2-advanced-toggle,.gmf-target-stress~.st2-advanced-toggle{display:none!important}
+@media(max-width:900px){#panel-insights .gmf-target-stress .gmf-stress-hero{height:auto;min-height:190px}.gmf-stress-score{min-width:0}.gmf-scenario-grid{grid-template-columns:1fr 1fr}.gmf-stress-outcomes{grid-template-columns:1fr 1fr!important}}
+@media(max-width:620px){.gmf-stress-hero{flex-direction:column;align-items:flex-start!important}.gmf-stress-score{width:100%}.gmf-chart-head{align-items:flex-start;flex-direction:column}.gmf-chart-legend{display:none}.gmf-scenario-grid,.gmf-insight-grid{grid-template-columns:1fr}.gmf-stress-tabs{overflow:auto}.gmf-stress-tab{white-space:nowrap}}
+</style>
 </head>
 <body>
 <script>
@@ -4718,144 +4732,58 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="insight-subview" data-insightpanel="stresstest">
         <div id="insightStressEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your resilience simulation</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="insightStressContent">
-          <div class="st2-shell">
-            <div class="card st2-hero">
-              <div class="st2-hero-text">
-                <h2 class="st2-hero-title">Stress Test Your Finances</h2>
-                <p class="st2-hero-sub">Life happens. We run the numbers so you can be ready for it.</p>
-                <ul class="st2-hero-list">
-                  <li>See how shocks impact your money</li>
-                  <li>Compare different "what if" scenarios</li>
-                  <li>Get a clear next best move</li>
-                </ul>
+          <div class="st2-shell gmf-target-stress">
+            <div class="gmf-stress-hero">
+              <div class="gmf-stress-hero-copy">
+                <div class="gmf-kicker">FINANCIAL RESILIENCE SIMULATOR</div>
+                <h2>If your income stopped tomorrow, what actually happens to your money?</h2>
+                <p>See how your cash, investments and monthly obligations hold up through a real financial shock.</p>
               </div>
-              <div class="st2-hero-art" aria-hidden="true">
-                <span class="st2-dot" style="width:14px;height:14px;background:#F5B942;top:6px;left:6px"></span>
-                <span class="st2-dot" style="width:10px;height:10px;background:#4FC28A;top:14px;right:16px"></span>
-                <span class="st2-dot" style="width:16px;height:16px;background:#5b8def;bottom:10px;left:0"></span>
-                <span class="st2-dot" style="width:8px;height:8px;background:#F5B942;bottom:22px;right:4px"></span>
-                <svg width="86" height="86" viewBox="0 0 86 86" fill="none">
-                  <circle cx="43" cy="43" r="42" fill="var(--surface)" opacity=".6"/>
-                  <path d="M43 12 L68 22 V42 C68 58 57 69 43 74 C29 69 18 58 18 42 V22 Z" fill="#2E9C81"/>
-                  <path d="M31 43 L39 51 L56 33" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
+              <div class="gmf-stress-score">
+                <div class="gmf-score-ring">
+                  <svg viewBox="0 0 120 120" width="104" height="104" aria-hidden="true">
+                    <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="9"/>
+                    <circle id="st2RingFg" cx="60" cy="60" r="48" fill="none" stroke="#F0B43C" stroke-width="9" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="301.6" transform="rotate(-90 60 60)"/>
+                  </svg>
+                  <div class="gmf-score-center"><strong id="st2ScoreNum">—</strong><span>/100</span></div>
+                </div>
+                <div class="gmf-score-copy"><div class="gmf-score-tier" id="st2ScoreTier">WATCH</div><p id="st2ScoreExplain">A prolonged disruption could create real pressure, though you have some cushion.</p></div>
               </div>
             </div>
 
-            <div class="st2-top-row">
-              <div class="card st2-score-card">
-                <span class="section-label" style="margin:0">Your Financial Resilience Score</span>
-                <p class="st2-score-sub">How prepared you are to weather financial shocks.</p>
-                <div class="st2-score-body">
-                  <div class="st2-ring-wrap">
-                    <svg class="st2-ring" viewBox="0 0 120 120" width="96" height="96" aria-hidden="true">
-                      <circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="10"/>
-                      <circle id="st2RingFg" cx="60" cy="60" r="52" fill="none" stroke="#4FC28A" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
-                    </svg>
-                    <div class="st2-ring-num"><span id="st2ScoreNum">—</span><span class="st2-ring-max">/100</span></div>
-                  </div>
-                  <div class="st2-score-text">
-                    <div class="st2-score-tier" id="st2ScoreTier">—</div>
-                    <p id="st2ScoreExplain">—</p>
-                    <button class="btn sm" id="st2SeeCalc" type="button">See how it's calculated →</button>
-                  </div>
-                </div>
+            <div class="gmf-stress-chart-card">
+              <div class="gmf-chart-head">
+                <div><span class="gmf-kicker dark">LIQUID ASSETS DURING A STRESS EVENT</span><h3>24-month resilience projection</h3></div>
+                <div class="gmf-chart-legend"><span><i class="g green"></i>Optimistic</span><span><i class="g gold"></i>Moderate</span><span><i class="g red"></i>Pessimistic</span></div>
               </div>
-
-              <div class="card st2-takeaway-card">
-                <span class="section-label" style="margin:0">☀️ Key Takeaway</span>
-                <p id="st2Takeaway">—</p>
-                <div class="st2-toprisk-row">Top risk: <b id="st2TopRisk">—</b><span class="st2-impact-pill high" id="st2TopRiskPill">Impact: High</span></div>
-              </div>
-
-              <div class="card st2-quick-card">
-                <div class="st2-quick-head">
-                  <span class="section-label" style="margin:0">Quick Scenarios</span>
-                  <button class="link-more" id="st2ViewAll" type="button">View all scenarios →</button>
-                </div>
-                <div class="st2-quick-list" id="st2QuickList"></div>
-              </div>
+              <div class="gmf-chart-wrap"><svg id="st2Chart" width="100%" height="250" viewBox="0 0 900 260" preserveAspectRatio="none" role="img" aria-label="Balance over time under optimistic, moderate, and pessimistic scenarios"></svg></div>
             </div>
 
-            <div class="card st2-sim-card">
-              <div class="st2-sim-head">
-                <div>
-                  <span class="section-label" style="margin:0">Scenario Simulator</span>
-                  <p class="st2-sim-sub">Adjust the variables below to see how different situations could affect your finances.</p>
-                </div>
-                <div class="st2-sim-actions">
-                  <button class="btn sm" id="st2Reset" type="button">↺ Reset</button>
-                  <button class="btn gold sm" id="st2Run" type="button">Run Simulation</button>
-                </div>
-              </div>
-              <div class="st2-sim-grid">
-                <div class="st2-sliders">
-                  <div class="st2-slider-row">
-                    <div class="st2-slider-icon" style="background:var(--brand-soft);color:var(--brand-bright)">💼</div>
-                    <div class="st2-slider-body">
-                      <label for="st2JobLoss">Job Loss Duration</label>
-                      <span class="st2-slider-caption">Months without income</span>
-                      <div class="st2-slider-control">
-                        <input type="range" id="st2JobLoss" min="0" max="24" step="1" value="6">
-                        <input type="number" id="st2JobLossNum" min="0" max="24" value="6">
-                        <span class="st2-slider-unit">months</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="st2-slider-row">
-                    <div class="st2-slider-icon" style="background:var(--gold-soft);color:var(--gold-bright)">📈</div>
-                    <div class="st2-slider-body">
-                      <label for="st2ExpenseInc">Expense Increase</label>
-                      <span class="st2-slider-caption">Monthly increase in spending</span>
-                      <div class="st2-slider-control">
-                        <input type="range" id="st2ExpenseInc" min="0" max="100" step="5" value="20">
-                        <input type="number" id="st2ExpenseIncNum" min="0" max="100" value="20">
-                        <span class="st2-slider-unit">%</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="st2-slider-row">
-                    <div class="st2-slider-icon" style="background:var(--bad-soft);color:var(--bad)">📉</div>
-                    <div class="st2-slider-body">
-                      <label for="st2MarketDrop">Market Drop</label>
-                      <span class="st2-slider-caption">Investment portfolio decline</span>
-                      <div class="st2-slider-control">
-                        <input type="range" id="st2MarketDrop" min="0" max="60" step="5" value="20">
-                        <input type="number" id="st2MarketDropNum" min="0" max="60" value="20">
-                        <span class="st2-slider-unit">%</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="st2-slider-row">
-                    <div class="st2-slider-icon" style="background:var(--good-soft);color:var(--good)">🛡️</div>
-                    <div class="st2-slider-body">
-                      <label for="st2EmergencyUse">Emergency Fund Use</label>
-                      <span class="st2-slider-caption">Use emergency fund for expenses</span>
-                      <div class="st2-slider-control">
-                        <select id="st2EmergencyUse"><option value="yes" selected>Yes</option><option value="no">No</option></select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="st2-impact">
-                  <span class="section-label" style="margin:0">Potential Impact</span>
-                  <div class="st2-impact-cards" id="st2ImpactCards"></div>
-                  <div class="st2-chart-card">
-                    <div class="st2-chart-head">Balance Over Time (Projection)</div>
-                    <svg id="st2Chart" width="100%" height="220" viewBox="0 0 900 260" preserveAspectRatio="none" role="img" aria-label="Balance over time under optimistic, moderate, and pessimistic scenarios"></svg>
-                    <div class="st2-chart-legend">
-                      <span><i style="background:#4FC28A"></i>Optimistic Scenario</span>
-                      <span><i style="background:#E8B34A"></i>Moderate Scenario</span>
-                      <span><i style="background:#E15B5B;border-top:2px dotted #E15B5B;height:0;background:none"></i>Pessimistic Scenario</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="gmf-stress-outcomes" id="st2ImpactCards"></div>
+
+            <div class="gmf-stress-tabs" role="tablist" aria-label="Stress test controls">
+              <button type="button" class="gmf-stress-tab active" data-stress-view="overview">Overview</button>
+              <button type="button" class="gmf-stress-tab" data-stress-view="scenario">Adjust Scenario</button>
+              <button type="button" class="gmf-stress-tab" data-stress-view="insights">Key Insights</button>
             </div>
 
-            <div class="card st2-protip-bar">
-              <div><span class="st2-protip-icon">💡</span><b>Pro Tip</b><p id="st2ProTip">Building your emergency fund to 6–12 months of expenses would significantly improve your resilience.</p></div>
-              <button class="btn st2-buildplan-btn" id="st2BuildPlan" type="button">Build My Plan</button>
+            <div class="gmf-stress-tabpanel active" data-stress-panel="overview">
+              <div class="gmf-overview-line"><span><b>Current scenario:</b> 6 months without income · +20% expenses · 20% market drop</span><button class="gmf-mini-action" type="button" data-open-stress="scenario">Adjust →</button></div>
+            </div>
+
+            <div class="gmf-stress-tabpanel" data-stress-panel="scenario">
+              <div class="gmf-scenario-grid">
+                <div class="gmf-scenario-control"><label>Job loss duration <b><input class="gmf-inline-number" id="st2JobLossNum" type="number" min="0" max="24" value="6"> mo</b></label><input type="range" id="st2JobLoss" min="0" max="24" step="1" value="6"></div>
+                <div class="gmf-scenario-control"><label>Expense increase <b><input class="gmf-inline-number" id="st2ExpenseIncNum" type="number" min="0" max="100" value="20">%</b></label><input type="range" id="st2ExpenseInc" min="0" max="100" step="5" value="20"></div>
+                <div class="gmf-scenario-control"><label>Market drop <b><input class="gmf-inline-number" id="st2MarketDropNum" type="number" min="0" max="60" value="20">%</b></label><input type="range" id="st2MarketDrop" min="0" max="60" step="5" value="20"></div>
+                <div class="gmf-scenario-control"><label>Use emergency fund <b><select id="st2EmergencyUse"><option value="yes" selected>Yes</option><option value="no">No</option></select></b></label><p>Allow cash reserves to cover shortfalls before investments.</p></div>
+              </div>
+              <div class="gmf-scenario-actions"><button class="btn sm" id="st2Reset" type="button">↺ Reset</button><button class="btn gold sm" id="st2Run" type="button">Run Simulation</button></div>
+              <div class="gmf-quick-row"><span class="gmf-kicker dark">QUICK SCENARIOS</span><div id="st2QuickList"></div></div>
+            </div>
+
+            <div class="gmf-stress-tabpanel" data-stress-panel="insights">
+              <div class="gmf-insight-grid"><div><span class="gmf-kicker dark">KEY TAKEAWAY</span><p id="st2Takeaway">—</p></div><div><span class="gmf-kicker dark">TOP RISK</span><p><b id="st2TopRisk">—</b> <span class="st2-impact-pill high" id="st2TopRiskPill">Impact: High</span></p></div><div><span class="gmf-kicker dark">NEXT MOVE</span><p>Build enough liquid reserves to cover the period where your income is most exposed.</p></div></div>
             </div>
           </div>
 
@@ -12117,6 +12045,21 @@ svg .brand-bright, .brand-fill{fill:#2fd6a0}
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(wireLive,300);});
   else setTimeout(wireLive,300);
+})();
+</script>
+
+<script>
+(function(){
+  function initStressTabs(){
+    var root=document.querySelector('.gmf-target-stress'); if(!root || root.__wired) return; root.__wired=true;
+    var tabs=root.querySelectorAll('.gmf-stress-tab'), panels=root.querySelectorAll('.gmf-stress-tabpanel');
+    function show(name){tabs.forEach(function(b){b.classList.toggle('active',b.dataset.stressView===name)});panels.forEach(function(p){p.classList.toggle('active',p.dataset.stressPanel===name)});}
+    tabs.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.stressView)})});
+    root.querySelectorAll('[data-open-stress]').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.openStress)})});
+  }
+  function go(){initStressTabs();}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',go); else setTimeout(go,80);
+  document.addEventListener('click',function(e){if(e.target.closest('[data-insightsub="stresstest"]')) setTimeout(go,100)});
 })();
 </script>
 </body>
