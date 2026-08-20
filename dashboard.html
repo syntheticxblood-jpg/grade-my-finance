@@ -1556,6 +1556,46 @@ body.is-pro .pro-blur-overlay{
 }
 .money-subtab-btn:hover{ color:var(--text) }
 .money-subtab-btn.active{ color:var(--text); border-bottom-color:var(--brand) }
+
+/* Accounts (account-level net worth) */
+.acct-form-grid{ display:grid; grid-template-columns:1.4fr 1.2fr 1fr 1fr auto; gap:10px; align-items:end }
+@media (max-width:760px){ .acct-form-grid{ grid-template-columns:1fr 1fr } }
+.acct-form-grid label{ display:block; font-size:11px; font-weight:700; color:var(--muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:.03em }
+.acct-form-grid input,.acct-form-grid select{ width:100%; padding:10px 11px; border-radius:9px; border:1px solid var(--line); background:var(--surface-2); color:var(--text); font-family:var(--font-body); font-size:13.5px }
+.acct-sync-bar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:14px 16px; border-radius:12px; background:var(--brand-soft); border:1px solid rgba(46,156,129,.25); margin-bottom:16px }
+.acct-sync-bar.synced{ background:var(--surface-2); border-color:var(--line) }
+.acct-sync-note{ font-size:12.5px; color:var(--muted); font-weight:600 }
+.acct-group-label{ font:800 10.5px var(--font-mono); text-transform:uppercase; letter-spacing:.07em; color:var(--muted-2); margin:18px 0 8px }
+.acct-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 14px; border:1px solid var(--line); border-radius:11px; background:var(--surface); margin-bottom:8px; flex-wrap:wrap }
+.acct-row-name{ font-weight:700; font-size:13.5px }
+.acct-row-sub{ font-size:11.5px; color:var(--muted); margin-top:2px }
+.acct-row-right{ display:flex; align-items:center; gap:8px }
+.acct-bal-input{ width:120px; text-align:right; padding:7px 9px; border-radius:8px; border:1px solid var(--line); background:var(--surface-2); color:var(--text); font-family:var(--font-mono); font-weight:700; font-size:13px }
+.acct-bal-input.debt{ color:var(--bad) }
+.acct-delete-btn{ background:none; border:none; color:var(--muted-2); cursor:pointer; padding:4px; display:flex }
+.acct-cat-bar-row{ display:grid; grid-template-columns:130px 1fr 74px; gap:10px; align-items:center; margin-bottom:9px; font-size:12.5px }
+.acct-cat-bar-track{ height:10px; border-radius:99px; background:var(--surface-2); overflow:hidden }
+.acct-cat-bar-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg,var(--brand),var(--brand-bright)) }
+.acct-cat-bar-fill.debt{ background:linear-gradient(90deg,var(--bad),#e07a70) }
+
+/* Budget / spending tracker */
+.budget-month-nav{ display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:16px }
+.budget-month-nav button{ width:34px; height:34px; border-radius:9px; border:1px solid var(--line); background:var(--surface-2); color:var(--text); cursor:pointer; font-size:15px; display:flex; align-items:center; justify-content:center }
+.budget-month-nav button:hover{ background:var(--surface) }
+.budget-month-label{ font:800 14.5px var(--font-display); min-width:150px; text-align:center }
+.budget-cat-row{ padding:12px 14px; border:1px solid var(--line); border-radius:11px; background:var(--surface); margin-bottom:9px }
+.budget-cat-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:8px }
+.budget-cat-name{ font-weight:700; font-size:13.5px }
+.budget-cat-nums{ font:700 12.5px var(--font-mono); color:var(--muted) }
+.budget-cat-nums b{ color:var(--text) }
+.budget-cat-nums.over b{ color:var(--bad) }
+.budget-tx-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; border:1px solid var(--line); border-radius:11px; background:var(--surface); margin-bottom:7px; flex-wrap:wrap }
+.budget-tx-left{ min-width:0 }
+.budget-tx-cat{ display:inline-block; font:800 10px var(--font-mono); text-transform:uppercase; letter-spacing:.03em; padding:2px 8px; border-radius:999px; background:var(--brand-soft); color:var(--brand-bright); margin-right:8px }
+.budget-tx-date{ font-size:11.5px; color:var(--muted-2) }
+.budget-tx-note{ font-size:12.5px; color:var(--muted); margin-top:2px }
+.budget-tx-amt{ font:800 13.5px var(--font-mono); color:var(--bad) }
+.budget-limit-input{ width:88px; padding:6px 8px; border-radius:7px; border:1px solid var(--line); background:var(--surface-2); color:var(--text); font-family:var(--font-mono); font-size:12.5px; text-align:right }
 .bill-type-badge{display:inline-flex;align-items:center;margin-left:7px;padding:3px 7px;border-radius:999px;border:1px solid rgba(19,167,127,.18);background:rgba(19,167,127,.07);color:var(--brand-bright);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
 .liability-bill-map{margin-top:14px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,var(--surface),var(--surface-2));box-shadow:0 5px 16px rgba(17,45,39,.04)}
 .liability-bill-map-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;margin-bottom:2px;border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.08em;font-weight:800;color:var(--muted)}
@@ -3453,10 +3493,12 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
       <div class="money-subtabs" id="moneySubtabs">
         <button class="money-subtab-btn active" data-moneysub="networth" type="button">Net Worth</button>
+        <button class="money-subtab-btn" data-moneysub="accounts" type="button">Accounts</button>
         <button class="money-subtab-btn" data-moneysub="moneyflow" type="button">Money Flow</button>
         <button class="money-subtab-btn" data-moneysub="bills" type="button">Bills</button>
         <button class="money-subtab-btn" data-moneysub="credit" type="button">Credit</button>
         <button class="money-subtab-btn" data-moneysub="allocation" type="button">Allocation</button>
+        <button class="money-subtab-btn" data-moneysub="budget" type="button">Budget</button>
       </div>
 
       <div class="money-subview active" data-moneypanel="networth">
@@ -3526,6 +3568,56 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         </div>
         <div id="nwEntriesList" style="margin-top:14px"></div>
       </div>
+      </div>
+
+      <div class="money-subview" data-moneypanel="accounts">
+        <span class="section-label">Your accounts</span>
+        <p class="section-sub">Track net worth by individual account instead of one lump number per category — then sync the totals into your Net Worth chart.</p>
+
+        <div class="acct-sync-bar" id="acctSyncBar">
+          <div class="acct-sync-note" id="acctSyncNote">Add an account below to get started.</div>
+          <button class="btn gold sm" id="acctSyncBtn" type="button">Save as Net Worth update</button>
+        </div>
+
+        <div class="card">
+          <span class="section-label" style="margin:0">Add an account</span>
+          <div class="acct-form-grid" style="margin-top:12px">
+            <div><label for="acctName">Account name</label><input id="acctName" type="text" placeholder="e.g. Chase Checking" maxlength="40"></div>
+            <div><label for="acctCategory">Category</label>
+              <select id="acctCategory">
+                <optgroup label="Assets">
+                  <option value="cash">Cash savings</option>
+                  <option value="retire">Retirement (401k, IRA)</option>
+                  <option value="brokerage">Brokerage / stocks</option>
+                  <option value="crypto">Crypto & other</option>
+                  <option value="home">Home value</option>
+                  <option value="car">Car value</option>
+                  <option value="hsa">HSA</option>
+                </optgroup>
+                <optgroup label="Debts">
+                  <option value="mortgage">Mortgage</option>
+                  <option value="student">Student loans</option>
+                  <option value="auto">Auto loans</option>
+                  <option value="cc">Credit cards</option>
+                  <option value="otherDebt">Personal loans / other</option>
+                </optgroup>
+              </select>
+            </div>
+            <div><label for="acctInstitution">Institution <span style="text-transform:none;font-weight:500">(optional)</span></label><input id="acctInstitution" type="text" placeholder="e.g. Chase" maxlength="30"></div>
+            <div><label for="acctBalance">Balance</label><input id="acctBalance" type="number" min="0" step="1" placeholder="0"></div>
+            <button class="btn gold sm" id="acctAddBtn" type="button">Add account</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <span class="section-label">Totals by category</span>
+          <div id="acctCatBars" style="margin-top:14px"></div>
+        </div>
+
+        <div class="stress-outcomes-row" id="acctOutcomesRow" style="margin-top:16px"></div>
+
+        <div id="acctListWrap" style="margin-top:16px"></div>
+        <div id="acctEmptyNote" class="empty-note" style="display:none">No accounts added yet — add your first one above.</div>
       </div>
 
       <div class="money-subview" data-moneypanel="moneyflow">
@@ -3683,6 +3775,62 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
             <div class="pro-blur-sub">Where your money actually sits, and how it compares to a common age-based guideline.</div>
             <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
           </div>
+        </div>
+        </div>
+      </div>
+
+      <div class="money-subview" data-moneypanel="budget">
+        <div class="pro-blur-section" style="min-height:420px">
+        <div class="pro-blur-content">
+        <span class="section-label">Budget & spending</span>
+        <p class="section-sub">Set a monthly limit per category, log expenses as they happen, and see exactly where you stand.</p>
+
+        <div class="budget-month-nav">
+          <button type="button" id="budgetPrevMonth" aria-label="Previous month">‹</button>
+          <div class="budget-month-label" id="budgetMonthLabel">—</div>
+          <button type="button" id="budgetNextMonth" aria-label="Next month">›</button>
+        </div>
+
+        <div class="stress-outcomes-row" id="budgetOutcomesRow"></div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="nw-update-header">
+            <span class="section-label" style="margin:0">Budget categories</span>
+            <button class="btn sm" id="budgetCatToggle" type="button">+ Add category</button>
+          </div>
+          <div id="budgetCatForm" class="ret-form-grid" style="display:none;margin-top:12px">
+            <div><label for="budgetCatName">Category name</label><input id="budgetCatName" type="text" placeholder="e.g. Groceries" maxlength="30"></div>
+            <div><label for="budgetCatLimit">Monthly limit</label><input id="budgetCatLimit" type="number" min="0" step="1" placeholder="e.g. 500"></div>
+            <div style="display:flex;align-items:end"><button class="btn gold sm" id="budgetCatAddBtn" type="button">Add</button></div>
+          </div>
+          <div id="budgetCatBars" style="margin-top:16px"></div>
+          <div id="budgetCatEmptyNote" class="empty-note" style="display:none">No budget categories yet — add one above to start tracking spending.</div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <span class="section-label">Log an expense</span>
+          <div class="ret-form-grid" style="margin-top:12px">
+            <div><label for="txDate">Date</label><input id="txDate" type="date"></div>
+            <div><label for="txCategory">Category</label><select id="txCategory"></select></div>
+            <div><label for="txAmount">Amount</label><input id="txAmount" type="number" min="0" step="0.01" placeholder="e.g. 42.50"></div>
+            <div><label for="txNote">Note <span style="text-transform:none;font-weight:500">(optional)</span></label><input id="txNote" type="text" placeholder="e.g. Whole Foods" maxlength="60"></div>
+          </div>
+          <button class="btn gold sm" id="txAddBtn" type="button" style="margin-top:12px">Add expense</button>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="nw-update-header">
+            <span class="section-label" style="margin:0">Transactions this month</span>
+            <button class="btn sm danger-outline" id="txClearMonth" type="button">Clear this month</button>
+          </div>
+          <div id="txList" style="margin-top:14px"></div>
+          <div id="txEmptyNote" class="empty-note" style="display:none">No expenses logged for this month yet.</div>
+        </div>
+        </div>
+        <div class="pro-blur-overlay">
+          <div class="pro-blur-title">🔒 Track spending against a real budget</div>
+          <div class="pro-blur-sub">Set monthly limits per category, log expenses, and see exactly where you're over or under.</div>
+          <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
         </div>
         </div>
       </div>
@@ -4268,6 +4416,320 @@ function escapeHtml(s){
 var BILLS_KEY = 'gmf_bills_v1';
 function getBills(){ try{ return JSON.parse(localStorage.getItem(BILLS_KEY)||'[]'); }catch(_){ return []; } }
 function saveBills(arr){ localStorage.setItem(BILLS_KEY, JSON.stringify(arr)); }
+
+/* ================= ACCOUNT-LEVEL NET WORTH ================= */
+var ACCOUNTS_KEY = 'gmf_accounts_v1';
+function getAccounts(){ try{ return JSON.parse(localStorage.getItem(ACCOUNTS_KEY)||'[]'); }catch(_){ return []; } }
+function saveAccounts(arr){ localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(arr)); }
+var ACCT_CATS = {
+  cash:{label:'Cash savings',group:'asset'}, retire:{label:'Retirement (401k, IRA)',group:'asset'},
+  brokerage:{label:'Brokerage / stocks',group:'asset'}, crypto:{label:'Crypto & other',group:'asset'},
+  home:{label:'Home value',group:'asset'}, car:{label:'Car value',group:'asset'}, hsa:{label:'HSA',group:'asset'},
+  mortgage:{label:'Mortgage',group:'debt'}, student:{label:'Student loans',group:'debt'},
+  auto:{label:'Auto loans',group:'debt'}, cc:{label:'Credit cards',group:'debt'}, otherDebt:{label:'Personal loans / other',group:'debt'}
+};
+function acctTotals(accounts){
+  var t = {}; Object.keys(ACCT_CATS).forEach(function(k){ t[k]=0; });
+  accounts.forEach(function(a){ if(ACCT_CATS[a.category]) t[a.category] += (Number(a.balance)||0); });
+  var assets=0, debts=0;
+  Object.keys(ACCT_CATS).forEach(function(k){ if(ACCT_CATS[k].group==='asset') assets+=t[k]; else debts+=t[k]; });
+  return { byCat:t, assets:assets, debts:debts, net:assets-debts };
+}
+
+/* ================= BUDGET / SPENDING TRACKER ================= */
+var BUDGET_CATS_KEY = 'gmf_budget_categories_v1';
+var TX_KEY = 'gmf_transactions_v1';
+function getBudgetCats(){ try{ return JSON.parse(localStorage.getItem(BUDGET_CATS_KEY)||'[]'); }catch(_){ return []; } }
+function saveBudgetCats(arr){ localStorage.setItem(BUDGET_CATS_KEY, JSON.stringify(arr)); }
+function getTransactions(){ try{ return JSON.parse(localStorage.getItem(TX_KEY)||'[]'); }catch(_){ return []; } }
+function saveTransactions(arr){ localStorage.setItem(TX_KEY, JSON.stringify(arr)); }
+function monthKey(dateStr){ return String(dateStr||'').slice(0,7); }
+function todayStr(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function shiftMonth(mk, delta){
+  var parts=mk.split('-'); var d=new Date(+parts[0], +parts[1]-1+delta, 1);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+}
+
+function renderAccountsTracker(){
+  var addBtn=$("acctAddBtn"), nameEl=$("acctName"), catEl=$("acctCategory"), instEl=$("acctInstitution"), balEl=$("acctBalance");
+  var catBarsEl=$("acctCatBars"), outcomesEl=$("acctOutcomesRow"), listWrap=$("acctListWrap"), emptyNote=$("acctEmptyNote");
+  var syncBar=$("acctSyncBar"), syncNote=$("acctSyncNote"), syncBtn=$("acctSyncBtn");
+  if(!addBtn) return;
+
+  function render(){
+    var accounts = getAccounts();
+    var totals = acctTotals(accounts);
+
+    var maxVal = 0;
+    Object.keys(ACCT_CATS).forEach(function(k){ maxVal = Math.max(maxVal, Math.abs(totals.byCat[k])); });
+    var catRows = Object.keys(ACCT_CATS).filter(function(k){ return totals.byCat[k] !== 0; });
+    if(!catRows.length){
+      catBarsEl.innerHTML = '<div class="empty-note">Add accounts below to see category totals.</div>';
+    } else {
+      catBarsEl.innerHTML = catRows.map(function(k){
+        var cat = ACCT_CATS[k], val = totals.byCat[k], pct = maxVal>0 ? Math.round((Math.abs(val)/maxVal)*100) : 0;
+        return '<div class="acct-cat-bar-row"><div>'+cat.label+'</div><div class="acct-cat-bar-track"><div class="acct-cat-bar-fill'+(cat.group==='debt'?' debt':'')+'" style="width:'+pct+'%"></div></div><div class="mono" style="text-align:right;font-weight:700">'+money(val)+'</div></div>';
+      }).join('');
+    }
+
+    outcomesEl.innerHTML = [
+      {label:'Total assets', val:money(totals.assets)},
+      {label:'Total debts', val:money(totals.debts), cls: totals.debts>0?'bad':''},
+      {label:'Net worth (from accounts)', val:money(totals.net)}
+    ].map(function(o){ return '<div class="stress-outcome-card"><div class="stress-outcome-num '+(o.cls||'')+'">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>'; }).join('');
+
+    if(!accounts.length){
+      listWrap.innerHTML=''; if(emptyNote) emptyNote.style.display='block';
+    } else {
+      if(emptyNote) emptyNote.style.display='none';
+      var assetAccts = accounts.filter(function(a){ return ACCT_CATS[a.category] && ACCT_CATS[a.category].group==='asset'; });
+      var debtAccts = accounts.filter(function(a){ return ACCT_CATS[a.category] && ACCT_CATS[a.category].group==='debt'; });
+      function rowsHtml(list, isDebt){
+        return list.map(function(a){
+          return '<div class="acct-row">'+
+            '<div><div class="acct-row-name">'+escapeHtml(a.name)+'</div><div class="acct-row-sub">'+(ACCT_CATS[a.category]?ACCT_CATS[a.category].label:'')+(a.institution?' · '+escapeHtml(a.institution):'')+'</div></div>'+
+            '<div class="acct-row-right">'+
+              '<input type="number" class="acct-bal-input'+(isDebt?' debt':'')+'" data-id="'+a.id+'" value="'+(a.balance||0)+'" min="0" step="1">'+
+              '<button type="button" class="acct-delete-btn" data-id="'+a.id+'" aria-label="Delete '+escapeHtml(a.name)+'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg></button>'+
+            '</div>'+
+          '</div>';
+        }).join('');
+      }
+      var html='';
+      if(assetAccts.length){ html += '<div class="acct-group-label">Assets</div>' + rowsHtml(assetAccts,false); }
+      if(debtAccts.length){ html += '<div class="acct-group-label">Debts</div>' + rowsHtml(debtAccts,true); }
+      listWrap.innerHTML = html;
+
+      listWrap.querySelectorAll('.acct-bal-input').forEach(function(inp){
+        inp.addEventListener('change', function(){
+          var arr = getAccounts();
+          var target = arr.find(function(a){ return String(a.id)===String(inp.dataset.id); });
+          if(target){ target.balance = Math.max(0, +inp.value || 0); saveAccounts(arr); render(); }
+        });
+      });
+      listWrap.querySelectorAll('.acct-delete-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if(!confirm('Delete this account?')) return;
+          saveAccounts(getAccounts().filter(function(a){ return String(a.id)!==String(btn.dataset.id); }));
+          render();
+        });
+      });
+    }
+
+    var hist = getHistory();
+    if(!accounts.length){
+      syncNote.textContent = 'Add an account below to get started.';
+      syncBtn.style.display = 'none';
+      syncBar.classList.remove('synced');
+    } else if(!hist.length){
+      syncNote.textContent = 'Run your first check-in from "Update My Finances" before syncing accounts to your Net Worth chart.';
+      syncBtn.style.display = 'none';
+      syncBar.classList.remove('synced');
+    } else {
+      var last = hist[hist.length-1];
+      var inSync = Object.keys(ACCT_CATS).every(function(k){ return Math.round(Number(last[k])||0) === Math.round(totals.byCat[k]); });
+      syncBtn.style.display = '';
+      if(inSync){
+        syncNote.textContent = '✓ Synced with your Net Worth chart.';
+        syncBar.classList.add('synced');
+      } else {
+        syncNote.textContent = 'Balances have changed since your last synced update — sync to update your Net Worth chart.';
+        syncBar.classList.remove('synced');
+      }
+    }
+  }
+
+  if(!addBtn._wired){
+    addBtn._wired = true;
+    addBtn.addEventListener('click', function(){
+      var name=(nameEl.value||'').trim();
+      var category=catEl.value;
+      var institution=(instEl.value||'').trim();
+      var balance=Math.max(0, +balEl.value || 0);
+      if(!name){ nameEl.focus(); return; }
+      var arr=getAccounts();
+      arr.push({ id: Date.now()+'_'+Math.random().toString(36).slice(2,7), name:name, category:category, institution:institution, balance:balance });
+      saveAccounts(arr);
+      nameEl.value=''; instEl.value=''; balEl.value='';
+      render();
+    });
+    syncBtn.addEventListener('click', function(){
+      var hist=getHistory();
+      if(!hist.length) return;
+      var last=hist[hist.length-1];
+      var totals=acctTotals(getAccounts());
+      var b=totals.byCat;
+      var assets=b.home+b.retire+b.brokerage+b.car+b.hsa+b.cash+b.crypto;
+      var liabs=b.mortgage+b.student+b.auto+b.cc+b.otherDebt;
+      hist.push({
+        ts: Date.now(), score: last.score, net: assets-liabs,
+        annualIncome: last.annualIncome, monthlyExpenses: last.monthlyExpenses, savingsRate: last.savingsRate,
+        totalDebt: liabs,
+        cash:b.cash, retire:b.retire, brokerage:b.brokerage, crypto:b.crypto,
+        home:b.home, car:b.car, hsa:b.hsa,
+        mortgage:b.mortgage, student:b.student, auto:b.auto, cc:b.cc, otherDebt:b.otherDebt,
+        isNetWorthUpdate:true
+      });
+      if(hist.length>500) hist=hist.slice(hist.length-500);
+      localStorage.setItem('gmf_history_v2', JSON.stringify(hist));
+      var freshHist=getHistory();
+      if(typeof renderNetWorthTab==='function') renderNetWorthTab(freshHist);
+      if(typeof renderOverview==='function') renderOverview(freshHist, groupCheckins(freshHist));
+      if(typeof renderScoreTab==='function') renderScoreTab(freshHist);
+      render();
+      if(window.__switchMoneySubtab) window.__switchMoneySubtab('networth', true);
+    });
+  }
+  render();
+}
+
+function renderBudgetTracker(){
+  var prevBtn=$("budgetPrevMonth"), nextBtn=$("budgetNextMonth"), labelEl=$("budgetMonthLabel");
+  var outcomesEl=$("budgetOutcomesRow");
+  var catToggle=$("budgetCatToggle"), catForm=$("budgetCatForm"), catNameEl=$("budgetCatName"), catLimitEl=$("budgetCatLimit"), catAddBtn=$("budgetCatAddBtn");
+  var catBarsEl=$("budgetCatBars"), catEmptyNote=$("budgetCatEmptyNote");
+  var txDateEl=$("txDate"), txCatEl=$("txCategory"), txAmountEl=$("txAmount"), txNoteEl=$("txNote"), txAddBtn=$("txAddBtn");
+  var txListEl=$("txList"), txEmptyNote=$("txEmptyNote"), txClearBtn=$("txClearMonth");
+  if(!prevBtn) return;
+  if(!window.__gmfBudgetMonth) window.__gmfBudgetMonth = todayStr().slice(0,7);
+
+  if(txDateEl && !txDateEl.value) txDateEl.value = todayStr();
+
+  function monthLabel(mk){
+    var parts=mk.split('-'); var d=new Date(+parts[0], +parts[1]-1, 1);
+    return d.toLocaleDateString(undefined,{month:'long',year:'numeric'});
+  }
+  function populateTxCategorySelect(){
+    var cats=getBudgetCats();
+    var cur = txCatEl.value;
+    txCatEl.innerHTML = '<option value="">Uncategorized</option>' + cats.map(function(c){ return '<option value="'+c.id+'">'+escapeHtml(c.name)+'</option>'; }).join('');
+    if(cur) txCatEl.value = cur;
+  }
+
+  function render(){
+    var mk = window.__gmfBudgetMonth;
+    labelEl.textContent = monthLabel(mk);
+    var cats = getBudgetCats();
+    var txs = getTransactions().filter(function(t){ return monthKey(t.date) === mk; });
+    populateTxCategorySelect();
+
+    var totalLimit = cats.reduce(function(s,c){ return s+(Number(c.limit)||0); }, 0);
+    var totalSpent = txs.reduce(function(s,t){ return s+(Number(t.amount)||0); }, 0);
+    var remaining = totalLimit - totalSpent;
+    outcomesEl.innerHTML = [
+      {label:'Budgeted', val: money(totalLimit)},
+      {label:'Spent', val: money(totalSpent)},
+      {label: remaining<0 ? 'Over budget' : 'Remaining', val: money(Math.abs(remaining)), cls: remaining<0 ? 'bad' : ''}
+    ].map(function(o){ return '<div class="stress-outcome-card"><div class="stress-outcome-num '+(o.cls||'')+'">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>'; }).join('');
+
+    if(!cats.length){
+      catBarsEl.innerHTML=''; if(catEmptyNote) catEmptyNote.style.display='block';
+    } else {
+      if(catEmptyNote) catEmptyNote.style.display='none';
+      catBarsEl.innerHTML = cats.map(function(c){
+        var spent = txs.filter(function(t){ return t.catId===c.id; }).reduce(function(s,t){ return s+(Number(t.amount)||0); }, 0);
+        var limit = Number(c.limit)||0;
+        var pct = limit>0 ? Math.min(100, Math.round((spent/limit)*100)) : (spent>0?100:0);
+        var over = limit>0 && spent>limit;
+        return '<div class="budget-cat-row">'+
+          '<div class="budget-cat-top">'+
+            '<div class="budget-cat-name">'+escapeHtml(c.name)+'</div>'+
+            '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'+
+              '<div class="budget-cat-nums'+(over?' over':'')+'"><b>'+money(spent)+'</b> / '+money(limit)+'</div>'+
+              '<input type="number" class="budget-limit-input" data-id="'+c.id+'" value="'+limit+'" min="0" step="1" aria-label="Edit limit for '+escapeHtml(c.name)+'">'+
+              '<button type="button" class="acct-delete-btn" data-catid="'+c.id+'" aria-label="Delete '+escapeHtml(c.name)+' category"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg></button>'+
+            '</div>'+
+          '</div>'+
+          '<div class="debt-race-track"><div class="debt-race-fill" style="width:'+pct+'%;'+(over?'background:linear-gradient(90deg,var(--bad),#e07a70)':'')+'"></div></div>'+
+        '</div>';
+      }).join('');
+
+      catBarsEl.querySelectorAll('.budget-limit-input').forEach(function(inp){
+        inp.addEventListener('change', function(){
+          var arr=getBudgetCats();
+          var target=arr.find(function(c){ return String(c.id)===String(inp.dataset.id); });
+          if(target){ target.limit=Math.max(0,+inp.value||0); saveBudgetCats(arr); render(); }
+        });
+      });
+      catBarsEl.querySelectorAll('[data-catid]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if(!confirm('Delete this category? Expenses logged under it will become Uncategorized.')) return;
+          var id=btn.dataset.catid;
+          saveBudgetCats(getBudgetCats().filter(function(c){ return String(c.id)!==String(id); }));
+          saveTransactions(getTransactions().map(function(t){ if(String(t.catId)===String(id)) t.catId=''; return t; }));
+          render();
+        });
+      });
+    }
+
+    if(!txs.length){
+      txListEl.innerHTML=''; if(txEmptyNote) txEmptyNote.style.display='block';
+    } else {
+      if(txEmptyNote) txEmptyNote.style.display='none';
+      var sorted = txs.slice().sort(function(a,b){ return (b.date||'').localeCompare(a.date||'') || String(b.id).localeCompare(String(a.id)); });
+      txListEl.innerHTML = sorted.map(function(t){
+        var cat = cats.find(function(c){ return c.id===t.catId; });
+        var d=new Date(t.date+'T00:00:00');
+        var dLabel = isNaN(d.getTime()) ? t.date : d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+        return '<div class="budget-tx-row">'+
+          '<div class="budget-tx-left"><span class="budget-tx-cat">'+escapeHtml(cat?cat.name:'Uncategorized')+'</span><span class="budget-tx-date">'+dLabel+'</span>'+(t.note?'<div class="budget-tx-note">'+escapeHtml(t.note)+'</div>':'')+'</div>'+
+          '<div style="display:flex;align-items:center;gap:10px"><div class="budget-tx-amt">-'+money(Number(t.amount)||0)+'</div><button type="button" class="acct-delete-btn" data-txid="'+t.id+'" aria-label="Delete expense"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg></button></div>'+
+        '</div>';
+      }).join('');
+      txListEl.querySelectorAll('[data-txid]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          saveTransactions(getTransactions().filter(function(t){ return String(t.id)!==String(btn.dataset.txid); }));
+          render();
+        });
+      });
+    }
+  }
+
+  if(!prevBtn._wired){
+    prevBtn._wired = true;
+    prevBtn.addEventListener('click', function(){ window.__gmfBudgetMonth = shiftMonth(window.__gmfBudgetMonth,-1); render(); });
+    nextBtn.addEventListener('click', function(){ window.__gmfBudgetMonth = shiftMonth(window.__gmfBudgetMonth,1); render(); });
+
+    catToggle.addEventListener('click', function(){
+      var isOpen = catForm.style.display !== 'none';
+      catForm.style.display = isOpen ? 'none' : 'grid';
+      catToggle.textContent = isOpen ? '+ Add category' : '− Close';
+    });
+    catAddBtn.addEventListener('click', function(){
+      var name=(catNameEl.value||'').trim();
+      var limit=Math.max(0,+catLimitEl.value||0);
+      if(!name){ catNameEl.focus(); return; }
+      var arr=getBudgetCats();
+      arr.push({ id: Date.now()+'_'+Math.random().toString(36).slice(2,7), name:name, limit:limit });
+      saveBudgetCats(arr);
+      catNameEl.value=''; catLimitEl.value='';
+      catForm.style.display='none'; catToggle.textContent='+ Add category';
+      render();
+    });
+    txAddBtn.addEventListener('click', function(){
+      var date=txDateEl.value || todayStr();
+      var catId=txCatEl.value || '';
+      var amount=Math.max(0,+txAmountEl.value||0);
+      var note=(txNoteEl.value||'').trim();
+      if(amount<=0){ txAmountEl.focus(); return; }
+      var arr=getTransactions();
+      arr.push({ id: Date.now()+'_'+Math.random().toString(36).slice(2,7), date:date, catId:catId, amount:amount, note:note });
+      saveTransactions(arr);
+      txAmountEl.value=''; txNoteEl.value='';
+      window.__gmfBudgetMonth = monthKey(date);
+      render();
+    });
+    txClearBtn.addEventListener('click', function(){
+      var mk = window.__gmfBudgetMonth;
+      var count = getTransactions().filter(function(t){ return monthKey(t.date)===mk; }).length;
+      if(!count) return;
+      if(!confirm('Delete all '+count+' expense'+(count===1?'':'s')+' logged for '+monthLabel(mk)+'? This cannot be undone.')) return;
+      saveTransactions(getTransactions().filter(function(t){ return monthKey(t.date)!==mk; }));
+      render();
+    });
+  }
+  render();
+}
 
 function projectNetWorth(startNet, monthlyContribution, annualRatePct, years){
   var r = annualRatePct/100/12;
@@ -8684,7 +9146,8 @@ document.addEventListener("keydown", function(e){
 var BACKUP_KEYS = [
   'gmf_pro','gmf_theme','gmf_currency','gmf_housing','gmf_autosave',
   'gmf_history_v2','gmf_checkin_count','gmf_best_score','gmf_achievements',
-  'gmf_scenarios','gmf_goal', GOALS_KEY, NAME_KEY, RET_KEY
+  'gmf_scenarios','gmf_goal', GOALS_KEY, NAME_KEY, RET_KEY,
+  ACCOUNTS_KEY, BUDGET_CATS_KEY, TX_KEY
 ];
 function buildBackupLink(){
   var data = {};
@@ -8828,6 +9291,8 @@ async function init(){
   __safeRender('score', function(){ renderScoreTab(hist); });
   __safeRender('progress', function(){ renderProgressPanel(hist); });
   __safeRender('money', function(){ renderMoneyExtras(); });
+  __safeRender('accounts', function(){ renderAccountsTracker(); });
+  __safeRender('budget', function(){ renderBudgetTracker(); });
 
   /* Insights first: Stress Test is a core Pro feature and must not be
      blocked by malformed legacy data in planning/projection widgets. */
