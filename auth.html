@@ -473,7 +473,15 @@
   // after a Google OAuth redirect lands back here with a fresh session -
   // Supabase parses that from the URL automatically before this runs.
   supabase.auth.getSession().then(({ data: { session } }) => {
-    if (!session) return;
+    if (!session) {
+      // Landed here specifically from the "View My Financial Dashboard"
+      // button, with no existing session - explain why, instead of just
+      // silently dropping someone on a login form with no context.
+      if (REDIRECT_TARGET === 'dashboard.html') {
+        showBanner('Create a free account (or sign in) to view your Dashboard.', 'success');
+      }
+      return;
+    }
 
     // Distinguish "just created via Google" from "existing Google user
     // logging back in": Supabase sets created_at and last_sign_in_at to
