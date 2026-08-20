@@ -1473,7 +1473,7 @@ body.is-pro .pro-blur-overlay{
 .st2-slider-caption{ display:block; font-size:11.5px; font-weight:500; color:var(--muted-2); margin-top:1px }
 .st2-slider-control{ display:flex; align-items:center; gap:8px; margin-top:8px }
 .st2-slider-control input[type="range"]{ flex:1; min-width:0; accent-color:var(--brand-bright) }
-.st2-slider-control input[type="number"]{ width:44px; padding:5px 4px; border:1px solid var(--line); border-radius:7px; background:var(--surface-2); color:var(--text); font-family:var(--font-mono); font-size:12px; text-align:center; flex:none; -moz-appearance:textfield }
+.st2-slider-control input[type="number"]{ width:58px; padding:5px 4px; border:1px solid var(--line); border-radius:7px; background:var(--surface-2); color:var(--text); font-family:var(--font-mono); font-size:12px; text-align:center; flex:none; -moz-appearance:textfield }
 .st2-slider-control input[type="number"]::-webkit-outer-spin-button,
 .st2-slider-control input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0 }
 .st2-slider-control select{ flex:1; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:var(--surface-2); color:var(--text); font-size:13px }
@@ -1496,6 +1496,8 @@ body.is-pro .pro-blur-overlay{
 .st2-chart-legend{ display:flex; gap:16px; justify-content:flex-end; margin-top:6px; flex-wrap:wrap }
 .st2-chart-legend span{ display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted) }
 .st2-chart-legend i{ width:14px; height:3px; border-radius:2px; display:inline-block }
+.st2-retirement-note{ display:flex; gap:10px; align-items:flex-start; padding:12px 14px; border-radius:10px; background:var(--bad-soft); border:1px solid rgba(193,73,61,.25); margin:0 0 14px; font-size:12.5px; line-height:1.5; color:var(--text) }
+.st2-retirement-note b{ color:var(--bad) }
 
 .st2-protip-bar{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:18px 24px }
 .st2-protip-bar b{ font-size:13.5px }
@@ -4481,11 +4483,11 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
                     <div class="st2-slider-icon" style="background:var(--gold-soft);color:var(--gold-bright)">📈</div>
                     <div class="st2-slider-body">
                       <label for="st2ExpenseInc">Expense Increase</label>
-                      <span class="st2-slider-caption">Monthly increase in spending</span>
+                      <span class="st2-slider-caption">Extra monthly spending</span>
                       <div class="st2-slider-control">
-                        <input type="range" id="st2ExpenseInc" min="0" max="100" step="5" value="20">
-                        <input type="number" id="st2ExpenseIncNum" min="0" max="100" value="20">
-                        <span class="st2-slider-unit">%</span>
+                        <input type="range" id="st2ExpenseInc" min="0" max="5000" step="50" value="500">
+                        <input type="number" id="st2ExpenseIncNum" min="0" max="5000" value="500">
+                        <span class="st2-slider-unit">$/mo</span>
                       </div>
                     </div>
                   </div>
@@ -4515,6 +4517,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
                 <div class="st2-impact">
                   <span class="section-label" style="margin:0">Potential Impact</span>
                   <div class="st2-impact-cards" id="st2ImpactCards"></div>
+                  <div id="st2RetirementNote" style="display:none"></div>
                   <div class="st2-chart-card">
                     <div class="st2-chart-head">Balance Over Time (Projection)</div>
                     <svg id="st2Chart" width="100%" height="220" viewBox="0 0 900 260" preserveAspectRatio="none" role="img" aria-label="Balance over time under optimistic, moderate, and pessimistic scenarios"></svg>
@@ -6884,7 +6887,20 @@ function renderEmergencyStressTest(inputV){
     if(result.stabilizeMonth!==null)marks.push({i:result.stabilizeMonth,label:'INCOME RESUMES',c:'#5b8def'});
     if(result.rebuildAccessibleMonth!==null)marks.push({i:result.rebuildAccessibleMonth,label:'RECOVERED',c:'#0f9f7a'});
     var used={}; marks=marks.filter(function(m){if(used[m.i])return false;used[m.i]=1;return true;}).sort(function(a,b){return a.i-b.i;});
-    marks.forEach(function(m){var px=x(m.i),py=y(vals[m.i]);html+='<line x1="'+px+'" y1="'+T+'" x2="'+px+'" y2="'+(H-B)+'" stroke="'+m.c+'" stroke-opacity=".16" stroke-dasharray="3 4"/>';html+='<circle cx="'+px+'" cy="'+py+'" r="6" fill="'+m.c+'" stroke="#fff" stroke-width="2"/><text x="'+px+'" y="25" text-anchor="middle" fill="'+m.c+'" font-size="12" font-weight="800" font-family="Inter,Arial,sans-serif">'+m.label+'</text>';});
+    // Stagger label rows: if this marker's x-position is close to the
+    // previous one's, alternate to a second row instead of drawing both
+    // labels centered at the same height - that's what was causing labels
+    // like "LOWEST" and "INCOME RESUMES" to visually run into each other
+    // and become unreadable when two milestones landed close in time.
+    var lastLabelX=null, labelRow=0;
+    marks.forEach(function(m){
+      var px=x(m.i),py=y(vals[m.i]);
+      if(lastLabelX!==null && Math.abs(px-lastLabelX)<110){ labelRow = labelRow===0?1:0; } else { labelRow=0; }
+      lastLabelX=px;
+      var labelY = 25 + labelRow*16;
+      html+='<line x1="'+px+'" y1="'+T+'" x2="'+px+'" y2="'+(H-B)+'" stroke="'+m.c+'" stroke-opacity=".16" stroke-dasharray="3 4"/>';
+      html+='<circle cx="'+px+'" cy="'+py+'" r="6" fill="'+m.c+'" stroke="#fff" stroke-width="2"/><text x="'+px+'" y="'+labelY+'" text-anchor="middle" fill="'+m.c+'" font-size="12" font-weight="800" font-family="Inter,Arial,sans-serif">'+m.label+'</text>';
+    });
     var step=vals.length<=12?3:6;
     for(var tm=0;tm<vals.length;tm+=step){var tx=x(tm);html+='<text x="'+tx+'" y="'+(H-14)+'" text-anchor="middle" fill="#71817f" font-size="12" font-family="Inter,Arial,sans-serif">Mo '+tm+'</text>';}
     html+='<text x="'+(W-R)+'" y="'+(H-14)+'" text-anchor="end" fill="#71817f" font-size="12" font-family="Inter,Arial,sans-serif">24-month simulation</text>';
@@ -6991,6 +7007,7 @@ function renderStressTest2(inputV){
   var debtPayments=n(v.debtPayments);
   if(!(debtPayments>0)){ [cc,otherDebt,auto,student].forEach(function(b){ if(b>0) debtPayments+=Math.min(Math.max(b*0.02,25),b); }); }
 
+  var age = n(v.age, hLatest ? n(hLatest.age, 35) : 35);
   var base={
     income: Math.max(0,income),
     expenses: Math.max(0,Math.round(expenses)),
@@ -6998,8 +7015,18 @@ function renderStressTest2(inputV){
     monthlyBurn: Math.max(0,Math.round(expenses))+Math.max(0,Math.round(debtPayments)),
     cash: Math.round(cash),
     brokerage: Math.round(brokerage0),
-    retirement: Math.round(retirement)
+    retirement: Math.round(retirement),
+    age: age
   };
+
+  // Simplified early-withdrawal cost model: ordinary income tax on the
+  // withdrawal (flat estimate - real rate depends on total income and
+  // bracket) plus the 10% federal early withdrawal penalty if under 59.5.
+  // This is deliberately conservative/simplified for a planning tool, not
+  // tax advice - the disclaimer below the simulator says as much.
+  var RETIREMENT_TAX_RATE = 0.22;
+  var RETIREMENT_PENALTY_RATE = base.age < 59.5 ? 0.10 : 0;
+  var RETIREMENT_EFFECTIVE_RATE = 1 - RETIREMENT_TAX_RATE - RETIREMENT_PENALTY_RATE;
 
   function money2(x){
     x=n(x); var sign=x<0?'-':''; var a=Math.abs(x);
@@ -7009,32 +7036,54 @@ function renderStressTest2(inputV){
   }
   function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
 
-  function simulate(jobLossMonths, expenseIncreasePct, marketDropPct, useEmergencyFund, months){
+  function simulate(jobLossMonths, expenseIncreaseAmt, marketDropPct, useEmergencyFund, months){
     months=months||24;
     var cashPool = useEmergencyFund ? base.cash : 0;
     var brokeragePool = base.brokerage*(1-clamp(marketDropPct,0,90)/100);
-    var starting = cashPool+brokeragePool;
+    var retirementPool = base.retirement;
+    var starting = cashPool+brokeragePool+retirementPool*RETIREMENT_EFFECTIVE_RATE;
     var timeline=[starting], breakingMonth=null;
+    var retirementTapped=0, retirementLostToTaxPenalty=0, retirementTapMonth=null;
     for(var m=1;m<=months;m++){
       var incomeThisMonth = m<=jobLossMonths ? 0 : base.income;
-      var outflow = base.expenses*(1+expenseIncreasePct/100)+base.debtPayments;
+      var outflow = base.expenses + Math.max(0,expenseIncreaseAmt) + base.debtPayments;
       var net = incomeThisMonth-outflow;
       if(net>=0){ cashPool+=net; }
       else{
         var shortfall=-net;
         var useC=Math.min(cashPool,shortfall); cashPool-=useC; shortfall-=useC;
         var useB=Math.min(brokeragePool,shortfall); brokeragePool-=useB; shortfall-=useB;
-        if(shortfall>0) cashPool-=shortfall;
+        if(shortfall>0 && retirementPool>0){
+          // Tapping retirement: need to withdraw MORE than the shortfall,
+          // since tax + penalty eat into every dollar pulled out. E.g. at
+          // a combined 32% hit, netting $1,000 actually requires
+          // withdrawing about $1,470.
+          var grossNeeded = RETIREMENT_EFFECTIVE_RATE>0 ? shortfall/RETIREMENT_EFFECTIVE_RATE : shortfall;
+          var useR = Math.min(retirementPool, grossNeeded);
+          var netFromR = useR*RETIREMENT_EFFECTIVE_RATE;
+          retirementPool -= useR;
+          retirementTapped += useR;
+          retirementLostToTaxPenalty += useR-netFromR;
+          if(retirementTapMonth===null && useR>0) retirementTapMonth=m;
+          shortfall -= netFromR;
+        }
+        if(shortfall>0) cashPool -= shortfall; // still short even after every source - goes negative
       }
-      var accessible=cashPool+brokeragePool;
+      var accessible=cashPool+brokeragePool+retirementPool*RETIREMENT_EFFECTIVE_RATE;
       if(breakingMonth===null && accessible<=0) breakingMonth=m;
       timeline.push(accessible);
     }
-    return {timeline:timeline, startingAccessible:starting, endBalance:cashPool+brokeragePool, breakingMonth:breakingMonth};
+    return {
+      timeline:timeline, startingAccessible:starting,
+      endBalance:cashPool+brokeragePool+retirementPool*RETIREMENT_EFFECTIVE_RATE,
+      breakingMonth:breakingMonth,
+      retirementTapped:retirementTapped, retirementLostToTaxPenalty:retirementLostToTaxPenalty,
+      retirementTapMonth:retirementTapMonth
+    };
   }
 
-  function scoreFor(jobLossMonths, expenseIncreasePct, marketDropPct, useEmergencyFund){
-    var result=simulate(jobLossMonths, expenseIncreasePct, marketDropPct, useEmergencyFund, 24);
+  function scoreFor(jobLossMonths, expenseIncreaseAmt, marketDropPct, useEmergencyFund){
+    var result=simulate(jobLossMonths, expenseIncreaseAmt, marketDropPct, useEmergencyFund, 24);
     var runway=result.breakingMonth===null?24:result.breakingMonth;
     var runwayPts=clamp(runway/6,0,1)*40;
     var liquidityRatio=(base.cash+base.brokerage)/Math.max(1,base.cash+base.brokerage+base.retirement);
@@ -7064,7 +7113,7 @@ function renderStressTest2(inputV){
   var emergencySel=$("st2EmergencyUse");
   var runBtn=$("st2Run"), resetBtn=$("st2Reset"), seeCalcBtn=$("st2SeeCalc"), viewAllBtn=$("st2ViewAll"), buildPlanBtn=$("st2BuildPlan");
 
-  var DEFAULTS={jobLoss:6,expenseInc:20,marketDrop:20,emergency:'yes'};
+  var DEFAULTS={jobLoss:6,expenseInc:500,marketDrop:20,emergency:'yes'};
 
   function syncSliderNum(slider,numInput){
     slider.addEventListener('input',function(){ numInput.value=slider.value; });
@@ -7080,7 +7129,7 @@ function renderStressTest2(inputV){
   function currentInputs(){
     return {
       jobLoss: clamp(Number(jobLossNum.value)||0,0,24),
-      expenseInc: clamp(Number(expIncNum.value)||0,0,100),
+      expenseInc: clamp(Number(expIncNum.value)||0,0,5000),
       marketDrop: clamp(Number(mktDropNum.value)||0,0,60),
       emergency: emergencySel.value==='yes'
     };
@@ -7150,7 +7199,7 @@ function renderStressTest2(inputV){
     if(takeawayEl) takeawayEl.textContent='You could handle ~'+months.toFixed(1)+' months of expenses before running into trouble.';
 
     var jobLossResult=simulate(6,0,0,true,24);
-    var expenseResult=simulate(0,20,0,true,24);
+    var expenseResult=simulate(0,500,0,true,24);
     var marketResult=simulate(0,0,20,true,24);
     var risks=[
       {label:'Job loss', breaking: jobLossResult.breakingMonth===null?99:jobLossResult.breakingMonth},
@@ -7183,11 +7232,23 @@ function renderStressTest2(inputV){
       {key:'moderate', timeline:moderate.result.timeline, color:'#E8B34A', dashed:false},
       {key:'pessimistic', timeline:pessimistic.timeline, color:'#E15B5B', dashed:true}
     ]);
+
+    var retNoteEl=$("st2RetirementNote");
+    if(retNoteEl){
+      if(result.retirementTapped>0){
+        var penaltyPct=Math.round((RETIREMENT_TAX_RATE+RETIREMENT_PENALTY_RATE)*100);
+        retNoteEl.style.display='';
+        retNoteEl.innerHTML='<div class="st2-retirement-note">⚠️ <div>In this scenario, cash and brokerage run out around month '+ (result.retirementTapMonth||'—') +', so the simulation taps <b>'+money2(result.retirementTapped)+'</b> from retirement to cover the gap. At an estimated '+penaltyPct+'% combined cost ('+Math.round(RETIREMENT_TAX_RATE*100)+'% tax'+(RETIREMENT_PENALTY_RATE>0?' + '+Math.round(RETIREMENT_PENALTY_RATE*100)+'% early withdrawal penalty':'')+'), about <b>'+money2(result.retirementLostToTaxPenalty)+'</b> of that is lost rather than reaching you. This is a simplified estimate, not tax advice — your real rate depends on your bracket and account type.</div></div>';
+      } else {
+        retNoteEl.style.display='none';
+        retNoteEl.innerHTML='';
+      }
+    }
   }
 
   var QUICK_SCENARIOS=[
     {icon:'💼', softVar:'brand-soft', textVar:'brand-bright', label:'Job loss (6 months)', impact:'high', jobLoss:6, expenseInc:0, marketDrop:0},
-    {icon:'📈', softVar:'gold-soft', textVar:'gold-bright', label:'Expenses increase (20%)', impact:'medium', jobLoss:0, expenseInc:20, marketDrop:0},
+    {icon:'📈', softVar:'gold-soft', textVar:'gold-bright', label:'Expenses increase ($500/mo)', impact:'medium', jobLoss:0, expenseInc:500, marketDrop:0},
     {icon:'📉', softVar:'bad-soft', textVar:'bad', label:'Market drop (20%)', impact:'low', jobLoss:0, expenseInc:0, marketDrop:20}
   ];
   if(quickListEl && !quickListEl._wired){
