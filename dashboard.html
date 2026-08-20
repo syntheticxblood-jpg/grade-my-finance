@@ -360,6 +360,7 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:2
   background:var(--surface); border-right:1px solid var(--line);
   display:flex; flex-direction:column; padding:20px 14px;
   box-shadow: 8px 0 40px -10px rgba(228,194,78,.18);
+  overflow-y:auto;
 }
 .sidebar-brand{ display:flex; align-items:center; gap:9px; text-decoration:none; padding:0 8px 22px; border-bottom:1px solid var(--line); margin-bottom:18px }
 .seal{
@@ -3387,7 +3388,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <button class="dash-nav-btn" data-tab="networth" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 9.5 4h5L16 7"/></svg>Money</button>
       <button class="dash-nav-btn" data-tab="goals" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>Goals</button>
       <div class="nav-section-label">PLANNING</div>
-      <button class="dash-nav-btn" data-tab="scenarios" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>Plan</button>
+      <button class="dash-nav-btn" data-tab="scenarios" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>Plan <span class="insights-pro-nav">PRO</span></button>
       <div class="nav-section-label">INSIGHTS</div>
       <button class="dash-nav-btn" data-tab="score" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg>Grade Report</button>
       <button class="dash-nav-btn" data-tab="insights" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Insights <span class="insights-pro-nav">PRO</span></button>
@@ -4069,7 +4070,16 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="plan-subview" data-planpanel="scenarios">
+        <div class="pro-blur-section">
+        <div class="pro-blur-content">
         <div id="scenariosContainer"></div>
+        </div>
+        <div class="pro-blur-overlay">
+          <div class="pro-blur-title">🔒 Save and compare what-if scenarios</div>
+          <div class="pro-blur-sub">Run a what-if from your report and save it here to compare against your real grade later.</div>
+          <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
+        </div>
+        </div>
       </div>
 
       <div class="plan-subview" data-planpanel="projections">
@@ -11538,6 +11548,12 @@ body{font-size:15px!important;min-height:100vh}
 </script>
 
 <style id="gmf-theme-repaint-final">
+/* Sidebar can overflow the viewport height on shorter screens (nav items +
+   settings + theme toggle + Pro card easily exceeds a laptop's height) -
+   without a scrollbar, anything past the bottom (like the Unlock Pro
+   button) becomes completely unreachable. */
+.sidebar{ overflow-y:auto!important; }
+
 /* =========================================================
    FINAL THEME REPAINT — single source of truth for dark/light.
    Placed last on purpose so it wins over the older, conflicting
