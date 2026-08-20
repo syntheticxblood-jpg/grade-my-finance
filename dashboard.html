@@ -1343,6 +1343,10 @@ body.is-pro .pro-blur-overlay{
 .life-events-legend-item .swatch{ width:16px; height:3px; border-radius:2px; flex:none }
 .life-events-list{ display:grid; gap:8px; margin-top:10px }
 .life-event-chip{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 12px; border:1px solid var(--line); border-radius:10px;
+  background:var(--surface-2); font-size:12.5px; color:var(--text);
+}
 .tc-wage-display{
   font-family:var(--font-serif); font-weight:700; font-size:28px; color:var(--brand-bright);
   background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:16px 18px;
@@ -1457,7 +1461,7 @@ body.is-pro .pro-blur-overlay{
 .st2-sim-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:22px }
 .st2-sim-sub{ margin:4px 0 0; color:var(--muted); font-size:13px }
 .st2-sim-actions{ display:flex; gap:10px; flex:none }
-.st2-sim-grid{ display:grid; grid-template-columns:280px 1fr; gap:26px }
+.st2-sim-grid{ display:grid; grid-template-columns:300px 1fr; gap:22px }
 @media (max-width:980px){ .st2-sim-grid{ grid-template-columns:1fr } }
 
 .st2-sliders{ display:flex; flex-direction:column; gap:20px }
@@ -1466,11 +1470,13 @@ body.is-pro .pro-blur-overlay{
 .st2-slider-body{ flex:1; min-width:0 }
 .st2-slider-body label{ display:block; font-size:13px; font-weight:700; color:var(--text) }
 .st2-slider-caption{ display:block; font-size:11.5px; font-weight:500; color:var(--muted-2); margin-top:1px }
-.st2-slider-control{ display:flex; align-items:center; gap:10px; margin-top:8px }
-.st2-slider-control input[type="range"]{ flex:1; accent-color:var(--brand-bright) }
-.st2-slider-control input[type="number"]{ width:52px; padding:5px 6px; border:1px solid var(--line); border-radius:7px; background:var(--surface-2); color:var(--text); font-family:var(--font-mono); font-size:12.5px; text-align:center }
+.st2-slider-control{ display:flex; align-items:center; gap:8px; margin-top:8px }
+.st2-slider-control input[type="range"]{ flex:1; min-width:0; accent-color:var(--brand-bright) }
+.st2-slider-control input[type="number"]{ width:44px; padding:5px 4px; border:1px solid var(--line); border-radius:7px; background:var(--surface-2); color:var(--text); font-family:var(--font-mono); font-size:12px; text-align:center; flex:none; -moz-appearance:textfield }
+.st2-slider-control input[type="number"]::-webkit-outer-spin-button,
+.st2-slider-control input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0 }
 .st2-slider-control select{ flex:1; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:var(--surface-2); color:var(--text); font-size:13px }
-.st2-slider-unit{ font-size:11.5px; color:var(--muted-2); flex:none }
+.st2-slider-unit{ font-size:11px; color:var(--muted-2); flex:none; white-space:nowrap }
 
 .st2-impact-cards{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:14px 0 18px }
 @media (max-width:760px){ .st2-impact-cards{ grid-template-columns:1fr 1fr } }
@@ -3274,434 +3280,6 @@ body{
 }
 </style>
 
-
-<style id="gmf-stress-single-page-final">
-/* =========================================================
-   STRESS TEST — ONE-SCREEN SAAS PASS
-   Keeps the existing calculation engine/IDs, but turns the
-   Stress Test into a compact, dashboard-style workspace.
-   ========================================================= */
-
-/* The stress-test workspace owns the viewport. */
-#panel-insights > .section-label,
-#panel-insights > .section-sub{
-  display:none !important;
-}
-#panel-insights .insight-subview[data-insightpanel="stresstest"]{
-  padding-top:0 !important;
-}
-#panel-insights #insightSubtabs{
-  margin:0 0 12px !important;
-  min-height:44px;
-  background:rgba(255,255,255,.72);
-  border:1px solid #dfe7e2;
-  border-radius:12px;
-  padding:4px;
-  box-shadow:0 4px 14px rgba(18,52,45,.04);
-}
-#panel-insights #insightSubtabs .insight-subtab-btn{
-  height:34px !important;
-  padding:7px 16px !important;
-  border-radius:9px !important;
-  border:0 !important;
-  font-size:12px !important;
-  font-weight:700 !important;
-}
-#panel-insights #insightSubtabs .insight-subtab-btn.active{
-  background:#fff !important;
-  color:#0f8c6c !important;
-  box-shadow:0 2px 8px rgba(18,52,45,.08) !important;
-}
-
-#insightStressContent{
-  width:100% !important;
-  max-width:none !important;
-}
-#insightStressContent .st2-shell{
-  gap:10px !important;
-  margin:0 !important;
-}
-
-/* HERO */
-#insightStressContent .st2-hero{
-  height:178px !important;
-  min-height:178px !important;
-  padding:22px 30px !important;
-  border-radius:16px !important;
-  gap:20px !important;
-  flex-wrap:nowrap !important;
-  overflow:hidden !important;
-  background:
-    radial-gradient(260px 180px at 90% 50%,rgba(79,124,255,.08),transparent 70%),
-    linear-gradient(135deg,#ffffff,#f8fbfa) !important;
-}
-#insightStressContent .st2-hero-text{
-  min-width:0;
-  flex:1;
-}
-#insightStressContent .st2-hero-title{
-  font-family:var(--font-display) !important;
-  font-size:25px !important;
-  letter-spacing:-.035em !important;
-  margin-bottom:5px !important;
-  color:#16243f !important;
-}
-#insightStressContent .st2-hero-sub{
-  font-size:13px !important;
-  margin-bottom:10px !important;
-  color:#61716d !important;
-}
-#insightStressContent .st2-hero-list{
-  gap:5px !important;
-}
-#insightStressContent .st2-hero-list li{
-  font-size:11.5px !important;
-  color:#40524d !important;
-}
-#insightStressContent .st2-hero-list li::before{
-  width:16px !important;
-  height:16px !important;
-  font-size:10px !important;
-}
-#insightStressContent .st2-hero-art{
-  width:145px !important;
-  height:135px !important;
-  transform:scale(.9);
-  margin-right:4px;
-}
-
-/* SCORE / TAKEAWAY / QUICK SCENARIOS */
-#insightStressContent .st2-top-row{
-  grid-template-columns:1.05fr 1fr 1.12fr !important;
-  gap:10px !important;
-  height:136px !important;
-}
-#insightStressContent .st2-top-row .card{
-  min-height:136px !important;
-  height:136px !important;
-  padding:14px 16px !important;
-  border-radius:14px !important;
-  overflow:hidden !important;
-}
-#insightStressContent .st2-score-sub{
-  margin:1px 0 6px !important;
-  font-size:10.5px !important;
-}
-#insightStressContent .st2-score-body{
-  gap:11px !important;
-}
-#insightStressContent .st2-ring-wrap{
-  width:76px !important;
-  height:76px !important;
-}
-#insightStressContent .st2-ring{
-  width:76px !important;
-  height:76px !important;
-}
-#insightStressContent .st2-ring-num span:first-child{
-  font-size:21px !important;
-}
-#insightStressContent .st2-ring-max{
-  font-size:9px !important;
-}
-#insightStressContent .st2-score-tier{
-  font-size:13px !important;
-  margin-bottom:2px !important;
-}
-#insightStressContent .st2-score-text p{
-  font-size:10.5px !important;
-  line-height:1.35 !important;
-  margin-bottom:5px !important;
-}
-#insightStressContent #st2SeeCalc{
-  display:none !important;
-}
-#insightStressContent .st2-takeaway-card p{
-  font-size:12px !important;
-  line-height:1.4 !important;
-  margin:2px 0 8px !important;
-}
-#insightStressContent .st2-toprisk-row{
-  font-size:10.5px !important;
-}
-#insightStressContent .st2-impact-pill{
-  font-size:9px !important;
-  padding:3px 7px !important;
-}
-#insightStressContent .st2-quick-head{
-  margin-bottom:5px !important;
-}
-#insightStressContent .st2-quick-head .link-more{
-  font-size:9.5px !important;
-}
-#insightStressContent .st2-quick-list{
-  gap:2px !important;
-}
-#insightStressContent .st2-quick-item{
-  padding:4px 5px !important;
-  gap:7px !important;
-}
-#insightStressContent .st2-quick-icon{
-  width:25px !important;
-  height:25px !important;
-  font-size:12px !important;
-}
-#insightStressContent .st2-quick-label{
-  font-size:10.5px !important;
-}
-#insightStressContent .st2-quick-item .st2-impact-pill{
-  font-size:8px !important;
-  padding:2px 5px !important;
-}
-
-/* SIMULATOR */
-#insightStressContent .st2-sim-card{
-  height:338px !important;
-  min-height:338px !important;
-  padding:16px 18px !important;
-  border-radius:15px !important;
-  overflow:hidden !important;
-}
-#insightStressContent .st2-sim-head{
-  margin-bottom:9px !important;
-  align-items:center !important;
-}
-#insightStressContent .st2-sim-sub{
-  font-size:10.5px !important;
-  margin-top:2px !important;
-}
-#insightStressContent .st2-sim-actions{
-  gap:6px !important;
-}
-#insightStressContent .st2-sim-actions .btn{
-  padding:6px 10px !important;
-  font-size:10.5px !important;
-}
-#insightStressContent .st2-sim-grid{
-  grid-template-columns:330px 1fr !important;
-  gap:16px !important;
-  height:275px !important;
-}
-#insightStressContent .st2-sliders{
-  gap:7px !important;
-  padding:3px 2px 0 0;
-}
-#insightStressContent .st2-slider-row{
-  gap:8px !important;
-  min-height:54px !important;
-}
-#insightStressContent .st2-slider-icon{
-  width:29px !important;
-  height:29px !important;
-  border-radius:8px !important;
-  font-size:12px !important;
-}
-#insightStressContent .st2-slider-body label{
-  font-size:10.5px !important;
-}
-#insightStressContent .st2-slider-caption{
-  font-size:9px !important;
-}
-#insightStressContent .st2-slider-control{
-  gap:6px !important;
-  margin-top:4px !important;
-}
-#insightStressContent .st2-slider-control input[type="number"]{
-  width:44px !important;
-  padding:3px 4px !important;
-  font-size:10px !important;
-}
-#insightStressContent .st2-slider-control select{
-  padding:5px 7px !important;
-  font-size:10.5px !important;
-}
-#insightStressContent .st2-slider-unit{
-  font-size:9px !important;
-}
-#insightStressContent .st2-impact-cards{
-  gap:7px !important;
-  margin:6px 0 8px !important;
-}
-#insightStressContent .st2-impact-card{
-  padding:7px 5px !important;
-  min-height:67px !important;
-  border-radius:9px !important;
-}
-#insightStressContent .st2-impact-num{
-  font-size:16px !important;
-}
-#insightStressContent .st2-impact-label{
-  font-size:8.5px !important;
-  margin-bottom:4px !important;
-}
-#insightStressContent .st2-impact-badge{
-  font-size:7.5px !important;
-  padding:2px 5px !important;
-}
-#insightStressContent .st2-impact-ring-wrap{
-  width:34px !important;
-  height:34px !important;
-  margin-bottom:2px !important;
-}
-#insightStressContent .st2-impact-ring-wrap svg{
-  width:34px !important;
-  height:34px !important;
-}
-#insightStressContent .st2-impact-ring-num{
-  font-size:10px !important;
-}
-#insightStressContent .st2-chart-card{
-  padding:9px 10px !important;
-  border-radius:10px !important;
-}
-#insightStressContent .st2-chart-head{
-  font-size:10.5px !important;
-  margin-bottom:1px !important;
-}
-#insightStressContent #st2Chart{
-  height:170px !important;
-}
-#insightStressContent .st2-chart-legend{
-  gap:10px !important;
-  margin-top:1px !important;
-}
-#insightStressContent .st2-chart-legend span{
-  font-size:8.5px !important;
-}
-#insightStressContent .st2-chart-legend i{
-  width:10px !important;
-}
-
-/* PRO TIP */
-#insightStressContent .st2-protip-bar{
-  height:56px !important;
-  min-height:56px !important;
-  padding:9px 16px !important;
-  border-radius:13px !important;
-  overflow:hidden !important;
-}
-#insightStressContent .st2-protip-bar > div{
-  display:flex;
-  align-items:center;
-  min-width:0;
-}
-#insightStressContent .st2-protip-icon{
-  width:27px !important;
-  height:27px !important;
-  margin-right:7px !important;
-  font-size:12px !important;
-  flex:none;
-}
-#insightStressContent .st2-protip-bar b{
-  font-size:10.5px !important;
-  margin-right:6px;
-  white-space:nowrap;
-}
-#insightStressContent .st2-protip-bar p{
-  font-size:9px !important;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  margin:0 !important;
-}
-#insightStressContent .st2-buildplan-btn{
-  padding:6px 12px !important;
-  font-size:9.5px !important;
-}
-
-/* The old 12-variable version is retained in the file for compatibility,
-   but is not part of the one-screen Stress Test workspace. */
-#insightStressContent .st2-advanced-toggle{
-  display:none !important;
-}
-
-/* Desktop viewport: no document scrolling while Stress Test is active. */
-@media(min-width:901px){
-  body.gmf-stress-single-page{
-    overflow:hidden !important;
-  }
-  body.gmf-stress-single-page #panel-insights{
-    height:calc(100vh - 64px) !important;
-    overflow:hidden !important;
-  }
-  body.gmf-stress-single-page #panel-insights .insight-subview[data-insightpanel="stresstest"]{
-    height:calc(100vh - 142px) !important;
-    overflow:hidden !important;
-  }
-}
-
-/* If a smaller desktop screen is used, scale the workspace rather than
-   introducing a long page. */
-@media(min-width:901px) and (max-height:820px){
-  #insightStressContent .st2-hero{height:155px !important;min-height:155px !important;padding:18px 24px !important}
-  #insightStressContent .st2-top-row,
-  #insightStressContent .st2-top-row .card{height:118px !important;min-height:118px !important}
-  #insightStressContent .st2-sim-card{height:300px !important;min-height:300px !important}
-  #insightStressContent .st2-sim-grid{height:242px !important}
-  #insightStressContent #st2Chart{height:145px !important}
-  #insightStressContent .st2-protip-bar{height:48px !important;min-height:48px !important}
-}
-
-/* Tablet/mobile remains usable and scrollable only when the screen is
-   genuinely too narrow to fit the desktop composition. */
-@media(max-width:980px){
-  #insightStressContent .st2-hero{height:auto !important;min-height:160px !important;flex-wrap:wrap !important}
-  #insightStressContent .st2-top-row{height:auto !important;grid-template-columns:1fr 1fr !important}
-  #insightStressContent .st2-top-row .card{height:130px !important;min-height:130px !important}
-  #insightStressContent .st2-top-row .st2-quick-card{grid-column:1/-1}
-  #insightStressContent .st2-sim-card{height:auto !important;min-height:0 !important}
-  #insightStressContent .st2-sim-grid{height:auto !important;grid-template-columns:1fr !important}
-  #insightStressContent #st2Chart{height:190px !important}
-}
-@media(max-width:600px){
-  #panel-insights #insightSubtabs{overflow-x:auto}
-  #insightStressContent .st2-hero{padding:18px !important}
-  #insightStressContent .st2-hero-art{display:none}
-  #insightStressContent .st2-top-row{grid-template-columns:1fr !important}
-  #insightStressContent .st2-top-row .card{height:auto !important;min-height:120px !important}
-  #insightStressContent .st2-top-row .st2-quick-card{grid-column:auto}
-  #insightStressContent .st2-protip-bar{height:auto !important;min-height:58px !important}
-  #insightStressContent .st2-protip-bar > div{flex:1}
-  #insightStressContent .st2-protip-bar p{white-space:normal}
-}
-</style>
-<script id="gmf-stress-single-page-controller">
-(function(){
-  'use strict';
-  function setStressMode(){
-    var panel=document.getElementById('panel-insights');
-    if(!panel) return;
-    var active=panel.querySelector('.insight-subview[data-insightpanel="stresstest"].active');
-    document.body.classList.toggle('gmf-stress-single-page',!!active);
-  }
-  function wire(){
-    var panel=document.getElementById('panel-insights');
-    if(!panel || panel._stressModeWired) return;
-    panel._stressModeWired=true;
-    panel.addEventListener('click',function(e){
-      if(e.target.closest('.insight-subtab-btn')) setTimeout(setStressMode,0);
-    });
-    setStressMode();
-    [100,500,1200].forEach(function(ms){setTimeout(setStressMode,ms);});
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',wire);
-  else wire();
-})();
-</script>
-
-<style id="gmf-exact-stress-redesign">
-/* Exact light SaaS stress-test layout */
-#panel-insights .gmf-target-stress{display:flex!important;flex-direction:column!important;gap:8px!important;margin:12px 0 0!important;max-width:none!important}
-#panel-insights .gmf-target-stress .gmf-stress-hero{height:194px;box-sizing:border-box;border-radius:18px;background:linear-gradient(135deg,#102f2f 0%,#153d3a 58%,#1c4b43 100%);color:#fff;padding:24px 26px;display:flex;align-items:center;justify-content:space-between;gap:28px;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(14,49,43,.12)}
-.gmf-stress-hero:after{content:"";position:absolute;width:260px;height:260px;right:-90px;bottom:-175px;border:32px solid rgba(255,255,255,.07);border-radius:50%}
-.gmf-stress-hero-copy{position:relative;z-index:1;max-width:650px}.gmf-kicker{font-size:10px;line-height:1;letter-spacing:.13em;font-weight:800;color:#5bd2ad;margin-bottom:10px}.gmf-kicker.dark{color:#2d9079}.gmf-stress-hero h2{margin:0 0 8px;font-size:18px;line-height:1.2;letter-spacing:-.02em;color:#fff;font-family:var(--font-body,Inter,Arial,sans-serif)}.gmf-stress-hero p{margin:0;color:rgba(255,255,255,.67);font-size:12px;line-height:1.5;max-width:560px}
-.gmf-stress-score{position:relative;z-index:1;display:flex;align-items:center;gap:18px;min-width:350px}.gmf-score-ring{position:relative;width:104px;height:104px;flex:none}.gmf-score-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:2px}.gmf-score-center strong{font-size:28px;line-height:1;font-weight:800;color:#fff}.gmf-score-center span{font-size:10px;color:rgba(255,255,255,.55);margin-top:11px}.gmf-score-copy{max-width:220px}.gmf-score-tier{font-size:17px;font-weight:800;letter-spacing:.01em;color:#f0b43c;margin-bottom:5px}.gmf-score-copy p{font-size:11px;line-height:1.5;color:rgba(255,255,255,.58);margin:0}
-.gmf-stress-chart-card{border:1px solid #d5e2e1;border-radius:16px;background:#fff;padding:14px 16px 10px;box-shadow:0 6px 18px rgba(17,45,39,.045)}.gmf-chart-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:5px}.gmf-chart-head h3{margin:4px 0 0;font-size:13px;color:#122b2a;font-weight:800}.gmf-chart-legend{display:flex;gap:14px;align-items:center}.gmf-chart-legend span{font-size:9px;color:#6a7d7d;display:flex;align-items:center;gap:5px}.gmf-chart-legend i{width:18px;height:3px;border-radius:2px;display:inline-block}.gmf-chart-legend .green{background:#0aa681}.gmf-chart-legend .gold{background:#d89b22}.gmf-chart-legend .red{background:#df625e;border-top:2px dashed #df625e;height:0}.gmf-chart-wrap{height:245px;overflow:hidden}.gmf-chart-wrap svg{display:block;width:100%;height:245px}
-.gmf-stress-outcomes{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:8px!important;margin:0!important;padding:0!important}.gmf-stress-outcomes .st2-impact-card{min-height:66px!important;padding:9px 10px!important;border:1px solid #d7e4e2!important;border-radius:12px!important;background:#fff!important;box-shadow:0 3px 10px rgba(17,45,39,.035)!important}.gmf-stress-outcomes .st2-impact-num{font-size:18px!important;margin-bottom:2px}.gmf-stress-outcomes .st2-impact-label{font-size:9px!important;line-height:1.2!important;margin-bottom:4px}.gmf-stress-outcomes .st2-impact-badge{font-size:8px!important;padding:2px 6px!important}
-.gmf-stress-tabs{height:34px;display:flex;gap:4px;border-bottom:1px solid #d7e3e2;align-items:flex-end}.gmf-stress-tab{border:1px solid transparent;background:transparent;color:#607272;font-size:10px;font-weight:750;padding:7px 13px;border-radius:9px 9px 0 0;cursor:pointer}.gmf-stress-tab.active{background:#fff;color:#0a8c71;border-color:#d7e3e2;border-bottom-color:#fff;margin-bottom:-1px}.gmf-stress-tabpanel{display:none;border:1px solid #d7e3e2;border-top:0;border-radius:0 0 12px 12px;background:#fff;padding:11px 13px}.gmf-stress-tabpanel.active{display:block}.gmf-overview-line{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:10px;color:#687b7a}.gmf-mini-action{border:0;background:none;color:#078d73;font-size:10px;font-weight:800;cursor:pointer}.gmf-scenario-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.gmf-scenario-control{min-width:0}.gmf-scenario-control label{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:10px;font-weight:750;color:#18302f;margin-bottom:6px}.gmf-scenario-control label b{color:#078d73;white-space:nowrap}.gmf-scenario-control input[type=range]{width:100%;accent-color:#0aa681}.gmf-scenario-control select{font-size:10px;border:1px solid #ccdedd;border-radius:7px;padding:4px 7px;background:#f7faf9;color:#17302e}.gmf-scenario-control p{font-size:9px;color:#7a8a89;margin:5px 0 0}.gmf-inline-number{width:42px!important;height:20px!important;border:1px solid #ccdedd!important;border-radius:5px!important;background:#f7faf9!important;color:#17302e!important;text-align:center!important;font:700 10px var(--font-mono,monospace)!important;padding:0 2px!important}.gmf-scenario-actions{display:flex;gap:7px;justify-content:flex-end;margin-top:9px}.gmf-scenario-actions .btn{font-size:10px;padding:5px 9px}.gmf-quick-row{margin-top:9px;display:flex;align-items:center;gap:9px}.gmf-quick-row>#st2QuickList{display:flex;gap:5px;flex-wrap:wrap}.gmf-quick-row .st2-quick-item{padding:5px 8px!important;width:auto!important;border:1px solid #d7e3e2!important;border-radius:7px!important;background:#f8fbfa!important}.gmf-quick-row .st2-quick-icon{display:none}.gmf-quick-row .st2-quick-label{font-size:9px!important}.gmf-quick-row .st2-impact-pill{display:none}.gmf-insight-grid{display:grid;grid-template-columns:1.5fr 1fr 1.2fr;gap:12px}.gmf-insight-grid>div{border:1px solid #e0e9e8;border-radius:9px;padding:9px 11px;background:#fbfdfc}.gmf-insight-grid p{font-size:10px;line-height:1.45;color:#586c6b;margin:5px 0 0}.gmf-insight-grid b{color:#18312f}.gmf-target-stress+.st2-advanced-toggle,.gmf-target-stress~.st2-advanced-toggle{display:none!important}
-@media(max-width:900px){#panel-insights .gmf-target-stress .gmf-stress-hero{height:auto;min-height:190px}.gmf-stress-score{min-width:0}.gmf-scenario-grid{grid-template-columns:1fr 1fr}.gmf-stress-outcomes{grid-template-columns:1fr 1fr!important}}
-@media(max-width:620px){.gmf-stress-hero{flex-direction:column;align-items:flex-start!important}.gmf-stress-score{width:100%}.gmf-chart-head{align-items:flex-start;flex-direction:column}.gmf-chart-legend{display:none}.gmf-scenario-grid,.gmf-insight-grid{grid-template-columns:1fr}.gmf-stress-tabs{overflow:auto}.gmf-stress-tab{white-space:nowrap}}
-</style>
 </head>
 <body>
 <script>
@@ -4732,58 +4310,144 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="insight-subview" data-insightpanel="stresstest">
         <div id="insightStressEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your resilience simulation</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="insightStressContent">
-          <div class="st2-shell gmf-target-stress">
-            <div class="gmf-stress-hero">
-              <div class="gmf-stress-hero-copy">
-                <div class="gmf-kicker">FINANCIAL RESILIENCE SIMULATOR</div>
-                <h2>If your income stopped tomorrow, what actually happens to your money?</h2>
-                <p>See how your cash, investments and monthly obligations hold up through a real financial shock.</p>
+          <div class="st2-shell">
+            <div class="card st2-hero">
+              <div class="st2-hero-text">
+                <h2 class="st2-hero-title">Stress Test Your Finances</h2>
+                <p class="st2-hero-sub">Life happens. We run the numbers so you can be ready for it.</p>
+                <ul class="st2-hero-list">
+                  <li>See how shocks impact your money</li>
+                  <li>Compare different "what if" scenarios</li>
+                  <li>Get a clear next best move</li>
+                </ul>
               </div>
-              <div class="gmf-stress-score">
-                <div class="gmf-score-ring">
-                  <svg viewBox="0 0 120 120" width="104" height="104" aria-hidden="true">
-                    <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="9"/>
-                    <circle id="st2RingFg" cx="60" cy="60" r="48" fill="none" stroke="#F0B43C" stroke-width="9" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="301.6" transform="rotate(-90 60 60)"/>
-                  </svg>
-                  <div class="gmf-score-center"><strong id="st2ScoreNum">—</strong><span>/100</span></div>
+              <div class="st2-hero-art" aria-hidden="true">
+                <span class="st2-dot" style="width:14px;height:14px;background:#F5B942;top:6px;left:6px"></span>
+                <span class="st2-dot" style="width:10px;height:10px;background:#4FC28A;top:14px;right:16px"></span>
+                <span class="st2-dot" style="width:16px;height:16px;background:#5b8def;bottom:10px;left:0"></span>
+                <span class="st2-dot" style="width:8px;height:8px;background:#F5B942;bottom:22px;right:4px"></span>
+                <svg width="86" height="86" viewBox="0 0 86 86" fill="none">
+                  <circle cx="43" cy="43" r="42" fill="var(--surface)" opacity=".6"/>
+                  <path d="M43 12 L68 22 V42 C68 58 57 69 43 74 C29 69 18 58 18 42 V22 Z" fill="#2E9C81"/>
+                  <path d="M31 43 L39 51 L56 33" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="st2-top-row">
+              <div class="card st2-score-card">
+                <span class="section-label" style="margin:0">Your Financial Resilience Score</span>
+                <p class="st2-score-sub">How prepared you are to weather financial shocks.</p>
+                <div class="st2-score-body">
+                  <div class="st2-ring-wrap">
+                    <svg class="st2-ring" viewBox="0 0 120 120" width="96" height="96" aria-hidden="true">
+                      <circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="10"/>
+                      <circle id="st2RingFg" cx="60" cy="60" r="52" fill="none" stroke="#4FC28A" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+                    </svg>
+                    <div class="st2-ring-num"><span id="st2ScoreNum">—</span><span class="st2-ring-max">/100</span></div>
+                  </div>
+                  <div class="st2-score-text">
+                    <div class="st2-score-tier" id="st2ScoreTier">—</div>
+                    <p id="st2ScoreExplain">—</p>
+                    <button class="btn sm" id="st2SeeCalc" type="button">See how it's calculated →</button>
+                  </div>
                 </div>
-                <div class="gmf-score-copy"><div class="gmf-score-tier" id="st2ScoreTier">WATCH</div><p id="st2ScoreExplain">A prolonged disruption could create real pressure, though you have some cushion.</p></div>
+              </div>
+
+              <div class="card st2-takeaway-card">
+                <span class="section-label" style="margin:0">☀️ Key Takeaway</span>
+                <p id="st2Takeaway">—</p>
+                <div class="st2-toprisk-row">Top risk: <b id="st2TopRisk">—</b><span class="st2-impact-pill high" id="st2TopRiskPill">Impact: High</span></div>
+              </div>
+
+              <div class="card st2-quick-card">
+                <div class="st2-quick-head">
+                  <span class="section-label" style="margin:0">Quick Scenarios</span>
+                  <button class="link-more" id="st2ViewAll" type="button">View all scenarios →</button>
+                </div>
+                <div class="st2-quick-list" id="st2QuickList"></div>
               </div>
             </div>
 
-            <div class="gmf-stress-chart-card">
-              <div class="gmf-chart-head">
-                <div><span class="gmf-kicker dark">LIQUID ASSETS DURING A STRESS EVENT</span><h3>24-month resilience projection</h3></div>
-                <div class="gmf-chart-legend"><span><i class="g green"></i>Optimistic</span><span><i class="g gold"></i>Moderate</span><span><i class="g red"></i>Pessimistic</span></div>
+            <div class="card st2-sim-card">
+              <div class="st2-sim-head">
+                <div>
+                  <span class="section-label" style="margin:0">Scenario Simulator</span>
+                  <p class="st2-sim-sub">Adjust the variables below to see how different situations could affect your finances.</p>
+                </div>
+                <div class="st2-sim-actions">
+                  <button class="btn sm" id="st2Reset" type="button">↺ Reset</button>
+                  <button class="btn gold sm" id="st2Run" type="button">Run Simulation</button>
+                </div>
               </div>
-              <div class="gmf-chart-wrap"><svg id="st2Chart" width="100%" height="250" viewBox="0 0 900 260" preserveAspectRatio="none" role="img" aria-label="Balance over time under optimistic, moderate, and pessimistic scenarios"></svg></div>
-            </div>
-
-            <div class="gmf-stress-outcomes" id="st2ImpactCards"></div>
-
-            <div class="gmf-stress-tabs" role="tablist" aria-label="Stress test controls">
-              <button type="button" class="gmf-stress-tab active" data-stress-view="overview">Overview</button>
-              <button type="button" class="gmf-stress-tab" data-stress-view="scenario">Adjust Scenario</button>
-              <button type="button" class="gmf-stress-tab" data-stress-view="insights">Key Insights</button>
-            </div>
-
-            <div class="gmf-stress-tabpanel active" data-stress-panel="overview">
-              <div class="gmf-overview-line"><span><b>Current scenario:</b> 6 months without income · +20% expenses · 20% market drop</span><button class="gmf-mini-action" type="button" data-open-stress="scenario">Adjust →</button></div>
-            </div>
-
-            <div class="gmf-stress-tabpanel" data-stress-panel="scenario">
-              <div class="gmf-scenario-grid">
-                <div class="gmf-scenario-control"><label>Job loss duration <b><input class="gmf-inline-number" id="st2JobLossNum" type="number" min="0" max="24" value="6"> mo</b></label><input type="range" id="st2JobLoss" min="0" max="24" step="1" value="6"></div>
-                <div class="gmf-scenario-control"><label>Expense increase <b><input class="gmf-inline-number" id="st2ExpenseIncNum" type="number" min="0" max="100" value="20">%</b></label><input type="range" id="st2ExpenseInc" min="0" max="100" step="5" value="20"></div>
-                <div class="gmf-scenario-control"><label>Market drop <b><input class="gmf-inline-number" id="st2MarketDropNum" type="number" min="0" max="60" value="20">%</b></label><input type="range" id="st2MarketDrop" min="0" max="60" step="5" value="20"></div>
-                <div class="gmf-scenario-control"><label>Use emergency fund <b><select id="st2EmergencyUse"><option value="yes" selected>Yes</option><option value="no">No</option></select></b></label><p>Allow cash reserves to cover shortfalls before investments.</p></div>
+              <div class="st2-sim-grid">
+                <div class="st2-sliders">
+                  <div class="st2-slider-row">
+                    <div class="st2-slider-icon" style="background:var(--brand-soft);color:var(--brand-bright)">💼</div>
+                    <div class="st2-slider-body">
+                      <label for="st2JobLoss">Job Loss Duration</label>
+                      <span class="st2-slider-caption">Months without income</span>
+                      <div class="st2-slider-control">
+                        <input type="range" id="st2JobLoss" min="0" max="24" step="1" value="6">
+                        <input type="number" id="st2JobLossNum" min="0" max="24" value="6">
+                        <span class="st2-slider-unit">months</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="st2-slider-row">
+                    <div class="st2-slider-icon" style="background:var(--gold-soft);color:var(--gold-bright)">📈</div>
+                    <div class="st2-slider-body">
+                      <label for="st2ExpenseInc">Expense Increase</label>
+                      <span class="st2-slider-caption">Monthly increase in spending</span>
+                      <div class="st2-slider-control">
+                        <input type="range" id="st2ExpenseInc" min="0" max="100" step="5" value="20">
+                        <input type="number" id="st2ExpenseIncNum" min="0" max="100" value="20">
+                        <span class="st2-slider-unit">%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="st2-slider-row">
+                    <div class="st2-slider-icon" style="background:var(--bad-soft);color:var(--bad)">📉</div>
+                    <div class="st2-slider-body">
+                      <label for="st2MarketDrop">Market Drop</label>
+                      <span class="st2-slider-caption">Investment portfolio decline</span>
+                      <div class="st2-slider-control">
+                        <input type="range" id="st2MarketDrop" min="0" max="60" step="5" value="20">
+                        <input type="number" id="st2MarketDropNum" min="0" max="60" value="20">
+                        <span class="st2-slider-unit">%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="st2-slider-row">
+                    <div class="st2-slider-icon" style="background:var(--good-soft);color:var(--good)">🛡️</div>
+                    <div class="st2-slider-body">
+                      <label for="st2EmergencyUse">Emergency Fund Use</label>
+                      <span class="st2-slider-caption">Use emergency fund for expenses</span>
+                      <div class="st2-slider-control">
+                        <select id="st2EmergencyUse"><option value="yes" selected>Yes</option><option value="no">No</option></select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="st2-impact">
+                  <span class="section-label" style="margin:0">Potential Impact</span>
+                  <div class="st2-impact-cards" id="st2ImpactCards"></div>
+                  <div class="st2-chart-card">
+                    <div class="st2-chart-head">Balance Over Time (Projection)</div>
+                    <svg id="st2Chart" width="100%" height="220" viewBox="0 0 900 260" preserveAspectRatio="none" role="img" aria-label="Balance over time under optimistic, moderate, and pessimistic scenarios"></svg>
+                    <div class="st2-chart-legend">
+                      <span><i style="background:#4FC28A"></i>Optimistic Scenario</span>
+                      <span><i style="background:#E8B34A"></i>Moderate Scenario</span>
+                      <span><i style="background:#E15B5B;border-top:2px dotted #E15B5B;height:0;background:none"></i>Pessimistic Scenario</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="gmf-scenario-actions"><button class="btn sm" id="st2Reset" type="button">↺ Reset</button><button class="btn gold sm" id="st2Run" type="button">Run Simulation</button></div>
-              <div class="gmf-quick-row"><span class="gmf-kicker dark">QUICK SCENARIOS</span><div id="st2QuickList"></div></div>
             </div>
 
-            <div class="gmf-stress-tabpanel" data-stress-panel="insights">
-              <div class="gmf-insight-grid"><div><span class="gmf-kicker dark">KEY TAKEAWAY</span><p id="st2Takeaway">—</p></div><div><span class="gmf-kicker dark">TOP RISK</span><p><b id="st2TopRisk">—</b> <span class="st2-impact-pill high" id="st2TopRiskPill">Impact: High</span></p></div><div><span class="gmf-kicker dark">NEXT MOVE</span><p>Build enough liquid reserves to cover the period where your income is most exposed.</p></div></div>
+            <div class="card st2-protip-bar">
+              <div><span class="st2-protip-icon">💡</span><b>Pro Tip</b><p id="st2ProTip">Building your emergency fund to 6–12 months of expenses would significantly improve your resilience.</p></div>
+              <button class="btn st2-buildplan-btn" id="st2BuildPlan" type="button">Build My Plan</button>
             </div>
           </div>
 
@@ -12014,54 +11678,6 @@ svg .brand-bright, .brand-fill{fill:#2fd6a0}
 :root[data-theme="light"] .sidebar .theme-choice.active{background:#245B4C!important;color:#fff!important;border-color:#B8D48A!important}
 </style>
 
-
-<script id="gmf-stress-live-controls">
-(function(){
-  'use strict';
-  function wireLive(){
-    var ids=['st2JobLoss','st2JobLossNum','st2ExpenseInc','st2ExpenseIncNum','st2MarketDrop','st2MarketDropNum','st2EmergencyUse'];
-    var els=ids.map(function(id){return document.getElementById(id);}).filter(Boolean);
-    if(!els.length || typeof window.renderStressTest2!=='function') return;
-    if(document.body._gmfStressLiveWired) return;
-    document.body._gmfStressLiveWired=true;
-    var timer=null;
-    function live(){
-      clearTimeout(timer);
-      timer=setTimeout(function(){
-        try{
-          var latest=null;
-          try{
-            var h=JSON.parse(localStorage.getItem('gmf_history_v2')||'[]');
-            latest=Array.isArray(h)&&h.length?h[h.length-1]:null;
-          }catch(e){}
-          if(latest && typeof renderStressTest2==='function') renderStressTest2(latest.v||latest);
-        }catch(e){}
-      },40);
-    }
-    els.forEach(function(el){
-      el.addEventListener('input',live);
-      el.addEventListener('change',live);
-    });
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(wireLive,300);});
-  else setTimeout(wireLive,300);
-})();
-</script>
-
-<script>
-(function(){
-  function initStressTabs(){
-    var root=document.querySelector('.gmf-target-stress'); if(!root || root.__wired) return; root.__wired=true;
-    var tabs=root.querySelectorAll('.gmf-stress-tab'), panels=root.querySelectorAll('.gmf-stress-tabpanel');
-    function show(name){tabs.forEach(function(b){b.classList.toggle('active',b.dataset.stressView===name)});panels.forEach(function(p){p.classList.toggle('active',p.dataset.stressPanel===name)});}
-    tabs.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.stressView)})});
-    root.querySelectorAll('[data-open-stress]').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.openStress)})});
-  }
-  function go(){initStressTabs();}
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',go); else setTimeout(go,80);
-  document.addEventListener('click',function(e){if(e.target.closest('[data-insightsub="stresstest"]')) setTimeout(go,100)});
-})();
-</script>
 </body>
 </html>
 
@@ -12127,568 +11743,3 @@ body::before{
   window.addEventListener('storage',function(e){if(e.key==='gmf_history_v2')draw()});
 })();
 </script>
-
-<style id="gmf-stress-exact-final">
-/* ================================================================
-   GRADE MY FINANCE — STRESS TEST / MOCKUP MATCH
-   Final pass: one-screen light SaaS workspace, no desktop scrolling.
-   Keeps the existing simulator IDs/engine intact.
-   ================================================================ */
-
-/* The Stress Test is deliberately a compact command center. */
-body.gmf-stress-single-page #panel-insights{padding-top:0!important}
-body.gmf-stress-single-page .content-header{display:none!important}
-body.gmf-stress-single-page #panel-insights > .section-label,
-body.gmf-stress-single-page #panel-insights > .section-sub{display:block!important}
-
-#panel-insights .insight-subview[data-insightpanel="stresstest"]{padding:0!important}
-#insightStressContent{max-width:1100px!important;margin:0 auto!important}
-
-/* ---------- tabs ---------- */
-#panel-insights #insightSubtabs{
-  display:flex!important;
-  align-items:center!important;
-  gap:0!important;
-  height:42px!important;
-  margin:0 0 14px!important;
-  padding:3px!important;
-  border:1px solid #d7e4e1!important;
-  border-radius:13px!important;
-  background:#f7faf9!important;
-  box-shadow:0 1px 3px rgba(19,61,53,.03)!important;
-}
-#panel-insights #insightSubtabs .insight-subtab-btn{
-  height:34px!important;
-  padding:0 18px!important;
-  border:0!important;
-  border-radius:9px!important;
-  background:transparent!important;
-  color:#526b65!important;
-  font-size:11px!important;
-  font-weight:700!important;
-  letter-spacing:.01em!important;
-}
-#panel-insights #insightSubtabs .insight-subtab-btn.active{
-  background:#fff!important;
-  color:#0d9877!important;
-  box-shadow:0 2px 8px rgba(18,52,45,.10)!important;
-}
-
-/* ---------- the Find the signals banner ---------- */
-#panel-insights > .gmf-tab-graphic{
-  position:relative!important;
-  display:block!important;
-  height:142px!important;
-  min-height:142px!important;
-  margin:0 auto 14px!important;
-  padding:18px 24px!important;
-  border:1px solid #d3e0e3!important;
-  border-radius:17px!important;
-  overflow:hidden!important;
-  background:linear-gradient(135deg,#fbfcfd 0%,#f5f8fb 100%)!important;
-  box-shadow:0 4px 12px rgba(34,73,83,.06)!important;
-}
-#panel-insights > .gmf-tab-graphic:after{
-  content:""!important;
-  position:absolute!important;
-  width:220px!important;height:220px!important;
-  right:-35px!important;top:-75px!important;
-  border-radius:50%!important;
-  background:radial-gradient(circle,rgba(43,173,145,.10),transparent 67%)!important;
-  box-shadow:-38px 40px 0 -12px rgba(43,173,145,.06),-115px 75px 0 -18px rgba(230,170,49,.11)!important;
-  pointer-events:none!important;
-}
-#panel-insights > .gmf-tab-graphic h3{
-  position:relative!important;z-index:2!important;
-  margin:0 0 7px!important;
-  font:800 16px/1.15 var(--font-display)!important;
-  color:#142b39!important;
-}
-#panel-insights > .gmf-tab-graphic p{
-  position:relative!important;z-index:2!important;
-  margin:0!important;max-width:500px!important;
-  font-size:11.5px!important;line-height:1.45!important;
-  color:#607582!important;
-}
-#panel-insights > .gmf-tab-graphic .gmf-bubbles{display:block!important}
-
-/* ---------- insight heading + 3 cards ---------- */
-#panel-insights > .section-label{
-  margin:0 0 4px!important;
-  font-size:9px!important;
-  letter-spacing:.15em!important;
-  color:#0c9b7a!important;
-}
-#panel-insights > .section-sub{
-  margin:0 0 13px!important;
-  font-size:10.5px!important;
-  line-height:1.4!important;
-  color:#647982!important;
-}
-#panel-insights > .gmf-insight-free-grid{
-  display:grid!important;
-  grid-template-columns:repeat(3,1fr)!important;
-  gap:10px!important;
-  margin:0 0 14px!important;
-}
-#panel-insights > .gmf-insight-free-grid .gmf-insight-free{
-  height:76px!important;
-  min-height:76px!important;
-  padding:11px 13px!important;
-  border:1px solid #d9e5e2!important;
-  border-radius:13px!important;
-  background:#fff!important;
-  box-shadow:0 3px 10px rgba(30,69,61,.045)!important;
-  overflow:hidden!important;
-}
-#panel-insights > .gmf-insight-free-grid .tag{
-  margin:0 0 5px!important;
-  font:800 7px/1 var(--font-mono)!important;
-  text-transform:uppercase!important;
-  letter-spacing:.13em!important;
-  color:#69817b!important;
-}
-#panel-insights > .gmf-insight-free-grid h3{
-  margin:0 0 4px!important;
-  font:800 13px/1.15 var(--font-display)!important;
-  color:#102b35!important;
-}
-#panel-insights > .gmf-insight-free-grid p{
-  margin:0!important;
-  font-size:8.5px!important;
-  line-height:1.3!important;
-  color:#6c7e84!important;
-}
-
-/* ---------- stress shell ---------- */
-#insightStressContent .gmf-stress-shell{
-  display:block!important;
-  width:100%!important;
-  height:auto!important;
-  margin:0!important;
-  border:1px solid #c9dcd9!important;
-  border-radius:17px!important;
-  background:#fff!important;
-  overflow:hidden!important;
-  box-shadow:0 8px 24px rgba(22,65,56,.075)!important;
-}
-
-/* Dark hero: this is the visual anchor from the reference. */
-#insightStressContent .gmf-stress-hero{
-  position:relative!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  gap:28px!important;
-  height:158px!important;
-  min-height:158px!important;
-  padding:22px 26px!important;
-  overflow:hidden!important;
-  background:linear-gradient(135deg,#123a35 0%,#143f39 54%,#173e42 100%)!important;
-  color:#fff!important;
-}
-#insightStressContent .gmf-stress-hero:after{
-  content:""!important;
-  position:absolute!important;
-  width:250px!important;height:250px!important;
-  right:-70px!important;bottom:-185px!important;
-  border:33px solid rgba(255,255,255,.065)!important;
-  border-radius:50%!important;
-  box-shadow:0 0 0 28px rgba(255,255,255,.025)!important;
-}
-#insightStressContent .gmf-stress-hero-copy{
-  position:relative!important;z-index:2!important;
-  min-width:0!important;flex:1!important;
-}
-#insightStressContent .gmf-kicker{
-  margin-bottom:8px!important;
-  font:800 8px/1 var(--font-mono)!important;
-  letter-spacing:.15em!important;
-  color:#61d6b3!important;
-}
-#insightStressContent .gmf-stress-hero h2{
-  margin:0 0 7px!important;
-  max-width:650px!important;
-  font:800 16px/1.22 var(--font-display)!important;
-  letter-spacing:-.015em!important;
-  color:#fff!important;
-}
-#insightStressContent .gmf-stress-hero p{
-  margin:0!important;
-  max-width:650px!important;
-  font-size:10.5px!important;
-  line-height:1.45!important;
-  color:rgba(255,255,255,.69)!important;
-}
-
-/* Score is right-aligned like the mockup. */
-#insightStressContent .gmf-stress-score{
-  position:relative!important;z-index:2!important;
-  display:flex!important;align-items:center!important;
-  gap:14px!important;flex:none!important;
-  min-width:275px!important;
-}
-#insightStressContent .gmf-score-ring{
-  position:relative!important;width:82px!important;height:82px!important;flex:none!important;
-}
-#insightStressContent .gmf-score-ring svg{width:82px!important;height:82px!important}
-#insightStressContent .gmf-score-center{
-  position:absolute!important;inset:0!important;
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  color:#fff!important;font-family:var(--font-display)!important;
-}
-#insightStressContent .gmf-score-center strong{font-size:24px!important;line-height:1!important}
-#insightStressContent .gmf-score-center span{font:700 8px var(--font-mono)!important;color:rgba(255,255,255,.55)!important;margin:7px 0 0 2px!important}
-#insightStressContent .gmf-score-copy{max-width:160px!important}
-#insightStressContent .gmf-score-tier{font:800 12px var(--font-display)!important;color:#fff!important;margin-bottom:4px!important}
-#insightStressContent .gmf-score-copy p{font-size:9px!important;line-height:1.4!important;color:rgba(255,255,255,.66)!important}
-
-/* ---------- projection chart ---------- */
-#insightStressContent .gmf-stress-chart-card{
-  margin:0!important;
-  padding:14px 18px 10px!important;
-  border:0!important;
-  border-bottom:1px solid #dfe9e6!important;
-  border-radius:0!important;
-  background:#fff!important;
-}
-#insightStressContent .gmf-chart-head{
-  display:flex!important;align-items:flex-end!important;justify-content:space-between!important;
-  gap:15px!important;margin-bottom:4px!important;
-}
-#insightStressContent .gmf-chart-head h3{
-  margin:4px 0 0!important;
-  font:800 12px var(--font-display)!important;
-  color:#17333b!important;
-}
-#insightStressContent .gmf-chart-head .gmf-kicker.dark{color:#0b9a78!important;margin:0!important;font-size:7px!important}
-#insightStressContent .gmf-chart-legend{display:flex!important;gap:12px!important;align-items:center!important;flex-wrap:nowrap!important}
-#insightStressContent .gmf-chart-legend span{font-size:8px!important;color:#6b7b81!important;white-space:nowrap!important}
-#insightStressContent .gmf-chart-legend i{width:13px!important;height:2px!important;margin-right:4px!important;display:inline-block!important;vertical-align:middle!important}
-#insightStressContent .gmf-chart-legend i.green{background:#0fa783!important}
-#insightStressContent .gmf-chart-legend i.gold{background:#e2a72f!important}
-#insightStressContent .gmf-chart-legend i.red{background:#ed6561!important}
-#insightStressContent .gmf-chart-wrap{
-  height:176px!important;min-height:176px!important;
-  border:0!important;border-radius:0!important;background:#fff!important;
-  overflow:hidden!important;
-}
-#insightStressContent #st2Chart{width:100%!important;height:176px!important;display:block!important}
-
-/* ---------- result strip ---------- */
-#insightStressContent .gmf-stress-outcomes{
-  display:grid!important;grid-template-columns:repeat(4,1fr)!important;
-  gap:0!important;margin:0!important;padding:0!important;
-  border-bottom:1px solid #dfe9e6!important;
-}
-#insightStressContent .gmf-stress-outcomes .st2-impact-card{
-  min-height:70px!important;height:70px!important;
-  padding:10px 13px!important;
-  border:0!important;border-right:1px solid #e2ebe8!important;
-  border-radius:0!important;background:#fbfdfc!important;
-  box-shadow:none!important;text-align:left!important;
-}
-#insightStressContent .gmf-stress-outcomes .st2-impact-card:last-child{border-right:0!important}
-#insightStressContent .st2-impact-num{font-size:17px!important;color:#14333a!important;margin:0 0 2px!important}
-#insightStressContent .st2-impact-label{font-size:7.5px!important;line-height:1.25!important;color:#6d7e82!important;margin:0!important}
-#insightStressContent .st2-impact-badge{display:none!important}
-#insightStressContent .st2-impact-ring-wrap{display:none!important}
-
-/* ---------- compact controls tabs ---------- */
-#insightStressContent .gmf-stress-tabs{
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  gap:3px!important;height:39px!important;padding:3px!important;
-  background:#f7faf9!important;border-bottom:1px solid #dfe9e6!important;
-}
-#insightStressContent .gmf-stress-tab{
-  height:31px!important;padding:0 15px!important;border:0!important;border-radius:8px!important;
-  background:transparent!important;color:#607570!important;font-size:9px!important;font-weight:800!important;cursor:pointer!important;
-}
-#insightStressContent .gmf-stress-tab.active{background:#fff!important;color:#0b9877!important;box-shadow:0 2px 7px rgba(20,62,54,.08)!important}
-#insightStressContent .gmf-stress-tabpanel{display:none!important}
-#insightStressContent .gmf-stress-tabpanel.active{display:block!important}
-#insightStressContent .gmf-overview-line{
-  height:44px!important;padding:0 15px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;
-  font-size:8.5px!important;color:#667a7d!important;background:#fff!important;
-}
-#insightStressContent .gmf-mini-action{border:0!important;background:none!important;color:#0b9877!important;font-size:8.5px!important;font-weight:800!important;cursor:pointer!important}
-#insightStressContent .gmf-scenario-grid{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:8px!important;padding:10px 14px!important}
-#insightStressContent .gmf-scenario-control{padding:9px!important;border:1px solid #dfe9e6!important;border-radius:10px!important;background:#fbfdfc!important}
-#insightStressContent .gmf-scenario-control label{display:flex!important;justify-content:space-between!important;gap:6px!important;font-size:8px!important;color:#526967!important}
-#insightStressContent .gmf-inline-number{width:40px!important;padding:3px 4px!important;border:1px solid #ccdcd8!important;border-radius:5px!important;font:700 8px var(--font-mono)!important;text-align:center!important;background:#fff!important;color:#173b37!important}
-#insightStressContent .gmf-scenario-control input[type=range]{width:100%!important;margin-top:8px!important;accent-color:#0fa783!important}
-#insightStressContent .gmf-scenario-control select{width:auto!important;padding:3px 5px!important;border:1px solid #ccdcd8!important;border-radius:5px!important;font-size:8px!important;background:#fff!important}
-#insightStressContent .gmf-scenario-control p{margin:4px 0 0!important;font-size:7px!important;color:#7a898d!important;line-height:1.25!important}
-#insightStressContent .gmf-scenario-actions{display:flex!important;justify-content:flex-end!important;gap:6px!important;padding:0 14px 8px!important}
-#insightStressContent .gmf-scenario-actions .btn{padding:5px 9px!important;font-size:8px!important}
-#insightStressContent .gmf-quick-row{padding:0 14px 10px!important}
-#insightStressContent .gmf-quick-row > .gmf-kicker{font-size:7px!important;color:#0b9877!important}
-#insightStressContent .gmf-quick-row #st2QuickList{display:flex!important;gap:6px!important;margin-top:5px!important}
-#insightStressContent .gmf-quick-row .st2-quick-item{padding:6px 8px!important;border:1px solid #dfe9e6!important;border-radius:8px!important;background:#fff!important;display:flex!important;align-items:center!important;gap:5px!important;font-size:8px!important}
-#insightStressContent .gmf-quick-row .st2-quick-icon{width:20px!important;height:20px!important;font-size:10px!important}
-#insightStressContent .gmf-quick-row .st2-quick-label{font-size:8px!important}
-#insightStressContent .gmf-insight-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:9px!important;padding:12px 14px!important}
-#insightStressContent .gmf-insight-grid>div{padding:10px!important;border:1px solid #dfe9e6!important;border-radius:10px!important;background:#fbfdfc!important}
-#insightStressContent .gmf-insight-grid p{font-size:9px!important;line-height:1.35!important;color:#64777a!important;margin:4px 0 0!important}
-
-/* The legacy advanced simulator stays in the file, but not in the main
-   one-screen workspace. */
-#insightStressContent .st2-advanced-toggle{display:none!important}
-
-/* ---------- desktop viewport fitting ---------- */
-@media(min-width:901px){
-  body.gmf-stress-single-page{overflow:hidden!important}
-  body.gmf-stress-single-page #dashboardContent{height:calc(100vh - 82px)!important;overflow:hidden!important}
-  body.gmf-stress-single-page #panel-insights{height:100%!important;overflow:hidden!important}
-  body.gmf-stress-single-page #panel-insights > .insight-subview[data-insightpanel="stresstest"]{height:auto!important;overflow:visible!important}
-}
-
-/* 1366x768-ish screens: shave the vertical composition slightly. */
-@media(min-width:901px) and (max-height:820px){
-  #panel-insights > .gmf-tab-graphic{height:116px!important;min-height:116px!important;margin-bottom:10px!important;padding:15px 20px!important}
-  #panel-insights > .gmf-tab-graphic h3{font-size:14px!important;margin-bottom:5px!important}
-  #panel-insights > .gmf-tab-graphic p{font-size:10px!important}
-  #panel-insights > .section-sub{margin-bottom:9px!important}
-  #panel-insights > .gmf-insight-free-grid{margin-bottom:10px!important}
-  #panel-insights > .gmf-insight-free-grid .gmf-insight-free{height:66px!important;min-height:66px!important;padding:9px 11px!important}
-  #insightStressContent .gmf-stress-hero{height:135px!important;min-height:135px!important;padding:18px 22px!important}
-  #insightStressContent .gmf-score-ring,#insightStressContent .gmf-score-ring svg{width:72px!important;height:72px!important}
-  #insightStressContent .gmf-score-center strong{font-size:21px!important}
-  #insightStressContent .gmf-stress-chart-card{padding-top:10px!important}
-  #insightStressContent .gmf-chart-wrap,#insightStressContent #st2Chart{height:142px!important;min-height:142px!important}
-  #insightStressContent .gmf-stress-outcomes .st2-impact-card{height:60px!important;min-height:60px!important;padding:7px 11px!important}
-  #insightStressContent .st2-impact-num{font-size:15px!important}
-  #insightStressContent .gmf-stress-tabs{height:34px!important}
-  #insightStressContent .gmf-stress-tab{height:27px!important}
-  #insightStressContent .gmf-overview-line{height:36px!important}
-}
-
-@media(max-width:900px){
-  body.gmf-stress-single-page{overflow:auto!important}
-  #panel-insights > .gmf-insight-free-grid{grid-template-columns:1fr!important}
-  #insightStressContent .gmf-stress-hero{height:auto!important;min-height:170px!important;flex-direction:column!important;align-items:flex-start!important}
-  #insightStressContent .gmf-stress-score{min-width:0!important;width:100%!important}
-  #insightStressContent .gmf-stress-outcomes{grid-template-columns:1fr 1fr!important}
-  #insightStressContent .gmf-stress-outcomes .st2-impact-card{border-bottom:1px solid #e2ebe8!important}
-  #insightStressContent .gmf-scenario-grid{grid-template-columns:1fr 1fr!important}
-  #insightStressContent .gmf-insight-grid{grid-template-columns:1fr!important}
-}
-@media(max-width:560px){
-  #panel-insights #insightSubtabs{overflow:auto!important}
-  #insightStressContent .gmf-chart-head{align-items:flex-start!important;flex-direction:column!important}
-  #insightStressContent .gmf-chart-legend{width:100%!important;justify-content:flex-start!important}
-  #insightStressContent .gmf-scenario-grid{grid-template-columns:1fr!important}
-  #insightStressContent .gmf-quick-row #st2QuickList{flex-direction:column!important}
-}
-</style>
-
-<script id="gmf-stress-exact-final-js">
-(function(){
-  'use strict';
-  function q(s,r){return (r||document).querySelector(s)}
-  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
-
-  function activateStressTab(name){
-    qa('#insightStressContent .gmf-stress-tab').forEach(function(b){
-      var on=b.getAttribute('data-stress-view')===name;
-      b.classList.toggle('active',on);
-      b.setAttribute('aria-selected',on?'true':'false');
-    });
-    qa('#insightStressContent .gmf-stress-tabpanel').forEach(function(p){
-      p.classList.toggle('active',p.getAttribute('data-stress-panel')===name);
-    });
-  }
-
-  function fitAndTop(){
-    document.body.classList.add('gmf-stress-single-page');
-    var panel=q('#panel-insights');
-    var stress=q('#panel-insights .insight-subview[data-insightpanel="stresstest"]');
-    if(panel && stress && stress.classList.contains('active')){
-      /* Put the workspace at the top whenever Stress Test becomes active. */
-      var top=panel.getBoundingClientRect().top+window.scrollY;
-      if(window.scrollY>top+12) window.scrollTo({top:Math.max(0,top),behavior:'instant'});
-    }
-  }
-
-  function wire(){
-    qa('#insightStressContent .gmf-stress-tab').forEach(function(btn){
-      if(btn._gmfStressWired) return;
-      btn._gmfStressWired=true;
-      btn.addEventListener('click',function(){activateStressTab(btn.getAttribute('data-stress-view'));});
-    });
-
-    var adjust=q('#insightStressContent .gmf-mini-action[data-open-stress="scenario"]');
-    if(adjust && !adjust._gmfStressWired){
-      adjust._gmfStressWired=true;
-      adjust.addEventListener('click',function(){activateStressTab('scenario');});
-    }
-
-    /* The existing top Insights tabs are already wired elsewhere. We only
-       make Stress Test open at the top so the user sees the complete screen. */
-    qa('#insightSubtabs .insight-subtab-btn').forEach(function(btn){
-      if(btn._gmfStressTopWired) return;
-      btn._gmfStressTopWired=true;
-      btn.addEventListener('click',function(){
-        if(btn.getAttribute('data-insightsub')==='stresstest'){
-          setTimeout(function(){
-            fitAndTop();
-            activateStressTab('overview');
-          },40);
-        }
-      },false);
-    });
-
-    if(q('#panel-insights .insight-subview[data-insightpanel="stresstest"].active')) fitAndTop();
-  }
-
-  function boot(){
-    wire();
-    setTimeout(wire,150);
-    setTimeout(wire,700);
-    setTimeout(wire,1500);
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true});
-  else boot();
-
-  document.addEventListener('click',function(e){
-    var nav=e.target&&e.target.closest?e.target.closest('.dash-nav-btn'):null;
-    if(nav) setTimeout(function(){wire();},120);
-  });
-})();
-</script>
-<style id="gmf-stress-reference-last-mile">
-/* Reference image alignment: score sits inside the lower-left of the dark
-   simulator rather than on the right side. */
-#insightStressContent .gmf-stress-hero{
-  display:block!important;
-  height:193px!important;
-  min-height:193px!important;
-  padding:20px 20px 15px!important;
-}
-#insightStressContent .gmf-stress-hero-copy{max-width:650px!important}
-#insightStressContent .gmf-stress-score{
-  position:absolute!important;
-  left:20px!important;
-  bottom:14px!important;
-  min-width:0!important;
-  gap:13px!important;
-}
-#insightStressContent .gmf-score-ring,
-#insightStressContent .gmf-score-ring svg{width:92px!important;height:92px!important}
-#insightStressContent .gmf-score-center strong{font-size:25px!important}
-#insightStressContent .gmf-score-copy{max-width:370px!important}
-#insightStressContent .gmf-score-tier{font-size:12px!important;color:#45caa1!important;text-transform:uppercase!important;letter-spacing:.08em!important}
-#insightStressContent .gmf-score-copy p{font-size:10px!important;max-width:360px!important}
-@media(min-width:901px) and (max-height:820px){
-  #insightStressContent .gmf-stress-hero{height:150px!important;min-height:150px!important;padding:17px 18px 12px!important}
-  #insightStressContent .gmf-stress-score{left:18px!important;bottom:10px!important}
-  #insightStressContent .gmf-score-ring,
-  #insightStressContent .gmf-score-ring svg{width:76px!important;height:76px!important}
-  #insightStressContent .gmf-score-center strong{font-size:21px!important}
-  #insightStressContent .gmf-score-copy p{font-size:8.5px!important}
-}
-</style>
-
-<style id="gmf-stress-final-viewport-fix">
-/* ================================================================
-   FINAL VIEWPORT FIX
-   The previous pass was clipping the lower half because the dashboard
-   container/body were locked to the viewport. This pass makes the Stress
-   Test itself a compact, self-contained workspace that fits a normal
-   desktop browser without browser zoom.
-   ================================================================ */
-@media (min-width:901px){
-  body.gmf-stress-single-page{overflow:hidden!important}
-  body.gmf-stress-single-page #dashboardContent{
-    height:auto!important;
-    min-height:0!important;
-    max-height:none!important;
-    overflow:visible!important;
-  }
-  body.gmf-stress-single-page #panel-insights{
-    height:auto!important;
-    min-height:0!important;
-    max-height:none!important;
-    overflow:visible!important;
-    padding-bottom:0!important;
-  }
-  body.gmf-stress-single-page #panel-insights > .insight-subview[data-insightpanel="stresstest"]{
-    height:auto!important;
-    min-height:0!important;
-    max-height:none!important;
-    overflow:visible!important;
-  }
-  /* Compact the context above the simulator to match the reference image. */
-  body.gmf-stress-single-page #panel-insights > .gmf-tab-graphic{
-    height:100px!important;
-    min-height:100px!important;
-    margin-bottom:10px!important;
-    padding:16px 20px!important;
-    border-radius:15px!important;
-  }
-  body.gmf-stress-single-page #panel-insights > .gmf-tab-graphic h3{font-size:15px!important;margin-bottom:5px!important}
-  body.gmf-stress-single-page #panel-insights > .gmf-tab-graphic p{font-size:10px!important;max-width:520px!important}
-  body.gmf-stress-single-page #panel-insights > .section-label{font-size:8px!important;margin-bottom:3px!important}
-  body.gmf-stress-single-page #panel-insights > .section-sub{font-size:9px!important;margin-bottom:8px!important}
-  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid{
-    gap:8px!important;margin-bottom:10px!important;
-  }
-  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid .gmf-insight-free{
-    height:62px!important;min-height:62px!important;padding:8px 11px!important;border-radius:11px!important;
-  }
-  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid .tag{font-size:6px!important;margin-bottom:4px!important}
-  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid h3{font-size:11px!important;margin-bottom:3px!important}
-  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid p{font-size:7.5px!important}
-
-  /* Main dark resilience panel. */
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-shell{border-radius:15px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-hero{
-    height:145px!important;min-height:145px!important;padding:16px 20px 12px!important;
-  }
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-hero h2{font-size:15px!important;margin-bottom:5px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-hero p{font-size:9px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-kicker{font-size:7px!important;margin-bottom:6px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-score{left:20px!important;bottom:10px!important;gap:11px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-score-ring,
-  body.gmf-stress-single-page #insightStressContent .gmf-score-ring svg{width:68px!important;height:68px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-score-center strong{font-size:20px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-score-center span{font-size:6px!important;margin-top:5px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-score-tier{font-size:9px!important;margin-bottom:3px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-score-copy p{font-size:8px!important;max-width:330px!important}
-
-  /* Chart: keep the complete plot visible, including x-axis labels. */
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-chart-card{padding:10px 16px 7px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-chart-head{margin-bottom:2px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-chart-head h3{font-size:10px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-chart-head .gmf-kicker.dark{font-size:6px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-chart-legend span{font-size:7px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-chart-wrap,
-  body.gmf-stress-single-page #insightStressContent #st2Chart{
-    height:132px!important;min-height:132px!important;
-  }
-
-  /* Results and tab strip remain visible on the same screen. */
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-outcomes .st2-impact-card{
-    height:50px!important;min-height:50px!important;padding:7px 10px!important;
-  }
-  body.gmf-stress-single-page #insightStressContent .st2-impact-num{font-size:13px!important}
-  body.gmf-stress-single-page #insightStressContent .st2-impact-label{font-size:6.5px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-tabs{height:32px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-tab{height:26px!important;font-size:8px!important;padding:0 12px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-overview-line{height:32px!important;font-size:7.5px!important}
-
-  /* Do not let the footer consume the viewport while the Stress Test is open. */
-  body.gmf-stress-single-page footer,
-  body.gmf-stress-single-page .site-footer{display:none!important}
-}
-
-/* Extra-wide / short desktop screens get one more small compression step. */
-@media (min-width:901px) and (max-height:760px){
-  body.gmf-stress-single-page #panel-insights > .gmf-tab-graphic{height:82px!important;min-height:82px!important;padding:12px 18px!important}
-  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid .gmf-insight-free{height:54px!important;min-height:54px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-hero{height:125px!important;min-height:125px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-chart-wrap,
-  body.gmf-stress-single-page #insightStressContent #st2Chart{height:112px!important;min-height:112px!important}
-  body.gmf-stress-single-page #insightStressContent .gmf-stress-outcomes .st2-impact-card{height:44px!important;min-height:44px!important}
-}
-</style>
