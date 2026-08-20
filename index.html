@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Grade My Finance | Free Financial Grade Calculator</title>
-<meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and a personalized plan to improve it.">
+<meta name="description" content="Get a free financial health grade in seconds. Enter your income, expenses, and assets to see your money score and a personalized plan to improve it. No sign-up required.">
 <meta name="theme-color" content="#0A0B0E">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://grademyfinance.com/">
@@ -26,7 +26,7 @@ document.documentElement.style.visibility = "hidden";
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta property="og:title" content="Grade My Finance | Free Financial Grade Calculator">
-<meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it.">
+<meta property="og:description" content="Get your money grade in seconds — plus a simple plan to raise it. No sign-up.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://grademyfinance.com/">
 <meta property="og:image" content="https://grademyfinance.com/og-image.png">
@@ -2603,20 +2603,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     });
   }
 
-  (async function gateAuth(){
-    var onLiveDomain = /(^|\.)grademyfinance\.com$/.test(window.location.hostname);
+  (async function initAccountMenu(){
+    // The homepage (free calculator, pricing, everything visitors land on
+    // from ads/search) stays open to everyone — no account required.
+    // We only check the session to show the account menu for people who
+    // are already signed in. Signing up happens later, specifically when
+    // someone finishes a report card and heads to the Dashboard — that page
+    // enforces its own account requirement.
     try{
       var res = await supabase.auth.getSession();
       var session = res.data && res.data.session;
-      if(!session){
-        if(onLiveDomain){
-          window.location.replace('auth.html');
-          return; // stay hidden, we're navigating away
-        }
-      } else {
-        wireAccountMenu(session);
-      }
-    }catch(e){ console.warn('Auth gate check failed:', e); }
+      if(session) wireAccountMenu(session);
+    }catch(e){ console.warn('Account menu check failed:', e); }
     document.documentElement.style.visibility = '';
   })();
 </script>
@@ -2921,7 +2919,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
   <div class="calc-v2-trust-bar">
     <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg> bank-level security</span>
     <span>•</span>
-    <span>Takes under 60 seconds</span>
+    <span>No sign up required</span>
     <span>•</span>
     <span>100% free forever</span>
   </div>
@@ -3066,7 +3064,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <h3>Free</h3>
         <div class="price">$0<span> /forever</span></div>
         <ul>
-          <li><b>Your financial grade & score</b> — instantly, with your account</li>
+          <li><b>Your financial grade & score</b> — instantly, no sign-up</li>
           <li><b>Key snapshot</b> — net worth, savings rate, debt-to-income</li>
           <li>Score history saved to your account</li>
           <li>Basic achievement badges</li>
