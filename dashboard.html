@@ -12588,3 +12588,107 @@ body.gmf-stress-single-page #panel-insights > .section-sub{display:block!importa
   #insightStressContent .gmf-score-copy p{font-size:8.5px!important}
 }
 </style>
+
+<style id="gmf-stress-final-viewport-fix">
+/* ================================================================
+   FINAL VIEWPORT FIX
+   The previous pass was clipping the lower half because the dashboard
+   container/body were locked to the viewport. This pass makes the Stress
+   Test itself a compact, self-contained workspace that fits a normal
+   desktop browser without browser zoom.
+   ================================================================ */
+@media (min-width:901px){
+  body.gmf-stress-single-page{overflow:hidden!important}
+  body.gmf-stress-single-page #dashboardContent{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  body.gmf-stress-single-page #panel-insights{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+    padding-bottom:0!important;
+  }
+  body.gmf-stress-single-page #panel-insights > .insight-subview[data-insightpanel="stresstest"]{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  /* Compact the context above the simulator to match the reference image. */
+  body.gmf-stress-single-page #panel-insights > .gmf-tab-graphic{
+    height:100px!important;
+    min-height:100px!important;
+    margin-bottom:10px!important;
+    padding:16px 20px!important;
+    border-radius:15px!important;
+  }
+  body.gmf-stress-single-page #panel-insights > .gmf-tab-graphic h3{font-size:15px!important;margin-bottom:5px!important}
+  body.gmf-stress-single-page #panel-insights > .gmf-tab-graphic p{font-size:10px!important;max-width:520px!important}
+  body.gmf-stress-single-page #panel-insights > .section-label{font-size:8px!important;margin-bottom:3px!important}
+  body.gmf-stress-single-page #panel-insights > .section-sub{font-size:9px!important;margin-bottom:8px!important}
+  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid{
+    gap:8px!important;margin-bottom:10px!important;
+  }
+  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid .gmf-insight-free{
+    height:62px!important;min-height:62px!important;padding:8px 11px!important;border-radius:11px!important;
+  }
+  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid .tag{font-size:6px!important;margin-bottom:4px!important}
+  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid h3{font-size:11px!important;margin-bottom:3px!important}
+  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid p{font-size:7.5px!important}
+
+  /* Main dark resilience panel. */
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-shell{border-radius:15px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-hero{
+    height:145px!important;min-height:145px!important;padding:16px 20px 12px!important;
+  }
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-hero h2{font-size:15px!important;margin-bottom:5px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-hero p{font-size:9px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-kicker{font-size:7px!important;margin-bottom:6px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-score{left:20px!important;bottom:10px!important;gap:11px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-score-ring,
+  body.gmf-stress-single-page #insightStressContent .gmf-score-ring svg{width:68px!important;height:68px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-score-center strong{font-size:20px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-score-center span{font-size:6px!important;margin-top:5px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-score-tier{font-size:9px!important;margin-bottom:3px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-score-copy p{font-size:8px!important;max-width:330px!important}
+
+  /* Chart: keep the complete plot visible, including x-axis labels. */
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-chart-card{padding:10px 16px 7px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-chart-head{margin-bottom:2px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-chart-head h3{font-size:10px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-chart-head .gmf-kicker.dark{font-size:6px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-chart-legend span{font-size:7px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-chart-wrap,
+  body.gmf-stress-single-page #insightStressContent #st2Chart{
+    height:132px!important;min-height:132px!important;
+  }
+
+  /* Results and tab strip remain visible on the same screen. */
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-outcomes .st2-impact-card{
+    height:50px!important;min-height:50px!important;padding:7px 10px!important;
+  }
+  body.gmf-stress-single-page #insightStressContent .st2-impact-num{font-size:13px!important}
+  body.gmf-stress-single-page #insightStressContent .st2-impact-label{font-size:6.5px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-tabs{height:32px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-tab{height:26px!important;font-size:8px!important;padding:0 12px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-overview-line{height:32px!important;font-size:7.5px!important}
+
+  /* Do not let the footer consume the viewport while the Stress Test is open. */
+  body.gmf-stress-single-page footer,
+  body.gmf-stress-single-page .site-footer{display:none!important}
+}
+
+/* Extra-wide / short desktop screens get one more small compression step. */
+@media (min-width:901px) and (max-height:760px){
+  body.gmf-stress-single-page #panel-insights > .gmf-tab-graphic{height:82px!important;min-height:82px!important;padding:12px 18px!important}
+  body.gmf-stress-single-page #panel-insights > .gmf-insight-free-grid .gmf-insight-free{height:54px!important;min-height:54px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-hero{height:125px!important;min-height:125px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-chart-wrap,
+  body.gmf-stress-single-page #insightStressContent #st2Chart{height:112px!important;min-height:112px!important}
+  body.gmf-stress-single-page #insightStressContent .gmf-stress-outcomes .st2-impact-card{height:44px!important;min-height:44px!important}
+}
+</style>
