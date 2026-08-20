@@ -485,16 +485,21 @@
 
     // Distinguish "just created via Google" from "existing Google user
     // logging back in": Supabase sets created_at and last_sign_in_at to
-    // (near) the same timestamp only on the very first sign-in. A guard
-    // in localStorage, keyed by user id, stops this from re-firing the
-    // notification on every page refresh within that same window.
+    // (near) the same timestamp only on the very first sign-in. Widened
+    // to 5 minutes (not 20s) because a first-time Google consent screen
+    // (reviewing permissions, clicking Allow) can easily take longer than
+    // a few seconds - a returning user's gap will still almost always be
+    // far larger than 5 minutes, so this stays reliable either way. A
+    // guard in localStorage, keyed by user id, stops this from re-firing
+    // the notification on every page refresh within that same window.
     var user = session.user;
     var isGoogleUser = (user.app_metadata && user.app_metadata.provider === 'google')
       || (user.identities || []).some(function(i){ return i.provider === 'google'; });
     var createdAt = new Date(user.created_at).getTime();
     var lastSignInAt = new Date(user.last_sign_in_at).getTime();
-    var looksNew = Math.abs(lastSignInAt - createdAt) < 20000; // 20s window
+    var looksNew = Math.abs(lastSignInAt - createdAt) < 300000; // 5 min window
     var notifiedKey = 'gmf_google_signup_notified_' + user.id;
+    console.log('[Grade My Finance] Google session check:', { isGoogleUser, looksNew, alreadyNotified: !!localStorage.getItem(notifiedKey), gapMs: Math.abs(lastSignInAt - createdAt) });
 
     if (isGoogleUser && looksNew && !localStorage.getItem(notifiedKey)) {
       var name = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || '';
