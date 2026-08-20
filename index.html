@@ -2599,20 +2599,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     });
   }
 
-  (async function gateAuth(){
-    var onLiveDomain = /(^|\.)grademyfinance\.com$/.test(window.location.hostname);
+  (async function initAccountMenu(){
+    // The homepage (free calculator, pricing, everything visitors land on
+    // from ads/search) stays open to everyone — no account required.
+    // We only check the session to show the account menu for people who
+    // are already signed in. Accounts are required later, for saving to
+    // the Dashboard and for Pro — never just to view this page.
     try{
       var res = await supabase.auth.getSession();
       var session = res.data && res.data.session;
-      if(!session){
-        if(onLiveDomain){
-          window.location.replace('auth.html');
-          return; // stay hidden, we're navigating away
-        }
-      } else {
-        wireAccountMenu(session);
-      }
-    }catch(e){ console.warn('Auth gate check failed:', e); }
+      if(session) wireAccountMenu(session);
+    }catch(e){ console.warn('Account menu check failed:', e); }
     document.documentElement.style.visibility = '';
   })();
 </script>
@@ -3071,6 +3068,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <div class="plan">
         <h3>Pro <span class="pro-badge">★ PRO</span></h3>
         <div class="price">$7.99<span> /mo</span></div>
+        <div class="trial-badge">7-day free trial — cancel before it ends and you're never charged</div>
         <div class="small" style="margin-bottom:12px;color:var(--muted)">Then $7.99/mo. Cancel anytime.</div>
         <ul>
           <li>Everything in Free</li>
@@ -3085,6 +3083,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <div class="plan highlight">
         <h3>Pro <span class="pro-badge">★ PRO</span> <span class="best-value-tag">Best Value</span></h3>
         <div class="price">$79.99<span> /yr</span></div>
+        <div class="trial-badge">7-day free trial — cancel before it ends and you're never charged</div>
         <div class="small" style="margin-bottom:12px;color:var(--muted)">Then $79.99/yr — about 2 months free vs. paying monthly.</div>
         <ul>
           <li>Everything in Free</li>
