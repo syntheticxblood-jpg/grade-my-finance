@@ -2554,8 +2554,10 @@ body{font-family:var(--font-body)!important}
   box-shadow:0 2px 8px rgba(0,0,0,.12)!important;border-radius:9px!important;
 }
 
-/* Make locked/pro content readable rather than blurred. The Pro label remains visible. */
-.pro-blur-content{filter:none!important;opacity:1!important;pointer-events:auto!important;user-select:auto!important}
+/* NOTE: this used to force .pro-blur-content to always show unblurred,
+   unconditionally - part of the same earlier "no blur" request that was
+   later reversed. Removed for the same reason as the block in
+   #gmf-user-request-final-fix further down this file. */
 
 /* Tables, lists and form controls */
 table{color:var(--ui-text)!important;border-color:var(--ui-line)!important}
@@ -3495,7 +3497,8 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
   </section>
 
   <section class="ship-lower-grid ship-modern-charts">
-    <div class="ship-chart-card ship-modern-chart-card">
+    <div class="ship-chart-card ship-modern-chart-card pro-blur-section">
+      <div class="pro-blur-content">
       <div class="ship-card-head">
         <div>
           <span class="ship-chart-kicker">PORTFOLIO MIX</span>
@@ -3508,8 +3511,15 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <svg id="gmfFinalPieChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth allocation pie chart"></svg>
       </div>
       <div class="ship-modern-legend" id="shipPieLegend"></div>
+      </div>
+      <div class="pro-blur-overlay">
+        <div class="pro-blur-title">🔒 See where your money actually lives</div>
+        <div class="pro-blur-sub">Full asset allocation breakdown across every account category.</div>
+        <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
+      </div>
     </div>
-    <div class="ship-chart-card ship-modern-chart-card">
+    <div class="ship-chart-card ship-modern-chart-card pro-blur-section">
+      <div class="pro-blur-content">
       <div class="ship-card-head">
         <div>
           <span class="ship-chart-kicker">MONTHLY PICTURE</span>
@@ -3522,17 +3532,37 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <svg id="gmfFinalBarChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Monthly income and expenses bar chart"></svg>
       </div>
       <div class="ship-bar-summary" id="shipBarSummary"></div>
+      </div>
+      <div class="pro-blur-overlay">
+        <div class="pro-blur-title">🔒 See your real monthly margin</div>
+        <div class="pro-blur-sub">Income vs. expenses, tracked every month so you always know where you stand.</div>
+        <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
+      </div>
     </div>
   </section>
 
   <section class="ship-lower-grid">
-    <div class="ship-change-card">
+    <div class="ship-change-card pro-blur-section">
+      <div class="pro-blur-content">
       <div class="ship-card-head"><div><h3>What changed since last check-in</h3><p id="shipChangePeriod">Your latest check-in compared with the one before it.</p></div></div>
       <div class="ship-change-list" id="shipChangeList"></div>
+      </div>
+      <div class="pro-blur-overlay">
+        <div class="pro-blur-title">🔒 See exactly what moved</div>
+        <div class="pro-blur-sub">A personalized breakdown of what changed since your last check-in, and why.</div>
+        <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
+      </div>
     </div>
-    <div class="ship-nextmove-card">
+    <div class="ship-nextmove-card pro-blur-section">
+      <div class="pro-blur-content">
       <div class="ship-card-head"><div><h3>Your next best move</h3><p>The single highest-impact thing to focus on right now.</p></div></div>
       <div id="shipNextMove"></div>
+      </div>
+      <div class="pro-blur-overlay">
+        <div class="pro-blur-title">🔒 Get your personalized next move</div>
+        <div class="pro-blur-sub">The single highest-impact action for your specific numbers, not generic advice.</div>
+        <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
+      </div>
     </div>
   </section>
 
@@ -9549,23 +9579,19 @@ Promise.resolve(init()).then(function(){
 <style id="gmf-user-request-final-fix">
 /* =========================================================
    USER REQUEST FINAL FIX
-   - No accidental blur on dashboard content
    - Reliable Insights / Plan / Money inner tabs
    - Money tabs stay at the top of the workspace
    - Clear visual state for Delete All
    ========================================================= */
 
-/* The dashboard should remain readable even when Pro is not enabled.
-   The previous Pro gate was visually obscuring the actual tab content. */
-.pro-blur-content{
-  filter:none !important;
-  opacity:1 !important;
-  pointer-events:auto !important;
-  user-select:auto !important;
-}
-.pro-blur-overlay{
-  display:none !important;
-}
+/* NOTE: this block used to force .pro-blur-content/.pro-blur-overlay to
+   always show unblurred/unlocked, site-wide, per an earlier request.
+   That request was explicitly reversed later ("make sure everything is
+   locked and points people towards pro") - removed so the normal
+   per-feature blur + "Unlock with Pro" overlay (used correctly
+   everywhere else: Money Flow, Bills, Credit, Allocation, Insights,
+   Budget) actually takes effect again instead of being silently
+   disabled by this override. */
 
 /* Inner navigation should remain visible while the selected section scrolls. */
 #moneySubtabs,
@@ -10345,13 +10371,14 @@ add('panel-achievements','rays','Every improvement counts','Celebrate milestones
     var invest=l?['retire','brokerage','hsa','crypto'].reduce(function(a,k){return a+(typeof l[k]==='number'?l[k]:0)},0):0;
     var debt=l?(typeof l.totalDebt==='number'?l.totalDebt:['mortgage','student','auto','cc','otherDebt'].reduce(function(a,k){return a+(typeof l[k]==='number'?l[k]:0)},0)):0;
     var max=Math.max(Math.abs(net),cash,invest,debt,1);
-    var html='<div class="gmf-pulse-left"><div class="gmf-pulse-head"><div><div class="gmf-pulse-kicker">YOUR FINANCIAL PULSE</div><div class="gmf-pulse-title">A more colorful look at your money.</div><div class="gmf-pulse-copy">This visual turns your latest snapshot into a quick financial mix so the home screen feels alive instead of like a wall of white cards.</div></div><div class="gmf-pulse-score"><b>'+ (l?score.toFixed(0):'—') +'</b><span>financial<br>score</span></div></div><div class="gmf-pulse-bars">'+
+    var html='<div class="pro-blur-content" style="display:grid;grid-template-columns:1.2fr .8fr;gap:14px"><div class="gmf-pulse-left"><div class="gmf-pulse-head"><div><div class="gmf-pulse-kicker">YOUR FINANCIAL PULSE</div><div class="gmf-pulse-title">A more colorful look at your money.</div><div class="gmf-pulse-copy">This visual turns your latest snapshot into a quick financial mix so the home screen feels alive instead of like a wall of white cards.</div></div><div class="gmf-pulse-score"><b>'+ (l?score.toFixed(0):'—') +'</b><span>financial<br>score</span></div></div><div class="gmf-pulse-bars">'+
       '<div class="gmf-pulse-row"><span>Net worth</span><div class="gmf-pulse-track"><div class="gmf-pulse-fill net" style="width:'+pct(net,max)+'%"></div></div><b>'+fmt(net)+'</b></div>'+ 
       '<div class="gmf-pulse-row"><span>Cash</span><div class="gmf-pulse-track"><div class="gmf-pulse-fill cash" style="width:'+pct(cash,max)+'%"></div></div><b>'+fmt(cash)+'</b></div>'+ 
       '<div class="gmf-pulse-row"><span>Invested</span><div class="gmf-pulse-track"><div class="gmf-pulse-fill invest" style="width:'+pct(invest,max)+'%"></div></div><b>'+fmt(invest)+'</b></div>'+ 
       '<div class="gmf-pulse-row"><span>Debt</span><div class="gmf-pulse-track"><div class="gmf-pulse-fill debt" style="width:'+pct(debt,max)+'%"></div></div><b>'+fmt(debt)+'</b></div></div></div>'+ 
-      '<div class="gmf-pulse-right"><div class="gmf-pulse-orbit"><div class="gmf-pulse-center"><b>'+ (l?score.toFixed(1):'—') +'</b><span>GRADE SCORE</span></div></div><div class="gmf-pulse-legend"><div><i class="gmf-pulse-dot net"></i>Net worth</div><div><i class="gmf-pulse-dot cash"></i>Cash</div><div><i class="gmf-pulse-dot invest"></i>Investments</div><div><i class="gmf-pulse-dot debt"></i>Debt</div></div></div>';
-    if(!old){old=document.createElement('section');old.className='gmf-overview-visual';var anchor=p.querySelector('.gmf-overview-rebuild');if(anchor&&anchor.nextSibling)p.insertBefore(old,anchor.nextSibling);else p.appendChild(old)}
+      '<div class="gmf-pulse-right"><div class="gmf-pulse-orbit"><div class="gmf-pulse-center"><b>'+ (l?score.toFixed(1):'—') +'</b><span>GRADE SCORE</span></div></div><div class="gmf-pulse-legend"><div><i class="gmf-pulse-dot net"></i>Net worth</div><div><i class="gmf-pulse-dot cash"></i>Cash</div><div><i class="gmf-pulse-dot invest"></i>Investments</div><div><i class="gmf-pulse-dot debt"></i>Debt</div></div></div></div>'+
+      '<div class="pro-blur-overlay"><div class="pro-blur-title">🔒 See your full financial mix</div><div class="pro-blur-sub">Net worth, cash, investments, and debt, visualized together.</div><a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a></div>';
+    if(!old){old=document.createElement('section');old.className='gmf-overview-visual pro-blur-section';var anchor=p.querySelector('.gmf-overview-rebuild');if(anchor&&anchor.nextSibling)p.insertBefore(old,anchor.nextSibling);else p.appendChild(old)}
     old.innerHTML=html;
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(render,90)});else setTimeout(render,90);
