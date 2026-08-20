@@ -9302,20 +9302,19 @@ async function init(){
   __safeRender('goals', function(){ renderGoals(); });
   __safeRender('scenarios', function(){ renderScenariosTab(); });
   __safeRender('achievements', function(){ renderAchievementsTab(); });
-  __safeRender('retirement-form', function(){ loadRetFormFromStorage(); });
-  __safeRender('retirement-wiring', function(){ wireRetForm(); });
-  __safeRender('retirement', function(){ renderRetirementTab(); });
-
-  // Canvas text needs the webfonts actually loaded, which can lag behind
-  // the initial render — redraw the share card once they're ready.
-  if(document.fonts && document.fonts.ready){
-    document.fonts.ready.then(function(){
-      if($("retResults") && $("retResults").style.display !== 'none') renderRetLive();
-    });
-  }
+  // Note: the old retirement form wiring (loadRetFormFromStorage/wireRetForm/
+  // renderRetirementTab, using retAge/retMonthly/etc IDs) was removed here —
+  // the Retirement tab now runs entirely on the newer "Retirement Studio"
+  // widget (rsAge/rsCalculate/etc), which wires itself up independently
+  // further down this file. Calling the old functions was throwing null-
+  // reference warnings on every load since those old elements no longer exist.
 }
 Promise.resolve(init()).then(function(){
-  try{ window.renderGmfCommandCenter(getHistory()); }catch(e){ console.warn('Command center render failed',e); }
+  // window.renderGmfCommandCenter (defined further down this file) targets
+  // an older Overview-page layout (ids like gmfHeroScore, gmfCash, gmfNet)
+  // that no longer exists anywhere in the current markup — the Overview tab
+  // is fully rendered elsewhere in init() already. Calling it here was dead
+  // code left over from that earlier layout, and would always fail.
 }).catch(function(e){
   console.error('Dashboard init recovered from error:', e);
 }).finally(function(){
@@ -11591,66 +11590,6 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
 })();
 </script>
 
-<script id="gmf-money-pro-lock-final">
-(function(){
-  /* FINAL MONEY PRO GATE: Money is a Pro workspace.  Several legacy render
-     functions rebuild #panel-networth after page load, so the gate must be
-     reapplied after those renders rather than only once at DOMContentLoaded. */
-  var moneyFeatures = [
-    'Interactive net worth tracking',
-    'Money flow, bills, credit & allocation',
-    'Colorful financial charts and trends',
-    'Cash runway and debt insights'
-  ];
-  function isPro(){ return localStorage.getItem('gmf_pro') === 'true'; }
-  function applyMoneyGate(){
-    var panel=document.getElementById('panel-networth');
-    var nav=document.querySelector('.dash-nav-btn[data-tab="networth"]');
-    if(!panel) return;
-    if(isPro()){
-      panel.classList.remove('gmf-pro-locked-tab');
-      if(nav) nav.classList.remove('gmf-nav-pro');
-      var old=panel.querySelector(':scope > .gmf-money-pro-gate');
-      if(old) old.remove();
-      return;
-    }
-    panel.classList.add('gmf-pro-locked-tab');
-    if(nav) nav.classList.add('gmf-nav-pro');
-    if(panel.querySelector(':scope > .gmf-money-pro-gate')) return;
-    var card=document.createElement('div');
-    card.className='gmf-pro-tab-gate-card gmf-money-pro-gate';
-    card.innerHTML='<div class="gmf-pro-gate-inner">'
-      +'<div class="gmf-pro-gate-orb"><span>🔒</span></div>'
-      +'<div class="gmf-pro-gate-kicker">GRADE MY FINANCE PRO</div>'
-      +'<h2>Unlock your complete Money workspace</h2>'
-      +'<p>Money is a Pro feature. Upgrade to unlock your net worth, money flow, bills, credit, allocation, charts and deeper financial insights.</p>'
-      +'<div class="gmf-pro-gate-features">'
-      +moneyFeatures.map(function(x){return '<div>'+x+'</div>';}).join('')
-      +'</div>'
-      +'<a class="btn gold gmf-pro-gate-cta" href="index.html#pricing">Unlock Pro →</a>'
-      +'<div class="gmf-pro-gate-note">Your free Dashboard and financial grade remain available.</div>'
-      +'</div>';
-    panel.insertBefore(card,panel.firstChild);
-  }
-  function boot(){
-    applyMoneyGate();
-    var panel=document.getElementById('panel-networth');
-    if(panel){
-      var observer=new MutationObserver(function(){
-        if(!isPro() && !panel.querySelector(':scope > .gmf-money-pro-gate')) applyMoneyGate();
-      });
-      observer.observe(panel,{childList:true});
-    }
-    window.addEventListener('storage',function(e){ if(e.key==='gmf_pro') applyMoneyGate(); });
-    document.addEventListener('click',function(e){
-      var b=e.target.closest && e.target.closest('.dash-nav-btn[data-tab="networth"]');
-      if(b) setTimeout(applyMoneyGate,0);
-    },true);
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(boot,100);});
-  else setTimeout(boot,100);
-})();
-</script>
 
 <style id="gmf-redesign-v3">
 /* =========================================================
@@ -11834,69 +11773,177 @@ body{font-size:15px!important;min-height:100vh}
 })();
 </script>
 
+<style id="gmf-theme-repaint-final">
+/* =========================================================
+   FINAL THEME REPAINT — single source of truth for dark/light.
+   Placed last on purpose so it wins over the older, conflicting
+   theme layers earlier in this file (same source-order convention
+   already used throughout this codebase). Dark values are sampled
+   directly from the reference screenshot: near-black navy base,
+   teal-green brand accent, purple secondary accent, lavender PRO chip.
+   ========================================================= */
+
+/* ---------- DARK ---------- */
+:root[data-theme="dark"]{
+  --bg:#070b15; --bg-2:#04070f; --surface:#0d1420; --surface-2:#101827;
+  --line:#1c2536; --text:#eef2f8; --muted:#93a0b4; --muted-2:#68748a;
+  --brand:#1f9c78; --brand-soft:rgba(34,197,148,.14); --brand-bright:#2fd6a0; --brand-text:#06120f;
+  --gold:#e2ad45; --gold-soft:rgba(226,173,69,.14); --gold-bright:#f3c866;
+  --good:#34d399; --good-2:#1f9c78; --good-soft:rgba(52,211,153,.12); --bad:#f06d63; --bad-soft:rgba(240,109,99,.12); --mid:#f3c866;
+}
+:root[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}
+:root[data-theme="dark"] .main-area{background:linear-gradient(180deg,#070b15,#04070f)!important}
+:root[data-theme="dark"] .main-area::before{background:none!important}
+
+:root[data-theme="dark"] .sidebar{background:#04070f!important;border-right:1px solid #161d2c!important;box-shadow:none!important;color:#c7cfdc!important}
+:root[data-theme="dark"] .sidebar-brand{border-bottom-color:#161d2c!important}
+:root[data-theme="dark"] .sidebar .wordmark,
+:root[data-theme="dark"] .sidebar .nav-section-label{color:#eef2f8!important}
+:root[data-theme="dark"] .sidebar .nav-section-label{opacity:.5!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn{color:#94a0b4!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn:hover{background:#0e1420!important;color:#fff!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn.active{background:rgba(31,156,120,.18)!important;color:#34d399!important;box-shadow:inset 3px 0 0 #22c58f!important}
+:root[data-theme="dark"] .sidebar .nav-icon{color:#7c879c!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn.active .nav-icon{color:#34d399!important}
+:root[data-theme="dark"] .sidebar-bottom{border-top-color:#161d2c!important}
+:root[data-theme="dark"] .sidebar .icon-btn{background:#0d1420!important;color:#c7cfdc!important}
+
+:root[data-theme="dark"] .sidebar-pro-card{background:#12142e!important;border:1px solid #262a4a!important;color:#e7e6f5!important;box-shadow:none!important}
+:root[data-theme="dark"] .sidebar-pro-card p{color:#a6a8c4!important}
+:root[data-theme="dark"] .sidebar-pro-card .btn.gold{background:#8b5cf6!important;border-color:#8b5cf6!important;color:#fff!important}
+:root[data-theme="dark"] .sidebar-pro-icon{background:#1e2148!important;color:#c4b5fd!important}
+
+:root[data-theme="dark"] .content-header,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .metric-card,
+:root[data-theme="dark"] .hero-card,
+:root[data-theme="dark"] .insight-card,
+:root[data-theme="dark"] .command-secondary,
+:root[data-theme="dark"] .action-plan-card,
+:root[data-theme="dark"] .goal-card,
+:root[data-theme="dark"] .scenario-card,
+:root[data-theme="dark"] .ret-scenario-card,
+:root[data-theme="dark"] .settings-panel,
+:root[data-theme="dark"] .pro-blur-section{
+  background:#0d1420!important; border-color:#1c2536!important; color:#eef2f8!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.28)!important;
+}
+:root[data-theme="dark"] .metric-card .m-val,
+:root[data-theme="dark"] .hv,
+:root[data-theme="dark"] .action-plan-title,
+:root[data-theme="dark"] .command-secondary .cs-value,
+:root[data-theme="dark"] .insight-card h4{color:#eef2f8!important}
+:root[data-theme="dark"] .section-sub,
+:root[data-theme="dark"] .m-label,
+:root[data-theme="dark"] .m-sub,
+:root[data-theme="dark"] .hv-sub,
+:root[data-theme="dark"] .updated,
+:root[data-theme="dark"] .command-secondary .cs-sub{color:#8b96ab!important}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea{background:#0a0f19!important;color:#eef2f8!important;border-color:#232d42!important}
+
+/* PRO chips: light lavender pill, matches the reference screenshot's badge */
+:root[data-theme="dark"] .insights-pro-nav,
+:root[data-theme="dark"] .grade-pro-pill,
+:root[data-theme="dark"] .pro-badge-filled{
+  background:#f3e8ff!important; color:#7c3aed!important; border:none!important;
+}
+
+/* Sidebar sub-elements missed on first pass: profile name, edit-name link,
+   settings panel, and theme switcher buttons. Without these, they kept
+   whatever black/dark text an older rule left them with, unreadable
+   against the new dark sidebar background. */
+:root[data-theme="dark"] .sidebar-profile-name{color:#eef2f8!important}
+:root[data-theme="dark"] .sidebar .edit-name-link{color:#93a0b4!important}
+:root[data-theme="dark"] .sidebar .settings-panel{background:#0d1420!important;border-color:#1c2536!important;color:#eef2f8!important}
+:root[data-theme="dark"] .sidebar .settings-title{color:#eef2f8!important}
+:root[data-theme="dark"] .sidebar .settings-sub{color:#93a0b4!important}
+:root[data-theme="dark"] .sidebar .theme-choice{background:#0a0f19!important;color:#c7cfdc!important;border-color:#232d42!important}
+:root[data-theme="dark"] .sidebar .theme-choice.active{background:rgba(31,156,120,.18)!important;color:#34d399!important;border-color:#22c58f!important}
+
+svg .brand-bright, .brand-fill{fill:#2fd6a0}
+
+/* ---------- LIGHT (true opposite of dark: white base, same accents) ---------- */
+:root[data-theme="light"]{
+  --bg:#f7f8fb; --bg-2:#eef1f6; --surface:#ffffff; --surface-2:#f3f5f9;
+  --line:#e3e7f0; --text:#10131c; --muted:#5b6472; --muted-2:#8791a1;
+  --brand:#1f9c78; --brand-soft:rgba(34,197,148,.10); --brand-bright:#22c58f; --brand-text:#ffffff;
+  --gold:#c98b16; --gold-soft:rgba(226,173,69,.14); --gold-bright:#e2ad45;
+  --good:#1f9c78; --good-2:#0f8b6d; --good-soft:rgba(31,156,120,.10); --bad:#c1493d; --bad-soft:rgba(193,73,61,.10); --mid:#c98b16;
+}
+:root[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}
+:root[data-theme="light"] .main-area{background:linear-gradient(180deg,#f7f8fb,#eef1f6)!important}
+:root[data-theme="light"] .main-area::before{background:none!important}
+
+:root[data-theme="light"] .sidebar{background:#ffffff!important;border-right:1px solid #e3e7f0!important;box-shadow:2px 0 14px rgba(20,30,50,.04)!important;color:#3c4454!important}
+:root[data-theme="light"] .sidebar-brand{border-bottom-color:#e3e7f0!important}
+:root[data-theme="light"] .sidebar .wordmark,
+:root[data-theme="light"] .sidebar .nav-section-label{color:#10131c!important}
+:root[data-theme="light"] .sidebar .nav-section-label{opacity:.55!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn{color:#5b6472!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn:hover{background:#f3f5f9!important;color:#10131c!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn.active{background:rgba(31,156,120,.10)!important;color:#0f8b6d!important;box-shadow:inset 3px 0 0 #1f9c78!important}
+:root[data-theme="light"] .sidebar .nav-icon{color:#8791a1!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn.active .nav-icon{color:#0f8b6d!important}
+:root[data-theme="light"] .sidebar-bottom{border-top-color:#e3e7f0!important}
+:root[data-theme="light"] .sidebar .icon-btn{background:#f3f5f9!important;color:#3c4454!important}
+
+:root[data-theme="light"] .sidebar-pro-card{background:linear-gradient(145deg,#f6f2ff,#ffffff)!important;border:1px solid #e6ddfb!important;color:#2c2440!important;box-shadow:none!important}
+:root[data-theme="light"] .sidebar-pro-card p{color:#6b6482!important}
+:root[data-theme="light"] .sidebar-pro-card .btn.gold{background:#8b5cf6!important;border-color:#8b5cf6!important;color:#fff!important}
+:root[data-theme="light"] .sidebar-pro-icon{background:#f0e9fe!important;color:#7c3aed!important}
+
+:root[data-theme="light"] .content-header,
+:root[data-theme="light"] .card,
+:root[data-theme="light"] .metric-card,
+:root[data-theme="light"] .hero-card,
+:root[data-theme="light"] .insight-card,
+:root[data-theme="light"] .command-secondary,
+:root[data-theme="light"] .action-plan-card,
+:root[data-theme="light"] .goal-card,
+:root[data-theme="light"] .scenario-card,
+:root[data-theme="light"] .ret-scenario-card,
+:root[data-theme="light"] .settings-panel,
+:root[data-theme="light"] .pro-blur-section{
+  background:#ffffff!important; border-color:#e3e7f0!important; color:#10131c!important;
+  box-shadow:0 6px 18px rgba(20,30,50,.06)!important;
+}
+:root[data-theme="light"] .metric-card .m-val,
+:root[data-theme="light"] .hv,
+:root[data-theme="light"] .action-plan-title,
+:root[data-theme="light"] .command-secondary .cs-value,
+:root[data-theme="light"] .insight-card h4{color:#10131c!important}
+:root[data-theme="light"] .section-sub,
+:root[data-theme="light"] .m-label,
+:root[data-theme="light"] .m-sub,
+:root[data-theme="light"] .hv-sub,
+:root[data-theme="light"] .updated,
+:root[data-theme="light"] .command-secondary .cs-sub{color:#5b6472!important}
+
+:root[data-theme="light"] input,
+:root[data-theme="light"] select,
+:root[data-theme="light"] textarea{background:#ffffff!important;color:#10131c!important;border-color:#e3e7f0!important}
+
+:root[data-theme="light"] .insights-pro-nav,
+:root[data-theme="light"] .grade-pro-pill,
+:root[data-theme="light"] .pro-badge-filled{
+  background:#f3e8ff!important; color:#7c3aed!important; border:none!important;
+}
+
+:root[data-theme="light"] .sidebar-profile-name{color:#10131c!important}
+:root[data-theme="light"] .sidebar .edit-name-link{color:#5b6472!important}
+:root[data-theme="light"] .sidebar .settings-panel{background:#ffffff!important;border-color:#e3e7f0!important;color:#10131c!important}
+:root[data-theme="light"] .sidebar .settings-title{color:#10131c!important}
+:root[data-theme="light"] .sidebar .settings-sub{color:#5b6472!important}
+:root[data-theme="light"] .sidebar .theme-choice{background:#f3f5f9!important;color:#3c4454!important;border-color:#e3e7f0!important}
+:root[data-theme="light"] .sidebar .theme-choice.active{background:rgba(31,156,120,.10)!important;color:#0f8b6d!important;border-color:#1f9c78!important}
+</style>
+
 </body>
 </html>
 
-<!-- FINAL PRO TAB GATE: Dashboard stays free; all other workspaces are Pro -->
-<style id="gmf-pro-tab-gate">
-.gmf-pro-locked-tab{position:relative!important;min-height:620px!important;overflow:hidden!important}
-.gmf-pro-locked-tab > *:not(.gmf-pro-tab-gate-card){display:none!important}
-.gmf-pro-tab-gate-card{display:grid!important;place-items:center!important;min-height:620px!important;padding:28px!important;background:
- radial-gradient(circle at 12% 15%,rgba(59,130,246,.16),transparent 28%),
- radial-gradient(circle at 88% 18%,rgba(139,92,246,.16),transparent 26%),
- radial-gradient(circle at 50% 100%,rgba(16,185,129,.16),transparent 35%),
- linear-gradient(135deg,#f8fbff 0%,#f4f1ff 48%,#effcf7 100%)!important}
-:root[data-theme="dark"] .gmf-pro-tab-gate-card{background:radial-gradient(circle at 12% 15%,rgba(59,130,246,.2),transparent 28%),radial-gradient(circle at 88% 18%,rgba(139,92,246,.2),transparent 26%),radial-gradient(circle at 50% 100%,rgba(16,185,129,.16),transparent 35%),linear-gradient(135deg,#0f1720 0%,#151329 48%,#0d211d 100%)!important}
-.gmf-pro-gate-inner{width:min(680px,100%);text-align:center;padding:44px 34px;border:1px solid rgba(125,145,170,.25);border-radius:28px;background:rgba(255,255,255,.76);box-shadow:0 24px 70px rgba(45,70,100,.15);backdrop-filter:blur(18px)}
-:root[data-theme="dark"] .gmf-pro-gate-inner{background:rgba(18,29,36,.82);border-color:rgba(255,255,255,.1);box-shadow:0 24px 70px rgba(0,0,0,.35)}
-.gmf-pro-gate-orb{width:104px;height:104px;border-radius:50%;margin:0 auto 22px;display:grid;place-items:center;font-size:40px;color:white;background:conic-gradient(#28c59a 0 32%,#4f8cff 32% 57%,#9b6cff 57% 78%,#f2b84b 78% 100%);box-shadow:0 0 0 10px rgba(83,137,255,.08),0 18px 40px rgba(79,140,255,.28)}
-.gmf-pro-gate-orb span{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;background:#17212a}
-.gmf-pro-gate-kicker{font-size:11px;font-weight:900;letter-spacing:.16em;color:#7564d9;margin-bottom:12px}
-.gmf-pro-gate-inner h2{margin:0;font-size:clamp(26px,4vw,42px);letter-spacing:-.04em;color:var(--text)}
-.gmf-pro-gate-inner p{max-width:560px;margin:14px auto 22px;line-height:1.65;color:var(--muted);font-size:15px}
-.gmf-pro-gate-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;text-align:left;margin:24px auto;max-width:560px}
-.gmf-pro-gate-features div{padding:12px 14px;border-radius:13px;background:rgba(255,255,255,.58);border:1px solid rgba(100,120,150,.13);font-size:13px;font-weight:750;color:var(--text)}
-:root[data-theme="dark"] .gmf-pro-gate-features div{background:rgba(255,255,255,.05)}
-.gmf-pro-gate-features div:before{content:'✓';display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;margin-right:8px;background:rgba(39,183,143,.16);color:#16a57c;font-size:11px}
-.gmf-pro-gate-cta{display:inline-flex!important;align-items:center;justify-content:center;gap:8px;padding:14px 22px!important;border-radius:14px!important;font-size:15px!important;font-weight:900!important;text-decoration:none!important;box-shadow:0 14px 30px rgba(39,183,143,.2)}
-.gmf-pro-gate-note{margin-top:13px;font-size:11px;color:var(--muted-2)}
-.dash-nav-btn.gmf-nav-pro{position:relative!important}
-.dash-nav-btn.gmf-nav-pro:after{content:'PRO';font-size:8px;line-height:1;font-weight:900;letter-spacing:.06em;padding:4px 5px;border-radius:6px;background:rgba(242,184,75,.16);color:#c98b16;margin-left:auto}
-@media(max-width:650px){.gmf-pro-tab-gate-card{min-height:540px!important;padding:14px!important}.gmf-pro-gate-inner{padding:32px 20px}.gmf-pro-gate-features{grid-template-columns:1fr}.gmf-pro-locked-tab{min-height:540px!important}}
-</style>
-<script id="gmf-pro-tab-gate-js">
-(function(){
-  var proTabs=['networth','goals','scenarios','score','insights'];
-  var features={
-    networth:['Interactive net worth tracking','Colorful money & allocation charts','Cash flow and debt insights','Long-term wealth history'],
-    goals:['Unlimited financial goals','Progress tracking & milestones','Personalized goal planning','Goal-based recommendations'],
-    scenarios:['What-if financial scenarios','Retirement projections','Future wealth planning','Decision stress testing'],
-    score:['Full grade breakdown','Score drivers and history','Category-by-category analysis','Progress over time'],
-    insights:['Personalized financial insights','Benchmark comparisons','Momentum & trend analysis','Your highest-impact next moves']
-  };
-  function isPro(){return localStorage.getItem('gmf_pro')==='true';}
-  function titleFor(tab){return {networth:'Track your entire financial picture',goals:'Turn your goals into progress',scenarios:'See where your money can take you',score:'Understand what drives your grade',insights:'Unlock your personalized insights'}[tab]||'Unlock this Pro feature';}
-  function gate(tab){
-    var panel=document.getElementById('panel-'+tab); if(!panel) return;
-    var nav=document.querySelector('.dash-nav-btn[data-tab="'+tab+'"]');
-    if(isPro()){
-      panel.classList.remove('gmf-pro-locked-tab');
-      var old=panel.querySelector(':scope > .gmf-pro-tab-gate-card'); if(old) old.remove();
-      if(nav) nav.classList.remove('gmf-nav-pro');
-      return;
-    }
-    panel.classList.add('gmf-pro-locked-tab'); if(nav) nav.classList.add('gmf-nav-pro');
-    if(panel.querySelector(':scope > .gmf-pro-tab-gate-card')) return;
-    var card=document.createElement('div'); card.className='gmf-pro-tab-gate-card';
-    var list=(features[tab]||[]).map(function(x){return '<div>'+x+'</div>';}).join('');
-    card.innerHTML='<div class="gmf-pro-gate-inner"><div class="gmf-pro-gate-orb"><span>🔒</span></div><div class="gmf-pro-gate-kicker">GRADE MY FINANCE PRO</div><h2>'+titleFor(tab)+'</h2><p>This workspace is part of Pro. Upgrade to unlock the deeper tools, interactive charts, and personalized planning features built around your finances.</p><div class="gmf-pro-gate-features">'+list+'</div><a class="btn gold gmf-pro-gate-cta" href="index.html#pricing">Unlock Pro →</a><div class="gmf-pro-gate-note">Your free Dashboard and financial grade remain available.</div></div>';
-    panel.insertBefore(card,panel.firstChild);
-  }
-  function apply(){proTabs.forEach(gate);}
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(apply,80);}); else setTimeout(apply,80);
-  window.addEventListener('storage',function(e){if(e.key==='gmf_pro') apply();});
-})();
-</script>
 
 <style id="gmf-olive-sidebar-final">
 /* FINAL SIDEBAR DIRECTION: Dark Olive Green in BOTH themes */
