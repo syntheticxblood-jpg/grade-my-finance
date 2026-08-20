@@ -12127,3 +12127,464 @@ body::before{
   window.addEventListener('storage',function(e){if(e.key==='gmf_history_v2')draw()});
 })();
 </script>
+
+<style id="gmf-stress-exact-final">
+/* ================================================================
+   GRADE MY FINANCE — STRESS TEST / MOCKUP MATCH
+   Final pass: one-screen light SaaS workspace, no desktop scrolling.
+   Keeps the existing simulator IDs/engine intact.
+   ================================================================ */
+
+/* The Stress Test is deliberately a compact command center. */
+body.gmf-stress-single-page #panel-insights{padding-top:0!important}
+body.gmf-stress-single-page .content-header{display:none!important}
+body.gmf-stress-single-page #panel-insights > .section-label,
+body.gmf-stress-single-page #panel-insights > .section-sub{display:block!important}
+
+#panel-insights .insight-subview[data-insightpanel="stresstest"]{padding:0!important}
+#insightStressContent{max-width:1100px!important;margin:0 auto!important}
+
+/* ---------- tabs ---------- */
+#panel-insights #insightSubtabs{
+  display:flex!important;
+  align-items:center!important;
+  gap:0!important;
+  height:42px!important;
+  margin:0 0 14px!important;
+  padding:3px!important;
+  border:1px solid #d7e4e1!important;
+  border-radius:13px!important;
+  background:#f7faf9!important;
+  box-shadow:0 1px 3px rgba(19,61,53,.03)!important;
+}
+#panel-insights #insightSubtabs .insight-subtab-btn{
+  height:34px!important;
+  padding:0 18px!important;
+  border:0!important;
+  border-radius:9px!important;
+  background:transparent!important;
+  color:#526b65!important;
+  font-size:11px!important;
+  font-weight:700!important;
+  letter-spacing:.01em!important;
+}
+#panel-insights #insightSubtabs .insight-subtab-btn.active{
+  background:#fff!important;
+  color:#0d9877!important;
+  box-shadow:0 2px 8px rgba(18,52,45,.10)!important;
+}
+
+/* ---------- the Find the signals banner ---------- */
+#panel-insights > .gmf-tab-graphic{
+  position:relative!important;
+  display:block!important;
+  height:142px!important;
+  min-height:142px!important;
+  margin:0 auto 14px!important;
+  padding:18px 24px!important;
+  border:1px solid #d3e0e3!important;
+  border-radius:17px!important;
+  overflow:hidden!important;
+  background:linear-gradient(135deg,#fbfcfd 0%,#f5f8fb 100%)!important;
+  box-shadow:0 4px 12px rgba(34,73,83,.06)!important;
+}
+#panel-insights > .gmf-tab-graphic:after{
+  content:""!important;
+  position:absolute!important;
+  width:220px!important;height:220px!important;
+  right:-35px!important;top:-75px!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(43,173,145,.10),transparent 67%)!important;
+  box-shadow:-38px 40px 0 -12px rgba(43,173,145,.06),-115px 75px 0 -18px rgba(230,170,49,.11)!important;
+  pointer-events:none!important;
+}
+#panel-insights > .gmf-tab-graphic h3{
+  position:relative!important;z-index:2!important;
+  margin:0 0 7px!important;
+  font:800 16px/1.15 var(--font-display)!important;
+  color:#142b39!important;
+}
+#panel-insights > .gmf-tab-graphic p{
+  position:relative!important;z-index:2!important;
+  margin:0!important;max-width:500px!important;
+  font-size:11.5px!important;line-height:1.45!important;
+  color:#607582!important;
+}
+#panel-insights > .gmf-tab-graphic .gmf-bubbles{display:block!important}
+
+/* ---------- insight heading + 3 cards ---------- */
+#panel-insights > .section-label{
+  margin:0 0 4px!important;
+  font-size:9px!important;
+  letter-spacing:.15em!important;
+  color:#0c9b7a!important;
+}
+#panel-insights > .section-sub{
+  margin:0 0 13px!important;
+  font-size:10.5px!important;
+  line-height:1.4!important;
+  color:#647982!important;
+}
+#panel-insights > .gmf-insight-free-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:10px!important;
+  margin:0 0 14px!important;
+}
+#panel-insights > .gmf-insight-free-grid .gmf-insight-free{
+  height:76px!important;
+  min-height:76px!important;
+  padding:11px 13px!important;
+  border:1px solid #d9e5e2!important;
+  border-radius:13px!important;
+  background:#fff!important;
+  box-shadow:0 3px 10px rgba(30,69,61,.045)!important;
+  overflow:hidden!important;
+}
+#panel-insights > .gmf-insight-free-grid .tag{
+  margin:0 0 5px!important;
+  font:800 7px/1 var(--font-mono)!important;
+  text-transform:uppercase!important;
+  letter-spacing:.13em!important;
+  color:#69817b!important;
+}
+#panel-insights > .gmf-insight-free-grid h3{
+  margin:0 0 4px!important;
+  font:800 13px/1.15 var(--font-display)!important;
+  color:#102b35!important;
+}
+#panel-insights > .gmf-insight-free-grid p{
+  margin:0!important;
+  font-size:8.5px!important;
+  line-height:1.3!important;
+  color:#6c7e84!important;
+}
+
+/* ---------- stress shell ---------- */
+#insightStressContent .gmf-stress-shell{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  margin:0!important;
+  border:1px solid #c9dcd9!important;
+  border-radius:17px!important;
+  background:#fff!important;
+  overflow:hidden!important;
+  box-shadow:0 8px 24px rgba(22,65,56,.075)!important;
+}
+
+/* Dark hero: this is the visual anchor from the reference. */
+#insightStressContent .gmf-stress-hero{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:28px!important;
+  height:158px!important;
+  min-height:158px!important;
+  padding:22px 26px!important;
+  overflow:hidden!important;
+  background:linear-gradient(135deg,#123a35 0%,#143f39 54%,#173e42 100%)!important;
+  color:#fff!important;
+}
+#insightStressContent .gmf-stress-hero:after{
+  content:""!important;
+  position:absolute!important;
+  width:250px!important;height:250px!important;
+  right:-70px!important;bottom:-185px!important;
+  border:33px solid rgba(255,255,255,.065)!important;
+  border-radius:50%!important;
+  box-shadow:0 0 0 28px rgba(255,255,255,.025)!important;
+}
+#insightStressContent .gmf-stress-hero-copy{
+  position:relative!important;z-index:2!important;
+  min-width:0!important;flex:1!important;
+}
+#insightStressContent .gmf-kicker{
+  margin-bottom:8px!important;
+  font:800 8px/1 var(--font-mono)!important;
+  letter-spacing:.15em!important;
+  color:#61d6b3!important;
+}
+#insightStressContent .gmf-stress-hero h2{
+  margin:0 0 7px!important;
+  max-width:650px!important;
+  font:800 16px/1.22 var(--font-display)!important;
+  letter-spacing:-.015em!important;
+  color:#fff!important;
+}
+#insightStressContent .gmf-stress-hero p{
+  margin:0!important;
+  max-width:650px!important;
+  font-size:10.5px!important;
+  line-height:1.45!important;
+  color:rgba(255,255,255,.69)!important;
+}
+
+/* Score is right-aligned like the mockup. */
+#insightStressContent .gmf-stress-score{
+  position:relative!important;z-index:2!important;
+  display:flex!important;align-items:center!important;
+  gap:14px!important;flex:none!important;
+  min-width:275px!important;
+}
+#insightStressContent .gmf-score-ring{
+  position:relative!important;width:82px!important;height:82px!important;flex:none!important;
+}
+#insightStressContent .gmf-score-ring svg{width:82px!important;height:82px!important}
+#insightStressContent .gmf-score-center{
+  position:absolute!important;inset:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  color:#fff!important;font-family:var(--font-display)!important;
+}
+#insightStressContent .gmf-score-center strong{font-size:24px!important;line-height:1!important}
+#insightStressContent .gmf-score-center span{font:700 8px var(--font-mono)!important;color:rgba(255,255,255,.55)!important;margin:7px 0 0 2px!important}
+#insightStressContent .gmf-score-copy{max-width:160px!important}
+#insightStressContent .gmf-score-tier{font:800 12px var(--font-display)!important;color:#fff!important;margin-bottom:4px!important}
+#insightStressContent .gmf-score-copy p{font-size:9px!important;line-height:1.4!important;color:rgba(255,255,255,.66)!important}
+
+/* ---------- projection chart ---------- */
+#insightStressContent .gmf-stress-chart-card{
+  margin:0!important;
+  padding:14px 18px 10px!important;
+  border:0!important;
+  border-bottom:1px solid #dfe9e6!important;
+  border-radius:0!important;
+  background:#fff!important;
+}
+#insightStressContent .gmf-chart-head{
+  display:flex!important;align-items:flex-end!important;justify-content:space-between!important;
+  gap:15px!important;margin-bottom:4px!important;
+}
+#insightStressContent .gmf-chart-head h3{
+  margin:4px 0 0!important;
+  font:800 12px var(--font-display)!important;
+  color:#17333b!important;
+}
+#insightStressContent .gmf-chart-head .gmf-kicker.dark{color:#0b9a78!important;margin:0!important;font-size:7px!important}
+#insightStressContent .gmf-chart-legend{display:flex!important;gap:12px!important;align-items:center!important;flex-wrap:nowrap!important}
+#insightStressContent .gmf-chart-legend span{font-size:8px!important;color:#6b7b81!important;white-space:nowrap!important}
+#insightStressContent .gmf-chart-legend i{width:13px!important;height:2px!important;margin-right:4px!important;display:inline-block!important;vertical-align:middle!important}
+#insightStressContent .gmf-chart-legend i.green{background:#0fa783!important}
+#insightStressContent .gmf-chart-legend i.gold{background:#e2a72f!important}
+#insightStressContent .gmf-chart-legend i.red{background:#ed6561!important}
+#insightStressContent .gmf-chart-wrap{
+  height:176px!important;min-height:176px!important;
+  border:0!important;border-radius:0!important;background:#fff!important;
+  overflow:hidden!important;
+}
+#insightStressContent #st2Chart{width:100%!important;height:176px!important;display:block!important}
+
+/* ---------- result strip ---------- */
+#insightStressContent .gmf-stress-outcomes{
+  display:grid!important;grid-template-columns:repeat(4,1fr)!important;
+  gap:0!important;margin:0!important;padding:0!important;
+  border-bottom:1px solid #dfe9e6!important;
+}
+#insightStressContent .gmf-stress-outcomes .st2-impact-card{
+  min-height:70px!important;height:70px!important;
+  padding:10px 13px!important;
+  border:0!important;border-right:1px solid #e2ebe8!important;
+  border-radius:0!important;background:#fbfdfc!important;
+  box-shadow:none!important;text-align:left!important;
+}
+#insightStressContent .gmf-stress-outcomes .st2-impact-card:last-child{border-right:0!important}
+#insightStressContent .st2-impact-num{font-size:17px!important;color:#14333a!important;margin:0 0 2px!important}
+#insightStressContent .st2-impact-label{font-size:7.5px!important;line-height:1.25!important;color:#6d7e82!important;margin:0!important}
+#insightStressContent .st2-impact-badge{display:none!important}
+#insightStressContent .st2-impact-ring-wrap{display:none!important}
+
+/* ---------- compact controls tabs ---------- */
+#insightStressContent .gmf-stress-tabs{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  gap:3px!important;height:39px!important;padding:3px!important;
+  background:#f7faf9!important;border-bottom:1px solid #dfe9e6!important;
+}
+#insightStressContent .gmf-stress-tab{
+  height:31px!important;padding:0 15px!important;border:0!important;border-radius:8px!important;
+  background:transparent!important;color:#607570!important;font-size:9px!important;font-weight:800!important;cursor:pointer!important;
+}
+#insightStressContent .gmf-stress-tab.active{background:#fff!important;color:#0b9877!important;box-shadow:0 2px 7px rgba(20,62,54,.08)!important}
+#insightStressContent .gmf-stress-tabpanel{display:none!important}
+#insightStressContent .gmf-stress-tabpanel.active{display:block!important}
+#insightStressContent .gmf-overview-line{
+  height:44px!important;padding:0 15px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;
+  font-size:8.5px!important;color:#667a7d!important;background:#fff!important;
+}
+#insightStressContent .gmf-mini-action{border:0!important;background:none!important;color:#0b9877!important;font-size:8.5px!important;font-weight:800!important;cursor:pointer!important}
+#insightStressContent .gmf-scenario-grid{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:8px!important;padding:10px 14px!important}
+#insightStressContent .gmf-scenario-control{padding:9px!important;border:1px solid #dfe9e6!important;border-radius:10px!important;background:#fbfdfc!important}
+#insightStressContent .gmf-scenario-control label{display:flex!important;justify-content:space-between!important;gap:6px!important;font-size:8px!important;color:#526967!important}
+#insightStressContent .gmf-inline-number{width:40px!important;padding:3px 4px!important;border:1px solid #ccdcd8!important;border-radius:5px!important;font:700 8px var(--font-mono)!important;text-align:center!important;background:#fff!important;color:#173b37!important}
+#insightStressContent .gmf-scenario-control input[type=range]{width:100%!important;margin-top:8px!important;accent-color:#0fa783!important}
+#insightStressContent .gmf-scenario-control select{width:auto!important;padding:3px 5px!important;border:1px solid #ccdcd8!important;border-radius:5px!important;font-size:8px!important;background:#fff!important}
+#insightStressContent .gmf-scenario-control p{margin:4px 0 0!important;font-size:7px!important;color:#7a898d!important;line-height:1.25!important}
+#insightStressContent .gmf-scenario-actions{display:flex!important;justify-content:flex-end!important;gap:6px!important;padding:0 14px 8px!important}
+#insightStressContent .gmf-scenario-actions .btn{padding:5px 9px!important;font-size:8px!important}
+#insightStressContent .gmf-quick-row{padding:0 14px 10px!important}
+#insightStressContent .gmf-quick-row > .gmf-kicker{font-size:7px!important;color:#0b9877!important}
+#insightStressContent .gmf-quick-row #st2QuickList{display:flex!important;gap:6px!important;margin-top:5px!important}
+#insightStressContent .gmf-quick-row .st2-quick-item{padding:6px 8px!important;border:1px solid #dfe9e6!important;border-radius:8px!important;background:#fff!important;display:flex!important;align-items:center!important;gap:5px!important;font-size:8px!important}
+#insightStressContent .gmf-quick-row .st2-quick-icon{width:20px!important;height:20px!important;font-size:10px!important}
+#insightStressContent .gmf-quick-row .st2-quick-label{font-size:8px!important}
+#insightStressContent .gmf-insight-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:9px!important;padding:12px 14px!important}
+#insightStressContent .gmf-insight-grid>div{padding:10px!important;border:1px solid #dfe9e6!important;border-radius:10px!important;background:#fbfdfc!important}
+#insightStressContent .gmf-insight-grid p{font-size:9px!important;line-height:1.35!important;color:#64777a!important;margin:4px 0 0!important}
+
+/* The legacy advanced simulator stays in the file, but not in the main
+   one-screen workspace. */
+#insightStressContent .st2-advanced-toggle{display:none!important}
+
+/* ---------- desktop viewport fitting ---------- */
+@media(min-width:901px){
+  body.gmf-stress-single-page{overflow:hidden!important}
+  body.gmf-stress-single-page #dashboardContent{height:calc(100vh - 82px)!important;overflow:hidden!important}
+  body.gmf-stress-single-page #panel-insights{height:100%!important;overflow:hidden!important}
+  body.gmf-stress-single-page #panel-insights > .insight-subview[data-insightpanel="stresstest"]{height:auto!important;overflow:visible!important}
+}
+
+/* 1366x768-ish screens: shave the vertical composition slightly. */
+@media(min-width:901px) and (max-height:820px){
+  #panel-insights > .gmf-tab-graphic{height:116px!important;min-height:116px!important;margin-bottom:10px!important;padding:15px 20px!important}
+  #panel-insights > .gmf-tab-graphic h3{font-size:14px!important;margin-bottom:5px!important}
+  #panel-insights > .gmf-tab-graphic p{font-size:10px!important}
+  #panel-insights > .section-sub{margin-bottom:9px!important}
+  #panel-insights > .gmf-insight-free-grid{margin-bottom:10px!important}
+  #panel-insights > .gmf-insight-free-grid .gmf-insight-free{height:66px!important;min-height:66px!important;padding:9px 11px!important}
+  #insightStressContent .gmf-stress-hero{height:135px!important;min-height:135px!important;padding:18px 22px!important}
+  #insightStressContent .gmf-score-ring,#insightStressContent .gmf-score-ring svg{width:72px!important;height:72px!important}
+  #insightStressContent .gmf-score-center strong{font-size:21px!important}
+  #insightStressContent .gmf-stress-chart-card{padding-top:10px!important}
+  #insightStressContent .gmf-chart-wrap,#insightStressContent #st2Chart{height:142px!important;min-height:142px!important}
+  #insightStressContent .gmf-stress-outcomes .st2-impact-card{height:60px!important;min-height:60px!important;padding:7px 11px!important}
+  #insightStressContent .st2-impact-num{font-size:15px!important}
+  #insightStressContent .gmf-stress-tabs{height:34px!important}
+  #insightStressContent .gmf-stress-tab{height:27px!important}
+  #insightStressContent .gmf-overview-line{height:36px!important}
+}
+
+@media(max-width:900px){
+  body.gmf-stress-single-page{overflow:auto!important}
+  #panel-insights > .gmf-insight-free-grid{grid-template-columns:1fr!important}
+  #insightStressContent .gmf-stress-hero{height:auto!important;min-height:170px!important;flex-direction:column!important;align-items:flex-start!important}
+  #insightStressContent .gmf-stress-score{min-width:0!important;width:100%!important}
+  #insightStressContent .gmf-stress-outcomes{grid-template-columns:1fr 1fr!important}
+  #insightStressContent .gmf-stress-outcomes .st2-impact-card{border-bottom:1px solid #e2ebe8!important}
+  #insightStressContent .gmf-scenario-grid{grid-template-columns:1fr 1fr!important}
+  #insightStressContent .gmf-insight-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:560px){
+  #panel-insights #insightSubtabs{overflow:auto!important}
+  #insightStressContent .gmf-chart-head{align-items:flex-start!important;flex-direction:column!important}
+  #insightStressContent .gmf-chart-legend{width:100%!important;justify-content:flex-start!important}
+  #insightStressContent .gmf-scenario-grid{grid-template-columns:1fr!important}
+  #insightStressContent .gmf-quick-row #st2QuickList{flex-direction:column!important}
+}
+</style>
+
+<script id="gmf-stress-exact-final-js">
+(function(){
+  'use strict';
+  function q(s,r){return (r||document).querySelector(s)}
+  function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+
+  function activateStressTab(name){
+    qa('#insightStressContent .gmf-stress-tab').forEach(function(b){
+      var on=b.getAttribute('data-stress-view')===name;
+      b.classList.toggle('active',on);
+      b.setAttribute('aria-selected',on?'true':'false');
+    });
+    qa('#insightStressContent .gmf-stress-tabpanel').forEach(function(p){
+      p.classList.toggle('active',p.getAttribute('data-stress-panel')===name);
+    });
+  }
+
+  function fitAndTop(){
+    document.body.classList.add('gmf-stress-single-page');
+    var panel=q('#panel-insights');
+    var stress=q('#panel-insights .insight-subview[data-insightpanel="stresstest"]');
+    if(panel && stress && stress.classList.contains('active')){
+      /* Put the workspace at the top whenever Stress Test becomes active. */
+      var top=panel.getBoundingClientRect().top+window.scrollY;
+      if(window.scrollY>top+12) window.scrollTo({top:Math.max(0,top),behavior:'instant'});
+    }
+  }
+
+  function wire(){
+    qa('#insightStressContent .gmf-stress-tab').forEach(function(btn){
+      if(btn._gmfStressWired) return;
+      btn._gmfStressWired=true;
+      btn.addEventListener('click',function(){activateStressTab(btn.getAttribute('data-stress-view'));});
+    });
+
+    var adjust=q('#insightStressContent .gmf-mini-action[data-open-stress="scenario"]');
+    if(adjust && !adjust._gmfStressWired){
+      adjust._gmfStressWired=true;
+      adjust.addEventListener('click',function(){activateStressTab('scenario');});
+    }
+
+    /* The existing top Insights tabs are already wired elsewhere. We only
+       make Stress Test open at the top so the user sees the complete screen. */
+    qa('#insightSubtabs .insight-subtab-btn').forEach(function(btn){
+      if(btn._gmfStressTopWired) return;
+      btn._gmfStressTopWired=true;
+      btn.addEventListener('click',function(){
+        if(btn.getAttribute('data-insightsub')==='stresstest'){
+          setTimeout(function(){
+            fitAndTop();
+            activateStressTab('overview');
+          },40);
+        }
+      },false);
+    });
+
+    if(q('#panel-insights .insight-subview[data-insightpanel="stresstest"].active')) fitAndTop();
+  }
+
+  function boot(){
+    wire();
+    setTimeout(wire,150);
+    setTimeout(wire,700);
+    setTimeout(wire,1500);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true});
+  else boot();
+
+  document.addEventListener('click',function(e){
+    var nav=e.target&&e.target.closest?e.target.closest('.dash-nav-btn'):null;
+    if(nav) setTimeout(function(){wire();},120);
+  });
+})();
+</script>
+<style id="gmf-stress-reference-last-mile">
+/* Reference image alignment: score sits inside the lower-left of the dark
+   simulator rather than on the right side. */
+#insightStressContent .gmf-stress-hero{
+  display:block!important;
+  height:193px!important;
+  min-height:193px!important;
+  padding:20px 20px 15px!important;
+}
+#insightStressContent .gmf-stress-hero-copy{max-width:650px!important}
+#insightStressContent .gmf-stress-score{
+  position:absolute!important;
+  left:20px!important;
+  bottom:14px!important;
+  min-width:0!important;
+  gap:13px!important;
+}
+#insightStressContent .gmf-score-ring,
+#insightStressContent .gmf-score-ring svg{width:92px!important;height:92px!important}
+#insightStressContent .gmf-score-center strong{font-size:25px!important}
+#insightStressContent .gmf-score-copy{max-width:370px!important}
+#insightStressContent .gmf-score-tier{font-size:12px!important;color:#45caa1!important;text-transform:uppercase!important;letter-spacing:.08em!important}
+#insightStressContent .gmf-score-copy p{font-size:10px!important;max-width:360px!important}
+@media(min-width:901px) and (max-height:820px){
+  #insightStressContent .gmf-stress-hero{height:150px!important;min-height:150px!important;padding:17px 18px 12px!important}
+  #insightStressContent .gmf-stress-score{left:18px!important;bottom:10px!important}
+  #insightStressContent .gmf-score-ring,
+  #insightStressContent .gmf-score-ring svg{width:76px!important;height:76px!important}
+  #insightStressContent .gmf-score-center strong{font-size:21px!important}
+  #insightStressContent .gmf-score-copy p{font-size:8.5px!important}
+}
+</style>
