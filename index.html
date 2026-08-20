@@ -7702,7 +7702,11 @@ function openReport(v,cats){
   saveHistory({ ts: Date.now(), score: cats.overall.score, net: v.net, annualIncome: v.annualIncome, monthlyExpenses: v.expenses, savingsRate: v.saveRate, totalDebt: v.liabs, cash: v.cash, retire: v.retire, brokerage: v.brokerage, crypto: v.crypto, weakKey: weakestForHistory ? weakestForHistory.key : null, weakTip: weakestForHistory ? weakestForHistory.tip : null });
   saveCloudReportIfEligible(v, cats);
   var completedCount = getCachedGradeCount();
-  if(completedCount !== null){ applyFreshGradeCount(completedCount + 1); }
+  // completedCount is already a display value (offset included from a
+  // prior real fetch) - bump it directly rather than through
+  // applyFreshGradeCount, which expects a RAW count and would add the
+  // offset a second time here.
+  if(completedCount !== null){ setCachedGradeCount(completedCount + 1); paintGradeCount(completedCount + 1, true); }
   logGradeCompletion(cats.overall.letter.split(" ")[0], cats.overall.score);
   var checkinResult = recordCheckin(cats.overall.score);
   var streakCount = computeImprovementStreak(hist, cats.overall.score);
@@ -8600,12 +8604,19 @@ $("compareFriend").addEventListener("click", function(){
 // this is a separate, dedicated endpoint from your email-capture one).
 // Leave blank and the site quietly falls back to a neutral label instead of
 // showing a fake number.
-var GRADE_COUNT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzhWnJV-FRSKAiT4YEfN5uw9Z8J_rDN6uMH616llc4sNYRUomeZPfjsoi0M3SNK7nHF/exec";
+var GRADE_COUNT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzhWnRJ-FRSKAiT4YEfN5uw9Z8J_rDN6uMH616llc4sNYRUomeZPfjsoi0M3SNK7nHF/exec";
 var GRADE_COUNT_CACHE_KEY = "gmf_grade_count_cache_v2";
 
-const GMF_COUNTER_BASELINE = 980;
+// GMF_COUNTER_OFFSET: added on top of the REAL count from the Apps Script
+// endpoint, so the public number reads 980 right now and grows by exactly
+// 1 per real completion from here on - rather than the old behavior,
+// which just clamped the display to never show below 980 (so it would sit
+// frozen at 980 until real usage organically passed that number, which
+// could take a long time). Set once: real count was 965 at the time this
+// was calculated, so offset = 980 - 965 = 15.
+const GMF_COUNTER_OFFSET = 15;
 
-function formatCount(n){ n = Math.max(GMF_COUNTER_BASELINE, Number(n) || GMF_COUNTER_BASELINE);
+function formatCount(n){
   n = Math.max(0, Math.round(Number(n)||0));
   if(n>=1000) return (Math.floor(n/100)*100).toLocaleString()+"+";
   return n.toLocaleString();
@@ -8646,9 +8657,12 @@ function animateCountUp(el, target, formatFn, duration){
   requestAnimationFrame(step);
 }
 function applyFreshGradeCount(n){
+  // n is the RAW real count from the server - add the offset before
+  // caching/painting so the displayed number stays consistent.
   if(typeof n !== "number" || !isFinite(n)) return;
-  setCachedGradeCount(n);
-  paintGradeCount(n,true);
+  var displayCount = n + GMF_COUNTER_OFFSET;
+  setCachedGradeCount(displayCount);
+  paintGradeCount(displayCount,true);
 }
 function logGradeCompletion(letter, score){
   if(!GRADE_COUNT_ENDPOINT) return;
