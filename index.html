@@ -11774,6 +11774,154 @@ body{font-size:15px!important;min-height:100vh}
 })();
 </script>
 
+<style id="gmf-theme-repaint-final">
+/* =========================================================
+   FINAL THEME REPAINT — single source of truth for dark/light.
+   Placed last on purpose so it wins over the older, conflicting
+   theme layers earlier in this file (same source-order convention
+   already used throughout this codebase). Dark values are sampled
+   directly from the reference screenshot: near-black navy base,
+   teal-green brand accent, purple secondary accent, lavender PRO chip.
+   ========================================================= */
+
+/* ---------- DARK ---------- */
+:root[data-theme="dark"]{
+  --bg:#070b15; --bg-2:#04070f; --surface:#0d1420; --surface-2:#101827;
+  --line:#1c2536; --text:#eef2f8; --muted:#93a0b4; --muted-2:#68748a;
+  --brand:#1f9c78; --brand-soft:rgba(34,197,148,.14); --brand-bright:#2fd6a0; --brand-text:#06120f;
+  --gold:#e2ad45; --gold-soft:rgba(226,173,69,.14); --gold-bright:#f3c866;
+  --good:#34d399; --good-2:#1f9c78; --good-soft:rgba(52,211,153,.12); --bad:#f06d63; --bad-soft:rgba(240,109,99,.12); --mid:#f3c866;
+}
+:root[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}
+:root[data-theme="dark"] .main-area{background:linear-gradient(180deg,#070b15,#04070f)!important}
+:root[data-theme="dark"] .main-area::before{background:none!important}
+
+:root[data-theme="dark"] .sidebar{background:#04070f!important;border-right:1px solid #161d2c!important;box-shadow:none!important;color:#c7cfdc!important}
+:root[data-theme="dark"] .sidebar-brand{border-bottom-color:#161d2c!important}
+:root[data-theme="dark"] .sidebar .wordmark,
+:root[data-theme="dark"] .sidebar .nav-section-label{color:#eef2f8!important}
+:root[data-theme="dark"] .sidebar .nav-section-label{opacity:.5!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn{color:#94a0b4!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn:hover{background:#0e1420!important;color:#fff!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn.active{background:rgba(31,156,120,.18)!important;color:#34d399!important;box-shadow:inset 3px 0 0 #22c58f!important}
+:root[data-theme="dark"] .sidebar .nav-icon{color:#7c879c!important}
+:root[data-theme="dark"] .sidebar .dash-nav-btn.active .nav-icon{color:#34d399!important}
+:root[data-theme="dark"] .sidebar-bottom{border-top-color:#161d2c!important}
+:root[data-theme="dark"] .sidebar .icon-btn{background:#0d1420!important;color:#c7cfdc!important}
+
+:root[data-theme="dark"] .sidebar-pro-card{background:#12142e!important;border:1px solid #262a4a!important;color:#e7e6f5!important;box-shadow:none!important}
+:root[data-theme="dark"] .sidebar-pro-card p{color:#a6a8c4!important}
+:root[data-theme="dark"] .sidebar-pro-card .btn.gold{background:#8b5cf6!important;border-color:#8b5cf6!important;color:#fff!important}
+:root[data-theme="dark"] .sidebar-pro-icon{background:#1e2148!important;color:#c4b5fd!important}
+
+:root[data-theme="dark"] .content-header,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .metric-card,
+:root[data-theme="dark"] .hero-card,
+:root[data-theme="dark"] .insight-card,
+:root[data-theme="dark"] .command-secondary,
+:root[data-theme="dark"] .action-plan-card,
+:root[data-theme="dark"] .goal-card,
+:root[data-theme="dark"] .scenario-card,
+:root[data-theme="dark"] .ret-scenario-card,
+:root[data-theme="dark"] .settings-panel,
+:root[data-theme="dark"] .pro-blur-section{
+  background:#0d1420!important; border-color:#1c2536!important; color:#eef2f8!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.28)!important;
+}
+:root[data-theme="dark"] .metric-card .m-val,
+:root[data-theme="dark"] .hv,
+:root[data-theme="dark"] .action-plan-title,
+:root[data-theme="dark"] .command-secondary .cs-value,
+:root[data-theme="dark"] .insight-card h4{color:#eef2f8!important}
+:root[data-theme="dark"] .section-sub,
+:root[data-theme="dark"] .m-label,
+:root[data-theme="dark"] .m-sub,
+:root[data-theme="dark"] .hv-sub,
+:root[data-theme="dark"] .updated,
+:root[data-theme="dark"] .command-secondary .cs-sub{color:#8b96ab!important}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea{background:#0a0f19!important;color:#eef2f8!important;border-color:#232d42!important}
+
+/* PRO chips: light lavender pill, matches the reference screenshot's badge */
+:root[data-theme="dark"] .insights-pro-nav,
+:root[data-theme="dark"] .grade-pro-pill,
+:root[data-theme="dark"] .pro-badge-filled{
+  background:#f3e8ff!important; color:#7c3aed!important; border:none!important;
+}
+
+svg .brand-bright, .brand-fill{fill:#2fd6a0}
+
+/* ---------- LIGHT (true opposite of dark: white base, same accents) ---------- */
+:root[data-theme="light"]{
+  --bg:#f7f8fb; --bg-2:#eef1f6; --surface:#ffffff; --surface-2:#f3f5f9;
+  --line:#e3e7f0; --text:#10131c; --muted:#5b6472; --muted-2:#8791a1;
+  --brand:#1f9c78; --brand-soft:rgba(34,197,148,.10); --brand-bright:#22c58f; --brand-text:#ffffff;
+  --gold:#c98b16; --gold-soft:rgba(226,173,69,.14); --gold-bright:#e2ad45;
+  --good:#1f9c78; --good-2:#0f8b6d; --good-soft:rgba(31,156,120,.10); --bad:#c1493d; --bad-soft:rgba(193,73,61,.10); --mid:#c98b16;
+}
+:root[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}
+:root[data-theme="light"] .main-area{background:linear-gradient(180deg,#f7f8fb,#eef1f6)!important}
+:root[data-theme="light"] .main-area::before{background:none!important}
+
+:root[data-theme="light"] .sidebar{background:#ffffff!important;border-right:1px solid #e3e7f0!important;box-shadow:2px 0 14px rgba(20,30,50,.04)!important;color:#3c4454!important}
+:root[data-theme="light"] .sidebar-brand{border-bottom-color:#e3e7f0!important}
+:root[data-theme="light"] .sidebar .wordmark,
+:root[data-theme="light"] .sidebar .nav-section-label{color:#10131c!important}
+:root[data-theme="light"] .sidebar .nav-section-label{opacity:.55!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn{color:#5b6472!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn:hover{background:#f3f5f9!important;color:#10131c!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn.active{background:rgba(31,156,120,.10)!important;color:#0f8b6d!important;box-shadow:inset 3px 0 0 #1f9c78!important}
+:root[data-theme="light"] .sidebar .nav-icon{color:#8791a1!important}
+:root[data-theme="light"] .sidebar .dash-nav-btn.active .nav-icon{color:#0f8b6d!important}
+:root[data-theme="light"] .sidebar-bottom{border-top-color:#e3e7f0!important}
+:root[data-theme="light"] .sidebar .icon-btn{background:#f3f5f9!important;color:#3c4454!important}
+
+:root[data-theme="light"] .sidebar-pro-card{background:linear-gradient(145deg,#f6f2ff,#ffffff)!important;border:1px solid #e6ddfb!important;color:#2c2440!important;box-shadow:none!important}
+:root[data-theme="light"] .sidebar-pro-card p{color:#6b6482!important}
+:root[data-theme="light"] .sidebar-pro-card .btn.gold{background:#8b5cf6!important;border-color:#8b5cf6!important;color:#fff!important}
+:root[data-theme="light"] .sidebar-pro-icon{background:#f0e9fe!important;color:#7c3aed!important}
+
+:root[data-theme="light"] .content-header,
+:root[data-theme="light"] .card,
+:root[data-theme="light"] .metric-card,
+:root[data-theme="light"] .hero-card,
+:root[data-theme="light"] .insight-card,
+:root[data-theme="light"] .command-secondary,
+:root[data-theme="light"] .action-plan-card,
+:root[data-theme="light"] .goal-card,
+:root[data-theme="light"] .scenario-card,
+:root[data-theme="light"] .ret-scenario-card,
+:root[data-theme="light"] .settings-panel,
+:root[data-theme="light"] .pro-blur-section{
+  background:#ffffff!important; border-color:#e3e7f0!important; color:#10131c!important;
+  box-shadow:0 6px 18px rgba(20,30,50,.06)!important;
+}
+:root[data-theme="light"] .metric-card .m-val,
+:root[data-theme="light"] .hv,
+:root[data-theme="light"] .action-plan-title,
+:root[data-theme="light"] .command-secondary .cs-value,
+:root[data-theme="light"] .insight-card h4{color:#10131c!important}
+:root[data-theme="light"] .section-sub,
+:root[data-theme="light"] .m-label,
+:root[data-theme="light"] .m-sub,
+:root[data-theme="light"] .hv-sub,
+:root[data-theme="light"] .updated,
+:root[data-theme="light"] .command-secondary .cs-sub{color:#5b6472!important}
+
+:root[data-theme="light"] input,
+:root[data-theme="light"] select,
+:root[data-theme="light"] textarea{background:#ffffff!important;color:#10131c!important;border-color:#e3e7f0!important}
+
+:root[data-theme="light"] .insights-pro-nav,
+:root[data-theme="light"] .grade-pro-pill,
+:root[data-theme="light"] .pro-badge-filled{
+  background:#f3e8ff!important; color:#7c3aed!important; border:none!important;
+}
+</style>
+
 </body>
 </html>
 
