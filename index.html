@@ -2507,6 +2507,10 @@ header.site #accountMenu #signOutBtn svg{
   }
 }
 
+/* Sign In link: visible for logged-out visitors, hidden once authed. */
+#signInBtn{ margin-right: 8px; }
+html.is-authed #signInBtn{ display:none !important; }
+
 
 /* ---------- Product polish: action-plan card ---------- */
 .rc-90day-card{margin-top:16px;padding:20px;border:1px solid rgba(46,156,129,.24);border-radius:16px;background:radial-gradient(circle at 90% 0%,rgba(245,185,66,.10),transparent 35%),linear-gradient(135deg,rgba(46,156,129,.08),rgba(255,255,255,.72))}
@@ -2670,6 +2674,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       </div>
       <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing"><span class="pro-star">★</span> Start Free Trial</a>
       <span class="btn sm pro-badge-filled pro-only-show" id="proPill" style="display:none">★ PRO</span>
+      <a class="btn sm" id="signInBtn" href="auth.html">Sign In</a>
       <div class="settings-wrap" id="accountWrap" style="display:none">
         <button class="icon-btn" id="accountBtn" aria-label="Account menu" aria-expanded="false" style="width:auto;padding:6px 10px 6px 6px;gap:7px;display:flex;align-items:center;border-radius:99px" type="button">
           <span id="accountAvatar" style="width:26px;height:26px;border-radius:50%;background:linear-gradient(155deg,var(--brand-bright),var(--brand));color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none">–</span>
