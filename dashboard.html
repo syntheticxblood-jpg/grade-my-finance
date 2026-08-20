@@ -1405,6 +1405,101 @@ body.is-pro .pro-blur-overlay{
 .stress-outcome-num.bad{ color:var(--bad) }
 .stress-outcome-label{ font-size:12.5px; color:var(--muted) }
 
+/* ================= STRESS TEST 2.0 (mockup-matched redesign) ================= */
+.st2-shell{ display:flex; flex-direction:column; gap:20px; margin-bottom:24px }
+
+.st2-hero{ display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; padding:30px 32px }
+.st2-hero-title{ font-family:var(--font-serif); font-size:26px; font-weight:700; margin:0 0 8px; color:var(--text) }
+.st2-hero-sub{ margin:0 0 16px; color:var(--muted); font-size:14.5px }
+.st2-hero-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px }
+.st2-hero-list li{ display:flex; align-items:center; gap:9px; font-size:13.5px; color:var(--text); font-weight:600 }
+.st2-hero-list li::before{ content:"✓"; width:18px; height:18px; border-radius:50%; background:var(--good-soft); color:var(--good); font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex:none }
+.st2-hero-art{ position:relative; width:150px; height:150px; flex:none; display:flex; align-items:center; justify-content:center }
+.st2-hero-art .st2-dot{ position:absolute; border-radius:50%; opacity:.5 }
+.st2-hero-art svg{ position:relative; z-index:1; filter:drop-shadow(0 8px 20px rgba(46,156,129,.25)) }
+@media (max-width:760px){ .st2-hero{ flex-direction:column; text-align:center } .st2-hero-list{ align-items:center } .st2-hero-list li{ text-align:left } }
+
+.st2-top-row{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px }
+@media (max-width:980px){ .st2-top-row{ grid-template-columns:1fr } }
+.st2-top-row .card{ padding:22px }
+
+.st2-score-sub{ margin:2px 0 16px; color:var(--muted); font-size:12.5px }
+.st2-score-body{ display:flex; align-items:center; gap:16px }
+.st2-ring-wrap{ position:relative; width:96px; height:96px; flex:none }
+.st2-ring{ transform:rotate(0deg) }
+.st2-ring-num{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1 }
+.st2-ring-num span:first-child{ font-family:var(--font-serif); font-weight:800; font-size:24px; color:var(--text) }
+.st2-ring-max{ font-size:10.5px; color:var(--muted-2); font-family:var(--font-mono) }
+.st2-score-tier{ font-weight:800; font-size:14.5px; margin-bottom:4px }
+.st2-score-tier.strong{ color:var(--good) }
+.st2-score-tier.watch{ color:var(--brand-bright) }
+.st2-score-tier.vulnerable{ color:#E8A34A }
+.st2-score-tier.critical{ color:var(--bad) }
+.st2-score-text p{ margin:0 0 10px; font-size:12.5px; color:var(--muted); line-height:1.5 }
+.st2-score-text .btn{ padding:6px 12px; font-size:12px }
+
+.st2-takeaway-card p{ margin:2px 0 14px; font-size:13.5px; color:var(--text); line-height:1.55 }
+.st2-toprisk-row{ font-size:12.5px; color:var(--muted); display:flex; align-items:center; gap:8px; flex-wrap:wrap }
+.st2-impact-pill{ font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.03em; padding:3px 9px; border-radius:999px }
+.st2-impact-pill.high{ background:var(--bad-soft); color:var(--bad) }
+.st2-impact-pill.medium{ background:var(--gold-soft); color:var(--gold-bright) }
+.st2-impact-pill.low{ background:var(--good-soft); color:var(--good) }
+
+.st2-quick-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px }
+.st2-quick-head .link-more{ background:none; border:none; color:var(--brand-bright); font-size:12px; font-weight:700; cursor:pointer; padding:0 }
+.st2-quick-list{ display:flex; flex-direction:column; gap:10px }
+.st2-quick-item{ display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:10px; cursor:pointer; transition:background .15s ease; border:none; background:none; width:100%; text-align:left; font-family:var(--font-body) }
+.st2-quick-item:hover{ background:var(--surface-2) }
+.st2-quick-icon{ width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex:none; font-size:14px }
+.st2-quick-label{ font-size:12.5px; font-weight:700; color:var(--text); flex:1 }
+
+.st2-sim-card{ padding:26px }
+.st2-sim-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:22px }
+.st2-sim-sub{ margin:4px 0 0; color:var(--muted); font-size:13px }
+.st2-sim-actions{ display:flex; gap:10px; flex:none }
+.st2-sim-grid{ display:grid; grid-template-columns:280px 1fr; gap:26px }
+@media (max-width:980px){ .st2-sim-grid{ grid-template-columns:1fr } }
+
+.st2-sliders{ display:flex; flex-direction:column; gap:20px }
+.st2-slider-row{ display:flex; gap:12px }
+.st2-slider-icon{ width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex:none; font-size:15px }
+.st2-slider-body{ flex:1; min-width:0 }
+.st2-slider-body label{ display:block; font-size:13px; font-weight:700; color:var(--text) }
+.st2-slider-caption{ display:block; font-size:11.5px; font-weight:500; color:var(--muted-2); margin-top:1px }
+.st2-slider-control{ display:flex; align-items:center; gap:10px; margin-top:8px }
+.st2-slider-control input[type="range"]{ flex:1; accent-color:var(--brand-bright) }
+.st2-slider-control input[type="number"]{ width:52px; padding:5px 6px; border:1px solid var(--line); border-radius:7px; background:var(--surface-2); color:var(--text); font-family:var(--font-mono); font-size:12.5px; text-align:center }
+.st2-slider-control select{ flex:1; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:var(--surface-2); color:var(--text); font-size:13px }
+.st2-slider-unit{ font-size:11.5px; color:var(--muted-2); flex:none }
+
+.st2-impact-cards{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:14px 0 18px }
+@media (max-width:760px){ .st2-impact-cards{ grid-template-columns:1fr 1fr } }
+.st2-impact-card{ border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--surface-2) }
+.st2-impact-num{ font-family:var(--font-serif); font-weight:800; font-size:19px; color:var(--text); margin-bottom:2px }
+.st2-impact-label{ font-size:10.5px; color:var(--muted); margin-bottom:8px; line-height:1.3 }
+.st2-impact-badge{ display:inline-block; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.03em; padding:2px 8px; border-radius:999px }
+.st2-impact-badge.good{ background:var(--good-soft); color:var(--good) }
+.st2-impact-badge.moderate{ background:var(--gold-soft); color:var(--gold-bright) }
+.st2-impact-badge.bad{ background:var(--bad-soft); color:var(--bad) }
+.st2-impact-ring-wrap{ position:relative; width:44px; height:44px; margin:0 auto 6px }
+.st2-impact-ring-num{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-weight:800; font-size:13px; color:var(--text) }
+
+.st2-chart-card{ border:1px solid var(--line); border-radius:12px; padding:16px; background:var(--surface-2) }
+.st2-chart-head{ font-size:12.5px; font-weight:700; color:var(--text); margin-bottom:6px }
+.st2-chart-legend{ display:flex; gap:16px; justify-content:flex-end; margin-top:6px; flex-wrap:wrap }
+.st2-chart-legend span{ display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted) }
+.st2-chart-legend i{ width:14px; height:3px; border-radius:2px; display:inline-block }
+
+.st2-protip-bar{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:18px 24px }
+.st2-protip-bar b{ font-size:13.5px }
+.st2-protip-bar p{ margin:2px 0 0; font-size:12.5px; color:var(--muted) }
+.st2-protip-icon{ width:34px; height:34px; border-radius:10px; background:var(--gold-soft); color:var(--gold-bright); display:inline-flex; align-items:center; justify-content:center; margin-right:10px; font-size:15px }
+.st2-buildplan-btn{ background:#8b5cf6!important; border-color:#8b5cf6!important; color:#fff!important; flex:none }
+
+.st2-advanced-toggle{ text-align:center; margin:4px 0 20px }
+.st2-advanced-toggle summary{ cursor:pointer; font-size:12.5px; font-weight:700; color:var(--brand-bright); list-style:none }
+.st2-advanced-toggle summary::-webkit-details-marker{ display:none }
+
 .stress-preset-row{ display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 16px; justify-content:center }
 .stress-preset-btn{
   appearance:none; border:1px solid var(--line); background:var(--surface-2); color:var(--muted);
@@ -4209,6 +4304,149 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="insight-subview" data-insightpanel="stresstest">
         <div id="insightStressEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your resilience simulation</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="insightStressContent">
+          <div class="st2-shell">
+            <div class="card st2-hero">
+              <div class="st2-hero-text">
+                <h2 class="st2-hero-title">Stress Test Your Finances</h2>
+                <p class="st2-hero-sub">Life happens. We run the numbers so you can be ready for it.</p>
+                <ul class="st2-hero-list">
+                  <li>See how shocks impact your money</li>
+                  <li>Compare different "what if" scenarios</li>
+                  <li>Get a clear next best move</li>
+                </ul>
+              </div>
+              <div class="st2-hero-art" aria-hidden="true">
+                <span class="st2-dot" style="width:14px;height:14px;background:#F5B942;top:6px;left:6px"></span>
+                <span class="st2-dot" style="width:10px;height:10px;background:#4FC28A;top:14px;right:16px"></span>
+                <span class="st2-dot" style="width:16px;height:16px;background:#5b8def;bottom:10px;left:0"></span>
+                <span class="st2-dot" style="width:8px;height:8px;background:#F5B942;bottom:22px;right:4px"></span>
+                <svg width="86" height="86" viewBox="0 0 86 86" fill="none">
+                  <circle cx="43" cy="43" r="42" fill="var(--surface)" opacity=".6"/>
+                  <path d="M43 12 L68 22 V42 C68 58 57 69 43 74 C29 69 18 58 18 42 V22 Z" fill="#2E9C81"/>
+                  <path d="M31 43 L39 51 L56 33" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="st2-top-row">
+              <div class="card st2-score-card">
+                <span class="section-label" style="margin:0">Your Financial Resilience Score</span>
+                <p class="st2-score-sub">How prepared you are to weather financial shocks.</p>
+                <div class="st2-score-body">
+                  <div class="st2-ring-wrap">
+                    <svg class="st2-ring" viewBox="0 0 120 120" width="96" height="96" aria-hidden="true">
+                      <circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="10"/>
+                      <circle id="st2RingFg" cx="60" cy="60" r="52" fill="none" stroke="#4FC28A" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+                    </svg>
+                    <div class="st2-ring-num"><span id="st2ScoreNum">—</span><span class="st2-ring-max">/100</span></div>
+                  </div>
+                  <div class="st2-score-text">
+                    <div class="st2-score-tier" id="st2ScoreTier">—</div>
+                    <p id="st2ScoreExplain">—</p>
+                    <button class="btn sm" id="st2SeeCalc" type="button">See how it's calculated →</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card st2-takeaway-card">
+                <span class="section-label" style="margin:0">☀️ Key Takeaway</span>
+                <p id="st2Takeaway">—</p>
+                <div class="st2-toprisk-row">Top risk: <b id="st2TopRisk">—</b><span class="st2-impact-pill high" id="st2TopRiskPill">Impact: High</span></div>
+              </div>
+
+              <div class="card st2-quick-card">
+                <div class="st2-quick-head">
+                  <span class="section-label" style="margin:0">Quick Scenarios</span>
+                  <button class="link-more" id="st2ViewAll" type="button">View all scenarios →</button>
+                </div>
+                <div class="st2-quick-list" id="st2QuickList"></div>
+              </div>
+            </div>
+
+            <div class="card st2-sim-card">
+              <div class="st2-sim-head">
+                <div>
+                  <span class="section-label" style="margin:0">Scenario Simulator</span>
+                  <p class="st2-sim-sub">Adjust the variables below to see how different situations could affect your finances.</p>
+                </div>
+                <div class="st2-sim-actions">
+                  <button class="btn sm" id="st2Reset" type="button">↺ Reset</button>
+                  <button class="btn gold sm" id="st2Run" type="button">Run Simulation</button>
+                </div>
+              </div>
+              <div class="st2-sim-grid">
+                <div class="st2-sliders">
+                  <div class="st2-slider-row">
+                    <div class="st2-slider-icon" style="background:var(--brand-soft);color:var(--brand-bright)">💼</div>
+                    <div class="st2-slider-body">
+                      <label for="st2JobLoss">Job Loss Duration</label>
+                      <span class="st2-slider-caption">Months without income</span>
+                      <div class="st2-slider-control">
+                        <input type="range" id="st2JobLoss" min="0" max="24" step="1" value="6">
+                        <input type="number" id="st2JobLossNum" min="0" max="24" value="6">
+                        <span class="st2-slider-unit">months</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="st2-slider-row">
+                    <div class="st2-slider-icon" style="background:var(--gold-soft);color:var(--gold-bright)">📈</div>
+                    <div class="st2-slider-body">
+                      <label for="st2ExpenseInc">Expense Increase</label>
+                      <span class="st2-slider-caption">Monthly increase in spending</span>
+                      <div class="st2-slider-control">
+                        <input type="range" id="st2ExpenseInc" min="0" max="100" step="5" value="20">
+                        <input type="number" id="st2ExpenseIncNum" min="0" max="100" value="20">
+                        <span class="st2-slider-unit">%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="st2-slider-row">
+                    <div class="st2-slider-icon" style="background:var(--bad-soft);color:var(--bad)">📉</div>
+                    <div class="st2-slider-body">
+                      <label for="st2MarketDrop">Market Drop</label>
+                      <span class="st2-slider-caption">Investment portfolio decline</span>
+                      <div class="st2-slider-control">
+                        <input type="range" id="st2MarketDrop" min="0" max="60" step="5" value="20">
+                        <input type="number" id="st2MarketDropNum" min="0" max="60" value="20">
+                        <span class="st2-slider-unit">%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="st2-slider-row">
+                    <div class="st2-slider-icon" style="background:var(--good-soft);color:var(--good)">🛡️</div>
+                    <div class="st2-slider-body">
+                      <label for="st2EmergencyUse">Emergency Fund Use</label>
+                      <span class="st2-slider-caption">Use emergency fund for expenses</span>
+                      <div class="st2-slider-control">
+                        <select id="st2EmergencyUse"><option value="yes" selected>Yes</option><option value="no">No</option></select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="st2-impact">
+                  <span class="section-label" style="margin:0">Potential Impact</span>
+                  <div class="st2-impact-cards" id="st2ImpactCards"></div>
+                  <div class="st2-chart-card">
+                    <div class="st2-chart-head">Balance Over Time (Projection)</div>
+                    <svg id="st2Chart" width="100%" height="220" viewBox="0 0 900 260" preserveAspectRatio="none" role="img" aria-label="Balance over time under optimistic, moderate, and pessimistic scenarios"></svg>
+                    <div class="st2-chart-legend">
+                      <span><i style="background:#4FC28A"></i>Optimistic Scenario</span>
+                      <span><i style="background:#E8B34A"></i>Moderate Scenario</span>
+                      <span><i style="background:#E15B5B;border-top:2px dotted #E15B5B;height:0;background:none"></i>Pessimistic Scenario</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card st2-protip-bar">
+              <div><span class="st2-protip-icon">💡</span><b>Pro Tip</b><p id="st2ProTip">Building your emergency fund to 6–12 months of expenses would significantly improve your resilience.</p></div>
+              <button class="btn st2-buildplan-btn" id="st2BuildPlan" type="button">Build My Plan</button>
+            </div>
+          </div>
+
+          <details class="st2-advanced-toggle">
+            <summary>Want more control? Open the advanced 12-variable simulator ↓</summary>
           <div class="gmf-stress-shell">
             <div class="card">
               <div class="stress-hero-v2">
@@ -4322,6 +4560,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
               <div class="small" style="margin-top:16px;padding-top:12px;border-top:1px solid var(--line)">This stress test is a planning simulation, not a prediction or financial advice. Results depend entirely on the assumptions above — adjust them to match your real situation. Actual outcomes may differ.</div>
             </div>
           </div>
+          </details>
         </div>
       </div>
     </div>
@@ -5933,6 +6172,7 @@ function renderInsightExtras(){
       }
     }
   }
+  try{ renderStressTest2(saved.v); }catch(e){ console.error('Stress Test 2.0 render failed:', e); }
 }
 
 /* ================= PHASE 4 PORTED (from index.html Report Card) =================
@@ -6624,6 +6864,297 @@ function renderEmergencyStressTest(inputV){
   if(emergencyEl)emergencyEl.onchange=update;
   if(housingEl)housingEl.onchange=update;
   update();
+}
+
+/* ================= STRESS TEST 2.0 — mockup-matched redesign =================
+   Reuses the same base-financial-data extraction pattern as
+   renderEmergencyStressTest, but with its own simpler 4-lever simulation
+   (job loss duration, expense increase %, market drop %, emergency fund
+   use) matching the new UI exactly. The original 12-variable engine above
+   is preserved untouched inside the "Advanced" details in the markup. */
+function renderStressTest2(inputV){
+  if(!$("st2ScoreNum")) return;
+
+  function n(x, fallback){ var v=Number(x); return isFinite(v)?v:(fallback||0); }
+  function latestHistory(){
+    try{
+      var h = JSON.parse(localStorage.getItem('gmf_history_v2') || '[]');
+      return Array.isArray(h) && h.length ? h[h.length-1] : null;
+    }catch(e){ return null; }
+  }
+  var v = Object.assign({}, inputV || {});
+  var hLatest = latestHistory();
+  if(hLatest){
+    ['annualIncome','monthlyExpenses','expenses','income','cash','brokerage','crypto','retire','hsa','cc','otherDebt','auto','student'].forEach(function(k){
+      var cur=Number(v[k]), hv=Number(hLatest[k]);
+      if(!isFinite(cur) && isFinite(hv)) v[k]=hv;
+    });
+  }
+  var annualIncome=n(v.annualIncome,0);
+  var income=n(v.income, annualIncome>0?annualIncome/12:0);
+  if(!(income>0) && hLatest) income=n(hLatest.income, n(hLatest.annualIncome)/12);
+  var expenses=n(v.expenses, n(v.monthlyExpenses,0));
+  if(!(expenses>0) && hLatest) expenses=n(hLatest.monthlyExpenses, n(hLatest.expenses,0));
+  var cash=Math.max(0,n(v.cash));
+  var brokerage0=Math.max(0,n(v.brokerage)+n(v.crypto));
+  var retirement=Math.max(0,n(v.retire)+n(v.hsa));
+  var cc=n(v.cc), otherDebt=n(v.otherDebt), auto=n(v.auto), student=n(v.student);
+  var debtPayments=n(v.debtPayments);
+  if(!(debtPayments>0)){ [cc,otherDebt,auto,student].forEach(function(b){ if(b>0) debtPayments+=Math.min(Math.max(b*0.02,25),b); }); }
+
+  var base={
+    income: Math.max(0,income),
+    expenses: Math.max(0,Math.round(expenses)),
+    debtPayments: Math.max(0,Math.round(debtPayments)),
+    monthlyBurn: Math.max(0,Math.round(expenses))+Math.max(0,Math.round(debtPayments)),
+    cash: Math.round(cash),
+    brokerage: Math.round(brokerage0),
+    retirement: Math.round(retirement)
+  };
+
+  function money2(x){
+    x=n(x); var sign=x<0?'-':''; var a=Math.abs(x);
+    if(a>=1000000) return sign+'$'+(a/1000000).toFixed(a>=10000000?1:2)+'M';
+    if(a>=1000) return sign+'$'+Math.round(a/1000)+'k';
+    return sign+'$'+Math.round(a).toLocaleString();
+  }
+  function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
+
+  function simulate(jobLossMonths, expenseIncreasePct, marketDropPct, useEmergencyFund, months){
+    months=months||24;
+    var cashPool = useEmergencyFund ? base.cash : 0;
+    var brokeragePool = base.brokerage*(1-clamp(marketDropPct,0,90)/100);
+    var starting = cashPool+brokeragePool;
+    var timeline=[starting], breakingMonth=null;
+    for(var m=1;m<=months;m++){
+      var incomeThisMonth = m<=jobLossMonths ? 0 : base.income;
+      var outflow = base.expenses*(1+expenseIncreasePct/100)+base.debtPayments;
+      var net = incomeThisMonth-outflow;
+      if(net>=0){ cashPool+=net; }
+      else{
+        var shortfall=-net;
+        var useC=Math.min(cashPool,shortfall); cashPool-=useC; shortfall-=useC;
+        var useB=Math.min(brokeragePool,shortfall); brokeragePool-=useB; shortfall-=useB;
+        if(shortfall>0) cashPool-=shortfall;
+      }
+      var accessible=cashPool+brokeragePool;
+      if(breakingMonth===null && accessible<=0) breakingMonth=m;
+      timeline.push(accessible);
+    }
+    return {timeline:timeline, startingAccessible:starting, endBalance:cashPool+brokeragePool, breakingMonth:breakingMonth};
+  }
+
+  function scoreFor(jobLossMonths, expenseIncreasePct, marketDropPct, useEmergencyFund){
+    var result=simulate(jobLossMonths, expenseIncreasePct, marketDropPct, useEmergencyFund, 24);
+    var runway=result.breakingMonth===null?24:result.breakingMonth;
+    var runwayPts=clamp(runway/6,0,1)*40;
+    var liquidityRatio=(base.cash+base.brokerage)/Math.max(1,base.cash+base.brokerage+base.retirement);
+    var liquidityPts=liquidityRatio*20;
+    var debtRatio=base.debtPayments/Math.max(1,base.income);
+    var debtPts=clamp(1-debtRatio/.4,0,1)*20;
+    var expenseRatio=base.monthlyBurn/Math.max(1,base.income);
+    var expensePts=clamp(1-expenseRatio,0,1)*20;
+    var score=Math.round(runwayPts+liquidityPts+debtPts+expensePts);
+    var tier=score>=80?'strong':score>=60?'watch':score>=40?'vulnerable':'critical';
+    var labels={strong:'Excellent resilience',watch:'Good resilience',vulnerable:'Some risk',critical:'High risk'};
+    var explains={strong:'You have substantial flexibility to absorb a real financial shock.',watch:"You're in good shape, but a few risks could put pressure on your finances.",vulnerable:'Your cash flow could become problematic fairly quickly under a real shock.',critical:'Building an emergency cushion should be a top priority.'};
+    return {score:score,tier:tier,label:labels[tier],explain:explains[tier],result:result};
+  }
+
+  function monthsCoverage(marketDropPct){
+    var accessible = base.cash + base.brokerage*(1-clamp(marketDropPct,0,90)/100);
+    return base.monthlyBurn>0 ? accessible/base.monthlyBurn : 0;
+  }
+
+  var ringFg=$("st2RingFg"), scoreNum=$("st2ScoreNum"), tierEl=$("st2ScoreTier"), explainEl=$("st2ScoreExplain");
+  var takeawayEl=$("st2Takeaway"), topRiskEl=$("st2TopRisk"), topRiskPillEl=$("st2TopRiskPill");
+  var quickListEl=$("st2QuickList"), impactCardsEl=$("st2ImpactCards"), chartEl=$("st2Chart");
+  var jobLossSlider=$("st2JobLoss"), jobLossNum=$("st2JobLossNum");
+  var expIncSlider=$("st2ExpenseInc"), expIncNum=$("st2ExpenseIncNum");
+  var mktDropSlider=$("st2MarketDrop"), mktDropNum=$("st2MarketDropNum");
+  var emergencySel=$("st2EmergencyUse");
+  var runBtn=$("st2Run"), resetBtn=$("st2Reset"), seeCalcBtn=$("st2SeeCalc"), viewAllBtn=$("st2ViewAll"), buildPlanBtn=$("st2BuildPlan");
+
+  var DEFAULTS={jobLoss:6,expenseInc:20,marketDrop:20,emergency:'yes'};
+
+  function syncSliderNum(slider,numInput){
+    slider.addEventListener('input',function(){ numInput.value=slider.value; });
+    numInput.addEventListener('change',function(){
+      var val=clamp(Number(numInput.value)||0, Number(slider.min), Number(slider.max));
+      numInput.value=val; slider.value=val;
+    });
+  }
+  if(jobLossSlider && jobLossNum && !jobLossSlider._wired){ jobLossSlider._wired=true; syncSliderNum(jobLossSlider,jobLossNum); }
+  if(expIncSlider && expIncNum && !expIncSlider._wired){ expIncSlider._wired=true; syncSliderNum(expIncSlider,expIncNum); }
+  if(mktDropSlider && mktDropNum && !mktDropSlider._wired){ mktDropSlider._wired=true; syncSliderNum(mktDropSlider,mktDropNum); }
+
+  function currentInputs(){
+    return {
+      jobLoss: clamp(Number(jobLossNum.value)||0,0,24),
+      expenseInc: clamp(Number(expIncNum.value)||0,0,100),
+      marketDrop: clamp(Number(mktDropNum.value)||0,0,60),
+      emergency: emergencySel.value==='yes'
+    };
+  }
+
+  function impactRingHtml(score){
+    var circ=2*Math.PI*18;
+    var tier=score>=80?'strong':score>=60?'watch':score>=40?'vulnerable':'critical';
+    var color=(tier==='strong'||tier==='watch')?'#4FC28A':tier==='vulnerable'?'#E8B34A':'#E15B5B';
+    return '<div class="st2-impact-ring-wrap"><svg viewBox="0 0 44 44" width="44" height="44"><circle cx="22" cy="22" r="18" fill="none" stroke="var(--line)" stroke-width="5"/><circle cx="22" cy="22" r="18" fill="none" stroke="'+color+'" stroke-width="5" stroke-linecap="round" stroke-dasharray="'+circ.toFixed(1)+'" stroke-dashoffset="'+(circ*(1-score/100)).toFixed(1)+'" transform="rotate(-90 22 22)"/></svg><div class="st2-impact-ring-num">'+score+'</div></div>';
+  }
+
+  function drawChart(scenarios){
+    if(!chartEl) return;
+    var W=900,H=260,L=54,R=20,T=16,B=30, iw=W-L-R, ih=H-T-B;
+    var allVals=scenarios.reduce(function(acc,s){ return acc.concat(s.timeline); },[]);
+    var minV=Math.min.apply(null,allVals.concat([0]));
+    var maxV=Math.max.apply(null,allVals.concat([1]));
+    if(maxV<=minV) maxV=minV+1;
+    var monthsCount=scenarios[0].timeline.length;
+    function x(i){ return L+(i/(monthsCount-1))*iw; }
+    function y(val){ return T+ih-((val-minV)/(maxV-minV))*ih; }
+    var html='';
+    [minV,(minV+maxV)/2,maxV].forEach(function(g){
+      var gy=y(g);
+      html+='<line x1="'+L+'" y1="'+gy+'" x2="'+(W-R)+'" y2="'+gy+'" stroke="var(--line)" stroke-width="1"/>';
+      html+='<text x="4" y="'+(gy+4)+'" fill="var(--muted-2)" font-size="11" font-family="Inter,Arial,sans-serif">'+money2(g)+'</text>';
+    });
+    var zeroY=y(0);
+    html+='<line x1="'+L+'" y1="'+zeroY+'" x2="'+(W-R)+'" y2="'+zeroY+'" stroke="var(--bad)" stroke-width="1" stroke-dasharray="4 4" opacity=".5"/>';
+    scenarios.forEach(function(s){
+      var pts=s.timeline, path='';
+      for(var i=0;i<pts.length;i++) path+=(i?' L ':'M ')+x(i)+' '+y(pts[i]);
+      if(s.key==='moderate'){
+        var area=path+' L '+x(pts.length-1)+' '+y(minV)+' L '+x(0)+' '+y(minV)+' Z';
+        html+='<path d="'+area+'" fill="'+s.color+'" opacity=".08"/>';
+      }
+      html+='<path d="'+path+'" fill="none" stroke="'+s.color+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"'+(s.dashed?' stroke-dasharray="5 5"':'')+'/>';
+    });
+    var step=monthsCount<=12?3:6;
+    for(var tm=0; tm<monthsCount; tm+=step){
+      var tx=x(tm);
+      html+='<text x="'+tx+'" y="'+(H-8)+'" text-anchor="middle" fill="var(--muted-2)" font-size="11" font-family="Inter,Arial,sans-serif">Month '+tm+'</text>';
+    }
+    chartEl.innerHTML=html;
+  }
+
+  function run(){
+    var inp=currentInputs();
+    var moderate=scoreFor(inp.jobLoss, inp.expenseInc, inp.marketDrop, inp.emergency);
+    var optimistic=simulate(Math.round(inp.jobLoss*0.5), inp.expenseInc*0.5, inp.marketDrop*0.5, inp.emergency, 24);
+    var pessimistic=simulate(Math.min(24,Math.round(inp.jobLoss*1.5)), Math.min(100,inp.expenseInc*1.5), Math.min(60,inp.marketDrop*1.5), inp.emergency, 24);
+    var result=moderate.result;
+
+    if(scoreNum) scoreNum.textContent=String(moderate.score);
+    if(tierEl){ tierEl.textContent=moderate.label; tierEl.className='st2-score-tier '+moderate.tier; }
+    if(explainEl) explainEl.textContent=moderate.explain;
+    if(ringFg){
+      var circ=2*Math.PI*52;
+      var color=(moderate.tier==='strong'||moderate.tier==='watch')?'#4FC28A':moderate.tier==='vulnerable'?'#E8B34A':'#E15B5B';
+      ringFg.setAttribute('stroke-dasharray',circ.toFixed(1));
+      ringFg.setAttribute('stroke-dashoffset',(circ*(1-moderate.score/100)).toFixed(1));
+      ringFg.setAttribute('stroke',color);
+    }
+
+    var months=monthsCoverage(inp.marketDrop);
+    if(takeawayEl) takeawayEl.textContent='You could handle ~'+months.toFixed(1)+' months of expenses before running into trouble.';
+
+    var jobLossResult=simulate(6,0,0,true,24);
+    var expenseResult=simulate(0,20,0,true,24);
+    var marketResult=simulate(0,0,20,true,24);
+    var risks=[
+      {label:'Job loss', breaking: jobLossResult.breakingMonth===null?99:jobLossResult.breakingMonth},
+      {label:'Rising expenses', breaking: expenseResult.breakingMonth===null?99:expenseResult.breakingMonth},
+      {label:'Market drop', breaking: marketResult.breakingMonth===null?99:marketResult.breakingMonth}
+    ].sort(function(a,b){ return a.breaking-b.breaking; });
+    var topRisk=risks[0];
+    if(topRiskEl) topRiskEl.textContent=topRisk.label;
+    if(topRiskPillEl){
+      var impactLevel=topRisk.breaking<=6?'high':topRisk.breaking<=14?'medium':'low';
+      topRiskPillEl.className='st2-impact-pill '+impactLevel;
+      topRiskPillEl.textContent='Impact: '+(impactLevel==='high'?'High':impactLevel==='medium'?'Medium':'Low');
+    }
+
+    var netWorthChange=result.endBalance-result.startingAccessible;
+    var netWorthPct=result.startingAccessible>0 ? (netWorthChange/result.startingAccessible*100) : 0;
+    var monthsStatus=months>=6?'good':months>=3?'moderate':'bad';
+    var endBalStatus=result.endBalance>=0 ? (result.endBalance>=result.startingAccessible*0.5?'good':'moderate') : 'bad';
+    var netChangeStatus=netWorthChange>=0?'good':(netWorthPct>-25?'moderate':'bad');
+    if(impactCardsEl){
+      impactCardsEl.innerHTML=
+        '<div class="st2-impact-card"><div class="st2-impact-num">'+months.toFixed(1)+'</div><div class="st2-impact-label">Months You Can<br>Cover Expenses</div><span class="st2-impact-badge '+monthsStatus+'">'+(monthsStatus==='good'?'Good':monthsStatus==='moderate'?'Moderate':'High Risk')+'</span></div>'+
+        '<div class="st2-impact-card"><div class="st2-impact-num">'+money2(result.endBalance)+'</div><div class="st2-impact-label">End Balance<br>remaining</div><span class="st2-impact-badge '+endBalStatus+'">'+(endBalStatus==='good'?'Good':endBalStatus==='moderate'?'Moderate':'High Risk')+'</span></div>'+
+        '<div class="st2-impact-card"><div class="st2-impact-num">'+money2(netWorthChange)+'</div><div class="st2-impact-label">Net Worth Change<br>('+(netWorthPct>=0?'+':'')+netWorthPct.toFixed(1)+'%)</div><span class="st2-impact-badge '+netChangeStatus+'">'+(netChangeStatus==='good'?'Good':netChangeStatus==='moderate'?'Moderate':'High')+'</span></div>'+
+        '<div class="st2-impact-card">'+impactRingHtml(moderate.score)+'<div class="st2-impact-label">Financial Resilience<br>Score</div><span class="st2-impact-badge '+((moderate.tier==='strong'||moderate.tier==='watch')?'good':moderate.tier==='vulnerable'?'moderate':'bad')+'">'+moderate.label.split(' ')[0]+'</span></div>';
+    }
+
+    drawChart([
+      {key:'optimistic', timeline:optimistic.timeline, color:'#4FC28A', dashed:false},
+      {key:'moderate', timeline:moderate.result.timeline, color:'#E8B34A', dashed:false},
+      {key:'pessimistic', timeline:pessimistic.timeline, color:'#E15B5B', dashed:true}
+    ]);
+  }
+
+  var QUICK_SCENARIOS=[
+    {icon:'💼', softVar:'brand-soft', textVar:'brand-bright', label:'Job loss (6 months)', impact:'high', jobLoss:6, expenseInc:0, marketDrop:0},
+    {icon:'📈', softVar:'gold-soft', textVar:'gold-bright', label:'Expenses increase (20%)', impact:'medium', jobLoss:0, expenseInc:20, marketDrop:0},
+    {icon:'📉', softVar:'bad-soft', textVar:'bad', label:'Market drop (20%)', impact:'low', jobLoss:0, expenseInc:0, marketDrop:20}
+  ];
+  if(quickListEl && !quickListEl._wired){
+    quickListEl._wired=true;
+    quickListEl.innerHTML=QUICK_SCENARIOS.map(function(s,i){
+      return '<button type="button" class="st2-quick-item" data-i="'+i+'"><span class="st2-quick-icon" style="background:var(--'+s.softVar+');color:var(--'+s.textVar+')">'+s.icon+'</span><span class="st2-quick-label">'+s.label+'</span><span class="st2-impact-pill '+s.impact+'">'+(s.impact==='high'?'High':s.impact==='medium'?'Medium':'Low')+' Impact</span></button>';
+    }).join('');
+    quickListEl.querySelectorAll('.st2-quick-item').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var s=QUICK_SCENARIOS[Number(btn.dataset.i)];
+        jobLossSlider.value=s.jobLoss; jobLossNum.value=s.jobLoss;
+        expIncSlider.value=s.expenseInc; expIncNum.value=s.expenseInc;
+        mktDropSlider.value=s.marketDrop; mktDropNum.value=s.marketDrop;
+        run();
+      });
+    });
+  }
+
+  if(runBtn && !runBtn._wired){ runBtn._wired=true; runBtn.addEventListener('click',run); }
+  if(resetBtn && !resetBtn._wired){
+    resetBtn._wired=true;
+    resetBtn.addEventListener('click',function(){
+      jobLossSlider.value=DEFAULTS.jobLoss; jobLossNum.value=DEFAULTS.jobLoss;
+      expIncSlider.value=DEFAULTS.expenseInc; expIncNum.value=DEFAULTS.expenseInc;
+      mktDropSlider.value=DEFAULTS.marketDrop; mktDropNum.value=DEFAULTS.marketDrop;
+      emergencySel.value=DEFAULTS.emergency;
+      run();
+    });
+  }
+  if(seeCalcBtn && !seeCalcBtn._wired){
+    seeCalcBtn._wired=true;
+    seeCalcBtn.addEventListener('click',function(){
+      var advanced=document.querySelector('.st2-advanced-toggle');
+      if(advanced){ advanced.open=true; advanced.scrollIntoView({behavior:'smooth',block:'start'}); }
+    });
+  }
+  if(viewAllBtn && !viewAllBtn._wired){
+    viewAllBtn._wired=true;
+    viewAllBtn.addEventListener('click',function(){
+      var advanced=document.querySelector('.st2-advanced-toggle');
+      if(advanced){
+        advanced.open=true;
+        var presetRow=$("stressPresetRow");
+        if(presetRow) presetRow.scrollIntoView({behavior:'smooth',block:'center'});
+      }
+    });
+  }
+  if(buildPlanBtn && !buildPlanBtn._wired){
+    buildPlanBtn._wired=true;
+    buildPlanBtn.addEventListener('click',function(){
+      var planTab=document.querySelector('.dash-nav-btn[data-tab="scenarios"]');
+      if(planTab) planTab.click();
+    });
+  }
+
+  run();
 }
 
 function projectNetWorthWithEvents(startNet, baseMonthlyContribution, annualRatePct, years, events){
@@ -8661,6 +9192,7 @@ Promise.resolve(init()).then(function(){
       var sr = getLastReport();
       if(sr && sr.v && typeof renderEmergencyStressTest === 'function'){
         renderEmergencyStressTest(sr.v);
+        if(typeof renderStressTest2 === 'function') renderStressTest2(sr.v);
       }else{
         var empty = document.getElementById('insightStressEmptyNote');
         var content = document.getElementById('insightStressContent');
