@@ -1175,7 +1175,7 @@ body.is-pro .pro-blur-overlay{
 
 .stress-score-block{ display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding:32px 0 8px }
 .rs-ring-wrap{ position:relative; flex:none; width:130px; height:130px }
-.rs-ring{ display:block }
+.rs-ring{ display:block; width:100%; height:100% }
 .rs-ring circle{ transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1), stroke .3s ease }
 .rs-ring-num{
   position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:2px;
@@ -1448,7 +1448,7 @@ body.is-pro .pro-blur-overlay{
 
 .stress-score-block{ display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding:32px 0 8px }
 .rs-ring-wrap{ position:relative; flex:none; width:130px; height:130px }
-.rs-ring{ display:block }
+.rs-ring{ display:block; width:100%; height:100% }
 .rs-ring circle{ transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1), stroke .3s ease }
 .rs-ring-num{
   position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:2px;
@@ -12469,6 +12469,31 @@ body::before{
   background:linear-gradient(145deg,#fbfefd 0%,#f2f8f6 55%,#f4f7fb 100%) !important;
   border:1px solid #cfe0dc !important;
   box-shadow:0 18px 48px rgba(28,72,66,.10), inset 0 1px 0 rgba(255,255,255,.95) !important;
+}
+</style>
+
+<style id="gmf-dark-mode-final-failsafe">
+/* Positioned last on purpose: earlier passes (this file has several
+   overlapping theming systems layered over time) leave a few components
+   stuck light in dark mode despite the dark rules existing elsewhere.
+   This block re-asserts the correct dark colors for exactly those
+   components at maximum priority, so nothing later in the cascade can
+   silently win over them again. */
+:root[data-theme="dark"] .hero-card,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .insight-card,
+:root[data-theme="dark"] .metric-card{
+  background:#0d1420 !important; border-color:#1c2536 !important; color:#eef2f8 !important;
+}
+:root[data-theme="dark"] .hv{ color:#eef2f8 !important }
+:root[data-theme="dark"] .hv-sub{ color:#93a0b4 !important }
+:root[data-theme="dark"] .stat-cell{ background:#0d1420 !important; border-color:#1c2536 !important }
+:root[data-theme="dark"] .stat-cell .s-label{ color:#68748a !important }
+:root[data-theme="dark"] .stat-cell .s-val{ color:#eef2f8 !important }
+:root[data-theme="dark"] .gmf-final-chart-card{
+  background:linear-gradient(145deg,#0d1420 0%,#0d1a17 55%,#0d1420 100%) !important;
+  border:1px solid #1c2536 !important;
+  box-shadow:0 18px 48px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03) !important;
 }
 </style>
 
