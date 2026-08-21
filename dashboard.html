@@ -10495,7 +10495,35 @@ function calc(){
  $r('rsStatus').textContent='Projection updated instantly as you change your plan.';
  var target=spend/wd, years=retire-age, monthlyRate=Math.pow(1+rate,1/12)-1, targetInfl=target*Math.pow(1+inf,years);
  var points=[], portfolio=bal, fiYear=null;
- for(var y=0;y<=70;y++){if(y>0){portfolio=portfolio*Math.pow(1+monthlyRate,12)+mo*12*((Math.pow(1+monthlyRate,12)-1)/monthlyRate)} points.push({y:y,v:portfolio}); if(fiYear===null&&portfolio>=target*Math.pow(1+inf,y))fiYear=y}
+ // Two phases, not one continuous 70-year contribution run: while still
+ // working (y <= years), keep compounding AND contributing monthly, same
+ // as before. Once past the chosen retirement age, contributions stop -
+ // the portfolio instead grows at the same rate but has inflation-adjusted
+ // annual spending withdrawn from it every year. Without this split, the
+ // loop was modeling someone who never stops adding new contributions,
+ // even decades past their own stated retirement age - which is how a
+ // modest monthly contribution can genuinely compound into tens of
+ // millions of dollars over a full 70 years, even though that's not a
+ // real, sensible retirement scenario.
+ for(var y=0;y<=70;y++){
+   if(y>0){
+     if(y<=years){
+       // Future value of 12 monthly deposits of `mo`, compounded monthly,
+       // evaluated at year-end: mo * [(1+monthlyRate)^12 - 1] / monthlyRate.
+       // That formula already accounts for all 12 deposits - it was
+       // previously also being multiplied by an extra `*12`, which
+       // effectively added roughly 12x too much in contributions every
+       // single year. Over decades of compounding, that's what turned a
+       // realistic multi-million-dollar projection into $20M+.
+       portfolio=portfolio*Math.pow(1+monthlyRate,12)+mo*((Math.pow(1+monthlyRate,12)-1)/monthlyRate);
+     } else {
+       var annualWithdrawal=spend*Math.pow(1+inf,y-years);
+       portfolio=Math.max(0, portfolio*Math.pow(1+monthlyRate,12)-annualWithdrawal);
+     }
+   }
+   points.push({y:y,v:portfolio});
+   if(fiYear===null&&portfolio>=target*Math.pow(1+inf,y))fiYear=y;
+ }
  var atRet=points[Math.min(years,points.length-1)].v, progress=Math.min(100,bal/target*100), fiAge=fiYear===null?'70+':(age+fiYear).toFixed(1), gap=Math.max(0,(targetInfl-atRet)/Math.max(1,years*12));
  $r('rsResults').style.display='block';$r('rsScore').textContent=progress.toFixed(0)+'%';$r('rsTarget').textContent=money(target);$r('rsPortfolio').textContent=money(atRet);$r('rsPortfolioSub').textContent=years+' years until age '+retire;$r('rsFiAge').textContent=fiAge;$r('rsFiSub').textContent=fiYear===null?'Target not reached in projection':'About '+fiYear.toFixed(1)+' years from now';$r('rsGap').textContent=gap?money(gap)+'/mo':'On track';$r('rsGapSub').textContent=gap?'Estimated extra monthly amount to close target-age gap':'Your current plan reaches the target by your goal age';
  var c=2*Math.PI*68;$r('rsDonutFg').style.strokeDasharray=c;$r('rsDonutFg').style.strokeDashoffset=c*(1-progress/100);$r('rsDonutPct').textContent=progress.toFixed(1)+'%';$r('rsReadinessText').textContent=progress>=25?'You have a meaningful foundation. Compounding has room to work.':'Your contribution rate is doing the heavy lifting now — building the starting balance is the first big milestone.';
