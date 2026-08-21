@@ -107,4 +107,8 @@ var GMF_BLOG_POSTS = [
   { slug:"series-i-savings-bonds-explained", title:"Series I Savings Bonds: How They Work and When They're Worth Buying", category:"Savings" }
 ,
   { slug:"sep-ira-vs-solo-401k-self-employed", title:"SEP IRA vs. Solo 401(k): Which Retirement Plan Actually Wins for the Self-Employed?", category:"Retirement" }
+,
+  { slug:"do-you-need-an-annuity", title:"Annuities: Do You Actually Need One?", category:"Insurance" }
+,
+  { slug:"zero-based-budgeting-explained", title:"Zero-Based Budgeting: How to Give Every Dollar a Job", category:"Budgeting" }
 ];
