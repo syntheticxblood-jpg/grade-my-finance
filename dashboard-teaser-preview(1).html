@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Teaser Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Fraunces:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F3EA; --bg-2:#ECEBDF;
+  --surface:#FFFFFF; --surface-2:#F1F0E6;
+  --line: #DEDCCE;
+  --text:#1A2620; --muted:#4E5F58; --muted-2:#78877F;
+  --gold:#D99A2B; --gold-soft: rgba(245,185,66,.16); --gold-bright:#F5B942;
+  --brand:#2E9C81; --brand-soft:rgba(46,156,129,.12); --brand-bright:#4FBF9F; --brand-text:#FFFFFF;
+  --good:#22C55E; --good-2:#16A34A; --mid:#F5B942; --bad:#C1493D;
+  --radius:14px; --radius-lg:20px;
+  --shadow: 0 20px 50px rgba(28,43,40,.1);
+  --font-display:'Space Grotesk',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-serif:'Fraunces',serif;
+}
+*{box-sizing:border-box}
+body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--font-body); padding:60px 24px; }
+h1,h2,h3,h4{font-family:var(--font-display); margin:0; letter-spacing:-.01em}
+.container{max-width:1180px;margin:0 auto;padding:0 24px}
+.block-head.center{ text-align:center; margin-bottom:32px }
+.kicker{ display:inline-block; font-family:var(--font-mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--brand); margin-bottom:8px }
+.block-head h2{ font-size:28px; max-width:640px; margin:0 auto }
+@media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+
+/* ---------- Pro dashboard preview frame ---------- */
+.pro-dash-frame{
+  max-width:840px; margin:0 auto; border-radius:18px; overflow:hidden; border:1px solid var(--line);
+  box-shadow:0 30px 70px -24px rgba(28,43,40,.18), 0 0 0 1px rgba(46,156,129,.06);
+}
+.pro-dash-chrome{ display:flex; align-items:center; gap:7px; padding:12px 16px; background:var(--surface-2); border-bottom:1px solid var(--line) }
+.pro-dash-chrome span{ width:10px; height:10px; border-radius:50%; background:var(--muted-2); opacity:.5 }
+.pro-dash-url{ margin-left:10px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted); background:var(--bg-2); border:1px solid var(--line); border-radius:6px; padding:4px 10px }
+
+.dpf-body{ display:flex; background:var(--surface); text-align:left }
+.dpf-sidebar{ flex:none; width:180px; display:flex; flex-direction:column; gap:14px; padding:20px 14px; border-right:1px solid var(--line) }
+.dpf-sidebar-brand{ display:flex; align-items:center; gap:8px; padding-bottom:14px; border-bottom:1px solid var(--line) }
+.dpf-sidebar-brand .seal{ position:relative; flex:none; width:26px; height:26px; border-radius:8px; overflow:hidden; background:linear-gradient(165deg,#1a1607,#0E1015 65%); border:1.5px solid rgba(245,185,66,.45); display:grid; place-items:center }
+.dpf-sidebar-brand .wordmark{ font-weight:700; font-size:12.5px }
+.dpf-sidebar-brand .pro-chip{ display:inline-flex; align-items:center; gap:4px; background:linear-gradient(155deg,var(--gold-bright),var(--gold)); color:#1a1300; font-weight:800; font-size:9px; letter-spacing:.03em; padding:2px 7px; border-radius:99px }
+.dpf-nav{ display:flex; flex-direction:column; gap:2px }
+.dpf-nav-item{ display:flex; align-items:center; gap:9px; padding:8px 10px; border-radius:9px; font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; transition:background .2s ease, color .2s ease; }
+.dpf-nav-item svg{ flex:none; opacity:.85 }
+.dpf-nav-item.active{ background:var(--brand-soft); color:var(--brand) }
+.dpf-nav-item:hover{ background:var(--surface-2) }
+
+/* rotating screens */
+.dpf-main-stack{ position:relative; flex:1 1 auto; min-width:0; min-height:428px }
+@media (max-width:700px){ .dpf-main-stack{ min-height:660px } .dpf-sidebar{ display:none } }
+.dpf-screen{
+  position:absolute; inset:0; padding:22px 24px 26px;
+  opacity:0; pointer-events:none; transition:opacity .5s ease;
+}
+.dpf-screen.active{ opacity:1; pointer-events:auto; position:relative }
+
+.dpf-header{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:18px }
+.dpf-greet{ font-family:var(--font-display); font-weight:700; font-size:19px; letter-spacing:-.01em }
+.dpf-greet-sub{ font-size:12px; color:var(--muted); margin-top:3px }
+.dpf-updated{ font-size:11.5px; color:var(--muted-2) }
+.dpf-preview-tag{ flex:none; font-size:9.5px; color:var(--muted-2); text-transform:uppercase; letter-spacing:.05em; font-family:var(--font-mono); margin-top:2px }
+
+.dpf-metrics-row{ display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:12px; margin-bottom:16px }
+@media (max-width:700px){ .dpf-metrics-row{ grid-template-columns:1fr 1fr } }
+.dpf-grade-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px; box-shadow:0 1px 2px rgba(28,43,40,.05); display:flex; align-items:center; gap:14px }
+@media (max-width:700px){ .dpf-grade-card{ grid-column:1/-1 } }
+.dpf-ring-wrap{ position:relative; flex:none; width:76px; height:76px }
+.dpf-ring-wrap.sm{ width:58px; height:58px }
+.dpf-ring-wrap svg{ display:block }
+.dpf-ring-center{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-weight:800; font-size:24px; color:var(--brand-bright) }
+.dpf-ring-center.sm{ font-size:17px }
+.dpf-grade-label{ font-size:11px; color:var(--muted); font-weight:500 }
+.dpf-grade-score{ font-family:var(--font-mono); font-weight:700; font-size:14px; color:var(--muted); margin-top:2px }
+.dpf-grade-explain{ font-size:11px; color:var(--muted); margin-top:3px; line-height:1.4 }
+
+.dpf-metric-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:14px; box-shadow:0 1px 2px rgba(28,43,40,.05) }
+.dpf-metric-head{ display:flex; align-items:center; justify-content:space-between; gap:8px }
+.dpf-m-label{ font-size:11.5px; color:var(--muted); font-weight:500 }
+.dpf-m-icon{ flex:none; width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px }
+.dpf-m-icon.good{ background:var(--good-soft, rgba(34,197,94,.14)); color:var(--good) }
+.dpf-m-icon.brand{ background:rgba(139,110,246,.16); color:#A78BFA }
+.dpf-m-icon.bad{ background:rgba(193,73,61,.14); color:var(--bad) }
+.dpf-m-val{ font-family:var(--font-serif); font-weight:600; font-size:21px; margin-top:5px; color:var(--text) }
+.dpf-m-sub{ font-size:10.5px; color:var(--muted-2); margin-top:3px; font-family:var(--font-mono) }
+.dpf-m-sub.up{ color:var(--good) }
+.dpf-m-sub.down{ color:var(--bad) }
+
+.dpf-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px }
+@media (max-width:700px){ .dpf-grid{ grid-template-columns:1fr } }
+.dpf-hero-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:18px; box-shadow:0 1px 2px rgba(28,43,40,.05) }
+.dpf-section-label{ font-size:10.5px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.05em; display:block; margin-bottom:4px }
+.dpf-hv{ font-family:var(--font-serif); font-weight:600; font-size:23px }
+.dpf-hv-sub{ font-size:11px; color:var(--muted); margin-top:3px }
+.dpf-slider-track{ position:relative; height:8px; border-radius:99px; margin-top:14px; background:linear-gradient(90deg,#EF4444,#F59E0B,#FBBF24,#22C55E) }
+.dpf-slider-marker{ position:absolute; top:50%; width:16px; height:16px; border-radius:50%; background:var(--bg-2); border:3px solid var(--brand); transform:translate(-50%,-50%) }
+.dpf-slider-labels{ display:flex; justify-content:space-between; margin-top:8px; font-size:9.5px; color:var(--muted-2); font-family:var(--font-mono) }
+.dpf-chart-wrap{ margin-top:12px }
+.dpf-chart-wrap svg{ display:block; width:100%; height:auto }
+
+/* Money Flow screen */
+.dpf-flow-summary{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px }
+@media (max-width:700px){ .dpf-flow-summary{ grid-template-columns:1fr } }
+.dpf-flow-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:12px 14px; box-shadow:0 1px 2px rgba(28,43,40,.05) }
+.dpf-flow-val{ font-family:var(--font-serif); font-weight:600; font-size:18px; margin-top:4px }
+.dpf-flow-card.income .dpf-flow-val{ color:var(--good) }
+.dpf-flow-card.expenses .dpf-flow-val{ color:var(--bad) }
+.dpf-flow-card.net .dpf-flow-val{ color:var(--brand) }
+.dpf-flow-legend{ display:flex; gap:16px; margin-top:10px; flex-wrap:wrap; font-size:11px; color:var(--muted) }
+.dpf-flow-legend span{ display:inline-flex; align-items:center; gap:6px }
+.dpf-flow-legend i{ width:12px; height:12px; border-radius:3px; display:inline-block }
+
+/* Stress Test screen */
+.dpf-stress-row{ display:flex; align-items:center; gap:16px; margin-bottom:14px; flex-wrap:wrap }
+.dpf-stress-tier{ font-family:var(--font-serif); font-weight:700; font-size:16px; color:var(--brand) }
+.dpf-stress-explain{ font-size:12px; color:var(--muted); margin-top:3px; max-width:300px }
+.dpf-scenario-chip{ display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; padding:4px 10px; border-radius:20px; background:rgba(193,73,61,.1); color:var(--bad); margin-bottom:8px }
+
+.dpf-dots-row{ display:flex; justify-content:center; align-items:center; gap:8px; margin-top:18px }
+.dpf-dot-btn{ width:7px; height:7px; border-radius:50%; background:var(--line); border:none; cursor:pointer; padding:0; transition:background .3s ease, transform .3s ease; }
+.dpf-dot-btn.active{ background:var(--brand); transform:scale(1.4) }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="block-head center">
+    <span class="kicker">Your finances, over time</span>
+    <h2>Your financial grade tells you where you are. Pro shows you whether you're getting better.</h2>
+  </div>
+
+  <div class="pro-dash-frame" id="proDashPreview">
+    <div class="pro-dash-chrome"><span></span><span></span><span></span><div class="pro-dash-url">grademyfinance.com/dashboard</div></div>
+
+    <div class="dpf-body" role="img" aria-label="Grade My Finance Pro dashboard — financial grade, money flow, stress test, and net worth">
+      <div class="dpf-sidebar">
+        <div class="dpf-sidebar-brand">
+          <span class="seal"><svg width="14" height="14" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="22" cy="22" r="16" stroke="#fff" stroke-width="5"/><rect x="22" y="19" width="12" height="6" fill="#fff"/><path d="M22 6 A16 16 0 0 1 34 17 L28.3 20.2 A10 10 0 0 0 22 13 Z" fill="#F5B942"/></svg></span>
+          <span class="wordmark">Grade My Finance</span>
+          <span class="pro-chip">PRO</span>
+        </div>
+        <nav class="dpf-nav">
+          <div class="dpf-nav-item active" data-screen="overview"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Overview</div>
+          <div class="dpf-nav-item" data-screen="flow"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c4 0 4 6 8 6s4-6 8-6M4 19c4 0 4-6 8-6s4 6 8 6"/></svg>Money Flow</div>
+          <div class="dpf-nav-item" data-screen="stresstest"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>Stress Test</div>
+          <div class="dpf-nav-item" data-screen="networth"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M8 7 9.5 4h5L16 7"/></svg>Net Worth</div>
+        </nav>
+      </div>
+
+      <div class="dpf-main-stack">
+
+        <!-- SCREEN: OVERVIEW -->
+        <div class="dpf-screen active" data-screen="overview">
+          <div class="dpf-header">
+            <div><div class="dpf-greet">Welcome back, Aaron</div><div class="dpf-greet-sub">Here's how your finances look today.</div></div>
+            <div style="text-align:right">
+              <div class="dpf-updated">Updated today</div>
+              <div class="dpf-preview-tag">Live Preview</div>
+            </div>
+          </div>
+          <div class="dpf-metrics-row">
+            <div class="dpf-grade-card">
+              <div class="dpf-ring-wrap">
+                <svg viewBox="0 0 120 120" width="76" height="76" aria-hidden="true">
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-2)" stroke-width="9"/>
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="var(--brand)" stroke-width="9" stroke-linecap="round" stroke-dasharray="314.2" stroke-dashoffset="21" transform="rotate(-90 60 60)"/>
+                </svg>
+                <div class="dpf-ring-center">A+</div>
+              </div>
+              <div>
+                <div class="dpf-grade-label">Financial Grade</div>
+                <div class="dpf-grade-score">92/100</div>
+                <div class="dpf-grade-explain">4-check-in improvement streak</div>
+              </div>
+            </div>
+            <div class="dpf-metric-card">
+              <div class="dpf-metric-head"><span class="dpf-m-label">Net Worth</span><span class="dpf-m-icon good">↗</span></div>
+              <div class="dpf-m-val">$187,245</div>
+              <div class="dpf-m-sub up">↑ 8.4% this year</div>
+            </div>
+            <div class="dpf-metric-card">
+              <div class="dpf-metric-head"><span class="dpf-m-label">Savings Rate</span><span class="dpf-m-icon brand">%</span></div>
+              <div class="dpf-m-val">22%</div>
+              <div class="dpf-m-sub">Above your target</div>
+            </div>
+          </div>
+          <div class="dpf-grid">
+            <div class="dpf-hero-card">
+              <span class="dpf-section-label">Score overview</span>
+              <div class="dpf-hv">92</div>
+              <div class="dpf-hv-sub">A+ · trending up</div>
+              <div class="dpf-slider-track"><div class="dpf-slider-marker" style="left:92%"></div></div>
+              <div class="dpf-slider-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+            </div>
+            <div class="dpf-hero-card">
+              <span class="dpf-section-label">Net worth</span>
+              <div class="dpf-hv">$187,245</div>
+              <div class="dpf-hv-sub">↑ 8.4% over the last year</div>
+              <div class="dpf-chart-wrap">
+                <svg viewBox="0 0 400 110" preserveAspectRatio="none">
+                  <defs><linearGradient id="dpfNetGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4FBF9F" stop-opacity="0.28"/><stop offset="100%" stop-color="#4FBF9F" stop-opacity="0"/></linearGradient></defs>
+                  <path d="M4 86 L 68 74 L 132 79 L 196 55 L 260 60 L 324 32 L 396 22 L 396 106 L 4 106 Z" fill="url(#dpfNetGrad)"/>
+                  <path d="M4 86 L 68 74 L 132 79 L 196 55 L 260 60 L 324 32 L 396 22" fill="none" stroke="#2E9C81" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN: MONEY FLOW -->
+        <div class="dpf-screen" data-screen="flow">
+          <div class="dpf-header">
+            <div><div class="dpf-greet">Money Flow</div><div class="dpf-greet-sub">Where this month's income actually went.</div></div>
+            <div style="text-align:right">
+              <div class="dpf-updated">This month</div>
+              <div class="dpf-preview-tag">Live Preview</div>
+            </div>
+          </div>
+          <div class="dpf-flow-summary">
+            <div class="dpf-flow-card income">
+              <span class="dpf-m-label">Total Income</span>
+              <div class="dpf-flow-val">$6,400</div>
+            </div>
+            <div class="dpf-flow-card expenses">
+              <span class="dpf-m-label">Total Expenses</span>
+              <div class="dpf-flow-val">$4,992</div>
+            </div>
+            <div class="dpf-flow-card net">
+              <span class="dpf-m-label">Net Income</span>
+              <div class="dpf-flow-val">$1,408</div>
+            </div>
+          </div>
+          <div class="dpf-hero-card">
+            <span class="dpf-section-label">Income → Where it went</span>
+            <svg viewBox="0 0 400 130" width="100%" height="120" aria-hidden="true">
+              <rect x="4" y="35" width="8" height="60" rx="2" fill="var(--brand)"/>
+              <rect x="388" y="6" width="8" height="34" rx="2" fill="var(--gold-bright)"/>
+              <rect x="388" y="48" width="8" height="26" rx="2" fill="var(--brand-bright)"/>
+              <rect x="388" y="82" width="8" height="30" rx="2" fill="var(--muted-2)"/>
+              <path d="M12,45 C160,45 240,23 388,23" fill="none" stroke="var(--gold-bright)" stroke-width="20" stroke-opacity=".35" stroke-linecap="round"/>
+              <path d="M12,62 C160,62 240,61 388,61" fill="none" stroke="var(--brand-bright)" stroke-width="14" stroke-opacity=".4" stroke-linecap="round"/>
+              <path d="M12,80 C160,80 240,97 388,97" fill="none" stroke="var(--muted-2)" stroke-width="16" stroke-opacity=".35" stroke-linecap="round"/>
+            </svg>
+            <div class="dpf-flow-legend">
+              <span><i style="background:var(--gold-bright)"></i>Fixed costs — 52%</span>
+              <span><i style="background:var(--brand-bright)"></i>Savings — 22%</span>
+              <span><i style="background:var(--muted-2)"></i>Discretionary — 26%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN: STRESS TEST -->
+        <div class="dpf-screen" data-screen="stresstest">
+          <div class="dpf-header">
+            <div><div class="dpf-greet">Stress Test</div><div class="dpf-greet-sub">If your income stopped tomorrow, what actually happens?</div></div>
+            <div style="text-align:right">
+              <div class="dpf-updated">Job loss scenario</div>
+              <div class="dpf-preview-tag">Live Preview</div>
+            </div>
+          </div>
+          <div class="dpf-stress-row">
+            <div class="dpf-ring-wrap sm">
+              <svg viewBox="0 0 120 120" width="58" height="58" aria-hidden="true">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-2)" stroke-width="9"/>
+                <circle cx="60" cy="60" r="50" fill="none" stroke="var(--brand)" stroke-width="9" stroke-linecap="round" stroke-dasharray="314.2" stroke-dashoffset="69" transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="dpf-ring-center sm">78</div>
+            </div>
+            <div>
+              <span class="dpf-scenario-chip">⚠ Job loss + $10k emergency cost</span>
+              <div class="dpf-stress-tier">Resilient</div>
+              <div class="dpf-stress-explain">Your emergency fund covers 7.2 months before you'd need to make changes.</div>
+            </div>
+          </div>
+          <div class="dpf-hero-card">
+            <span class="dpf-section-label">Liquid assets during the event</span>
+            <div class="dpf-hv">7.2 months</div>
+            <div class="dpf-hv-sub">runway before cash runs out</div>
+            <div class="dpf-chart-wrap">
+              <svg viewBox="0 0 400 110" preserveAspectRatio="none">
+                <defs><linearGradient id="dpfStressGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C1493D" stop-opacity="0.22"/><stop offset="100%" stop-color="#C1493D" stop-opacity="0"/></linearGradient></defs>
+                <path d="M4 20 L 60 22 L 96 46 L 160 78 L 224 92 L 288 84 L 352 66 L 396 58 L 396 106 L 4 106 Z" fill="url(#dpfStressGrad)"/>
+                <path d="M4 20 L 60 22 L 96 46 L 160 78 L 224 92 L 288 84 L 352 66 L 396 58" fill="none" stroke="#C1493D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN: NET WORTH -->
+        <div class="dpf-screen" data-screen="networth">
+          <div class="dpf-header">
+            <div><div class="dpf-greet">Net Worth</div><div class="dpf-greet-sub">Assets, debts, and the trend that matters.</div></div>
+            <div style="text-align:right">
+              <div class="dpf-updated">Updated today</div>
+              <div class="dpf-preview-tag">Live Preview</div>
+            </div>
+          </div>
+          <div class="dpf-hero-card" style="margin-bottom:14px">
+            <span class="dpf-section-label">12-month trend</span>
+            <div class="dpf-hv">$187,245</div>
+            <div class="dpf-chart-wrap">
+              <svg viewBox="0 0 500 90" preserveAspectRatio="none">
+                <defs><linearGradient id="dpfNetGrad2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4FBF9F" stop-opacity="0.28"/><stop offset="100%" stop-color="#4FBF9F" stop-opacity="0"/></linearGradient></defs>
+                <path d="M0,75 45,72 90,68 135,66 180,58 225,55 270,44 315,40 360,30 405,24 450,14 500,6 500,90 0,90 Z" fill="url(#dpfNetGrad2)"/>
+                <path d="M0,75 45,72 90,68 135,66 180,58 225,55 270,44 315,40 360,30 405,24 450,14 500,6" fill="none" stroke="#2E9C81" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="dpf-metrics-row" style="grid-template-columns:repeat(3,1fr)">
+            <div class="dpf-metric-card">
+              <div class="dpf-metric-head"><span class="dpf-m-label">Assets</span><span class="dpf-m-icon good">↗</span></div>
+              <div class="dpf-m-val">$241,800</div>
+              <div class="dpf-m-sub up">↑ 6.1% YTD</div>
+            </div>
+            <div class="dpf-metric-card">
+              <div class="dpf-metric-head"><span class="dpf-m-label">Debts</span><span class="dpf-m-icon bad">↘</span></div>
+              <div class="dpf-m-val">$54,555</div>
+              <div class="dpf-m-sub down">↓ 11% YTD</div>
+            </div>
+            <div class="dpf-metric-card">
+              <div class="dpf-metric-head"><span class="dpf-m-label">Coast FI Age</span><span class="dpf-m-icon brand">◎</span></div>
+              <div class="dpf-m-val">52</div>
+              <div class="dpf-m-sub">On pace</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="dpf-dots-row" id="proDashDots">
+    <button class="dpf-dot-btn active" data-dot="overview" aria-label="Overview"></button>
+    <button class="dpf-dot-btn" data-dot="flow" aria-label="Money Flow"></button>
+    <button class="dpf-dot-btn" data-dot="stresstest" aria-label="Stress Test"></button>
+    <button class="dpf-dot-btn" data-dot="networth" aria-label="Net Worth"></button>
+  </div>
+
+  <div style="text-align:center;margin-top:28px">
+    <a class="btn gold" href="#pricing" style="display:inline-block;padding:12px 24px;border-radius:10px;background:linear-gradient(155deg,var(--gold-bright),var(--gold));color:#1a1300;font-weight:700;text-decoration:none;font-family:var(--font-display)">Explore Pro →</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.getElementById('proDashPreview');
+  if(!root) return;
+  var navItems = root.querySelectorAll('.dpf-nav-item[data-screen]');
+  var screens = root.querySelectorAll('.dpf-screen[data-screen]');
+  var dots = document.querySelectorAll('#proDashDots .dpf-dot-btn');
+  var order = ['overview','flow','stresstest','networth'];
+  var idx = 0, timer = null;
+
+  function show(name){
+    navItems.forEach(function(n){ n.classList.toggle('active', n.getAttribute('data-screen')===name); });
+    screens.forEach(function(s){ s.classList.toggle('active', s.getAttribute('data-screen')===name); });
+    dots.forEach(function(d){ d.classList.toggle('active', d.getAttribute('data-dot')===name); });
+    idx = order.indexOf(name);
+  }
+  function next(){ show(order[(idx+1) % order.length]); }
+  function start(){ stop(); timer = setInterval(next, 4500); }
+  function stop(){ if(timer) clearInterval(timer); }
+
+  navItems.forEach(function(n){
+    n.addEventListener('click', function(){ show(n.getAttribute('data-screen')); start(); });
+  });
+  dots.forEach(function(d){
+    d.addEventListener('click', function(){ show(d.getAttribute('data-dot')); start(); });
+  });
+
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', start);
+
+  start();
+})();
+</script>
+</body>
+</html>
