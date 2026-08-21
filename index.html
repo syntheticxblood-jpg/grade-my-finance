@@ -8621,7 +8621,6 @@ const GMF_COUNTER_OFFSET = 15;
 
 function formatCount(n){
   n = Math.max(0, Math.round(Number(n)||0));
-  if(n>=1000) return (Math.floor(n/100)*100).toLocaleString()+"+";
   return n.toLocaleString();
 }
 function getCachedGradeCount(){
