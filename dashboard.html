@@ -1290,6 +1290,62 @@ body.is-pro .pro-blur-overlay{
 .nwage-verdict.ahead{ background:var(--good-soft); color:var(--good) }
 .nwage-verdict.ontrack{ background:var(--brand-soft); color:var(--brand-bright) }
 .nwage-verdict.behind{ background:var(--bad-soft); color:var(--bad) }
+
+/* ================= INVESTMENT DEEP-DIVE ================= */
+.inv-hero{ display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; padding:28px 30px; background:linear-gradient(135deg,#1f2937,#111827); border-radius:18px; margin-bottom:18px; color:#fff }
+.inv-hero .inv-kicker{ font:800 11px var(--font-mono); text-transform:uppercase; letter-spacing:.08em; color:#93c5fd }
+.inv-hero h2{ font-family:var(--font-serif); font-size:26px; font-weight:700; margin:8px 0 8px; color:#fff }
+.inv-hero h2 span{ color:#93c5fd }
+.inv-hero p{ margin:0; color:#cbd5e1; font-size:14px; max-width:520px }
+.inv-hero-badge{ background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:16px; padding:16px 22px; text-align:center; flex:none }
+.inv-hero-badge b{ display:block; font-family:var(--font-serif); font-size:26px; color:#fff }
+.inv-hero-badge span{ font-size:11px; color:#94a3b8; text-transform:uppercase; letter-spacing:.05em }
+
+.inv-top-row{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px }
+@media (max-width:900px){ .inv-top-row{ grid-template-columns:1fr } }
+.inv-sub{ margin:4px 0 14px; color:var(--muted); font-size:12.5px }
+.inv-score-body{ display:flex; align-items:center; gap:16px }
+.inv-score-tier{ font-weight:800; font-size:14.5px; margin-bottom:4px; color:#5B8DEF }
+.inv-score-text p{ margin:0; font-size:12.5px; color:var(--muted); line-height:1.5 }
+.inv-conc-list{ margin-top:16px; display:flex; flex-direction:column; gap:8px }
+.inv-conc-item{ display:flex; align-items:center; gap:10px; font-size:12.5px }
+.inv-conc-item .bar{ flex:1; height:8px; border-radius:99px; background:var(--surface-2); overflow:hidden }
+.inv-conc-item .bar > div{ height:100%; border-radius:99px }
+.inv-conc-item .lbl{ width:90px; flex:none; color:var(--muted) }
+.inv-conc-item .val{ width:48px; flex:none; text-align:right; font-family:var(--font-mono); font-weight:700 }
+.inv-conc-item.flag .lbl{ color:var(--bad); font-weight:700 }
+
+.inv-mix-legend{ display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; justify-content:center }
+.inv-mix-legend span{ display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted) }
+.inv-mix-legend i{ width:10px; height:10px; border-radius:50%; display:inline-block }
+
+.inv-fee-card, .inv-bench-card, .inv-next-card{ margin-bottom:18px }
+.inv-fee-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:16px }
+@media (max-width:760px){ .inv-fee-grid{ grid-template-columns:1fr } }
+.inv-fee-inputs label{ display:block; font-size:12.5px; font-weight:700; color:var(--text); margin-bottom:14px }
+.inv-fee-slider{ display:flex; align-items:center; gap:8px; margin-top:8px }
+.inv-fee-slider input[type="range"]{ flex:1; accent-color:#5B8DEF }
+.inv-fee-slider input[type="number"]{ width:56px; padding:5px; border:1px solid var(--line); border-radius:7px; background:var(--surface-2); color:var(--text); font-family:var(--font-mono); font-size:12px; text-align:center }
+.inv-fee-slider span{ font-size:11.5px; color:var(--muted-2) }
+.inv-fee-caption{ display:block; font-size:11px; color:var(--muted-2); font-weight:500; margin-top:4px }
+.inv-fee-stats{ display:flex; flex-direction:column; gap:10px; justify-content:center }
+.inv-fee-stat{ display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border-radius:10px; background:var(--surface-2); border:1px solid var(--line) }
+.inv-fee-stat span{ font-size:12px; color:var(--muted) }
+.inv-fee-stat b{ font-family:var(--font-serif); font-size:16px; color:var(--text) }
+.inv-fee-stat.bad b{ color:var(--bad) }
+.inv-fee-legend, .inv-bench-legend{ display:flex; gap:16px; justify-content:flex-end; margin-top:8px }
+.inv-fee-legend span, .inv-bench-legend span{ display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted) }
+.inv-fee-legend i, .inv-bench-legend i{ width:14px; height:3px; border-radius:2px; display:inline-block }
+
+.inv-bench-inputs{ display:flex; gap:24px; flex-wrap:wrap; margin-bottom:16px }
+.inv-bench-inputs label{ font-size:12.5px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px }
+.inv-bench-inputs input{ width:64px; padding:6px 8px; border:1px solid var(--line); border-radius:7px; background:var(--surface-2); color:var(--text); font-family:var(--font-mono); font-size:13px; text-align:center }
+.inv-bench-verdict{ margin-top:14px; padding:12px 14px; border-radius:10px; font-size:13px; line-height:1.5 }
+.inv-bench-verdict.good{ background:var(--good-soft); color:var(--good) }
+.inv-bench-verdict.bad{ background:var(--bad-soft); color:var(--bad) }
+.inv-next-card{ background:linear-gradient(135deg,#0f2f2a,#0a3d33); color:#fff; border:none }
+.inv-next-card h3{ font-family:var(--font-serif); font-size:18px; margin:4px 0 8px; color:#fff }
+.inv-next-card p{ margin:0; color:#a7d8ce; font-size:13px; line-height:1.55 }
 .bench-row:last-child{ border-bottom:none; padding-bottom:2px }
 .bench-row-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px; gap:10px }
 .bench-row-head span:first-child{ font-weight:700; font-size:13.5px }
@@ -3401,6 +3457,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="nav-section-label">PLANNING</div>
       <button class="dash-nav-btn" data-tab="scenarios" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>Plan <span class="insights-pro-nav">PRO</span></button>
       <button class="dash-nav-btn" data-tab="retirement" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Retirement <span class="insights-pro-nav">PRO</span></button>
+      <button class="dash-nav-btn" data-tab="investing" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-5 3 3 5-7"/></svg>Investing <span class="insights-pro-nav">PRO</span></button>
       <div class="nav-section-label">INSIGHTS</div>
       <button class="dash-nav-btn" data-tab="score" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg>Grade Report</button>
       <button class="dash-nav-btn" data-tab="insights" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Insights <span class="insights-pro-nav">PRO</span></button>
@@ -4293,6 +4350,86 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
   </div>
   </div>
 </div>
+
+    <!-- ================= INVESTING DEEP-DIVE ================= -->
+    <div class="dash-tab-panel" id="panel-investing">
+      <div class="pro-blur-section">
+      <div class="pro-blur-content">
+      <div class="inv-hero">
+        <div><span class="inv-kicker">INVESTMENT DEEP-DIVE</span><h2>How your money is <span>actually working.</span></h2><p>Diversification, hidden fee drag, and how you stack up against a simple index fund — the analysis most people never get to see.</p></div>
+        <div class="inv-hero-badge"><b id="invDivScoreHero">—</b><span>Diversification</span></div>
+      </div>
+
+      <div class="inv-top-row">
+        <div class="card inv-score-card">
+          <span class="section-label" style="margin:0">Diversification Score</span>
+          <p class="inv-sub">How spread out your money is across asset types.</p>
+          <div class="inv-score-body">
+            <div class="rs-ring-wrap">
+              <svg class="rs-ring" viewBox="0 0 120 120" width="104" height="104" aria-hidden="true">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="10"/>
+                <circle id="invDivRingFg" cx="60" cy="60" r="52" fill="none" stroke="#5B8DEF" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="rs-ring-num"><span id="invDivScore">—</span><span class="rs-ring-max">/100</span></div>
+            </div>
+            <div class="inv-score-text">
+              <div class="inv-score-tier" id="invDivTier">—</div>
+              <p id="invDivExplain">—</p>
+            </div>
+          </div>
+          <div id="invConcentrationList" class="inv-conc-list"></div>
+        </div>
+        <div class="card inv-mix-card">
+          <span class="section-label" style="margin:0">Where it actually sits</span>
+          <p class="inv-sub">Your investable assets, broken out by type.</p>
+          <svg id="invMixChart" width="100%" height="200" viewBox="0 0 300 200"></svg>
+          <div id="invMixLegend" class="inv-mix-legend"></div>
+        </div>
+      </div>
+
+      <div class="card inv-fee-card">
+        <div class="inv-card-head"><div><span class="section-label" style="margin:0">Fee Impact Analysis</span><p class="inv-sub">A 1% fee sounds small. Over decades, it almost never is.</p></div></div>
+        <div class="inv-fee-grid">
+          <div class="inv-fee-inputs">
+            <label>Your blended expense ratio<div class="inv-fee-slider"><input type="range" id="invFeeRate" min="0" max="2" step="0.05" value="0.6"><input type="number" id="invFeeRateNum" min="0" max="2" step="0.05" value="0.6"><span>%</span></div></label>
+            <label>Compare against<div class="inv-fee-slider"><input type="range" id="invLowFeeRate" min="0" max="1" step="0.01" value="0.05"><input type="number" id="invLowFeeRateNum" min="0" max="1" step="0.01" value="0.05"><span>%</span></div><span class="inv-fee-caption">A typical low-cost index fund</span></label>
+          </div>
+          <div class="inv-fee-stats">
+            <div class="inv-fee-stat"><span>Lost to fees in 10 years</span><b id="invFee10">—</b></div>
+            <div class="inv-fee-stat"><span>Lost to fees in 20 years</span><b id="invFee20">—</b></div>
+            <div class="inv-fee-stat bad"><span>Lost to fees in 30 years</span><b id="invFee30">—</b></div>
+          </div>
+        </div>
+        <svg id="invFeeChart" width="100%" height="220" viewBox="0 0 900 260"></svg>
+        <div class="inv-fee-legend"><span><i style="background:#5B8DEF"></i>At your fee</span><span><i style="background:#19b58e"></i>At low-cost fee</span></div>
+      </div>
+
+      <div class="card inv-bench-card">
+        <span class="section-label" style="margin:0">Benchmark: You vs. a Simple Index Fund</span>
+        <p class="inv-sub">If your current invested balance just tracked a plain, low-cost index fund from here on, versus growing at your own estimated rate.</p>
+        <div class="inv-bench-inputs">
+          <label>Your estimated annual return<input type="number" id="invOwnReturn" min="-20" max="30" step="0.5" value="7">%</label>
+          <label>Index fund historical average<input type="number" id="invIndexReturn" min="0" max="20" step="0.5" value="10">%</label>
+        </div>
+        <svg id="invBenchChart" width="100%" height="240" viewBox="0 0 900 270"></svg>
+        <div class="inv-bench-legend"><span><i style="background:#5B8DEF"></i>Your estimated rate</span><span><i style="background:#E8B34A"></i>Index fund average</span></div>
+        <div id="invBenchVerdict" class="inv-bench-verdict"></div>
+      </div>
+
+      <div class="card inv-next-card">
+        <span class="section-label" style="margin:0">Smart next move</span>
+        <h3 id="invAdviceTitle">—</h3>
+        <p id="invAdvice">—</p>
+      </div>
+      </div>
+      <div class="pro-blur-overlay">
+        <div class="pro-blur-title">🔒 See the deepest analysis of your money</div>
+        <div class="pro-blur-sub">Diversification score, real fee drag in dollars, and how you stack up against a simple index fund.</div>
+        <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
+      </div>
+      </div>
+    </div>
+
     <!-- ================= INSIGHTS ================= -->
     <div class="dash-tab-panel" id="panel-insights">
       <span class="section-label">Insights</span>
@@ -6085,6 +6222,7 @@ function __track(){} // no-op if GA hasn't wired a custom tracker on this page
     goals:{title:'Goals',sub:'Turn your financial priorities into measurable targets you can actually track.'},
     scenarios:{title:'Your Plan',sub:'Choose the next move, build a plan, and see what changes before you commit.'},
     retirement:{title:'Retirement',sub:'Build your path to financial independence, with real numbers.'},
+    investing:{title:'Investing',sub:'The deepest look at how your money is actually working.'},
     score:{title:'Grade Report',sub:'Understand exactly what is driving your Financial Grade and how it can improve.'},
     insights:{title:'Insights',sub:'Go beyond the headline with financial context, benchmarks, and decision tools.'}
   };
@@ -6293,6 +6431,7 @@ function renderInsightExtras(){
   // calculating and drawing its score, data, and chart.
   try{ renderBenchmarksPanel(saved.v, saved.cats); }catch(e){ console.warn('Benchmarks render failed:', e); }
   try{ renderNetWorthByAgeChart(saved.v); }catch(e){ console.warn('Net worth by age chart failed:', e); }
+  try{ renderInvestingPanel(saved.v); }catch(e){ console.warn('Investing panel render failed:', e); }
   try{ renderTimeCostTranslator(saved.v); }catch(e){ console.warn('Time-cost render failed:', e); }
   try{ renderLifestyleInflationSimulator(saved.v); }catch(e){ console.warn('Lifestyle render failed:', e); }
   try{ renderNetWorthPaceGauge(saved.v); }catch(e){ console.warn('Pace gauge render failed:', e); }
@@ -7473,6 +7612,221 @@ function renderNetWorthByAgeChart(v){
     };
     verdictEl.className='nwage-verdict '+tier;
     verdictEl.textContent=msgs[tier];
+  }
+}
+
+/* ================= INVESTMENT DEEP-DIVE ================= */
+function renderInvestingPanel(v){
+  if(!$("invDivScore")) return;
+  v = v || {};
+  function n(x){ var num=Number(x); return isFinite(num)?num:0; }
+  function clampI(x,a,b){ return Math.max(a,Math.min(b,x)); }
+  function money2(x){
+    x=n(x); var sign=x<0?'-':''; var ab=Math.abs(x);
+    if(ab>=1000000) return sign+'$'+(ab/1000000).toFixed(2)+'M';
+    if(ab>=1000) return sign+'$'+Math.round(ab/1000)+'k';
+    return sign+'$'+Math.round(ab).toLocaleString();
+  }
+
+  var cats = {
+    retire: Math.max(0,n(v.retire)+n(v.hsa)),
+    brokerage: Math.max(0,n(v.brokerage)),
+    crypto: Math.max(0,n(v.crypto))
+  };
+  var investable = cats.retire+cats.brokerage+cats.crypto;
+
+  // ---- Diversification score ----
+  var divScore, divTier, divExplain;
+  if(investable<=0){
+    divScore=null; divTier='—'; divExplain='Add your account balances to see your diversification score.';
+  } else {
+    var shares = Object.keys(cats).map(function(k){ return cats[k]/investable; });
+    var hhi = shares.reduce(function(s,p){ return s+p*p; },0); // 1/n (best) to 1 (worst)
+    var n_cats = Object.keys(cats).filter(function(k){ return cats[k]>0; }).length;
+    var minHhi = 1/Math.max(1,n_cats);
+    var normalized = n_cats<=1 ? 1 : clampI((hhi-minHhi)/(1-minHhi),0,1); // 0=perfectly spread, 1=all in one
+    divScore = Math.round((1-normalized)*100);
+    var cryptoShare = cats.crypto/investable;
+    if(cryptoShare>0.15) divScore = Math.max(0, divScore-15);
+    divScore = clampI(divScore,0,100);
+    divTier = divScore>=70?'Well diversified':divScore>=45?'Moderately concentrated':'Highly concentrated';
+    divExplain = divScore>=70
+      ? 'Your investable assets are spread across multiple account types — a real risk-reducer.'
+      : divScore>=45
+        ? 'Your money leans heavily toward one or two account types. Not alarming, but worth watching.'
+        : 'Most of your investable assets sit in a single place. A shock to that one category hits your whole portfolio.';
+  }
+  $("invDivScore").textContent = divScore===null?'—':String(divScore);
+  $("invDivScoreHero").textContent = divScore===null?'—':divScore+'/100';
+  $("invDivTier").textContent = divTier;
+  $("invDivExplain").textContent = divExplain;
+  var ringFg=$("invDivRingFg");
+  if(ringFg){
+    var circ=2*Math.PI*52;
+    var color = divScore===null?'#8791a1':divScore>=70?'#19b58e':divScore>=45?'#E8B34A':'#E15B5B';
+    ringFg.setAttribute('stroke-dasharray',circ.toFixed(1));
+    ringFg.setAttribute('stroke-dashoffset',(circ*(1-(divScore||0)/100)).toFixed(1));
+    ringFg.setAttribute('stroke',color);
+  }
+
+  var concEl=$("invConcentrationList");
+  if(concEl){
+    var CAT_META={retire:{label:'Retirement + HSA',color:'#5B8DEF'},brokerage:{label:'Brokerage',color:'#19b58e'},crypto:{label:'Crypto',color:'#E8B34A'}};
+    if(investable<=0){
+      concEl.innerHTML='<div class="small" style="color:var(--muted)">No investable balances yet — add accounts to see this breakdown.</div>';
+    } else {
+      concEl.innerHTML = Object.keys(cats).map(function(k){
+        var pct = Math.round(cats[k]/investable*100);
+        var flagged = (k==='crypto' && pct>15) || pct>70;
+        return '<div class="inv-conc-item'+(flagged?' flag':'')+'"><span class="lbl">'+CAT_META[k].label+'</span><div class="bar"><div style="width:'+pct+'%;background:'+CAT_META[k].color+'"></div></div><span class="val">'+pct+'%</span></div>';
+      }).join('');
+    }
+  }
+
+  // ---- Mix donut ----
+  var mixChart=$("invMixChart"), mixLegend=$("invMixLegend");
+  if(mixChart){
+    if(investable<=0){
+      mixChart.innerHTML='<text x="150" y="100" text-anchor="middle" fill="var(--muted-2)" font-size="13" font-family="Inter,Arial,sans-serif">Add accounts to see your mix</text>';
+      if(mixLegend) mixLegend.innerHTML='';
+    } else {
+      var segs=[
+        {key:'retire',label:'Retirement + HSA',val:cats.retire,color:'#5B8DEF'},
+        {key:'brokerage',label:'Brokerage',val:cats.brokerage,color:'#19b58e'},
+        {key:'crypto',label:'Crypto',val:cats.crypto,color:'#E8B34A'}
+      ].filter(function(s){ return s.val>0; });
+      var cx=150,cy=100,r=70,r2=42,startAngle=-90;
+      var path='';
+      segs.forEach(function(s){
+        var frac=s.val/investable, angle=frac*360;
+        var a0=startAngle*Math.PI/180, a1=(startAngle+angle)*Math.PI/180;
+        var x0=cx+r*Math.cos(a0), y0=cy+r*Math.sin(a0), x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1);
+        var xi0=cx+r2*Math.cos(a1), yi0=cy+r2*Math.sin(a1), xi1=cx+r2*Math.cos(a0), yi1=cy+r2*Math.sin(a0);
+        var large=angle>180?1:0;
+        path+='<path d="M '+x0+' '+y0+' A '+r+' '+r+' 0 '+large+' 1 '+x1+' '+y1+' L '+xi0+' '+yi0+' A '+r2+' '+r2+' 0 '+large+' 0 '+xi1+' '+yi1+' Z" fill="'+s.color+'"/>';
+        startAngle+=angle;
+      });
+      path+='<text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-size="18" font-weight="800" fill="var(--text)" font-family="Inter,Arial,sans-serif">'+money2(investable)+'</text><text x="'+cx+'" y="'+(cy+16)+'" text-anchor="middle" font-size="10.5" fill="var(--muted-2)" font-family="Inter,Arial,sans-serif">INVESTABLE</text>';
+      mixChart.innerHTML=path;
+      if(mixLegend) mixLegend.innerHTML = segs.map(function(s){ return '<span><i style="background:'+s.color+'"></i>'+s.label+' · '+Math.round(s.val/investable*100)+'%</span>'; }).join('');
+    }
+  }
+
+  // ---- Fee impact ----
+  var feeSlider=$("invFeeRate"), feeNum=$("invFeeRateNum"), lowFeeSlider=$("invLowFeeRate"), lowFeeNum=$("invLowFeeRateNum");
+  function syncPair(slider,num){
+    if(!slider._wired){
+      slider._wired=true;
+      slider.addEventListener('input',function(){ num.value=slider.value; runFees(); });
+      num.addEventListener('change',function(){ var val=clampI(Number(num.value)||0,Number(slider.min),Number(slider.max)); num.value=val; slider.value=val; runFees(); });
+    }
+  }
+  if(feeSlider&&feeNum) syncPair(feeSlider,feeNum);
+  if(lowFeeSlider&&lowFeeNum) syncPair(lowFeeSlider,lowFeeNum);
+
+  function drawFeeChart(feeRate,lowRate){
+    var chartEl=$("invFeeChart"); if(!chartEl) return;
+    var ASSUMED_RETURN=0.07;
+    var years=30, W=900,H=260,L=64,R=24,T=20,B=34, iw=W-L-R, ih=H-T-B;
+    var atFee=[investable], atLow=[investable];
+    for(var yr0=1;yr0<=years;yr0++){
+      atFee.push(atFee[yr0-1]*(1+ASSUMED_RETURN-feeRate/100));
+      atLow.push(atLow[yr0-1]*(1+ASSUMED_RETURN-lowRate/100));
+    }
+    var maxVal=Math.max.apply(null, atFee.concat(atLow).concat([1]));
+    function x(yv){ return L+(yv/years)*iw; }
+    function yScale(val){ return T+ih-(val/maxVal)*ih; }
+    var html='';
+    [0,maxVal/2,maxVal].forEach(function(g){
+      var gy=yScale(g);
+      html+='<line x1="'+L+'" y1="'+gy+'" x2="'+(W-R)+'" y2="'+gy+'" stroke="var(--line)" stroke-width="1"/>';
+      html+='<text x="4" y="'+(gy+4)+'" fill="var(--muted-2)" font-size="11" font-family="Inter,Arial,sans-serif">'+money2(g)+'</text>';
+    });
+    [0,10,20,30].forEach(function(yr){ html+='<text x="'+x(yr)+'" y="'+(H-10)+'" text-anchor="middle" fill="var(--muted-2)" font-size="11" font-family="Inter,Arial,sans-serif">Yr '+yr+'</text>'; });
+    var p1=atLow.map(function(val,i){ return (i?' L ':'M ')+x(i)+' '+yScale(val); }).join('');
+    var p2=atFee.map(function(val,i){ return (i?' L ':'M ')+x(i)+' '+yScale(val); }).join('');
+    html+='<path d="'+p1+'" fill="none" stroke="#19b58e" stroke-width="3"/>';
+    html+='<path d="'+p2+'" fill="none" stroke="#5B8DEF" stroke-width="3"/>';
+    chartEl.innerHTML=html;
+    return {atFee:atFee,atLow:atLow};
+  }
+
+  function runFees(){
+    var feeRate=Number(feeNum?feeNum.value:0.6)||0, lowRate=Number(lowFeeNum?lowFeeNum.value:0.05)||0;
+    if(investable<=0){
+      ['invFee10','invFee20','invFee30'].forEach(function(id){ if($(id)) $(id).textContent='—'; });
+      var ce=$("invFeeChart"); if(ce) ce.innerHTML='<text x="450" y="130" text-anchor="middle" fill="var(--muted-2)" font-size="13" font-family="Inter,Arial,sans-serif">Add accounts to see fee impact</text>';
+      return;
+    }
+    var res=drawFeeChart(feeRate,lowRate);
+    if($("invFee10")) $("invFee10").textContent=money2(res.atLow[10]-res.atFee[10]);
+    if($("invFee20")) $("invFee20").textContent=money2(res.atLow[20]-res.atFee[20]);
+    if($("invFee30")) $("invFee30").textContent=money2(res.atLow[30]-res.atFee[30]);
+  }
+  runFees();
+
+  // ---- Benchmark vs index ----
+  var ownReturnEl=$("invOwnReturn"), indexReturnEl=$("invIndexReturn");
+  function runBenchmark(){
+    var chartEl=$("invBenchChart"), verdictEl=$("invBenchVerdict"); if(!chartEl) return;
+    var ownRate=(Number(ownReturnEl?ownReturnEl.value:7)||0)/100;
+    var idxRate=(Number(indexReturnEl?indexReturnEl.value:10)||0)/100;
+    if(investable<=0){
+      chartEl.innerHTML='<text x="450" y="130" text-anchor="middle" fill="var(--muted-2)" font-size="13" font-family="Inter,Arial,sans-serif">Add accounts to see this comparison</text>';
+      if(verdictEl){ verdictEl.className='inv-bench-verdict'; verdictEl.textContent=''; }
+      return;
+    }
+    var years=20, W=900,H=270,L=64,R=24,T=20,B=34, iw=W-L-R, ih=H-T-B;
+    var own=[investable], idx=[investable];
+    for(var y=1;y<=years;y++){ own.push(own[y-1]*(1+ownRate)); idx.push(idx[y-1]*(1+idxRate)); }
+    var maxVal=Math.max.apply(null, own.concat(idx).concat([1]));
+    function x(yv){ return L+(yv/years)*iw; }
+    function yy(val){ return T+ih-(val/maxVal)*ih; }
+    var html='';
+    [0,maxVal/2,maxVal].forEach(function(g){
+      var gy=yy(g);
+      html+='<line x1="'+L+'" y1="'+gy+'" x2="'+(W-R)+'" y2="'+gy+'" stroke="var(--line)" stroke-width="1"/>';
+      html+='<text x="4" y="'+(gy+4)+'" fill="var(--muted-2)" font-size="11" font-family="Inter,Arial,sans-serif">'+money2(g)+'</text>';
+    });
+    [0,5,10,15,20].forEach(function(yr){ html+='<text x="'+x(yr)+'" y="'+(H-10)+'" text-anchor="middle" fill="var(--muted-2)" font-size="11" font-family="Inter,Arial,sans-serif">Yr '+yr+'</text>'; });
+    var p1=own.map(function(val,i){ return (i?' L ':'M ')+x(i)+' '+yy(val); }).join('');
+    var p2=idx.map(function(val,i){ return (i?' L ':'M ')+x(i)+' '+yy(val); }).join('');
+    html+='<path d="'+p1+'" fill="none" stroke="#5B8DEF" stroke-width="3"/>';
+    html+='<path d="'+p2+'" fill="none" stroke="#E8B34A" stroke-width="3" stroke-dasharray="6 4"/>';
+    chartEl.innerHTML=html;
+    var gap=idx[years]-own[years];
+    if(verdictEl){
+      if(idxRate>ownRate && gap>0){
+        verdictEl.className='inv-bench-verdict bad';
+        verdictEl.textContent='At these rates, a simple index fund would be worth about '+money2(gap)+' more than your own estimate after 20 years — the gap between "pretty good" and "market average" compounds fast.';
+      } else {
+        verdictEl.className='inv-bench-verdict good';
+        verdictEl.textContent='Your estimated rate keeps pace with or beats the index fund assumption over 20 years in this comparison.';
+      }
+    }
+  }
+  [ownReturnEl,indexReturnEl].forEach(function(el){ if(el && !el._wired){ el._wired=true; el.addEventListener('change',runBenchmark); } });
+  runBenchmark();
+
+  // ---- Smart next move ----
+  var titleEl=$("invAdviceTitle"), adviceEl=$("invAdvice");
+  if(titleEl && adviceEl){
+    if(investable<=0){
+      titleEl.textContent='Add your account balances to get personalized advice.';
+      adviceEl.textContent='Once your retirement, brokerage, and crypto balances are in, this analyzes concentration risk, fee drag, and how you stack up against a simple index fund.';
+    } else if(divScore!==null && divScore<45){
+      titleEl.textContent='Concentration is your biggest risk right now.';
+      adviceEl.textContent='Most of your investable money sits in one place. That is not necessarily wrong, but it means one bad outcome in that single category hits your entire portfolio. Consider whether that concentration is intentional.';
+    } else {
+      var feeRateNow=Number(feeNum?feeNum.value:0.6)||0;
+      if(feeRateNow>=1){
+        titleEl.textContent='Fees are the biggest lever here.';
+        adviceEl.textContent='At your current blended expense ratio, the fee impact chart above shows real money lost over decades compared to a low-cost index fund — often more than any single investment decision.';
+      } else {
+        titleEl.textContent='Your foundation looks solid.';
+        adviceEl.textContent='Diversification and fees both look reasonable. The benchmark comparison above is worth revisiting whenever your accounts change meaningfully.';
+      }
+    }
   }
 }
 
@@ -11759,6 +12113,7 @@ body{font-size:15px!important;min-height:100vh}
   goals:{title:'Goals',sub:'Turn your financial goals into measurable progress.'},
   scenarios:{title:'Plan',sub:'Stress-test decisions and see where your finances can go.'},
   retirement:{title:'Retirement',sub:'Build your path to financial independence, with real numbers.'},
+    investing:{title:'Investing',sub:'The deepest look at how your money is actually working.'},
   score:{title:'Grade Report',sub:'Understand what is driving your financial grade.'},
   insights:{title:'Insights',sub:'Go beyond the headline with financial context and decision support.'}
  };
