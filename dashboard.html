@@ -1306,6 +1306,7 @@ body.is-pro .pro-blur-overlay{
 .inv-sub{ margin:4px 0 14px; color:var(--muted); font-size:12.5px }
 .inv-score-body{ display:flex; align-items:center; gap:16px }
 .inv-score-tier{ font-weight:800; font-size:14.5px; margin-bottom:4px; color:#5B8DEF }
+.inv-score-text{ flex:1 1 auto; min-width:0 }
 .inv-score-text p{ margin:0; font-size:12.5px; color:var(--muted); line-height:1.5 }
 .inv-conc-list{ margin-top:16px; display:flex; flex-direction:column; gap:8px }
 .inv-conc-item{ display:flex; align-items:center; gap:10px; font-size:12.5px }
@@ -10458,6 +10459,8 @@ main{padding-top:16px !important;padding-bottom:42px !important}
 /* richer chart colors */
 #panel-overview .ship-chart-card:first-child{background:linear-gradient(145deg,#ffffff 0%,#f1fbf7 100%)!important}
 #panel-overview .ship-chart-card:nth-child(2){background:linear-gradient(145deg,#ffffff 0%,#f5f1ff 100%)!important}
+:root[data-theme="dark"] #panel-overview .ship-chart-card:first-child{background:linear-gradient(145deg,#0d1420 0%,#0d1a17 100%)!important}
+:root[data-theme="dark"] #panel-overview .ship-chart-card:nth-child(2){background:linear-gradient(145deg,#0d1420 0%,#161029 100%)!important}
 #panel-overview .ship-chart-legend i.net{background:#159a78!important}
 @media(max-width:900px){
   .main-area .container{padding-left:14px!important;padding-right:14px!important}
@@ -10947,7 +10950,13 @@ $r('rsCalculate').addEventListener('click',calc);['rsAge','rsRetireAge','rsBalan
 #panel-scenarios .hero-card:first-of-type{background:linear-gradient(135deg,#edf6ff,#eefbf5)!important}
 #panel-insights .hero-card:first-of-type{background:linear-gradient(135deg,#f5efff,#e8fbf5)!important}
 #panel-achievements .hero-card:first-of-type{background:linear-gradient(135deg,#fff7e5,#eef5ff)!important}
-.gmf-tab-graphic{margin:14px 0 18px;border-radius:18px;padding:18px;overflow:hidden;position:relative;min-height:180px;border:1px solid var(--line);box-shadow:var(--shadow-sm)}
+:root[data-theme="dark"] #panel-score .hero-card:first-of-type{background:linear-gradient(135deg,#0d1a17,#0d1420)!important}
+:root[data-theme="dark"] #panel-networth .hero-card:first-of-type{background:linear-gradient(135deg,#0d1a17,#1a1608)!important}
+:root[data-theme="dark"] #panel-goals .hero-card:first-of-type{background:linear-gradient(135deg,#1a1608,#161029)!important}
+:root[data-theme="dark"] #panel-scenarios .hero-card:first-of-type{background:linear-gradient(135deg,#0d1420,#0d1a17)!important}
+:root[data-theme="dark"] #panel-insights .hero-card:first-of-type{background:linear-gradient(135deg,#161029,#0d1a17)!important}
+:root[data-theme="dark"] #panel-achievements .hero-card:first-of-type{background:linear-gradient(135deg,#1a1608,#0d1420)!important}
+.gmf-tab-graphic{margin:14px 0 18px;border-radius:18px;padding:18px;overflow:hidden;position:relative;min-height:180px;border:1px solid var(--line);box-shadow:var(--shadow-sm);background:var(--surface)!important}
 .gmf-tab-graphic h3{margin:0 0 4px;font-size:18px}.gmf-tab-graphic p{margin:0;color:var(--muted);max-width:520px}.gmf-bars{height:90px;display:flex;align-items:end;gap:8px;margin-top:18px}.gmf-bars i{display:block;flex:1;border-radius:9px 9px 3px 3px;background:linear-gradient(180deg,var(--brand-bright),var(--brand));box-shadow:0 -8px 24px rgba(46,156,129,.15)}
 .gmf-breakdown-card{background:#fff;border:1px solid var(--rb-line);border-radius:15px;padding:18px;margin:0 0 16px}
 .gmf-breakdown-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px}
@@ -12026,6 +12035,24 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
   --gmf-gold:#e6aa31;
   --gmf-red:#ef6461;
   --gmf-shadow:0 14px 36px rgba(34,73,83,.09),0 2px 8px rgba(34,73,83,.05);
+}
+:root[data-theme="dark"]{
+  --gmf-canvas:#070b15;
+  --gmf-canvas-2:#04070f;
+  --gmf-card:#0d1420;
+  --gmf-card-green:#0d1a17;
+  --gmf-card-blue:#0d1420;
+  --gmf-border:#1c2536;
+  --gmf-border-strong:#28374a;
+  --gmf-ink:#eef2f8;
+  --gmf-muted:#93a0b4;
+  --gmf-teal:#2fd6a0;
+  --gmf-teal-dark:#1f9c78;
+  --gmf-blue:#5b8def;
+  --gmf-purple:#8f6fe8;
+  --gmf-gold:#f3c866;
+  --gmf-red:#f06d63;
+  --gmf-shadow:0 14px 36px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.25);
 }
 html,body{background:var(--gmf-canvas)!important;color:var(--gmf-ink)!important}
 body{font-size:15px!important;min-height:100vh}
