@@ -4868,9 +4868,14 @@ function renderAccountsTracker(){
 
       listWrap.querySelectorAll('.acct-bal-input').forEach(function(inp){
         inp.addEventListener('change', function(){
+          var newBal = Math.max(0, +inp.value || 0);
+          if(newBal > 10000000){
+            var ok = confirm('That\'s '+money(newBal)+' for this account - just confirming that\'s correct and not an extra digit or two. Continue?');
+            if(!ok){ inp.value = getAccounts().find(function(a){return String(a.id)===String(inp.dataset.id);})?.balance || 0; inp.focus(); inp.select(); return; }
+          }
           var arr = getAccounts();
           var target = arr.find(function(a){ return String(a.id)===String(inp.dataset.id); });
-          if(target){ target.balance = Math.max(0, +inp.value || 0); saveAccounts(arr); render(); }
+          if(target){ target.balance = newBal; saveAccounts(arr); render(); }
         });
       });
       listWrap.querySelectorAll('.acct-delete-btn').forEach(function(btn){
@@ -4913,6 +4918,14 @@ function renderAccountsTracker(){
       var institution=(instEl.value||'').trim();
       var balance=Math.max(0, +balEl.value || 0);
       if(!name){ nameEl.focus(); return; }
+      // Sanity check for likely typos (an extra digit or two is an easy
+      // mistake in a plain number field, and there was previously nothing
+      // stopping a value like this from silently becoming a trillion-
+      // dollar "net worth" everywhere else in the dashboard).
+      if(balance > 10000000){
+        var ok = confirm('That\'s '+money(balance)+' for this account - just confirming that\'s correct and not an extra digit or two. Continue?');
+        if(!ok){ balEl.focus(); balEl.select(); return; }
+      }
       var arr=getAccounts();
       arr.push({ id: Date.now()+'_'+Math.random().toString(36).slice(2,7), name:name, category:category, institution:institution, balance:balance });
       saveAccounts(arr);
@@ -8244,9 +8257,20 @@ function renderShipOverview(hist){
   var flow = (inc !== null && exp !== null) ? inc - exp : null;
   var runway = cash !== null && exp > 0 ? cash/exp : null;
 
-  $('shipGlanceNet').textContent = shipMoney(net);
+  // Defensive sanity bounds: no real individual's net worth or emergency-
+  // fund runway should ever be in these ranges on this app. Rather than
+  // ever display a corrupted value like a trillion-dollar net worth or a
+  // billion-month runway (which can happen from something as simple as
+  // one extra typed digit in an account balance), show a clear "this
+  // looks off" flag pointing back to Accounts instead.
+  var netLooksCorrupted = net !== null && Math.abs(net) > 100000000;
+  var runwayLooksCorrupted = runway !== null && Math.abs(runway) > 1200;
+  if(netLooksCorrupted) net = null;
+  if(runwayLooksCorrupted) runway = null;
+
+  $('shipGlanceNet').textContent = netLooksCorrupted ? '⚠ Check accounts' : shipMoney(net);
   $('shipGlanceFlow').textContent = flow === null ? '—' : (flow>=0?'+':'')+money(flow)+'/mo';
-  $('shipGlanceCash').textContent = runway === null ? '—' : runway.toFixed(1)+' mo';
+  $('shipGlanceCash').textContent = runwayLooksCorrupted ? '⚠ Check accounts' : (runway === null ? '—' : runway.toFixed(1)+' mo');
   $('shipGlanceDebt').textContent = typeof latest.totalDebt === 'number' ? shipMoney(latest.totalDebt) : '—';
 
   var prevInc = prev ? shipMonthlyIncome(prev) : null;
