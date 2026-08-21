@@ -1281,6 +1281,15 @@ body.is-pro .pro-blur-overlay{
 .opportunities-list{ display:grid; gap:16px }
 /* Benchmark comparison — real bars instead of a text-only chip, so it reads in 2-3 seconds */
 .bench-row{ padding:12px 0; border-bottom:1px solid var(--line) }
+
+.nwage-chart-card{ border:1px solid var(--line); border-radius:14px; padding:18px; background:var(--surface-2) }
+.nwage-legend{ display:flex; gap:18px; flex-wrap:wrap; justify-content:flex-end; margin-top:8px }
+.nwage-legend span{ display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted) }
+.nwage-legend i{ width:12px; height:12px; display:inline-block }
+.nwage-verdict{ margin-top:14px; padding:12px 14px; border-radius:10px; font-size:13px; line-height:1.5 }
+.nwage-verdict.ahead{ background:var(--good-soft); color:var(--good) }
+.nwage-verdict.ontrack{ background:var(--brand-soft); color:var(--brand-bright) }
+.nwage-verdict.behind{ background:var(--bad-soft); color:var(--bad) }
 .bench-row:last-child{ border-bottom:none; padding-bottom:2px }
 .bench-row-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px; gap:10px }
 .bench-row-head span:first-child{ font-weight:700; font-size:13.5px }
@@ -3391,6 +3400,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <button class="dash-nav-btn" data-tab="goals" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>Goals <span class="insights-pro-nav">PRO</span></button>
       <div class="nav-section-label">PLANNING</div>
       <button class="dash-nav-btn" data-tab="scenarios" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>Plan <span class="insights-pro-nav">PRO</span></button>
+      <button class="dash-nav-btn" data-tab="retirement" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Retirement <span class="insights-pro-nav">PRO</span></button>
       <div class="nav-section-label">INSIGHTS</div>
       <button class="dash-nav-btn" data-tab="score" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg>Grade Report</button>
       <button class="dash-nav-btn" data-tab="insights" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Insights <span class="insights-pro-nav">PRO</span></button>
@@ -4239,6 +4249,8 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= RETIREMENT / FI ================= -->
     <div class="dash-tab-panel" id="panel-retirement">
+  <div class="pro-blur-section">
+  <div class="pro-blur-content">
   <div class="retirement-studio">
     <div class="ret-hero">
       <div><span class="ret-kicker">RETIREMENT LAB</span><h2>Build your path to <span>financial freedom.</span></h2><p>Enter your numbers below. Your projection updates instantly with colorful charts, scenarios, milestones, and clear next steps.</p></div>
@@ -4272,6 +4284,13 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="ret-chart-card" style="margin-top:16px"><span class="section-label">Scenario explorer</span><h3>How different market outcomes change your path</h3><div id="rsScenarioBars" class="ret-scenario-bars"></div></div>
       <div class="ret-bottom-grid"><div class="ret-chart-card"><span class="section-label">Milestones</span><h3>Your roadmap</h3><div id="rsMilestones"></div></div><div class="ret-chart-card ret-next"><span class="section-label">Smart next move</span><h3 id="rsAdviceTitle">—</h3><p id="rsAdvice">—</p></div></div>
     </div>
+  </div>
+  </div>
+  <div class="pro-blur-overlay">
+    <div class="pro-blur-title">🔒 Build your retirement plan</div>
+    <div class="pro-blur-sub">See your projected portfolio, FI age, monthly gap, and a real month-by-month roadmap to financial independence.</div>
+    <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
+  </div>
   </div>
 </div>
     <!-- ================= INSIGHTS ================= -->
@@ -4311,6 +4330,18 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
           <div id="weakWrap" style="display:grid;gap:10px"></div>
           <span class="section-label" style="margin-top:22px;display:block">How you compare to our benchmark (estimated)</span>
           <div id="benchRows" style="display:grid;gap:8px;margin-top:12px"></div>
+
+          <span class="section-label" style="margin-top:22px;display:block">Net worth by age — how you compare</span>
+          <p class="small" style="margin:6px 0 14px;color:var(--muted)">The line shows commonly-cited savings milestones (a multiple of income by age) purely for context. Your own target — the diamond marker — comes from this app's actual scoring model, which may differ from the general milestone line.</p>
+          <div class="nwage-chart-card">
+            <svg id="nwAgeChart" width="100%" height="260" viewBox="0 0 900 300" preserveAspectRatio="none" role="img" aria-label="Net worth compared to age-based milestones"></svg>
+            <div class="nwage-legend">
+              <span><i style="background:#8791a1"></i>General milestone guide</span>
+              <span><i style="background:#22c58f;border-radius:50%"></i>Your net worth today</span>
+              <span><i style="background:#8b5cf6;transform:rotate(45deg)"></i>Your calculated target</span>
+            </div>
+            <div id="nwAgeVerdict" class="nwage-verdict"></div>
+          </div>
         </div>
           <div class="pro-blur-overlay">
             <div class="pro-blur-title">🔒 See exactly what's driving your grade</div>
@@ -6040,6 +6071,7 @@ function __track(){} // no-op if GA hasn't wired a custom tracker on this page
     networth:{title:'Money',sub:'Understand what you own, what you owe, and where your cash is going.'},
     goals:{title:'Goals',sub:'Turn your financial priorities into measurable targets you can actually track.'},
     scenarios:{title:'Your Plan',sub:'Choose the next move, build a plan, and see what changes before you commit.'},
+    retirement:{title:'Retirement',sub:'Build your path to financial independence, with real numbers.'},
     score:{title:'Grade Report',sub:'Understand exactly what is driving your Financial Grade and how it can improve.'},
     insights:{title:'Insights',sub:'Go beyond the headline with financial context, benchmarks, and decision tools.'}
   };
@@ -6247,6 +6279,7 @@ function renderInsightExtras(){
   // benchmark/perspective widget must NEVER prevent the Stress Test from
   // calculating and drawing its score, data, and chart.
   try{ renderBenchmarksPanel(saved.v, saved.cats); }catch(e){ console.warn('Benchmarks render failed:', e); }
+  try{ renderNetWorthByAgeChart(saved.v); }catch(e){ console.warn('Net worth by age chart failed:', e); }
   try{ renderTimeCostTranslator(saved.v); }catch(e){ console.warn('Time-cost render failed:', e); }
   try{ renderLifestyleInflationSimulator(saved.v); }catch(e){ console.warn('Lifestyle render failed:', e); }
   try{ renderNetWorthPaceGauge(saved.v); }catch(e){ console.warn('Pace gauge render failed:', e); }
@@ -7352,6 +7385,82 @@ function renderBenchmarksPanel(v, cats){
       '</div>';
     benchRows.appendChild(row);
   });
+  try{ renderNetWorthByAgeChart(v); }catch(e){ console.warn('Net worth by age chart failed:', e); }
+}
+
+// Widely-cited savings-milestone guide (a multiple of income by age),
+// used here purely as a general reference line for the chart. The
+// user's own diamond marker uses this app's real scoring target
+// (v.nwTargetAmount), which can differ from this general guide.
+var NW_AGE_MILESTONES = [
+  {age:22, mult:0}, {age:30, mult:1}, {age:35, mult:2}, {age:40, mult:3},
+  {age:45, mult:4}, {age:50, mult:6}, {age:55, mult:7}, {age:60, mult:8},
+  {age:67, mult:10}, {age:70, mult:11}
+];
+function nwAgeMultipleAt(age){
+  age = Math.max(22, Math.min(70, age));
+  for(var i=0;i<NW_AGE_MILESTONES.length-1;i++){
+    var a=NW_AGE_MILESTONES[i], b=NW_AGE_MILESTONES[i+1];
+    if(age>=a.age && age<=b.age){
+      var t=(age-a.age)/(b.age-a.age);
+      return a.mult + t*(b.mult-a.mult);
+    }
+  }
+  return NW_AGE_MILESTONES[NW_AGE_MILESTONES.length-1].mult;
+}
+function renderNetWorthByAgeChart(v){
+  var chartEl=$("nwAgeChart"), verdictEl=$("nwAgeVerdict");
+  if(!chartEl) return;
+  function clampN(x,a,b){ return Math.max(a,Math.min(b,x)); }
+  function money2(x){
+    x=Number(x)||0; var sign=x<0?'-':''; var ab=Math.abs(x);
+    if(ab>=1000000) return sign+'$'+(ab/1000000).toFixed(1)+'M';
+    if(ab>=1000) return sign+'$'+Math.round(ab/1000)+'k';
+    return sign+'$'+Math.round(ab);
+  }
+  var age=Number(v.age)||30;
+  var income=Number(v.annualIncome)||0;
+  var net=Number(v.net)||0;
+  var myTarget=Number(v.nwTargetAmount);
+  if(!isFinite(myTarget) || myTarget<=0) myTarget = income*nwAgeMultipleAt(age);
+
+  var W=900,H=300,L=64,R=24,T=20,B=36, iw=W-L-R, ih=H-T-B;
+  var minAge=22, maxAge=70;
+  function x(a){ return L+((clampN(a,minAge,maxAge)-minAge)/(maxAge-minAge))*iw; }
+
+  var curvePts=[]; for(var a=minAge;a<=maxAge;a+=1){ curvePts.push({age:a, val:income*nwAgeMultipleAt(a)}); }
+  var maxVal=Math.max.apply(null, curvePts.map(function(p){return p.val;}).concat([net, myTarget, 1]));
+  function y(val){ return T+ih-(val/maxVal)*ih; }
+
+  var html='';
+  [0, maxVal/2, maxVal].forEach(function(g){
+    var gy=y(g);
+    html+='<line x1="'+L+'" y1="'+gy+'" x2="'+(W-R)+'" y2="'+gy+'" stroke="var(--line)" stroke-width="1"/>';
+    html+='<text x="4" y="'+(gy+4)+'" fill="var(--muted-2)" font-size="11" font-family="Inter,Arial,sans-serif">'+money2(g)+'</text>';
+  });
+  var path=''; curvePts.forEach(function(p,i){ path+=(i?' L ':'M ')+x(p.age)+' '+y(p.val); });
+  html+='<path d="'+path+'" fill="none" stroke="#8791a1" stroke-width="2.5" stroke-dasharray="6 4"/>';
+  [25,30,35,40,45,50,55,60,65,70].forEach(function(a){
+    var tx=x(a);
+    html+='<text x="'+tx+'" y="'+(H-12)+'" text-anchor="middle" fill="var(--muted-2)" font-size="11" font-family="Inter,Arial,sans-serif">'+a+'</text>';
+  });
+  var tx2=x(age), ty2=y(myTarget);
+  html+='<rect x="'+(tx2-6)+'" y="'+(ty2-6)+'" width="12" height="12" fill="#8b5cf6" stroke="#fff" stroke-width="1.5" transform="rotate(45 '+tx2+' '+ty2+')"/>';
+  var ny=y(net);
+  html+='<circle cx="'+tx2+'" cy="'+ny+'" r="7" fill="#22c58f" stroke="#fff" stroke-width="2"/>';
+  chartEl.innerHTML=html;
+
+  if(verdictEl){
+    var pct = myTarget>0 ? (net/myTarget*100) : 100;
+    var tier = pct>=100?'ahead':pct>=70?'ontrack':'behind';
+    var msgs={
+      ahead:"You're at or above your calculated net worth target for age "+Math.round(age)+" — ahead of pace.",
+      ontrack:"You're at about "+Math.round(pct)+"% of your calculated target for age "+Math.round(age)+" — building steadily.",
+      behind:"You're at about "+Math.round(pct)+"% of your calculated target for age "+Math.round(age)+" — there's a real gap to close."
+    };
+    verdictEl.className='nwage-verdict '+tier;
+    verdictEl.textContent=msgs[tier];
+  }
 }
 
 /* ---- Progress (under Grade & History) - same trend/milestone logic as the Report Card,
@@ -11597,6 +11706,7 @@ body{font-size:15px!important;min-height:100vh}
   networth:{title:'Money',sub:'Understand what you own, what you owe, and where your cash is going.'},
   goals:{title:'Goals',sub:'Turn your financial goals into measurable progress.'},
   scenarios:{title:'Plan',sub:'Stress-test decisions and see where your finances can go.'},
+  retirement:{title:'Retirement',sub:'Build your path to financial independence, with real numbers.'},
   score:{title:'Grade Report',sub:'Understand what is driving your financial grade.'},
   insights:{title:'Insights',sub:'Go beyond the headline with financial context and decision support.'}
  };
