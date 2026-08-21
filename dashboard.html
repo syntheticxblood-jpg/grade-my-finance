@@ -3651,7 +3651,15 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= SCORE HISTORY ================= -->
     <div class="dash-tab-panel" id="panel-score">
-      <span class="section-label">Score history</span>
+      <div class="ret-hero">
+        <div>
+          <span class="ret-kicker">GRADE REPORT</span>
+          <h2>Watch your grade <span>climb over time.</span></h2>
+          <p>Every check-in adds a new data point — your score, your milestones, and how far you've come.</p>
+        </div>
+        <div class="ret-hero-badge"><b id="scHeroBadgeVal">—</b><span>Current score</span></div>
+      </div>
+      <span class="section-label" style="margin-top:18px">Score history</span>
       <p class="section-sub">Track how your financial health has changed over time.</p>
       <div class="hero-card">
         <div class="hero-card-top">
@@ -4432,7 +4440,15 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= INSIGHTS ================= -->
     <div class="dash-tab-panel" id="panel-insights">
-      <span class="section-label">Insights</span>
+      <div class="ret-hero">
+        <div>
+          <span class="ret-kicker">INSIGHTS</span>
+          <h2>Three ways to <span>understand your grade.</span></h2>
+          <p>How you compare to real benchmarks, how your money feels day-to-day, and how you'd hold up in a tough month.</p>
+        </div>
+        <div class="ret-hero-badge"><b style="font-size:26px">🔎</b><span>3-part deep dive</span></div>
+      </div>
+      <span class="section-label" style="margin-top:18px">Insights</span>
       <p class="section-sub">Deeper context on your grade — how you compare, how it feels day-to-day, and how you'd hold up in a tough month.</p>
 
       <div class="money-subtabs" id="insightSubtabs">
@@ -9101,12 +9117,16 @@ function renderScoreTab(hist){
   var heroVal = $("scHeroVal"), heroSub = $("scHeroSub");
   if(!hist.length){
     heroVal.textContent = "—"; heroSub.textContent = "No check-ins yet.";
+    var scHeroBadgeElEmpty = $("scHeroBadgeVal");
+    if(scHeroBadgeElEmpty) scHeroBadgeElEmpty.textContent = "—";
     $("scoreChart").innerHTML = ""; $("scoreStatsGrid").innerHTML = ""; $("milestonesList").innerHTML = '<div class="empty-note">No milestones yet.</div>';
     if($("historyEntriesList")) $("historyEntriesList").innerHTML = '<div class="empty-note">No check-ins recorded yet.</div>';
     return;
   }
   var latest = hist[hist.length-1];
   heroVal.textContent = latest.score.toFixed(1);
+  var scHeroBadgeEl = $("scHeroBadgeVal");
+  if(scHeroBadgeEl) scHeroBadgeEl.textContent = latest.score.toFixed(1);
   var best = getBestScore();
   heroSub.textContent = "Personal best: " + (best !== null ? best.toFixed(1) : latest.score.toFixed(1));
 
@@ -12265,6 +12285,59 @@ body{font-size:15px!important;min-height:100vh}
 :root[data-theme="dark"] .sidebar .theme-choice.active{background:#245B4C!important;color:#fff!important;border-color:#B8D48A!important}
 
 svg .brand-bright, .brand-fill{fill:#2fd6a0}
+
+/* ---------- Dark mode: fix components missed by earlier passes.
+   Several later "ship polish" overrides hardcoded light card backgrounds
+   with !important (some ID-scoped, beating the dark rules above on
+   specificity), while their text kept inheriting body's dark-mode text
+   color - white-on-white cards with invisible text. This block targets
+   every one of those by name so they actually go dark. ---------- */
+:root[data-theme="dark"] #panel-score .hv{ color:#eef2f8!important }
+:root[data-theme="dark"] #panel-score .stat-cell{ background:#0d1420!important; border-color:#1c2536!important }
+:root[data-theme="dark"] #panel-score .stat-cell .s-label{ color:#68748a!important }
+:root[data-theme="dark"] #panel-score .stat-cell .s-val{ color:#eef2f8!important }
+:root[data-theme="dark"] #panel-score .chart-time-filters{ background:#101827!important; border-color:#1c2536!important }
+:root[data-theme="dark"] #panel-insights .stress-chart-hero{ background:#0d1420!important; border-color:#1c2536!important }
+:root[data-theme="dark"] #panel-insights .stress-builder-col{ background:#101827!important; border-color:#1c2536!important }
+:root[data-theme="dark"] #panel-networth .nw-cell{ background:#0d1420!important; border-color:#1c2536!important }
+
+:root[data-theme="dark"] .flow-summary-card,
+:root[data-theme="dark"] .bill-card,
+:root[data-theme="dark"] .bill-row,
+:root[data-theme="dark"] .credit-card,
+:root[data-theme="dark"] .allocation-card,
+:root[data-theme="dark"] .opp-card,
+:root[data-theme="dark"] .gmf-goal-preset,
+:root[data-theme="dark"] .ret-input-card,
+:root[data-theme="dark"] .ret-chart-card{
+  background:#0d1420!important; border-color:#1c2536!important;
+}
+:root[data-theme="dark"] .opp-card.weakest{ background:linear-gradient(145deg,#2a1614,#0d1420)!important; border-color:rgba(240,109,99,.35)!important }
+:root[data-theme="dark"] .opp-card-title,
+:root[data-theme="dark"] .ret-metric strong,
+:root[data-theme="dark"] .ret-card-title h3,
+:root[data-theme="dark"] .ret-chart-card h3{ color:#eef2f8!important }
+:root[data-theme="dark"] .opp-card-tip,
+:root[data-theme="dark"] .ret-metric span,
+:root[data-theme="dark"] .ret-metric small,
+:root[data-theme="dark"] .ret-donut-wrap span,
+:root[data-theme="dark"] .ret-milestone span,
+:root[data-theme="dark"] .ret-action-row #rsStatus,
+:root[data-theme="dark"] .ret-studio-grid label,
+:root[data-theme="dark"] .gmf-goal-preset{ color:#93a0b4!important }
+:root[data-theme="dark"] .weakest-link-pill{ background:#241d0a!important; border-color:#4a3a1a!important; color:#f3c866!important }
+:root[data-theme="dark"] .moves-list li{ background:#0d1420!important; border-color:#1c2536!important }
+:root[data-theme="dark"] .moves-list li::before{ background:rgba(34,197,148,.16)!important; color:#2fd6a0!important }
+:root[data-theme="dark"] .debt-race-track{ background:#101827!important }
+:root[data-theme="dark"] .ret-metric{ border-color:#1c2536!important }
+:root[data-theme="dark"] .ret-metric.mint{ background:linear-gradient(135deg,#0f2620,#0d1420)!important }
+:root[data-theme="dark"] .ret-metric.purple{ background:linear-gradient(135deg,#211a33,#0d1420)!important }
+:root[data-theme="dark"] .ret-metric.gold{ background:linear-gradient(135deg,#2b2311,#0d1420)!important }
+:root[data-theme="dark"] .ret-metric.blue{ background:linear-gradient(135deg,#101f33,#0d1420)!important }
+:root[data-theme="dark"] .rs-bar{ background:#101827!important }
+:root[data-theme="dark"] .ret-milestone{ border-bottom-color:#1c2536!important }
+:root[data-theme="dark"] .ret-live{ background:rgba(34,197,148,.14)!important; color:#2fd6a0!important }
+:root[data-theme="dark"] .ret-hero-badge{ background:rgba(0,0,0,.18)!important }
 
 /* ---------- LIGHT (true opposite of dark: white base, same accents) ---------- */
 :root[data-theme="light"]{
