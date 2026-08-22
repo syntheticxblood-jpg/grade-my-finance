@@ -2010,9 +2010,16 @@ body{
 body{padding-bottom:var(--gmf-safe-bottom)}
 header.site{height:calc(var(--header-h) + var(--gmf-safe-top));padding-top:var(--gmf-safe-top)}
 .hdr-row{height:var(--header-h)}
+
+/* Mobile nav toggle + backdrop for the sidebar drawer. Hidden by default
+   (desktop) - the media query below turns them on and makes the sidebar
+   slide in as an overlay instead of just vanishing with nowhere to go. */
+.mobile-nav-toggle{ display:none; }
+.mobile-nav-backdrop{ display:none; }
+</style>
+<style id="gmf-dashboard-mobile-fix-2">
 @media(max-width:900px){
   .main-area{margin-left:0 !important}
-  .sidebar{display:none !important}
   main{padding-top:18px !important;padding-bottom:calc(70px + var(--gmf-safe-bottom)) !important}
   .content-header{padding-top:8px !important}
   .grade-ring-card{
@@ -12363,7 +12370,7 @@ body{font-size:15px!important;min-height:100vh}
    settings + theme toggle + Pro card easily exceeds a laptop's height) -
    without a scrollbar, anything past the bottom (like the Unlock Pro
    button) becomes completely unreachable. */
-.sidebar{ overflow-y:auto!important; }
+@media (min-width:901px){ .sidebar{ overflow-y:auto!important; } }
 
 /* =========================================================
    FINAL THEME REPAINT — single source of truth for dark/light.
@@ -12694,3 +12701,104 @@ body::before{
   window.addEventListener('storage',function(e){if(e.key==='gmf_history_v2')draw()});
 })();
 </script>
+
+<style id="gmf-mobile-hero-overflow-fix">
+/* This overrides several conflicting earlier attempts to collapse the
+   "Your Financial Grade" / "Pro command center" hero into a single mobile
+   column - none of them fully won, so the hero card was rendering at its
+   old 2-column desktop width (~708px) even inside a 390px viewport. That
+   caused the whole page to overflow horizontally, which in turn let the
+   Pro panel's excess height visually collide with (and intercept taps
+   meant for) the fixed bottom nav bar underneath it.
+   Using flex-direction:column instead of display:block specifically
+   because a leftover display:grid!important from an earlier layer was
+   still winning over a same-specificity display:block!important fix -
+   flex is enough of a different layout mode that grid-template-columns
+   from any earlier rule becomes fully irrelevant, not just overridden. */
+@media (max-width:900px){
+  .ship-grade-hero, .ship-grade-hero-v2{
+    display:flex !important;
+    flex-direction:column !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+  .ship-grade-hero > *, .ship-grade-hero-v2 > *{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+  }
+  .grade-ring-card, .grade-pro-panel{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+  }
+  .grade-pro-features{ flex-wrap:wrap !important; }
+  body{ overflow-x:hidden !important; }
+  html{ overflow-x:hidden !important; }
+
+  /* The real root cause of the width-100%-doesn't-work mystery above:
+     .dash-tab-panel (every tab's container, including #panel-overview)
+     is display:grid. CSS grid tracks default to a minimum size equal to
+     their content's natural (min-content) width unless the track is
+     explicitly defined as minmax(0, ...) - so any child with a wide
+     unwrapped element (long text, a fixed-size SVG, a nowrap row) forces
+     the whole track, and therefore the panel's effective content width,
+     wider than the panel's own box - which is exactly how a child could
+     render at 708px width inside a 366px-wide parent. Forcing block
+     layout on mobile sidesteps the grid-track sizing algorithm entirely,
+     since a plain block child simply respects its parent's actual width. */
+  .dash-tab-panel{ display:block !important; }
+
+  /* The .dash-tab-panel rule above isn't enough on its own: there's a
+     separate, much more specific rule elsewhere -
+     "#dashboardContent > #panel-overview.active, #panel-overview.active
+     { display:grid !important }" - using two ID selectors, which beats a
+     plain class selector on specificity alone, regardless of which one
+     appears later in the file. Matching that exact selector here (also
+     placed last) is what actually wins the tie. */
+  #dashboardContent > #panel-overview.active, #panel-overview.active{
+    display:block !important;
+  }
+
+  /* The "At a Glance" stat row (Net Worth / Cash Flow / Emergency Fund /
+     Debt Load) was forcing 4 equal columns regardless of viewport width -
+     collapsing to 2x2 so it actually fits on a phone screen. Matching
+     "#panel-overview .ship-glance-grid" specifically (not just the plain
+     class) because that's the exact higher-specificity selector already
+     forcing 4 columns elsewhere in this file. */
+  .ship-glance-grid, #panel-overview .ship-glance-grid{ grid-template-columns:repeat(2,1fr) !important; }
+  .ship-glance-item{ border-right:none !important; border-bottom:1px solid var(--ship-line,var(--line)) !important; }
+  .ship-glance-item:nth-child(2n){ border-right:none !important; }
+  .ship-glance-item:nth-last-child(-n+2){ border-bottom:none !important; }
+
+  /* My earlier overflow-y:auto fix (added at the very start of today's
+     session, for an unrelated desktop drawer-scroll issue) was unscoped
+     and fighting with this mobile bottom bar's own overflow-x:auto - two
+     different overflow axes on the same short, fixed-height container
+     corrupted the nav buttons' layout so badly that they rendered ~200px
+     away from their own visible container. Explicitly cancelling
+     vertical overflow here on mobile only. */
+  .sidebar{ overflow-y:visible !important; overflow-x:auto !important; }
+
+  /* The actual root cause of the mispositioned nav buttons: ".sidebar
+     .dash-nav" was set to display:grid!important elsewhere (with no
+     grid-template defined, and overflow:visible!important) - a leftover
+     from a different layout attempt entirely. With no template, an
+     unconstrained grid can lay its items out and size itself in ways
+     that don't resemble a simple horizontal bar at all, and
+     overflow:visible let it render completely outside its own
+     container's box instead of clipping/scrolling within it. Forcing
+     it back to a real flex row, matching the exact ".sidebar .dash-nav"
+     specificity so this reliably wins. */
+  .sidebar .dash-nav{
+    display:flex !important;
+    flex-direction:row !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    align-items:stretch !important;
+  }
+}
+</style>
