@@ -3681,7 +3681,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ret-chart-head">
           <div>
             <span class="section-label" style="margin:0">Grade trend</span>
-            <h3>Score history</h3>
+            <h3>Grade history</h3>
             <div style="margin-top:4px"><span class="hv mono" id="scHeroVal" style="font-size:20px">—</span> <span class="hv-sub" id="scHeroSub">—</span></div>
           </div>
           <div class="chart-time-filters" id="scoreTimeFilters">
@@ -3725,7 +3725,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
             <span class="section-label" style="margin:0">Since your last check-in</span>
             <div id="progCompareText" class="small" style="font-weight:700;color:var(--text);font-size:15px">—</div>
           </div>
-          <span class="progress-chart-label">Score</span>
+          <span class="progress-chart-label">Grade</span>
           <svg id="progSpark" width="100%" height="70" viewBox="0 0 500 70" preserveAspectRatio="none" aria-hidden="true"></svg>
           <span class="progress-chart-label" style="margin-top:6px">Net worth</span>
           <svg id="progSparkNet" width="100%" height="70" viewBox="0 0 500 70" preserveAspectRatio="none" aria-hidden="true"></svg>
@@ -9227,9 +9227,9 @@ function renderScoreTab(hist){
   var statsEl = $("scoreStatsGrid");
   statsEl.innerHTML = "";
   function addStat(label, val){ statsEl.innerHTML += '<div class="stat-cell"><div class="s-label">'+label+'</div><div class="s-val mono">'+val+'</div></div>'; }
-  addStat("Current Score", latest.score.toFixed(1));
+  addStat("Current Grade", latest.score.toFixed(1));
   if(best !== null) addStat("Personal Best", best.toFixed(1));
-  addStat("Starting Score", hist[0].score.toFixed(1));
+  addStat("Starting Grade", hist[0].score.toFixed(1));
   addStat("Overall Change", (function(){ var d = latest.score - hist[0].score; return (d>=0?"+":"")+d.toFixed(1); })());
   var highestLetter = overallLetter(Math.round(Math.max.apply(null, hist.map(function(h){ return h.score; }))));
   addStat("Highest Grade", highestLetter);
@@ -9832,7 +9832,7 @@ $("copyBackupLinkBtn").addEventListener("click", copyBackupLink);
 function exportHistoryAsCsv(){
   var hist = getHistory();
   if(!hist.length){ alert("No history to export yet."); return; }
-  var rows = [["Date", "Score", "Net Worth"]];
+  var rows = [["Date", "Grade", "Net Worth"]];
   hist.forEach(function(h){ rows.push([new Date(h.ts).toISOString().split('T')[0], h.score.toFixed(1), (typeof h.net==='number'?h.net:'')]); });
   var csv = rows.map(function(r){ return r.map(function(c){ var s=String(c); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }).join(','); }).join('\n');
   var blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
@@ -9888,7 +9888,7 @@ async function renderFreeTierDashboard(session){
 
   var net = (row.total_savings || 0) + (row.total_investments || 0) - (row.total_debt || 0);
   metricsEl.innerHTML =
-    '<div class="metric-card"><div class="m-label">Score</div><div class="m-val mono">' + (row.overall_score != null ? row.overall_score : '—') + '</div></div>' +
+    '<div class="metric-card"><div class="m-label">Grade</div><div class="m-val mono">' + (row.overall_score != null ? row.overall_score : '—') + '</div></div>' +
     '<div class="metric-card"><div class="m-label">Net Worth</div><div class="m-val mono">' + money(net) + '</div></div>' +
     '<div class="metric-card"><div class="m-label">Total Debt</div><div class="m-val mono">' + money(row.total_debt || 0) + '</div></div>';
 }
