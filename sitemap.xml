@@ -605,4 +605,14 @@ This XML file does not appear to have any style information associated with it. 
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
+<url>
+<loc>https://grademyfinance.com/blog/balance-transfer-credit-cards-explained.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://grademyfinance.com/blog/what-to-do-with-an-old-401k.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
 </urlset>

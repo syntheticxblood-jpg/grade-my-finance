@@ -111,4 +111,8 @@ var GMF_BLOG_POSTS = [
   { slug:"do-you-need-an-annuity", title:"Annuities: Do You Actually Need One?", category:"Insurance" }
 ,
   { slug:"zero-based-budgeting-explained", title:"Zero-Based Budgeting: How to Give Every Dollar a Job", category:"Budgeting" }
+,
+  { slug:"balance-transfer-credit-cards-explained", title:"Balance Transfer Credit Cards: When They Actually Save You Money (and When They Don't)", category:"Debt" }
+,
+  { slug:"what-to-do-with-an-old-401k", title:"What to Do With an Old 401(k) When You Change Jobs", category:"Retirement" }
 ];
