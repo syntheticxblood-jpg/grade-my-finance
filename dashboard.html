@@ -230,6 +230,7 @@ main{ padding:28px 0 70px }
 .stat-cell{ background:var(--surface); padding:14px 16px }
 .stat-cell .s-label{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em }
 .stat-cell .s-val{ font-family:var(--font-serif); font-weight:600; font-size:19px; margin-top:5px }
+.stat-cell .s-val .s-sub{ font-family:var(--font-mono); font-size:11px; font-weight:500; color:var(--muted); margin-left:4px }
 
 .milestone-row{ display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--line) }
 .milestone-row:last-child{ border-bottom:none }
@@ -3674,7 +3675,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
           <h2>Watch your grade <span>climb over time.</span></h2>
           <p>Every check-in adds a new data point — your score, your subjects, and how far you've come.</p>
         </div>
-        <div class="ret-hero-badge"><b id="scHeroBadgeVal">—</b><span>Current score</span></div>
+        <div class="ret-hero-badge"><b id="scHeroBadgeVal">—</b><span id="scHeroBadgeSub">Current grade</span></div>
       </div>
 
       <div class="ret-chart-card" style="margin-top:16px">
@@ -9214,11 +9215,13 @@ function renderScoreTab(hist){
     return;
   }
   var latest = hist[hist.length-1];
-  heroVal.textContent = latest.score.toFixed(1);
-  var scHeroBadgeEl = $("scHeroBadgeVal");
-  if(scHeroBadgeEl) scHeroBadgeEl.textContent = latest.score.toFixed(1);
+  var latestLetter = overallLetter(Math.round(latest.score));
+  heroVal.textContent = latestLetter;
+  var scHeroBadgeEl = $("scHeroBadgeVal"), scHeroBadgeSubEl = $("scHeroBadgeSub");
+  if(scHeroBadgeEl) scHeroBadgeEl.textContent = latestLetter;
+  if(scHeroBadgeSubEl) scHeroBadgeSubEl.textContent = latest.score.toFixed(1) + " / 100";
   var best = getBestScore();
-  heroSub.textContent = "Personal best: " + (best !== null ? best.toFixed(1) : latest.score.toFixed(1));
+  heroSub.textContent = latest.score.toFixed(1) + "/100 · Personal best: " + (best !== null ? best.toFixed(1) : latest.score.toFixed(1));
 
   var filtered = filterByRange(hist, scoreRange, 'ts');
   drawChart($("scoreChart"), $("scoreTooltip"), filtered.map(function(h){ return {v:h.score, ts:h.ts}; }), { formatter:function(v){ return v.toFixed(1)+" ("+overallLetter(Math.round(v))+")"; } });
@@ -9226,13 +9229,14 @@ function renderScoreTab(hist){
   // Stats — only shown when they can be honestly calculated
   var statsEl = $("scoreStatsGrid");
   statsEl.innerHTML = "";
-  function addStat(label, val){ statsEl.innerHTML += '<div class="stat-cell"><div class="s-label">'+label+'</div><div class="s-val mono">'+val+'</div></div>'; }
-  addStat("Current Grade", latest.score.toFixed(1));
-  if(best !== null) addStat("Personal Best", best.toFixed(1));
-  addStat("Starting Grade", hist[0].score.toFixed(1));
+  function addStat(label, val, sub){ statsEl.innerHTML += '<div class="stat-cell"><div class="s-label">'+label+'</div><div class="s-val mono">'+val+(sub?' <span class="s-sub">'+sub+'</span>':'')+'</div></div>'; }
+  addStat("Current Grade", latestLetter, latest.score.toFixed(1));
+  if(best !== null) addStat("Personal Best", overallLetter(Math.round(best)), best.toFixed(1));
+  addStat("Starting Grade", overallLetter(Math.round(hist[0].score)), hist[0].score.toFixed(1));
   addStat("Overall Change", (function(){ var d = latest.score - hist[0].score; return (d>=0?"+":"")+d.toFixed(1); })());
-  var highestLetter = overallLetter(Math.round(Math.max.apply(null, hist.map(function(h){ return h.score; }))));
-  addStat("Highest Grade", highestLetter);
+  var highestScore = Math.max.apply(null, hist.map(function(h){ return h.score; }));
+  var highestLetter = overallLetter(Math.round(highestScore));
+  addStat("Highest Grade", highestLetter, highestScore.toFixed(1));
 
   // Milestones — derived only from real unlocked-achievement timestamps
   var unlocked = getUnlockedAchievements();
