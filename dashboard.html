@@ -237,6 +237,15 @@ main{ padding:28px 0 70px }
 .milestone-label{ font-weight:600; font-size:13px; flex:1 }
 .milestone-date{ font-size:11.5px; color:var(--muted-2); font-family:var(--font-mono) }
 
+/* Report Card: subject grades, remarks, attendance */
+.subject-grades-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:14px }
+@media (max-width:900px){ .subject-grades-grid{ grid-template-columns:repeat(3,1fr) } }
+@media (max-width:560px){ .subject-grades-grid{ grid-template-columns:repeat(2,1fr) } }
+.report-remarks-card p{ font-family:var(--font-serif); font-size:15px; line-height:1.65; color:var(--text); margin:10px 0 0; font-style:italic }
+.attendance-row{ display:flex; gap:28px; flex-wrap:wrap; margin-top:14px }
+.attendance-row > div{ flex:1 1 180px }
+.attendance-row strong{ display:block; font-family:var(--font-display); font-weight:700; font-size:23px; margin-top:6px; color:var(--text) }
+
 /* Net worth breakdown */
 .nw-breakdown{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:16px }
 @media (max-width:600px){ .nw-breakdown{ grid-template-columns:1fr } }
@@ -3663,15 +3672,18 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div>
           <span class="ret-kicker">GRADE REPORT</span>
           <h2>Watch your grade <span>climb over time.</span></h2>
-          <p>Every check-in adds a new data point — your score, your milestones, and how far you've come.</p>
+          <p>Every check-in adds a new data point — your score, your subjects, and how far you've come.</p>
         </div>
         <div class="ret-hero-badge"><b id="scHeroBadgeVal">—</b><span>Current score</span></div>
       </div>
-      <span class="section-label" style="margin-top:18px">Score history</span>
-      <p class="section-sub">Track how your financial health has changed over time.</p>
-      <div class="hero-card">
-        <div class="hero-card-top">
-          <div><div class="hv mono" id="scHeroVal">—</div><div class="hv-sub" id="scHeroSub">—</div></div>
+
+      <div class="ret-chart-card" style="margin-top:16px">
+        <div class="ret-chart-head">
+          <div>
+            <span class="section-label" style="margin:0">Grade trend</span>
+            <h3>Score history</h3>
+            <div style="margin-top:4px"><span class="hv mono" id="scHeroVal" style="font-size:20px">—</span> <span class="hv-sub" id="scHeroSub">—</span></div>
+          </div>
           <div class="chart-time-filters" id="scoreTimeFilters">
             <button type="button" data-range="7">7D</button><button type="button" data-range="30">30D</button><button type="button" data-range="90">3M</button>
             <button type="button" data-range="180">6M</button><button type="button" data-range="365">1Y</button><button type="button" data-range="all" class="active">ALL</button>
@@ -3679,9 +3691,28 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         </div>
         <div class="chart-wrap"><svg id="scoreChart" width="100%" height="220" viewBox="0 0 900 220" preserveAspectRatio="none"></svg><div class="chart-tooltip" id="scoreTooltip"></div></div>
       </div>
+
       <div class="stats-grid" id="scoreStatsGrid"></div>
-      <div class="card">
-        <span class="section-label">Financial milestones</span>
+
+      <div class="ret-chart-card" style="margin-top:16px">
+        <span class="section-label" style="margin:0">Subject grades</span>
+        <p class="section-sub" style="margin-top:4px">The five factors behind your overall grade, graded individually — same as a real report card.</p>
+        <div class="subject-grades-grid" id="subjectGradesGrid"></div>
+      </div>
+
+      <div class="card report-remarks-card" style="margin-top:16px">
+        <span class="section-label" style="margin:0">Remarks</span>
+        <p id="reportCardRemarks">Complete a check-in to see personalized remarks here.</p>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <span class="section-label" style="margin:0">Attendance</span>
+        <p class="section-sub" style="margin-top:4px">Consistency is most of what makes a grade move.</p>
+        <div class="attendance-row" id="attendanceRow"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <span class="section-label">Honors &amp; distinctions</span>
         <div id="milestonesList"></div>
       </div>
 
@@ -3701,10 +3732,6 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         </div>
         <div class="progress-stat-row" id="progressStatRow" style="margin-top:14px"></div>
         <div class="report-section" id="biggestJumpSection" style="margin-top:14px;display:none"></div>
-        <div class="report-section" style="margin-top:14px">
-          <span class="section-label">Milestones</span>
-          <div id="progressMilestonesList" class="milestone-timeline"></div>
-        </div>
       </div>
 
       <div class="card">
@@ -9183,6 +9210,7 @@ function renderScoreTab(hist){
     if(scHeroBadgeElEmpty) scHeroBadgeElEmpty.textContent = "—";
     $("scoreChart").innerHTML = ""; $("scoreStatsGrid").innerHTML = ""; $("milestonesList").innerHTML = '<div class="empty-note">No milestones yet.</div>';
     if($("historyEntriesList")) $("historyEntriesList").innerHTML = '<div class="empty-note">No check-ins recorded yet.</div>';
+    renderReportCardExtras(hist);
     return;
   }
   var latest = hist[hist.length-1];
@@ -9205,12 +9233,6 @@ function renderScoreTab(hist){
   addStat("Overall Change", (function(){ var d = latest.score - hist[0].score; return (d>=0?"+":"")+d.toFixed(1); })());
   var highestLetter = overallLetter(Math.round(Math.max.apply(null, hist.map(function(h){ return h.score; }))));
   addStat("Highest Grade", highestLetter);
-  addStat("Total Check-ins", getCheckinCount() || hist.length);
-
-  // Longest improvement streak within the stored history window
-  var longest = 1, cur = 1;
-  for(var i=1;i<hist.length;i++){ if(hist[i].score > hist[i-1].score){ cur++; longest = Math.max(longest, cur); } else { cur = 1; } }
-  if(hist.length >= 2) addStat("Longest Streak", longest + (longest===1?" check-in":" check-ins"));
 
   // Milestones — derived only from real unlocked-achievement timestamps
   var unlocked = getUnlockedAchievements();
@@ -9229,8 +9251,60 @@ function renderScoreTab(hist){
     });
   }
 
+  renderReportCardExtras(hist);
   renderHistoryEntriesList(hist);
 }
+
+/* ================= REPORT CARD EXTRAS =================
+   Subject Grades reuses the exact same v/cats already computed and
+   saved from the last full check-in (getLastReport()) - the same source
+   Benchmarks and Opportunities already read from - so these letter
+   grades always agree with the rest of the app, no separate scoring
+   logic duplicated here. Attendance recomputes the same streak logic
+   already used above so this function stays self-contained. */
+function renderReportCardExtras(hist){
+  var gradesWrap = $("subjectGradesGrid"), remarksEl = $("reportCardRemarks"), attendEl = $("attendanceRow");
+  var saved = getLastReport();
+
+  if(gradesWrap){
+    if(!saved){
+      gradesWrap.innerHTML = '<div class="empty-note">Complete a check-in to see your subject-by-subject grades.</div>';
+      if(remarksEl) remarksEl.textContent = "Complete a check-in to see personalized remarks here.";
+    } else {
+      var cats = saved.cats;
+      var subjects = [
+        { label:"Savings Rate", score:cats.s.sSave, letter:cats.components[0].letter, tip:cats.components[0].tip, cls:"mint" },
+        { label:"Emergency Fund", score:cats.s.sEF, letter:cats.components[1].letter, tip:cats.components[1].tip, cls:"blue" },
+        { label:"Debt Load", score:cats.s.sDebt, letter:cats.components[2].letter, tip:cats.components[2].tip, cls:"gold" },
+        { label:"Net Worth", score:cats.s.sAgeNW, letter:cats.components[3].letter, tip:cats.components[3].tip, cls:"purple" },
+        { label:"Income Strength", score:cats.s.sInc, letter:cats.components[4].letter, tip:cats.components[4].tip, cls:"mint" }
+      ];
+      gradesWrap.innerHTML = subjects.map(function(s){
+        return '<div class="ret-metric '+s.cls+'"><span>'+s.label+'</span><strong>'+s.letter+'</strong><small>'+s.tip+'</small></div>';
+      }).join('');
+
+      if(remarksEl){
+        var sorted = subjects.slice().sort(function(a,b){ return a.score-b.score; });
+        var weakest = sorted[0], strongest = sorted[sorted.length-1];
+        if(weakest.label === strongest.label || sorted.length < 2){
+          remarksEl.textContent = "Performance is fairly even across all five subjects on this report.";
+        } else {
+          remarksEl.textContent = "Strongest performance in " + strongest.label.toLowerCase() + ". The clearest opportunity for the next report is " + weakest.label.toLowerCase() + " — improving this would move your overall grade the most.";
+        }
+      }
+    }
+  }
+
+  if(attendEl){
+    var count = getCheckinCount() || hist.length;
+    var longest = 1, cur = 1;
+    for(var i=1;i<hist.length;i++){ if(hist[i].score > hist[i-1].score){ cur++; longest = Math.max(longest, cur); } else { cur = 1; } }
+    attendEl.innerHTML =
+      '<div><span class="section-label" style="margin:0">Check-ins recorded</span><strong>'+count+'</strong></div>' +
+      '<div><span class="section-label" style="margin:0">Longest improving streak</span><strong>'+(hist.length>=2 ? longest+(longest===1?' check-in':' check-ins') : '—')+'</strong></div>';
+  }
+}
+
 
 // Lets someone remove an individual check-in they entered incorrectly.
 // Shown newest-first. Deleting used to call location.reload(), which
