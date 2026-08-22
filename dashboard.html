@@ -238,12 +238,14 @@ main{ padding:28px 0 70px }
 .milestone-date{ font-size:11.5px; color:var(--muted-2); font-family:var(--font-mono) }
 
 /* Net worth breakdown */
-.nw-breakdown{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; margin-top:16px }
+.nw-breakdown{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:16px }
 @media (max-width:600px){ .nw-breakdown{ grid-template-columns:1fr } }
-.nw-cell{ background:var(--surface); padding:16px 18px }
-.nw-cell .n-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em }
-.nw-cell .n-val{ font-family:var(--font-serif); font-weight:600; font-size:20px; margin-top:5px }
-.nw-cell .n-delta{ font-size:11.5px; margin-top:4px; font-family:var(--font-mono) }
+.nw-cell{ padding:18px; border-radius:var(--radius-lg); border:1px solid var(--line); background:var(--surface) }
+.nw-cell:nth-child(1){ background:linear-gradient(135deg,var(--brand-soft),transparent) }
+.nw-cell:nth-child(2){ background:linear-gradient(135deg,rgba(139,110,246,.12),transparent) }
+.nw-cell .n-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; font-weight:700 }
+.nw-cell .n-val{ font-family:var(--font-display); font-weight:700; font-size:25px; margin:7px 0 4px; color:var(--text) }
+.nw-cell .n-delta{ font-size:11px; font-family:var(--font-mono); color:var(--muted) }
 .nw-cell .n-delta.up{ color:var(--good) } .nw-cell .n-delta.down{ color:var(--bad) }
 
 /* Goals */
@@ -2141,14 +2143,6 @@ body{background:#f7f8f7!important;color:var(--ship-ink)!important}
 .ship-grade-trend{border-left:1px solid var(--ship-line);padding-left:22px;color:#6b7b81;font-size:11px}.ship-trend-value{font:700 17px var(--font-mono);color:#129b79;margin-bottom:2px}.ship-grade-trend svg{width:100%;height:48px;margin:6px 0 3px;color:#129b79}
 .ship-grade-message{padding:27px 26px;display:flex;flex-direction:column;justify-content:center}.ship-message-title{font:700 17px var(--font-display);color:#162d35;margin-bottom:20px}.ship-strength-opps{display:grid;grid-template-columns:1fr 1fr;gap:24px}.ship-strength-opps>div+div{border-left:1px solid var(--ship-line);padding-left:24px}.ship-mini-label{display:block;font:800 9px var(--font-mono);letter-spacing:.07em;color:#738287;margin-bottom:6px}.ship-strength-opps b{display:block;font-size:13px;color:#1b343d}.ship-strength-opps small{display:block;font-size:11px;line-height:1.4;color:#7a888d;margin-top:4px}
 .ship-link{border:0;background:none;padding:0;color:#0b9271;font:700 11px var(--font-body);cursor:pointer;text-decoration:none}.ship-link:hover{text-decoration:underline}
-
-.ship-weather{ display:flex; align-items:center; gap:12px; margin-top:18px; padding-top:16px; border-top:1px solid var(--ship-line) }
-.ship-weather-icon{ font-size:28px; line-height:1; flex:none }
-.ship-weather-label{ display:block; font-weight:700; font-size:13.5px; color:#18323b }
-.ship-weather-desc{ display:block; font-size:11.5px; color:#7a898e; margin-top:2px; max-width:440px }
-:root[data-theme="dark"] .ship-weather{ border-top-color:#1c2536 }
-:root[data-theme="dark"] .ship-weather-label{ color:#eef2f8 }
-:root[data-theme="dark"] .ship-weather-desc{ color:#93a0b4 }
 .ship-glance-card{background:#fff;border:1px solid var(--ship-line);border-radius:16px;padding:16px 20px;margin-bottom:14px}.ship-panel-title{display:flex;justify-content:space-between;align-items:center;font:800 10px var(--font-mono);letter-spacing:.09em;color:#65757a;margin-bottom:8px}.ship-glance-grid{display:grid;grid-template-columns:repeat(4,1fr)}.ship-glance-item{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:10px 16px;border-right:1px solid var(--ship-line)}.ship-glance-item:last-child{border-right:0}.ship-glance-icon{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#edf7f4;color:#159a78;border:1px solid #d7eee7;font:700 13px var(--font-mono)}.ship-glance-item>div span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#7c898d}.ship-glance-item>div b{display:block;font:700 16px var(--font-mono);color:#1b3038;margin-top:3px}.ship-glance-item em{font:700 10px var(--font-mono);font-style:normal;color:#159a78}.ship-glance-item em.down{color:var(--ship-red)}
 .ship-metric-strip{display:grid;grid-template-columns:repeat(6,1fr);background:#fff;border:1px solid var(--ship-line);border-radius:16px;overflow:hidden;margin-bottom:16px}.ship-metric{min-width:0;padding:15px 16px;border-right:1px solid var(--ship-line);position:relative}.ship-metric:last-child{border-right:0}.ship-metric>span{display:block;font:800 9px var(--font-mono);letter-spacing:.07em;color:#78878b}.ship-metric>b{display:block;font:700 20px var(--font-mono);color:#162e36;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ship-metric>em{display:block;font:700 10px var(--font-mono);font-style:normal;color:#129b79;margin-top:3px}.ship-metric>em.down{color:var(--ship-red)}.ship-metric svg{display:block;width:100%;height:28px;margin-top:6px}.ship-metric-expense>b,.ship-metric-debt>b{color:#263b42}.ship-metric-expense>em.down,.ship-metric-debt>em.down{color:var(--ship-red)}
 .ship-lower-grid{display:grid;grid-template-columns:1.45fr .85fr;gap:14px;margin-bottom:14px}.ship-chart-card,.ship-change-card,.ship-moves-card,.ship-note-card{background:#fff;border:1px solid var(--ship-line);border-radius:16px;padding:20px;box-shadow:0 5px 18px rgba(15,35,42,.035)}.ship-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.ship-card-head h3{font-size:15px;color:#18323b}.ship-card-head p{font-size:11px;color:#7a898e;margin:3px 0 0}.ship-range{display:flex;gap:2px;padding:3px;background:#f2f5f4;border:1px solid #e0e6e4;border-radius:8px}.ship-range button{border:0;background:transparent;color:#718086;border-radius:6px;padding:5px 8px;font:700 10px var(--font-mono);cursor:pointer}.ship-range button.active{background:#fff;color:#118e70;box-shadow:0 1px 3px rgba(0,0,0,.08)}.ship-chart-wrap{height:292px;margin-top:14px}.ship-chart-wrap svg{width:100%;height:100%;display:block}.ship-chart-legend{display:flex;align-items:center;gap:18px;font-size:10px;color:#748288;margin-top:5px}.ship-chart-legend i{display:inline-block;width:10px;height:3px;border-radius:3px;background:#129b79;vertical-align:middle;margin-right:5px}.ship-chart-legend i.net{background:#4389e8}.ship-chart-legend button{margin-left:auto}
@@ -3560,10 +3554,6 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ship-grade-score"><span id="shipGradeScore">—</span><small>/ 100</small></div>
         <div class="ship-grade-trend"><div class="ship-trend-value" id="shipGradeDelta">—</div><div>since last check-in</div><svg id="shipGradeSpark" viewBox="0 0 180 48" preserveAspectRatio="none"></svg><button class="ship-link" data-goto="score" type="button">View grade history →</button></div>
       </div>
-      <div class="ship-weather" id="shipWeather" style="display:none">
-        <span class="ship-weather-icon" id="shipWeatherIcon">🌫️</span>
-        <div><span class="ship-weather-label" id="shipWeatherLabel">Gathering Data</span><span class="ship-weather-desc" id="shipWeatherDesc">—</span></div>
-      </div>
     </div>
     <aside class="grade-pro-panel" id="gradeProPanel">
       <div class="grade-pro-panel-top"><span class="grade-pro-pill" id="gradeProPill">PRO</span><span class="grade-pro-status" id="gradeProStatus">Upgrade your financial view</span></div>
@@ -3742,9 +3732,19 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="money-subview active" data-moneypanel="networth">
       <div class="pro-blur-section">
       <div class="pro-blur-content">
-      <div class="card" id="nwUpdateCard">
-        <div class="nw-update-header">
-          <span class="section-label" style="margin:0">Log a net worth update</span>
+
+      <div class="ret-hero" style="margin-bottom:16px">
+        <div>
+          <span class="ret-kicker">NET WORTH</span>
+          <h2>Every dollar, <span>one line.</span></h2>
+          <p>Log an update anytime — assets, debts, and the trend that ties them together.</p>
+        </div>
+        <div class="ret-hero-badge"><b id="nwHeroVal">—</b><span>Net worth</span></div>
+      </div>
+
+      <div class="ret-input-card" id="nwUpdateCard">
+        <div class="ret-card-title">
+          <div><span class="section-label" style="margin:0">Log a net worth update</span><h3 style="font-size:16px">Keep your trend current</h3></div>
           <button class="btn sm" id="nwUpdateToggle" type="button">+ Add update</button>
         </div>
         <div id="nwUpdateForm" class="nw-update-form" style="display:none">
@@ -3776,9 +3776,9 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         </div>
       </div>
 
-      <div class="hero-card">
-        <div class="hero-card-top">
-          <div><div class="hv mono" id="nwHeroVal">—</div><div class="hv-sub" id="nwHeroSub">—</div></div>
+      <div class="ret-chart-card" style="margin-top:16px">
+        <div class="ret-chart-head">
+          <div><span class="section-label" style="margin:0">Your trend</span><h3>Net worth over time</h3><div class="hv-sub" id="nwHeroSub" style="margin-top:4px">—</div></div>
           <div class="chart-time-filters" id="nwTimeFilters">
             <button type="button" data-range="30">1M</button><button type="button" data-range="90">3M</button><button type="button" data-range="180">6M</button>
             <button type="button" data-range="365">1Y</button><button type="button" data-range="all" class="active">ALL</button>
@@ -3788,7 +3788,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
       <div class="nw-breakdown" id="nwBreakdown"></div>
 
-      <div class="card" style="margin-top:16px">
+      <div class="ret-chart-card" style="margin-top:16px">
         <span class="section-label">Net worth vs. debt</span>
         <p class="section-sub" style="margin-top:4px" id="compositionSub">—</p>
         <div class="chart-wrap"><svg id="compositionChart" width="100%" height="140" viewBox="0 0 600 140" preserveAspectRatio="none"></svg></div>
@@ -6181,6 +6181,27 @@ function drawSparkline(svgEl, values, colorVar){
     '<path d="'+d+'" fill="none" stroke="'+colorVar+'" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>';
 }
 
+/* Smooth line path (Catmull-Rom -> cubic Bezier) - used anywhere a chart
+   should read as a fluid curve instead of a jagged connect-the-dots line.
+   pts is an array of [x,y] pairs, already in SVG coordinate space. */
+function smoothLinePath(pts){
+  if(!pts || !pts.length) return '';
+  if(pts.length === 1) return 'M '+pts[0][0]+' '+pts[0][1];
+  if(pts.length === 2) return 'M '+pts[0][0]+' '+pts[0][1]+' L '+pts[1][0]+' '+pts[1][1];
+  var d = 'M '+pts[0][0]+' '+pts[0][1]+' ';
+  for(var i=0;i<pts.length-1;i++){
+    var p0 = pts[i-1] || pts[i];
+    var p1 = pts[i];
+    var p2 = pts[i+1];
+    var p3 = pts[i+2] || p2;
+    var c1x = p1[0] + (p2[0]-p0[0])/6;
+    var c1y = p1[1] + (p2[1]-p0[1])/6;
+    var c2x = p2[0] - (p3[0]-p1[0])/6;
+    var c2y = p2[1] - (p3[1]-p1[1])/6;
+    d += 'C '+c1x+' '+c1y+' '+c2x+' '+c2y+' '+p2[0]+' '+p2[1]+' ';
+  }
+  return d;
+}
 function drawChart(svgEl, tooltipEl, points, opts){
   opts = opts || {};
   var formatter = opts.formatter || function(v){ return v.toFixed(1); };
@@ -6211,21 +6232,28 @@ function drawChart(svgEl, tooltipEl, points, opts){
   }
   function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
 
+  var pts = points.map(function(p,i){ return [x(i), y(p.v)]; });
+  var pathD = smoothLinePath(pts);
+  var areaD = pathD + ' L '+pts[pts.length-1][0]+','+(padT+innerH)+' L '+pts[0][0]+','+(padT+innerH)+' Z';
+
   var html = '';
   [0,0.5,1].forEach(function(f){
     var gy = padT + innerH*f;
     html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="var(--line)" stroke-width="1"/>';
   });
-  var pathD = ''; for(var i=0;i<points.length;i++){ pathD += (i?' L ':'M ') + x(i) + ' ' + y(points[i].v); }
-  var areaD = pathD + ' L '+x(points.length-1)+','+(padT+innerH)+' L '+padL+','+(padT+innerH)+' Z';
   html += '<path d="'+areaD+'" fill="url(#chartGrad)" opacity="0.5"/>';
   html += '<defs><linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--brand-bright)" stop-opacity="0.25"/><stop offset="100%" stop-color="var(--brand-bright)" stop-opacity="0"/></linearGradient></defs>';
-  html += '<path d="'+pathD+'" fill="none" stroke="var(--brand-bright)" stroke-width="2.5"/>';
+  html += '<path d="'+pathD+'" fill="none" stroke="var(--brand-bright)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  html += '<line class="chart-guide" x1="0" y1="'+padT+'" x2="0" y2="'+(padT+innerH)+'" stroke="var(--muted-2)" stroke-width="1" stroke-dasharray="3 3" opacity="0"/>';
+  html += '<circle class="chart-hover-dot" cx="0" cy="0" r="4.5" fill="var(--brand-bright)" stroke="var(--surface)" stroke-width="2" opacity="0"/>';
+  html += '<circle cx="'+pts[pts.length-1][0]+'" cy="'+pts[pts.length-1][1]+'" r="4" fill="var(--brand-bright)" stroke="var(--surface)" stroke-width="2"/>';
   points.forEach(function(p,i){
-    html += '<circle class="chart-pt" data-i="'+i+'" cx="'+x(i)+'" cy="'+y(p.v)+'" r="9" fill="transparent"/>';
-    html += '<circle cx="'+x(i)+'" cy="'+y(p.v)+'" r="3" fill="var(--brand-bright)" stroke="var(--bg-2)" stroke-width="1.5" style="pointer-events:none"/>';
+    html += '<circle class="chart-pt" data-i="'+i+'" cx="'+pts[i][0]+'" cy="'+pts[i][1]+'" r="9" fill="transparent"/>';
   });
   svgEl.innerHTML = html;
+
+  var guideEl = svgEl.querySelector('.chart-guide');
+  var hoverDotEl = svgEl.querySelector('.chart-hover-dot');
 
   if(tooltipEl){
     svgEl.querySelectorAll('.chart-pt').forEach(function(circle){
@@ -6234,11 +6262,18 @@ function drawChart(svgEl, tooltipEl, points, opts){
         tooltipEl.style.display = 'block';
         tooltipEl.innerHTML = '<b>'+formatter(p.v)+'</b>'+(p.label||formatDateFull(p.ts));
         var rect = svgEl.getBoundingClientRect();
-        var px = (x(i)/w)*rect.width, py = (y(p.v)/h)*rect.height;
-        tooltipEl.style.left = Math.min(rect.width-110, Math.max(0, px-45)) + "px";
-        tooltipEl.style.top = Math.max(0, py-52) + "px";
+        var px = pts[i][0], py = pts[i][1];
+        var screenPx = (px/w)*rect.width, screenPy = (py/h)*rect.height;
+        tooltipEl.style.left = Math.min(rect.width-110, Math.max(0, screenPx-45)) + "px";
+        tooltipEl.style.top = Math.max(0, screenPy-52) + "px";
+        if(guideEl){ guideEl.setAttribute('x1', px); guideEl.setAttribute('x2', px); guideEl.style.opacity = '1'; }
+        if(hoverDotEl){ hoverDotEl.setAttribute('cx', px); hoverDotEl.setAttribute('cy', py); hoverDotEl.style.opacity = '1'; }
       });
-      circle.addEventListener('mouseleave', function(){ tooltipEl.style.display = 'none'; });
+      circle.addEventListener('mouseleave', function(){
+        tooltipEl.style.display = 'none';
+        if(guideEl) guideEl.style.opacity = '0';
+        if(hoverDotEl) hoverDotEl.style.opacity = '0';
+      });
     });
   }
 }
@@ -8638,57 +8673,6 @@ function renderDashGoalsPreview(hist){
   }).join('') + '</div>';
 }
 
-/* ================= FINANCIAL WEATHER =================
-   A single glanceable read on momentum, synthesized from the same five
-   deltas the "Since last check-in" list already computes (grade, net
-   worth, cash flow, emergency fund runway, debt). Deliberately doesn't
-   reach for the Stress Test resilience score - that's computed live only
-   when someone opens Insights and isn't persisted anywhere, so pulling it
-   in here would mean re-running that calculation speculatively on every
-   Overview load just in case. These five are already known-good at this
-   point in the render, so the signal stays honest and free. */
-function renderFinancialWeather(sd, dn, df, dc, dd, hasPrev){
-  var wrap = $('shipWeather'), iconEl = $('shipWeatherIcon'), labelEl = $('shipWeatherLabel'), descEl = $('shipWeatherDesc');
-  if(!wrap || !iconEl || !labelEl || !descEl) return;
-
-  if(!hasPrev){
-    wrap.style.display = 'none';
-    return;
-  }
-
-  var signals = [];
-  if(sd !== null) signals.push(sd > 0 ? 1 : (sd < 0 ? -1 : 0));
-  if(dn !== null) signals.push(dn > 0 ? 1 : (dn < 0 ? -1 : 0));
-  if(df !== null) signals.push(df > 0 ? 1 : (df < 0 ? -1 : 0));
-  if(dc !== null) signals.push(dc > 0 ? 1 : (dc < 0 ? -1 : 0));
-  if(dd !== null) signals.push(dd < 0 ? 1 : (dd > 0 ? -1 : 0));
-
-  if(!signals.length){
-    wrap.style.display = 'none';
-    return;
-  }
-
-  var net = signals.reduce(function(a,b){ return a+b; }, 0);
-  var w;
-  if(sd !== null && sd < 0 && net >= 2){
-    w = { icon:'🌦️', label:'Clearing Up', desc:'Your grade dipped, but the numbers underneath are trending the right way.' };
-  } else if(net >= 3){
-    w = { icon:'☀️', label:'Sunny', desc:'Strong momentum across the board since your last check-in.' };
-  } else if(net >= 1){
-    w = { icon:'🌤️', label:'Mostly Sunny', desc:'More right than wrong since your last check-in.' };
-  } else if(net === 0){
-    w = { icon:'⛅', label:'Partly Cloudy', desc:'A mixed bag since your last check-in — some up, some down.' };
-  } else if(net >= -2){
-    w = { icon:'☁️', label:'Cloudy', desc:'A few things slipped since your last check-in. Worth a look.' };
-  } else {
-    w = { icon:'⛈️', label:'Stormy', desc:'Several numbers moved the wrong way — a good time to find your biggest lever.' };
-  }
-
-  wrap.style.display = 'flex';
-  iconEl.textContent = w.icon;
-  labelEl.textContent = w.label;
-  descEl.textContent = w.desc;
-}
 function renderShipOverview(hist){
   var latest = hist.length ? hist[hist.length-1] : null, prev = hist.length>1 ? hist[hist.length-2] : null;
   if(!latest) return;
@@ -8733,8 +8717,6 @@ function renderShipOverview(hist){
   $('shipGlanceCashDelta').textContent = dc===null ? '—' : (dc>=0?'↑ +':'↓ ')+Math.abs(dc).toFixed(1)+' mo';
   $('shipGlanceDebtDelta').textContent = shipDeltaMoney(dd);
   if(dd>0) $('shipGlanceDebtDelta').className = 'down';
-
-  renderFinancialWeather(sd, dn, df, dc, dd, !!prev);
 
   shipSpark($('shipGradeSpark'), hist.map(function(h){ return h.score; }).slice(-18));
 
@@ -9049,8 +9031,8 @@ function renderCompositionChart(hist){
   function x(i){ return rows.length===1 ? padL+innerW/2 : padL + (i/(rows.length-1))*innerW; }
   function y(v){ return padT + innerH - ((v-minV)/(maxV-minV))*innerH; }
   function pathFor(vals){
-    var d=''; for(var i=0;i<vals.length;i++){ d += (i?' L ':'M ') + x(i) + ' ' + y(vals[i]); }
-    return d;
+    var pts = vals.map(function(v,i){ return [x(i), y(v)]; });
+    return smoothLinePath(pts);
   }
   var html = '';
   [minV, maxV].forEach(function(gv){
@@ -9058,8 +9040,8 @@ function renderCompositionChart(hist){
     html += '<line x1="'+padL+'" y1="'+gy+'" x2="'+(w-padR)+'" y2="'+gy+'" stroke="var(--line)" stroke-width="1"/>';
     html += '<text x="4" y="'+(gy+4)+'" fill="var(--muted-2)" font-size="10" font-family=\'IBM Plex Mono\'>'+formatCompact(gv)+'</text>';
   });
-  html += '<path d="'+pathFor(debtVals)+'" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray="4 4" opacity="0.75"/>';
-  html += '<path d="'+pathFor(netVals)+'" fill="none" stroke="var(--brand-bright)" stroke-width="2.5"/>';
+  html += '<path d="'+pathFor(debtVals)+'" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray="4 4" opacity="0.75" stroke-linecap="round"/>';
+  html += '<path d="'+pathFor(netVals)+'" fill="none" stroke="var(--brand-bright)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
   setHTML(svgEl, html);
 }
 function setHTML(el, html){ el.innerHTML = html; }
@@ -9436,14 +9418,10 @@ function renderColorfulNetWorthChart(svgEl, tooltipEl, points){
   var spread=max-min; min-=spread*.12; max+=spread*.12;
   function x(i){return vals.length===1?pad.l+iw*.5:pad.l+(i/(vals.length-1))*iw;}
   function y(v){return pad.t+ih-((v-min)/(max-min))*ih;}
-  var line='M '+x(0)+' '+y(vals[0]);
-  for(var i=1;i<vals.length;i++) line+=' L '+x(i)+' '+y(vals[i]);
-  if(vals.length===1){
-    var cx=x(0),cy=y(vals[0]);
-    line='M '+(cx-150)+' '+(cy+35)+' C '+(cx-70)+' '+(cy-55)+' '+(cx+70)+' '+(cy+55)+' '+(cx+150)+' '+(cy-35);
-  }
+  var pts=vals.map(function(v,i){return [x(i),y(v)];});
+  var line=smoothLinePath(pts);
   var baseline=pad.t+ih;
-  var area=line+' L '+(x(vals.length-1))+' '+baseline+' L '+x(0)+' '+baseline+' Z';
+  var area=line+' L '+pts[pts.length-1][0]+' '+baseline+' L '+pts[0][0]+' '+baseline+' Z';
   var html='<defs>'+
     '<linearGradient id="nwCoolGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#7c3aed"/><stop offset="45%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#10b981"/></linearGradient>'+
     '<linearGradient id="nwCoolArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06b6d4" stop-opacity=".38"/><stop offset="55%" stop-color="#8b5cf6" stop-opacity=".14"/><stop offset="100%" stop-color="#10b981" stop-opacity="0"/></linearGradient>'+
@@ -9451,14 +9429,17 @@ function renderColorfulNetWorthChart(svgEl, tooltipEl, points){
   [0,.25,.5,.75,1].forEach(function(f){var gy=pad.t+ih*f;html+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(w-pad.r)+'" y2="'+gy+'" stroke="#dbe7f0" stroke-width="1" stroke-dasharray="4 8"/>';});
   html+='<path d="'+area+'" fill="url(#nwCoolArea)"/>';
   html+='<path d="'+line+'" fill="none" stroke="url(#nwCoolGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".18" filter="url(#nwGlow)"/>';
-  html+='<path d="'+line+'" fill="none" stroke="url(#nwCoolGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  html+='<path d="'+line+'" fill="none" stroke="url(#nwCoolGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
   if(demo){
     html+='<text x="'+(w/2)+'" y="'+(pad.t+32)+'" text-anchor="middle" fill="#53677a" font-size="13" font-weight="700">YOUR NET WORTH STORY STARTS HERE</text>';
     html+='<text x="'+(w/2)+'" y="'+(pad.t+53)+'" text-anchor="middle" fill="#8292a3" font-size="11">Add your first update to replace this preview with your real trend</text>';
   }
-  vals.forEach(function(v,i){var px=x(i),py=y(v);html+='<circle class="nw-cool-pt" data-i="'+i+'" cx="'+px+'" cy="'+py+'" r="8" fill="#fff" stroke="url(#nwCoolGrad)" stroke-width="3"/><circle cx="'+px+'" cy="'+py+'" r="3" fill="#10b981"/>';});
+  html+='<circle class="nw-cool-hoverdot" cx="0" cy="0" r="6" fill="#fff" stroke="url(#nwCoolGrad)" stroke-width="3" opacity="0"/>';
+  html+='<circle cx="'+pts[pts.length-1][0]+'" cy="'+pts[pts.length-1][1]+'" r="6" fill="#fff" stroke="url(#nwCoolGrad)" stroke-width="3"/><circle cx="'+pts[pts.length-1][0]+'" cy="'+pts[pts.length-1][1]+'" r="2.5" fill="#10b981"/>';
+  vals.forEach(function(v,i){var px=x(i),py=y(v);html+='<circle class="nw-cool-pt" data-i="'+i+'" cx="'+px+'" cy="'+py+'" r="9" fill="transparent"/>';});
   svgEl.innerHTML=html;
-  if(tooltipEl && hasData){svgEl.querySelectorAll('.nw-cool-pt').forEach(function(c){c.addEventListener('mouseenter',function(){var i=+c.getAttribute('data-i'),pt=points[i];tooltipEl.style.display='block';tooltipEl.innerHTML='<b>'+money(pt.v)+'</b><br><span>'+formatDateFull(pt.ts)+'</span>';var r=svgEl.getBoundingClientRect();tooltipEl.style.left=Math.max(8,Math.min(r.width-120,(x(i)/w)*r.width-55))+'px';tooltipEl.style.top=Math.max(8,(y(pt.v)/h)*r.height-56)+'px';});c.addEventListener('mouseleave',function(){tooltipEl.style.display='none';});});}
+  var hoverDot=svgEl.querySelector('.nw-cool-hoverdot');
+  if(tooltipEl && hasData){svgEl.querySelectorAll('.nw-cool-pt').forEach(function(c){c.addEventListener('mouseenter',function(){var i=+c.getAttribute('data-i'),pt=points[i];tooltipEl.style.display='block';tooltipEl.innerHTML='<b>'+money(pt.v)+'</b><br><span>'+formatDateFull(pt.ts)+'</span>';var r=svgEl.getBoundingClientRect();var px=pts[i][0],py=pts[i][1];tooltipEl.style.left=Math.max(8,Math.min(r.width-120,(px/w)*r.width-55))+'px';tooltipEl.style.top=Math.max(8,(py/h)*r.height-56)+'px';if(hoverDot){hoverDot.setAttribute('cx',px);hoverDot.setAttribute('cy',py);hoverDot.style.opacity='1';}});c.addEventListener('mouseleave',function(){tooltipEl.style.display='none';if(hoverDot) hoverDot.style.opacity='0';});});}
 }
 
 function renderNetWorthTab(hist){
