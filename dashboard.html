@@ -2141,6 +2141,14 @@ body{background:#f7f8f7!important;color:var(--ship-ink)!important}
 .ship-grade-trend{border-left:1px solid var(--ship-line);padding-left:22px;color:#6b7b81;font-size:11px}.ship-trend-value{font:700 17px var(--font-mono);color:#129b79;margin-bottom:2px}.ship-grade-trend svg{width:100%;height:48px;margin:6px 0 3px;color:#129b79}
 .ship-grade-message{padding:27px 26px;display:flex;flex-direction:column;justify-content:center}.ship-message-title{font:700 17px var(--font-display);color:#162d35;margin-bottom:20px}.ship-strength-opps{display:grid;grid-template-columns:1fr 1fr;gap:24px}.ship-strength-opps>div+div{border-left:1px solid var(--ship-line);padding-left:24px}.ship-mini-label{display:block;font:800 9px var(--font-mono);letter-spacing:.07em;color:#738287;margin-bottom:6px}.ship-strength-opps b{display:block;font-size:13px;color:#1b343d}.ship-strength-opps small{display:block;font-size:11px;line-height:1.4;color:#7a888d;margin-top:4px}
 .ship-link{border:0;background:none;padding:0;color:#0b9271;font:700 11px var(--font-body);cursor:pointer;text-decoration:none}.ship-link:hover{text-decoration:underline}
+
+.ship-weather{ display:flex; align-items:center; gap:12px; margin-top:18px; padding-top:16px; border-top:1px solid var(--ship-line) }
+.ship-weather-icon{ font-size:28px; line-height:1; flex:none }
+.ship-weather-label{ display:block; font-weight:700; font-size:13.5px; color:#18323b }
+.ship-weather-desc{ display:block; font-size:11.5px; color:#7a898e; margin-top:2px; max-width:440px }
+:root[data-theme="dark"] .ship-weather{ border-top-color:#1c2536 }
+:root[data-theme="dark"] .ship-weather-label{ color:#eef2f8 }
+:root[data-theme="dark"] .ship-weather-desc{ color:#93a0b4 }
 .ship-glance-card{background:#fff;border:1px solid var(--ship-line);border-radius:16px;padding:16px 20px;margin-bottom:14px}.ship-panel-title{display:flex;justify-content:space-between;align-items:center;font:800 10px var(--font-mono);letter-spacing:.09em;color:#65757a;margin-bottom:8px}.ship-glance-grid{display:grid;grid-template-columns:repeat(4,1fr)}.ship-glance-item{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:10px 16px;border-right:1px solid var(--ship-line)}.ship-glance-item:last-child{border-right:0}.ship-glance-icon{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#edf7f4;color:#159a78;border:1px solid #d7eee7;font:700 13px var(--font-mono)}.ship-glance-item>div span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#7c898d}.ship-glance-item>div b{display:block;font:700 16px var(--font-mono);color:#1b3038;margin-top:3px}.ship-glance-item em{font:700 10px var(--font-mono);font-style:normal;color:#159a78}.ship-glance-item em.down{color:var(--ship-red)}
 .ship-metric-strip{display:grid;grid-template-columns:repeat(6,1fr);background:#fff;border:1px solid var(--ship-line);border-radius:16px;overflow:hidden;margin-bottom:16px}.ship-metric{min-width:0;padding:15px 16px;border-right:1px solid var(--ship-line);position:relative}.ship-metric:last-child{border-right:0}.ship-metric>span{display:block;font:800 9px var(--font-mono);letter-spacing:.07em;color:#78878b}.ship-metric>b{display:block;font:700 20px var(--font-mono);color:#162e36;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ship-metric>em{display:block;font:700 10px var(--font-mono);font-style:normal;color:#129b79;margin-top:3px}.ship-metric>em.down{color:var(--ship-red)}.ship-metric svg{display:block;width:100%;height:28px;margin-top:6px}.ship-metric-expense>b,.ship-metric-debt>b{color:#263b42}.ship-metric-expense>em.down,.ship-metric-debt>em.down{color:var(--ship-red)}
 .ship-lower-grid{display:grid;grid-template-columns:1.45fr .85fr;gap:14px;margin-bottom:14px}.ship-chart-card,.ship-change-card,.ship-moves-card,.ship-note-card{background:#fff;border:1px solid var(--ship-line);border-radius:16px;padding:20px;box-shadow:0 5px 18px rgba(15,35,42,.035)}.ship-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.ship-card-head h3{font-size:15px;color:#18323b}.ship-card-head p{font-size:11px;color:#7a898e;margin:3px 0 0}.ship-range{display:flex;gap:2px;padding:3px;background:#f2f5f4;border:1px solid #e0e6e4;border-radius:8px}.ship-range button{border:0;background:transparent;color:#718086;border-radius:6px;padding:5px 8px;font:700 10px var(--font-mono);cursor:pointer}.ship-range button.active{background:#fff;color:#118e70;box-shadow:0 1px 3px rgba(0,0,0,.08)}.ship-chart-wrap{height:292px;margin-top:14px}.ship-chart-wrap svg{width:100%;height:100%;display:block}.ship-chart-legend{display:flex;align-items:center;gap:18px;font-size:10px;color:#748288;margin-top:5px}.ship-chart-legend i{display:inline-block;width:10px;height:3px;border-radius:3px;background:#129b79;vertical-align:middle;margin-right:5px}.ship-chart-legend i.net{background:#4389e8}.ship-chart-legend button{margin-left:auto}
@@ -3551,6 +3559,10 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ship-grade-letter" id="shipGradeLetter">—</div>
         <div class="ship-grade-score"><span id="shipGradeScore">—</span><small>/ 100</small></div>
         <div class="ship-grade-trend"><div class="ship-trend-value" id="shipGradeDelta">—</div><div>since last check-in</div><svg id="shipGradeSpark" viewBox="0 0 180 48" preserveAspectRatio="none"></svg><button class="ship-link" data-goto="score" type="button">View grade history →</button></div>
+      </div>
+      <div class="ship-weather" id="shipWeather" style="display:none">
+        <span class="ship-weather-icon" id="shipWeatherIcon">🌫️</span>
+        <div><span class="ship-weather-label" id="shipWeatherLabel">Gathering Data</span><span class="ship-weather-desc" id="shipWeatherDesc">—</span></div>
       </div>
     </div>
     <aside class="grade-pro-panel" id="gradeProPanel">
@@ -8626,6 +8638,57 @@ function renderDashGoalsPreview(hist){
   }).join('') + '</div>';
 }
 
+/* ================= FINANCIAL WEATHER =================
+   A single glanceable read on momentum, synthesized from the same five
+   deltas the "Since last check-in" list already computes (grade, net
+   worth, cash flow, emergency fund runway, debt). Deliberately doesn't
+   reach for the Stress Test resilience score - that's computed live only
+   when someone opens Insights and isn't persisted anywhere, so pulling it
+   in here would mean re-running that calculation speculatively on every
+   Overview load just in case. These five are already known-good at this
+   point in the render, so the signal stays honest and free. */
+function renderFinancialWeather(sd, dn, df, dc, dd, hasPrev){
+  var wrap = $('shipWeather'), iconEl = $('shipWeatherIcon'), labelEl = $('shipWeatherLabel'), descEl = $('shipWeatherDesc');
+  if(!wrap || !iconEl || !labelEl || !descEl) return;
+
+  if(!hasPrev){
+    wrap.style.display = 'none';
+    return;
+  }
+
+  var signals = [];
+  if(sd !== null) signals.push(sd > 0 ? 1 : (sd < 0 ? -1 : 0));
+  if(dn !== null) signals.push(dn > 0 ? 1 : (dn < 0 ? -1 : 0));
+  if(df !== null) signals.push(df > 0 ? 1 : (df < 0 ? -1 : 0));
+  if(dc !== null) signals.push(dc > 0 ? 1 : (dc < 0 ? -1 : 0));
+  if(dd !== null) signals.push(dd < 0 ? 1 : (dd > 0 ? -1 : 0));
+
+  if(!signals.length){
+    wrap.style.display = 'none';
+    return;
+  }
+
+  var net = signals.reduce(function(a,b){ return a+b; }, 0);
+  var w;
+  if(sd !== null && sd < 0 && net >= 2){
+    w = { icon:'🌦️', label:'Clearing Up', desc:'Your grade dipped, but the numbers underneath are trending the right way.' };
+  } else if(net >= 3){
+    w = { icon:'☀️', label:'Sunny', desc:'Strong momentum across the board since your last check-in.' };
+  } else if(net >= 1){
+    w = { icon:'🌤️', label:'Mostly Sunny', desc:'More right than wrong since your last check-in.' };
+  } else if(net === 0){
+    w = { icon:'⛅', label:'Partly Cloudy', desc:'A mixed bag since your last check-in — some up, some down.' };
+  } else if(net >= -2){
+    w = { icon:'☁️', label:'Cloudy', desc:'A few things slipped since your last check-in. Worth a look.' };
+  } else {
+    w = { icon:'⛈️', label:'Stormy', desc:'Several numbers moved the wrong way — a good time to find your biggest lever.' };
+  }
+
+  wrap.style.display = 'flex';
+  iconEl.textContent = w.icon;
+  labelEl.textContent = w.label;
+  descEl.textContent = w.desc;
+}
 function renderShipOverview(hist){
   var latest = hist.length ? hist[hist.length-1] : null, prev = hist.length>1 ? hist[hist.length-2] : null;
   if(!latest) return;
@@ -8670,6 +8733,8 @@ function renderShipOverview(hist){
   $('shipGlanceCashDelta').textContent = dc===null ? '—' : (dc>=0?'↑ +':'↓ ')+Math.abs(dc).toFixed(1)+' mo';
   $('shipGlanceDebtDelta').textContent = shipDeltaMoney(dd);
   if(dd>0) $('shipGlanceDebtDelta').className = 'down';
+
+  renderFinancialWeather(sd, dn, df, dc, dd, !!prev);
 
   shipSpark($('shipGradeSpark'), hist.map(function(h){ return h.score; }).slice(-18));
 
