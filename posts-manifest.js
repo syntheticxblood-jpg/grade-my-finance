@@ -115,4 +115,8 @@ var GMF_BLOG_POSTS = [
   { slug:"balance-transfer-credit-cards-explained", title:"Balance Transfer Credit Cards: When They Actually Save You Money (and When They Don't)", category:"Debt" }
 ,
   { slug:"what-to-do-with-an-old-401k", title:"What to Do With an Old 401(k) When You Change Jobs", category:"Retirement" }
+,
+  { slug:"hdhp-vs-ppo-open-enrollment", title:"HDHP vs. PPO: How to Actually Pick a Health Insurance Plan During Open Enrollment", category:"Insurance" }
+,
+  { slug:"renters-insurance-is-it-worth-it", title:"Renters Insurance: Is It Actually Worth the Cost?", category:"Insurance" }
 ];
