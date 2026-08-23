@@ -681,6 +681,7 @@ section.block{ padding:76px 0 }
   width:480px; max-width:100%; background:var(--surface); border:1px solid var(--line);
   border-radius:22px; padding:38px 34px 30px; box-shadow:0 30px 80px -20px rgba(0,0,0,.5), var(--shadow);
   text-align:center; animation:revealCardIn .45s cubic-bezier(.19,1,.22,1);
+  max-height:calc(100vh - 48px); max-height:calc(100dvh - 48px); overflow-y:auto;
 }
 @keyframes revealCardIn{ from{ opacity:0; transform:translateY(18px) scale(.97) } to{ opacity:1; transform:none } }
 @media (prefers-reduced-motion: reduce){ .grade-reveal-card{ animation:none } }
