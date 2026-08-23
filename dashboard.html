@@ -3528,6 +3528,55 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     </div>
   </aside>
 
+  <nav class="gmf-mtabbar" id="gmfMobileTabbar" aria-label="Mobile navigation">
+    <button class="gmf-mtab-btn" data-tab="overview" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Home
+    </button>
+    <button class="gmf-mtab-btn" data-tab="networth" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 9.5 4h5L16 7"/></svg>
+      Money
+    </button>
+    <button class="gmf-mtab-btn" data-tab="scenarios" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>
+      Plan
+    </button>
+    <button class="gmf-mtab-btn" data-tab="insights" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+      Insights
+    </button>
+    <button class="gmf-mtab-btn" id="gmfMoreBtn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+      More
+    </button>
+  </nav>
+
+  <div class="gmf-mtab-more-sheet" id="gmfMoreSheet">
+    <div class="gmf-mtab-more-panel">
+      <div class="gmf-mtab-more-handle"></div>
+      <button class="gmf-mtab-more-item" data-tab="goals" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+        Goals
+      </button>
+      <button class="gmf-mtab-more-item" data-tab="retirement" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Retirement
+      </button>
+      <button class="gmf-mtab-more-item" data-tab="investing" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-5 3 3 5-7"/></svg>
+        Investing
+      </button>
+      <button class="gmf-mtab-more-item" data-tab="score" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        Grade Report
+      </button>
+      <button class="gmf-mtab-more-item" id="gmfMoreSignOut" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Sign out
+      </button>
+    </div>
+  </div>
+
   <div class="main-area">
     <main class="container">
       <div id="freeTierState" style="display:none">
@@ -12370,6 +12419,55 @@ body{font-size:15px!important;min-height:100vh}
 })();
 </script>
 
+<script id="gmf-mobile-tabbar-js">
+(function(){
+  function go(tab){
+    if(!tab) return;
+    if(typeof window.__gmfShowTab==='function') window.__gmfShowTab(tab,true);
+    else if(typeof window.gmfNav==='function') window.gmfNav(tab,true);
+    setActive(tab);
+    closeMore();
+  }
+  function setActive(tab){
+    document.querySelectorAll('.gmf-mtab-btn[data-tab]').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-tab')===tab);
+    });
+  }
+  function openMore(){ var s=document.getElementById('gmfMoreSheet'); if(s) s.classList.add('open'); }
+  function closeMore(){ var s=document.getElementById('gmfMoreSheet'); if(s) s.classList.remove('open'); }
+
+  document.addEventListener('click', function(ev){
+    var tabBtn = ev.target.closest && ev.target.closest('.gmf-mtab-btn[data-tab], .gmf-mtab-more-item[data-tab]');
+    if(tabBtn){ ev.preventDefault(); go(tabBtn.getAttribute('data-tab')); return; }
+
+    if(ev.target.closest && ev.target.closest('#gmfMoreBtn')){ ev.preventDefault(); openMore(); return; }
+
+    if(ev.target.closest && ev.target.closest('#gmfMoreSignOut')){
+      ev.preventDefault();
+      closeMore();
+      var realSignOut = document.getElementById('accountSignOutBtn');
+      if(realSignOut) realSignOut.click();
+      return;
+    }
+
+    // tapping the dark backdrop (not the sheet itself) closes it
+    if(ev.target && ev.target.id === 'gmfMoreSheet'){ closeMore(); return; }
+  });
+
+  // Keep the active tab in sync if something else switches tabs
+  // (e.g. an in-page "Go to Money" button), by watching which
+  // .dash-tab-panel currently has the active class.
+  var lastActive = null;
+  setInterval(function(){
+    var activePanel = document.querySelector('.dash-tab-panel.active');
+    if(activePanel && activePanel.id !== lastActive){
+      lastActive = activePanel.id;
+      setActive(activePanel.id.replace('panel-',''));
+    }
+  }, 400);
+})();
+</script>
+
 <style id="gmf-theme-repaint-final">
 /* Sidebar can overflow the viewport height on shorter screens (nav items +
    settings + theme toggle + Pro card easily exceeds a laptop's height) -
@@ -12788,40 +12886,63 @@ body::before{
      vertical overflow here on mobile only. */
   .sidebar{ overflow-y:visible !important; overflow-x:auto !important; }
 
-  /* The actual root cause of the mispositioned nav buttons: ".sidebar
-     .dash-nav" was set to display:grid!important elsewhere (with no
-     grid-template defined, and overflow:visible!important) - a leftover
-     from a different layout attempt entirely. With no template, an
-     unconstrained grid can lay its items out and size itself in ways
-     that don't resemble a simple horizontal bar at all, and
-     overflow:visible let it render completely outside its own
-     container's box instead of clipping/scrolling within it. Forcing
-     it back to a real flex row, matching the exact ".sidebar .dash-nav"
-     specificity so this reliably wins. */
-  .sidebar .dash-nav{
-    display:flex !important;
-    flex-direction:row !important;
-    overflow-x:auto !important;
-    overflow-y:hidden !important;
-    align-items:stretch !important;
-  }
+  /* After three rounds of patches on top of this same legacy sidebar
+     (grid-vs-flex conflicts, an unhidden account block, an unscoped
+     cream background with a flex-column margin idiom that breaks once
+     switched to a row), it kept resurfacing new bugs specifically on
+     real mobile Safari that didn't reproduce in headless testing.
+     Rather than patch a fourth time on a foundation that's proven
+     fragile, the sidebar goes back to simply being hidden on mobile -
+     see the new, fully independent ".gmf-mtabbar" bottom nav below,
+     which shares no CSS or markup with the sidebar at all. */
+  .sidebar{ display:none !important; }
+}
+</style>
 
-  /* .sidebar-bottom (Settings/theme toggle/Pro card) carries an
-     unscoped cream background (#f1eee3, from ".sidebar-bottom" base
-     rule) and a "margin-top:auto" that's a flex-COLUMN idiom (push to
-     bottom of a vertical stack) - once the sidebar switches to
-     flex-direction:row for the mobile bottom bar, that margin can
-     behave unpredictably, and if this section's actual content is
-     taller than the compact bar, its cream background shows through
-     wherever that content actually renders - a floating cream box over
-     the main page, independent of the .dash-nav and #accountChip bugs
-     already fixed above. */
-  .sidebar-bottom{
-    margin-top:0 !important;
-    overflow:hidden !important;
-    max-height:100% !important;
+<style id="gmf-mobile-tabbar">
+/* A brand new, fully self-contained mobile bottom nav bar. Deliberately
+   uses only its own "gmf-mtab-*" classes - nothing here is shared with
+   .sidebar/.dash-nav/.sidebar-bottom, so nothing from that tangled,
+   many-times-patched stylesheet can reach in and break this. */
+.gmf-mtabbar{ display:none; }
+.gmf-mtab-more-sheet{ display:none; }
+@media (max-width:900px){
+  .gmf-mtabbar{
     display:flex !important;
-    align-items:center !important;
+    position:fixed !important; left:0 !important; right:0 !important; bottom:0 !important;
+    z-index:999999 !important;
+    background:#0d1720 !important; border-top:1px solid #22313a !important;
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px)) !important;
+    box-shadow:0 -6px 24px rgba(0,0,0,.25) !important;
   }
+  .gmf-mtab-btn{
+    flex:1 1 0; display:flex !important; flex-direction:column !important; align-items:center !important;
+    justify-content:center !important; gap:2px; padding:6px 2px; background:none !important; border:none !important;
+    color:#8fa0a5 !important; font:600 10px var(--font-body,Inter,Arial,sans-serif) !important;
+    cursor:pointer; -webkit-tap-highlight-color:transparent;
+  }
+  .gmf-mtab-btn svg{ width:20px; height:20px; }
+  .gmf-mtab-btn.active{ color:#20b58f !important; }
+  main{ padding-bottom:calc(76px + env(safe-area-inset-bottom,0px)) !important; }
+
+  .gmf-mtab-more-sheet.open{
+    display:block !important; position:fixed !important; inset:0 !important; z-index:999998 !important;
+    background:rgba(0,0,0,.5) !important;
+  }
+  .gmf-mtab-more-panel{
+    position:absolute !important; left:0 !important; right:0 !important; bottom:0 !important;
+    background:#0d1720 !important; border-radius:16px 16px 0 0 !important;
+    padding:10px 8px calc(16px + env(safe-area-inset-bottom,0px)) !important;
+    max-height:70vh !important; overflow-y:auto !important;
+  }
+  .gmf-mtab-more-handle{ width:36px; height:4px; border-radius:2px; background:#3a4a4f; margin:6px auto 12px; }
+  .gmf-mtab-more-item{
+    display:flex !important; align-items:center !important; gap:12px; width:100%;
+    padding:14px 12px; background:none !important; border:none !important; border-bottom:1px solid #1c2b30 !important;
+    color:#e8f0f1 !important; font:600 14px var(--font-body,Inter,Arial,sans-serif) !important; text-align:left;
+    cursor:pointer;
+  }
+  .gmf-mtab-more-item svg{ width:19px; height:19px; flex:none; color:#8fa0a5; }
+  .gmf-mtab-more-item.danger{ color:#e07a6b !important; }
 }
 </style>
