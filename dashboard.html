@@ -12805,5 +12805,23 @@ body::before{
     overflow-y:hidden !important;
     align-items:stretch !important;
   }
+
+  /* .sidebar-bottom (Settings/theme toggle/Pro card) carries an
+     unscoped cream background (#f1eee3, from ".sidebar-bottom" base
+     rule) and a "margin-top:auto" that's a flex-COLUMN idiom (push to
+     bottom of a vertical stack) - once the sidebar switches to
+     flex-direction:row for the mobile bottom bar, that margin can
+     behave unpredictably, and if this section's actual content is
+     taller than the compact bar, its cream background shows through
+     wherever that content actually renders - a floating cream box over
+     the main page, independent of the .dash-nav and #accountChip bugs
+     already fixed above. */
+  .sidebar-bottom{
+    margin-top:0 !important;
+    overflow:hidden !important;
+    max-height:100% !important;
+    display:flex !important;
+    align-items:center !important;
+  }
 }
 </style>
