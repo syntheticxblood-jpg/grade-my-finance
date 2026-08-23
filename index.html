@@ -260,6 +260,7 @@ nav.primary a:hover{ color:var(--text) }
 @media (prefers-reduced-motion: reduce){ .hero-headline-accent{ animation:none; color:var(--brand-bright); background:none } }
 
 .hero-trust-row{ display:flex; gap:22px; flex-wrap:wrap; margin-top:28px; justify-content:flex-start }
+.hero-reassurance{ margin:12px 0 0; font-size:12.5px; color:var(--muted); font-weight:500; order:3 }
 @media (max-width:980px){ .hero-trust-row{ justify-content:center } }
 .htr-item{ display:flex; align-items:center; gap:9px }
 .htr-icon{ flex:none; width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; background:var(--brand-soft); color:var(--brand-bright) }
@@ -722,6 +723,14 @@ section.block{ padding:76px 0 }
 .grade-reveal-row.strength .grr-label{ color:var(--good) }
 .grade-reveal-row.opportunity .grr-label{ color:var(--gold-bright) }
 .grade-reveal-cta{ width:100%; margin-top:18px; padding:13px; font-size:14.5px; font-weight:700 }
+.reveal-pro-teaser{
+  margin-top:18px; padding:16px 18px; border-radius:14px; text-align:center;
+  background:linear-gradient(135deg,var(--brand-soft,rgba(34,197,148,.10)),transparent);
+  border:1px solid var(--brand);
+}
+.reveal-pro-teaser .rpt-line{ margin:0 0 12px; font-size:14px; line-height:1.4; color:var(--text) }
+.reveal-pro-teaser .btn{ width:100%; justify-content:center }
+.reveal-pro-teaser .rpt-sub{ display:block; margin-top:8px; font-size:11.5px; color:var(--muted) }
 
 /* ---------- Report modal — modern dashboard treatment ---------- */
 .modal{ position:fixed; inset:0; display:none; z-index:100; background:rgba(6,7,9,.68) }
@@ -1460,6 +1469,14 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 
 /* ---------- Pricing ---------- */
 .pricing-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; align-items:stretch; max-width:920px; margin:0 auto }
+.pricing-outcome-row{ display:flex; gap:16px; justify-content:center; max-width:640px; margin:0 auto 28px; flex-wrap:wrap }
+.pricing-outcome{ flex:1; min-width:220px; text-align:center; padding:18px 20px; border-radius:14px; border:1px solid var(--line) }
+.pricing-outcome .po-label{ display:block; font-family:var(--font-mono,monospace); font-size:11px; font-weight:800; letter-spacing:.08em; margin-bottom:6px }
+.pricing-outcome p{ margin:0; font-size:16px; font-weight:700; color:var(--text) }
+.pricing-outcome.free{ background:var(--surface-2) }
+.pricing-outcome.free .po-label{ color:var(--muted) }
+.pricing-outcome.pro{ background:linear-gradient(135deg,var(--brand-soft,rgba(34,197,148,.10)),transparent); border-color:var(--brand) }
+.pricing-outcome.pro .po-label{ color:var(--brand-bright,var(--brand)) }
 @media (max-width:980px){ .pricing-grid{ grid-template-columns:1fr } }
 .plan{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:22px; display:flex; flex-direction:column; transition:transform .2s ease, box-shadow .2s ease }
 .plan:hover{ transform:translateY(-3px) }
@@ -2727,7 +2744,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           </button>
         </div>
       </div>
-      <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing"><span class="pro-star">★</span> Start Free Trial</a>
+      <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing" onclick="try{__track('pro_clicked',{location:'header'})}catch(e){}"><span class="pro-star">★</span> Start Free Trial</a>
       <span class="btn sm pro-badge-filled pro-only-show" id="proPill" style="display:none">★ PRO</span>
       <a class="btn sm" id="signInBtn" href="auth.html">Sign In</a>
       <div class="settings-wrap" id="accountWrap" style="display:none">
@@ -2767,12 +2784,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <span class="lcb-count" id="liveGradeCountHero">—</span>
         <span class="lcb-label" id="liveGradeCountHeroLabel">report cards graded</span>
       </div>
-      <h1 class="hero-in" style="--d:.16s">Know your numbers.<br><span class="hero-headline-accent">Grade your life.</span></h1>
-      <p class="lede hero-in" style="--d:.26s">Get your financial grade in minutes. See where you stand and what to improve.</p>
+      <h1 class="hero-in" style="--d:.16s">Know Exactly Where<br>You Stand <span class="hero-headline-accent">Financially.</span></h1>
+      <p class="lede hero-in" style="--d:.26s">Grade your finances, see what's holding you back, and get a personalized plan to improve your financial health.</p>
       <div class="hero-cta hero-in" style="--d:.36s">
-        <button class="btn gold" id="gradeBtnHero" type="button">Get My Free Grade →</button>
+        <button class="btn gold" id="gradeBtnHero" type="button">Get My Free Financial Grade →</button>
         <button class="btn ghost" id="demoBtn" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> See How It Works</button>
       </div>
+      <p class="hero-reassurance hero-in" style="--d:.40s">No bank connection required &nbsp;•&nbsp; Takes a few minutes &nbsp;•&nbsp; Your financial inputs stay private</p>
       <div class="hero-trust-row hero-in" style="--d:.44s">
         <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span><div><b>100% Private</b><span>Your data stays yours</span></div></div>
         <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>No Credit Check</b><span>Zero impact to score</span></div></div>
@@ -2809,210 +2827,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <span class="hero-ring-example">Example grade — yours is personal to you</span>
     </div>
 
-  </div>
-</section>
-
-<section class="block gmf-how-modern" id="how">
-  <div class="container">
-    <div class="gmf-feature-strip">
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon mint">▦</div>
-        <div><strong>Free Calculator</strong><span>Enter your numbers.</span></div>
-      </div>
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon blue">↗</div>
-        <div><strong>See Where You Stand</strong><span>Compare your progress.</span></div>
-      </div>
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon green">✓</div>
-        <div><strong>Get Your Plan</strong><span>Know what to do next.</span></div>
-      </div>
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon gold">↗</div>
-        <div><strong>Track Progress</strong><span>Keep getting better.</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div id="calcModal" class="modal calc-modal" role="dialog" aria-modal="true" aria-labelledby="calcModalTitle">
-<section id="grade" class="calc-wrap" aria-label="Calculator">
-  <button class="xbtn calc-modal-close" id="calcModalClose" type="button" aria-label="Close calculator">✕</button>
-  <div class="calc-v2-main">
-    <h2 id="calcModalTitle" class="calc-simple-title">Get your financial grade</h2>
-  <div class="stepper-head">
-    <div class="stepper-track-wrap">
-      <div class="stepper-track-bg"></div>
-      <div class="stepper-track-fill" id="stepperFill" style="width:0%"></div>
-      <div class="stepper-nodes">
-        <span class="step-label active" data-step-label="1"><span class="step-circle">1</span><span class="step-name">About You</span></span>
-        <span class="step-label" data-step-label="2"><span class="step-circle">2</span><span class="step-name">Spending</span></span>
-        <span class="step-label" data-step-label="3"><span class="step-circle">3</span><span class="step-name">Assets</span></span>
-        <span class="step-label" data-step-label="4"><span class="step-circle">4</span><span class="step-name">Debt</span></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="calc-step active" data-step="1">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></span><div><b>About You</b><span>A couple quick basics to get started</span></div></div>
-    <div class="inputs">
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span><label for="age">Age</label></div>
-        <input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"><div class="hint">Used to compare your numbers to others at your stage of life.</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><label for="income">Monthly Household Income</label></div>
-        <input id="income" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Your take-home pay — after taxes, before rent or bills.</div>
-      </div>
-    </div>
-    <div class="step-actions"><span></span><button class="btn gold" type="button" data-next>Continue →</button></div>
-  </div>
-
-  <div class="calc-step" data-step="2">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><div><b>Your Spending</b><span>What goes out each month</span></div></div>
-    <div class="inputs">
-      <div class="field icon-field" style="grid-column:1/-1">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><label for="expenses">Monthly Expenses (Total)</label></div>
-        <input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined. One number keeps this quick; we compare it against your income either way.</div>
-      </div>
-    </div>
-    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
-  </div>
-
-  <div class="calc-step" data-step="3">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1"/></svg></span><div><b>Your Assets</b><span>Everything you own that holds value</span></div></div>
-    <div class="field-row">
-      <div class="segmented" role="group" aria-label="Housing">
-        <button id="modeOwner" type="button">Owner</button>
-        <button id="modeRenter" type="button">Renter</button>
-      </div>
-    </div>
-    <div class="inputs">
-      <div class="field icon-field" id="homeCard">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="home">Home Value</label></div>
-        <input id="home" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="retire">Retirement (401k, IRA)</label></div>
-        <input id="retire" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(74,222,158,.15);color:#4ADE9E"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><label for="brokerage">Brokerage / Stocks</label></div>
-        <input id="brokerage" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><label for="hsa">HSA</label></div>
-        <input id="hsa" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><label for="cash">Cash Savings</label></div>
-        <input id="cash" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(236,72,153,.15);color:#EC4899"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span><label for="crypto">Crypto &amp; Other</label></div>
-        <input id="crypto" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="car">Car Value</label></div>
-        <input id="car" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-    </div>
-
-    <div class="calc-total-card">
-      <span class="calc-total-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
-      <div class="calc-total-text"><b>Total Assets</b><span>Total of everything entered above</span></div>
-      <div class="calc-total-value" id="assetsHint">—</div>
-    </div>
-    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
-  </div>
-
-  <div class="calc-step" data-step="4">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>Your Debt &amp; Liabilities</b><span>Include all outstanding balances</span></div></div>
-    <div class="inputs">
-      <div class="field icon-field" id="mortCard">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="mortgage">Mortgage Balance</label></div>
-        <input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Current mortgage payoff amount</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span><label for="student">Student Loans</label></div>
-        <input id="student" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total student loan balance</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="auto">Auto Loans</label></div>
-        <input id="auto" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Outstanding auto loan balance</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><label for="cc">Credit Cards</label></div>
-        <input id="cc" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total credit card balances</div>
-      </div>
-    </div>
-
-    <div class="calc-total-card">
-      <span class="calc-total-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
-      <div class="calc-total-text"><b>Total Liabilities</b><span>Total of all debts entered</span></div>
-      <div class="calc-total-value" id="liabHint">—</div>
-    </div>
-
-    <div class="inputs" style="margin-top:10px">
-      <div class="field icon-field" style="grid-column:1/-1">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="otherDebt">Personal Loans / Other Debt</label></div>
-        <input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Personal loans, lines of credit, or other debts</div>
-      </div>
-    </div>
-
-    <div class="calc-privacy-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg><span>All calculations are done locally on your device. Your data is <b>never</b> sent anywhere.</span></div>
-
-    <div class="progress"><div id="progressFill"></div></div>
-    <div class="calc-actions">
-      <button class="btn" id="resetBtn" type="button">Reset</button>
-      <button class="btn gold" id="gradeBtn" type="button">Get My Financial Grade</button>
-    </div>
-    <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
-  </div>
-    </div>
-  <div class="calc-v2-trust-bar">
-    <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg> bank-level security</span>
-    <span>•</span>
-    <span>No sign up required</span>
-    <span>•</span>
-    <span>100% free forever</span>
-  </div>
-</section>
-</div>
-
-
-
-<section class="block" id="money-loop" style="padding-top:34px;padding-bottom:34px">
-  <div class="container">
-    <div class="block-head center">
-      <span class="kicker">The Grade My Finance loop</span>
-      <h2>Know your number. Fix what matters. Watch it improve.</h2>
-      <p style="max-width:650px;margin:10px auto 0;color:var(--muted)">Your Financial Grade is the starting point — not the finish line. Grade My Finance turns your numbers into a simple path forward.</p>
-    </div>
-    <div class="gmf-loop-grid">
-      <div class="gmf-loop-card">
-        <div class="gmf-loop-num">01</div>
-        <div class="gmf-loop-icon">◎</div>
-        <h3>Get your grade</h3>
-        <p>See your overall financial health and the numbers behind it.</p>
-      </div>
-      <div class="gmf-loop-card featured">
-        <div class="gmf-loop-num">02</div>
-        <div class="gmf-loop-icon">→</div>
-        <h3>Find your next move</h3>
-        <p>Get one clear priority instead of a wall of generic financial advice.</p>
-      </div>
-      <div class="gmf-loop-card">
-        <div class="gmf-loop-num">03</div>
-        <div class="gmf-loop-icon">↗</div>
-        <h3>Come back & improve</h3>
-        <p>Regrade your finances and watch your score, goals, and net worth move.</p>
-      </div>
-    </div>
-    <div class="gmf-loop-bottom">
-      <div><span class="kicker">Built for progress</span><strong>Your dashboard remembers the journey.</strong></div>
-      <a class="btn gold" href="#pro-dashboard-preview">See the dashboard ↓</a>
-    </div>
   </div>
 </section>
 
@@ -3235,6 +3049,211 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
   </div>
 </section>
 
+<section class="block gmf-how-modern" id="how">
+  <div class="container">
+    <div class="gmf-feature-strip">
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon mint">▦</div>
+        <div><strong>Free Calculator</strong><span>Enter your numbers.</span></div>
+      </div>
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon blue">↗</div>
+        <div><strong>See Where You Stand</strong><span>Compare your progress.</span></div>
+      </div>
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon green">✓</div>
+        <div><strong>Get Your Plan</strong><span>Know what to do next.</span></div>
+      </div>
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon gold">↗</div>
+        <div><strong>Track Progress</strong><span>Keep getting better.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="calcModal" class="modal calc-modal" role="dialog" aria-modal="true" aria-labelledby="calcModalTitle">
+<section id="grade" class="calc-wrap" aria-label="Calculator">
+  <button class="xbtn calc-modal-close" id="calcModalClose" type="button" aria-label="Close calculator">✕</button>
+  <div class="calc-v2-main">
+    <h2 id="calcModalTitle" class="calc-simple-title">Get your financial grade</h2>
+  <div class="stepper-head">
+    <div class="stepper-track-wrap">
+      <div class="stepper-track-bg"></div>
+      <div class="stepper-track-fill" id="stepperFill" style="width:0%"></div>
+      <div class="stepper-nodes">
+        <span class="step-label active" data-step-label="1"><span class="step-circle">1</span><span class="step-name">About You</span></span>
+        <span class="step-label" data-step-label="2"><span class="step-circle">2</span><span class="step-name">Spending</span></span>
+        <span class="step-label" data-step-label="3"><span class="step-circle">3</span><span class="step-name">Assets</span></span>
+        <span class="step-label" data-step-label="4"><span class="step-circle">4</span><span class="step-name">Debt</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="calc-step active" data-step="1">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></span><div><b>About You</b><span>A couple quick basics to get started</span></div></div>
+    <div class="inputs">
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span><label for="age">Age</label></div>
+        <input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"><div class="hint">Used to compare your numbers to others at your stage of life.</div>
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><label for="income">Monthly Household Income</label></div>
+        <input id="income" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Your take-home pay — after taxes, before rent or bills.</div>
+      </div>
+    </div>
+    <div class="step-actions"><span></span><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step" data-step="2">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><div><b>Your Spending</b><span>What goes out each month</span></div></div>
+    <div class="inputs">
+      <div class="field icon-field" style="grid-column:1/-1">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><label for="expenses">Monthly Expenses (Total)</label></div>
+        <input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined. One number keeps this quick; we compare it against your income either way.</div>
+      </div>
+    </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step" data-step="3">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1"/></svg></span><div><b>Your Assets</b><span>Everything you own that holds value</span></div></div>
+    <div class="field-row">
+      <div class="segmented" role="group" aria-label="Housing">
+        <button id="modeOwner" type="button">Owner</button>
+        <button id="modeRenter" type="button">Renter</button>
+      </div>
+    </div>
+    <div class="inputs">
+      <div class="field icon-field" id="homeCard">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="home">Home Value</label></div>
+        <input id="home" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="retire">Retirement (401k, IRA)</label></div>
+        <input id="retire" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(74,222,158,.15);color:#4ADE9E"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><label for="brokerage">Brokerage / Stocks</label></div>
+        <input id="brokerage" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><label for="hsa">HSA</label></div>
+        <input id="hsa" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><label for="cash">Cash Savings</label></div>
+        <input id="cash" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(236,72,153,.15);color:#EC4899"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span><label for="crypto">Crypto &amp; Other</label></div>
+        <input id="crypto" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="car">Car Value</label></div>
+        <input id="car" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+    </div>
+
+    <div class="calc-total-card">
+      <span class="calc-total-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
+      <div class="calc-total-text"><b>Total Assets</b><span>Total of everything entered above</span></div>
+      <div class="calc-total-value" id="assetsHint">—</div>
+    </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step" data-step="4">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>Your Debt &amp; Liabilities</b><span>Include all outstanding balances</span></div></div>
+    <div class="inputs">
+      <div class="field icon-field" id="mortCard">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="mortgage">Mortgage Balance</label></div>
+        <input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Current mortgage payoff amount</div>
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span><label for="student">Student Loans</label></div>
+        <input id="student" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total student loan balance</div>
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="auto">Auto Loans</label></div>
+        <input id="auto" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Outstanding auto loan balance</div>
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><label for="cc">Credit Cards</label></div>
+        <input id="cc" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total credit card balances</div>
+      </div>
+    </div>
+
+    <div class="calc-total-card">
+      <span class="calc-total-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
+      <div class="calc-total-text"><b>Total Liabilities</b><span>Total of all debts entered</span></div>
+      <div class="calc-total-value" id="liabHint">—</div>
+    </div>
+
+    <div class="inputs" style="margin-top:10px">
+      <div class="field icon-field" style="grid-column:1/-1">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="otherDebt">Personal Loans / Other Debt</label></div>
+        <input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Personal loans, lines of credit, or other debts</div>
+      </div>
+    </div>
+
+    <div class="calc-privacy-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg><span>All calculations are done locally on your device. Your data is <b>never</b> sent anywhere.</span></div>
+
+    <div class="progress"><div id="progressFill"></div></div>
+    <div class="calc-actions">
+      <button class="btn" id="resetBtn" type="button">Reset</button>
+      <button class="btn gold" id="gradeBtn" type="button">Get My Financial Grade</button>
+    </div>
+    <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
+  </div>
+    </div>
+  <div class="calc-v2-trust-bar">
+    <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg> No bank connection required</span>
+    <span>•</span>
+    <span>No sign up required</span>
+    <span>•</span>
+    <span>100% free forever</span>
+  </div>
+</section>
+</div>
+
+
+
+<section class="block" id="money-loop" style="padding-top:34px;padding-bottom:34px">
+  <div class="container">
+    <div class="block-head center">
+      <span class="kicker">The Grade My Finance loop</span>
+      <h2>Know your number. Fix what matters. Watch it improve.</h2>
+      <p style="max-width:650px;margin:10px auto 0;color:var(--muted)">Your Financial Grade is the starting point — not the finish line. Grade My Finance turns your numbers into a simple path forward.</p>
+    </div>
+    <div class="gmf-loop-grid">
+      <div class="gmf-loop-card">
+        <div class="gmf-loop-num">01</div>
+        <div class="gmf-loop-icon">◎</div>
+        <h3>Get your grade</h3>
+        <p>See your overall financial health and the numbers behind it.</p>
+      </div>
+      <div class="gmf-loop-card featured">
+        <div class="gmf-loop-num">02</div>
+        <div class="gmf-loop-icon">→</div>
+        <h3>Find your next move</h3>
+        <p>Get one clear priority instead of a wall of generic financial advice.</p>
+      </div>
+      <div class="gmf-loop-card">
+        <div class="gmf-loop-num">03</div>
+        <div class="gmf-loop-icon">↗</div>
+        <h3>Come back & improve</h3>
+        <p>Regrade your finances and watch your score, goals, and net worth move.</p>
+      </div>
+    </div>
+    <div class="gmf-loop-bottom">
+      <div><span class="kicker">Built for progress</span><strong>Your dashboard remembers the journey.</strong></div>
+      <a class="btn gold" href="#pro-dashboard-preview">See the dashboard ↓</a>
+    </div>
+  </div>
+</section>
+
+
 <script>
 (function(){
   var root = document.getElementById('proDashPreview');
@@ -3269,12 +3288,46 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 })();
 </script>
 
+<section class="block" id="features" style="background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
+  <div class="container">
+    <div class="block-head center">
+      <span class="kicker">Why it's different</span>
+      <h2>Built to be transparent, not to sell you a bank account.</h2>
+    </div>
+    <div class="features">
+      <div class="feature"><div class="fi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></div><h4>Private by design</h4><p>All calculations run in your browser. Nothing is sent to a server.</p></div>
+      <div class="feature"><div class="fi">Σ</div><h4>Open methodology</h4><p>We publish the exact weighting behind your grade — no black box.</p></div>
+      <div class="feature"><div class="fi">→</div><h4>Actionable path</h4><p>Specific next steps with dollar targets, ranked by point impact.</p></div>
+      <div class="feature"><div class="fi">%</div><h4>Benchmarks</h4><p>See how you compare to our age-adjusted benchmark.</p></div>
+    </div>
+    <div class="methodology-home-card">
+      <div>
+        <span class="kicker">How the grade works</span>
+        <h3>Five factors. Published weights. No black box.</h3>
+        <p>The current score is weighted across income strength, savings rate, non-mortgage debt, age-based net worth, and emergency-fund coverage. These are model benchmarks — not guarantees, official percentiles, or financial advice.</p>
+      </div>
+      <div class="methodology-weight-grid" aria-label="Grade weighting">
+        <span><b>25%</b><small>Income</small></span>
+        <span><b>20%</b><small>Savings</small></span>
+        <span><b>20%</b><small>Debt</small></span>
+        <span><b>20%</b><small>Net worth</small></span>
+        <span><b>15%</b><small>Emergency fund</small></span>
+      </div>
+      <a href="#faq" class="methodology-link">See assumptions &amp; privacy →</a>
+    </div>
+  </div>
+</section>
+
 <section class="block reveal" id="pricing" aria-label="Pricing">
   <div class="container">
     <div class="block-head center">
-      <span class="kicker">Pricing</span>
+      <span class="kicker">Free vs. Pro</span>
       <h2>See your grade for free. Get the full picture with Pro.</h2>
       <p>Anyone can check their grade in seconds — that tells you if you're doing well. Pro tells you what to do next, and whether you're actually improving.</p>
+    </div>
+    <div class="pricing-outcome-row">
+      <div class="pricing-outcome free"><span class="po-label">FREE</span><p>See where you stand.</p></div>
+      <div class="pricing-outcome pro"><span class="po-label">PRO</span><p>Know exactly what to do next.</p></div>
     </div>
     <div class="pricing-grid">
       <div class="plan free">
@@ -3301,7 +3354,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <li><b>Money Flow, projections</b> & planning tools</li>
           <li>Ad-free, priority support</li>
         </ul>
-        <a class="btn gold pro-only-hide" id="upgradeBtnPricingMonthly" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pszwz">Start Free Trial</a>
+        <a class="btn gold pro-only-hide" id="upgradeBtnPricingMonthly" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pszwz" onclick="try{__track('pro_clicked',{plan:'monthly'});__track('checkout_started',{plan:'monthly'})}catch(e){}">Start Free Trial</a>
         <span class="btn pro-only-show" style="display:none;background:var(--brand-soft);color:var(--brand-bright);border-color:rgba(201,162,39,.4)">You're on Pro ✓</span>
       </div>
       <div class="plan highlight">
@@ -3318,7 +3371,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <li><b>Money Flow, projections</b> & planning tools</li>
           <li>Ad-free, priority support</li>
         </ul>
-        <a class="btn gold pro-only-hide" id="upgradeBtnPricingYearly" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pzllld">Start Free Trial</a>
+        <a class="btn gold pro-only-hide" id="upgradeBtnPricingYearly" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pzllld" onclick="try{__track('pro_clicked',{plan:'yearly'});__track('checkout_started',{plan:'yearly'})}catch(e){}">Start Free Trial</a>
         <span class="btn pro-only-show" style="display:none;background:var(--brand-soft);color:var(--brand-bright);border-color:rgba(201,162,39,.4)">You're on Pro ✓</span>
         <div class="license-row pro-only-hide">
           <input type="text" id="licenseInput" placeholder="Have a Pro license key? Paste it here" aria-label="Pro license key">
@@ -3379,35 +3432,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
   </div>
 </div>
 
-<section class="block" id="features" style="background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
-  <div class="container">
-    <div class="block-head center">
-      <span class="kicker">Why it's different</span>
-      <h2>Built to be transparent, not to sell you a bank account.</h2>
-    </div>
-    <div class="features">
-      <div class="feature"><div class="fi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></div><h4>Private by design</h4><p>All calculations run in your browser. Nothing is sent to a server.</p></div>
-      <div class="feature"><div class="fi">Σ</div><h4>Open methodology</h4><p>We publish the exact weighting behind your grade — no black box.</p></div>
-      <div class="feature"><div class="fi">→</div><h4>Actionable path</h4><p>Specific next steps with dollar targets, ranked by point impact.</p></div>
-      <div class="feature"><div class="fi">%</div><h4>Benchmarks</h4><p>See how you compare to our age-adjusted benchmark.</p></div>
-    </div>
-    <div class="methodology-home-card">
-      <div>
-        <span class="kicker">How the grade works</span>
-        <h3>Five factors. Published weights. No black box.</h3>
-        <p>The current score is weighted across income strength, savings rate, non-mortgage debt, age-based net worth, and emergency-fund coverage. These are model benchmarks — not guarantees, official percentiles, or financial advice.</p>
-      </div>
-      <div class="methodology-weight-grid" aria-label="Grade weighting">
-        <span><b>25%</b><small>Income</small></span>
-        <span><b>20%</b><small>Savings</small></span>
-        <span><b>20%</b><small>Debt</small></span>
-        <span><b>20%</b><small>Net worth</small></span>
-        <span><b>15%</b><small>Emergency fund</small></span>
-      </div>
-      <a href="#faq" class="methodology-link">See assumptions &amp; privacy →</a>
-    </div>
-  </div>
-</section>
+
 
 
 <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
@@ -3439,8 +3464,15 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <span id="revealAction" class="grr-value">—</span>
       </div>
     </div>
+
+    <div class="reveal-pro-teaser">
+      <p class="rpt-line"><b>Your grade tells you WHERE you stand.</b> Pro tells you HOW to improve it.</p>
+      <a class="btn gold sm" href="#pricing" onclick="try{__track('pro_clicked',{location:'grade_reveal'})}catch(e){}">Unlock My Financial Plan →</a>
+      <span class="rpt-sub">Cancel anytime.</span>
+    </div>
+
     <button id="revealCta" class="btn gold grade-reveal-cta" type="button">View My Financial Dashboard →</button>
-    <p style="text-align:center;font-size:12px;color:var(--muted);margin:10px 0 0">Free account required — save your progress and track it over time.</p>
+    <p style="text-align:center;font-size:12px;color:var(--muted);margin:10px 0 0">Want to save your financial profile and track your progress? A free account keeps this grade and lets you check in again later.</p>
   </div>
 </div>
 
@@ -7566,6 +7598,7 @@ function showGradeReveal(v, cats, prevHistory){
   overlayEl.classList.add("show");
   var cta = $("revealCta");
   cta.onclick = function(){
+    try{ __track('signup_started', {location:'grade_reveal'}); }catch(e){}
     // Cross-document View Transition: if the browser supports it (both
     // pages opt in via @view-transition{navigation:auto}), this element
     // and dashboard.html's grade badge share a view-transition-name, so
@@ -8050,6 +8083,8 @@ function openReport(v,cats){
   rcGrade.classList.remove("pop"); void rcGrade.offsetWidth; rcGrade.classList.add("pop");
   spawnInkRipple(rcGrade);
   __track('view_report_card', {letter: cats.overall.letter, score: cats.overall.score});
+  __track('calculator_completed', {letter: cats.overall.letter, score: cats.overall.score});
+  __track('grade_viewed', {letter: cats.overall.letter, score: cats.overall.score});
 
   initProjections(v, cats);
 }
@@ -8213,6 +8248,7 @@ function gradeNow(){
 }
 function openCalcModal(location){
   __track('click_open_calculator',{location:location});
+  __track('calculator_started',{location:location});
   var m=$("calcModal");
   m.classList.add("show");
   lockBodyScroll();
@@ -8354,6 +8390,7 @@ function setProState(on){
       var clean = location.origin + location.pathname;
       history.replaceState(null, "", clean);
       __track('pro_activated', {method:'redirect'});
+      __track('purchase', {method:'redirect'});
     }
   }catch(e){}
 })();
