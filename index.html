@@ -545,6 +545,15 @@ section.block{ padding:76px 0 }
 .calc-subtitle{ font-size:14.5px; color:var(--muted); margin:0; max-width:440px; line-height:1.5 }
 
 .stepper-head{ margin-bottom:32px }
+.stepper-progress-label{
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;
+  font-family:var(--font-mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
+}
+.stepper-progress-label span:first-child{ color:var(--muted-2); font-weight:700 }
+.stepper-progress-count{
+  color:var(--calc-accent-bright); background:var(--calc-accent-soft); border:1px solid rgba(45,212,191,.35);
+  padding:4px 10px; border-radius:999px; font-weight:700;
+}
 .stepper-track-wrap{ position:relative; padding-top:2px }
 .stepper-track-bg{
   position:absolute; top:19px; left:19px; right:19px; height:2px; background:rgba(255,255,255,.08); z-index:0;
@@ -674,7 +683,34 @@ section.block{ padding:76px 0 }
 .calc-step{ display:none; animation:stepFadeIn .35s ease; position:relative }
 .calc-step.active{ display:block }
 @keyframes stepFadeIn{ from{ opacity:0; transform:translateY(6px) } to{ opacity:1; transform:none } }
+.calc-step.active.step-dir-fwd{ animation:stepSlideFwd .4s cubic-bezier(.19,1,.22,1) }
+.calc-step.active.step-dir-back{ animation:stepSlideBack .4s cubic-bezier(.19,1,.22,1) }
+@keyframes stepSlideFwd{ from{ opacity:0; transform:translateX(18px) } to{ opacity:1; transform:none } }
+@keyframes stepSlideBack{ from{ opacity:0; transform:translateX(-18px) } to{ opacity:1; transform:none } }
+@media (prefers-reduced-motion: reduce){ .calc-step.active.step-dir-fwd, .calc-step.active.step-dir-back{ animation:none } }
 .step-actions{ display:flex; justify-content:space-between; align-items:center; margin-top:24px }
+/* Single-question step (Income) reads as a focused, premium moment rather
+   than a sparse form stretched across the usual 4-column grid. */
+.calc-step-solo .inputs{ grid-template-columns:1fr; max-width:380px; margin:0 auto }
+.calc-step-solo .field input{ font-size:19px; padding:16px 17px; text-align:center; font-weight:700 }
+.calc-step-solo .calc-field-header{ justify-content:center; text-align:center; flex-direction:column; gap:10px }
+.calc-step-solo .calc-field-header-icon{ width:44px; height:44px }
+.calc-step-solo .step-actions{ justify-content:center }
+.calc-step-solo .step-actions .btn.gold{ min-width:220px; justify-content:center }
+.calc-housing-label{ font-size:12.5px; color:var(--muted); font-weight:600; margin-bottom:9px }
+/* The final "Get My Financial Grade" button is the single highest-intent
+   click in the whole product - it earns a more prominent treatment than
+   a regular Continue button. */
+.btn.calc-final-cta{
+  width:100%; padding:16px; font-size:16px; font-weight:800; letter-spacing:.01em;
+  box-shadow:0 14px 34px -10px rgba(46,156,129,.55), 0 0 0 1px rgba(46,156,129,.25) inset;
+  animation:finalCtaGlow 2.6s ease-in-out infinite;
+}
+@keyframes finalCtaGlow{
+  0%,100%{ box-shadow:0 14px 34px -10px rgba(46,156,129,.55), 0 0 0 1px rgba(46,156,129,.25) inset }
+  50%{ box-shadow:0 18px 42px -8px rgba(46,156,129,.75), 0 0 0 1px rgba(46,156,129,.4) inset }
+}
+@media (prefers-reduced-motion: reduce){ .btn.calc-final-cta{ animation:none } }
 
 /* Overlay loader */
 .overlay{ position:fixed; inset:0; display:none; place-items:center; background:rgba(6,7,9,.6); backdrop-filter:blur(3px); z-index:80 }
@@ -690,6 +726,41 @@ section.block{ padding:76px 0 }
 @media (prefers-reduced-motion: reduce){ .load-row strong::before{ animation:none; opacity:1 } }
 .bar{ height:10px; border-radius:99px; overflow:hidden; border:1px solid var(--line); background:var(--bg-2) }
 .bar .fill{ height:100%; width:0; background:linear-gradient(90deg,var(--brand),var(--brand-bright)); transition:width .25s ease }
+
+/* Premium "analyzing" checklist shown while the grade is computed */
+.analysis-loader{ width:420px; padding:30px 26px 26px; text-align:left }
+.analysis-headline{
+  font-family:var(--font-display); font-size:18px; font-weight:700; color:var(--text);
+  margin-bottom:20px; display:flex; align-items:center; gap:10px;
+}
+.analysis-headline::before{
+  content:""; width:9px; height:9px; border-radius:50%; background:var(--brand-bright); flex:none;
+  animation:loadThinkPulse 1.1s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce){ .analysis-headline::before{ animation:none; opacity:1 } }
+.analysis-checklist{ list-style:none; margin:0 0 18px; padding:0; display:grid; gap:11px }
+.analysis-checklist li{
+  display:flex; align-items:center; gap:11px; font-size:14px; color:var(--muted-2);
+  opacity:.4; transform:translateX(-4px); transition:opacity .35s ease, transform .35s ease, color .35s ease;
+}
+.analysis-checklist li.active{ opacity:1; transform:none; color:var(--text) }
+.analysis-checklist li.done{ opacity:1; transform:none; color:var(--muted) }
+.ac-check{
+  flex:none; width:20px; height:20px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:800; background:var(--bg-2); color:transparent; border:1.5px solid var(--line);
+  transition:background .3s ease, border-color .3s ease, color .3s ease, transform .3s cubic-bezier(.2,1,.3,1);
+}
+.analysis-checklist li.active .ac-check{
+  border-color:var(--calc-accent,var(--brand)); background:transparent; color:var(--calc-accent,var(--brand));
+  animation:acPulse 1s ease-in-out infinite;
+}
+.analysis-checklist li.done .ac-check{
+  background:var(--good); border-color:var(--good); color:#0d1608; transform:scale(1.05);
+  animation:none;
+}
+@keyframes acPulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(46,156,129,.35) } 50%{ box-shadow:0 0 0 5px rgba(46,156,129,0) } }
+@media (prefers-reduced-motion: reduce){ .analysis-checklist li.active .ac-check{ animation:none } }
+.analysis-pct{ text-align:right; font-family:var(--font-mono); font-size:12px; color:var(--muted-2); margin-top:8px }
 
 /* Grade Reveal - shown once right after calculating, before the dashboard */
 .grade-reveal-overlay{
@@ -3076,27 +3147,25 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <section id="grade" class="calc-wrap" aria-label="Calculator">
   <button class="xbtn calc-modal-close" id="calcModalClose" type="button" aria-label="Close calculator">✕</button>
   <div class="calc-v2-main">
-    <h2 id="calcModalTitle" class="calc-simple-title">Get your financial grade</h2>
+    <h2 id="calcModalTitle" class="calc-simple-title">Your Financial Assessment</h2>
   <div class="stepper-head">
+    <div class="stepper-progress-label"><span>Financial Assessment</span><span id="stepperStepText" class="stepper-progress-count">Step 1 of 5</span></div>
     <div class="stepper-track-wrap">
       <div class="stepper-track-bg"></div>
       <div class="stepper-track-fill" id="stepperFill" style="width:0%"></div>
       <div class="stepper-nodes">
-        <span class="step-label active" data-step-label="1"><span class="step-circle">1</span><span class="step-name">About You</span></span>
-        <span class="step-label" data-step-label="2"><span class="step-circle">2</span><span class="step-name">Spending</span></span>
-        <span class="step-label" data-step-label="3"><span class="step-circle">3</span><span class="step-name">Assets</span></span>
-        <span class="step-label" data-step-label="4"><span class="step-circle">4</span><span class="step-name">Debt</span></span>
+        <span class="step-label active" data-step-label="1"><span class="step-circle">1</span><span class="step-name">Income</span></span>
+        <span class="step-label" data-step-label="2"><span class="step-circle">2</span><span class="step-name">Cash</span></span>
+        <span class="step-label" data-step-label="3"><span class="step-circle">3</span><span class="step-name">Debt</span></span>
+        <span class="step-label" data-step-label="4"><span class="step-circle">4</span><span class="step-name">Investing</span></span>
+        <span class="step-label" data-step-label="5"><span class="step-circle">5</span><span class="step-name">Details</span></span>
       </div>
     </div>
   </div>
 
-  <div class="calc-step active" data-step="1">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg></span><div><b>About You</b><span>A couple quick basics to get started</span></div></div>
+  <div class="calc-step calc-step-solo active" data-step="1">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div><b>Let's Start With Your Income</b><span>This helps establish the foundation of your financial picture</span></div></div>
     <div class="inputs">
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span><label for="age">Age</label></div>
-        <input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"><div class="hint">Used to compare your numbers to others at your stage of life.</div>
-      </div>
       <div class="field icon-field">
         <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><label for="income">Monthly Household Income</label></div>
         <input id="income" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Your take-home pay — after taxes, before rent or bills.</div>
@@ -3106,22 +3175,34 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
   </div>
 
   <div class="calc-step" data-step="2">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><div><b>Your Spending</b><span>What goes out each month</span></div></div>
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><div><b>How Strong Is Your Financial Cushion?</b><span>Cash on hand is what carries you through the unexpected</span></div></div>
     <div class="inputs">
-      <div class="field icon-field" style="grid-column:1/-1">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><label for="expenses">Monthly Expenses (Total)</label></div>
-        <input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined. One number keeps this quick; we compare it against your income either way.</div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><label for="cash">Cash Savings</label></div>
+        <input id="cash" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Checking, savings, and emergency fund — combined.</div>
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><label for="hsa">HSA</label></div>
+        <input id="hsa" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Health savings account balance, if you have one.</div>
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(236,72,153,.15);color:#EC4899"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span><label for="crypto">Crypto &amp; Other</label></div>
+        <input id="crypto" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Any other cash-like or miscellaneous assets.</div>
       </div>
     </div>
     <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
   </div>
 
   <div class="calc-step" data-step="3">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1"/></svg></span><div><b>Your Assets</b><span>Everything you own that holds value</span></div></div>
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>Let's Look at Your Debt</b><span>No judgment here — just the numbers, so your grade reflects the full picture</span></div></div>
+
     <div class="field-row">
-      <div class="segmented" role="group" aria-label="Housing">
-        <button id="modeOwner" type="button">Owner</button>
-        <button id="modeRenter" type="button">Renter</button>
+      <div>
+        <div class="calc-housing-label">Do you own or rent your home?</div>
+        <div class="segmented" role="group" aria-label="Housing">
+          <button id="modeOwner" type="button">Owner</button>
+          <button id="modeRenter" type="button">Renter</button>
+        </div>
       </div>
     </div>
     <div class="inputs">
@@ -3129,43 +3210,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="home">Home Value</label></div>
         <input id="home" type="number" value="0" min="0" inputmode="decimal">
       </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="retire">Retirement (401k, IRA)</label></div>
-        <input id="retire" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(74,222,158,.15);color:#4ADE9E"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><label for="brokerage">Brokerage / Stocks</label></div>
-        <input id="brokerage" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><label for="hsa">HSA</label></div>
-        <input id="hsa" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><label for="cash">Cash Savings</label></div>
-        <input id="cash" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(236,72,153,.15);color:#EC4899"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span><label for="crypto">Crypto &amp; Other</label></div>
-        <input id="crypto" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="car">Car Value</label></div>
-        <input id="car" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-    </div>
-
-    <div class="calc-total-card">
-      <span class="calc-total-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
-      <div class="calc-total-text"><b>Total Assets</b><span>Total of everything entered above</span></div>
-      <div class="calc-total-value" id="assetsHint">—</div>
-    </div>
-    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
-  </div>
-
-  <div class="calc-step" data-step="4">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>Your Debt &amp; Liabilities</b><span>Include all outstanding balances</span></div></div>
-    <div class="inputs">
       <div class="field icon-field" id="mortCard">
         <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="mortgage">Mortgage Balance</label></div>
         <input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Current mortgage payoff amount</div>
@@ -3182,6 +3226,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><label for="cc">Credit Cards</label></div>
         <input id="cc" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total credit card balances</div>
       </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="otherDebt">Personal Loans / Other Debt</label></div>
+        <input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Personal loans, lines of credit, or other debts</div>
+      </div>
     </div>
 
     <div class="calc-total-card">
@@ -3189,12 +3237,45 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <div class="calc-total-text"><b>Total Liabilities</b><span>Total of all debts entered</span></div>
       <div class="calc-total-value" id="liabHint">—</div>
     </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
 
-    <div class="inputs" style="margin-top:10px">
-      <div class="field icon-field" style="grid-column:1/-1">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="otherDebt">Personal Loans / Other Debt</label></div>
-        <input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Personal loans, lines of credit, or other debts</div>
+  <div class="calc-step" data-step="4">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b>What Are You Building for the Future?</b><span>Retirement accounts and investments — the money working for you long-term</span></div></div>
+    <div class="inputs">
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="retire">Retirement (401k, IRA)</label></div>
+        <input id="retire" type="number" value="0" min="0" inputmode="decimal"><div class="hint">401(k), 403(b), traditional and Roth IRA balances — combined.</div>
       </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(74,222,158,.15);color:#4ADE9E"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><label for="brokerage">Brokerage / Stocks</label></div>
+        <input id="brokerage" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Taxable brokerage or stock holdings outside retirement accounts.</div>
+      </div>
+    </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step" data-step="5">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span><div><b>A Few Final Details</b><span>Just a couple more things, then your Financial Grade is ready</span></div></div>
+    <div class="inputs">
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span><label for="age">Age</label></div>
+        <input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"><div class="hint">Used to compare your numbers to others at your stage of life.</div>
+      </div>
+      <div class="field icon-field" style="grid-column:span 2">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><label for="expenses">Monthly Expenses (Total)</label></div>
+        <input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined.</div>
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="car">Car Value</label></div>
+        <input id="car" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Estimated resale value of any vehicles you own.</div>
+      </div>
+    </div>
+
+    <div class="calc-total-card">
+      <span class="calc-total-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
+      <div class="calc-total-text"><b>Total Assets</b><span>Total of everything entered so far</span></div>
+      <div class="calc-total-value" id="assetsHint">—</div>
     </div>
 
     <div class="calc-privacy-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg><span>All calculations are done locally on your device. Your data is <b>never</b> sent anywhere.</span></div>
@@ -3202,7 +3283,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     <div class="progress"><div id="progressFill"></div></div>
     <div class="calc-actions">
       <button class="btn" id="resetBtn" type="button">Reset</button>
-      <button class="btn gold" id="gradeBtn" type="button">Get My Financial Grade</button>
+      <button class="btn gold calc-final-cta" id="gradeBtn" type="button">Get My Financial Grade →</button>
     </div>
     <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
   </div>
@@ -3436,15 +3517,23 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 
 <div id="overlay" class="overlay" aria-live="polite" aria-busy="true">
-  <div class="loader">
-    <div class="load-row"><strong id="loadMsg">Calculating your Financial Grade…</strong><span id="pct">0%</span></div>
+  <div class="loader analysis-loader">
+    <div class="analysis-headline" id="loadMsg">Analyzing Your Financial Picture…</div>
+    <ul class="analysis-checklist" id="analysisChecklist">
+      <li data-item><span class="ac-check">✓</span><span class="ac-text">Reviewing your income</span></li>
+      <li data-item><span class="ac-check">✓</span><span class="ac-text">Analyzing your savings</span></li>
+      <li data-item><span class="ac-check">✓</span><span class="ac-text">Evaluating your debt</span></li>
+      <li data-item><span class="ac-check">✓</span><span class="ac-text">Measuring your investment progress</span></li>
+      <li data-item><span class="ac-check">✓</span><span class="ac-text">Calculating your Financial Grade</span></li>
+    </ul>
     <div class="bar"><div class="fill" id="barFill"></div></div>
+    <div class="analysis-pct" id="pct">0%</div>
   </div>
 </div>
 
 <div id="gradeRevealOverlay" class="grade-reveal-overlay" role="dialog" aria-modal="true" aria-labelledby="revealEyebrow">
   <div class="grade-reveal-card">
-    <div class="grade-reveal-eyebrow" id="revealEyebrow">Your Financial Grade</div>
+    <div class="grade-reveal-eyebrow" id="revealEyebrow">Your Financial Grade Is Ready</div>
     <div class="grade-reveal-badge-wrap">
       <div id="revealRing" class="rc-grade"><span id="revealLetter" class="rc-grade-letter">—</span></div>
     </div>
@@ -3471,8 +3560,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <span class="rpt-sub">Cancel anytime.</span>
     </div>
 
-    <button id="revealCta" class="btn gold grade-reveal-cta" type="button">View My Financial Dashboard →</button>
-    <p style="text-align:center;font-size:12px;color:var(--muted);margin:10px 0 0">Want to save your financial profile and track your progress? A free account keeps this grade and lets you check in again later.</p>
+    <button id="revealCta" class="btn gold grade-reveal-cta" type="button">Create My Free Account →</button>
+    <p style="text-align:center;font-size:12px;color:var(--muted);margin:10px 0 0">Create your free account to save this grade and access your full financial report — plus track your progress every time you check back in.</p>
   </div>
 </div>
 
@@ -4961,22 +5050,38 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
   var current = 1;
 
   var SIDEBAR_COPY = {
-    1: { p1:"Let's get to know", p2:"your numbers.", sub:"Just the basics to start — this takes about a minute." },
-    2: { p1:"Now, the money", p2:"going out.", sub:"Your regular expenses — housing, bills, everything combined." },
-    3: { p1:"What have you", p2:"already built?", sub:"Everything you own that holds value — savings, investments, property." },
-    4: { p1:"Almost there!", p2:"Let's finish strong.", sub:"Enter your debt and liabilities so we can calculate your full financial picture." }
+    1: { p1:"Let's start with", p2:"your income.", sub:"This is the foundation of your financial picture — everything else builds from here." },
+    2: { p1:"How strong is", p2:"your safety net?", sub:"Cash on hand is what carries you through the unexpected." },
+    3: { p1:"Let's talk about", p2:"your debt.", sub:"No judgment here — just the numbers, so your grade reflects the full picture." },
+    4: { p1:"What are you", p2:"building for the future?", sub:"Retirement and investment accounts — the money working for you long-term." },
+    5: { p1:"Almost there —", p2:"a few final details.", sub:"Just a couple more things, then your Financial Grade is ready." }
   };
   var badgeNumEl = $("calcStepBadgeNum"), h1El = $("calcHeadlinePart1"), h2El = $("calcHeadlinePart2"), subEl = $("calcSidebarSub");
+  var stepperStepText = $("stepperStepText");
 
   function show(stepNum){
+    var prevStep = current;
     current = Math.max(1, Math.min(total, stepNum));
-    steps.forEach(function(s){ s.classList.toggle("active", +s.dataset.step === current); });
+    steps.forEach(function(s){
+      var n = +s.dataset.step;
+      var wasActive = s.classList.contains("active");
+      s.classList.toggle("active", n === current);
+      // Re-trigger the entrance animation on the newly active step, and
+      // give it a directional cue (forward vs back) so Continue/Back feel
+      // like distinct, intentional motions rather than an identical fade.
+      if(n === current && !wasActive){
+        s.classList.remove("step-dir-fwd","step-dir-back");
+        void s.offsetWidth; // force reflow so the animation restarts
+        s.classList.add(current >= prevStep ? "step-dir-fwd" : "step-dir-back");
+      }
+    });
     labels.forEach(function(l){
       var n = +l.dataset.stepLabel;
       l.classList.toggle("active", n === current);
       l.classList.toggle("done", n < current);
     });
     if(fill) fill.style.width = (total > 1 ? Math.round(((current-1)/(total-1))*100) : 0)+"%";
+    if(stepperStepText) stepperStepText.textContent = "Step "+current+" of "+total;
     var copy = SIDEBAR_COPY[current];
     if(copy){
       if(badgeNumEl) badgeNumEl.textContent = current;
@@ -4984,16 +5089,18 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
       if(h2El) h2El.textContent = copy.p2;
       if(subEl) subEl.textContent = copy.sub;
     }
+    // Keep the modal scrolled to the top of the new step instead of
+    // wherever the previous (often taller/shorter) step left the
+    // scroll position — otherwise "Continue" from a long step can land
+    // you mid-way down the next one.
+    var scroller = document.querySelector(".calc-modal .calc-wrap");
+    if(scroller) scroller.scrollTop = 0;
     __track('calculator_step_view', {step: current});
   }
 
   function validateCurrentStep(){
     var raw=currentRaw();
-    if(current===1){
-      if(raw.age<18 || raw.age>100){ toastMsg("Enter an age between 18 and 100."); return false; }
-      if(raw.income<=0){ toastMsg("Enter your monthly take-home income."); return false; }
-    }
-    if(current===2 && raw.expenses<=0){ toastMsg("Enter your average monthly expenses."); return false; }
+    if(current===1 && raw.income<=0){ toastMsg("Enter your monthly take-home income."); return false; }
     return true;
   }
 
@@ -9138,28 +9245,37 @@ function initProjections(vBase, catsBase){
   };
 }
 
-var overlay=$("overlay"), bar=$("barFill"), pct=$("pct"), loadMsg=$("loadMsg");
+var overlay=$("overlay"), bar=$("barFill"), pct=$("pct");
 function runWithLoader(fnDone){
-  // A brief "thinking" sequence before the reveal - 3 short, honest
-  // messages over 2.5s total, so the moment reads as deliberate analysis
-  // rather than an instant flip or empty padding. No new calculations
-  // happen here - this is purely the display layer around the same
-  // categoryScores()/buildPath() work that already runs synchronously.
-  var steps = ["Reviewing your numbers…", "Calculating your Financial Grade…", "Finalizing your results…"];
-  var stepDuration = 2500 / steps.length;
+  // A brief "thinking" sequence before the reveal - the checklist ticks
+  // off one item at a time over ~3s total, so the moment reads as
+  // deliberate analysis rather than an instant flip or empty padding.
+  // No new calculations happen here - this is purely the display layer
+  // around the same categoryScores()/buildPath() work that already runs
+  // synchronously.
+  var items = document.querySelectorAll("#analysisChecklist [data-item]");
+  var total = items.length || 1;
+  var stepDuration = 2800 / total;
   overlay.classList.add("show"); bar.style.width="0%"; pct.textContent="0%";
+  items.forEach(function(li){ li.classList.remove("active","done"); });
   var i = 0;
   function showStep(){
-    loadMsg.textContent = steps[i];
-    var prog = Math.round(((i+1)/steps.length)*100);
+    items.forEach(function(li, idx){
+      li.classList.toggle("active", idx === i);
+      li.classList.toggle("done", idx < i);
+    });
+    var prog = Math.round(((i+1)/total)*100);
     bar.style.width = prog+"%"; pct.textContent = prog+"%";
     i++;
-    if(i < steps.length){
+    if(i < total){
       setTimeout(showStep, stepDuration);
     } else {
       setTimeout(function(){
-        overlay.classList.remove("show");
-        try { fnDone(); } catch(err){ console.error(err); }
+        items.forEach(function(li){ li.classList.remove("active"); li.classList.add("done"); });
+        setTimeout(function(){
+          overlay.classList.remove("show");
+          try { fnDone(); } catch(err){ console.error(err); }
+        }, 260);
       }, stepDuration);
     }
   }
