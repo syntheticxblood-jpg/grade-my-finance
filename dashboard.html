@@ -477,6 +477,11 @@ main{ padding:28px 0 50px }
   .sidebar-bottom .dash-nav-btn{ flex-direction:column; gap:3px; font-size:10px; padding:8px 10px }
   .sidebar-bottom .icon-btn{ flex-direction:column; gap:3px; font-size:10px; padding:8px 10px; justify-content:center }
   .sidebar-profile{ display:none } /* avatar/name drop on mobile - not critical nav, saves space in a slim bar */
+  #accountChip{ display:none !important } /* separate account-name/email/sign-out block, shown via inline style
+    when actually signed in - had no mobile rule at all, so on a real
+    signed-in session it rendered at full desktop height inside the slim
+    horizontal bottom bar, overflowing upward into the main content and
+    visually distorting the rest of the bar. */
   .main-area{ margin-left:0; padding-bottom:64px }
   .content-header{ margin-bottom:18px }
 }
