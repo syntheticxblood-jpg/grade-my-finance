@@ -152,6 +152,25 @@ nav.primary a:hover{ color:var(--text) }
   padding:8px; z-index:60;
 }
 .settings-menu.open{ display:block }
+
+/* On a crowded mobile header (the "..." button sits well left-of-edge
+   once the PRO badge and account chip are also visible), anchoring the
+   menu's right edge to the button itself means it needs ~220px of clear
+   space to the button's LEFT - space that often doesn't exist, so the
+   menu clips straight off the left edge of the screen with no boundary
+   detection at all (this is what was cutting the first letter off every
+   item). Pinning it to the viewport instead of the button removes the
+   question of "is there room to this button's left" entirely. */
+@media (max-width:640px){
+  .settings-menu{
+    position:fixed !important;
+    left:12px !important; right:12px !important;
+    top:calc(var(--header-h) + env(safe-area-inset-top,0px) + 8px) !important;
+    margin-top:0 !important;
+    min-width:0 !important; width:auto !important;
+    max-height:70vh; overflow-y:auto;
+  }
+}
 .settings-item{
   display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px;
   font-size:13.5px; color:var(--text); text-decoration:none; width:100%; box-sizing:border-box;
