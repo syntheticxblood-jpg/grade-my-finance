@@ -119,4 +119,8 @@ var GMF_BLOG_POSTS = [
   { slug:"hdhp-vs-ppo-open-enrollment", title:"HDHP vs. PPO: How to Actually Pick a Health Insurance Plan During Open Enrollment", category:"Insurance" }
 ,
   { slug:"renters-insurance-is-it-worth-it", title:"Renters Insurance: Is It Actually Worth the Cost?", category:"Insurance" }
+,
+  { slug:"do-you-need-a-living-trust", title:"Living Trust vs. Will: Do You Actually Need a Trust?", category:"Advice" }
+,
+  { slug:"credit-card-rewards-are-they-worth-it", title:"Credit Card Rewards: Are They Actually Worth It, or Just Marketing?", category:"Credit" }
 ];
