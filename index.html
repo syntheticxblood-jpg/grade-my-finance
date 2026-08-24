@@ -3477,6 +3477,23 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     <div id="revealDelta" class="grade-reveal-delta">—</div>
     <p class="reveal-headline" id="revealHeadline">—</p>
 
+    <div class="reveal-pro-teaser">
+      <p class="rpt-headline">Want your complete financial picture?</p>
+      <p class="rpt-line">Your free grade uses five high-level numbers. Unlock Pro to access your full financial Dashboard — add your home, retirement accounts, investments, cash, vehicles, and individual debts for a deeper analysis. Your Dashboard includes:</p>
+      <ul class="rpt-feature-list">
+        <li>✓ Full net worth &amp; asset breakdown</li>
+        <li>✓ Debt breakdown &amp; payoff planning</li>
+        <li>✓ Financial benchmarks for your age</li>
+        <li>✓ Personalized action steps</li>
+        <li>✓ Score history, what-if scenarios &amp; stress testing</li>
+      </ul>
+      <div class="rpt-cta-row">
+        <a class="btn gold sm" href="#pricing" id="revealUnlockPro" onclick="try{__track('pro_clicked',{location:'grade_reveal'})}catch(e){}var __ov=document.getElementById('gradeRevealOverlay');if(__ov)__ov.classList.remove('show');">Unlock Pro →</a>
+        <button class="btn sm ghost" id="revealCta" type="button">Create Free Account</button>
+      </div>
+      <span class="rpt-sub">Free account saves your snapshot. Pro unlocks the complete financial analysis in your Dashboard.</span>
+    </div>
+
     <div class="reveal-section-title" style="margin-top:22px">Financial Snapshot</div>
     <p class="reveal-snapshot-caption">Based only on the five numbers you entered — not your complete financial picture.</p>
     <div class="reveal-metrics-row" id="revealMetricsRow">
@@ -3507,23 +3524,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <span class="rhh-title">What's hurting you</span>
         <ul id="revealHurtingList"></ul>
       </div>
-    </div>
-
-    <div class="reveal-pro-teaser">
-      <p class="rpt-headline">Want your complete financial picture?</p>
-      <p class="rpt-line">Your free grade uses five high-level numbers. GradeMyFinance Pro lets you add your complete financial picture — including your home, retirement accounts, investments, cash, vehicles, and individual debts — for a deeper analysis.</p>
-      <ul class="rpt-feature-list">
-        <li>✓ Full net worth &amp; asset breakdown</li>
-        <li>✓ Debt breakdown &amp; payoff planning</li>
-        <li>✓ Financial benchmarks for your age</li>
-        <li>✓ Personalized action steps</li>
-        <li>✓ Score history, what-if scenarios &amp; stress testing</li>
-      </ul>
-      <div class="rpt-cta-row">
-        <a class="btn gold sm" href="#pricing" id="revealUnlockPro" onclick="try{__track('pro_clicked',{location:'grade_reveal'})}catch(e){}var __ov=document.getElementById('gradeRevealOverlay');if(__ov)__ov.classList.remove('show');">Unlock Pro →</a>
-        <button class="btn sm ghost" id="revealCta" type="button">Create Free Account</button>
-      </div>
-      <span class="rpt-sub">Free account saves your snapshot. Pro unlocks the complete financial analysis.</span>
     </div>
 
     <input type="hidden" id="cash" value="0">
