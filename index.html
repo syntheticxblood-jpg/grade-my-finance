@@ -3526,18 +3526,82 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       </div>
     </div>
 
-    <input type="hidden" id="cash" value="0">
-    <input type="hidden" id="otherDebt" value="0">
-    <input type="hidden" id="home" value="0">
-    <input type="hidden" id="mortgage" value="0">
-    <input type="hidden" id="retire" value="0">
-    <input type="hidden" id="brokerage" value="0">
-    <input type="hidden" id="hsa" value="0">
-    <input type="hidden" id="crypto" value="0">
-    <input type="hidden" id="car" value="0">
-    <input type="hidden" id="student" value="0">
-    <input type="hidden" id="auto" value="0">
-    <input type="hidden" id="cc" value="0">
+    <div class="reveal-section-title" style="margin-top:22px">Add Your Complete Financial Details</div>
+    <div class="pro-lock">🔒 Enter your home, retirement accounts, and individual debts for a more accurate grade — <a href="#pricing" style="color:var(--brand-bright);font-weight:700;text-decoration:none" onclick="try{__track('pro_clicked',{location:'grade_reveal_detailed'})}catch(e){}">unlock with Pro</a></div>
+
+    <div class="pro-gated" id="revealDetailedSection">
+      <p class="reveal-deeper-sub">You're on Pro — add your full financial picture for a more accurate, complete grade.</p>
+      <div class="field-row">
+        <div>
+          <div class="calc-housing-label">Do you own or rent your home?</div>
+          <div class="segmented" role="group" aria-label="Housing">
+            <button id="modeOwner" type="button">Owner</button>
+            <button id="modeRenter" type="button">Renter</button>
+          </div>
+        </div>
+      </div>
+      <div class="inputs">
+        <div class="field icon-field" id="homeCard">
+          <div class="field-icon-row"><label for="home">Home Value</label></div>
+          <input id="home" type="number" value="0" min="0" inputmode="decimal">
+        </div>
+        <div class="field icon-field" id="mortCard">
+          <div class="field-icon-row"><label for="mortgage">Mortgage Balance</label></div>
+          <input id="mortgage" type="number" value="0" min="0" inputmode="decimal">
+        </div>
+        <div class="field icon-field">
+          <div class="field-icon-row"><label for="retire">Retirement (401k, IRA)</label></div>
+          <input id="retire" type="number" value="0" min="0" inputmode="decimal">
+        </div>
+        <div class="field icon-field">
+          <div class="field-icon-row"><label for="brokerage">Brokerage / Stocks</label></div>
+          <input id="brokerage" type="number" value="0" min="0" inputmode="decimal">
+        </div>
+        <div class="field icon-field">
+          <div class="field-icon-row"><label for="hsa">HSA</label></div>
+          <input id="hsa" type="number" value="0" min="0" inputmode="decimal">
+        </div>
+        <div class="field icon-field">
+          <div class="field-icon-row"><label for="cash">Cash Savings</label></div>
+          <input id="cash" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Pre-filled from your total savings answer — adjust if you're now itemizing.</div>
+        </div>
+        <div class="field icon-field">
+          <div class="field-icon-row"><label for="crypto">Crypto &amp; Other</label></div>
+          <input id="crypto" type="number" value="0" min="0" inputmode="decimal">
+        </div>
+        <div class="field icon-field">
+          <div class="field-icon-row"><label for="car">Car Value</label></div>
+          <input id="car" type="number" value="0" min="0" inputmode="decimal">
+        </div>
+        <div class="field icon-field">
+          <div class="field-icon-row"><label for="student">Student Loans</label></div>
+          <input id="student" type="number" value="0" min="0" inputmode="decimal">
+        </div>
+        <div class="field icon-field">
+          <div class="field-icon-row"><label for="auto">Auto Loans</label></div>
+          <input id="auto" type="number" value="0" min="0" inputmode="decimal">
+        </div>
+        <div class="field icon-field">
+          <div class="field-icon-row"><label for="cc">Credit Cards</label></div>
+          <input id="cc" type="number" value="0" min="0" inputmode="decimal">
+        </div>
+        <div class="field icon-field">
+          <div class="field-icon-row"><label for="otherDebt">Personal Loans / Other Debt</label></div>
+          <input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Pre-filled from your total debt answer — adjust if you're now itemizing.</div>
+        </div>
+      </div>
+      <div class="calc-total-card">
+        <div class="calc-total-text"><b>Total Assets</b><span>Total of everything entered above</span></div>
+        <div class="calc-total-value" id="assetsHint">—</div>
+      </div>
+      <div class="calc-total-card">
+        <div class="calc-total-text"><b>Total Liabilities</b><span>Total of all debts entered above</span></div>
+        <div class="calc-total-value" id="liabHint">—</div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn gold sm" id="revealDeeperSave" type="button">Recalculate My Grade</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -8409,9 +8473,25 @@ function gradeNow(){
     showGradeReveal(v, cats, prevHistory);
   });
 }
-/* Deeper-profile editing (home, retirement, individual debts, etc.) is
-   now part of the gated Pro/dashboard experience, not this free page —
-   see dashboard.html's Net Worth tab. */
+/* Detailed financial fields (home, retirement, individual debts, etc.)
+   are gated behind Pro via the .pro-gated/.pro-lock CSS pair — hidden
+   for free users, revealed automatically for Pro (body.is-pro). This
+   just wires the Recalculate button; visibility itself is pure CSS. */
+(function setupDetailedRecalc(){
+  var save = $("revealDeeperSave");
+  if(!save) return;
+  save.addEventListener("click", function(){
+    try{ __track('deeper_profile_completed', {}); }catch(e){}
+    var v=values(); var cats=categoryScores(v);
+    var prevHistory = getHistory();
+    var modalEl = document.getElementById("reportModal");
+    if(modalEl) modalEl.style.setProperty("display", "none", "important");
+    openReport(v,cats);
+    showGradeReveal(v, cats, prevHistory);
+    var card = document.querySelector(".grade-reveal-card");
+    if(card) card.scrollTop = 0;
+  });
+})();
 
 function openCalcModal(location){
   __track('click_open_calculator',{location:location});
