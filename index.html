@@ -770,7 +770,7 @@ section.block{ padding:76px 0 }
 }
 .grade-reveal-overlay.show{ display:flex }
 .grade-reveal-card{
-  width:480px; max-width:100%; background:var(--surface); border:1px solid var(--line);
+  width:560px; max-width:100%; background:var(--surface); border:1px solid var(--line);
   border-radius:22px; padding:38px 34px 30px; box-shadow:0 30px 80px -20px rgba(0,0,0,.5), var(--shadow);
   text-align:center; animation:revealCardIn .45s cubic-bezier(.19,1,.22,1);
   max-height:calc(100vh - 48px); max-height:calc(100dvh - 48px); overflow-y:auto;
@@ -787,21 +787,47 @@ section.block{ padding:76px 0 }
 .grade-reveal-delta{ font-family:var(--font-mono); font-size:13px; font-weight:600; margin-top:6px; color:var(--muted) }
 .grade-reveal-delta.up{ color:var(--good) }
 .grade-reveal-delta.down{ color:var(--bad) }
-.grade-reveal-rows{ text-align:left; margin:22px 0 6px; border-top:1px solid var(--line) }
-.grade-reveal-row{ padding:13px 2px; border-bottom:1px solid var(--line); display:flex; flex-direction:column; gap:2px }
-.grr-label{ font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted-2) }
-.grr-value{ font-size:13.5px; color:var(--text); line-height:1.45 }
-.grade-reveal-row.strength .grr-label{ color:var(--good) }
-.grade-reveal-row.opportunity .grr-label{ color:var(--gold-bright) }
+.reveal-headline{ font-size:15px; font-weight:600; color:var(--text); margin:10px 0 0; line-height:1.4 }
+.reveal-metrics-row{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:0; margin:20px 0 4px;
+  border:1px solid var(--line); border-radius:14px; overflow:hidden; text-align:center;
+}
+.reveal-metric{ padding:14px 8px; border-right:1px solid var(--line) }
+.reveal-metric:last-child{ border-right:none }
+.reveal-metric .rm-label{ display:block; font-size:10px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted-2); margin-bottom:5px }
+.reveal-metric .rm-val{ font-size:17px; font-weight:700; color:var(--text) }
+.reveal-section-title{ text-align:left; font-size:13px; font-weight:700; color:var(--text); margin:22px 0 10px }
+.reveal-helping-hurting{ display:grid; grid-template-columns:1fr 1fr; gap:14px; text-align:left }
+@media (max-width:520px){ .reveal-helping-hurting{ grid-template-columns:1fr } }
+.rhh-col{ padding:14px; border-radius:12px; border:1px solid var(--line) }
+.rhh-col.good{ background:var(--good-soft,rgba(34,197,94,.08)); border-color:rgba(34,197,94,.25) }
+.rhh-col.bad{ background:rgba(193,73,61,.06); border-color:rgba(193,73,61,.22) }
+.rhh-title{ display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px }
+.rhh-col.good .rhh-title{ color:var(--good) }
+.rhh-col.bad .rhh-title{ color:var(--bad) }
+.rhh-col ul{ list-style:none; margin:0; padding:0; display:grid; gap:6px }
+.rhh-col li{ font-size:13px; color:var(--text); line-height:1.4 }
 .grade-reveal-cta{ width:100%; margin-top:18px; padding:13px; font-size:14.5px; font-weight:700 }
 .reveal-pro-teaser{
-  margin-top:18px; padding:16px 18px; border-radius:14px; text-align:center;
+  margin-top:22px; padding:18px 20px; border-radius:14px; text-align:left;
   background:linear-gradient(135deg,var(--brand-soft,rgba(34,197,148,.10)),transparent);
   border:1px solid var(--brand);
 }
-.reveal-pro-teaser .rpt-line{ margin:0 0 12px; font-size:14px; line-height:1.4; color:var(--text) }
+.reveal-pro-teaser .rpt-headline{ margin:0 0 6px; font-size:15px; font-weight:700; color:var(--text) }
+.reveal-pro-teaser .rpt-line{ margin:0 0 12px; font-size:13px; line-height:1.4; color:var(--muted) }
+.rpt-feature-list{ list-style:none; margin:0 0 14px; padding:0; display:grid; gap:6px }
+.rpt-feature-list li{ font-size:13px; color:var(--text); font-weight:600 }
 .reveal-pro-teaser .btn{ width:100%; justify-content:center }
-.reveal-pro-teaser .rpt-sub{ display:block; margin-top:8px; font-size:11.5px; color:var(--muted) }
+.reveal-pro-teaser .rpt-sub{ display:block; margin-top:8px; font-size:11.5px; color:var(--muted); text-align:center }
+.reveal-deeper-profile{ margin-top:22px; padding-top:20px; border-top:1px solid var(--line); text-align:left }
+.reveal-deeper-sub{ font-size:12.5px; color:var(--muted); margin:0 0 14px; line-height:1.5 }
+.reveal-deeper-actions{ display:flex; gap:10px; flex-wrap:wrap }
+.reveal-deeper-actions .btn{ flex:1 1 auto; justify-content:center }
+.reveal-deeper-form{ overflow:hidden; max-height:0; transition:max-height .35s ease }
+.reveal-deeper-form.open{ max-height:2400px; margin-top:14px }
+.reveal-deeper-form .inputs{ grid-template-columns:repeat(2,1fr) }
+@media (max-width:520px){ .reveal-deeper-form .inputs{ grid-template-columns:1fr } }
+.reveal-deeper-form .calc-total-card{ margin-top:10px }
 
 /* ---------- Report modal — modern dashboard treatment ---------- */
 .modal{ position:fixed; inset:0; display:none; z-index:100; background:rgba(6,7,9,.68) }
@@ -2855,13 +2881,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <span class="lcb-count" id="liveGradeCountHero">—</span>
         <span class="lcb-label" id="liveGradeCountHeroLabel">report cards graded</span>
       </div>
-      <h1 class="hero-in" style="--d:.16s">Know Exactly Where<br>You Stand <span class="hero-headline-accent">Financially.</span></h1>
-      <p class="lede hero-in" style="--d:.26s">Grade your finances, see what's holding you back, and get a personalized plan to improve your financial health.</p>
+      <h1 class="hero-in" style="--d:.16s">What's Your <span class="hero-headline-accent">Financial Grade?</span></h1>
+      <p class="lede hero-in" style="--d:.26s"><b>Enter 5 numbers and find out in about 60 seconds.</b><br>See what's helping your finances, what's holding you back, and what to do next.</p>
       <div class="hero-cta hero-in" style="--d:.36s">
-        <button class="btn gold" id="gradeBtnHero" type="button">Get My Free Financial Grade →</button>
+        <button class="btn gold" id="gradeBtnHero" type="button">Get My Free Grade →</button>
         <button class="btn ghost" id="demoBtn" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> See How It Works</button>
       </div>
-      <p class="hero-reassurance hero-in" style="--d:.40s">No bank connection required &nbsp;•&nbsp; Takes a few minutes &nbsp;•&nbsp; Your financial inputs stay private</p>
+      <p class="hero-reassurance hero-in" style="--d:.40s">No credit card required &nbsp;•&nbsp; No bank connection required &nbsp;•&nbsp; Your financial inputs stay private</p>
       <div class="hero-trust-row hero-in" style="--d:.44s">
         <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span><div><b>100% Private</b><span>Your data stays yours</span></div></div>
         <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>No Credit Check</b><span>Zero impact to score</span></div></div>
@@ -3120,173 +3146,88 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
   </div>
 </section>
 
-<section class="block gmf-how-modern" id="how">
-  <div class="container">
-    <div class="gmf-feature-strip">
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon mint">▦</div>
-        <div><strong>Free Calculator</strong><span>Enter your numbers.</span></div>
-      </div>
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon blue">↗</div>
-        <div><strong>See Where You Stand</strong><span>Compare your progress.</span></div>
-      </div>
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon green">✓</div>
-        <div><strong>Get Your Plan</strong><span>Know what to do next.</span></div>
-      </div>
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon gold">↗</div>
-        <div><strong>Track Progress</strong><span>Keep getting better.</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <div id="calcModal" class="modal calc-modal" role="dialog" aria-modal="true" aria-labelledby="calcModalTitle">
 <section id="grade" class="calc-wrap" aria-label="Calculator">
   <button class="xbtn calc-modal-close" id="calcModalClose" type="button" aria-label="Close calculator">✕</button>
   <div class="calc-v2-main">
-    <h2 id="calcModalTitle" class="calc-simple-title">Your Financial Assessment</h2>
+    <h2 id="calcModalTitle" class="calc-simple-title">What's Your Financial Grade?</h2>
   <div class="stepper-head">
-    <div class="stepper-progress-label"><span>Financial Assessment</span><span id="stepperStepText" class="stepper-progress-count">Step 1 of 5</span></div>
+    <div class="stepper-progress-label"><span>Quick Grade</span><span id="stepperStepText" class="stepper-progress-count">1 of 5</span></div>
     <div class="stepper-track-wrap">
       <div class="stepper-track-bg"></div>
       <div class="stepper-track-fill" id="stepperFill" style="width:0%"></div>
       <div class="stepper-nodes">
-        <span class="step-label active" data-step-label="1"><span class="step-circle">1</span><span class="step-name">Income</span></span>
-        <span class="step-label" data-step-label="2"><span class="step-circle">2</span><span class="step-name">Cash</span></span>
-        <span class="step-label" data-step-label="3"><span class="step-circle">3</span><span class="step-name">Debt</span></span>
-        <span class="step-label" data-step-label="4"><span class="step-circle">4</span><span class="step-name">Investing</span></span>
-        <span class="step-label" data-step-label="5"><span class="step-circle">5</span><span class="step-name">Details</span></span>
+        <span class="step-label active" data-step-label="1"><span class="step-circle">1</span><span class="step-name">Age</span></span>
+        <span class="step-label" data-step-label="2"><span class="step-circle">2</span><span class="step-name">Income</span></span>
+        <span class="step-label" data-step-label="3"><span class="step-circle">3</span><span class="step-name">Expenses</span></span>
+        <span class="step-label" data-step-label="4"><span class="step-circle">4</span><span class="step-name">Savings</span></span>
+        <span class="step-label" data-step-label="5"><span class="step-circle">5</span><span class="step-name">Debt</span></span>
       </div>
     </div>
   </div>
 
   <div class="calc-step calc-step-solo active" data-step="1">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div><b>Let's Start With Your Income</b><span>This helps establish the foundation of your financial picture</span></div></div>
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span><div><b>How Old Are You?</b><span>Used to compare your numbers to others at your stage of life</span></div></div>
     <div class="inputs">
       <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><label for="income">Monthly Household Income</label></div>
-        <input id="income" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Your take-home pay — after taxes, before rent or bills.</div>
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span><label for="age">Age</label></div>
+        <input id="age" type="number" value="30" min="16" max="100" inputmode="numeric">
       </div>
     </div>
     <div class="step-actions"><span></span><button class="btn gold" type="button" data-next>Continue →</button></div>
   </div>
 
-  <div class="calc-step" data-step="2">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><div><b>How Strong Is Your Financial Cushion?</b><span>Cash on hand is what carries you through the unexpected</span></div></div>
+  <div class="calc-step calc-step-solo" data-step="2">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div><b>Monthly Take-Home Income</b><span>After taxes, before rent or bills</span></div></div>
     <div class="inputs">
       <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><label for="cash">Cash Savings</label></div>
-        <input id="cash" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Checking, savings, and emergency fund — combined.</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><label for="hsa">HSA</label></div>
-        <input id="hsa" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Health savings account balance, if you have one.</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(236,72,153,.15);color:#EC4899"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span><label for="crypto">Crypto &amp; Other</label></div>
-        <input id="crypto" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Any other cash-like or miscellaneous assets.</div>
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><label for="income">Monthly Income</label></div>
+        <input id="income" type="number" value="0" min="0" inputmode="decimal">
       </div>
     </div>
     <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
   </div>
 
-  <div class="calc-step" data-step="3">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>Let's Look at Your Debt</b><span>No judgment here — just the numbers, so your grade reflects the full picture</span></div></div>
-
-    <div class="field-row">
-      <div>
-        <div class="calc-housing-label">Do you own or rent your home?</div>
-        <div class="segmented" role="group" aria-label="Housing">
-          <button id="modeOwner" type="button">Owner</button>
-          <button id="modeRenter" type="button">Renter</button>
-        </div>
-      </div>
-    </div>
-    <div class="inputs">
-      <div class="field icon-field" id="homeCard">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="home">Home Value</label></div>
-        <input id="home" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field" id="mortCard">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="mortgage">Mortgage Balance</label></div>
-        <input id="mortgage" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Current mortgage payoff amount</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span><label for="student">Student Loans</label></div>
-        <input id="student" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total student loan balance</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="auto">Auto Loans</label></div>
-        <input id="auto" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Outstanding auto loan balance</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><label for="cc">Credit Cards</label></div>
-        <input id="cc" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Total credit card balances</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="otherDebt">Personal Loans / Other Debt</label></div>
-        <input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Personal loans, lines of credit, or other debts</div>
-      </div>
-    </div>
-
-    <div class="calc-total-card">
-      <span class="calc-total-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
-      <div class="calc-total-text"><b>Total Liabilities</b><span>Total of all debts entered</span></div>
-      <div class="calc-total-value" id="liabHint">—</div>
-    </div>
-    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
-  </div>
-
-  <div class="calc-step" data-step="4">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b>What Are You Building for the Future?</b><span>Retirement accounts and investments — the money working for you long-term</span></div></div>
+  <div class="calc-step calc-step-solo" data-step="3">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><div><b>Monthly Expenses</b><span>Housing, transportation, everything else — combined</span></div></div>
     <div class="inputs">
       <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="retire">Retirement (401k, IRA)</label></div>
-        <input id="retire" type="number" value="0" min="0" inputmode="decimal"><div class="hint">401(k), 403(b), traditional and Roth IRA balances — combined.</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(74,222,158,.15);color:#4ADE9E"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><label for="brokerage">Brokerage / Stocks</label></div>
-        <input id="brokerage" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Taxable brokerage or stock holdings outside retirement accounts.</div>
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><label for="expenses">Monthly Expenses</label></div>
+        <input id="expenses" type="number" value="0" min="0" inputmode="decimal">
       </div>
     </div>
     <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
   </div>
 
-  <div class="calc-step" data-step="5">
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span><div><b>A Few Final Details</b><span>Just a couple more things, then your Financial Grade is ready</span></div></div>
+  <div class="calc-step calc-step-solo" data-step="4">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><div><b>Total Savings &amp; Investments</b><span>Cash, retirement accounts, brokerage — everything combined</span></div></div>
     <div class="inputs">
       <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span><label for="age">Age</label></div>
-        <input id="age" type="number" value="30" min="16" max="100" inputmode="numeric"><div class="hint">Used to compare your numbers to others at your stage of life.</div>
-      </div>
-      <div class="field icon-field" style="grid-column:span 2">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/></svg></span><label for="expenses">Monthly Expenses (Total)</label></div>
-        <input id="expenses" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Housing, transportation, everything else — combined.</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="car">Car Value</label></div>
-        <input id="car" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Estimated resale value of any vehicles you own.</div>
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><label for="qSavingsTotal">Total Savings</label></div>
+        <input id="qSavingsTotal" type="number" value="0" min="0" inputmode="decimal">
       </div>
     </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
 
-    <div class="calc-total-card">
-      <span class="calc-total-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></span>
-      <div class="calc-total-text"><b>Total Assets</b><span>Total of everything entered so far</span></div>
-      <div class="calc-total-value" id="assetsHint">—</div>
+  <div class="calc-step calc-step-solo" data-step="5">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(193,73,61,.15);color:#C1493D"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>Total Debt</b><span>Credit cards, loans, anything you owe — not counting a mortgage</span></div></div>
+    <div class="inputs">
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(193,73,61,.15);color:#C1493D"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><label for="qDebtTotal">Total Debt</label></div>
+        <input id="qDebtTotal" type="number" value="0" min="0" inputmode="decimal">
+      </div>
     </div>
 
     <div class="calc-privacy-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg><span>All calculations are done locally on your device. Your data is <b>never</b> sent anywhere.</span></div>
 
-    <div class="progress"><div id="progressFill"></div></div>
     <div class="calc-actions">
       <button class="btn" id="resetBtn" type="button">Reset</button>
       <button class="btn gold calc-final-cta" id="gradeBtn" type="button">Get My Financial Grade →</button>
     </div>
     <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
   </div>
+
     </div>
   <div class="calc-v2-trust-bar">
     <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg> No bank connection required</span>
@@ -3369,36 +3310,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 })();
 </script>
 
-<section class="block" id="features" style="background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
-  <div class="container">
-    <div class="block-head center">
-      <span class="kicker">Why it's different</span>
-      <h2>Built to be transparent, not to sell you a bank account.</h2>
-    </div>
-    <div class="features">
-      <div class="feature"><div class="fi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></div><h4>Private by design</h4><p>All calculations run in your browser. Nothing is sent to a server.</p></div>
-      <div class="feature"><div class="fi">Σ</div><h4>Open methodology</h4><p>We publish the exact weighting behind your grade — no black box.</p></div>
-      <div class="feature"><div class="fi">→</div><h4>Actionable path</h4><p>Specific next steps with dollar targets, ranked by point impact.</p></div>
-      <div class="feature"><div class="fi">%</div><h4>Benchmarks</h4><p>See how you compare to our age-adjusted benchmark.</p></div>
-    </div>
-    <div class="methodology-home-card">
-      <div>
-        <span class="kicker">How the grade works</span>
-        <h3>Five factors. Published weights. No black box.</h3>
-        <p>The current score is weighted across income strength, savings rate, non-mortgage debt, age-based net worth, and emergency-fund coverage. These are model benchmarks — not guarantees, official percentiles, or financial advice.</p>
-      </div>
-      <div class="methodology-weight-grid" aria-label="Grade weighting">
-        <span><b>25%</b><small>Income</small></span>
-        <span><b>20%</b><small>Savings</small></span>
-        <span><b>20%</b><small>Debt</small></span>
-        <span><b>20%</b><small>Net worth</small></span>
-        <span><b>15%</b><small>Emergency fund</small></span>
-      </div>
-      <a href="#faq" class="methodology-link">See assumptions &amp; privacy →</a>
-    </div>
-  </div>
-</section>
-
 <section class="block reveal" id="pricing" aria-label="Pricing">
   <div class="container">
     <div class="block-head center">
@@ -3468,6 +3379,36 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 
 
+
+<section class="block" id="features" style="background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
+  <div class="container">
+    <div class="block-head center">
+      <span class="kicker">Why it's different</span>
+      <h2>Built to be transparent, not to sell you a bank account.</h2>
+    </div>
+    <div class="features">
+      <div class="feature"><div class="fi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></div><h4>Private by design</h4><p>All calculations run in your browser. Nothing is sent to a server.</p></div>
+      <div class="feature"><div class="fi">Σ</div><h4>Open methodology</h4><p>We publish the exact weighting behind your grade — no black box.</p></div>
+      <div class="feature"><div class="fi">→</div><h4>Actionable path</h4><p>Specific next steps with dollar targets, ranked by point impact.</p></div>
+      <div class="feature"><div class="fi">%</div><h4>Benchmarks</h4><p>See how you compare to our age-adjusted benchmark.</p></div>
+    </div>
+    <div class="methodology-home-card">
+      <div>
+        <span class="kicker">How the grade works</span>
+        <h3>Five factors. Published weights. No black box.</h3>
+        <p>The current score is weighted across income strength, savings rate, non-mortgage debt, age-based net worth, and emergency-fund coverage. These are model benchmarks — not guarantees, official percentiles, or financial advice.</p>
+      </div>
+      <div class="methodology-weight-grid" aria-label="Grade weighting">
+        <span><b>25%</b><small>Income</small></span>
+        <span><b>20%</b><small>Savings</small></span>
+        <span><b>20%</b><small>Debt</small></span>
+        <span><b>20%</b><small>Net worth</small></span>
+        <span><b>15%</b><small>Emergency fund</small></span>
+      </div>
+      <a href="#faq" class="methodology-link">See assumptions &amp; privacy →</a>
+    </div>
+  </div>
+</section>
 <section class="trust-section" aria-label="Privacy and trust">
   <div class="container">
     <div class="trust-inner">
@@ -3539,25 +3480,118 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     </div>
     <div class="grade-reveal-score"><span id="revealScore">—</span><small> / 100</small></div>
     <div id="revealDelta" class="grade-reveal-delta">—</div>
-    <div class="grade-reveal-rows">
-      <div class="grade-reveal-row strength">
-        <span class="grr-label">Biggest strength</span>
-        <span id="revealStrength" class="grr-value">—</span>
+    <p class="reveal-headline" id="revealHeadline">—</p>
+
+    <div class="reveal-metrics-row" id="revealMetricsRow">
+      <div class="reveal-metric"><span class="rm-label">Net Worth</span><span class="rm-val mono" id="revealNetWorth">—</span></div>
+      <div class="reveal-metric"><span class="rm-label">Savings Rate</span><span class="rm-val mono" id="revealSavingsRate">—</span></div>
+      <div class="reveal-metric"><span class="rm-label">Debt-to-Income</span><span class="rm-val mono" id="revealDTI">—</span></div>
+    </div>
+
+    <div class="reveal-section-title">What went into your grade</div>
+    <div class="reveal-helping-hurting">
+      <div class="rhh-col good">
+        <span class="rhh-title">What's helping you</span>
+        <ul id="revealHelpingList"></ul>
       </div>
-      <div class="grade-reveal-row opportunity">
-        <span class="grr-label">Biggest opportunity</span>
-        <span id="revealOpportunity" class="grr-value">—</span>
-      </div>
-      <div class="grade-reveal-row action">
-        <span class="grr-label">Next recommended action</span>
-        <span id="revealAction" class="grr-value">—</span>
+      <div class="rhh-col bad">
+        <span class="rhh-title">What's hurting you</span>
+        <ul id="revealHurtingList"></ul>
       </div>
     </div>
 
     <div class="reveal-pro-teaser">
-      <p class="rpt-line"><b>Your grade tells you WHERE you stand.</b> Pro tells you HOW to improve it.</p>
-      <a class="btn gold sm" href="#pricing" onclick="try{__track('pro_clicked',{location:'grade_reveal'})}catch(e){}var __ov=document.getElementById('gradeRevealOverlay');if(__ov)__ov.classList.remove('show');">Unlock My Financial Plan →</a>
+      <p class="rpt-headline">Want to improve your grade?</p>
+      <p class="rpt-line">GradeMyFinance shows you exactly where you're strong, where you're falling behind, and what to do next.</p>
+      <ul class="rpt-feature-list">
+        <li>✓ Your 3 personalized next steps</li>
+        <li>✓ Track your score over time</li>
+        <li>✓ Run what-if scenarios &amp; stress tests</li>
+      </ul>
+      <a class="btn gold sm" href="#pricing" onclick="try{__track('pro_clicked',{location:'grade_reveal'})}catch(e){}var __ov=document.getElementById('gradeRevealOverlay');if(__ov)__ov.classList.remove('show');">Unlock Pro →</a>
       <span class="rpt-sub">Cancel anytime.</span>
+    </div>
+
+    <div class="reveal-deeper-profile" id="revealDeeperProfile">
+      <div class="reveal-section-title" style="margin-bottom:4px">Make your grade more accurate</div>
+      <p class="reveal-deeper-sub">Add a bit more detail — home, retirement accounts, specific debts — for a sharper picture. Totally optional.</p>
+      <div class="reveal-deeper-actions" id="revealDeeperActions">
+        <button class="btn gold sm" id="revealDeeperToggle" type="button">Improve My Grade Accuracy</button>
+        <button class="btn sm ghost" id="revealDeeperSkip" type="button">Skip For Now</button>
+      </div>
+
+      <div class="reveal-deeper-form" id="revealDeeperForm">
+        <div class="field-row">
+          <div>
+            <div class="calc-housing-label">Do you own or rent your home?</div>
+            <div class="segmented" role="group" aria-label="Housing">
+              <button id="modeOwner" type="button">Owner</button>
+              <button id="modeRenter" type="button">Renter</button>
+            </div>
+          </div>
+        </div>
+        <div class="inputs">
+          <div class="field icon-field" id="homeCard">
+            <div class="field-icon-row"><label for="home">Home Value</label></div>
+            <input id="home" type="number" value="0" min="0" inputmode="decimal">
+          </div>
+          <div class="field icon-field" id="mortCard">
+            <div class="field-icon-row"><label for="mortgage">Mortgage Balance</label></div>
+            <input id="mortgage" type="number" value="0" min="0" inputmode="decimal">
+          </div>
+          <div class="field icon-field">
+            <div class="field-icon-row"><label for="retire">Retirement (401k, IRA)</label></div>
+            <input id="retire" type="number" value="0" min="0" inputmode="decimal">
+          </div>
+          <div class="field icon-field">
+            <div class="field-icon-row"><label for="brokerage">Brokerage / Stocks</label></div>
+            <input id="brokerage" type="number" value="0" min="0" inputmode="decimal">
+          </div>
+          <div class="field icon-field">
+            <div class="field-icon-row"><label for="hsa">HSA</label></div>
+            <input id="hsa" type="number" value="0" min="0" inputmode="decimal">
+          </div>
+          <div class="field icon-field">
+            <div class="field-icon-row"><label for="cash">Cash Savings</label></div>
+            <input id="cash" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Pre-filled from your total savings answer — adjust if you're now itemizing.</div>
+          </div>
+          <div class="field icon-field">
+            <div class="field-icon-row"><label for="crypto">Crypto &amp; Other</label></div>
+            <input id="crypto" type="number" value="0" min="0" inputmode="decimal">
+          </div>
+          <div class="field icon-field">
+            <div class="field-icon-row"><label for="car">Car Value</label></div>
+            <input id="car" type="number" value="0" min="0" inputmode="decimal">
+          </div>
+          <div class="field icon-field">
+            <div class="field-icon-row"><label for="student">Student Loans</label></div>
+            <input id="student" type="number" value="0" min="0" inputmode="decimal">
+          </div>
+          <div class="field icon-field">
+            <div class="field-icon-row"><label for="auto">Auto Loans</label></div>
+            <input id="auto" type="number" value="0" min="0" inputmode="decimal">
+          </div>
+          <div class="field icon-field">
+            <div class="field-icon-row"><label for="cc">Credit Cards</label></div>
+            <input id="cc" type="number" value="0" min="0" inputmode="decimal">
+          </div>
+          <div class="field icon-field">
+            <div class="field-icon-row"><label for="otherDebt">Personal Loans / Other Debt</label></div>
+            <input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Pre-filled from your total debt answer — adjust if you're now itemizing.</div>
+          </div>
+        </div>
+        <div class="calc-total-card">
+          <div class="calc-total-text"><b>Total Assets</b><span>Total of everything entered above</span></div>
+          <div class="calc-total-value" id="assetsHint">—</div>
+        </div>
+        <div class="calc-total-card">
+          <div class="calc-total-text"><b>Total Liabilities</b><span>Total of all debts entered above</span></div>
+          <div class="calc-total-value" id="liabHint">—</div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+          <button class="btn gold sm" id="revealDeeperSave" type="button">Recalculate My Grade</button>
+        </div>
+      </div>
     </div>
 
     <button id="revealCta" class="btn gold grade-reveal-cta" type="button">Create My Free Account →</button>
@@ -4581,6 +4615,30 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 
 
+
+<section class="block gmf-how-modern" id="how">
+  <div class="container">
+    <div class="gmf-feature-strip">
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon mint">▦</div>
+        <div><strong>Free Calculator</strong><span>Enter your numbers.</span></div>
+      </div>
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon blue">↗</div>
+        <div><strong>See Where You Stand</strong><span>Compare your progress.</span></div>
+      </div>
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon green">✓</div>
+        <div><strong>Get Your Plan</strong><span>Know what to do next.</span></div>
+      </div>
+      <div class="gmf-mini-card">
+        <div class="gmf-mini-icon gold">↗</div>
+        <div><strong>Track Progress</strong><span>Keep getting better.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="block homepage-secondary" style="padding-top:0">
   <div class="container" style="max-width:820px">
     <div class="card" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between;padding:26px">
@@ -5022,8 +5080,9 @@ function deriveFrom(raw){
 function values(){ return deriveFrom(currentRaw()); }
 function updateHints(){
   var v=values();
-  $("assetsHint").textContent=money(v.assets);
-  $("liabHint").textContent=money(v.liabs);
+  var a=$("assetsHint"), l=$("liabHint");
+  if(a) a.textContent=money(v.assets);
+  if(l) l.textContent=money(v.liabs);
 }
 
 function setHousing(mode){
@@ -5050,11 +5109,11 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
   var current = 1;
 
   var SIDEBAR_COPY = {
-    1: { p1:"Let's start with", p2:"your income.", sub:"This is the foundation of your financial picture — everything else builds from here." },
-    2: { p1:"How strong is", p2:"your safety net?", sub:"Cash on hand is what carries you through the unexpected." },
-    3: { p1:"Let's talk about", p2:"your debt.", sub:"No judgment here — just the numbers, so your grade reflects the full picture." },
-    4: { p1:"What are you", p2:"building for the future?", sub:"Retirement and investment accounts — the money working for you long-term." },
-    5: { p1:"Almost there —", p2:"a few final details.", sub:"Just a couple more things, then your Financial Grade is ready." }
+    1: { p1:"How old", p2:"are you?", sub:"Used to compare your numbers to others at your stage of life." },
+    2: { p1:"What's your", p2:"monthly income?", sub:"Your take-home pay — after taxes, before rent or bills." },
+    3: { p1:"What are your", p2:"monthly expenses?", sub:"Housing, transportation, everything else — combined." },
+    4: { p1:"How much have you", p2:"saved so far?", sub:"Cash, retirement accounts, investments — everything combined." },
+    5: { p1:"Almost there —", p2:"what do you owe?", sub:"Credit cards, loans, anything you owe. One lump number is fine." }
   };
   var badgeNumEl = $("calcStepBadgeNum"), h1El = $("calcHeadlinePart1"), h2El = $("calcHeadlinePart2"), subEl = $("calcSidebarSub");
   var stepperStepText = $("stepperStepText");
@@ -5081,7 +5140,7 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
       l.classList.toggle("done", n < current);
     });
     if(fill) fill.style.width = (total > 1 ? Math.round(((current-1)/(total-1))*100) : 0)+"%";
-    if(stepperStepText) stepperStepText.textContent = "Step "+current+" of "+total;
+    if(stepperStepText) stepperStepText.textContent = current+" of "+total;
     var copy = SIDEBAR_COPY[current];
     if(copy){
       if(badgeNumEl) badgeNumEl.textContent = current;
@@ -5100,13 +5159,20 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
 
   function validateCurrentStep(){
     var raw=currentRaw();
-    if(current===1 && raw.income<=0){ toastMsg("Enter your monthly take-home income."); return false; }
+    if(current===1 && (raw.age<18 || raw.age>100)){ toastMsg("Enter an age between 18 and 100."); return false; }
+    if(current===2 && raw.income<=0){ toastMsg("Enter your monthly take-home income."); return false; }
+    if(current===3 && raw.expenses<=0){ toastMsg("Enter your average monthly expenses."); return false; }
     return true;
   }
 
   steps.forEach(function(stepEl){
     stepEl.querySelectorAll("[data-next]").forEach(function(btn){
-      btn.addEventListener("click", function(){ if(validateCurrentStep()) show(current+1); });
+      btn.addEventListener("click", function(){
+        if(validateCurrentStep()){
+          try{ __track('calculator_step_completed', {step: current}); }catch(e){}
+          show(current+1);
+        }
+      });
     });
     stepEl.querySelectorAll("[data-prev]").forEach(function(btn){
       btn.addEventListener("click", function(){ show(current-1); });
@@ -7685,24 +7751,35 @@ function showGradeReveal(v, cats, prevHistory){
     deltaEl.className = "grade-reveal-delta";
   }
 
-  // Same strongest/weakest derivation used in buildGradeSummaryParagraph,
-  // so this always agrees with the rest of the report.
-  var scores = { "Savings rate":cats.s.sSave, "Emergency fund":cats.s.sEF, "Debt load (non-mort.)":cats.s.sDebt, "Age-based net worth":cats.s.sAgeNW, "Income strength":cats.s.sInc };
-  var labels = { "Savings rate":"Savings rate", "Emergency fund":"Emergency fund", "Debt load (non-mort.)":"Debt load", "Age-based net worth":"Net worth", "Income strength":"Income" };
-  var sortedKeys = Object.keys(scores).sort(function(a,b){ return scores[b]-scores[a]; });
-  var strongestKey = sortedKeys[0], weakestKey = sortedKeys[sortedKeys.length-1];
-  var strongestComp = cats.components.filter(function(c){ return c.key===strongestKey; })[0];
-  var weakestComp = cats.components.filter(function(c){ return c.key===weakestKey; })[0];
-  $("revealStrength").textContent = labels[strongestKey] + " — " + strongestComp.val;
-  $("revealOpportunity").textContent = weakestKey === strongestKey
-    ? "Nothing stands out — every factor is landing in a similar place"
-    : labels[weakestKey] + " — " + weakestComp.tip;
+  // One-sentence explanation — copy varies by tier only, no new scoring.
+  var headlineEl = $("revealHeadline");
+  if(headlineEl){
+    headlineEl.textContent = tier === "good" ? "You're in strong shape — keep the momentum going."
+      : tier === "mid" ? "You're doing better than you might think, with real room to grow."
+      : "There's real room to improve here, and small changes can move this fast.";
+  }
 
-  var actions = (function(){ try{ return buildPath(v,cats); }catch(_){ return []; } })();
-  $("revealAction").textContent = actions.length ? actions[0].txt : "Keep doing what you're doing — consistency compounds from here.";
+  // Key metrics row
+  var nwEl=$("revealNetWorth"), srEl=$("revealSavingsRate"), dtiEl=$("revealDTI");
+  if(nwEl) nwEl.textContent = money(v.net);
+  if(srEl) srEl.textContent = Math.round(v.saveRate*100)+"%";
+  if(dtiEl) dtiEl.textContent = Math.round(v.dtiWeighted*100)+"%";
+
+  // What's helping / what's hurting — same five components used everywhere
+  // else in the report, just split by rank instead of only showing one of each.
+  var scores = { "Savings rate":cats.s.sSave, "Emergency fund":cats.s.sEF, "Debt load (non-mort.)":cats.s.sDebt, "Age-based net worth":cats.s.sAgeNW, "Income strength":cats.s.sInc };
+  var labels = { "Savings rate":"Strong savings rate", "Emergency fund":"Healthy emergency fund", "Debt load (non-mort.)":"Low debt burden", "Age-based net worth":"Healthy net worth for your age", "Income strength":"Solid income" };
+  var hurtLabels = { "Savings rate":"Savings rate", "Emergency fund":"Emergency savings", "Debt load (non-mort.)":"Debt level", "Age-based net worth":"Net worth progress", "Income strength":"Income" };
+  var sortedKeys = Object.keys(scores).sort(function(a,b){ return scores[b]-scores[a]; });
+  var helpKeys = sortedKeys.slice(0,2), hurtKeys = sortedKeys.slice(-2).reverse();
+  var helpEl = $("revealHelpingList"), hurtEl = $("revealHurtingList");
+  if(helpEl) helpEl.innerHTML = helpKeys.map(function(k){ return '<li>✓ '+labels[k]+'</li>'; }).join('');
+  if(hurtEl) hurtEl.innerHTML = hurtKeys.map(function(k){ return '<li>⚠ '+hurtLabels[k]+'</li>'; }).join('');
 
   var overlayEl = $("gradeRevealOverlay");
   overlayEl.classList.add("show");
+  try{ __track('grade_viewed', {grade:letterClean, score:cats.overall.score}); }catch(e){}
+
   var cta = $("revealCta");
   cta.onclick = function(){
     try{ __track('signup_started', {location:'grade_reveal'}); }catch(e){}
@@ -8353,6 +8430,35 @@ function gradeNow(){
     showGradeReveal(v, cats, prevHistory);
   });
 }
+/* ================= DEEPER PROFILE (optional, post-grade) ================= */
+(function setupDeeperProfile(){
+  var toggle=$("revealDeeperToggle"), skip=$("revealDeeperSkip"), form=$("revealDeeperForm"), save=$("revealDeeperSave"), actions=$("revealDeeperActions");
+  if(!toggle) return;
+  toggle.addEventListener("click", function(){
+    try{ __track('deeper_profile_started', {}); }catch(e){}
+    form.classList.add("open");
+    actions.style.display = "none";
+    updateHints();
+  });
+  skip.addEventListener("click", function(){
+    var panel = $("revealDeeperProfile");
+    if(panel) panel.style.display = "none";
+  });
+  save.addEventListener("click", function(){
+    try{ __track('deeper_profile_completed', {}); }catch(e){}
+    var v=values(); var cats=categoryScores(v);
+    var prevHistory = getHistory();
+    var modalEl = document.getElementById("reportModal");
+    if(modalEl) modalEl.style.setProperty("display", "none", "important");
+    openReport(v,cats);
+    showGradeReveal(v, cats, prevHistory);
+    var panel = $("revealDeeperProfile");
+    if(panel) panel.style.display = "none";
+    var card = document.querySelector(".grade-reveal-card");
+    if(card) card.scrollTop = 0;
+  });
+})();
+
 function openCalcModal(location){
   __track('click_open_calculator',{location:location});
   __track('calculator_started',{location:location});
@@ -8369,7 +8475,7 @@ function openCalcModal(location){
   // desktop where there's no keyboard to trigger it.
   var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   if(!isTouchDevice){
-    setTimeout(function(){ var incomeEl=$("income"); if(incomeEl) incomeEl.focus({ preventScroll:true }); }, 350);
+    setTimeout(function(){ var ageEl=$("age"); if(ageEl) ageEl.focus({ preventScroll:true }); }, 350);
   }
 }
 function closeCalcModal(){
@@ -8384,7 +8490,20 @@ document.addEventListener("keydown", function(e){ if(e.key === "Escape" && $("ca
 
 $("gradeBtnHero").addEventListener("click", function(){ openCalcModal('hero'); });
 if($("gradeBtnFooterCta")) $("gradeBtnFooterCta").addEventListener("click", function(){ openCalcModal('footer_cta'); });
-$("gradeBtn").addEventListener("click", function(){ closeCalcModal(); gradeNow(); });
+$("gradeBtn").addEventListener("click", function(){
+  // One-time sync: copy the two quick-flow aggregate answers into the
+  // real scoring fields (cash, otherDebt) before the first grade
+  // computation. The deeper-profile "Recalculate" button calls
+  // gradeNow() directly and does NOT go through this handler, so a
+  // later manual edit to Cash/Other Debt in the deeper profile is
+  // never silently overwritten by this sync.
+  var qs=$("qSavingsTotal"), qd=$("qDebtTotal"), cashEl=$("cash"), otherDebtEl=$("otherDebt");
+  if(qs && cashEl) cashEl.value = qs.value || 0;
+  if(qd && otherDebtEl) otherDebtEl.value = qd.value || 0;
+  try{ __track('calculator_completed', {}); }catch(e){}
+  closeCalcModal();
+  gradeNow();
+});
 $("gradeBtnSticky").addEventListener("click", function(){ __track('click_get_report_card',{location:'sticky'}); openCalcModal('sticky'); });
 
 function randomDemo(){
@@ -8438,6 +8557,9 @@ $("demoBtn").addEventListener("click", function(){
 
 $("resetBtn").addEventListener("click", function(){
   ids.forEach(function(id){ if(els[id]) els[id].value = (id==="age") ? 30 : 0; });
+  var qs=$("qSavingsTotal"), qd=$("qDebtTotal");
+  if(qs) qs.value = 0;
+  if(qd) qd.value = 0;
   updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); __track('reset_inputs');
   if(window.__stepperReset) window.__stepperReset();
 });
