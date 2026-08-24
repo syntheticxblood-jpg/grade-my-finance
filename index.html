@@ -3394,9 +3394,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     </div>
 
     <div class="license-key-section pro-only-hide">
-      <button type="button" id="licenseKeyToggleBtn" class="license-key-link">Already purchased? Activate your license key</button>
+      <button type="button" id="licenseKeyToggleBtn" class="license-key-link">Have a promo code or license key? Activate it here</button>
       <div class="license-row" id="licenseRowWrap" style="display:none">
-        <input type="text" id="licenseInput" placeholder="Paste your license key" aria-label="Pro license key">
+        <input type="text" id="licenseInput" placeholder="Paste your promo code or license key" aria-label="Promo code or Pro license key">
         <button class="btn sm" id="licenseSubmit" type="button">Activate</button>
       </div>
       <div class="license-status" id="licenseStatus"></div>
@@ -8892,6 +8892,27 @@ if(licenseSubmit){
       });
   });
 }
+
+// Auto-activate from a personalized link, e.g.
+// https://grademyfinance.com/?code=GMF-XXXX-XXXX#pricing — lets you text
+// or email a specific free code straight to someone with nothing for
+// them to type or hunt for. Expands the license box, fills it in, and
+// clicks Activate for them (goes through the exact same verification
+// path as manual entry, so this doesn't bypass any of it).
+(function autoActivateFromCodeParam(){
+  try{
+    var params = new URLSearchParams(location.search);
+    var code = params.get("code");
+    if(!code) return;
+    var clean = location.origin + location.pathname + location.hash;
+    history.replaceState(null, "", clean);
+    var toggle = $("licenseKeyToggleBtn"), row = $("licenseRowWrap");
+    if(row) row.style.display = "flex";
+    if(toggle) toggle.style.display = "none";
+    if(licenseInput) licenseInput.value = code;
+    if(licenseSubmit) setTimeout(function(){ licenseSubmit.click(); }, 50);
+  }catch(e){}
+})();
 
 ['gradeBtnPricingFree','upgradeBtnTop','upgradeBtnPricingMonthly','upgradeBtnPricingYearly'].forEach(function(id){
   var b=$(id); if(b && id==='gradeBtnPricingFree') b.addEventListener('click', function(){ openCalcModal('pricing'); });
