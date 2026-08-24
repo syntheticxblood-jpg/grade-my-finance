@@ -3819,22 +3819,19 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= SCORE HISTORY ================= -->
     <div class="dash-tab-panel" id="panel-score">
-      <div class="ret-hero">
+      <div class="gmf-hero">
         <div>
-          <span class="ret-kicker">GRADE REPORT</span>
-          <h2>Watch your grade <span>climb over time.</span></h2>
-          <p>Every check-in adds a new data point — your score, your subjects, and how far you've come.</p>
+          <span class="gmf-hero-kicker">Grade Report</span>
+          <div class="gmf-hero-value" id="scHeroVal">—</div>
+          <div class="gmf-hero-trend" id="scHeroSub">—</div>
         </div>
-        <div class="ret-hero-badge"><b id="scHeroBadgeVal">—</b><span id="scHeroBadgeSub">Current grade</span></div>
       </div>
+      <span id="scHeroBadgeVal" style="display:none"></span>
+      <span id="scHeroBadgeSub" style="display:none"></span>
 
-      <div class="ret-chart-card" style="margin-top:16px">
-        <div class="ret-chart-head">
-          <div>
-            <span class="section-label" style="margin:0">Grade trend</span>
-            <h3>Grade history</h3>
-            <div style="margin-top:4px"><span class="hv mono" id="scHeroVal" style="font-size:20px">—</span> <span class="hv-sub" id="scHeroSub">—</span></div>
-          </div>
+      <div class="gmf-chart-panel">
+        <div class="gmf-chart-panel-head">
+          <div><h3>Grade history</h3><div class="sub">Every check-in, plotted over time.</div></div>
           <div class="chart-time-filters" id="scoreTimeFilters">
             <button type="button" data-range="7">7D</button><button type="button" data-range="30">30D</button><button type="button" data-range="90">3M</button>
             <button type="button" data-range="180">6M</button><button type="button" data-range="365">1Y</button><button type="button" data-range="all" class="active">ALL</button>
@@ -3845,9 +3842,10 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
       <div class="stats-grid" id="scoreStatsGrid"></div>
 
-      <div class="ret-chart-card" style="margin-top:16px">
-        <span class="section-label" style="margin:0">Subject grades</span>
-        <p class="section-sub" style="margin-top:4px">The five factors behind your overall grade, graded individually — same as a real report card.</p>
+      <div class="gmf-chart-panel">
+        <div class="gmf-chart-panel-head">
+          <div><h3>Subject grades</h3><div class="sub">The five factors behind your overall grade, graded individually — same as a real report card.</div></div>
+        </div>
         <div class="subject-grades-grid" id="subjectGradesGrid"></div>
       </div>
 
@@ -4011,8 +4009,14 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="money-subview" data-moneypanel="accounts">
         <div class="pro-blur-section">
         <div class="pro-blur-content">
-        <span class="section-label">Your accounts</span>
-        <p class="section-sub">Track net worth by individual account instead of one lump number per category — then sync the totals into your Net Worth chart.</p>
+
+        <div class="gmf-hero">
+          <div>
+            <span class="gmf-hero-kicker">Accounts</span>
+            <div class="gmf-hero-value" id="acctHeroVal">—</div>
+            <div class="gmf-hero-trend" id="acctHeroSub">Net worth across every account you've added here.</div>
+          </div>
+        </div>
 
         <div class="acct-sync-bar" id="acctSyncBar">
           <div class="acct-sync-note" id="acctSyncNote">Add an account below to get started.</div>
@@ -4049,12 +4053,12 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
           </div>
         </div>
 
+        <div class="stress-outcomes-row" id="acctOutcomesRow" style="margin-top:16px"></div>
+
         <div class="card" style="margin-top:16px">
           <span class="section-label">Totals by category</span>
           <div id="acctCatBars" style="margin-top:14px"></div>
         </div>
-
-        <div class="stress-outcomes-row" id="acctOutcomesRow" style="margin-top:16px"></div>
 
         <div id="acctListWrap" style="margin-top:16px"></div>
         <div id="acctEmptyNote" class="empty-note" style="display:none">No accounts added yet — add your first one above.</div>
@@ -4072,6 +4076,15 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div id="moneyFlowContent">
           <div class="pro-blur-section">
           <div class="pro-blur-content">
+
+          <div class="gmf-hero">
+            <div>
+              <span class="gmf-hero-kicker">Money Flow</span>
+              <div class="gmf-hero-value" id="flowHeroVal">—</div>
+              <div class="gmf-hero-trend" id="flowHeroSub">Net income per year — what's left after expenses.</div>
+            </div>
+          </div>
+
           <div class="flow-tabs" id="flowTabs">
             <button class="flow-tab active" data-view="flowAssets" type="button">Assets Flow</button>
             <button class="flow-tab" data-view="flowLiabs" type="button">Liabilities Flow</button>
@@ -4122,6 +4135,13 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
           <div class="pro-blur-content">
           <span class="section-label">Bills &amp; subscriptions</span>
           <p class="small" style="margin:6px 0 16px">Add your recurring bills and subscriptions to see the real total, and how much of your monthly expenses they actually make up. Saved on this device.</p>
+          <div class="gmf-hero" style="border-bottom:none;padding-bottom:6px;margin-bottom:10px">
+            <div>
+              <span class="gmf-hero-kicker">Bills</span>
+              <div class="gmf-hero-value" id="billsHeroVal">—</div>
+              <div class="gmf-hero-trend" id="billsHeroSub">Total recurring bills per month.</div>
+            </div>
+          </div>
           <div class="stress-outcomes-row" id="billsOutcomesRow"></div>
           <div class="stress-builder-grid" style="margin-top:20px">
             <div class="stress-builder-col"><label class="stress-builder-label" for="billName">Name</label><input type="text" id="billName" placeholder="e.g. Mortgage" maxlength="40" style="padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px"></div>
@@ -4148,6 +4168,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
           <div class="pro-blur-section" style="min-height:360px">
           <div class="pro-blur-content">
           <div class="card">
+            <span class="gmf-hero-kicker" style="display:block">Credit</span>
             <span class="section-label">Credit utilization</span>
             <p class="small" style="margin:6px 0 18px">We don't have access to your real credit score (no credit bureau connects here) — but utilization, the amount you owe versus your available credit, is the one factor you can see and act on directly. It's also the single biggest lever you actually control, at 30% of a real FICO score.</p>
             <div class="stress-score-block" style="padding:16px 0 8px">
@@ -4193,6 +4214,13 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
           <div class="pro-blur-section" style="min-height:400px">
           <div class="pro-blur-content">
           <div class="card">
+            <div class="gmf-hero" style="border-bottom:none;padding-bottom:6px;margin-bottom:6px">
+              <div>
+                <span class="gmf-hero-kicker">Allocation</span>
+                <div class="gmf-hero-value" id="allocHeroVal">—</div>
+                <div class="gmf-hero-trend" id="allocHeroSub">Investable assets — retirement, brokerage, and crypto.</div>
+              </div>
+            </div>
             <span class="section-label">Your asset mix</span>
             <p class="small" style="margin:6px 0 16px">Where your money actually sits right now — computed directly from what you entered, no assumptions needed for this part.</p>
             <div class="stress-outcomes-row" id="allocMixRow"></div>
@@ -4229,13 +4257,20 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="money-subview" data-moneypanel="budget">
         <div class="pro-blur-section" style="min-height:420px">
         <div class="pro-blur-content">
-        <span class="section-label">Budget & spending</span>
-        <p class="section-sub">Set a monthly limit per category, log expenses as they happen, and see exactly where you stand.</p>
 
-        <div class="budget-month-nav">
-          <button type="button" id="budgetPrevMonth" aria-label="Previous month">‹</button>
-          <div class="budget-month-label" id="budgetMonthLabel">—</div>
-          <button type="button" id="budgetNextMonth" aria-label="Next month">›</button>
+        <div class="gmf-hero">
+          <div>
+            <span class="gmf-hero-kicker">Budget</span>
+            <div class="gmf-hero-value" id="budgetHeroVal">—</div>
+            <div class="gmf-hero-trend" id="budgetHeroSub">Remaining this month.</div>
+          </div>
+          <div class="gmf-hero-meta">
+            <div class="budget-month-nav">
+              <button type="button" id="budgetPrevMonth" aria-label="Previous month">‹</button>
+              <div class="budget-month-label" id="budgetMonthLabel">—</div>
+              <button type="button" id="budgetNextMonth" aria-label="Next month">›</button>
+            </div>
+          </div>
         </div>
 
         <div class="stress-outcomes-row" id="budgetOutcomesRow"></div>
@@ -5206,6 +5241,12 @@ function renderAccountsTracker(){
     var accounts = getAccounts();
     var totals = acctTotals(accounts);
 
+    var heroVal = $("acctHeroVal"), heroSub = $("acctHeroSub");
+    if(heroVal) heroVal.textContent = money(totals.net);
+    if(heroSub) heroSub.textContent = accounts.length
+      ? accounts.length+' account'+(accounts.length===1?'':'s')+' tracked · net worth across everything added here.'
+      : 'Net worth across every account you\'ve added here.';
+
     var maxVal = 0;
     Object.keys(ACCT_CATS).forEach(function(k){ maxVal = Math.max(maxVal, Math.abs(totals.byCat[k])); });
     var catRows = Object.keys(ACCT_CATS).filter(function(k){ return totals.byCat[k] !== 0; });
@@ -5220,8 +5261,7 @@ function renderAccountsTracker(){
 
     outcomesEl.innerHTML = [
       {label:'Total assets', val:money(totals.assets)},
-      {label:'Total debts', val:money(totals.debts), cls: totals.debts>0?'bad':''},
-      {label:'Net worth (from accounts)', val:money(totals.net)}
+      {label:'Total debts', val:money(totals.debts), cls: totals.debts>0?'bad':''}
     ].map(function(o){ return '<div class="stress-outcome-card"><div class="stress-outcome-num '+(o.cls||'')+'">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>'; }).join('');
 
     if(!accounts.length){
@@ -5375,10 +5415,17 @@ function renderBudgetTracker(){
     var totalLimit = cats.reduce(function(s,c){ return s+(Number(c.limit)||0); }, 0);
     var totalSpent = txs.reduce(function(s,t){ return s+(Number(t.amount)||0); }, 0);
     var remaining = totalLimit - totalSpent;
+    var heroEl=$("budgetHeroVal"), heroSubEl=$("budgetHeroSub");
+    if(heroEl) heroEl.textContent = money(Math.abs(remaining));
+    if(heroSubEl){
+      heroSubEl.className = 'gmf-hero-trend '+(remaining<0?'down':'up');
+      heroSubEl.innerHTML = remaining<0
+        ? '<b>Over budget</b> this month'
+        : (totalLimit>0 ? '<b>Remaining</b> of '+money(totalLimit)+' budgeted' : 'Add budget categories to track spending');
+    }
     outcomesEl.innerHTML = [
       {label:'Budgeted', val: money(totalLimit)},
-      {label:'Spent', val: money(totalSpent)},
-      {label: remaining<0 ? 'Over budget' : 'Remaining', val: money(Math.abs(remaining)), cls: remaining<0 ? 'bad' : ''}
+      {label:'Spent', val: money(totalSpent)}
     ].map(function(o){ return '<div class="stress-outcome-card"><div class="stress-outcome-num '+(o.cls||'')+'">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>'; }).join('');
 
     if(!cats.length){
@@ -5732,9 +5779,15 @@ function renderNetWorthTrendTab(v){
 }
 function renderFlowSummaryCards(v){
   var incomeEl = $("flowSumIncome"), expensesEl = $("flowSumExpenses"), netEl = $("flowSumNet");
-  if(!incomeEl) return;
+  var heroEl = $("flowHeroVal"), heroSubEl = $("flowHeroSub");
   var annualExpenses = v.expenses * 12;
   var netAnnual = v.annualIncome - annualExpenses;
+  if(heroEl) heroEl.textContent = (netAnnual>=0?'+':'-')+money(Math.abs(netAnnual));
+  if(heroSubEl){
+    heroSubEl.className = 'gmf-hero-trend '+(netAnnual>=0?'up':'down');
+    heroSubEl.innerHTML = money(v.annualIncome)+' income − '+money(annualExpenses)+' expenses, per year';
+  }
+  if(!incomeEl) return;
   incomeEl.textContent = money(v.annualIncome);
   expensesEl.textContent = money(annualExpenses);
   netEl.textContent = (netAnnual >= 0 ? '+' : '') + money(netAnnual);
@@ -5766,7 +5819,12 @@ function renderBillsTracker(v){
     saveBills(bills); bills.sort(function(a,b){return(a.day||99)-(b.day||99);});
     var total=bills.reduce(function(sum,b){return sum+(b.amount||0)},0);
     var debtPayments=bills.filter(function(b){return b.type!=='other';}).reduce(function(sum,b){return sum+(b.amount||0)},0);
-    outcomesEl.innerHTML=[{label:'Bills tracked',val:String(bills.length)},{label:'Total monthly',val:money(total)},{label:'Debt payments linked',val:money(debtPayments)+'/mo'}].map(function(o){return '<div class="stress-outcome-card"><div class="stress-outcome-num">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';}).join('');
+    var heroEl=$("billsHeroVal"), heroSubEl=$("billsHeroSub");
+    if(heroEl) heroEl.textContent = money(total);
+    if(heroSubEl) heroSubEl.textContent = bills.length
+      ? bills.length+' bill'+(bills.length===1?'':'s')+' tracked'+(v && v.expenses>0 ? ' · '+Math.round((total/v.expenses)*100)+'% of your monthly expenses' : '')
+      : 'Add your recurring bills to see the real total.';
+    outcomesEl.innerHTML=[{label:'Bills tracked',val:String(bills.length)},{label:'Debt payments linked',val:money(debtPayments)+'/mo'}].map(function(o){return '<div class="stress-outcome-card"><div class="stress-outcome-num">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';}).join('');
     if(!bills.length){listEl.innerHTML='';if(emptyEl)emptyEl.style.display='block';return;}
     if(emptyEl)emptyEl.style.display='none';
     var typeOptions=[['other','Other / recurring bill'],['mortgage','Mortgage'],['student','Student loan'],['auto','Auto loan'],['cc','Credit card'],['otherDebt','Personal / other debt']];
@@ -5783,10 +5841,14 @@ function renderAssetAllocation(v){
   if(!stockPctEl) return;
   var investable = Math.max(0, v.retire) + Math.max(0, v.brokerage) + Math.max(0, v.crypto);
   var cryptoPct = investable > 0 ? (Math.max(0,v.crypto)/investable)*100 : 0;
+  var heroEl=$("allocHeroVal"), heroSubEl=$("allocHeroSub");
+  if(heroEl) heroEl.textContent = money(investable);
+  if(heroSubEl) heroSubEl.textContent = investable>0
+    ? 'Retirement, brokerage, and crypto — '+Math.round(cryptoPct)+'% of it in crypto.'
+    : 'Investable assets — retirement, brokerage, and crypto.';
   $("allocMixRow").innerHTML = [
     { label:'Liquid cash', val: money(v.cash) },
-    { label:'Investable assets', val: money(investable) },
-    { label:'Crypto exposure', val: Math.round(cryptoPct)+'% of that', cls: cryptoPct>=20 ? 'bad' : '' }
+    { label:'Crypto exposure', val: Math.round(cryptoPct)+'% of investable', cls: cryptoPct>=20 ? 'bad' : '' }
   ].map(function(o){
     return '<div class="stress-outcome-card"><div class="stress-outcome-num '+(o.cls||'')+'">'+o.val+'</div><div class="stress-outcome-label">'+o.label+'</div></div>';
   }).join('');
