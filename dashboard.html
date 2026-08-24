@@ -1847,42 +1847,133 @@ body{
     radial-gradient(circle at 55% 10%,rgba(244,215,127,.18),transparent 35%) !important;
 }
 
-/* Strong fixed-color content bands */
-#panel-overview{
-  background:transparent !important;
-}
-#panel-score{
-  background:#dce9e4 !important;
-  border-radius:22px;
-  padding:18px !important;
-}
-#panel-networth{
-  background:#e3e9f4 !important;
-  border-radius:22px;
-  padding:18px !important;
-}
-#panel-goals{
-  background:#f2e1ad !important;
-  border-radius:22px;
-  padding:18px !important;
-}
-#panel-scenarios{
-  background:#e5dcf2 !important;
-  border-radius:22px;
-  padding:18px !important;
-}
-#panel-achievements{
-  background:#d9ece5 !important;
-  border-radius:22px;
-  padding:18px !important;
-}
+/* Unified design system: panels no longer sit inside solid-color
+   bands. Content flows on the page background, and cards/hero
+   sections earn their own elevation intentionally instead of every
+   page getting a different colored box. */
+#panel-overview,
+#panel-score,
+#panel-networth,
+#panel-goals,
+#panel-scenarios,
+#panel-achievements,
 #panel-retirement{
-  background:#dce4f2 !important;
-  border-radius:22px;
-  padding:18px !important;
+  background:transparent !important;
+  border-radius:0;
+  padding:0 !important;
 }
 
-/* Overview top cards */
+/* ==================================================================
+   GMF DESIGN SYSTEM — shared hero / insight / timeline components
+   Used across Net Worth, Goals, and (progressively) the rest of the
+   dashboard so every page reads as one product instead of a set of
+   differently-styled screens.
+   ================================================================== */
+
+/* Hero insight: the one dominant number a page leads with. */
+.gmf-hero{
+  display:flex; align-items:flex-end; justify-content:space-between; gap:20px;
+  flex-wrap:wrap; padding:4px 2px 24px; margin-bottom:22px; border-bottom:1px solid var(--line);
+}
+.gmf-hero-kicker{
+  font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--brand-bright); margin-bottom:8px; display:block;
+}
+.gmf-hero-value{
+  font-family:var(--font-display); font-weight:700; letter-spacing:-.02em; color:var(--text);
+  font-size:clamp(34px,5vw,52px); line-height:1.05; margin:0;
+}
+.gmf-hero-trend{ font-size:14px; font-weight:600; color:var(--muted); margin-top:8px }
+.gmf-hero-trend b{ font-weight:800 }
+.gmf-hero-trend.up b{ color:var(--good) }
+.gmf-hero-trend.down b{ color:var(--bad) }
+.gmf-hero-meta{ display:flex; flex-direction:column; align-items:flex-end; gap:10px; text-align:right }
+.gmf-hero-meta .updated{ font-size:11.5px; color:var(--muted-2) }
+@media (max-width:640px){
+  .gmf-hero{ align-items:flex-start; flex-direction:column; gap:14px }
+  .gmf-hero-meta{ align-items:flex-start; text-align:left; width:100% }
+}
+
+/* Compact supporting-insight row: a small number of clean stats that
+   support the hero without competing with it. */
+.gmf-insight-row{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+  margin-bottom:26px; border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; background:var(--surface);
+}
+.gmf-insight-cell{ padding:16px 18px; border-right:1px solid var(--line) }
+.gmf-insight-cell:last-child{ border-right:none }
+.gmf-insight-cell .il-label{
+  font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted-2); display:block; margin-bottom:6px;
+}
+.gmf-insight-cell .il-value{ font-family:var(--font-mono); font-weight:700; font-size:21px; color:var(--text) }
+.gmf-insight-cell .il-sub{ font-size:11.5px; color:var(--muted); margin-top:4px }
+.gmf-insight-cell .il-sub.up{ color:var(--good) }
+.gmf-insight-cell .il-sub.down{ color:var(--bad) }
+@media (max-width:640px){
+  .gmf-insight-row{ grid-template-columns:1fr }
+  .gmf-insight-cell{ border-right:none; border-bottom:1px solid var(--line) }
+  .gmf-insight-cell:last-child{ border-bottom:none }
+}
+
+/* Chart panel: minimal chrome so the visualization itself is the
+   dominant element, not the box around it. */
+.gmf-chart-panel{ margin-bottom:22px }
+.gmf-chart-panel-head{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px;
+}
+.gmf-chart-panel-head h3{ font-family:var(--font-display); font-size:16px; font-weight:700; margin:0 0 3px; color:var(--text) }
+.gmf-chart-panel-head .sub{ font-size:12px; color:var(--muted) }
+.gmf-chart-panel .chart-wrap{ border:none; padding:0 }
+
+/* Compact activity/timeline list — replaces repeated identical cards
+   for every history entry with a scannable, low-chrome row list. */
+.gmf-timeline{ display:flex; flex-direction:column }
+.gmf-timeline-row{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:13px 2px; border-bottom:1px solid var(--line);
+}
+.gmf-timeline-row:last-child{ border-bottom:none }
+.gmf-timeline-date{ font-size:12px; color:var(--muted-2); min-width:110px }
+.gmf-timeline-val{ font-family:var(--font-mono); font-weight:700; font-size:14px; color:var(--text); flex:1 }
+.gmf-timeline-row .btn{ flex:none }
+@media (max-width:560px){
+  .gmf-timeline-row{ flex-wrap:wrap }
+  .gmf-timeline-date{ min-width:0 }
+}
+
+/* Section heading used for sub-blocks within a page (History, Manage
+   updates, etc.) — quieter than the page hero, still clearly a heading. */
+.gmf-subhead{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap:wrap }
+.gmf-subhead h3{ font-family:var(--font-display); font-size:15px; font-weight:700; margin:0; color:var(--text) }
+.gmf-subhead .sub{ font-size:12px; color:var(--muted); margin-top:2px }
+
+/* Goal cards: status-aware treatment so complete / almost-there /
+   in-progress goals don't all look identical. */
+.gmf-goals-hero{ margin-bottom:24px }
+.gmf-goals-hero-value{ font-family:var(--font-display); font-weight:700; font-size:clamp(28px,4vw,38px); letter-spacing:-.02em; margin:6px 0 8px }
+.gmf-goals-hero-sub{ font-size:13.5px; color:var(--muted); margin-bottom:12px }
+.gmf-goals-status-row{ display:flex; gap:18px; flex-wrap:wrap; font-size:13px; color:var(--muted) }
+.gmf-goals-status-row b{ color:var(--text); font-weight:700 }
+.gmf-goals-status-row .dot{ display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:7px; vertical-align:middle }
+.gmf-goals-status-row .dot.complete{ background:var(--good) }
+.gmf-goals-status-row .dot.close{ background:var(--gold-bright) }
+.gmf-goals-status-row .dot.progress{ background:var(--muted-2) }
+
+.goal-card{ position:relative; transition:box-shadow .2s ease, transform .2s ease }
+.goal-card.status-complete{ border-color:rgba(34,197,94,.35); background:linear-gradient(180deg,var(--good-soft),var(--surface) 60%) }
+.goal-card.status-complete .g-type{ color:var(--good-2) !important }
+.goal-card.status-close{ border-color:rgba(245,185,66,.45); box-shadow:0 0 0 1px rgba(245,185,66,.12) }
+.goal-card.status-close .g-type{ color:var(--gold) !important }
+.gmf-goal-badge{
+  display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; margin-top:10px;
+}
+.gmf-goal-badge.complete{ color:var(--good-2) }
+.gmf-goal-badge.close{ color:var(--gold) }
+.gmf-add-goal-toggle{ margin-bottom:16px }
+.gmf-add-goal-form{ overflow:hidden; max-height:0; transition:max-height .3s ease }
+.gmf-add-goal-form.open{ max-height:220px }
+
+
 #panel-overview > .metrics-row:first-child .grade-ring-card{
   background:#d5eee5 !important;
   border-color:#b5dacc !important;
@@ -1988,12 +2079,11 @@ body{
   padding:12px !important;
 }
 
-/* Mobile: turn colored panels into full-width sections without horizontal overflow */
+/* Mobile: panels are transparent full-width sections, no padding banding needed */
 @media (max-width:900px){
   #panel-score,#panel-networth,#panel-goals,#panel-scenarios,
   #panel-achievements,#panel-retirement{
-    border-radius:16px;
-    padding:12px !important;
+    padding:0;
   }
 }
 @media (max-width:600px){
@@ -2003,8 +2093,7 @@ body{
   }
   #panel-score,#panel-networth,#panel-goals,#panel-scenarios,
   #panel-achievements,#panel-retirement{
-    padding:9px !important;
-    border-radius:14px;
+    padding:0;
   }
 }
 
@@ -3822,19 +3911,36 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="pro-blur-section">
       <div class="pro-blur-content">
 
-      <div class="ret-hero" style="margin-bottom:16px">
+      <div class="gmf-hero">
         <div>
-          <span class="ret-kicker">NET WORTH</span>
-          <h2>Every dollar, <span>one line.</span></h2>
-          <p>Log an update anytime — assets, debts, and the trend that ties them together.</p>
+          <span class="gmf-hero-kicker">Net Worth</span>
+          <div class="gmf-hero-value" id="nwHeroVal">—</div>
+          <div class="gmf-hero-trend" id="nwHeroSub">—</div>
         </div>
-        <div class="ret-hero-badge"><b id="nwHeroVal">—</b><span>Net worth</span></div>
+        <div class="gmf-hero-meta">
+          <button class="btn gold sm" id="nwUpdateToggle" type="button">+ Add update</button>
+        </div>
+      </div>
+
+      <div class="gmf-insight-row" id="nwInsightRow">
+        <div class="gmf-insight-cell">
+          <span class="il-label">Assets</span>
+          <div class="il-value mono" id="nwAssetsVal">—</div>
+        </div>
+        <div class="gmf-insight-cell">
+          <span class="il-label">Debt</span>
+          <div class="il-value mono" id="nwDebtVal">—</div>
+        </div>
+        <div class="gmf-insight-cell">
+          <span class="il-label">Biggest Change</span>
+          <div class="il-value mono" id="nwBiggestChangeVal">—</div>
+          <div class="il-sub" id="nwBiggestChangeSub"></div>
+        </div>
       </div>
 
       <div class="ret-input-card" id="nwUpdateCard">
         <div class="ret-card-title">
           <div><span class="section-label" style="margin:0">Log a net worth update</span><h3 style="font-size:16px">Keep your trend current</h3></div>
-          <button class="btn sm" id="nwUpdateToggle" type="button">+ Add update</button>
         </div>
         <div id="nwUpdateForm" class="nw-update-form" style="display:none">
           <p class="section-sub" style="margin:2px 0 14px">Enter what's changed. Anything left blank keeps its last known value.</p>
@@ -3865,21 +3971,22 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         </div>
       </div>
 
-      <div class="ret-chart-card" style="margin-top:16px">
-        <div class="ret-chart-head">
-          <div><span class="section-label" style="margin:0">Your trend</span><h3>Net worth over time</h3><div class="hv-sub" id="nwHeroSub" style="margin-top:4px">—</div></div>
+      <div class="gmf-chart-panel">
+        <div class="gmf-chart-panel-head">
+          <div><h3>Net worth over time</h3><div class="sub">Every check-in and quick update, plotted together.</div></div>
           <div class="chart-time-filters" id="nwTimeFilters">
             <button type="button" data-range="30">1M</button><button type="button" data-range="90">3M</button><button type="button" data-range="180">6M</button>
             <button type="button" data-range="365">1Y</button><button type="button" data-range="all" class="active">ALL</button>
           </div>
         </div>
-        <div class="chart-wrap"><svg id="nwChart" width="100%" height="220" viewBox="0 0 900 220" preserveAspectRatio="none"></svg><div class="chart-tooltip" id="nwTooltip"></div></div>
+        <div class="chart-wrap"><svg id="nwChart" width="100%" height="240" viewBox="0 0 900 240" preserveAspectRatio="none"></svg><div class="chart-tooltip" id="nwTooltip"></div></div>
       </div>
-      <div class="nw-breakdown" id="nwBreakdown"></div>
+      <div class="nw-breakdown" id="nwBreakdown" style="display:none"></div>
 
-      <div class="ret-chart-card" style="margin-top:16px">
-        <span class="section-label">Net worth vs. debt</span>
-        <p class="section-sub" style="margin-top:4px" id="compositionSub">—</p>
+      <div class="gmf-chart-panel">
+        <div class="gmf-chart-panel-head">
+          <div><h3>Net worth vs. debt</h3><div class="sub" id="compositionSub">—</div></div>
+        </div>
         <div class="chart-wrap"><svg id="compositionChart" width="100%" height="140" viewBox="0 0 600 140" preserveAspectRatio="none"></svg></div>
         <div class="composition-legend">
           <span><span class="swatch" style="background:var(--brand-bright)"></span>Net worth</span>
@@ -3887,16 +3994,11 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         </div>
       </div>
 
-      <div class="card">
-        <div class="nw-update-header">
-          <div>
-            <span class="section-label" style="margin:0">Manage net worth updates</span>
-            <p class="section-sub" style="margin-top:4px;margin-bottom:0">Remove a single update or clear every quick net-worth update saved from this dashboard.</p>
-          </div>
-          <button class="btn sm danger-outline" id="nwDeleteAll" type="button">Delete all updates</button>
-        </div>
-        <div id="nwEntriesList" style="margin-top:14px"></div>
+      <div class="gmf-subhead" style="margin-top:8px">
+        <div><h3>Update history</h3><div class="sub">Remove a single update, or clear everything saved from this dashboard.</div></div>
+        <button class="btn sm danger-outline" id="nwDeleteAll" type="button">Delete all updates</button>
       </div>
+      <div id="nwEntriesList" class="gmf-timeline"></div>
       </div>
       <div class="pro-blur-overlay">
         <div class="pro-blur-title">🔒 Track your net worth over time</div>
@@ -4183,14 +4285,23 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= GOALS ================= -->
     <div class="dash-tab-panel" id="panel-goals">
-      <span class="section-label">Your goals</span>
-      <p class="section-sub">Turn your financial plans into measurable progress.</p>
+      <div class="gmf-goals-hero">
+        <span class="gmf-hero-kicker">Goals</span>
+        <div class="gmf-goals-hero-value" id="goalsHeroHeadline">Set your first goal</div>
+        <div class="gmf-goals-hero-sub" id="goalsHeroSub">Pick a small number of measurable outcomes to track.</div>
+        <div class="gmf-goals-status-row" id="goalsStatusRow" style="display:none"></div>
+      </div>
       <div class="pro-blur-section">
       <div class="pro-blur-content">
-      <div class="goal-form">
-        <div><label for="goalType">Goal type</label><select id="goalType"><option value="score">Overall score</option><option value="networth">Net worth</option><option value="cashrunway">Emergency fund (months)</option></select></div>
-        <div><label for="goalTarget">Target</label><input id="goalTarget" type="number" min="0" placeholder="e.g. 90"></div>
-        <button class="btn gold" id="addGoalBtn" type="button">Add goal</button>
+      <div class="gmf-add-goal-toggle">
+        <button class="btn gold sm" id="addGoalToggle" type="button">+ Add Goal</button>
+      </div>
+      <div class="gmf-add-goal-form" id="addGoalFormWrap">
+        <div class="goal-form">
+          <div><label for="goalType">Goal type</label><select id="goalType"><option value="score">Overall score</option><option value="networth">Net worth</option><option value="cashrunway">Emergency fund (months)</option></select></div>
+          <div><label for="goalTarget">Target</label><input id="goalTarget" type="number" min="0" placeholder="e.g. 90"></div>
+          <button class="btn gold" id="addGoalBtn" type="button">Add goal</button>
+        </div>
       </div>
       <div class="goals-grid" id="goalsGrid"></div>
       </div>
@@ -9585,9 +9696,14 @@ function renderNetWorthTab(hist){
   hist=hist||[];
   var withNet=hist.filter(function(h){return typeof h.net==='number' && isFinite(h.net);});
   var heroVal=$("nwHeroVal"),heroSub=$("nwHeroSub"),chart=$("nwChart"),breakdown=$("nwBreakdown");
+  var assetsEl=$("nwAssetsVal"),debtEl=$("nwDebtVal"),bigEl=$("nwBiggestChangeVal"),bigSubEl=$("nwBiggestChangeSub");
   if(!withNet.length){
     if(heroVal) heroVal.textContent='Start tracking';
     if(heroSub) heroSub.textContent='Add your first update to build your personal net worth trend.';
+    if(assetsEl) assetsEl.textContent='—';
+    if(debtEl) debtEl.textContent='—';
+    if(bigEl) bigEl.textContent='—';
+    if(bigSubEl){ bigSubEl.className='il-sub'; bigSubEl.textContent='Add a couple updates to see this'; }
     renderColorfulNetWorthChart(chart,$("nwTooltip"),[]);
     if(breakdown) breakdown.innerHTML='<div class="nw-cell"><div class="n-label">NEXT STEP</div><div class="n-val" style="font-size:18px">Add your numbers</div><div class="n-delta up">Your colorful trend will appear here</div></div><div class="nw-cell"><div class="n-label">WHAT YOU\'LL SEE</div><div class="n-val" style="font-size:18px">Growth over time</div><div class="n-delta up">Track every update and milestone</div></div>';
     renderNwEntriesList(withNet); return;
@@ -9595,8 +9711,34 @@ function renderNetWorthTab(hist){
   var latest=withNet[withNet.length-1];
   if(heroVal) heroVal.textContent=money(latest.net);
   if(heroSub){
-    if(withNet.length>=2){var change=latest.net-withNet[0].net,pct=withNet[0].net!==0?(change/Math.abs(withNet[0].net))*100:null;heroSub.innerHTML='<span style="color:'+(change>=0?'#10b981':'#ef4444')+';font-weight:800">'+(change>=0?'↑ ':'↓ ')+money(Math.abs(change))+'</span>'+(pct!==null?' · '+(change>=0?'+':'')+pct.toFixed(1)+'%':'')+' since first tracked';}
-    else heroSub.textContent='First data point saved — add another update to reveal your trend.';
+    if(withNet.length>=2){
+      var change=latest.net-withNet[0].net;
+      heroSub.className='gmf-hero-trend '+(change>=0?'up':'down');
+      heroSub.innerHTML='<b>'+(change>=0?'+':'-')+money(Math.abs(change))+'</b> since you started tracking';
+    } else {
+      heroSub.className='gmf-hero-trend';
+      heroSub.textContent='First data point saved — add another update to reveal your trend.';
+    }
+  }
+  // Assets / Debt / Biggest Change — the compact supporting-insight row
+  // beneath the hero. All three derive from fields already stored on
+  // every check-in (net + totalDebt), no new data collection needed.
+  var totalDebt = typeof latest.totalDebt === 'number' ? latest.totalDebt : null;
+  if(assetsEl) assetsEl.textContent = totalDebt!==null ? money(latest.net + totalDebt) : '—';
+  if(debtEl) debtEl.textContent = totalDebt!==null ? money(totalDebt) : '—';
+  if(bigEl || bigSubEl){
+    if(withNet.length>=2){
+      var biggest=null;
+      for(var i=1;i<withNet.length;i++){
+        var d=withNet[i].net-withNet[i-1].net;
+        if(!biggest || Math.abs(d)>Math.abs(biggest.diff)) biggest={diff:d,ts:withNet[i].ts};
+      }
+      if(bigEl) bigEl.textContent=(biggest.diff>=0?'+':'-')+money(Math.abs(biggest.diff));
+      if(bigSubEl){ bigSubEl.className='il-sub '+(biggest.diff>=0?'up':'down'); bigSubEl.textContent=formatDateFull(biggest.ts); }
+    } else {
+      if(bigEl) bigEl.textContent='—';
+      if(bigSubEl){ bigSubEl.className='il-sub'; bigSubEl.textContent='Add another update to see this'; }
+    }
   }
   var filtered=filterByRange(withNet,nwRange,'ts');
   if(!filtered.length && withNet.length) filtered=[latest];
@@ -9660,15 +9802,11 @@ function renderNwEntriesList(withNet){
   el2.innerHTML = "";
   rows.forEach(function(entry){
     var row = document.createElement("div");
-    row.className = "scenario-card";
+    row.className = "gmf-timeline-row";
     row.innerHTML =
-      '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">' +
-        '<div>' +
-          '<div class="sc-date">' + formatDateFull(entry.ts) + '</div>' +
-          '<div class="sc-cell-val mono" style="margin-top:2px">Net worth: ' + money(entry.net) + '</div>' +
-        '</div>' +
-        '<button class="btn sm" data-del-nw-entry="' + entry.ts + '" type="button">Delete</button>' +
-      '</div>';
+      '<span class="gmf-timeline-date">' + formatDateFull(entry.ts) + '</span>' +
+      '<span class="gmf-timeline-val mono">' + money(entry.net) + '</span>' +
+      '<button class="btn sm" data-del-nw-entry="' + entry.ts + '" type="button">Delete</button>';
     el2.appendChild(row);
   });
   el2.querySelectorAll("[data-del-nw-entry]").forEach(function(btn){
@@ -9693,10 +9831,19 @@ function renderGoals(){
   var priorities = latest ? (deriveFinancialPriorities(latest)||[]) : [];
   var grid = $("goalsGrid");
   grid.innerHTML = "";
+
+  var heroHeadline = $("goalsHeroHeadline"), heroSub = $("goalsHeroSub"), statusRow = $("goalsStatusRow");
+
   if(!goals.length){
     grid.innerHTML = '<div class="empty-note" style="grid-column:1/-1"><b>No goals yet</b>Add one below, or start one straight from a recommendation on your Dashboard or Plan.</div>';
+    if(heroHeadline) heroHeadline.textContent = 'Set your first goal';
+    if(heroSub) heroSub.textContent = 'Pick a small number of measurable outcomes to track — progress you can check, not a long wish list.';
+    if(statusRow) statusRow.style.display = 'none';
     return;
   }
+
+  var completeCount = 0, closeCount = 0, progressCount = 0;
+
   goals.forEach(function(g, idx){
     var current, target = g.target, fmt = money, label;
     if(g.source === 'priority'){
@@ -9710,21 +9857,51 @@ function renderGoals(){
     } else {
       current = latest && typeof latest.net === 'number' ? latest.net : null; label = 'Net Worth';
     }
-    var card = el("div", { className:"goal-card" });
+    var status = 'progress';
     var html = '<div class="g-type">'+label+'</div>';
     if(current !== null){
       var pct = Math.max(0, Math.min(100, (current/target)*100));
       var remaining = Math.max(0, target - current);
       html += '<div class="g-progress-num mono">'+fmt(current)+' / '+fmt(target)+'</div>';
       html += '<div class="progress-bar"><div style="width:'+pct.toFixed(0)+'%"></div></div>';
-      html += '<div class="g-remaining">'+(current>=target ? 'Goal reached 🎉' : fmt(remaining)+' remaining')+'</div>';
+      if(current >= target){
+        status = 'complete'; completeCount++;
+        html += '<div class="gmf-goal-badge complete">✓ Goal Complete</div>';
+      } else if(pct >= 85){
+        status = 'close'; closeCount++;
+        html += '<div class="g-remaining">'+fmt(remaining)+' to your goal</div>';
+      } else {
+        progressCount++;
+        html += '<div class="g-remaining">'+fmt(remaining)+' remaining</div>';
+      }
     } else {
+      progressCount++;
       html += '<div class="g-progress-num mono">Target: '+fmt(target)+'</div><div class="g-remaining">Run a calculation to start tracking progress.</div>';
     }
     html += '<div class="g-actions"><button class="btn sm" data-del="'+idx+'" type="button">Delete</button></div>';
+    var card = el("div", { className:"goal-card status-"+status });
     card.innerHTML = html;
     grid.appendChild(card);
   });
+
+  // Hero summary — the one thing this page should communicate in 3
+  // seconds: how many goals are on track, and the breakdown by status.
+  var onTrack = completeCount + closeCount;
+  if(heroHeadline){
+    heroHeadline.textContent = goals.length===1
+      ? (completeCount ? 'Goal Complete' : closeCount ? 'Almost There' : 'Your Goal')
+      : onTrack + ' of ' + goals.length + ' Goals On Track';
+  }
+  if(heroSub) heroSub.textContent = 'You\'re making progress toward your financial priorities.';
+  if(statusRow){
+    statusRow.style.display = 'flex';
+    var parts = [];
+    if(completeCount) parts.push('<span><i class="dot complete"></i><b>'+completeCount+'</b> Complete</span>');
+    if(closeCount) parts.push('<span><i class="dot close"></i><b>'+closeCount+'</b> Almost There</span>');
+    if(progressCount) parts.push('<span><i class="dot progress"></i><b>'+progressCount+'</b> In Progress</span>');
+    statusRow.innerHTML = parts.join('');
+  }
+
   grid.querySelectorAll("[data-del]").forEach(function(btn){
     btn.addEventListener("click", function(){
       var arr = getGoals(); arr.splice(+btn.dataset.del, 1); saveGoals(arr);
@@ -9741,7 +9918,20 @@ $("addGoalBtn").addEventListener("click", function(){
   $("goalTarget").value = "";
   renderGoals();
   renderDashGoalsPreview(getHistory());
+  var wrap = $("addGoalFormWrap"); if(wrap) wrap.classList.remove("open");
 });
+
+// Collapsible "+ Add Goal" — keeps the form out of the way until someone
+// actually wants to add a goal, instead of it dominating the page by default.
+(function setupAddGoalToggle(){
+  var toggle = $("addGoalToggle"), wrap = $("addGoalFormWrap");
+  if(!toggle || !wrap) return;
+  toggle.addEventListener("click", function(){
+    var isOpen = wrap.classList.toggle("open");
+    toggle.textContent = isOpen ? "− Close" : "+ Add Goal";
+    if(isOpen){ var firstInput = $("goalTarget"); if(firstInput) setTimeout(function(){ firstInput.focus(); }, 200); }
+  });
+})();
 
 /* ================= WHAT-IF SCENARIOS TAB ================= */
 function renderScenariosTab(){
@@ -10118,7 +10308,7 @@ Promise.resolve(init()).then(function(){
       else p.insertBefore(nav,p.firstElementChild);
     }
   }
-  function goalsTab(x){var p=id('panel-goals');if(!p)return;var l=x.l;addHead(p,'Goals','Pick a small number of measurable outcomes. The point is progress you can check, not a long wish list.',l?chip('Current grade '+grade(l.score)+' · '+Number(l.score||0).toFixed(1),true):chip('Set your first target',false));
+  function goalsTab(x){var p=id('panel-goals');if(!p)return;var l=x.l;addHead(p,'Your financial priorities','Track the milestones that matter most — a small number of measurable outcomes, not a long wish list.',l?chip('Current grade '+grade(l.score)+' · '+Number(l.score||0).toFixed(1),true):chip('Set your first target',false));
     tool(p,'Set one target','Add a score or net-worth target, then use the rest of the dashboard to see what will move it.','');
     if(!q('.gmf-goal-summary',p)){var s=document.createElement('div');s.className='gmf-goal-summary';s.innerHTML='<div><b>Keep goals connected to your next move.</b><span>Your plan can suggest a priority; add it here when you want to track it.</span></div><button class="btn sm" type="button" data-goto="scenarios">View my plan</button>';p.insertBefore(s,q('.goal-form',p));q('[data-goto="scenarios"]',s).onclick=function(){var b=q('[data-tab="scenarios"]');if(b)b.click()}}
     if(!q('.gmf-goal-presets',p)){var form=q('.goal-form',p),el=document.createElement('div');el.className='gmf-goal-presets';el.innerHTML='<button class="gmf-goal-preset" data-k="score:85" type="button">Reach score 85</button><button class="gmf-goal-preset" data-k="score:90" type="button">Reach score 90</button><button class="gmf-goal-preset" data-k="cashrunway:3" type="button">Build 3-month emergency fund</button><button class="gmf-goal-preset" data-k="networth:50000" type="button">Build $50k net worth</button><button class="gmf-goal-preset" data-k="networth:100000" type="button">Build $100k net worth</button>';form.insertAdjacentElement('afterend',el);qa('button',el).forEach(function(b){b.onclick=function(){var a=b.dataset.k.split(':');id('goalType').value=a[0];id('goalTarget').value=a[1];id('goalTarget').focus()}})}
@@ -11145,23 +11335,11 @@ $r('rsCalculate').addEventListener('click',calc);['rsAge','rsRetireAge','rsBalan
 </script>
 
 <style id="gmf-all-tabs-colorful-upgrade">
-/* ALL-TABS COLORFUL HD UPGRADE */
-#panel-score,#panel-networth,#panel-goals,#panel-scenarios,#panel-insights,#panel-achievements{position:relative}
-#panel-score:before,#panel-networth:before,#panel-goals:before,#panel-scenarios:before,#panel-insights:before,#panel-achievements:before{content:"";display:block;height:4px;border-radius:999px;margin:0 0 18px;background:linear-gradient(90deg,var(--brand),var(--gold-bright),#8b5cf6,#38bdf8)}
-#panel-score .hero-card:first-of-type{background:linear-gradient(135deg,#eef8f4,#e9f0ff)!important}
-#panel-networth .hero-card:first-of-type{background:linear-gradient(135deg,#ecfbf5,#fff5df)!important}
-#panel-goals .hero-card:first-of-type{background:linear-gradient(135deg,#fff6dc,#f1ecff)!important}
-#panel-scenarios .hero-card:first-of-type{background:linear-gradient(135deg,#edf6ff,#eefbf5)!important}
-#panel-insights .hero-card:first-of-type{background:linear-gradient(135deg,#f5efff,#e8fbf5)!important}
-#panel-achievements .hero-card:first-of-type{background:linear-gradient(135deg,#fff7e5,#eef5ff)!important}
-:root[data-theme="dark"] #panel-score .hero-card:first-of-type{background:linear-gradient(135deg,#0d1a17,#0d1420)!important}
-:root[data-theme="dark"] #panel-networth .hero-card:first-of-type{background:linear-gradient(135deg,#0d1a17,#1a1608)!important}
-:root[data-theme="dark"] #panel-goals .hero-card:first-of-type{background:linear-gradient(135deg,#1a1608,#161029)!important}
-:root[data-theme="dark"] #panel-scenarios .hero-card:first-of-type{background:linear-gradient(135deg,#0d1420,#0d1a17)!important}
-:root[data-theme="dark"] #panel-insights .hero-card:first-of-type{background:linear-gradient(135deg,#161029,#0d1a17)!important}
-:root[data-theme="dark"] #panel-achievements .hero-card:first-of-type{background:linear-gradient(135deg,#1a1608,#0d1420)!important}
-.gmf-tab-graphic{margin:14px 0 18px;border-radius:18px;padding:18px;overflow:hidden;position:relative;min-height:180px;border:1px solid var(--line);box-shadow:var(--shadow-sm);background:var(--surface)!important}
-.gmf-tab-graphic h3{margin:0 0 4px;font-size:18px}.gmf-tab-graphic p{margin:0;color:var(--muted);max-width:520px}.gmf-bars{height:90px;display:flex;align-items:end;gap:8px;margin-top:18px}.gmf-bars i{display:block;flex:1;border-radius:9px 9px 3px 3px;background:linear-gradient(180deg,var(--brand-bright),var(--brand));box-shadow:0 -8px 24px rgba(46,156,129,.15)}
+/* Design system: removed the rainbow accent bar, per-panel gradient
+   hero backgrounds, and decorative filler graphics (donut/spark/orbit/
+   bubbles/rays) that didn't carry real data — the hero insight on each
+   page now carries that visual weight instead. Grade Report's real
+   breakdown rows below are unrelated structural CSS and are kept. */
 .gmf-breakdown-card{background:#fff;border:1px solid var(--rb-line);border-radius:15px;padding:18px;margin:0 0 16px}
 .gmf-breakdown-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px}
 .gmf-breakdown-head h3{margin:0;font:800 16px var(--font-display);color:var(--rb-ink)}
@@ -11179,24 +11357,12 @@ $r('rsCalculate').addEventListener('click',calc);['rsAge','rsRetireAge','rsBalan
 .gmf-breakdown-legend span{display:inline-flex;align-items:center;gap:5px}
 .gmf-breakdown-legend i{width:8px;height:8px;border-radius:2px;display:inline-block}
 @media(max-width:620px){.gmf-breakdown-row{grid-template-columns:90px 1fr 34px 44px;gap:8px}}
-.gmf-donut{position:absolute;right:28px;bottom:18px;width:120px;height:120px;border-radius:50%;background:conic-gradient(var(--brand) 0 42%,var(--gold-bright) 42% 68%,#8b5cf6 68% 84%,#38bdf8 84% 100%);box-shadow:inset 0 0 0 22px var(--surface)}
-.gmf-donut:after{content:"LIVE";position:absolute;inset:38px 0 auto;text-align:center;font:700 12px var(--font-mono);color:var(--text)}
-.gmf-spark{position:absolute;right:24px;bottom:22px;width:240px;height:105px;opacity:.95}
-.gmf-goal-orbit{position:absolute;right:32px;bottom:24px;width:135px;height:135px;border:2px solid rgba(139,92,246,.25);border-radius:50%;box-shadow:0 0 0 18px rgba(46,156,129,.08),0 0 0 36px rgba(245,185,66,.08)}
-.gmf-goal-orbit:before{content:"✓";position:absolute;inset:32px;display:grid;place-items:center;border-radius:50%;background:var(--brand);color:#fff;font-size:30px;font-weight:800}
-.gmf-bubbles{position:absolute;right:28px;bottom:20px;width:220px;height:120px}.gmf-bubbles i{position:absolute;border-radius:50%;display:block;background:linear-gradient(135deg,var(--brand-soft),#fff)}.gmf-bubbles i:nth-child(1){width:86px;height:86px;left:20px;top:20px}.gmf-bubbles i:nth-child(2){width:58px;height:58px;left:105px;top:5px}.gmf-bubbles i:nth-child(3){width:42px;height:42px;left:160px;top:70px}.gmf-bubbles i:nth-child(4){width:28px;height:28px;left:4px;top:0px;background:var(--gold-soft)}
-.gmf-insight-rays{position:absolute;right:20px;bottom:-55px;width:220px;height:220px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(139,92,246,.14) 0 10deg,transparent 10deg 24deg)}
-@media(max-width:700px){.gmf-donut,.gmf-spark,.gmf-goal-orbit,.gmf-bubbles,.gmf-insight-rays{opacity:.28}.gmf-tab-graphic{min-height:155px}}
 </style>
 <script id="gmf-all-tabs-colorful-graphics">
-(function(){
-function add(panel,type,title,copy){var p=document.getElementById(panel);if(!p||p.querySelector('.gmf-tab-graphic'))return;var d=document.createElement('div');d.className='gmf-tab-graphic';var visual='';if(type==='bars'){visual='<div class="gmf-bars">'+[38,62,48,78,58,92,74,100].map(function(x){return '<i style="height:'+x+'%"></i>'}).join('')+'</div>'}else if(type==='donut'){visual='<div class="gmf-donut"></div>'}else if(type==='spark'){visual='<svg class="gmf-spark" viewBox="0 0 240 105"><defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#2e9c81"/><stop offset=".5" stop-color="#f5b942"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><path d="M4 88 C35 82 38 62 66 68 S100 42 128 50 S158 12 188 28 S218 18 236 4" fill="none" stroke="url(#g)" stroke-width="8" stroke-linecap="round"/></svg>'}else if(type==='goal'){visual='<div class="gmf-goal-orbit"></div>'}else if(type==='bubbles'){visual='<div class="gmf-bubbles"><i></i><i></i><i></i><i></i></div>'}else{visual='<div class="gmf-insight-rays"></div>'}d.innerHTML='<h3>'+title+'</h3><p>'+copy+'</p>'+visual;p.insertBefore(d,p.firstChild)}
-add('panel-networth','donut','Your money picture at a glance','Explore what you own, what you owe, and how each update changes your financial position.');
-add('panel-goals','goal','Goals with momentum','Turn priorities into measurable progress and keep the next milestone visible.');
-add('panel-scenarios','spark','See your future before you choose','Adjust the plan, compare outcomes, and watch the projected path change in real time.');
-add('panel-insights','bubbles','Find the signals in your numbers','Use your data to spot strengths, pressure points, tradeoffs, and the next best move.');
-add('panel-achievements','rays','Every improvement counts','Celebrate milestones as your habits and financial position get stronger.');
-})();
+/* Design system: this used to inject a purely decorative "graphic" card
+   (fake generic copy + an abstract shape) at the top of Money, Goals,
+   Plan, Insights, and Achievements — no real data behind it. Removed so
+   each page's real hero insight is the first thing people see. */
 </script>
 
 
