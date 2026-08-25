@@ -3809,6 +3809,23 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <button class="btn gold sm" id="openAdvancedCalcBtn" type="button">Open Advanced Calculator →</button>
     </div>
 
+    <div class="reveal-email-retention pro-only-hide" id="revealEmailRetention">
+      <span class="rer-label">Not ready for Pro?</span>
+      <p class="rer-headline">Save your financial grade.</p>
+      <p class="rer-line">Enter your email and we'll send you your GradeMyFinance score so you can come back to it later.</p>
+      <form id="revealEmailForm" class="rer-form"
+        action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
+        method="POST" novalidate>
+        <input type="hidden" name="reportGrade" id="revealEmailGrade" value="">
+        <input type="hidden" name="reportScore" id="revealEmailScore" value="">
+        <input type="text" name="website" id="revealEmailWebsite" tabindex="-1" autocomplete="off" aria-hidden="true"
+          style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
+        <input type="email" name="email" id="revealEmailInput" placeholder="Enter your email" required>
+        <button type="submit" class="btn sm" id="revealEmailSubmit">Save My Grade</button>
+      </form>
+      <span class="rer-sub">No spam. Unsubscribe anytime.</span>
+    </div>
+
     <div class="reveal-section-title" style="margin-top:22px">Financial Snapshot</div>
     <p class="reveal-snapshot-caption">Based only on the five numbers you entered — not your complete financial picture.</p>
     <div class="reveal-metrics-row" id="revealMetricsRow">
@@ -3839,23 +3856,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <span class="rhh-title">What's hurting you</span>
         <ul id="revealHurtingList"></ul>
       </div>
-    </div>
-
-    <div class="reveal-email-retention pro-only-hide" id="revealEmailRetention">
-      <span class="rer-label">Not ready for Pro?</span>
-      <p class="rer-headline">Save your financial grade.</p>
-      <p class="rer-line">Enter your email and we'll send you your GradeMyFinance score so you can come back to it later.</p>
-      <form id="revealEmailForm" class="rer-form"
-        action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
-        method="POST" novalidate>
-        <input type="hidden" name="reportGrade" id="revealEmailGrade" value="">
-        <input type="hidden" name="reportScore" id="revealEmailScore" value="">
-        <input type="text" name="website" id="revealEmailWebsite" tabindex="-1" autocomplete="off" aria-hidden="true"
-          style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
-        <input type="email" name="email" id="revealEmailInput" placeholder="Enter your email" required>
-        <button type="submit" class="btn sm" id="revealEmailSubmit">Save My Grade</button>
-      </form>
-      <span class="rer-sub">No spam. Unsubscribe anytime.</span>
     </div>
   </div>
 </div>
@@ -9425,7 +9425,7 @@ $("compareFriend").addEventListener("click", function(){
         if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
         var websiteEl = $("compareWebsite");
         fetch("https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec", {
-          method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+          method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
           body:JSON.stringify({ email:email, source:"grademyfinance.com/comparebanner", friendGrade: friend.l, friendScore: friend.s, website: websiteEl ? websiteEl.value : "", t: Date.now() - __gmfPageLoadTime })
         }).then(function(res){
           if(res.ok){ __track('subscribe_success',{placement:'compare_banner'}); toastMsg("Thanks! Check your inbox for a confirmation."); compareCaptureForm.reset(); }
@@ -9659,7 +9659,7 @@ if(subFormRC){
     if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
     var gradeEl=$("subReportGrade"), scoreEl=$("subReportScore"), websiteEl=$("subWebsiteRC");
     fetch(subFormRC.action, {
-      method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+      method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
       body:JSON.stringify({
         email:email,
         source:"grademyfinance.com/reportcard",
@@ -9693,7 +9693,7 @@ if(revealEmailForm){
     var submitBtn=$("revealEmailSubmit");
     if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Saving…"; }
     fetch(revealEmailForm.action, {
-      method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+      method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
       body:JSON.stringify({
         email:email,
         source:"grademyfinance.com/gradereveal",
