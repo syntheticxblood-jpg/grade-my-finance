@@ -788,6 +788,13 @@ section.block{ padding:76px 0 }
 .grade-reveal-delta.up{ color:var(--good) }
 .grade-reveal-delta.down{ color:var(--bad) }
 .reveal-headline{ font-size:15px; font-weight:600; color:var(--text); margin:10px 0 0; line-height:1.4 }
+.reveal-partial-banner{
+  display:flex; align-items:flex-start; gap:11px; text-align:left; margin:18px 0 0;
+  background:rgba(217,154,43,.12); border:1px solid rgba(217,154,43,.4); border-radius:12px; padding:13px 15px;
+}
+.reveal-partial-banner .rpb-icon{ font-size:16px; line-height:1; flex:none; margin-top:1px }
+.reveal-partial-banner b{ display:block; font-size:13.5px; color:var(--gold,#D99A2B); margin-bottom:2px }
+.reveal-partial-banner span{ display:block; font-size:12.5px; color:var(--muted); line-height:1.4 }
 .reveal-snapshot-caption{ font-size:11.5px; color:var(--muted-2); margin:0 0 12px; text-align:left }
 .reveal-metrics-row{
   display:grid; grid-template-columns:repeat(3,1fr); gap:0; margin:0 0 4px;
@@ -3647,7 +3654,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     <div id="revealDelta" class="grade-reveal-delta">—</div>
     <p class="reveal-headline" id="revealHeadline">—</p>
 
-    <div class="reveal-pro-teaser">
+    <div class="reveal-partial-banner pro-only-hide">
+      <span class="rpb-icon">⚠</span>
+      <div><b>This is your Partial Grade</b><span>Based on 5 numbers only — not your complete financial picture.</span></div>
+    </div>
+
+    <div class="reveal-pro-teaser pro-only-hide">
       <p class="rpt-headline">Want your complete financial picture?</p>
       <p class="rpt-line">Your free grade uses five high-level numbers. Unlock Pro to access your full financial Dashboard — add your home, retirement accounts, investments, cash, vehicles, and individual debts for a deeper analysis. Your Dashboard includes:</p>
       <ul class="rpt-feature-list">
@@ -3662,6 +3674,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <button class="btn sm ghost" id="revealCta" type="button">Create Free Account</button>
       </div>
       <span class="rpt-sub">Free account saves your snapshot. Pro unlocks the complete financial analysis in your Dashboard.</span>
+    </div>
+
+    <div class="pro-gated reveal-advanced-cta" id="revealDetailedSection">
+      <p class="rpt-headline" style="margin-bottom:4px">Get Your Complete Financial Picture</p>
+      <p class="reveal-deeper-sub">You're on Pro — add your home, retirement accounts, investments, and individual debts for a full, accurate grade and dashboard.</p>
+      <button class="btn gold sm" id="openAdvancedCalcBtn" type="button">Open Advanced Calculator →</button>
     </div>
 
     <div class="reveal-section-title" style="margin-top:22px">Financial Snapshot</div>
@@ -3694,14 +3712,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <span class="rhh-title">What's hurting you</span>
         <ul id="revealHurtingList"></ul>
       </div>
-    </div>
-
-    <div class="reveal-section-title" style="margin-top:22px">Add Your Complete Financial Details</div>
-    <div class="pro-lock">🔒 Enter your home, retirement accounts, and individual debts for a more accurate grade — <a href="#pricing" style="color:var(--brand-bright);font-weight:700;text-decoration:none" onclick="try{__track('pro_clicked',{location:'grade_reveal_detailed'})}catch(e){}">unlock with Pro</a></div>
-
-    <div class="pro-gated reveal-advanced-cta" id="revealDetailedSection">
-      <p class="reveal-deeper-sub">You're on Pro — add your full financial picture for a more accurate, complete grade.</p>
-      <button class="btn gold sm" id="openAdvancedCalcBtn" type="button">Open Advanced Calculator →</button>
     </div>
   </div>
 </div>
