@@ -2238,85 +2238,95 @@ footer{background:#0b302a;}
    Inspired by the clean colorful reference layout.
    ========================================================= */
 .site{
-  background:#073d32 !important;
+  background:#0A0F1C !important;
   color:#fff;
   border-bottom:1px solid rgba(255,255,255,.08);
 }
 .site .brandmark,.site .wordmark,.site .primary a,.site .icon-btn{
   color:#fff !important;
 }
-.site .primary a{font-weight:600;text-shadow:none;}
-.site .primary a:hover{color:#bdf3df !important;}
+.site .primary a{font-weight:500;text-shadow:none;}
+.site .primary a:hover{color:#5FE0BE !important;}
+.nav-login-link{ background:transparent !important; border-color:rgba(255,255,255,.22) !important; color:#fff !important }
+.nav-login-link:hover{ background:rgba(255,255,255,.08) !important }
+#navGetGradeBtn.btn.gold{ background:#149B7A !important; border-color:#149B7A !important; color:#fff !important }
+#navGetGradeBtn.btn.gold:hover{ background:#0F8168 !important }
 
 .hero{
   min-height:510px;
-  background:
-    radial-gradient(circle at 78% 28%,rgba(67,190,155,.20),transparent 26%),
-    radial-gradient(circle at 92% 82%,rgba(65,157,214,.12),transparent 24%),
-    #d7efe7 !important;
+  background:#FAFAF8 !important;
   overflow:hidden;
 }
 .hero .hero-grid{align-items:center;}
 .hero-copy{padding-top:12px;}
-.hero .hero-badge-row{display:none;}
+.hero .hero-badge-row{display:block;}
+.hero .eyebrow{
+  display:inline-flex; align-items:center; gap:7px; background:#fff !important; border:1px solid rgba(20,155,122,.28) !important;
+  color:#0F8168 !important; font-weight:700 !important; font-size:11.5px !important; letter-spacing:.04em !important;
+  text-transform:uppercase; padding:7px 14px !important; border-radius:99px;
+}
 .hero h1{
-  font-size:clamp(52px,6.3vw,86px) !important;
-  line-height:.95 !important;
-  letter-spacing:-.055em !important;
-  color:#092e28 !important;
-  margin:18px 0 20px !important;
+  font-size:clamp(44px,5.6vw,72px) !important;
+  line-height:1.02 !important;
+  letter-spacing:-.03em !important;
+  color:#0B1220 !important;
+  margin:20px 0 18px !important;
+  font-weight:800 !important;
 }
 .hero .hero-headline-accent{color:#149b7a !important;}
 .hero .lede{
-  max-width:590px;
-  font-size:18px !important;
-  line-height:1.5 !important;
-  color:#183d36 !important;
+  max-width:560px;
+  font-size:17px !important;
+  line-height:1.55 !important;
+  color:#4A5568 !important;
 }
-.hero .hero-cta{margin-top:24px;}
+.hero .hero-cta{margin-top:26px;}
 .hero .btn.gold{
-  background:#087d61 !important;
-  border-color:#087d61 !important;
+  background:#149B7A !important;
+  border-color:#149B7A !important;
   color:#fff !important;
-  box-shadow:0 10px 24px rgba(8,125,97,.22);
+  box-shadow:0 10px 24px rgba(20,155,122,.25);
+  font-weight:700 !important;
 }
-.hero .btn.gold:hover{background:#066b53 !important;}
+.hero .btn.gold:hover{background:#0F8168 !important;}
 .hero .btn.ghost{
-  background:rgba(255,255,255,.58) !important;
-  border-color:rgba(7,61,50,.18) !important;
-  color:#073d32 !important;
+  background:transparent !important;
+  border-color:#D8DCE2 !important;
+  color:#1A2233 !important;
 }
 .hero .hero-trust-row{
   background:transparent !important;
   border:0 !important;
   box-shadow:none !important;
   padding:16px 0 0 !important;
-  gap:18px;
+  gap:22px;
 }
 .hero .htr-item{
-  background:rgba(255,255,255,.58);
-  border:1px solid rgba(7,61,50,.10);
-  border-radius:12px;
-  padding:9px 12px;
-  backdrop-filter:blur(8px);
+  background:transparent;
+  border:none;
+  padding:0;
+  display:flex; align-items:center; gap:6px;
 }
-.hero .htr-item b{color:#073d32;}
-.hero .htr-item span{color:#42635c;}
+.hero .htr-item div{ display:flex; flex-direction:row; align-items:center; gap:6px }
+.hero .htr-item b{color:#1A2233; font-size:13.5px; font-weight:600}
+.hero .htr-item span{display:none}
+.hero .htr-icon{ color:#149B7A; background:none !important; border:none !important; width:auto !important; height:auto !important; padding:0 !important }
 
 .live-counter-badge{
   background:#fff !important;
-  color:#183d36 !important;
-  border:1px solid rgba(7,61,50,.10) !important;
-  box-shadow:0 8px 22px rgba(7,61,50,.10);
+  color:#4A5568 !important;
+  border:1px solid #E8EAED !important;
+  box-shadow:none;
+  margin-top:18px;
 }
 .live-counter-badge .lcb-count{color:#149b7a !important;}
 
 .hero-ring-wrap{transform:scale(1.08);}
 .hero-ring-example{color:#356057 !important;}
 
-.gmf-how-modern{
-  padding:18px 0 30px !important;
-  background:#f6f1df !important;
+#how.gmf-how-modern{
+  padding:64px 0 !important;
+  background:var(--bg-2) !important;
 }
 .gmf-feature-strip{
   display:grid;
@@ -2376,11 +2386,103 @@ footer{background:#073d32 !important;}
 }
 @media (max-width:640px){
   .hero{min-height:auto;padding-bottom:42px;}
-  .hero h1{font-size:50px !important;}
+  .hero h1{font-size:42px !important;}
   .hero-ring-wrap{transform:scale(.88);margin-top:-8px;}
   .gmf-feature-strip{grid-template-columns:1fr;}
   .gmf-mini-card + .gmf-mini-card{border-left:0;border-top:1px solid #e1ddcf;}
-  .hero .hero-trust-row{display:grid;grid-template-columns:1fr;}
+  .hero .hero-trust-row{display:flex;flex-wrap:wrap;grid-template-columns:none;}
+}
+
+/* ============= Hero product preview (right side) ============= */
+.hero-preview-card{
+  background:#fff; border:1px solid #E8EAED; border-radius:20px; overflow:hidden;
+  box-shadow:0 30px 70px -24px rgba(10,15,28,.18), 0 0 0 1px rgba(10,15,28,.02);
+  display:grid; grid-template-columns:150px 1fr;
+}
+.hpc-sidebar{
+  background:#0A0F1C; padding:20px 14px; display:flex; flex-direction:column; gap:4px;
+}
+.hpc-sidebar-mark{
+  width:34px; height:34px; border-radius:9px; background:#149B7A; color:#fff; font-weight:800; font-family:var(--font-display);
+  display:grid; place-items:center; font-size:15px; margin-bottom:18px;
+}
+.hpc-nav-item{
+  display:flex; align-items:center; gap:8px; padding:8px 9px; border-radius:8px; font-size:11.5px; font-weight:600;
+  color:rgba(255,255,255,.5);
+}
+.hpc-nav-item svg{ flex:none; opacity:.85 }
+.hpc-nav-item.active{ background:rgba(255,255,255,.09); color:#fff }
+.hpc-main{ padding:22px 24px 24px }
+.hpc-title{ font-family:var(--font-display); font-size:18px; font-weight:800; color:#0B1220; margin:0 0 2px }
+.hpc-sub{ font-size:12px; color:#8A93A3; margin:0 0 18px }
+.hpc-grade-row{ display:flex; align-items:center; gap:22px; margin-bottom:22px; flex-wrap:wrap }
+.hpc-ring{ position:relative; width:112px; height:112px; flex:none }
+.hpc-ring svg{ width:100%; height:100% }
+.hpc-ring-inner{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.hpc-ring-letter{ font-family:var(--font-display); font-size:34px; font-weight:800; color:#149B7A; line-height:1 }
+.hpc-ring-score{ font-size:11px; color:#8A93A3; margin-top:2px }
+.hpc-grade-note{ font-size:12.5px; color:#4A5568; max-width:220px }
+.hpc-grade-note b{ color:#149B7A }
+.hpc-breakdown{ background:#F7F8FA; border:1px solid #EDEFF2; border-radius:14px; padding:16px; margin-bottom:16px }
+.hpc-breakdown-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px }
+.hpc-breakdown-head b{ font-size:12.5px; color:#0B1220 }
+.hpc-breakdown-head span{ font-size:11px; color:#149B7A; font-weight:600 }
+.hpc-bar-row{ display:grid; grid-template-columns:78px 1fr 40px; align-items:center; gap:10px; margin-bottom:9px; font-size:11.5px }
+.hpc-bar-row:last-child{ margin-bottom:0 }
+.hpc-bar-row .hbr-label{ color:#4A5568; font-weight:600 }
+.hpc-bar-track{ height:6px; border-radius:99px; background:#E8EAED; overflow:hidden }
+.hpc-bar-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg,#149B7A,#2FCBA0) }
+.hpc-bar-row .hbr-val{ text-align:right; color:#8A93A3; font-weight:600 }
+.hpc-metrics{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px }
+.hpc-metric{ background:#F7F8FA; border:1px solid #EDEFF2; border-radius:12px; padding:10px 12px }
+.hpc-metric span{ display:block; font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:#8A93A3; margin-bottom:4px }
+.hpc-metric b{ font-size:14px; color:#0B1220 }
+.hero-ring-wrap.hero-in-mock{ display:flex; flex-direction:column; align-items:center }
+@media (max-width:980px){
+  .hero-preview-card{ grid-template-columns:1fr; max-width:420px; margin:0 auto }
+  .hpc-sidebar{ display:none }
+}
+@media (max-width:640px){
+  .hpc-metrics{ grid-template-columns:repeat(2,1fr) }
+}
+
+/* ============= Dark feature strip (below hero) ============= */
+.dark-feature-strip{ background:#0A0F1C; padding:52px 0; }
+.dfs-grid{ display:grid; grid-template-columns:repeat(4,1fr); }
+.dfs-item{ padding:0 28px; display:flex; flex-direction:column; gap:12px; border-left:1px solid rgba(255,255,255,.09) }
+.dfs-item:first-child{ border-left:none; padding-left:0 }
+.dfs-icon{
+  width:38px; height:38px; border-radius:10px; background:rgba(20,155,122,.15); color:#5FE0BE;
+  display:grid; place-items:center; flex:none;
+}
+.dfs-item h3{ font-size:15px; font-weight:700; color:#fff; margin:0 }
+.dfs-item p{ font-size:13px; line-height:1.5; color:rgba(255,255,255,.55); margin:0 }
+@media (max-width:900px){
+  .dfs-grid{ grid-template-columns:1fr 1fr; row-gap:32px }
+  .dfs-item:nth-child(3){ border-left:none; padding-left:0 }
+  .dfs-item:nth-child(odd){ border-left:none; padding-left:0 }
+  .dfs-item:nth-child(even){ padding-left:28px }
+}
+@media (max-width:640px){
+  .dfs-grid{ grid-template-columns:1fr; row-gap:28px }
+  .dfs-item{ border-left:none !important; padding-left:0 !important }
+}
+
+/* ============= How It Works — 3-step redesign ============= */
+.how-steps-v2{ display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:start; max-width:920px; margin:0 auto; gap:0 }
+.hsv2-step{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; padding:0 12px }
+.hsv2-num{
+  width:44px; height:44px; border-radius:50%; background:#149B7A; color:#fff; font-family:var(--font-display); font-weight:800;
+  font-size:17px; display:grid; place-items:center; flex:none;
+}
+.hsv2-step h3{ font-size:16px; font-weight:700; color:var(--text); margin:0 }
+.hsv2-step p{ font-size:13.5px; line-height:1.5; color:var(--muted); margin:0; max-width:230px }
+.hsv2-arrow{ display:flex; align-items:center; padding-top:22px; color:var(--muted-2) }
+@media (max-width:760px){
+  .how-steps-v2{ grid-template-columns:1fr; gap:32px }
+  .hsv2-arrow{ display:none }
 }
 
 </style>
@@ -2392,7 +2494,7 @@ footer{background:#073d32 !important;}
 
 /* Header: force the dark brand bar and readable navigation */
 header.site{
-  background:#073d32 !important;
+  background:#0A0F1C !important;
   color:#fff !important;
   min-height:72px;
 }
@@ -2405,31 +2507,24 @@ header.site .icon-btn{
   opacity:1 !important;
 }
 header.site nav.primary a{
-  font-weight:600 !important;
+  font-weight:500 !important;
   text-shadow:none !important;
 }
-header.site nav.primary a:hover{color:#c5f3e4 !important;}
+header.site nav.primary a:hover{color:#5FE0BE !important;}
 header.site .pro-cta{
   color:#18352f !important;
   background:#fff !important;
   border-color:#fff !important;
 }
 
-/* Hero: counter belongs above the headline, aligned to the same left edge */
+/* Hero: natural source order (eyebrow, headline, lede, trust
+   checkmarks, CTAs, reassurance, live counter) — matches the reference
+   layout, so no flex-order override needed here. */
 .hero-copy{
   align-items:flex-start !important;
   text-align:left !important;
 }
-.hero-badge-row{display:none !important;}
-.live-counter-badge{
-  align-self:flex-start !important;
-  margin:0 0 18px !important;
-  order:0;
-}
-.hero h1{order:1;}
-.hero .lede{order:2;}
-.hero .hero-cta{order:3;}
-.hero .hero-trust-row{order:4;}
+.hero-badge-row{display:flex !important;}
 
 /* Keep the live counter in the exact visual hierarchy of the reference */
 .hero .hero-grid{
@@ -2817,10 +2912,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <span class="wordmark">Grade My Finance</span>
     </a>
     <nav class="primary">
-      <a href="#how">How it Works</a>
+      <a href="#how">How It Works</a>
+      <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
-      <a href="https://discord.gg/g76aPc6FQT" target="_blank" rel="noopener">Community</a>
-      <a href="dashboard.html">Dashboard</a>
+      <a href="blog/index.html">Blog</a>
+      <a href="about.html">About</a>
     </nav>
     <div class="hdr-right">
       <div class="settings-wrap">
@@ -2852,9 +2948,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <a class="settings-item" href="#guides">
             <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg></span> Free Tools
           </a>
-          <a class="settings-item" href="blog/index.html">
-            <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5A2.5 2.5 0 0 1 17.5 21H6.5A2.5 2.5 0 0 1 4 18.5z"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"/></svg></span> Blog
-          </a>
           <a class="settings-item" href="for-advisors.html">
             <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span> For Advisors
           </a>
@@ -2865,7 +2958,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       </div>
       <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing" onclick="try{__track('pro_clicked',{location:'header'})}catch(e){}"><span class="pro-star">★</span> Start Free Trial</a>
       <span class="btn sm pro-badge-filled pro-only-show" id="proPill" style="display:none">★ PRO</span>
-      <a class="btn sm" id="signInBtn" href="auth.html">Sign In</a>
+      <a class="btn sm nav-login-link" id="signInBtn" href="auth.html">Log In</a>
       <div class="settings-wrap" id="accountWrap" style="display:none">
         <button class="icon-btn" id="accountBtn" aria-label="Account menu" aria-expanded="false" style="width:auto;padding:6px 10px 6px 6px;gap:7px;display:flex;align-items:center;border-radius:99px" type="button">
           <span id="accountAvatar" style="width:26px;height:26px;border-radius:50%;background:linear-gradient(155deg,var(--brand-bright),var(--brand));color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none">–</span>
@@ -2885,6 +2978,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           </button>
         </div>
       </div>
+      <button class="btn sm gold" id="navGetGradeBtn" type="button">Get My Grade</button>
     </div>
   </div>
 </header>
@@ -2894,58 +2988,100 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
   <div class="container hero-grid">
     <div class="hero-copy">
       <div class="hero-badge-row hero-in" style="--d:0s">
-        <span class="eyebrow">Your Financial Report Card</span>
+        <span class="eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Know Your Number. Improve Your Future.</span>
       </div>
-      <div class="live-counter-badge hero-in" style="--d:.08s" aria-live="polite" aria-label="Grade My Finance report cards graded">
+      <h1 class="hero-in" style="--d:.16s">What's Your <span class="hero-headline-accent">Financial Grade?</span></h1>
+      <p class="lede hero-in" style="--d:.26s">GradeMyFinance analyzes your income, spending, savings, debt and investments to show you where you stand — and what you can improve next.</p>
+      <div class="hero-trust-row hero-in" style="--d:.30s">
+        <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>100% Free</b></div></div>
+        <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>No Credit Card</b></div></div>
+        <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Instant Results</b></div></div>
+      </div>
+      <div class="hero-cta hero-in" style="--d:.36s">
+        <button class="btn gold" id="gradeBtnHero" type="button">Get My Free Financial Grade</button>
+        <button class="btn ghost" id="demoBtn" type="button">See How It Works →</button>
+      </div>
+      <p class="hero-reassurance hero-in" style="--d:.40s">No credit card required &nbsp;•&nbsp; No bank connection required &nbsp;•&nbsp; Your financial inputs stay private</p>
+      <div class="live-counter-badge hero-in" style="--d:.44s" aria-live="polite" aria-label="Grade My Finance report cards graded">
         <span class="lcb-dot" aria-hidden="true"></span>
         <span class="lcb-live-text">LIVE</span>
         <span class="lcb-sep">•</span>
         <span class="lcb-count" id="liveGradeCountHero">—</span>
         <span class="lcb-label" id="liveGradeCountHeroLabel">report cards graded</span>
       </div>
-      <h1 class="hero-in" style="--d:.16s">What's Your <span class="hero-headline-accent">Financial Grade?</span></h1>
-      <p class="lede hero-in" style="--d:.26s"><b>Enter 5 numbers and find out in about 60 seconds.</b><br>See what's helping your finances, what's holding you back, and what to do next.</p>
-      <div class="hero-cta hero-in" style="--d:.36s">
-        <button class="btn gold" id="gradeBtnHero" type="button">Get My Free Grade →</button>
-        <button class="btn ghost" id="demoBtn" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg> See How It Works</button>
-      </div>
-      <p class="hero-reassurance hero-in" style="--d:.40s">No credit card required &nbsp;•&nbsp; No bank connection required &nbsp;•&nbsp; Your financial inputs stay private</p>
-      <div class="hero-trust-row hero-in" style="--d:.44s">
-        <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span><div><b>100% Private</b><span>Your data stays yours</span></div></div>
-        <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>No Credit Check</b><span>Zero impact to score</span></div></div>
-        <div class="htr-item"><span class="htr-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><div><b>Takes 60 Seconds</b><span>Instant personalized grade</span></div></div>
-      </div>
     </div>
     <div class="hero-ring-wrap hero-in-mock">
-      <div class="hero-ring-stage">
-        <div class="hero-ring-glow" aria-hidden="true"></div>
-        <div class="hero-ring-sparkles" aria-hidden="true">
-          <span class="hrs s1"></span><span class="hrs s2"></span><span class="hrs s3"></span>
-          <span class="hrs s4"></span><span class="hrs s5"></span><span class="hrs s6"></span>
+      <div class="hero-preview-card" role="img" aria-label="A preview of the GradeMyFinance report — Financial Grade A minus, 85 out of 100, with a score breakdown across income, spending, savings, investments, and debt, plus monthly income, savings, net worth, and debt-to-income figures">
+        <div class="hpc-sidebar">
+          <div class="hpc-sidebar-mark">G</div>
+          <div class="hpc-nav-item active"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Overview</div>
+          <div class="hpc-nav-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Income</div>
+          <div class="hpc-nav-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/></svg>Spending</div>
+          <div class="hpc-nav-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg>Savings</div>
+          <div class="hpc-nav-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg>Investments</div>
+          <div class="hpc-nav-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Debt</div>
+          <div class="hpc-nav-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Report Card</div>
+          <div class="hpc-nav-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.26L21 9.27l-4.5 4.38L17.8 21 12 17.77 6.2 21l1.3-7.35L3 9.27l6.1-1.01L12 2z"/></svg>Recommendations</div>
         </div>
-        <div class="hero-ring">
-          <svg class="hero-ring-svg" viewBox="0 0 240 240" aria-hidden="true">
-            <defs>
-              <linearGradient id="heroRingGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#2E9C81"/>
-                <stop offset="100%" stop-color="#4FBF9F"/>
-              </linearGradient>
-            </defs>
-            <circle class="hero-ring-track" cx="120" cy="120" r="106"/>
-            <circle class="hero-ring-progress" cx="120" cy="120" r="106" style="stroke-dashoffset:14"/>
-            <circle class="hero-ring-head" cx="120" cy="14" r="5"/>
-          </svg>
-          <div class="hero-ring-inner">
-            <span class="hero-ring-label">YOUR FINANCIAL GRADE</span>
-            <span class="hero-ring-letter">A+</span>
-            <span class="hero-ring-score">92 / 100</span>
-            <span class="hero-ring-pill"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26L21 9.27l-4.5 4.38L17.8 21 12 17.77 6.2 21l1.3-7.35L3 9.27l6.1-1.01L12 2z"/></svg> You're in excellent shape!</span>
+        <div class="hpc-main">
+          <div class="hpc-title">Your Financial Grade</div>
+          <p class="hpc-sub">Overall Score</p>
+          <div class="hpc-grade-row">
+            <div class="hpc-ring">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="#EDEFF2" stroke-width="9"/>
+                <circle cx="60" cy="60" r="52" fill="none" stroke="#149B7A" stroke-width="9" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="49" transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="hpc-ring-inner"><span class="hpc-ring-letter">A-</span><span class="hpc-ring-score">85 / 100</span></div>
+            </div>
+            <div class="hpc-grade-note">You're in the <b>top 20%</b> of people in your age group.</div>
+          </div>
+          <div class="hpc-breakdown">
+            <div class="hpc-breakdown-head"><b>Score Breakdown</b><span>View Details</span></div>
+            <div class="hpc-bar-row"><span class="hbr-label">Income</span><span class="hpc-bar-track"><span class="hpc-bar-fill" style="width:90%"></span></span><span class="hbr-val">90/100</span></div>
+            <div class="hpc-bar-row"><span class="hbr-label">Spending</span><span class="hpc-bar-track"><span class="hpc-bar-fill" style="width:75%"></span></span><span class="hbr-val">75/100</span></div>
+            <div class="hpc-bar-row"><span class="hbr-label">Savings</span><span class="hpc-bar-track"><span class="hpc-bar-fill" style="width:90%"></span></span><span class="hbr-val">90/100</span></div>
+            <div class="hpc-bar-row"><span class="hbr-label">Investments</span><span class="hpc-bar-track"><span class="hpc-bar-fill" style="width:80%;background:linear-gradient(90deg,#D99A2B,#F0B84D)"></span></span><span class="hbr-val">80/100</span></div>
+            <div class="hpc-bar-row"><span class="hbr-label">Debt</span><span class="hpc-bar-track"><span class="hpc-bar-fill" style="width:70%;background:linear-gradient(90deg,#D99A2B,#F0B84D)"></span></span><span class="hbr-val">70/100</span></div>
+          </div>
+          <div class="hpc-metrics">
+            <div class="hpc-metric"><span>Monthly Income</span><b>$6,250</b></div>
+            <div class="hpc-metric"><span>Monthly Savings</span><b>$1,350</b></div>
+            <div class="hpc-metric"><span>Net Worth</span><b>$142,500</b></div>
+            <div class="hpc-metric"><span>Debt-to-Income</span><b>18%</b></div>
           </div>
         </div>
       </div>
-      <span class="hero-ring-example">Example grade — yours is personal to you</span>
+      <span class="hero-ring-example">Example report — yours is personal to you</span>
     </div>
 
+  </div>
+</section>
+
+<section class="dark-feature-strip" aria-label="Why GradeMyFinance">
+  <div class="container">
+    <div class="dfs-grid">
+      <div class="dfs-item">
+        <span class="dfs-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></span>
+        <h3>Comprehensive Analysis</h3>
+        <p>We evaluate income, spending, savings, debt, and investments for a complete picture.</p>
+      </div>
+      <div class="dfs-item">
+        <span class="dfs-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.26L21 9.27l-4.5 4.38L17.8 21 12 17.77 6.2 21l1.3-7.35L3 9.27l6.1-1.01L12 2z"/></svg></span>
+        <h3>Personalized Insights</h3>
+        <p>Get recommendations based on your unique financial situation, not a generic checklist.</p>
+      </div>
+      <div class="dfs-item">
+        <span class="dfs-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></span>
+        <h3>Track Your Progress</h3>
+        <p>Log updates over time and watch your grade and net worth move as your finances improve.</p>
+      </div>
+      <div class="dfs-item">
+        <span class="dfs-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span>
+        <h3>Secure &amp; Private</h3>
+        <p>Everything is calculated locally in your browser. No bank connection, no unnecessary data collection.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -4686,22 +4822,27 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 <section class="block gmf-how-modern" id="how">
   <div class="container">
-    <div class="gmf-feature-strip">
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon mint">▦</div>
-        <div><strong>Free Calculator</strong><span>Enter your numbers.</span></div>
+    <div class="block-head center">
+      <span class="kicker">Simple Process</span>
+      <h2>How It Works</h2>
+    </div>
+    <div class="how-steps-v2">
+      <div class="hsv2-step">
+        <div class="hsv2-num">1</div>
+        <h3>Answer 5 Quick Questions</h3>
+        <p>Age, income, expenses, savings, and debt — entered by hand, right in your browser. No bank connection, ever.</p>
       </div>
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon blue">↗</div>
-        <div><strong>See Where You Stand</strong><span>Compare your progress.</span></div>
+      <div class="hsv2-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h24M19 1l6 6-6 6"/></svg></div>
+      <div class="hsv2-step">
+        <div class="hsv2-num">2</div>
+        <h3>We Analyze Everything</h3>
+        <p>Our scoring model weighs your savings rate, emergency fund, debt load, income, and net worth for your age.</p>
       </div>
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon green">✓</div>
-        <div><strong>Get Your Plan</strong><span>Know what to do next.</span></div>
-      </div>
-      <div class="gmf-mini-card">
-        <div class="gmf-mini-icon gold">↗</div>
-        <div><strong>Track Progress</strong><span>Keep getting better.</span></div>
+      <div class="hsv2-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h24M19 1l6 6-6 6"/></svg></div>
+      <div class="hsv2-step">
+        <div class="hsv2-num">3</div>
+        <h3>Get Your Grade &amp; Plan</h3>
+        <p>See your letter grade instantly, understand exactly what's helping and hurting, and what to do next.</p>
       </div>
     </div>
   </div>
@@ -8603,6 +8744,7 @@ $("calcModal").addEventListener("click", function(e){ if(e.target === $("calcMod
 document.addEventListener("keydown", function(e){ if(e.key === "Escape" && $("calcModal").classList.contains("show")) closeCalcModal(); });
 
 $("gradeBtnHero").addEventListener("click", function(){ openCalcModal('hero'); });
+if($("navGetGradeBtn")) $("navGetGradeBtn").addEventListener("click", function(){ openCalcModal('nav'); });
 if($("gradeBtnFooterCta")) $("gradeBtnFooterCta").addEventListener("click", function(){ openCalcModal('footer_cta'); });
 $("gradeBtn").addEventListener("click", function(){
   // One-time sync: copy the two quick-flow aggregate answers into the
