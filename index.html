@@ -567,6 +567,8 @@ section.block{ padding:76px 0 }
   display:flex; flex-direction:column; align-items:center; gap:8px; background:none; border:none; padding:0;
   flex:1 1 0; min-width:0;
 }
+.pro-only-step-label{ display:none }
+body.is-pro .pro-only-step-label{ display:flex }
 .step-circle{
   font-family:var(--font-mono); font-weight:700; color:var(--muted-2); width:38px; height:38px; border-radius:50%;
   display:inline-flex; align-items:center; justify-content:center; font-size:13px;
@@ -2445,9 +2447,9 @@ footer{background:#073d32 !important;}
 .hpc-bar-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg,#149B7A,#2FCBA0) }
 .hpc-bar-row .hbr-val{ text-align:right; color:#8A93A3; font-weight:600 }
 .hpc-metrics{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px }
-.hpc-metric{ background:#F7F8FA; border:1px solid #EDEFF2; border-radius:12px; padding:10px 12px }
-.hpc-metric span{ display:block; font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:#8A93A3; margin-bottom:4px }
-.hpc-metric b{ font-size:14px; color:#0B1220 }
+.hpc-metric{ background:#F7F8FA; border:1px solid #EDEFF2; border-radius:12px; padding:10px 12px; display:flex; flex-direction:column }
+.hpc-metric span{ display:block; font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:#8A93A3; margin-bottom:4px; line-height:1.3; min-height:24px }
+.hpc-metric b{ font-size:14px; color:#0B1220; margin-top:auto }
 .hero-ring-wrap.hero-in-mock{ display:flex; flex-direction:column; align-items:center }
 @media (max-width:980px){
   .hero-preview-card{ grid-template-columns:1fr; max-width:420px; margin:0 auto }
@@ -3057,7 +3059,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
             <div class="hpc-metric"><span>Monthly Income</span><b>$6,250</b></div>
             <div class="hpc-metric"><span>Monthly Savings</span><b>$1,350</b></div>
             <div class="hpc-metric"><span>Net Worth</span><b>$142,500</b></div>
-            <div class="hpc-metric"><span>Debt-to-Income</span><b>18%</b></div>
+            <div class="hpc-metric"><span>Debt / Income</span><b>18%</b></div>
           </div>
         </div>
       </div>
@@ -3329,6 +3331,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <span class="step-label" data-step-label="3"><span class="step-circle">3</span><span class="step-name">Expenses</span></span>
         <span class="step-label" data-step-label="4"><span class="step-circle">4</span><span class="step-name">Savings</span></span>
         <span class="step-label" data-step-label="5"><span class="step-circle">5</span><span class="step-name">Debt</span></span>
+        <span class="step-label pro-only-step-label" data-step-label="6"><span class="step-circle">6</span><span class="step-name">Housing</span></span>
+        <span class="step-label pro-only-step-label" data-step-label="7"><span class="step-circle">7</span><span class="step-name">Investing</span></span>
+        <span class="step-label pro-only-step-label" data-step-label="8"><span class="step-circle">8</span><span class="step-name">Assets</span></span>
+        <span class="step-label pro-only-step-label" data-step-label="9"><span class="step-circle">9</span><span class="step-name">Debts</span></span>
       </div>
     </div>
   </div>
@@ -3392,6 +3398,107 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     <div class="calc-actions">
       <button class="btn" id="resetBtn" type="button">Reset</button>
       <button class="btn gold calc-final-cta" id="gradeBtn" type="button">Get My Financial Grade →</button>
+    </div>
+    <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
+  </div>
+
+  <div class="calc-step pro-only-step" data-step="6">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><div><b>Housing</b><span>Only relevant if you own — renters can skip this</span></div></div>
+    <div class="field-row">
+      <div>
+        <div class="calc-housing-label">Do you own or rent your home?</div>
+        <div class="segmented" role="group" aria-label="Housing">
+          <button id="modeOwner" type="button">Owner</button>
+          <button id="modeRenter" type="button">Renter</button>
+        </div>
+      </div>
+    </div>
+    <div class="inputs">
+      <div class="field icon-field" id="homeCard">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="home">Home Value</label></div>
+        <input id="home" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field" id="mortCard">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="mortgage">Mortgage Balance</label></div>
+        <input id="mortgage" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+    </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step pro-only-step" data-step="7">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b>Retirement &amp; Investments</b><span>Accounts working for you long-term</span></div></div>
+    <div class="inputs">
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="retire">Retirement (401k, IRA)</label></div>
+        <input id="retire" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(74,222,158,.15);color:#4ADE9E"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><label for="brokerage">Brokerage / Stocks</label></div>
+        <input id="brokerage" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><label for="hsa">HSA</label></div>
+        <input id="hsa" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+    </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step pro-only-step" data-step="8">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><div><b>Cash &amp; Other Assets</b><span>Everything else that holds value</span></div></div>
+    <div class="inputs">
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><label for="cash">Cash Savings</label></div>
+        <input id="cash" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Pre-filled from your total savings answer — adjust if you're now itemizing.</div>
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(236,72,153,.15);color:#EC4899"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span><label for="crypto">Crypto &amp; Other</label></div>
+        <input id="crypto" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="car">Car Value</label></div>
+        <input id="car" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+    </div>
+    <div class="step-actions"><button class="btn" type="button" data-prev>← Back</button><button class="btn gold" type="button" data-next>Continue →</button></div>
+  </div>
+
+  <div class="calc-step pro-only-step" data-step="9">
+    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(193,73,61,.15);color:#C1493D"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>Debts</b><span>Everything you owe, broken out individually</span></div></div>
+    <div class="inputs">
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span><label for="student">Student Loans</label></div>
+        <input id="student" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="auto">Auto Loans</label></div>
+        <input id="auto" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><label for="cc">Credit Cards</label></div>
+        <input id="cc" type="number" value="0" min="0" inputmode="decimal">
+      </div>
+      <div class="field icon-field">
+        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="otherDebt">Personal Loans / Other Debt</label></div>
+        <input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Pre-filled from your total debt answer — adjust if you're now itemizing.</div>
+      </div>
+    </div>
+
+    <div class="calc-total-card" style="margin-top:20px">
+      <div class="calc-total-text"><b>Total Assets</b><span>Total of everything entered above</span></div>
+      <div class="calc-total-value" id="assetsHint">—</div>
+    </div>
+    <div class="calc-total-card">
+      <div class="calc-total-text"><b>Total Liabilities</b><span>Total of all debts entered above</span></div>
+      <div class="calc-total-value" id="liabHint">—</div>
+    </div>
+
+    <div class="calc-privacy-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg><span>All calculations are done locally on your device. Your data is <b>never</b> sent anywhere.</span></div>
+
+    <div class="calc-actions">
+      <span></span>
+      <button class="btn gold calc-final-cta" id="gradeBtnFinal" type="button">Get My Financial Grade →</button>
     </div>
     <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
   </div>
@@ -3719,102 +3826,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
   </div>
 </div>
 
-<div id="advancedCalcModal" class="modal calc-modal" role="dialog" aria-modal="true" aria-labelledby="advCalcTitle">
-<section class="calc-wrap" aria-label="Advanced financial details">
-  <button class="xbtn calc-modal-close" id="advancedCalcClose" type="button" aria-label="Close advanced calculator">✕</button>
-  <div class="calc-v2-main">
-    <h2 id="advCalcTitle" class="calc-simple-title">Your Complete Financial Picture</h2>
-    <p class="reveal-deeper-sub" style="margin-bottom:26px">Add as much or as little as you'd like — anything left blank stays at 0. This refines your grade using the full scoring model instead of the five-number estimate.</p>
-
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><div><b>Housing</b><span>Only relevant if you own — renters can skip this</span></div></div>
-    <div class="field-row">
-      <div>
-        <div class="calc-housing-label">Do you own or rent your home?</div>
-        <div class="segmented" role="group" aria-label="Housing">
-          <button id="modeOwner" type="button">Owner</button>
-          <button id="modeRenter" type="button">Renter</button>
-        </div>
-      </div>
-    </div>
-    <div class="inputs" style="margin-bottom:26px">
-      <div class="field icon-field" id="homeCard">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="home">Home Value</label></div>
-        <input id="home" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field" id="mortCard">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(45,212,191,.15);color:#2DD4BF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span><label for="mortgage">Mortgage Balance</label></div>
-        <input id="mortgage" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-    </div>
-
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b>Retirement &amp; Investments</b><span>Accounts working for you long-term</span></div></div>
-    <div class="inputs" style="margin-bottom:26px">
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="retire">Retirement (401k, IRA)</label></div>
-        <input id="retire" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(74,222,158,.15);color:#4ADE9E"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span><label for="brokerage">Brokerage / Stocks</label></div>
-        <input id="brokerage" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><label for="hsa">HSA</label></div>
-        <input id="hsa" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-    </div>
-
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><div><b>Cash &amp; Other Assets</b><span>Everything else that holds value</span></div></div>
-    <div class="inputs" style="margin-bottom:26px">
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span><label for="cash">Cash Savings</label></div>
-        <input id="cash" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Pre-filled from your total savings answer — adjust if you're now itemizing.</div>
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(236,72,153,.15);color:#EC4899"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span><label for="crypto">Crypto &amp; Other</label></div>
-        <input id="crypto" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="car">Car Value</label></div>
-        <input id="car" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-    </div>
-
-    <div class="calc-field-header"><span class="calc-field-header-icon" style="background:rgba(193,73,61,.15);color:#C1493D"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><div><b>Debts</b><span>Everything you owe, broken out individually</span></div></div>
-    <div class="inputs">
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span><label for="student">Student Loans</label></div>
-        <input id="student" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(59,130,246,.15);color:#3B82F6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span><label for="auto">Auto Loans</label></div>
-        <input id="auto" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(232,179,74,.15);color:#E8B34A"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span><label for="cc">Credit Cards</label></div>
-        <input id="cc" type="number" value="0" min="0" inputmode="decimal">
-      </div>
-      <div class="field icon-field">
-        <div class="field-icon-row"><span class="field-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><label for="otherDebt">Personal Loans / Other Debt</label></div>
-        <input id="otherDebt" type="number" value="0" min="0" inputmode="decimal"><div class="hint">Pre-filled from your total debt answer — adjust if you're now itemizing.</div>
-      </div>
-    </div>
-
-    <div class="calc-total-card" style="margin-top:20px">
-      <div class="calc-total-text"><b>Total Assets</b><span>Total of everything entered above</span></div>
-      <div class="calc-total-value" id="assetsHint">—</div>
-    </div>
-    <div class="calc-total-card">
-      <div class="calc-total-text"><b>Total Liabilities</b><span>Total of all debts entered above</span></div>
-      <div class="calc-total-value" id="liabHint">—</div>
-    </div>
-
-    <div class="calc-actions">
-      <span></span>
-      <button class="btn gold calc-final-cta" id="revealDeeperSave" type="button">Get My Financial Grade →</button>
-    </div>
-  </div>
-</section>
-</div>
 
 <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rcTitle">
   <div class="sheet">
@@ -5330,27 +5341,39 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
 
 /* ================= MULTI-STEP CALCULATOR WIZARD ================= */
 (function setupStepper(){
-  var steps = document.querySelectorAll(".calc-step");
-  var labels = document.querySelectorAll(".step-label");
+  var allSteps = Array.prototype.slice.call(document.querySelectorAll(".calc-step"));
+  var allLabels = Array.prototype.slice.call(document.querySelectorAll(".step-label"));
   var fill = $("stepperFill");
-  if(!steps.length) return;
-  var total = steps.length;
+  if(!allSteps.length) return;
   var current = 1;
+
+  // Pro-only steps (6-9: Housing, Retirement & Investments, Cash & Other
+  // Assets, Debts) are excluded from the free flow entirely - computed
+  // fresh on every navigation rather than once at load, so activating
+  // Pro mid-session (e.g. pasting a license key) is reflected on the
+  // very next step change without needing a page reload.
+  function visibleSteps(){ return allSteps.filter(function(s){ return !s.classList.contains("pro-only-step") || isProUser(); }); }
+  function visibleLabels(){ return allLabels.filter(function(l){ return !l.classList.contains("pro-only-step-label") || isProUser(); }); }
 
   var SIDEBAR_COPY = {
     1: { p1:"How old", p2:"are you?", sub:"Used to compare your numbers to others at your stage of life." },
     2: { p1:"What's your", p2:"monthly income?", sub:"Your take-home pay — after taxes, before rent or bills." },
     3: { p1:"What are your", p2:"monthly expenses?", sub:"Housing, transportation, everything else — combined." },
     4: { p1:"How much have you", p2:"saved so far?", sub:"Cash, retirement accounts, investments — everything combined." },
-    5: { p1:"Almost there —", p2:"what do you owe?", sub:"Credit cards, loans, anything you owe. One lump number is fine." }
+    5: { p1:"Almost there —", p2:"what do you owe?", sub:"Credit cards, loans, anything you owe. One lump number is fine." },
+    6: { p1:"Let's talk about", p2:"your housing.", sub:"Only relevant if you own — renters can skip this." },
+    7: { p1:"What are you", p2:"building for the future?", sub:"Retirement and investment accounts working for you long-term." },
+    8: { p1:"Any other", p2:"assets?", sub:"Cash, crypto, vehicles — everything else that holds value." },
+    9: { p1:"Last step —", p2:"your individual debts.", sub:"Everything you owe, broken out by type." }
   };
   var badgeNumEl = $("calcStepBadgeNum"), h1El = $("calcHeadlinePart1"), h2El = $("calcHeadlinePart2"), subEl = $("calcSidebarSub");
   var stepperStepText = $("stepperStepText");
 
   function show(stepNum){
+    var steps = visibleSteps(), labels = visibleLabels(), total = steps.length;
     var prevStep = current;
     current = Math.max(1, Math.min(total, stepNum));
-    steps.forEach(function(s){
+    allSteps.forEach(function(s){
       var n = +s.dataset.step;
       var wasActive = s.classList.contains("active");
       s.classList.toggle("active", n === current);
@@ -5394,7 +5417,10 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
     return true;
   }
 
-  steps.forEach(function(stepEl){
+  // Handlers are attached to every step unconditionally (not just
+  // currently-visible ones), since Pro status - and therefore which
+  // steps are reachable - can change after this runs.
+  allSteps.forEach(function(stepEl){
     stepEl.querySelectorAll("[data-next]").forEach(function(btn){
       btn.addEventListener("click", function(){
         if(validateCurrentStep()){
@@ -5408,7 +5434,7 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
     });
   });
 
-  labels.forEach(function(l){
+  allLabels.forEach(function(l){
     l.style.cursor = "pointer";
     l.addEventListener("click", function(){
       var n = +l.dataset.stepLabel;
@@ -5419,8 +5445,9 @@ setHousing(localStorage.getItem("gmf_housing")||"owner");
   // If a share-link hash hydrates the form with real values, or someone
   // hits "See a sample report", jump straight to the last step so they see
   // everything already filled in rather than re-clicking through 1-2-3.
-  window.__stepperJumpToEnd = function(){ show(total); };
+  window.__stepperJumpToEnd = function(){ show(visibleSteps().length); };
   window.__stepperReset = function(){ show(1); };
+  window.__stepperShow = show;
 
   show(1);
 })();
@@ -8690,43 +8717,26 @@ function gradeNow(){
   });
 }
 /* Detailed financial fields (home, retirement, individual debts, etc.)
-   are gated behind Pro via the .pro-gated/.pro-lock CSS pair — hidden
-   for free users, revealed automatically for Pro (body.is-pro). They
-   live in their own dedicated modal (separate from the free 5-question
-   calculator) so the results card stays clean and the detailed fields
-   get real room to breathe. */
-(function setupAdvancedCalcModal(){
-  var openBtn = $("openAdvancedCalcBtn"), closeBtn = $("advancedCalcClose"), modal = $("advancedCalcModal"), save = $("revealDeeperSave");
-  if(!modal) return;
-
-  function openAdvancedCalc(){
-    try{ __track('deeper_profile_started', {}); }catch(e){}
-    modal.classList.add("show");
-    lockBodyScroll();
-    updateHints();
-  }
-  window.__openAdvancedCalc = openAdvancedCalc;
-  function closeAdvancedCalc(){
-    modal.classList.remove("show");
-    unlockBodyScroll();
-  }
-  if(openBtn) openBtn.addEventListener("click", openAdvancedCalc);
-  if(closeBtn) closeBtn.addEventListener("click", closeAdvancedCalc);
-  modal.addEventListener("click", function(e){ if(e.target === modal) closeAdvancedCalc(); });
-
-  if(save) save.addEventListener("click", function(){
-    try{ __track('deeper_profile_completed', {}); }catch(e){}
-    var v=values(); var cats=categoryScores(v);
-    var prevHistory = getHistory();
-    var modalEl = document.getElementById("reportModal");
-    if(modalEl) modalEl.style.setProperty("display", "none", "important");
-    openReport(v,cats);
-    closeAdvancedCalc();
-    showGradeReveal(v, cats, prevHistory);
-    var card = document.querySelector(".grade-reveal-card");
-    if(card) card.scrollTop = 0;
-  });
-})();
+   are gated behind Pro via the .pro-gated/.pro-lock CSS pair, and now
+   live as extra steps (6-9) inside the SAME calculator stepper instead
+   of a separate modal - one continuous flow, one final grade. The
+   final button on step 9 (gradeBtnFinal) reuses gradeNow() directly,
+   so the loading-screen animation runs for Pro users too, exactly the
+   same as the free path. */
+if($("gradeBtnFinal")) $("gradeBtnFinal").addEventListener("click", function(){
+  try{ __track('deeper_profile_completed', {}); }catch(e){}
+  closeCalcModal();
+  gradeNow();
+});
+// "Add Your Complete Financial Details" on the results screen re-opens
+// the calculator at the detail steps for a Pro user who wants to go
+// back and add or adjust something after already seeing a grade.
+if($("openAdvancedCalcBtn")) $("openAdvancedCalcBtn").addEventListener("click", function(){
+  var overlayEl = $("gradeRevealOverlay");
+  if(overlayEl) overlayEl.classList.remove("show");
+  openCalcModal("grade_reveal_detailed");
+  if(window.__stepperShow) window.__stepperShow(6);
+});
 
 function openCalcModal(location){
   __track('click_open_calculator',{location:location});
@@ -8768,19 +8778,20 @@ if($("navGetGradeBtn")) $("navGetGradeBtn").addEventListener("click", function()
 if($("gradeBtnFooterCta")) $("gradeBtnFooterCta").addEventListener("click", function(){ openCalcModal('footer_cta'); });
 $("gradeBtn").addEventListener("click", function(){
   // One-time sync: copy the two quick-flow aggregate answers into the
-  // real scoring fields (cash, otherDebt). For Pro users this feeds the
-  // advanced form's pre-fill; for free users it feeds the grade directly.
+  // real scoring fields (cash, otherDebt). For Pro users this pre-fills
+  // the detail steps that follow; for free users it feeds the grade directly.
   var qs=$("qSavingsTotal"), qd=$("qDebtTotal"), cashEl=$("cash"), otherDebtEl=$("otherDebt");
   if(qs && cashEl) cashEl.value = qs.value || 0;
   if(qd && otherDebtEl) otherDebtEl.value = qd.value || 0;
   try{ __track('calculator_completed', {}); }catch(e){}
-  closeCalcModal();
-  if(isProUser() && window.__openAdvancedCalc){
-    // Pro users go straight into the full-detail form instead of seeing
-    // a partial grade first and having to hunt for it afterward - one
-    // continuous flow, one final grade.
-    window.__openAdvancedCalc();
+  if(isProUser() && window.__stepperShow){
+    // Pro users continue straight into the full-detail steps (still the
+    // same modal, same stepper) instead of seeing a partial grade first
+    // and having to hunt down a separate calculator afterward.
+    updateHints();
+    window.__stepperShow(6);
   } else {
+    closeCalcModal();
     gradeNow();
   }
 });
