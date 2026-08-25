@@ -242,6 +242,77 @@ main{ padding:28px 0 70px }
 .subject-grades-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:14px }
 @media (max-width:900px){ .subject-grades-grid{ grid-template-columns:repeat(3,1fr) } }
 @media (max-width:560px){ .subject-grades-grid{ grid-template-columns:repeat(2,1fr) } }
+
+/* ============= Live Grade editor (Grade Report tab) =============
+   Deliberately its own dark, high-contrast surface regardless of the
+   site's light/dark theme toggle — a distinct "workbench" feel for the
+   one place where editing a number visibly moves your grade. */
+.gmr-live-shell{
+  background:#0A0F1C; border-radius:20px; padding:26px 24px 22px; color:#fff;
+  box-shadow:0 24px 60px -20px rgba(10,15,28,.5);
+}
+.gmr-live-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:22px }
+.gmr-live-kicker{ font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#5FE0BE }
+.gmr-live-sub{ font-size:12.5px; color:rgba(255,255,255,.55); margin:6px 0 0; max-width:420px; line-height:1.5 }
+.gmr-live-head .btn.gold{ background:#149B7A; border-color:#149B7A; color:#fff }
+.gmr-live-head .btn.gold:hover{ background:#0F8168 }
+
+.gmr-ring-row{ display:flex; align-items:center; gap:28px; margin-bottom:28px; flex-wrap:wrap }
+.gmr-ring-wrap{ position:relative; width:160px; height:160px; flex:none }
+.gmr-ring-svg{ width:100%; height:100% }
+.gmr-ring-track{ fill:none; stroke:rgba(255,255,255,.08); stroke-width:11 }
+.gmr-ring-fill{
+  fill:none; stroke:#149B7A; stroke-width:11; stroke-linecap:round;
+  stroke-dasharray:439.8; stroke-dashoffset:439.8;
+  transition:stroke-dashoffset 1s cubic-bezier(.16,1,.3,1), stroke 1s ease;
+}
+.gmr-ring-fill.up{ stroke:#2FCBA0 }
+.gmr-ring-fill.down{ stroke:#E5675A }
+.gmr-ring-inner{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px }
+.gmr-ring-letter{ font-family:var(--font-display); font-size:40px; font-weight:800; line-height:1; transition:transform .3s ease }
+.gmr-ring-letter.bump{ animation:gmrBump .45s ease }
+@keyframes gmrBump{ 0%{ transform:scale(1) } 40%{ transform:scale(1.18) } 100%{ transform:scale(1) } }
+.gmr-ring-score{ font-family:var(--font-mono); font-size:12px; color:rgba(255,255,255,.55) }
+.gmr-ring-side{ display:flex; flex-direction:column; gap:14px; flex:1 1 240px; min-width:220px }
+.gmr-delta-pill{
+  display:inline-flex; align-items:center; gap:6px; align-self:flex-start; padding:6px 13px; border-radius:99px;
+  font-size:12.5px; font-weight:700; background:rgba(255,255,255,.07); color:rgba(255,255,255,.6);
+  transition:background .3s ease, color .3s ease;
+}
+.gmr-delta-pill.up{ background:rgba(47,203,160,.16); color:#5FE0BE }
+.gmr-delta-pill.down{ background:rgba(229,103,90,.16); color:#F0938A }
+.gmr-mini-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
+.gmr-mini-stat{ background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:10px 12px }
+.gmr-mini-stat span{ display:block; font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:rgba(255,255,255,.4); margin-bottom:5px }
+.gmr-mini-stat b{ font-family:var(--font-mono); font-size:14px; color:#fff }
+
+.gmr-field-group{ margin-top:18px }
+.gmr-field-group-head{ margin-bottom:8px }
+.gmr-field-group-head span{ font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.4) }
+.gmr-row{
+  display:flex; align-items:center; gap:12px; padding:11px 4px; border-bottom:1px solid rgba(255,255,255,.06);
+}
+.gmr-row:last-child{ border-bottom:none }
+.gmr-row-icon{
+  width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex:none;
+}
+.gmr-row-icon.asset{ background:rgba(47,203,160,.15); color:#5FE0BE }
+.gmr-row-icon.debt{ background:rgba(229,103,90,.15); color:#F0938A }
+.gmr-row-label{ flex:1; font-size:13.5px; font-weight:600; color:rgba(255,255,255,.85) }
+.gmr-row-input{
+  width:130px; text-align:right; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+  border-radius:9px; padding:8px 10px; color:#fff; font-family:var(--font-mono); font-size:13.5px;
+  transition:border-color .15s ease, background .15s ease;
+}
+.gmr-row-input:focus{ outline:none; border-color:#149B7A; background:rgba(20,155,122,.12) }
+@media (max-width:560px){
+  .gmr-live-shell{ padding:20px 16px 18px }
+  .gmr-ring-row{ gap:18px }
+  .gmr-ring-wrap{ width:130px; height:130px }
+  .gmr-ring-letter{ font-size:32px }
+  .gmr-mini-stats{ grid-template-columns:1fr }
+  .gmr-row-input{ width:105px }
+}
 .report-remarks-card p{ font-family:var(--font-serif); font-size:15px; line-height:1.65; color:var(--text); margin:10px 0 0; font-style:italic }
 .attendance-row{ display:flex; gap:28px; flex-wrap:wrap; margin-top:14px }
 .attendance-row > div{ flex:1 1 180px }
@@ -3819,7 +3890,125 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
 
     <!-- ================= SCORE HISTORY ================= -->
     <div class="dash-tab-panel" id="panel-score">
-      <div class="gmf-hero">
+      <div class="gmr-live-shell">
+        <div class="gmr-live-head">
+          <div>
+            <span class="gmr-live-kicker">Live Grade</span>
+            <p class="gmr-live-sub">Edit any number below and watch your grade move — nothing saves until you hit Save Update.</p>
+          </div>
+          <button class="btn gold sm" id="gmrSaveUpdate" type="button" style="display:none">Save Update</button>
+        </div>
+
+        <div class="gmr-ring-row">
+          <div class="gmr-ring-wrap">
+            <svg viewBox="0 0 160 160" class="gmr-ring-svg" aria-hidden="true">
+              <circle cx="80" cy="80" r="70" class="gmr-ring-track"/>
+              <circle cx="80" cy="80" r="70" class="gmr-ring-fill" id="gmrRingFill" transform="rotate(-90 80 80)"/>
+            </svg>
+            <div class="gmr-ring-inner">
+              <span class="gmr-ring-letter" id="gmrRingLetter">—</span>
+              <span class="gmr-ring-score" id="gmrRingScore">— / 100</span>
+            </div>
+          </div>
+          <div class="gmr-ring-side">
+            <div class="gmr-delta-pill" id="gmrDeltaPill">No changes yet</div>
+            <div class="gmr-mini-stats">
+              <div class="gmr-mini-stat"><span>Net Worth</span><b id="gmrMiniNet">—</b></div>
+              <div class="gmr-mini-stat"><span>Savings Rate</span><b id="gmrMiniSave">—</b></div>
+              <div class="gmr-mini-stat"><span>Debt Load</span><b id="gmrMiniDebt">—</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gmr-field-group">
+          <div class="gmr-field-group-head"><span>Income &amp; Age</span></div>
+          <div class="gmr-row" data-field="age">
+            <span class="gmr-row-icon" style="background:rgba(139,92,246,.18);color:#B79CFF"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span>
+            <span class="gmr-row-label">Age</span>
+            <input class="gmr-row-input" id="gmrIn_age" type="number" inputmode="numeric" min="16" max="100">
+          </div>
+          <div class="gmr-row" data-field="income">
+            <span class="gmr-row-icon" style="background:rgba(59,130,246,.18);color:#7FB2F5"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+            <span class="gmr-row-label">Monthly Income</span>
+            <input class="gmr-row-input" id="gmrIn_income" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="expenses">
+            <span class="gmr-row-icon" style="background:rgba(232,179,74,.18);color:#F0C572"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/></svg></span>
+            <span class="gmr-row-label">Monthly Expenses</span>
+            <input class="gmr-row-input" id="gmrIn_expenses" type="number" inputmode="decimal" min="0">
+          </div>
+        </div>
+
+        <div class="gmr-field-group">
+          <div class="gmr-field-group-head"><span>Assets</span></div>
+          <div class="gmr-row" data-field="cash">
+            <span class="gmr-row-icon asset"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h4.5a2 2 0 1 1 0 4H9"/></svg></span>
+            <span class="gmr-row-label">Cash Savings</span>
+            <input class="gmr-row-input" id="gmrIn_cash" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="retire">
+            <span class="gmr-row-icon asset"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <span class="gmr-row-label">Retirement (401k, IRA)</span>
+            <input class="gmr-row-input" id="gmrIn_retire" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="brokerage">
+            <span class="gmr-row-icon asset"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 15l4-6 3 3 5-8"/></svg></span>
+            <span class="gmr-row-label">Brokerage / Stocks</span>
+            <input class="gmr-row-input" id="gmrIn_brokerage" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="hsa">
+            <span class="gmr-row-icon asset"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+            <span class="gmr-row-label">HSA</span>
+            <input class="gmr-row-input" id="gmrIn_hsa" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="crypto">
+            <span class="gmr-row-icon asset"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></span>
+            <span class="gmr-row-label">Crypto &amp; Other</span>
+            <input class="gmr-row-input" id="gmrIn_crypto" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="home">
+            <span class="gmr-row-icon asset"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span>
+            <span class="gmr-row-label">Home Value</span>
+            <input class="gmr-row-input" id="gmrIn_home" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="car">
+            <span class="gmr-row-icon asset"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span>
+            <span class="gmr-row-label">Car Value</span>
+            <input class="gmr-row-input" id="gmrIn_car" type="number" inputmode="decimal" min="0">
+          </div>
+        </div>
+
+        <div class="gmr-field-group">
+          <div class="gmr-field-group-head"><span>Liabilities</span></div>
+          <div class="gmr-row" data-field="mortgage">
+            <span class="gmr-row-icon debt"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg></span>
+            <span class="gmr-row-label">Mortgage Balance</span>
+            <input class="gmr-row-input" id="gmrIn_mortgage" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="student">
+            <span class="gmr-row-icon debt"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span>
+            <span class="gmr-row-label">Student Loans</span>
+            <input class="gmr-row-input" id="gmrIn_student" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="auto">
+            <span class="gmr-row-icon debt"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M3 17V9l2-5h10l4 5h2v8"/></svg></span>
+            <span class="gmr-row-label">Auto Loans</span>
+            <input class="gmr-row-input" id="gmrIn_auto" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="cc">
+            <span class="gmr-row-icon debt"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+            <span class="gmr-row-label">Credit Cards</span>
+            <input class="gmr-row-input" id="gmrIn_cc" type="number" inputmode="decimal" min="0">
+          </div>
+          <div class="gmr-row" data-field="otherDebt">
+            <span class="gmr-row-icon debt"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <span class="gmr-row-label">Personal Loans / Other</span>
+            <input class="gmr-row-input" id="gmrIn_otherDebt" type="number" inputmode="decimal" min="0">
+          </div>
+        </div>
+      </div>
+
+      <div class="gmf-hero" style="margin-top:26px">
         <div>
           <span class="gmf-hero-kicker">Grade Report</span>
           <div class="gmf-hero-value" id="scHeroVal">—</div>
@@ -5991,6 +6180,176 @@ function incomeBenchmark(age){
   }
   return INCOME_BENCHMARK_CURVE[INCOME_BENCHMARK_CURVE.length-1][1];
 }
+
+/* ================= LIVE GRADE EDITOR — scoring engine =================
+   Ported verbatim from index.html's calculator (same constants, same
+   formulas, same letter thresholds) so the Grade Report's live editor
+   can never compute a different grade than the real calculator would
+   for the same numbers. Do not tweak these independent of index.html. */
+var retirementSafe = 3000000;
+var withdrawalRate = 0.04;
+var NW_CURVE=[[25,0.2],[30,0.5],[35,1.0],[40,1.5],[45,2.5],[50,3.5],[55,5.0],[60,6.5]];
+function targetNW(age){
+  if(age<=NW_CURVE[0][0]) return NW_CURVE[0][1];
+  if(age>=NW_CURVE[NW_CURVE.length-1][0]) return NW_CURVE[NW_CURVE.length-1][1];
+  for(var i=1;i<NW_CURVE.length;i++){
+    var a0=NW_CURVE[i-1][0], t0=NW_CURVE[i-1][1], a1=NW_CURVE[i][0], t1=NW_CURVE[i][1];
+    if(age<=a1){ var t=(age-a0)/(a1-a0); return t0+(t1-t0)*t; }
+  }
+  return NW_CURVE[NW_CURVE.length-1][1];
+}
+function ageNWScore(nwProgress){
+  if(nwProgress >= 0) return Math.pow(clamp(nwProgress,0,1.0),0.85);
+  return clamp(0.15 * (1 - clamp(-nwProgress,0,3)/3), 0, 0.15);
+}
+function incomeLetterFromRatio(r){
+  return r>=2.2?"A+": r>=1.8?"A": r>=1.5?"A-": r>=1.3?"B+": r>=1.15?"B": r>=1.0?"B-": r>=0.9?"C+": r>=0.8?"C": r>=0.7?"C-": r>=0.6?"D": "F";
+}
+var GMR_FIELD_IDS = ["age","income","expenses","home","retire","brokerage","car","hsa","cash","crypto","mortgage","student","auto","cc","otherDebt"];
+function gmrDeriveFrom(raw){
+  var v={};
+  GMR_FIELD_IDS.forEach(function(id){ v[id] = Math.max(0, Number(raw[id])||0); });
+  v.age = Math.min(100, Math.max(18, v.age || 30));
+  v.assets=v.home+v.retire+v.brokerage+v.car+v.hsa+v.cash+v.crypto;
+  v.liabs=v.mortgage+v.student+v.auto+v.cc+v.otherDebt;
+  v.net=v.assets-v.liabs;
+  v.annualIncome=v.income*12;
+  v.annualSpend=v.expenses*12;
+  v.baseline=Math.max(v.annualSpend, 30000);
+  v.monthlySurplus=v.income-v.expenses;
+  v.saveRate=v.income>0 ? clamp(v.monthlySurplus/v.income, 0, 1) : 0;
+  v.efMonths=v.expenses>0 ? v.cash/v.expenses : 0;
+  v.nonMortDebt=v.student+v.auto+v.cc+v.otherDebt;
+  v.debtBalanceRatio=v.annualIncome>0 ? v.nonMortDebt/v.annualIncome : 1;
+  v.debtWeighted = v.cc*1.5 + v.otherDebt*1.2 + v.auto*1.0 + v.student*0.5;
+  v.dtiWeighted = v.annualIncome>0 ? v.debtWeighted/v.annualIncome : 1;
+  v.dtiNonMort = v.debtBalanceRatio;
+  v.nwTargetMultiple=targetNW(v.age);
+  v.nwIncomeBase=Math.max(v.annualIncome, v.baseline);
+  v.nwTargetAmount=v.nwTargetMultiple*v.nwIncomeBase;
+  if(v.net>=retirementSafe || v.net>=v.baseline/withdrawalRate) v.nwProgress=1;
+  else v.nwProgress=v.nwTargetAmount>0 ? v.net/v.nwTargetAmount : 0;
+  var ratio=v.annualIncome/incomeBenchmark(v.age);
+  v.incomeScore=clamp(0.5+0.5*Math.tanh((ratio-1)*1.2),0,1);
+  v.incomeLetter=incomeLetterFromRatio(ratio);
+  return v;
+}
+function gmrCategoryScores(v){
+  var sSave = map01(v.saveRate, 0, 0.25);
+  var sEF   = map01(v.efMonths, 0, 6);
+  var sDebt = clamp(1 - v.dtiWeighted/0.60, 0, 1);
+  var sAgeNW= ageNWScore(v.nwProgress);
+  var sInc  = v.incomeScore;
+  var weighted;
+  if (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) weighted = 100;
+  else weighted = (sSave*0.20 + sEF*0.15 + sDebt*0.20 + sAgeNW*0.20 + sInc*0.25) * 100;
+  var finalScore = (v.net >= retirementSafe || v.net >= v.baseline / withdrawalRate) ? 100 : Math.round(weighted*10)/10;
+  return {
+    s: {sSave:sSave, sEF:sEF, sDebt:sDebt, sAgeNW:sAgeNW, sInc:sInc},
+    overall: { score: finalScore, letter: overallLetter(finalScore) }
+  };
+}
+
+/* ================= LIVE GRADE EDITOR — render + wire ================= */
+var GMR_RING_CIRC = 439.8; // 2 * PI * 70 (matches the SVG circle radius)
+var gmrBaseline = null; // last-saved values, used to compute the delta pill and dirty state
+
+function gmrReadCurrentRaw(){
+  var raw = {};
+  GMR_FIELD_IDS.forEach(function(id){
+    var el = document.getElementById("gmrIn_" + id);
+    raw[id] = el ? (Number(el.value) || 0) : 0;
+  });
+  return raw;
+}
+
+function gmrLatestSavedRaw(){
+  var hist = getHistory();
+  var latest = hist.length ? hist[hist.length-1] : null;
+  var raw = {};
+  GMR_FIELD_IDS.forEach(function(id){
+    raw[id] = latest && typeof latest[id] === "number" ? latest[id] : (id === "age" ? 30 : 0);
+  });
+  return raw;
+}
+
+function gmrPaintRing(cats, animate){
+  var ring = $("gmrRingFill"), letterEl = $("gmrRingLetter"), scoreEl = $("gmrRingScore");
+  if(!ring) return;
+  var pct = clamp(cats.overall.score, 0, 100) / 100;
+  var offset = GMR_RING_CIRC * (1 - pct);
+  var prevScore = gmrPaintRing._lastScore;
+  ring.style.strokeDashoffset = offset;
+  ring.classList.remove("up","down");
+  if(animate && typeof prevScore === "number" && Math.abs(cats.overall.score - prevScore) > 0.05){
+    ring.classList.add(cats.overall.score > prevScore ? "up" : "down");
+    if(letterEl){ letterEl.classList.remove("bump"); void letterEl.offsetWidth; letterEl.classList.add("bump"); }
+  }
+  gmrPaintRing._lastScore = cats.overall.score;
+  if(letterEl) letterEl.textContent = cats.overall.letter;
+  if(scoreEl) scoreEl.textContent = cats.overall.score.toFixed(1) + " / 100";
+}
+
+function gmrRunLive(animate){
+  var raw = gmrReadCurrentRaw();
+  var v = gmrDeriveFrom(raw);
+  var cats = gmrCategoryScores(v);
+  gmrPaintRing(cats, animate);
+
+  var netEl=$("gmrMiniNet"), saveEl=$("gmrMiniSave"), debtEl=$("gmrMiniDebt");
+  if(netEl) netEl.textContent = money(v.net);
+  if(saveEl) saveEl.textContent = Math.round(v.saveRate*100)+"%";
+  if(debtEl) debtEl.textContent = Math.round(v.dtiNonMort*100)+"%";
+
+  var pill = $("gmrDeltaPill"), saveBtn = $("gmrSaveUpdate");
+  if(gmrBaseline){
+    var baseCats = gmrCategoryScores(gmrDeriveFrom(gmrBaseline));
+    var d = Math.round((cats.overall.score - baseCats.overall.score)*10)/10;
+    var dirty = JSON.stringify(raw) !== JSON.stringify(gmrBaseline);
+    if(pill){
+      if(!dirty){ pill.textContent = "No changes yet"; pill.className = "gmr-delta-pill"; }
+      else if(Math.abs(d) < 0.05){ pill.textContent = "Same grade so far"; pill.className = "gmr-delta-pill"; }
+      else if(d > 0){ pill.textContent = "↑ +"+d+" pts from your last save"; pill.className = "gmr-delta-pill up"; }
+      else { pill.textContent = "↓ "+d+" pts from your last save"; pill.className = "gmr-delta-pill down"; }
+    }
+    if(saveBtn) saveBtn.style.display = dirty ? "inline-flex" : "none";
+  }
+  return { raw: raw, v: v, cats: cats };
+}
+
+function initLiveGradeEditor(){
+  if(!$("gmrRingFill")) return;
+  var saved = gmrLatestSavedRaw();
+  gmrBaseline = saved;
+  GMR_FIELD_IDS.forEach(function(id){
+    var el = document.getElementById("gmrIn_" + id);
+    if(el){
+      el.value = saved[id];
+      el.addEventListener("input", function(){ gmrRunLive(true); });
+    }
+  });
+  gmrRunLive(false); // paint the initial state without triggering the "moved" animation
+
+  var saveBtn = $("gmrSaveUpdate");
+  if(saveBtn) saveBtn.addEventListener("click", function(){
+    var result = gmrRunLive(false);
+    var entry = { ts: Date.now(), score: result.cats.overall.score, net: result.v.net,
+      annualIncome: result.v.annualIncome, monthlyExpenses: result.v.expenses, savingsRate: result.v.saveRate,
+      totalDebt: result.v.liabs, cash: result.v.cash, retire: result.v.retire, brokerage: result.v.brokerage,
+      crypto: result.v.crypto, age: result.v.age, income: result.v.income, expenses: result.v.expenses,
+      home: result.v.home, mortgage: result.v.mortgage, hsa: result.v.hsa, car: result.v.car,
+      student: result.v.student, auto: result.v.auto, cc: result.v.cc, otherDebt: result.v.otherDebt };
+    var arr = getHistory();
+    arr.push(entry);
+    localStorage.setItem("gmf_history_v2", JSON.stringify(arr));
+    gmrBaseline = result.raw;
+    gmrRunLive(false);
+    try{ __track("live_grade_update_saved", {score: result.cats.overall.score}); }catch(e){}
+    if(typeof renderScoreTab === "function") renderScoreTab(getHistory());
+    if(typeof toastMsg === "function") toastMsg("Update saved — your grade history now reflects this.");
+  });
+}
+
 function nextLetterTarget(score){
   var bounds=[60,63,67,70,73,77,80,83,87,90,93,97];
   for(var i=0;i<bounds.length;i++){ if(score<bounds[i]) return bounds[i]; }
@@ -10271,6 +10630,11 @@ async function init(){
   __safeRender('header', function(){ renderHeader(hist); });
   __safeRender('overview', function(){ renderOverviewSupplementals(hist); });
   __safeRender('score', function(){ renderScoreTab(hist); });
+  __safeRender('live-grade-editor', function(){
+    // Only wires inputs/listeners once - re-running this on every
+    // dashboard refresh would reset whatever someone is mid-edit on.
+    if(!window.__gmrLiveEditorInited){ window.__gmrLiveEditorInited = true; initLiveGradeEditor(); }
+  });
   __safeRender('progress', function(){ renderProgressPanel(hist); });
   __safeRender('money', function(){ renderMoneyExtras(); });
   __safeRender('accounts', function(){ renderAccountsTracker(); });

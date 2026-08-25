@@ -8471,7 +8471,13 @@ function openReport(v,cats){
     var match = cats.components.filter(function(c){ return c.key === minKey; })[0];
     return match ? { key: match.key, tip: match.tip } : null;
   })();
-  saveHistory({ ts: Date.now(), score: cats.overall.score, net: v.net, annualIncome: v.annualIncome, monthlyExpenses: v.expenses, savingsRate: v.saveRate, totalDebt: v.liabs, cash: v.cash, retire: v.retire, brokerage: v.brokerage, crypto: v.crypto, weakKey: weakestForHistory ? weakestForHistory.key : null, weakTip: weakestForHistory ? weakestForHistory.tip : null });
+  saveHistory({ ts: Date.now(), score: cats.overall.score, net: v.net, annualIncome: v.annualIncome, monthlyExpenses: v.expenses, savingsRate: v.saveRate, totalDebt: v.liabs, cash: v.cash, retire: v.retire, brokerage: v.brokerage, crypto: v.crypto, weakKey: weakestForHistory ? weakestForHistory.key : null, weakTip: weakestForHistory ? weakestForHistory.tip : null,
+    // Full raw inputs, preserved so the dashboard's Grade Report can
+    // rebuild the exact same v/categoryScores() computation and let
+    // someone edit any individual number and watch the grade move live,
+    // instead of only ever seeing pre-aggregated totals.
+    age: v.age, income: v.income, expenses: v.expenses, home: v.home, mortgage: v.mortgage, hsa: v.hsa, car: v.car, student: v.student, auto: v.auto, cc: v.cc, otherDebt: v.otherDebt
+  });
   saveCloudReportIfEligible(v, cats);
   var completedCount = getCachedGradeCount();
   // completedCount is already a display value (offset included from a
