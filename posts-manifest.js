@@ -123,4 +123,6 @@ var GMF_BLOG_POSTS = [
   { slug:"do-you-need-a-living-trust", title:"Living Trust vs. Will: Do You Actually Need a Trust?", category:"Advice" }
 ,
   { slug:"credit-card-rewards-are-they-worth-it", title:"Credit Card Rewards: Are They Actually Worth It, or Just Marketing?", category:"Credit" }
+,
+  { slug:"backdoor-roth-ira-explained", title:"Backdoor Roth IRA: How It Works and Who Should Actually Use One", category:"Investing" }
 ];
