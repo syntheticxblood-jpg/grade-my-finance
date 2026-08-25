@@ -831,6 +831,23 @@ body.is-pro .pro-only-step-label{ display:flex }
 .rpt-cta-row{ display:flex; gap:10px; flex-wrap:wrap }
 .rpt-cta-row .btn{ flex:1 1 0; justify-content:center; min-width:0 }
 .reveal-pro-teaser .rpt-sub{ display:block; margin-top:10px; font-size:11.5px; color:var(--muted); text-align:center }
+
+/* Email retention capture — deliberately quieter than the Pro teaser
+   above it (no color-filled background, no bold border, smaller
+   button) so it reads as the fallback option, not a competing offer. */
+.reveal-email-retention{
+  margin-top:24px; padding-top:20px; border-top:1px solid var(--line); text-align:left;
+}
+.rer-label{ display:block; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--muted-2); margin-bottom:4px }
+.rer-headline{ font-size:14.5px; font-weight:700; color:var(--text); margin:0 0 4px }
+.rer-line{ font-size:12.5px; color:var(--muted); margin:0 0 12px; line-height:1.45 }
+.rer-form{ display:flex; gap:8px; flex-wrap:wrap }
+.rer-form input[type="email"]{
+  flex:1 1 180px; padding:9px 11px; border-radius:9px; border:1px solid var(--line);
+  background:var(--bg-2); color:var(--text); font-family:var(--font-mono); font-size:13px;
+}
+.rer-form .btn{ flex:none }
+.rer-sub{ display:block; margin-top:8px; font-size:11px; color:var(--muted-2) }
 .reveal-advanced-cta{ text-align:left }
 .reveal-advanced-cta .reveal-deeper-sub{ font-size:12.5px; color:var(--muted); margin:0 0 12px; line-height:1.5 }
 .reveal-advanced-cta .btn{ width:100%; justify-content:center }
@@ -3780,7 +3797,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <li>✓ Score history, what-if scenarios &amp; stress testing</li>
       </ul>
       <div class="rpt-cta-row">
-        <a class="btn gold sm" href="#pricing" id="revealUnlockPro" onclick="try{__track('pro_clicked',{location:'grade_reveal'})}catch(e){}var __ov=document.getElementById('gradeRevealOverlay');if(__ov)__ov.classList.remove('show');">Unlock Pro →</a>
+        <a class="btn gold sm" href="#pricing" id="revealUnlockPro" onclick="try{__track('pro_clicked',{location:'grade_reveal'})}catch(e){}if(!window.__gmfEmailCaptureSubmitted){try{__track('grade_email_skipped',{via:'unlock_pro'})}catch(e){}}var __ov=document.getElementById('gradeRevealOverlay');if(__ov)__ov.classList.remove('show');">Unlock Pro →</a>
         <button class="btn sm ghost" id="revealCta" type="button">Create Free Account</button>
       </div>
       <span class="rpt-sub">Free account saves your snapshot. Pro unlocks the complete financial analysis in your Dashboard.</span>
@@ -3822,6 +3839,23 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <span class="rhh-title">What's hurting you</span>
         <ul id="revealHurtingList"></ul>
       </div>
+    </div>
+
+    <div class="reveal-email-retention pro-only-hide" id="revealEmailRetention">
+      <span class="rer-label">Not ready for Pro?</span>
+      <p class="rer-headline">Save your financial grade.</p>
+      <p class="rer-line">Enter your email and we'll send you your GradeMyFinance score so you can come back to it later.</p>
+      <form id="revealEmailForm" class="rer-form"
+        action="https://script.google.com/macros/s/AKfycbz7fO0zGxt_gDaRO3PSOhLxLONLNx6w5hpTQoBbJ1UiI4Y-Bh_nl6RYTKK_JYdBS4p9/exec"
+        method="POST" novalidate>
+        <input type="hidden" name="reportGrade" id="revealEmailGrade" value="">
+        <input type="hidden" name="reportScore" id="revealEmailScore" value="">
+        <input type="text" name="website" id="revealEmailWebsite" tabindex="-1" autocomplete="off" aria-hidden="true"
+          style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
+        <input type="email" name="email" id="revealEmailInput" placeholder="Enter your email" required>
+        <button type="submit" class="btn sm" id="revealEmailSubmit">Save My Grade</button>
+      </form>
+      <span class="rer-sub">No spam. Unsubscribe anytime.</span>
     </div>
   </div>
 </div>
@@ -8065,10 +8099,25 @@ function showGradeReveal(v, cats, prevHistory){
   var overlayEl = $("gradeRevealOverlay");
   overlayEl.classList.add("show");
   try{ __track('grade_viewed', {grade:letterClean, score:cats.overall.score}); }catch(e){}
+  try{ __track('grade_revealed', {grade:letterClean, score:cats.overall.score}); }catch(e){}
+
+  // Populate the email-retention form's hidden fields so a saved grade
+  // is associated with the actual result, same pattern already used by
+  // the report-card subscribe form (subReportGrade/subReportScore).
+  var emailGradeEl=$("revealEmailGrade"), emailScoreEl=$("revealEmailScore");
+  if(emailGradeEl) emailGradeEl.value = letterClean;
+  if(emailScoreEl) emailScoreEl.value = cats.overall.score;
+  window.__gmfEmailCaptureSubmitted = false;
+
+  if(!isProUser()){
+    try{ __track('pro_offer_viewed', {location:'grade_reveal'}); }catch(e){}
+    try{ __track('grade_email_capture_viewed', {location:'grade_reveal'}); }catch(e){}
+  }
 
   var cta = $("revealCta");
   cta.onclick = function(){
     try{ __track('signup_started', {location:'grade_reveal'}); }catch(e){}
+    if(!window.__gmfEmailCaptureSubmitted){ try{ __track('grade_email_skipped', {via:'create_account'}); }catch(e){} }
     // Cross-document View Transition: if the browser supports it (both
     // pages opt in via @view-transition{navigation:auto}), this element
     // and dashboard.html's grade badge share a view-transition-name, so
@@ -8911,6 +8960,7 @@ function setProState(on){
       history.replaceState(null, "", clean);
       __track('pro_activated', {method:'redirect'});
       __track('purchase', {method:'redirect'});
+      __track('pro_purchased', {method:'redirect'});
     }
   }catch(e){}
 })();
@@ -9624,6 +9674,52 @@ if(subFormRC){
       else { __track('subscribe_error',{placement:'report_card',code:res.status}); alert("Signup failed. Please try again later."); }
     })
     .catch(function(){ __track('subscribe_error',{placement:'report_card',code:'network'}); alert("Network error. Please try again later."); });
+  });
+}
+
+// Grade-reveal email retention capture — a save-your-result fallback
+// for people who see their free grade but aren't ready for Pro. Posts
+// to the exact same Apps Script lead endpoint as the other subscribe
+// forms on this page (no separate/duplicate storage system), and never
+// sends any of the user's actual financial inputs - only the letter
+// grade, numeric score, and email itself.
+var revealEmailForm=$("revealEmailForm");
+if(revealEmailForm){
+  revealEmailForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var email=$("revealEmailInput").value.trim();
+    if(!/^\S+@\S+\.\S+$/.test(email)){ alert("Please enter a valid email."); return; }
+    var gradeEl=$("revealEmailGrade"), scoreEl=$("revealEmailScore"), websiteEl=$("revealEmailWebsite");
+    var submitBtn=$("revealEmailSubmit");
+    if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Saving…"; }
+    fetch(revealEmailForm.action, {
+      method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+      body:JSON.stringify({
+        email:email,
+        source:"grademyfinance.com/gradereveal",
+        reportGrade: gradeEl ? gradeEl.value : "",
+        reportScore: scoreEl ? scoreEl.value : "",
+        website: websiteEl ? websiteEl.value : "",
+        t: Date.now() - __gmfPageLoadTime
+      })
+    })
+    .then(function(res){
+      if(res.ok){
+        window.__gmfEmailCaptureSubmitted = true;
+        try{ __track('grade_email_submitted', {location:'grade_reveal'}); }catch(e){}
+        var wrap = $("revealEmailRetention");
+        if(wrap) wrap.innerHTML = '<span class="rer-label">Saved ✓</span><p class="rer-headline">Your grade is on its way.</p><p class="rer-line">Check your inbox — we\'ll also let you know when it\'s worth checking back in.</p>';
+      } else {
+        __track('subscribe_error',{placement:'grade_reveal',code:res.status});
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = "Save My Grade"; }
+        alert("Something went wrong. Please try again.");
+      }
+    })
+    .catch(function(){
+      __track('subscribe_error',{placement:'grade_reveal',code:'network'});
+      if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = "Save My Grade"; }
+      alert("Network error. Please try again.");
+    });
   });
 }
 
