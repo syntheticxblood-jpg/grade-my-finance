@@ -2016,6 +2016,8 @@ footer.site{ border-top:1px solid var(--line); background:var(--bg-2); padding:4
 .pro-only-show{ display:none }
 body.is-pro .pro-only-hide{ display:none !important }
 body.is-pro .pro-only-show{ display:inline-flex !important }
+body.is-pro #gradeBtnProNote{ display:block !important }
+.calc-pro-note{ font-size:12px; color:var(--brand-bright); text-align:center; margin:0 0 10px; line-height:1.5 }
 body.is-pro .pro-lock{ display:none !important }
 body.is-pro .pro-gated{ display:block !important }
 .pro-gated{ display:none }
@@ -3385,6 +3387,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     </div>
 
     <div class="calc-privacy-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg><span>All calculations are done locally on your device. Your data is <b>never</b> sent anywhere.</span></div>
+    <p class="pro-only-show calc-pro-note" id="gradeBtnProNote" style="display:none">You're on Pro — next you'll add your full financial picture (home, retirement, investments, individual debts) before seeing your complete grade.</p>
 
     <div class="calc-actions">
       <button class="btn" id="resetBtn" type="button">Reset</button>
@@ -3807,7 +3810,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
     <div class="calc-actions">
       <span></span>
-      <button class="btn gold calc-final-cta" id="revealDeeperSave" type="button">Recalculate My Grade →</button>
+      <button class="btn gold calc-final-cta" id="revealDeeperSave" type="button">Get My Financial Grade →</button>
     </div>
   </div>
 </section>
@@ -8702,6 +8705,7 @@ function gradeNow(){
     lockBodyScroll();
     updateHints();
   }
+  window.__openAdvancedCalc = openAdvancedCalc;
   function closeAdvancedCalc(){
     modal.classList.remove("show");
     unlockBodyScroll();
@@ -8730,6 +8734,12 @@ function openCalcModal(location){
   var m=$("calcModal");
   m.classList.add("show");
   lockBodyScroll();
+  // Pro users get one continuous flow straight into the full-detail
+  // form instead of a partial grade they'd have to click past - swap
+  // the final button's label/hint to set that expectation up front.
+  var gradeBtnEl = $("gradeBtn"), proNoteEl = $("gradeBtnProNote");
+  if(gradeBtnEl) gradeBtnEl.textContent = isProUser() ? "Continue to Full Details →" : "Get My Financial Grade →";
+  if(proNoteEl) proNoteEl.style.display = isProUser() ? "block" : "none";
   // Auto-focusing the income field is a nice touch on desktop, but on a
   // real touch device it pops the virtual keyboard immediately after the
   // modal opens - and the browser's own keyboard-avoidance scrolling
@@ -8758,17 +8768,21 @@ if($("navGetGradeBtn")) $("navGetGradeBtn").addEventListener("click", function()
 if($("gradeBtnFooterCta")) $("gradeBtnFooterCta").addEventListener("click", function(){ openCalcModal('footer_cta'); });
 $("gradeBtn").addEventListener("click", function(){
   // One-time sync: copy the two quick-flow aggregate answers into the
-  // real scoring fields (cash, otherDebt) before the first grade
-  // computation. The deeper-profile "Recalculate" button calls
-  // gradeNow() directly and does NOT go through this handler, so a
-  // later manual edit to Cash/Other Debt in the deeper profile is
-  // never silently overwritten by this sync.
+  // real scoring fields (cash, otherDebt). For Pro users this feeds the
+  // advanced form's pre-fill; for free users it feeds the grade directly.
   var qs=$("qSavingsTotal"), qd=$("qDebtTotal"), cashEl=$("cash"), otherDebtEl=$("otherDebt");
   if(qs && cashEl) cashEl.value = qs.value || 0;
   if(qd && otherDebtEl) otherDebtEl.value = qd.value || 0;
   try{ __track('calculator_completed', {}); }catch(e){}
   closeCalcModal();
-  gradeNow();
+  if(isProUser() && window.__openAdvancedCalc){
+    // Pro users go straight into the full-detail form instead of seeing
+    // a partial grade first and having to hunt for it afterward - one
+    // continuous flow, one final grade.
+    window.__openAdvancedCalc();
+  } else {
+    gradeNow();
+  }
 });
 $("gradeBtnSticky").addEventListener("click", function(){ __track('click_get_report_card',{location:'sticky'}); openCalcModal('sticky'); });
 
