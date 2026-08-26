@@ -9326,7 +9326,7 @@ Promise.resolve(init()).then(function(){
 #dashboardContent{padding-bottom:70px}
 .dash-tab-panel{max-width:1080px;margin:0 auto}
 /* Dashboard: make the first viewport feel like a financial command center. */
-#panel-overview{display:grid;gap:14px}
+#panel-overview{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
 #panel-overview .ship-grade-hero{margin-bottom:0!important;border-radius:18px!important;min-height:180px!important;box-shadow:0 12px 35px rgba(18,48,43,.10)!important}
 #panel-overview .ship-grade-main{padding:24px 26px!important}
 #panel-overview .ship-grade-letter{font-size:84px!important}
@@ -11711,6 +11711,14 @@ body{font-size:15px!important;min-height:100vh}
     shifted anchor and the panel hung off the right edge of the screen.
     Pin it to the viewport instead, docked just above the tab bar. */
  .sidebar-bottom .settings-panel{position:fixed!important;left:10px!important;right:10px!important;bottom:76px!important;width:auto!important;max-width:none!important}
+ /* #panel-overview .ship-glance-grid{grid-template-columns:repeat(4,1fr)!important}
+    elsewhere outranks the existing 2-column mobile rule because it's
+    scoped with an ID, so the "At a Glance" metrics stayed jammed into 4
+    columns on phones no matter what. Match its specificity here so the
+    mobile layout actually wins, and use minmax(0,1fr) so long values
+    like "+$223,000/mo" can't force the columns wider than the screen. */
+ #panel-overview .ship-glance-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #panel-overview .ship-glance-item{min-width:0!important}
 }
 </style>
 
