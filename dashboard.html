@@ -4176,7 +4176,12 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ret-metric blue"><span>Monthly gap</span><strong id="rsGap">—</strong><small id="rsGapSub">—</small></div>
       </div>
       <div class="ret-charts-grid">
-        <div class="ret-chart-card"><div class="ret-chart-head"><div><span class="section-label">Portfolio growth</span><h3>Your wealth over time</h3></div><div class="ret-legend"><i></i>Portfolio <i class="target"></i>FI target</div></div><svg id="rsGrowthChart" viewBox="0 0 900 330" preserveAspectRatio="none"></svg></div>
+        <div class="ret-chart-card"><div class="ret-chart-head"><div><span class="section-label">Portfolio growth</span><h3>Your wealth over time</h3></div><div class="ret-legend"><i></i>Portfolio <i class="target"></i>FI target</div></div><svg id="rsGrowthChart" viewBox="0 0 900 330" preserveAspectRatio="none"></svg>
+          <div class="rs-yearly-wrap">
+            <div class="rs-yearly-head"><div><span class="section-label">Year-by-year projection</span><h4>Projected portfolio by age</h4></div><span>Starting balance + monthly contributions</span></div>
+            <div class="rs-yearly-scroll"><table class="rs-yearly-table"><thead><tr><th>Age</th><th>5% Conservative</th><th>7% Moderate</th><th>9% Growth</th></tr></thead><tbody id="rsYearlyTable"></tbody></table></div>
+          </div>
+        </div>
         <div class="ret-chart-card"><span class="section-label">At a glance</span><h3>Retirement readiness</h3><div class="ret-donut-wrap"><svg id="rsDonut" viewBox="0 0 180 180"><circle cx="90" cy="90" r="68" fill="none" stroke="#e7ece9" stroke-width="18"/><circle id="rsDonutFg" cx="90" cy="90" r="68" fill="none" stroke="#19b58e" stroke-width="18" stroke-linecap="round" transform="rotate(-90 90 90)"/></svg><div><b id="rsDonutPct">0%</b><span>to FI</span></div></div><div id="rsReadinessText" class="ret-readiness"></div></div>
       </div>
       <div class="ret-chart-card" style="margin-top:16px"><span class="section-label">Scenario explorer</span><h3>How different market outcomes change your path</h3><div id="rsScenarioBars" class="ret-scenario-bars"></div></div>
@@ -10305,6 +10310,30 @@ main{padding-top:16px !important;padding-bottom:42px !important}
   fill:#b7c8c3;
 }
 
+
+.rs-yearly-wrap{margin-top:18px;border-top:1px solid var(--rb-line);padding-top:16px}
+.rs-yearly-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:10px}
+.rs-yearly-head h4{margin:2px 0 0;font:800 16px var(--font-display);color:var(--rb-ink)}
+.rs-yearly-head>span{font-size:10.5px;color:var(--rb-muted)}
+.rs-yearly-scroll{max-height:360px;overflow:auto;border:1px solid var(--rb-line);border-radius:12px}
+.rs-yearly-table{width:100%;border-collapse:collapse;font-size:12px}
+.rs-yearly-table th{position:sticky;top:0;background:#f6faf8;color:var(--rb-muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em;text-align:right;padding:10px 12px;border-bottom:1px solid var(--rb-line);z-index:1}
+.rs-yearly-table th:first-child,.rs-yearly-table td:first-child{text-align:left}
+.rs-yearly-table td{padding:9px 12px;text-align:right;border-bottom:1px solid #edf2ef;color:var(--rb-ink);font-variant-numeric:tabular-nums}
+.rs-yearly-table tr:last-child td{border-bottom:0;font-weight:800;background:#f8fbfa}
+.rs-yearly-table td:nth-child(2){color:#b77b00}.rs-yearly-table td:nth-child(3){color:#16866a}.rs-yearly-table td:nth-child(4){color:#3979b8}
+.rs-yearly-table tbody tr:hover{background:#f8fbfa}
+:root[data-theme="dark"] .rs-yearly-wrap{border-color:#30484e}
+:root[data-theme="dark"] .rs-yearly-scroll{border-color:#30484e}
+:root[data-theme="dark"] .rs-yearly-table th{background:#102125;color:#b7c8c3;border-color:#30484e}
+:root[data-theme="dark"] .rs-yearly-table td{color:#eef7f3;border-color:#263b40}
+:root[data-theme="dark"] .rs-yearly-table tr:last-child td{background:#1b3034}
+:root[data-theme="dark"] .rs-yearly-table td:nth-child(2){color:#f0c65b}
+:root[data-theme="dark"] .rs-yearly-table td:nth-child(3){color:#69e0bb}
+:root[data-theme="dark"] .rs-yearly-table td:nth-child(4){color:#7db8f0}
+:root[data-theme="dark"] .rs-yearly-table tbody tr:hover{background:#1b3034}
+@media(max-width:700px){.rs-yearly-head{display:block}.rs-yearly-head>span{display:block;margin-top:4px}.rs-yearly-table{min-width:540px}}
+
 </style>
 
 <script id="retirement-studio-js">
@@ -10342,31 +10371,82 @@ function calc(){
  var age=val('rsAge'), retire=val('rsRetireAge'), bal=val('rsBalance'), mo=val('rsMonthly'), spend=val('rsSpending'), rate=val('rsReturn'), inf=val('rsInflation'), wd=val('rsWithdraw');
  if(!age||retire<=age||spend<=0){$r('rsStatus').textContent='Enter a valid current age, target age, and annual retirement spending.';return}
  $r('rsStatus').textContent='Projection updated instantly as you change your plan.';
- var target=spend/wd, years=retire-age;
- // Use one consistent monthly model everywhere. The selected annual return
- // is treated as the effective annual return, so the equivalent monthly rate
- // preserves that annual rate. Contributions are added once per month.
- var monthlyRate=rate===0?0:(Math.pow(1+rate,1/12)-1);
- var targetInfl=target*Math.pow(1+inf,years);
- var points=[], portfolio=bal, fiYear=null;
- points.push({y:0,v:portfolio});
- for(var month=1;month<=70*12;month++){
-   portfolio=portfolio*(1+monthlyRate)+mo;
-   if(month%12===0){
-     var y=month/12;
-     points.push({y:y,v:portfolio});
-     if(fiYear===null&&portfolio>=target*Math.pow(1+inf,y))fiYear=y;
+ var target=spend/wd, years=retire-age, targetInfl=target*Math.pow(1+inf,years);
+ // Always calculate all three market scenarios. This makes the chart and
+ // year-by-year table useful even when the selected return is 7%.
+ var rates=[.05,.07,.09];
+ function project(rate){
+   var mr=rate===0?0:(Math.pow(1+rate,1/12)-1), p=bal, out=[{y:0,v:p}], fiYear=null;
+   for(var month=1;month<=years*12;month++){
+     p=p*(1+mr)+mo;
+     if(month%12===0){
+       var y=month/12;
+       out.push({y:y,v:p});
+       if(fiYear===null&&p>=target*Math.pow(1+inf,y))fiYear=y;
+     }
    }
+   return {rate:rate,points:out,fiYear:fiYear};
  }
- var atRet=points[Math.min(years,points.length-1)].v, progress=Math.min(100,bal/target*100), fiAge=fiYear===null?'70+':(age+fiYear).toFixed(1), gap=Math.max(0,(targetInfl-atRet)/Math.max(1,years*12));
+ var projections=rates.map(project), selected=projections.find(function(x){return Math.abs(x.rate-rate)<0.000001})||projections[1];
+ var points=selected.points, fiYear=selected.fiYear;
+ var atRet=points[points.length-1].v, progress=Math.min(100,bal/target*100), fiAge=fiYear===null?'70+':(age+fiYear).toFixed(1), gap=Math.max(0,(targetInfl-atRet)/Math.max(1,years*12));
  $r('rsResults').style.display='block';$r('rsScore').textContent=progress.toFixed(0)+'%';$r('rsTarget').textContent=money(target);$r('rsPortfolio').textContent=money(atRet);$r('rsPortfolioSub').textContent=years+' years until age '+retire;$r('rsFiAge').textContent=fiAge;$r('rsFiSub').textContent=fiYear===null?'Target not reached in projection':'About '+fiYear.toFixed(1)+' years from now';$r('rsGap').textContent=gap?money(gap)+'/mo':'On track';$r('rsGapSub').textContent=gap?'Estimated extra monthly amount to close target-age gap':'Your current plan reaches the target by your goal age';
  var c=2*Math.PI*68;$r('rsDonutFg').style.strokeDasharray=c;$r('rsDonutFg').style.strokeDashoffset=c*(1-progress/100);$r('rsDonutPct').textContent=progress.toFixed(1)+'%';$r('rsReadinessText').textContent=progress>=25?'You have a meaningful foundation. Compounding has room to work.':'Your contribution rate is doing the heavy lifting now — building the starting balance is the first big milestone.';
- draw(points,target,age);
+ draw(projections,target,age,years);
+ renderYearlyTable(projections,age,years);
  scenarios([.05,.07,.09],age,bal,mo,target,inf);
  milestones(points,target,age);
  var title,advice;if(atRet>=targetInfl){title='You are on track for your target age.';advice='Your current savings plan is projected to cover your inflation-adjusted FI target. The biggest lever now is consistency: keep contributions automated and review your plan annually.'}else if(fiYear!==null){title='You can reach FI — just later than planned.';advice='Your strongest lever is increasing monthly investing. Even a few hundred dollars more per month can pull the FI date forward because every extra contribution gets years to compound.'}else{title='Your current plan needs a bigger lever.';advice='Consider a combination of higher monthly investing, a later retirement age, or lower planned retirement spending. Explore each input above to see which change moves the needle most.'}$r('rsAdviceTitle').textContent=title;$r('rsAdvice').textContent=advice;
 }
-function draw(p,target,age){var svg=$r('rsGrowthChart'),W=900,H=330,pad=45,max=Math.max(target,...p.slice(0,46).map(x=>x.v))*1.08;function xy(x,v){return [pad+x/45*(W-pad*2),H-pad-v/max*(H-pad*2)]}var dark=document.documentElement.getAttribute('data-theme')==='dark',gridStroke=dark?'#30484e':'#e7efeb',gridText=dark?'#b7c8c3':'#778782';var grid='';for(var i=0;i<5;i++){var y=pad+i*(H-pad*2)/4,amt=max*(1-i/4);grid+='<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+y+'" y2="'+y+'" stroke="'+gridStroke+'"/><text x="4" y="'+(y+4)+'" font-size="11" fill="'+gridText+'">'+money(amt)+'</text>'}var path=p.slice(0,46).map((x,i)=>{var q=xy(x.y,x.v);return(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join(' '),ty=xy(0,target)[1];svg.innerHTML=grid+'<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+ty+'" y2="'+ty+'" stroke="#f1b933" stroke-width="3" stroke-dasharray="9 7"/><path d="'+path+'" fill="none" stroke="#19b58e" stroke-width="5" stroke-linecap="round"/><text x="'+(W-150)+'" y="'+(ty-8)+'" font-size="12" fill="#bd850d">FI target</text>'; }
+function draw(projections,target,age,years){
+ var svg=$r('rsGrowthChart'),W=900,H=330,pad=48,chartYears=Math.max(1,years);
+ var max=target;
+ projections.forEach(function(pr){pr.points.forEach(function(x){if(x.v>max)max=x.v})});
+ max*=1.08;
+ function xy(x,v){return [pad+x/chartYears*(W-pad*2),H-pad-v/max*(H-pad*2)]}
+ var dark=document.documentElement.getAttribute('data-theme')==='dark';
+ var gridStroke=dark?'#30484e':'#e7efeb',gridText=dark?'#b7c8c3':'#778782';
+ var lineColors=['#d39a24','#19b58e','#4b8fd1'];
+ var grid='';
+ for(var i=0;i<5;i++){
+   var y=pad+i*(H-pad*2)/4,amt=max*(1-i/4);
+   grid+='<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+y+'" y2="'+y+'" stroke="'+gridStroke+'"/><text x="4" y="'+(y+4)+'" font-size="11" fill="'+gridText+'">'+money(amt)+'</text>';
+ }
+ var xStep=chartYears<=12?1:(chartYears<=25?5:10);
+ for(var x=0;x<=chartYears;x+=xStep){
+   var q=xy(x,0);
+   grid+='<text x="'+q[0]+'" y="'+(H-12)+'" text-anchor="middle" font-size="10" fill="'+gridText+'">Age '+(age+x)+'</text>';
+ }
+ var paths=projections.map(function(pr,idx){
+   var path=pr.points.map(function(pt,i){var q=xy(pt.y,pt.v);return(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join(' ');
+   return '<path d="'+path+'" fill="none" stroke="'+lineColors[idx]+'" stroke-width="4" stroke-linecap="round"/>';
+ }).join('');
+ var ty=xy(0,target)[1];
+ var labels=[
+   '<span><i style="background:'+lineColors[0]+'"></i>5% Conservative</span>',
+   '<span><i style="background:'+lineColors[1]+'"></i>7% Moderate</span>',
+   '<span><i style="background:'+lineColors[2]+'"></i>9% Growth</span>',
+   '<span><i class="target"></i>FI target</span>'
+ ].join('');
+ var legend=document.querySelector('#rsGrowthChart').parentNode.querySelector('.ret-legend');
+ if(legend) legend.innerHTML=labels;
+ svg.innerHTML=grid+
+   '<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+ty+'" y2="'+ty+'" stroke="#f1b933" stroke-width="3" stroke-dasharray="9 7"/>'+
+   paths+
+   '<text x="'+(W-150)+'" y="'+(ty-8)+'" font-size="12" fill="#bd850d">FI target</text>';
+}
+function renderYearlyTable(projections,age,years){
+ var body=$r('rsYearlyTable');
+ if(!body)return;
+ var rows='';
+ for(var y=0;y<=years;y++){
+   rows+='<tr><td><b>Age '+(age+y)+'</b></td>'+
+     '<td>'+money(projections[0].points[y].v)+'</td>'+
+     '<td>'+money(projections[1].points[y].v)+'</td>'+
+     '<td>'+money(projections[2].points[y].v)+'</td></tr>';
+ }
+ body.innerHTML=rows;
+}
 function scenarios(rates,age,bal,mo,target,inf){var el=$r('rsScenarioBars');var rows=rates.map(function(rate){
  var p=bal,mr=rate===0?0:(Math.pow(1+rate,1/12)-1),hit=null;
  for(var m=1;m<=840;m++){
