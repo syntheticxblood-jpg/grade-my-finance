@@ -2341,6 +2341,14 @@ body{background:#f7f8f7!important;color:var(--ship-ink)!important}.main-area{mar
 #panel-overview{background:transparent!important;padding:0!important}#panel-overview>.metrics-row,#panel-overview>#commandCenter,#panel-overview>#actionPlan,#panel-overview>#whatsChanged,#panel-overview>.ov-grid{display:none!important}.gmf-new-overview{display:block!important}
 .ship-grade-hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(360px,.95fr);background:#fff;border:1px solid var(--ship-line);border-radius:16px;box-shadow:0 8px 26px rgba(15,35,42,.05);overflow:hidden;margin-bottom:14px}.ship-grade-main{padding:26px 28px 24px;border-right:1px solid var(--ship-line)}.ship-eyebrow{font:800 10px var(--font-mono);letter-spacing:.11em;color:#66777c;margin-bottom:12px}.ship-grade-row{display:grid;grid-template-columns:auto auto minmax(180px,1fr);align-items:center;gap:22px}.ship-grade-letter{font:700 92px/.82 var(--font-serif);color:#139d7a;letter-spacing:-.06em;view-transition-name:gmf-grade-hero}.ship-grade-score{font:700 26px var(--font-mono);color:#173038}.ship-grade-score small{font-size:14px;color:#7b898e;font-weight:500}.ship-grade-trend{border-left:1px solid var(--ship-line);padding-left:22px;color:#6b7b81;font-size:11px}.ship-trend-value{font:700 17px var(--font-mono);color:#129b79;margin-bottom:2px}.ship-grade-trend svg{width:100%;height:48px;margin:6px 0 3px}.ship-grade-message{padding:27px 26px;display:flex;flex-direction:column;justify-content:center}.ship-message-title{font:700 17px var(--font-display);color:#162d35;margin-bottom:20px}.ship-strength-opps{display:grid;grid-template-columns:1fr 1fr;gap:24px}.ship-strength-opps>div+div{border-left:1px solid var(--ship-line);padding-left:24px}.ship-mini-label{display:block;font:800 9px var(--font-mono);letter-spacing:.07em;color:#738287;margin-bottom:6px}.ship-strength-opps b{display:block;font-size:13px;color:#1b343d}.ship-strength-opps small{display:block;font-size:11px;line-height:1.4;color:#7a888d;margin-top:4px}.ship-link{border:0;background:none;padding:0;color:#0b9271;font:700 11px var(--font-body);cursor:pointer}.ship-link:hover{text-decoration:underline}
 .ship-glance-card{background:#fff;border:1px solid var(--ship-line);border-radius:16px;padding:16px 20px;margin-bottom:14px}.ship-panel-title{display:flex;justify-content:space-between;align-items:center;font:800 10px var(--font-mono);letter-spacing:.09em;color:#65757a;margin-bottom:8px}.ship-glance-grid{display:grid;grid-template-columns:repeat(4,1fr)}.ship-glance-item{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:10px 16px;border-right:1px solid var(--ship-line)}.ship-glance-item:last-child{border-right:0}.ship-glance-icon{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#edf7f4;color:#159a78;border:1px solid #d7eee7;font:700 13px var(--font-mono)}.ship-glance-item>div span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#7c898d}.ship-glance-item>div b{display:block;font:700 16px var(--font-mono);color:#1b3038;margin-top:3px}.ship-glance-item em{font:700 10px var(--font-mono);font-style:normal;color:#159a78}.ship-glance-item em.down{color:var(--ship-red)}
+/* Give each "at a glance" metric its own accent instead of four
+   identical teal circles - reads as a livelier, more colorful row. */
+.ship-glance-icon.gi-blue{background:#eaf1fd;color:#3f6fd8;border-color:#d7e3fa}
+.ship-glance-icon.gi-purple{background:#f2edfc;color:#7c4fd8;border-color:#e2d7f9}
+.ship-glance-icon.gi-orange{background:#fdf1e6;color:#d9822b;border-color:#f7dfc2}
+:root[data-theme="dark"] .ship-glance-icon.gi-blue{background:rgba(63,111,216,.16);color:#8fb2ef;border-color:rgba(63,111,216,.3)}
+:root[data-theme="dark"] .ship-glance-icon.gi-purple{background:rgba(124,79,216,.16);color:#bb9df0;border-color:rgba(124,79,216,.3)}
+:root[data-theme="dark"] .ship-glance-icon.gi-orange{background:rgba(217,130,43,.16);color:#f0b876;border-color:rgba(217,130,43,.3)}
 .ship-metric-strip{display:grid;grid-template-columns:repeat(6,1fr);background:#fff;border:1px solid var(--ship-line);border-radius:16px;overflow:hidden;margin-bottom:16px}.ship-metric{min-width:0;padding:15px 16px;border-right:1px solid var(--ship-line)}.ship-metric:last-child{border-right:0}.ship-metric>span{display:block;font:800 9px var(--font-mono);letter-spacing:.07em;color:#78878b}.ship-metric>b{display:block;font:700 20px var(--font-mono);color:#162e36;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ship-metric>em{display:block;font:700 10px var(--font-mono);font-style:normal;color:#129b79;margin-top:3px}.ship-metric>em.down{color:var(--ship-red)}.ship-metric svg{display:block;width:100%;height:28px;margin-top:6px}
 .ship-lower-grid{display:grid;grid-template-columns:1.45fr .85fr;gap:14px;margin-bottom:14px}.ship-chart-card,.ship-change-card,.ship-moves-card,.ship-note-card{background:#fff;border:1px solid var(--ship-line);border-radius:16px;padding:20px;box-shadow:0 5px 18px rgba(15,35,42,.035)}.ship-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.ship-card-head h3{font-size:15px;color:#18323b}.ship-card-head p{font-size:11px;color:#7a898e;margin:3px 0 0}.ship-range{display:flex;gap:2px;padding:3px;background:#f2f5f4;border:1px solid #e0e6e4;border-radius:8px}.ship-range button{border:0;background:transparent;color:#718086;border-radius:6px;padding:5px 8px;font:700 10px var(--font-mono);cursor:pointer}.ship-range button.active{background:#fff;color:#118e70;box-shadow:0 1px 3px rgba(0,0,0,.08)}.ship-chart-wrap{height:292px;margin-top:14px}.ship-chart-wrap svg{width:100%;height:100%;display:block}.ship-chart-legend{display:flex;align-items:center;gap:18px;font-size:10px;color:#748288;margin-top:5px}.ship-chart-legend i{display:inline-block;width:10px;height:3px;border-radius:3px;background:#129b79;vertical-align:middle;margin-right:5px}.ship-chart-legend i.net{background:#4389e8}.ship-chart-legend button{margin-left:auto}.ship-change-list{margin:14px 0}.ship-change-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--ship-line)}.ship-change-row:last-child{border-bottom:0}.ship-change-row span{font-size:11px;color:#607177}.ship-change-row b{font:700 12px var(--font-mono);color:#159a78}.ship-change-row b.down{color:var(--ship-red)}
 .ship-bottom-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}.ship-move{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--ship-line);cursor:pointer}.ship-move>span{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#e7f5f1;color:#108d70;font:700 11px var(--font-mono)}.ship-move>div{flex:1}.ship-move b{display:block;font-size:13px;color:#1a333b}.ship-move small{display:block;color:#7a888d;font-size:10.5px;margin-top:2px}.ship-move>i{font-size:23px;color:#8a989c;font-style:normal}.ship-note-card{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;min-height:150px;background:linear-gradient(135deg,#f8fbfa,#fff)}.ship-note-mark{font:700 48px/1 var(--font-serif);color:#d8ad50}.ship-note-card h3{font-size:17px;color:#19333b}.ship-note-card p{font-size:11px;color:#718087;margin:4px 0 0}.ship-note-card svg{position:absolute;right:-15px;bottom:-5px;width:62%;color:#159a78}
@@ -2649,24 +2657,42 @@ label{font-size:11px!important;font-weight:700!important;color:#5d7077!important
 <style id="gmf-tab-focus-pro">
 .tab-focus-badge{display:inline-flex;align-items:center;margin-top:8px;padding:5px 8px;border-radius:999px;background:#edf7f3;color:#0f8067;border:1px solid #cfe9df;font:800 8px var(--font-mono);letter-spacing:.12em}
 .ship-grade-hero-v2{display:grid!important;grid-template-columns:minmax(0,1fr) 330px!important;overflow:hidden!important}
-.grade-pro-panel{padding:22px 22px 20px;border-left:1px solid rgba(16,42,44,.10);background:linear-gradient(145deg,#f3fbf7 0%,#e6f5ef 100%);display:flex;flex-direction:column;justify-content:center;min-height:180px}
-.grade-pro-panel-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.grade-pro-panel{padding:22px 22px 20px;border-left:1px solid rgba(255,255,255,.08);background:linear-gradient(150deg,#062621 0%,#0b4a3d 55%,#0f6350 100%);display:flex;flex-direction:column;justify-content:center;min-height:180px;position:relative;overflow:hidden}
+.grade-pro-panel-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;position:relative;z-index:1}
 .grade-pro-pill{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#d4a43a;color:#fff;font:900 8px var(--font-mono);letter-spacing:.1em}
-.grade-pro-status{font:700 9px var(--font-mono);letter-spacing:.04em;color:#55736b}
-.grade-pro-panel h3{margin:0 0 6px;font:800 18px var(--font-display);color:#153b34}
-.grade-pro-panel p{margin:0;color:#607570;font-size:11.5px;line-height:1.45;max-width:280px}
-.grade-pro-features{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
-.grade-pro-features span{font-size:9.5px;font-weight:800;color:#315b50;background:rgba(255,255,255,.75);border:1px solid #cfe5dc;border-radius:999px;padding:5px 7px}
-.grade-pro-cta{align-self:flex-start;text-decoration:none;background:#0f9f7a;color:#fff;border-radius:8px;padding:8px 11px;font-size:10.5px;font-weight:800;box-shadow:0 5px 12px rgba(15,159,122,.18)}
-.grade-pro-panel.is-pro{background:linear-gradient(145deg,#073e35 0%,#0b5c4c 100%);border-left-color:rgba(255,255,255,.12)}
-.grade-pro-panel.is-pro .grade-pro-status{color:#a9d9cb}
+.grade-pro-status{font:700 9px var(--font-mono);letter-spacing:.04em;color:#8fd9c3}
+.grade-pro-panel h3{margin:0 0 6px;font:800 18px var(--font-display);color:#fff;position:relative;z-index:1}
+.grade-pro-panel p{margin:0;color:#bfe4d8;font-size:11.5px;line-height:1.45;max-width:280px;position:relative;z-index:1}
+.grade-pro-features{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0;position:relative;z-index:1}
+.grade-pro-features span{font-size:9.5px;font-weight:800;color:#d9f2e9;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:5px 7px}
+.grade-pro-cta{align-self:flex-start;text-decoration:none;background:#2fd6a8;color:#043128;border-radius:8px;padding:8px 11px;font-size:10.5px;font-weight:800;box-shadow:0 8px 20px rgba(47,214,168,.3);position:relative;z-index:1}
+/* Glowing ascending-bars decoration in the corner, matching the
+   reference's dark upsell panel - purely decorative, sits behind the
+   copy via z-index and negative positioning. */
+.grade-pro-panel::before{
+  content:""; position:absolute; right:-18px; bottom:-14px; width:150px; height:110px; z-index:0;
+  background:
+    linear-gradient(#2fd6a8,#2fd6a8) 0 100%/16px 34% no-repeat,
+    linear-gradient(#2fd6a8,#2fd6a8) 26px 100%/16px 52% no-repeat,
+    linear-gradient(#2fd6a8,#2fd6a8) 52px 100%/16px 74% no-repeat,
+    linear-gradient(#2fd6a8,#2fd6a8) 78px 100%/16px 92% no-repeat;
+  background-position:0 100%,26px 100%,52px 100%,78px 100%;
+  opacity:.16; filter:blur(.3px);
+}
+.grade-pro-panel::after{
+  content:""; position:absolute; right:-40px; bottom:-40px; width:160px; height:160px; z-index:0; border-radius:50%;
+  background:radial-gradient(circle,rgba(47,214,168,.35),transparent 70%);
+}
+.grade-pro-panel.is-pro{background:linear-gradient(150deg,#062621 0%,#0b4a3d 55%,#0f6350 100%)}
+.grade-pro-panel.is-pro .grade-pro-status{color:#8fd9c3}
 .grade-pro-panel.is-pro h3{color:#fff}
-.grade-pro-panel.is-pro p{color:#c2ddd6}
-.grade-pro-panel.is-pro .grade-pro-features span{color:#d9eee8;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16)}
-.grade-pro-panel.is-pro .grade-pro-cta{background:#35c79f;color:#07352e}
-@media(max-width:900px){.ship-grade-hero-v2{grid-template-columns:1fr!important}.grade-pro-panel{border-left:0;border-top:1px solid rgba(16,42,44,.10)}}
+.grade-pro-panel.is-pro p{color:#bfe4d8}
+.grade-pro-panel.is-pro .grade-pro-features span{color:#d9f2e9;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
+.grade-pro-panel.is-pro .grade-pro-cta{background:#2fd6a8;color:#043128}
+@media(max-width:900px){.ship-grade-hero-v2{grid-template-columns:1fr!important}.grade-pro-panel{border-left:0;border-top:1px solid rgba(255,255,255,.08)}}
 :root[data-theme="dark"] .tab-focus-badge{background:rgba(39,183,143,.12);border-color:rgba(39,183,143,.22);color:#65d4b3}
-:root[data-theme="dark"] .grade-pro-panel{background:linear-gradient(145deg,#102a2b,#143d36);border-color:#274844}
+:root[data-theme="dark"] .grade-pro-panel,
+:root[data-theme="dark"] .grade-pro-panel.is-pro{background:linear-gradient(150deg,#051d19 0%,#0a3d32 55%,#0c5445 100%)}
 :root[data-theme="dark"] .grade-pro-panel h3{color:#eef8f4}
 :root[data-theme="dark"] .grade-pro-panel p{color:#a9beb8}
 :root[data-theme="dark"] .grade-pro-features span{background:#17302e;border-color:#31504b;color:#c7dfd8}
@@ -3803,9 +3829,9 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     <div class="ship-panel-title">AT A GLANCE</div>
     <div class="ship-glance-grid">
       <div class="ship-glance-item"><span class="ship-glance-icon">↗</span><div><span>Net Worth</span><b id="shipGlanceNet">—</b></div><em id="shipGlanceNetDelta">—</em></div>
-      <div class="ship-glance-item"><span class="ship-glance-icon">⇄</span><div><span>Cash Flow</span><b id="shipGlanceFlow">—</b></div><em id="shipGlanceFlowDelta">—</em></div>
-      <div class="ship-glance-item"><span class="ship-glance-icon">◷</span><div><span>Emergency Fund</span><b id="shipGlanceCash">—</b></div><em id="shipGlanceCashDelta">—</em></div>
-      <div class="ship-glance-item"><span class="ship-glance-icon">−</span><div><span>Debt Load</span><b id="shipGlanceDebt">—</b></div><em id="shipGlanceDebtDelta">—</em></div>
+      <div class="ship-glance-item"><span class="ship-glance-icon gi-blue">⇄</span><div><span>Cash Flow</span><b id="shipGlanceFlow">—</b></div><em id="shipGlanceFlowDelta">—</em></div>
+      <div class="ship-glance-item"><span class="ship-glance-icon gi-purple">◷</span><div><span>Emergency Fund</span><b id="shipGlanceCash">—</b></div><em id="shipGlanceCashDelta">—</em></div>
+      <div class="ship-glance-item"><span class="ship-glance-icon gi-orange">−</span><div><span>Debt Load</span><b id="shipGlanceDebt">—</b></div><em id="shipGlanceDebtDelta">—</em></div>
     </div>
   </section>
 
