@@ -697,8 +697,10 @@ body.is-pro .pro-only-step-label{ display:flex }
 .calc-step-solo .field input{ font-size:19px; padding:16px 17px; text-align:center; font-weight:700 }
 .calc-step-solo .calc-field-header{ justify-content:center; text-align:center; flex-direction:column; gap:10px }
 .calc-step-solo .calc-field-header-icon{ width:44px; height:44px }
-.calc-step-solo .step-actions{ justify-content:center }
-.calc-step-solo .step-actions .btn.gold{ min-width:220px; justify-content:center }
+/* Continue must land in the exact same screen position on every step
+   (right-aligned, next to Back) regardless of whether that step is a
+   single-question "solo" step or a multi-field one - centering it here
+   was making the button jump around the screen between slides. */
 .calc-housing-label{ font-size:12.5px; color:var(--muted); font-weight:600; margin-bottom:9px }
 /* The final "Get My Financial Grade" button is the single highest-intent
    click in the whole product - it earns a more prominent treatment than
