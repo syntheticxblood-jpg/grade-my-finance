@@ -10260,14 +10260,27 @@ function syncRetirementBalance(){
 
 syncRetirementBalance();
 window.addEventListener('storage',function(e){ if(e.key==='gmf_autosave') syncRetirementBalance(); });
-function val(id){return parseFloat($r(id).value)||0}
+// Sanity check: $400,000 at 9% for 17 years with $0/mo = about $1.73M.\nfunction val(id){return parseFloat($r(id).value)||0}
 function calc(){
  var age=val('rsAge'), retire=val('rsRetireAge'), bal=val('rsBalance'), mo=val('rsMonthly'), spend=val('rsSpending'), rate=val('rsReturn'), inf=val('rsInflation'), wd=val('rsWithdraw');
  if(!age||retire<=age||spend<=0){$r('rsStatus').textContent='Enter a valid current age, target age, and annual retirement spending.';return}
  $r('rsStatus').textContent='Projection updated instantly as you change your plan.';
- var target=spend/wd, years=retire-age, monthlyRate=Math.pow(1+rate,1/12)-1, targetInfl=target*Math.pow(1+inf,years);
+ var target=spend/wd, years=retire-age;
+ // Use one consistent monthly model everywhere. The selected annual return
+ // is treated as the effective annual return, so the equivalent monthly rate
+ // preserves that annual rate. Contributions are added once per month.
+ var monthlyRate=rate===0?0:(Math.pow(1+rate,1/12)-1);
+ var targetInfl=target*Math.pow(1+inf,years);
  var points=[], portfolio=bal, fiYear=null;
- for(var y=0;y<=70;y++){if(y>0){portfolio=portfolio*Math.pow(1+monthlyRate,12)+mo*12*((Math.pow(1+monthlyRate,12)-1)/monthlyRate)} points.push({y:y,v:portfolio}); if(fiYear===null&&portfolio>=target*Math.pow(1+inf,y))fiYear=y}
+ points.push({y:0,v:portfolio});
+ for(var month=1;month<=70*12;month++){
+   portfolio=portfolio*(1+monthlyRate)+mo;
+   if(month%12===0){
+     var y=month/12;
+     points.push({y:y,v:portfolio});
+     if(fiYear===null&&portfolio>=target*Math.pow(1+inf,y))fiYear=y;
+   }
+ }
  var atRet=points[Math.min(years,points.length-1)].v, progress=Math.min(100,bal/target*100), fiAge=fiYear===null?'70+':(age+fiYear).toFixed(1), gap=Math.max(0,(targetInfl-atRet)/Math.max(1,years*12));
  $r('rsResults').style.display='block';$r('rsScore').textContent=progress.toFixed(0)+'%';$r('rsTarget').textContent=money(target);$r('rsPortfolio').textContent=money(atRet);$r('rsPortfolioSub').textContent=years+' years until age '+retire;$r('rsFiAge').textContent=fiAge;$r('rsFiSub').textContent=fiYear===null?'Target not reached in projection':'About '+fiYear.toFixed(1)+' years from now';$r('rsGap').textContent=gap?money(gap)+'/mo':'On track';$r('rsGapSub').textContent=gap?'Estimated extra monthly amount to close target-age gap':'Your current plan reaches the target by your goal age';
  var c=2*Math.PI*68;$r('rsDonutFg').style.strokeDasharray=c;$r('rsDonutFg').style.strokeDashoffset=c*(1-progress/100);$r('rsDonutPct').textContent=progress.toFixed(1)+'%';$r('rsReadinessText').textContent=progress>=25?'You have a meaningful foundation. Compounding has room to work.':'Your contribution rate is doing the heavy lifting now — building the starting balance is the first big milestone.';
@@ -10277,7 +10290,14 @@ function calc(){
  var title,advice;if(atRet>=targetInfl){title='You are on track for your target age.';advice='Your current savings plan is projected to cover your inflation-adjusted FI target. The biggest lever now is consistency: keep contributions automated and review your plan annually.'}else if(fiYear!==null){title='You can reach FI — just later than planned.';advice='Your strongest lever is increasing monthly investing. Even a few hundred dollars more per month can pull the FI date forward because every extra contribution gets years to compound.'}else{title='Your current plan needs a bigger lever.';advice='Consider a combination of higher monthly investing, a later retirement age, or lower planned retirement spending. Explore each input above to see which change moves the needle most.'}$r('rsAdviceTitle').textContent=title;$r('rsAdvice').textContent=advice;
 }
 function draw(p,target,age){var svg=$r('rsGrowthChart'),W=900,H=330,pad=45,max=Math.max(target,...p.slice(0,46).map(x=>x.v))*1.08;function xy(x,v){return [pad+x/45*(W-pad*2),H-pad-v/max*(H-pad*2)]}var grid='';for(var i=0;i<5;i++){var y=pad+i*(H-pad*2)/4,amt=max*(1-i/4);grid+='<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+y+'" y2="'+y+'" stroke="#e7efeb"/><text x="4" y="'+(y+4)+'" font-size="11" fill="#778782">'+money(amt)+'</text>'}var path=p.slice(0,46).map((x,i)=>{var q=xy(x.y,x.v);return(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join(' '),ty=xy(0,target)[1];svg.innerHTML=grid+'<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+ty+'" y2="'+ty+'" stroke="#f1b933" stroke-width="3" stroke-dasharray="9 7"/><path d="'+path+'" fill="none" stroke="#19b58e" stroke-width="5" stroke-linecap="round"/><text x="'+(W-150)+'" y="'+(ty-8)+'" font-size="12" fill="#bd850d">FI target</text>'; }
-function scenarios(rates,age,bal,mo,target,inf){var el=$r('rsScenarioBars');var rows=rates.map(function(rate){var p=bal,mr=Math.pow(1+rate,1/12)-1,hit=null;for(var m=1;m<=840;m++){p=p*(1+mr)+mo;if(p>=target*Math.pow(1+inf,m/12)){hit=m;break}}return {label:(rate*100).toFixed(0)+'% return',age:hit?age+hit/12:null,months:hit}});var max=Math.max.apply(null,rows.map(x=>x.months||840));el.innerHTML=rows.map(x=>'<div class="rs-bar-row"><b>'+x.label+'</b><div class="rs-bar"><div style="width:'+Math.max(8,100*(1-(x.months||840)/max))+'%"></div></div><span>'+ (x.age?'Age '+x.age.toFixed(1):'70+ yrs')+'</span></div>').join('')}
+function scenarios(rates,age,bal,mo,target,inf){var el=$r('rsScenarioBars');var rows=rates.map(function(rate){
+ var p=bal,mr=rate===0?0:(Math.pow(1+rate,1/12)-1),hit=null;
+ for(var m=1;m<=840;m++){
+   p=p*(1+mr)+mo;
+   if(p>=target*Math.pow(1+inf,m/12)){hit=m;break}
+ }
+ return {label:(rate*100).toFixed(0)+'% return',age:hit?age+hit/12:null,months:hit};
+});var max=Math.max.apply(null,rows.map(x=>x.months||840));el.innerHTML=rows.map(x=>'<div class="rs-bar-row"><b>'+x.label+'</b><div class="rs-bar"><div style="width:'+Math.max(8,100*(1-(x.months||840)/max))+'%"></div></div><span>'+ (x.age?'Age '+x.age.toFixed(1):'70+ yrs')+'</span></div>').join('')}
 function milestones(p,target,age){var levels=[.1,.25,.5,.75,1],names=['10% foundation','25% momentum','Halfway to FI','75% stretch','Financial independence'];var html='';levels.forEach(function(l,i){var hit=p.find(x=>x.v>=target*l);html+='<div class="ret-milestone"><i class="ret-dot"></i><div><b>'+names[i]+'</b><span>'+ (hit?'Projected at age '+(age+hit.y).toFixed(1)+' · '+money(target*l):'Beyond this projection')+'</span></div></div>'});$r('rsMilestones').innerHTML=html}
 $r('rsCalculate').addEventListener('click',calc);['rsAge','rsRetireAge','rsBalance','rsMonthly','rsSpending','rsReturn','rsInflation','rsWithdraw'].forEach(id=>$r(id).addEventListener('input',calc));$r('rsFillExample').addEventListener('click',function(){var x={rsAge:32,rsRetireAge:60,rsBalance:125000,rsMonthly:1800,rsSpending:60000};Object.keys(x).forEach(k=>$r(k).value=x[k]);calc()});
 })();
