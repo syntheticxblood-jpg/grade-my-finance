@@ -10336,7 +10336,8 @@ function syncRetirementBalance(){
 
 syncRetirementBalance();
 window.addEventListener('storage',function(e){ if(e.key==='gmf_autosave') syncRetirementBalance(); });
-// Sanity check: $400,000 at 9% for 17 years with $0/mo = about $1.73M.\nfunction val(id){return parseFloat($r(id).value)||0}
+// Sanity check: $400,000 at 9% for 17 years with $0/mo = about $1.73M.
+function val(id){return parseFloat($r(id).value)||0}
 function calc(){
  var age=val('rsAge'), retire=val('rsRetireAge'), bal=val('rsBalance'), mo=val('rsMonthly'), spend=val('rsSpending'), rate=val('rsReturn'), inf=val('rsInflation'), wd=val('rsWithdraw');
  if(!age||retire<=age||spend<=0){$r('rsStatus').textContent='Enter a valid current age, target age, and annual retirement spending.';return}
@@ -10375,7 +10376,13 @@ function scenarios(rates,age,bal,mo,target,inf){var el=$r('rsScenarioBars');var 
  return {label:(rate*100).toFixed(0)+'% return',age:hit?age+hit/12:null,months:hit};
 });var max=Math.max.apply(null,rows.map(x=>x.months||840));el.innerHTML=rows.map(x=>'<div class="rs-bar-row"><b>'+x.label+'</b><div class="rs-bar"><div style="width:'+Math.max(8,100*(1-(x.months||840)/max))+'%"></div></div><span>'+ (x.age?'Age '+x.age.toFixed(1):'70+ yrs')+'</span></div>').join('')}
 function milestones(p,target,age){var levels=[.1,.25,.5,.75,1],names=['10% foundation','25% momentum','Halfway to FI','75% stretch','Financial independence'];var html='';levels.forEach(function(l,i){var hit=p.find(x=>x.v>=target*l);html+='<div class="ret-milestone"><i class="ret-dot"></i><div><b>'+names[i]+'</b><span>'+ (hit?'Projected at age '+(age+hit.y).toFixed(1)+' · '+money(target*l):'Beyond this projection')+'</span></div></div>'});$r('rsMilestones').innerHTML=html}
-$r('rsCalculate').addEventListener('click',calc);['rsAge','rsRetireAge','rsBalance','rsMonthly','rsSpending','rsReturn','rsInflation','rsWithdraw'].forEach(id=>$r(id).addEventListener('input',calc));$r('rsFillExample').addEventListener('click',function(){var x={rsAge:32,rsRetireAge:60,rsBalance:125000,rsMonthly:1800,rsSpending:60000};Object.keys(x).forEach(k=>$r(k).value=x[k]);calc()});
+$r('rsCalculate').addEventListener('click',function(){
+  try{ calc(); }
+  catch(err){
+    console.error('Retirement calculator error:',err);
+    $r('rsStatus').textContent='We could not calculate the projection. Please check your inputs and try again.';
+  }
+});['rsAge','rsRetireAge','rsBalance','rsMonthly','rsSpending','rsReturn','rsInflation','rsWithdraw'].forEach(id=>$r(id).addEventListener('input',calc));$r('rsFillExample').addEventListener('click',function(){var x={rsAge:32,rsRetireAge:60,rsBalance:125000,rsMonthly:1800,rsSpending:60000};Object.keys(x).forEach(k=>$r(k).value=x[k]);calc()});
 })();
 </script>
 
