@@ -10229,6 +10229,82 @@ main{padding-top:16px !important;padding-bottom:42px !important}
 
 <style id="retirement-studio-css">
 #panel-retirement .retirement-studio{padding-bottom:40px}.ret-hero{background:linear-gradient(135deg,#103c35,#126b5a 55%,#19a98a);color:#fff;border-radius:24px;padding:30px;display:flex;justify-content:space-between;gap:25px;align-items:center;overflow:hidden;position:relative}.ret-hero:after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;right:-140px;top:-220px;background:radial-gradient(circle,rgba(255,215,110,.55),transparent 65%)}.ret-kicker{font:700 11px var(--font-mono);letter-spacing:.16em;color:#b9f4df}.ret-hero h2{font-size:clamp(27px,4vw,43px);max-width:600px;margin:8px 0}.ret-hero h2 span{color:#ffe08a}.ret-hero p{max-width:620px;color:#d8f2ea;margin:0}.ret-hero-badge{position:relative;z-index:1;min-width:140px;height:140px;border-radius:50%;display:grid;place-content:center;text-align:center;background:rgba(255,255,255,.13);border:8px solid rgba(255,255,255,.16);backdrop-filter:blur(8px)}.ret-hero-badge b{font:800 34px var(--font-display)}.ret-hero-badge span{font-size:11px;color:#d8f2ea}.ret-input-card,.ret-chart-card{background:#fff;border:1px solid #dfe9e5;border-radius:20px;box-shadow:0 12px 35px rgba(20,60,51,.07)}.ret-input-card{margin-top:16px;padding:22px}.ret-card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.ret-card-title h3,.ret-chart-card h3{margin:2px 0 0;font-size:20px}.ret-live{font:700 11px var(--font-mono);color:#0f9b79;background:#e2f8ef;padding:6px 9px;border-radius:99px}.ret-studio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.ret-studio-grid label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#60746e;font-weight:700}.ret-studio-grid input,.ret-studio-grid select{display:block;width:100%;margin-top:7px;padding:12px;border:1px solid #dbe5e1;border-radius:11px;background:#f8fbfa;color:#183a33;font:600 14px var(--font-mono)}.ret-action-row{display:flex;align-items:center;gap:10px;margin-top:18px;flex-wrap:wrap}.ret-action-row #rsStatus{font-size:12px;color:#72817d}.ret-metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}.ret-metric{padding:18px;border-radius:18px;border:1px solid #e1e7e4}.ret-metric span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:#62736e}.ret-metric strong{display:block;font:700 28px var(--font-display);margin:7px 0;color:#153a32}.ret-metric small{color:#72817d;font-size:11px}.ret-metric.mint{background:linear-gradient(135deg,#e7f8f1,#fff)}.ret-metric.purple{background:linear-gradient(135deg,#eee9ff,#fff)}.ret-metric.gold{background:linear-gradient(135deg,#fff5d8,#fff)}.ret-metric.blue{background:linear-gradient(135deg,#e9f2ff,#fff)}.ret-charts-grid{display:grid;grid-template-columns:1.65fr .8fr;gap:16px;margin-top:16px}.ret-chart-card{padding:20px}.ret-chart-head{display:flex;justify-content:space-between;gap:10px;align-items:start}.ret-legend{font-size:11px;color:#60746e}.ret-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;background:#19b58e;margin:0 5px}.ret-legend .target{background:#f1b933}.ret-chart-card svg{width:100%;height:280px;margin-top:12px}.ret-donut-wrap{height:235px;position:relative;display:grid;place-items:center}.ret-donut-wrap svg{width:190px;height:190px;margin:0}.ret-donut-wrap>div{position:absolute;text-align:center}.ret-donut-wrap b{display:block;font:700 30px var(--font-display)}.ret-donut-wrap span{font-size:11px;color:#70817c}.ret-readiness{font-size:12px;text-align:center;color:#62736e}.ret-scenario-bars{display:grid;gap:14px;margin-top:20px}.rs-bar-row{display:grid;grid-template-columns:145px 1fr 90px;gap:12px;align-items:center;font-size:12px}.rs-bar{height:14px;border-radius:99px;background:#edf2ef;overflow:hidden}.rs-bar div{height:100%;border-radius:99px;background:linear-gradient(90deg,#3a7ee8,#8b6be8)}.rs-bar-row:nth-child(2) .rs-bar div{background:linear-gradient(90deg,#159a78,#47c8a7)}.rs-bar-row:nth-child(3) .rs-bar div{background:linear-gradient(90deg,#e6a52d,#f6d369)}.ret-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.ret-milestone{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #edf1ef}.ret-milestone:last-child{border:none}.ret-dot{width:11px;height:11px;border-radius:50%;background:#19b58e;margin-top:4px}.ret-milestone b{font-size:13px}.ret-milestone span{display:block;font-size:11px;color:#71817d;margin-top:2px}.ret-next{background:linear-gradient(135deg,#123f37,#177f6a);color:#fff}.ret-next .section-label,.ret-next p{color:#c6eee3!important}.ret-next p{font-size:13px;line-height:1.6}@media(max-width:900px){.ret-studio-grid,.ret-metric-grid{grid-template-columns:1fr 1fr}.ret-charts-grid,.ret-bottom-grid{grid-template-columns:1fr}}@media(max-width:560px){.ret-hero{padding:22px}.ret-hero-badge{display:none}.ret-studio-grid,.ret-metric-grid{grid-template-columns:1fr}.rs-bar-row{grid-template-columns:100px 1fr 65px}}
+
+/* ---------- Retirement Lab: dark-theme readability ---------- */
+:root[data-theme="dark"] .ret-chart-card,
+:root[data-theme="dark"] .ret-input-card{
+  background:#16282c!important;
+  border-color:#30484e!important;
+  color:#eef7f3!important;
+}
+:root[data-theme="dark"] .ret-card-title h3,
+:root[data-theme="dark"] .ret-chart-card h3,
+:root[data-theme="dark"] .ret-studio-grid label,
+:root[data-theme="dark"] .ret-slider-top .rs-label,
+:root[data-theme="dark"] .ret-milestone b{
+  color:#f1f8f5!important;
+}
+:root[data-theme="dark"] .ret-studio-grid input,
+:root[data-theme="dark"] .ret-studio-grid select{
+  background:#0e1c20!important;
+  color:#f1f8f5!important;
+  border-color:#3a555c!important;
+}
+:root[data-theme="dark"] .ret-studio-grid input::placeholder{
+  color:#8fa49e!important;
+}
+:root[data-theme="dark"] .ret-live{
+  background:#123d34!important;
+  color:#6ee7c1!important;
+}
+:root[data-theme="dark"] .ret-action-row #rsStatus,
+:root[data-theme="dark"] .ret-legend,
+:root[data-theme="dark"] .ret-donut-wrap span,
+:root[data-theme="dark"] .ret-readiness,
+:root[data-theme="dark"] .ret-milestone span{
+  color:#aebfba!important;
+}
+:root[data-theme="dark"] .ret-metric{
+  border-color:#30484e!important;
+}
+:root[data-theme="dark"] .ret-metric span{
+  color:#b3c4bf!important;
+}
+:root[data-theme="dark"] .ret-metric strong{
+  color:#f3faf7!important;
+}
+:root[data-theme="dark"] .ret-metric small{
+  color:#9fb1ac!important;
+}
+:root[data-theme="dark"] .ret-metric.mint{
+  background:linear-gradient(135deg,#123c34,#172a2d)!important;
+}
+:root[data-theme="dark"] .ret-metric.purple{
+  background:linear-gradient(135deg,#292348,#18262b)!important;
+}
+:root[data-theme="dark"] .ret-metric.gold{
+  background:linear-gradient(135deg,#44361b,#1b292b)!important;
+}
+:root[data-theme="dark"] .ret-metric.blue{
+  background:linear-gradient(135deg,#1c3551,#18272c)!important;
+}
+:root[data-theme="dark"] .rs-bar{
+  background:#273b40!important;
+}
+:root[data-theme="dark"] .ret-milestone{
+  border-bottom-color:#30484e!important;
+}
+:root[data-theme="dark"] .ret-next{
+  background:linear-gradient(135deg,#103b35,#126b59)!important;
+}
+:root[data-theme="dark"] .ret-next .section-label,
+:root[data-theme="dark"] .ret-next p{
+  color:#d0f4e9!important;
+}
+:root[data-theme="dark"] .ret-chart-card svg text{
+  fill:#b7c8c3;
+}
+
 </style>
 
 <script id="retirement-studio-js">
@@ -10289,7 +10365,7 @@ function calc(){
  milestones(points,target,age);
  var title,advice;if(atRet>=targetInfl){title='You are on track for your target age.';advice='Your current savings plan is projected to cover your inflation-adjusted FI target. The biggest lever now is consistency: keep contributions automated and review your plan annually.'}else if(fiYear!==null){title='You can reach FI — just later than planned.';advice='Your strongest lever is increasing monthly investing. Even a few hundred dollars more per month can pull the FI date forward because every extra contribution gets years to compound.'}else{title='Your current plan needs a bigger lever.';advice='Consider a combination of higher monthly investing, a later retirement age, or lower planned retirement spending. Explore each input above to see which change moves the needle most.'}$r('rsAdviceTitle').textContent=title;$r('rsAdvice').textContent=advice;
 }
-function draw(p,target,age){var svg=$r('rsGrowthChart'),W=900,H=330,pad=45,max=Math.max(target,...p.slice(0,46).map(x=>x.v))*1.08;function xy(x,v){return [pad+x/45*(W-pad*2),H-pad-v/max*(H-pad*2)]}var grid='';for(var i=0;i<5;i++){var y=pad+i*(H-pad*2)/4,amt=max*(1-i/4);grid+='<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+y+'" y2="'+y+'" stroke="#e7efeb"/><text x="4" y="'+(y+4)+'" font-size="11" fill="#778782">'+money(amt)+'</text>'}var path=p.slice(0,46).map((x,i)=>{var q=xy(x.y,x.v);return(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join(' '),ty=xy(0,target)[1];svg.innerHTML=grid+'<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+ty+'" y2="'+ty+'" stroke="#f1b933" stroke-width="3" stroke-dasharray="9 7"/><path d="'+path+'" fill="none" stroke="#19b58e" stroke-width="5" stroke-linecap="round"/><text x="'+(W-150)+'" y="'+(ty-8)+'" font-size="12" fill="#bd850d">FI target</text>'; }
+function draw(p,target,age){var svg=$r('rsGrowthChart'),W=900,H=330,pad=45,max=Math.max(target,...p.slice(0,46).map(x=>x.v))*1.08;function xy(x,v){return [pad+x/45*(W-pad*2),H-pad-v/max*(H-pad*2)]}var dark=document.documentElement.getAttribute('data-theme')==='dark',gridStroke=dark?'#30484e':'#e7efeb',gridText=dark?'#b7c8c3':'#778782';var grid='';for(var i=0;i<5;i++){var y=pad+i*(H-pad*2)/4,amt=max*(1-i/4);grid+='<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+y+'" y2="'+y+'" stroke="'+gridStroke+'"/><text x="4" y="'+(y+4)+'" font-size="11" fill="'+gridText+'">'+money(amt)+'</text>'}var path=p.slice(0,46).map((x,i)=>{var q=xy(x.y,x.v);return(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join(' '),ty=xy(0,target)[1];svg.innerHTML=grid+'<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+ty+'" y2="'+ty+'" stroke="#f1b933" stroke-width="3" stroke-dasharray="9 7"/><path d="'+path+'" fill="none" stroke="#19b58e" stroke-width="5" stroke-linecap="round"/><text x="'+(W-150)+'" y="'+(ty-8)+'" font-size="12" fill="#bd850d">FI target</text>'; }
 function scenarios(rates,age,bal,mo,target,inf){var el=$r('rsScenarioBars');var rows=rates.map(function(rate){
  var p=bal,mr=rate===0?0:(Math.pow(1+rate,1/12)-1),hit=null;
  for(var m=1;m<=840;m++){
