@@ -2810,6 +2810,35 @@ body{font-family:var(--font-body)!important}
 .ship-metric{border-right-color:var(--ui-line)!important}
 .ship-metric>span{color:var(--ui-dim)!important}.ship-metric>b{color:var(--ui-text)!important}.ship-metric>em{color:var(--ui-green)!important}
 .ship-lower-grid{gap:14px!important}.ship-chart-card,.ship-change-card,.ship-moves-card,.ship-note-card{background:var(--ui-card)!important;border-color:var(--ui-line)!important}
+/* The pie+bar row gets its own 3-column override (adding the Top
+   Insights card) without touching the 2-column layout .ship-lower-grid
+   still uses for the "what changed" / "next move" row below it. */
+.ship-modern-charts{grid-template-columns:1.05fr 1fr .82fr!important}
+@media(max-width:1100px){.ship-modern-charts{grid-template-columns:1fr 1fr!important}}
+.ship-insights-card{background:#fff;border:1px solid var(--ship-line);border-radius:16px;padding:18px;box-shadow:0 5px 18px rgba(15,35,42,.035);display:flex;flex-direction:column}
+.ship-insights-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ship-insights-head span{font:800 10px var(--font-mono);letter-spacing:.08em;color:#65757a}
+.ship-insights-list{display:flex;flex-direction:column;gap:4px;flex:1}
+.ship-insight-row{display:flex;align-items:center;gap:11px;padding:9px 6px;border-radius:10px;text-decoration:none;cursor:pointer;transition:background .12s ease}
+.ship-insight-row:hover{background:#f5f8f7}
+.ship-insight-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none;font-size:15px}
+.ship-insight-icon.mint{background:#e3f6ee;color:#159a78}
+.ship-insight-icon.purple{background:#f2edfc;color:#7c4fd8}
+.ship-insight-icon.gold{background:#fdf1e0;color:#d9822b}
+.ship-insight-text{flex:1;min-width:0}
+.ship-insight-text b{display:block;font-size:12.5px;color:#173b3d;font-weight:700}
+.ship-insight-text span{display:block;font-size:10.5px;color:#7a898e;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ship-insight-row svg{flex:none;color:#a7b4b2}
+.ship-insights-cta{margin-top:12px;padding:14px;border-radius:12px;background:linear-gradient(135deg,#e3f6ee,#eef6fb);border:1px solid #d7ece4}
+.ship-insights-cta-head{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.ship-insights-cta-icon{width:26px;height:26px;border-radius:8px;background:#159a78;color:#fff;display:flex;align-items:center;justify-content:center;flex:none;font-size:12px}
+.ship-insights-cta b{font-size:12px;color:#173b3d}
+.ship-insights-cta .btn{width:100%;justify-content:center;font-size:11.5px;padding:8px}
+:root[data-theme="dark"] .ship-insights-card{background:var(--ui-card)!important;border-color:var(--ui-line)!important}
+:root[data-theme="dark"] .ship-insight-row:hover{background:rgba(255,255,255,.04)}
+:root[data-theme="dark"] .ship-insight-text b{color:#eef7f3}
+:root[data-theme="dark"] .ship-insights-cta{background:linear-gradient(135deg,rgba(21,154,120,.12),rgba(76,130,237,.10));border-color:rgba(21,154,120,.25)}
+:root[data-theme="dark"] .ship-insights-cta b{color:#eef7f3}
 .ship-range{background:var(--ui-bg2)!important;border-color:var(--ui-line)!important}.ship-range button{color:var(--ui-muted)!important}.ship-range button.active{background:var(--ui-card2)!important;color:var(--ui-green)!important}
 .ship-chart-legend{color:var(--ui-muted)!important}.ship-change-row{border-bottom-color:var(--ui-line)!important}.ship-change-row b{color:var(--ui-green)!important}.ship-change-row b.down{color:var(--ui-red)!important}
 .ship-move{border-bottom-color:var(--ui-line)!important}.ship-move>span{background:var(--ui-green-soft)!important;color:var(--ui-green)!important}
@@ -3796,7 +3825,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
             <div class="dash-greeting-eyebrow" id="greetingEyebrow" style="display:none">Welcome back,</div>
             <h1 class="dash-greeting-text" id="greetingText">Welcome</h1>
             <div class="dash-greeting-sub" id="greetingSub">Here's how your finances look today.</div>
-            <div class="tab-focus-badge" id="tabFocusBadge">COMMAND CENTER</div>
+            <div class="tab-focus-badge" id="tabFocusBadge" style="display:none">COMMAND CENTER</div>
           </div>
           <div class="content-header-right">
             <div class="updated" id="dashHeaderUpdated">—</div>
@@ -3875,6 +3904,27 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="pro-blur-overlay">
         <div class="pro-blur-title">🔒 See your real monthly margin</div>
         <div class="pro-blur-sub">Income vs. expenses, tracked every month so you always know where you stand.</div>
+        <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
+      </div>
+    </div>
+    <div class="ship-insights-card pro-blur-section">
+      <div class="pro-blur-content" style="display:flex;flex-direction:column;height:100%">
+      <div class="ship-insights-head">
+        <span>TOP INSIGHTS</span>
+        <button class="ship-link" data-goto="insights" type="button">View all →</button>
+      </div>
+      <div class="ship-insights-list" id="shipTopInsightsList"></div>
+      <div class="ship-insights-cta">
+        <div class="ship-insights-cta-head">
+          <span class="ship-insights-cta-icon">◎</span>
+          <b>Want a personalized plan?</b>
+        </div>
+        <button class="btn gold sm" data-goto="scenarios" type="button">Start Planning →</button>
+      </div>
+      </div>
+      <div class="pro-blur-overlay">
+        <div class="pro-blur-title">🔒 See your top priorities</div>
+        <div class="pro-blur-sub">The highest-impact things to focus on, ranked for your numbers.</div>
         <a class="btn gold sm" href="index.html#pricing">Unlock with Pro</a>
       </div>
     </div>
@@ -6754,41 +6804,18 @@ function renderGreeting(hist){
   var name = getUserName();
   var textEl = $("greetingText"), subEl = $("greetingSub"), avatarEl = $("greetAvatar"), editLink = $("editNameLink"), eyebrowEl = $("greetingEyebrow");
 
-  if(!name){
-    avatarEl.textContent = "•";
-    textEl.textContent = timeOfDayGreeting() + ".";
-    if(eyebrowEl) eyebrowEl.style.display = "none";
-    editLink.style.display = "none";
-    showNameCaptureUI(subEl, "", function(){ renderGreeting(getHistory()); });
-    return;
+  if(eyebrowEl){
+    eyebrowEl.style.display = "block";
+    if(name){ var firstName = name.split(/\s+/)[0]; eyebrowEl.innerHTML = "Welcome back, <span class=\"name-highlight\">" + firstName + "</span> 👋"; }
+    else eyebrowEl.textContent = "Welcome back 👋";
   }
-
-  var firstName = name.split(/\s+/)[0];
-  avatarEl.textContent = initialsFor(name);
-  if(eyebrowEl) eyebrowEl.style.display = "block";
-  textEl.innerHTML = timeOfDayGreeting() + ', <span class="name-highlight">' + firstName + "</span>.";
-
-  // A real, long gap since the last check-in still gets priority (that's
-  // a genuine retention signal worth surfacing), but for a routine
-  // return, a varied motivational line matches the tone the rest of this
-  // greeting is going for, rather than repeating the same static
-  // sentence on every single visit.
-  var MOTIVATIONAL_LINES = [
-    "Let's crush your financial goals today.",
-    "Your numbers are looking sharp. Let's keep it up.",
-    "Small moves today, big difference later.",
-    "Let's see what's changed since last time.",
-    "Ready to check in on your progress?"
-  ];
-  if(!hist.length){
-    subEl.textContent = "Run your first calculation to start building your dashboard.";
-  } else {
-    var latest = hist[hist.length-1];
-    var gap = daysBetween(latest.ts);
-    if(gap > 45) subEl.textContent = "It's been a while since your last check-in. Worth a fresh look?";
-    else subEl.textContent = MOTIVATIONAL_LINES[Math.floor(Math.random() * MOTIVATIONAL_LINES.length)];
-  }
+  avatarEl.textContent = name ? initialsFor(name) : "•";
   editLink.style.display = "inline-block";
+  // Heading/subtitle here are the static "command center" framing (this
+  // matches the tab section title/sub scheme setupTabs() uses for every
+  // other tab) - only the eyebrow above is personalized with the name.
+  if(textEl) textEl.textContent = "Your financial command center.";
+  if(subEl) subEl.textContent = "Track your progress, stay on target, and make confident financial decisions.";
 }
 $("editNameLink").addEventListener("click", function(){
   showNameCaptureUI($("greetingSub"), getUserName(), function(){ renderGreeting(getHistory()); });
@@ -6964,12 +6991,22 @@ function __track(){} // no-op if GA hasn't wired a custom tracker on this page
   function buttons(){return document.querySelectorAll('.dash-nav-btn[data-tab]')}
   function panels(){return document.querySelectorAll('.dash-tab-panel')}
   function updateFocus(name){
+    var badge=document.getElementById('tabFocusBadge');
+    if(name==='overview'){
+      // The overview/home tab uses the personalized greeting rendered by
+      // renderGreeting() (name + "command center" framing, matching the
+      // target design) instead of the generic per-tab title/sub scheme
+      // below - and has no section badge at all. Re-render it fresh in
+      // case another tab's title/sub is still sitting in these elements.
+      if(badge) badge.style.display='none';
+      if(typeof renderGreeting==='function' && typeof getHistory==='function') renderGreeting(getHistory());
+      return;
+    }
     var m=meta[name]||meta.overview;
     var h=document.getElementById('greetingText'),sub=document.getElementById('greetingSub');
     if(h) h.textContent=m.title;
     if(sub) sub.textContent=m.sub;
-    var badge=document.getElementById('tabFocusBadge');
-    if(badge) badge.textContent=name==='overview'?'COMMAND CENTER':name==='score'?'EXPLAIN YOUR GRADE':name==='insights'?'DECISION SUPPORT':name.toUpperCase();
+    if(badge){ badge.style.display=''; badge.textContent=name==='score'?'EXPLAIN YOUR GRADE':name==='insights'?'DECISION SUPPORT':name.toUpperCase(); }
   }
   function activate(name,shouldScroll){
     if(!name || !document.getElementById('panel-'+name)) return;
@@ -9281,6 +9318,29 @@ function renderNextBestMove(hist, mountId){
   var btn = $(mountId+'StartGoalBtn');
   if(btn) btn.addEventListener('click', function(){ startGoalFromPriority(pri); });
 }
+var SHIP_INSIGHT_ICONS = ['mint','purple','gold'];
+function renderTopInsights(hist){
+  var mount = $("shipTopInsightsList"); if(!mount) return;
+  var latest = hist.length ? hist[hist.length-1] : null;
+  var priorities = latest ? (deriveFinancialPriorities(latest)||[]) : [];
+  if(!priorities.length){
+    mount.innerHTML = '<div class="ship-insight-row" style="cursor:default"><div class="ship-insight-text"><b>Nothing urgent right now</b><span>Keep checking in — this updates as your numbers change.</span></div></div>';
+    return;
+  }
+  mount.innerHTML = priorities.slice(0,3).map(function(p, i){
+    return '<button class="ship-insight-row" type="button" data-priority-key="'+p.key+'">'+
+      '<span class="ship-insight-icon '+SHIP_INSIGHT_ICONS[i % 3]+'">'+(i===0?'🛡':i===1?'📈':'🎯')+'</span>'+
+      '<span class="ship-insight-text"><b>'+p.title+'</b><span>'+p.action+'</span></span>'+
+      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>'+
+    '</button>';
+  }).join('');
+  mount.querySelectorAll('[data-priority-key]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var pri = priorities.find(function(p){ return p.key === btn.getAttribute('data-priority-key'); });
+      if(pri) startGoalFromPriority(pri);
+    });
+  });
+}
 function startGoalFromPriority(pri){
   var goals = getGoals();
   if(goals.some(function(g){ return g.source==='priority' && g.key===pri.key && !g.completedAt; })) return;
@@ -9292,7 +9352,7 @@ function startGoalFromPriority(pri){
   var hist = getHistory();
   renderGoals();
   renderDashGoalsPreview(hist);
-  renderNextBestMove(hist, 'shipNextMove');
+  renderNextBestMove(hist, 'shipNextMove'); renderTopInsights(hist);
   renderPlanNextBestMove(hist);
   toastMsg('Goal added — track it from Goals or Plan.');
 }
@@ -9391,7 +9451,7 @@ function renderShipOverview(hist){
   }).join('');
   $('shipChangePeriod').textContent = prev ? 'Latest check-in vs. '+new Date(prev.ts).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}) : 'Your next check-in will create the first comparison.';
 
-  renderNextBestMove(hist, 'shipNextMove');
+  renderNextBestMove(hist, 'shipNextMove'); renderTopInsights(hist);
   renderDashGoalsPreview(hist);
 }
 /* ================= OVERVIEW TAB ================= */
@@ -11004,10 +11064,18 @@ Promise.resolve(init()).then(function(){
     });
     var meta=(window.__dashTabMeta||{})[name];
     var h=qs('#greetingText'), sub=qs('#greetingSub'), badge=qs('#tabFocusBadge');
-    if(meta){
+    if(name==='overview'){
+      // Overview uses the personalized greeting (name + the static
+      // "command center" framing, matching the target design) instead of
+      // the generic per-tab title/sub scheme, and has no section badge -
+      // re-render it fresh in case a different tab's title/sub is still
+      // sitting in these same two elements from just before this click.
+      if(badge) badge.style.display='none';
+      if(typeof renderGreeting==='function' && typeof getHistory==='function') renderGreeting(getHistory());
+    } else if(meta){
       if(h) h.textContent=meta.title;
       if(sub) sub.textContent=meta.sub;
-      if(badge) badge.textContent=name==='overview'?'COMMAND CENTER':name==='score'?'EXPLAIN YOUR GRADE':name==='insights'?'DECISION SUPPORT':name.toUpperCase();
+      if(badge){ badge.style.display=''; badge.textContent=name==='score'?'EXPLAIN YOUR GRADE':name==='insights'?'DECISION SUPPORT':name.toUpperCase(); }
     }
     if(scroll){
       var header=qs('.content-header');
@@ -13014,9 +13082,19 @@ body{font-size:15px!important;min-height:100vh}
    });
    var meta=names[name]||names.overview;
    var h=document.getElementById('greetingText'),sub=document.getElementById('greetingSub'),badge=document.getElementById('tabFocusBadge');
-   if(h) h.textContent=meta.title;
-   if(sub) sub.textContent=meta.sub;
-   if(badge) badge.textContent=name==='overview'?'COMMAND CENTER':name==='score'?'EXPLAIN YOUR GRADE':name==='insights'?'DECISION SUPPORT':name.toUpperCase();
+   if(name==='overview'){
+     // Overview uses the personalized greeting rendered by renderGreeting()
+     // (name + "command center" framing, matching the target design)
+     // instead of the generic per-tab title/sub scheme, and has no
+     // section badge - re-render fresh in case another tab's title/sub
+     // is still sitting in these same elements from just before this call.
+     if(badge) badge.style.display='none';
+     if(typeof renderGreeting==='function' && typeof getHistory==='function') renderGreeting(getHistory());
+   } else {
+     if(h) h.textContent=meta.title;
+     if(sub) sub.textContent=meta.sub;
+     if(badge){ badge.style.display=''; badge.textContent=name==='score'?'EXPLAIN YOUR GRADE':name==='insights'?'DECISION SUPPORT':name.toUpperCase(); }
+   }
    if(scroll){
      var header=document.querySelector('.content-header');
      var y=panel.getBoundingClientRect().top+window.scrollY;
