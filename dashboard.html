@@ -11673,6 +11673,23 @@ body{font-size:15px!important;min-height:100vh}
  .content-header-right .btn{flex:1!important}
  .ship-grade-hero{display:block!important}
  .grade-pro-panel{min-width:0!important}
+ /* This block's own .sidebar{width:224px!important} above has no mobile
+    reset, so it was clamping the bottom tab bar to 224px wide on phones
+    instead of letting it span the full screen. Put it back to the
+    fixed-bottom-bar layout the earlier mobile rules define. */
+ .sidebar{width:auto!important;padding:0 6px!important}
+ /* Same problem for the nav list itself: an unconditional
+    .sidebar .dash-nav{display:grid!important} elsewhere stacks every tab
+    button in a vertical column with no mobile reset, so the tab bar
+    overflows upward off-screen instead of sitting in one row. */
+ .sidebar .dash-nav{display:flex!important;flex-direction:row!important}
+ .sidebar .dash-nav-btn{width:auto!important}
+ /* The Settings dropdown has its own unconditional
+    position:absolute!important rule elsewhere with no mobile reset, so
+    once the tab bar became full-width its left:4px was measured from a
+    shifted anchor and the panel hung off the right edge of the screen.
+    Pin it to the viewport instead, docked just above the tab bar. */
+ .sidebar-bottom .settings-panel{position:fixed!important;left:10px!important;right:10px!important;bottom:76px!important;width:auto!important;max-width:none!important}
 }
 </style>
 
