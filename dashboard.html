@@ -4159,7 +4159,8 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="ret-studio-grid">
         <label>Current age<input id="rsAge" type="number" min="18" max="100" placeholder="32"></label>
         <label>Target retirement age<input id="rsRetireAge" type="number" min="19" max="100" placeholder="60"></label>
-        <label>Current invested balance<input id="rsBalance" type="number" min="0" placeholder="125000"></label>
+        <label>Current invested balance<input id="rsBalance" type="number" min="0" placeholder="125000">
+<span id="rsBalanceSyncNote" class="rs-sync-note">Pulled from your latest financial check-in — you can edit it here.</span></label>
         <label>Monthly contribution<input id="rsMonthly" type="number" min="0" placeholder="1500"></label>
         <label>Annual retirement spending<input id="rsSpending" type="number" min="1" placeholder="60000"></label>
         <label>Expected annual return<select id="rsReturn"><option value="0.05">5% · Conservative</option><option value="0.07" selected>7% · Moderate</option><option value="0.09">9% · Growth</option></select></label>
@@ -10344,25 +10345,26 @@ function $r(id){return document.getElementById(id)} function money(v){return new
    single source of truth. The dashboard never asks the user to enter it twice. */
 function syncRetirementBalance(){
   try{
-    var saved=JSON.parse(localStorage.getItem('gmf_autosave')||'null');
-    var el=$r('rsBalance');
-    if(!el || !saved || !isFinite(Number(saved.retire))) return false;
-    el.value=Math.max(0,Math.round(Number(saved.retire)));
-    el.readOnly=true;
-    el.setAttribute('aria-readonly','true');
-    el.title='Synced automatically from your latest GradeMyFinance calculator entry.';
-    var parent=el.parentElement;
-    if(parent && !parent.querySelector('.ret-source-note')){
-      var note=document.createElement('small');
-      note.className='ret-source-note';
-      note.textContent='Synced from your financial check-in';
-      note.style.cssText='display:block;margin-top:5px;color:#19a77f;font-size:10.5px;font-weight:700;';
-      parent.appendChild(note);
+    var input=$r('rsBalance');
+    if(!input) return;
+    var raw=localStorage.getItem('gmf_autosave');
+    if(!raw) return;
+    var data=JSON.parse(raw);
+    var candidate=data.retirementBalance ?? data.retirement ?? data.retirementAccountsTotal ?? data.retirementTotal;
+    if(candidate===undefined || candidate===null || candidate==='') return;
+    // Prefill from the calculator, but never lock the dashboard field.
+    // If the user has already edited it, preserve their dashboard value.
+    if(!input.value || input.dataset.userEdited!=='1'){
+      var n=Number(String(candidate).replace(/[$,]/g,''));
+      if(Number.isFinite(n)){
+        input.value=Math.round(n);
+        input.dataset.synced='1';
+        var note=$r('rsBalanceSyncNote');
+        if(note) note.textContent='Pulled from your latest financial check-in — you can edit it here.';
+      }
     }
-    return true;
-  }catch(e){ return false; }
+  }catch(e){}
 }
-
 syncRetirementBalance();
 window.addEventListener('storage',function(e){ if(e.key==='gmf_autosave') syncRetirementBalance(); });
 // Sanity check: $400,000 at 9% for 17 years with $0/mo = about $1.73M.
@@ -10462,7 +10464,13 @@ $r('rsCalculate').addEventListener('click',function(){
     console.error('Retirement calculator error:',err);
     $r('rsStatus').textContent='We could not calculate the projection. Please check your inputs and try again.';
   }
-});['rsAge','rsRetireAge','rsBalance','rsMonthly','rsSpending','rsReturn','rsInflation','rsWithdraw'].forEach(id=>$r(id).addEventListener('input',calc));$r('rsFillExample').addEventListener('click',function(){var x={rsAge:32,rsRetireAge:60,rsBalance:125000,rsMonthly:1800,rsSpending:60000};Object.keys(x).forEach(k=>$r(k).value=x[k]);calc()});
+});$r('rsBalance').addEventListener('input',function(){
+  this.dataset.userEdited='1';
+  var note=$r('rsBalanceSyncNote');
+  if(note) note.textContent='Edited on the dashboard — this value is now used for your retirement plan.';
+  calc();
+});
+['rsAge','rsRetireAge','rsBalance','rsMonthly','rsSpending','rsReturn','rsInflation','rsWithdraw'].forEach(id=>$r(id).addEventListener('input',calc));$r('rsFillExample').addEventListener('click',function(){var x={rsAge:32,rsRetireAge:60,rsBalance:125000,rsMonthly:1800,rsSpending:60000};Object.keys(x).forEach(k=>$r(k).value=x[k]);calc()});
 })();
 </script>
 
@@ -11882,6 +11890,129 @@ svg .brand-bright, .brand-fill{fill:#2fd6a0}
 :root[data-theme="light"] .sidebar .theme-choice.active{background:#245B4C!important;color:#fff!important;border-color:#B8D48A!important}
 </style>
 
+<style id="gmf-final-dark-fix">
+/* ---------- Dashboard-wide dark theme readability ---------- */
+:root[data-theme="dark"] body{
+  background:#0b1518!important;
+  color:#edf6f2!important;
+}
+:root[data-theme="dark"] .app,
+:root[data-theme="dark"] .dashboard-shell,
+:root[data-theme="dark"] main,
+:root[data-theme="dark"] .main-content,
+:root[data-theme="dark"] .content{
+  background:#0b1518!important;
+  color:#edf6f2!important;
+}
+:root[data-theme="dark"] .topbar,
+:root[data-theme="dark"] header{
+  background:#101f23!important;
+  border-color:#263c42!important;
+  color:#edf6f2!important;
+}
+:root[data-theme="dark"] .sidebar{
+  background:#102a25!important;
+  border-color:#29423d!important;
+  color:#edf6f2!important;
+}
+:root[data-theme="dark"] .sidebar a,
+:root[data-theme="dark"] .sidebar button,
+:root[data-theme="dark"] .nav-item{
+  color:#d7e6e1!important;
+}
+:root[data-theme="dark"] .sidebar a:hover,
+:root[data-theme="dark"] .sidebar button:hover,
+:root[data-theme="dark"] .nav-item:hover{
+  background:#193a34!important;
+  color:#ffffff!important;
+}
+:root[data-theme="dark"] .sidebar .active,
+:root[data-theme="dark"] .nav-item.active{
+  background:#1d4d42!important;
+  color:#ffffff!important;
+}
+:root[data-theme="dark"] .hero-card,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .panel-card,
+:root[data-theme="dark"] .stat-card,
+:root[data-theme="dark"] .dashboard-card,
+:root[data-theme="dark"] .chart-card,
+:root[data-theme="dark"] .insight-card,
+:root[data-theme="dark"] .goal-card{
+  background:#14252a!important;
+  border-color:#2b454c!important;
+  color:#edf6f2!important;
+  box-shadow:0 10px 30px rgba(0,0,0,.18)!important;
+}
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] h4,
+:root[data-theme="dark"] h5,
+:root[data-theme="dark"] strong,
+:root[data-theme="dark"] b{
+  color:#f4faf7!important;
+}
+:root[data-theme="dark"] p,
+:root[data-theme="dark"] small,
+:root[data-theme="dark"] .muted,
+:root[data-theme="dark"] .subtitle,
+:root[data-theme="dark"] .description,
+:root[data-theme="dark"] label{
+  color:#aebfba!important;
+}
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea{
+  background:#0d1b1f!important;
+  color:#f2f8f5!important;
+  border-color:#385159!important;
+}
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder{
+  color:#7f9690!important;
+}
+:root[data-theme="dark"] table th{
+  background:#102125!important;
+  color:#b8cac4!important;
+  border-color:#2d464c!important;
+}
+:root[data-theme="dark"] table td{
+  color:#edf6f2!important;
+  border-color:#263e44!important;
+}
+:root[data-theme="dark"] .chart,
+:root[data-theme="dark"] svg{
+  color:#dceae6;
+}
+:root[data-theme="dark"] .progress,
+:root[data-theme="dark"] .bar-track{
+  background:#263b40!important;
+}
+:root[data-theme="dark"] .dropdown,
+:root[data-theme="dark"] .menu,
+:root[data-theme="dark"] .popover{
+  background:#14252a!important;
+  border-color:#304950!important;
+  color:#edf6f2!important;
+}
+:root[data-theme="dark"] .dropdown *,
+:root[data-theme="dark"] .menu *,
+:root[data-theme="dark"] .popover *{
+  color:inherit;
+}
+/* Existing dashboard-specific cards that were forced light */
+:root[data-theme="dark"] #panel-score .hero-card:first-of-type,
+:root[data-theme="dark"] #panel-networth .hero-card:first-of-type,
+:root[data-theme="dark"] #panel-goals .hero-card:first-of-type,
+:root[data-theme="dark"] #panel-scenarios .hero-card:first-of-type,
+:root[data-theme="dark"] #panel-insights .hero-card:first-of-type,
+:root[data-theme="dark"] #panel-achievements .hero-card:first-of-type{
+  background:#14252a!important;
+}
+.rs-sync-note{display:block;margin-top:6px;font-size:10.5px;line-height:1.35;color:var(--rb-muted)}
+:root[data-theme="dark"] .rs-sync-note{color:#9fb4ae}
+</style>
 </body>
 </html>
 
