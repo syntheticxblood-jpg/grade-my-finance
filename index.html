@@ -776,8 +776,15 @@ body.is-pro .pro-only-step-label{ display:flex }
   border-radius:22px; padding:38px 34px 30px; box-shadow:0 30px 80px -20px rgba(0,0,0,.5), var(--shadow);
   text-align:center; animation:revealCardIn .45s cubic-bezier(.19,1,.22,1);
   max-height:calc(100vh - 48px); max-height:calc(100dvh - 48px); overflow-y:auto;
-  box-sizing:border-box;
+  box-sizing:border-box; position:relative;
 }
+.grade-reveal-close{
+  position:absolute; top:14px; right:14px; width:30px; height:30px; border-radius:50%;
+  background:var(--bg-2); border:1px solid var(--line); color:var(--muted); font-size:14px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2;
+  transition:background .15s ease, color .15s ease;
+}
+.grade-reveal-close:hover{ background:var(--line); color:var(--text) }
 @keyframes revealCardIn{ from{ opacity:0; transform:translateY(18px) scale(.97) } to{ opacity:1; transform:none } }
 @media (prefers-reduced-motion: reduce){ .grade-reveal-card{ animation:none } }
 .grade-reveal-eyebrow{ font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted) }
@@ -3768,6 +3775,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 <div id="gradeRevealOverlay" class="grade-reveal-overlay" role="dialog" aria-modal="true" aria-labelledby="revealEyebrow">
   <div class="grade-reveal-card">
+    <button class="grade-reveal-close" id="revealCloseBtn" type="button" aria-label="Close">✕</button>
     <div class="grade-reveal-eyebrow" id="revealEyebrow">Your Financial Grade Is Ready</div>
     <div class="grade-reveal-badge-wrap">
       <div id="revealRing" class="rc-grade"><span id="revealLetter" class="rc-grade-letter">—</span></div>
@@ -3799,9 +3807,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     </div>
 
     <div class="pro-gated reveal-advanced-cta" id="revealDetailedSection">
-      <p class="rpt-headline" style="margin-bottom:4px">Get Your Complete Financial Picture</p>
-      <p class="reveal-deeper-sub">You're on Pro — add your home, retirement accounts, investments, and individual debts for a full, accurate grade and dashboard.</p>
-      <button class="btn gold sm" id="openAdvancedCalcBtn" type="button">Open Advanced Calculator →</button>
+      <p class="rpt-headline" style="margin-bottom:4px">Your Complete Financial Picture</p>
+      <p class="reveal-deeper-sub">Your grade above already includes your full profile — track your net worth, goals, and progress on your Dashboard.</p>
+      <a class="btn gold sm" id="goToDashboardBtn" href="dashboard.html" style="text-align:center">Go to Dashboard →</a>
     </div>
 
     <div class="reveal-email-retention pro-only-hide" id="revealEmailRetention">
@@ -8778,14 +8786,14 @@ if($("gradeBtnFinal")) $("gradeBtnFinal").addEventListener("click", function(){
   closeCalcModal();
   gradeNow();
 });
-// "Add Your Complete Financial Details" on the results screen re-opens
-// the calculator at the detail steps for a Pro user who wants to go
-// back and add or adjust something after already seeing a grade.
-if($("openAdvancedCalcBtn")) $("openAdvancedCalcBtn").addEventListener("click", function(){
+// The results screen's Pro section now links straight to the Dashboard
+// (a plain <a href="dashboard.html">) instead of re-opening the
+// calculator, since a Pro user always completes the full-detail steps
+// before ever reaching this screen - "add your details" would be
+// asking them to redo something they just finished.
+if($("revealCloseBtn")) $("revealCloseBtn").addEventListener("click", function(){
   var overlayEl = $("gradeRevealOverlay");
   if(overlayEl) overlayEl.classList.remove("show");
-  openCalcModal("grade_reveal_detailed");
-  if(window.__stepperShow) window.__stepperShow(6);
 });
 
 function openCalcModal(location){
