@@ -3383,6 +3383,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="nav-section-label">INSIGHTS</div>
       <button class="dash-nav-btn" data-tab="score" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg>Grade Report</button>
       <button class="dash-nav-btn" data-tab="insights" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Insights <span class="insights-pro-nav">PRO</span></button>
+      <button class="dash-nav-btn" data-tab="retirement" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 16V8"/><path d="M10 16V5"/><path d="M14 16v-7"/><path d="M18 16V3"/></svg>Retirement</button>
     </nav>
 
     <div class="sidebar-bottom">
@@ -10233,6 +10234,32 @@ main{padding-top:16px !important;padding-bottom:42px !important}
 <script id="retirement-studio-js">
 (function(){
 function $r(id){return document.getElementById(id)} function money(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v||0)}
+
+/* Calculator -> Retirement Lab sync: the calculator's retirement balance is the
+   single source of truth. The dashboard never asks the user to enter it twice. */
+function syncRetirementBalance(){
+  try{
+    var saved=JSON.parse(localStorage.getItem('gmf_autosave')||'null');
+    var el=$r('rsBalance');
+    if(!el || !saved || !isFinite(Number(saved.retire))) return false;
+    el.value=Math.max(0,Math.round(Number(saved.retire)));
+    el.readOnly=true;
+    el.setAttribute('aria-readonly','true');
+    el.title='Synced automatically from your latest GradeMyFinance calculator entry.';
+    var parent=el.parentElement;
+    if(parent && !parent.querySelector('.ret-source-note')){
+      var note=document.createElement('small');
+      note.className='ret-source-note';
+      note.textContent='Synced from your financial check-in';
+      note.style.cssText='display:block;margin-top:5px;color:#19a77f;font-size:10.5px;font-weight:700;';
+      parent.appendChild(note);
+    }
+    return true;
+  }catch(e){ return false; }
+}
+
+syncRetirementBalance();
+window.addEventListener('storage',function(e){ if(e.key==='gmf_autosave') syncRetirementBalance(); });
 function val(id){return parseFloat($r(id).value)||0}
 function calc(){
  var age=val('rsAge'), retire=val('rsRetireAge'), bal=val('rsBalance'), mo=val('rsMonthly'), spend=val('rsSpending'), rate=val('rsReturn'), inf=val('rsInflation'), wd=val('rsWithdraw');
@@ -10252,43 +10279,6 @@ function calc(){
 function draw(p,target,age){var svg=$r('rsGrowthChart'),W=900,H=330,pad=45,max=Math.max(target,...p.slice(0,46).map(x=>x.v))*1.08;function xy(x,v){return [pad+x/45*(W-pad*2),H-pad-v/max*(H-pad*2)]}var grid='';for(var i=0;i<5;i++){var y=pad+i*(H-pad*2)/4,amt=max*(1-i/4);grid+='<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+y+'" y2="'+y+'" stroke="#e7efeb"/><text x="4" y="'+(y+4)+'" font-size="11" fill="#778782">'+money(amt)+'</text>'}var path=p.slice(0,46).map((x,i)=>{var q=xy(x.y,x.v);return(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join(' '),ty=xy(0,target)[1];svg.innerHTML=grid+'<line x1="'+pad+'" x2="'+(W-pad)+'" y1="'+ty+'" y2="'+ty+'" stroke="#f1b933" stroke-width="3" stroke-dasharray="9 7"/><path d="'+path+'" fill="none" stroke="#19b58e" stroke-width="5" stroke-linecap="round"/><text x="'+(W-150)+'" y="'+(ty-8)+'" font-size="12" fill="#bd850d">FI target</text>'; }
 function scenarios(rates,age,bal,mo,target,inf){var el=$r('rsScenarioBars');var rows=rates.map(function(rate){var p=bal,mr=Math.pow(1+rate,1/12)-1,hit=null;for(var m=1;m<=840;m++){p=p*(1+mr)+mo;if(p>=target*Math.pow(1+inf,m/12)){hit=m;break}}return {label:(rate*100).toFixed(0)+'% return',age:hit?age+hit/12:null,months:hit}});var max=Math.max.apply(null,rows.map(x=>x.months||840));el.innerHTML=rows.map(x=>'<div class="rs-bar-row"><b>'+x.label+'</b><div class="rs-bar"><div style="width:'+Math.max(8,100*(1-(x.months||840)/max))+'%"></div></div><span>'+ (x.age?'Age '+x.age.toFixed(1):'70+ yrs')+'</span></div>').join('')}
 function milestones(p,target,age){var levels=[.1,.25,.5,.75,1],names=['10% foundation','25% momentum','Halfway to FI','75% stretch','Financial independence'];var html='';levels.forEach(function(l,i){var hit=p.find(x=>x.v>=target*l);html+='<div class="ret-milestone"><i class="ret-dot"></i><div><b>'+names[i]+'</b><span>'+ (hit?'Projected at age '+(age+hit.y).toFixed(1)+' · '+money(target*l):'Beyond this projection')+'</span></div></div>'});$r('rsMilestones').innerHTML=html}
-/* ================= CALCULATOR -> RETIREMENT SYNC =================
-   The main GradeMyFinance calculator already autosaves its inputs in
-   gmf_autosave. Use that saved retirement balance as the source of truth
-   for the Retirement Lab so users never have to enter the same balance twice.
-*/
-function syncRetirementFromCalculator(){
-  try{
-    var saved = JSON.parse(localStorage.getItem('gmf_autosave') || 'null');
-    if(!saved || typeof saved.retire !== 'number' || !isFinite(saved.retire)) return false;
-    var balanceEl = $r('rsBalance');
-    if(!balanceEl) return false;
-    balanceEl.value = Math.max(0, Math.round(saved.retire));
-    balanceEl.setAttribute('readonly','readonly');
-    balanceEl.style.opacity = '0.78';
-    balanceEl.title = 'Pulled automatically from your latest GradeMyFinance calculator entry.';
-    var label = balanceEl.parentElement;
-    if(label && !label.querySelector('.ret-source-note')){
-      var note = document.createElement('small');
-      note.className = 'ret-source-note';
-      note.textContent = 'Synced from your financial check-in';
-      note.style.cssText = 'display:block;margin-top:5px;color:#19a77f;font-size:10.5px;font-weight:700;';
-      label.appendChild(note);
-    }
-    return true;
-  }catch(e){ return false; }
-}
-
-syncRetirementFromCalculator();
-window.addEventListener('storage', function(e){
-  if(e.key === 'gmf_autosave'){
-    if(syncRetirementFromCalculator()){
-      var ageEl=$r('rsAge'), retireAgeEl=$r('rsRetireAge'), spendEl=$r('rsSpending');
-      if(ageEl && retireAgeEl && spendEl && +ageEl.value && +retireAgeEl.value > +ageEl.value && +spendEl.value > 0) calc();
-    }
-  }
-});
-
 $r('rsCalculate').addEventListener('click',calc);['rsAge','rsRetireAge','rsBalance','rsMonthly','rsSpending','rsReturn','rsInflation','rsWithdraw'].forEach(id=>$r(id).addEventListener('input',calc));$r('rsFillExample').addEventListener('click',function(){var x={rsAge:32,rsRetireAge:60,rsBalance:125000,rsMonthly:1800,rsSpending:60000};Object.keys(x).forEach(k=>$r(k).value=x[k]);calc()});
 })();
 </script>
