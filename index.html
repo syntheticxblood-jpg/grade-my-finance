@@ -2044,6 +2044,8 @@ body.is-pro .pro-only-hide{ display:none !important }
 body.is-pro .pro-only-show{ display:inline-flex !important }
 body.is-pro #gradeBtnProNote{ display:block !important }
 .calc-pro-note{ font-size:12px; color:var(--brand-bright); text-align:center; margin:0 0 10px; line-height:1.5 }
+.calc-reset-link{ background:none; border:none; font-size:12px; color:var(--muted); text-decoration:underline; cursor:pointer; font-family:var(--font-body); padding:4px }
+.calc-reset-link:hover{ color:var(--text) }
 body.is-pro .pro-lock{ display:none !important }
 body.is-pro .pro-gated{ display:block !important }
 .pro-gated{ display:none }
@@ -3414,11 +3416,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     <div class="calc-privacy-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg><span>All calculations are done locally on your device. Your data is <b>never</b> sent anywhere.</span></div>
     <p class="pro-only-show calc-pro-note" id="gradeBtnProNote" style="display:none">You're on Pro — next you'll add your full financial picture (home, retirement, investments, individual debts) before seeing your complete grade.</p>
 
-    <div class="calc-actions">
-      <button class="btn" id="resetBtn" type="button">Reset</button>
-      <button class="btn gold calc-final-cta" id="gradeBtn" type="button">Get My Financial Grade →</button>
+    <div class="step-actions">
+      <button class="btn" type="button" data-prev>← Back</button>
+      <button class="btn gold" id="gradeBtn" type="button">Get My Financial Grade →</button>
     </div>
-    <div class="step-actions" style="margin-top:0"><button class="btn" type="button" data-prev>← Back</button><span></span></div>
+    <div style="text-align:center;margin-top:14px"><button class="calc-reset-link" id="resetBtn" type="button">Reset all fields</button></div>
   </div>
 
   <div class="calc-step pro-only-step" data-step="6">
