@@ -459,6 +459,7 @@ main{ padding:28px 0 50px }
   .sidebar-bottom .dash-nav-btn{ flex-direction:column; gap:3px; font-size:10px; padding:8px 10px }
   .sidebar-bottom .icon-btn{ flex-direction:column; gap:3px; font-size:10px; padding:8px 10px; justify-content:center }
   .sidebar-profile{ display:none } /* avatar/name drop on mobile - not critical nav, saves space in a slim bar */
+  #accountChip{ display:none !important } /* desktop-only account card - doesn't fit the horizontal bottom bar; email/sign-out live in Settings on mobile instead */
   .main-area{ margin-left:0; padding-bottom:64px }
   .content-header{ margin-bottom:18px }
 }
@@ -3310,9 +3311,22 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     avatarEl.textContent = initialsFor(fullName || email);
     nameEl.textContent = displayName;
     emailEl.textContent = email;
-    signOutBtn.addEventListener('click', function(){
+    function doSignOut(){
       supabase.auth.signOut().then(function(){ window.location.href = 'auth.html'; });
-    });
+    }
+    signOutBtn.addEventListener('click', doSignOut);
+
+    /* Mirrors the account chip's email + sign-out into the Settings panel,
+       since #accountChip is hidden on mobile (it doesn't fit the bottom
+       tab bar layout) and mobile users still need a way to sign out. */
+    var settingsRow = document.getElementById('settingsAccountRow');
+    var settingsEmail = document.getElementById('settingsAccountEmail');
+    var settingsSignOutBtn = document.getElementById('settingsSignOutBtn');
+    if(settingsRow && settingsEmail && settingsSignOutBtn){
+      settingsRow.style.display = 'block';
+      settingsEmail.textContent = email;
+      settingsSignOutBtn.addEventListener('click', doSignOut);
+    }
   }
 
   (async function gateAuth(){
@@ -3400,6 +3414,10 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
           <button class="btn sm" id="exportCsvBtn" type="button">Export History</button>
         </div>
         <div id="backupStatus" style="margin-top:10px;font-size:11px"></div>
+        <div id="settingsAccountRow" style="display:none;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)">
+          <div id="settingsAccountEmail" style="font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:6px">—</div>
+          <button id="settingsSignOutBtn" type="button" class="btn sm" style="width:100%">Sign out</button>
+        </div>
       </div>
       <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" style="margin:10px 0" type="button">◐ Theme: Light</button>
 
