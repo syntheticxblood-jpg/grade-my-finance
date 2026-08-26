@@ -125,4 +125,8 @@ var GMF_BLOG_POSTS = [
   { slug:"credit-card-rewards-are-they-worth-it", title:"Credit Card Rewards: Are They Actually Worth It, or Just Marketing?", category:"Credit" }
 ,
   { slug:"backdoor-roth-ira-explained", title:"Backdoor Roth IRA: How It Works and Who Should Actually Use One", category:"Investing" }
+,
+  { slug:"custodial-accounts-utma-ugma-explained", title:"Custodial Accounts (UTMA/UGMA): How They Work and What Nobody Tells You About the Kiddie Tax", category:"Investing" }
+,
+  { slug:"target-date-funds-explained", title:"Target-Date Funds: How They Work and Whether They're Right for Your 401(k)", category:"Retirement" }
 ];
