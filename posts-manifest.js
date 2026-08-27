@@ -129,4 +129,8 @@ var GMF_BLOG_POSTS = [
   { slug:"custodial-accounts-utma-ugma-explained", title:"Custodial Accounts (UTMA/UGMA): How They Work and What Nobody Tells You About the Kiddie Tax", category:"Investing" }
 ,
   { slug:"target-date-funds-explained", title:"Target-Date Funds: How They Work and Whether They're Right for Your 401(k)", category:"Retirement" }
+,
+  { slug:"medicare-enrollment-timing-and-costs", title:"Medicare Enrollment: What It Actually Costs and When You Need to Sign Up", category:"Retirement" }
+,
+  { slug:"how-much-car-insurance-coverage-do-you-need", title:"How Much Car Insurance Do You Actually Need?", category:"Insurance" }
 ];

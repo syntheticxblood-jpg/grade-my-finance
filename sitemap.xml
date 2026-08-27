@@ -650,4 +650,14 @@ This XML file does not appear to have any style information associated with it. 
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
+<url>
+<loc>https://grademyfinance.com/blog/medicare-enrollment-timing-and-costs.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://grademyfinance.com/blog/how-much-car-insurance-coverage-do-you-need.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
 </urlset>
