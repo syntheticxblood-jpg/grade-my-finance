@@ -3274,6 +3274,68 @@ body{
 }
 </style>
 
+<style id="gmf-visual-simplify-v1">
+/* ================= "MORE VISUAL, LESS TEXT" GLOBAL PASS =================
+   Site-wide treatment applied consistently across every tab: the number
+   is the hero, the paragraph explaining it is secondary. No calculation
+   or copy content is removed - this only changes visual hierarchy
+   (bigger numbers/bars/color, smaller/quieter supporting text) so a
+   glance tells the story before anyone has to read a sentence. */
+
+/* Bigger, bolder headline numbers across every card type site-wide */
+.gmf-purpose-card .value{font-size:26px!important}
+.gmf-mini-stat b{font-size:19px!important}
+.gmf-driver-grade{font-size:17px!important}
+.gmf-report-list b{font-size:13px!important}
+.gmf-insight-free h3{font-size:20px!important}
+.gmf-return-title{font-size:19px!important}
+.gmf-rebuild-stat b{font-size:20px!important}
+.ret-metric strong{font-size:30px!important}
+.gmf-goal-health .box b{font-size:20px!important}
+
+/* De-emphasize (not hide) supporting sentences - smaller, tighter,
+   narrower measure so it reads as a caption, not a paragraph to parse */
+.gmf-purpose-card p,.gmf-driver p,.gmf-report-box p,.gmf-insight-free p,
+.gmf-plan-step span,.gmf-return-copy,.gmf-pro-value p{
+  font-size:10px!important;line-height:1.4!important;max-width:34ch;opacity:.82;
+}
+
+/* Color-coded left accent bar on every card-style tile, so the eye
+   sorts good/neutral/attention before reading anything */
+.gmf-purpose-card,.gmf-driver,.gmf-plan-step,.gmf-insight-free,
+.gmf-report-box,.gmf-mini-stat,.gmf-rebuild-stat{
+  border-left-width:4px!important;border-left-style:solid!important;
+}
+.gmf-purpose-card,.gmf-mini-stat,.gmf-rebuild-stat,.gmf-insight-free{border-left-color:#129b79!important}
+.gmf-purpose-card.primary{border-left-color:#d9a53d!important}
+.gmf-plan-step{border-left-color:#4b8fd1!important}
+.gmf-plan-step.active{border-left-color:#129b79!important}
+.gmf-driver{border-left-color:#129b79!important}
+.gmf-report-box{border-left-color:#8b68df!important}
+
+/* Thicker, more visible progress bars everywhere one exists */
+.gmf-driver-bar{height:10px!important}
+.mg-bar{height:9px!important}
+.rs-bar{height:16px!important}
+.tile-bar{height:8px!important}
+
+/* Tighten grid gaps slightly so bigger numbers don't force extra scroll */
+.gmf-purpose-grid,.gmf-plan-timeline,.gmf-insight-free-grid,.gmf-driver-grid{gap:12px!important}
+
+html:root[data-theme="dark"] .gmf-purpose-card,
+html:root[data-theme="dark"] .gmf-mini-stat,
+html:root[data-theme="dark"] .gmf-rebuild-stat,
+html:root[data-theme="dark"] .gmf-insight-free{border-left-color:#1fcf9f!important}
+html:root[data-theme="dark"] .gmf-report-box{border-left-color:#a58af0!important}
+html:root[data-theme="dark"] .gmf-driver{border-left-color:#1fcf9f!important}
+html:root[data-theme="dark"] .gmf-plan-step{border-left-color:#6ba6e8!important}
+html:root[data-theme="dark"] .gmf-plan-step.active{border-left-color:#1fcf9f!important}
+
+@media(max-width:560px){
+  .gmf-purpose-card p,.gmf-driver p,.gmf-report-box p,.gmf-insight-free p,
+  .gmf-plan-step span,.gmf-return-copy,.gmf-pro-value p{max-width:none;}
+}
+</style>
 <style id="gmf-command-center-v1">
 /* ---- Phase 1 "Command Center" additions: Why factors, Health
    Scorecard, Financial Momentum, elevated Next Best Move. All read
