@@ -3274,6 +3274,47 @@ body{
 }
 </style>
 
+<style id="gmf-stresstest-modernize-v1">
+/* ================= STRESS TEST / SCENARIO SIMULATOR MODERNIZATION =================
+   Pure visual pass - no markup restructuring, no JS changes. The native
+   range+number-input pairing read as dated (inconsistent browser
+   rendering, redundant spinner next to a slider); this restyles the
+   existing elements to match the rest of the app's card/slider language
+   without touching any of the wiring that reads their values. */
+
+.st2-hero,.st2-top-row .card,.st2-sim-card,.st2-protip-bar{border-radius:16px!important}
+.st2-hero-art .st2-dot{opacity:.28!important}
+
+.st2-slider-row{align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.st2-slider-row:last-child{border-bottom:0;padding-bottom:0}
+.st2-slider-icon{width:8px!important;height:8px!important;border-radius:50%!important;font-size:0!important;margin-top:6px}
+.st2-slider-body label{font-size:13px}
+.st2-slider-control{margin-top:10px;gap:0;position:relative}
+.st2-slider-control input[type="range"]{height:6px;border-radius:99px}
+.st2-slider-control input[type="number"]{
+  -moz-appearance:textfield;appearance:textfield;border:none!important;background:none!important;
+  width:auto!important;min-width:30px;max-width:44px;text-align:right;font:800 15px var(--font-mono)!important;
+  color:#0f9b79!important;padding:0!important;order:-1;margin-right:8px;pointer-events:none;
+}
+.st2-slider-control input[type="number"]::-webkit-outer-spin-button,
+.st2-slider-control input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.st2-slider-unit{order:-1;margin-right:2px;font:700 11px var(--font-mono)!important;color:#0f9b79!important}
+.st2-slider-control select{border-radius:10px}
+
+.st2-impact-cards{gap:10px!important}
+.st2-impact-card{border-radius:14px!important;padding:16px!important;border:1px solid var(--line)}
+
+.st2-chart-card{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:6px}
+.st2-chart-head{font:800 12px var(--font-mono);letter-spacing:.04em;color:#7c8b8d;text-transform:uppercase;margin-bottom:8px}
+.st2-chart-legend{display:flex;gap:16px;margin-top:8px;font-size:11px;color:#6b7b81}
+.st2-chart-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:1px}
+
+.st2-protip-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:#f4faf8;border:1px solid #dbeee8}
+:root[data-theme="dark"] .st2-protip-bar{background:#0f1e21;border-color:#294047}
+:root[data-theme="dark"] .st2-slider-row{border-bottom-color:#294047}
+
+@media(max-width:640px){.st2-slider-row{flex-direction:column}.st2-slider-icon{display:none}}
+</style>
 <style id="gmf-visual-simplify-v1">
 /* ================= "MORE VISUAL, LESS TEXT" GLOBAL PASS =================
    Site-wide treatment applied consistently across every tab: the number
@@ -4114,29 +4155,21 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     <!-- ================= WHAT-IF SCENARIOS ================= -->
     <div class="dash-tab-panel" id="panel-scenarios">
       <span class="section-label">Plan</span>
-      <p class="section-sub">Your next move, your biggest opportunities, a real debt payoff plan, and what-if scenarios — all built from your latest check-in.</p>
+      <p class="section-sub">Your next move, your biggest opportunities, a real debt payoff plan, and saved what-if scenarios — all built from your latest check-in.</p>
 
       <div class="money-subtabs" id="planSubtabs">
-        <button class="plan-subtab-btn active" data-plansub="opportunities" type="button">Opportunities</button>
-        <button class="plan-subtab-btn" data-plansub="debtplan" type="button">Debt Plan</button>
-        <button class="plan-subtab-btn" data-plansub="scenarios" type="button">Scenarios</button>
-        <button class="plan-subtab-btn" data-plansub="projections" type="button">Projections</button>
-      </div>
-
-      <div class="ship-nextmove-card" style="margin-bottom:18px">
-        <div class="ship-card-head"><div><h3 style="font:800 15px var(--font-display);color:#18323b">Your next best move</h3><p style="font-size:11px;color:#7a898e;margin-top:3px">The single highest-impact thing to focus on right now.</p></div></div>
-        <div id="planNextMove"></div>
-      </div>
-
-      <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px">
-        <div>
-          <span class="section-label" style="margin:0">Retirement &amp; financial independence</span>
-          <p class="section-sub" style="margin-top:4px">Project when you'll hit FI and what moves that date.</p>
-        </div>
-        <button class="btn gold" type="button" data-goto="retirement">Open Retirement →</button>
+        <button class="plan-subtab-btn active" data-plansub="opportunities" type="button">Next Moves</button>
+        <button class="plan-subtab-btn" data-plansub="debtplan" type="button">Debt Payoff</button>
+        <button class="plan-subtab-btn" data-plansub="scenarios" type="button">Saved Scenarios</button>
+        <button class="plan-subtab-btn" data-plansub="projections" type="button">Future Projections</button>
       </div>
 
       <div class="plan-subview active" data-planpanel="opportunities">
+        <div class="ship-nextmove-card" style="margin-bottom:18px">
+          <div class="ship-card-head"><div><h3 style="font:800 15px var(--font-display);color:#18323b">Your next best move</h3><p style="font-size:11px;color:#7a898e;margin-top:3px">The single highest-impact thing to focus on right now.</p></div></div>
+          <div id="planNextMove"></div>
+        </div>
+
         <div id="planOppEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your opportunities</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="planOppContent">
           <div class="pro-blur-section" style="min-height:340px">
@@ -4159,6 +4192,14 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="plan-subview" data-planpanel="debtplan">
+        <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+          <div>
+            <span class="section-label" style="margin:0">Retirement &amp; financial independence</span>
+            <p class="section-sub" style="margin-top:4px">Debt payoff below is for non-mortgage debt. For your long-term FI timeline, use the dedicated Retirement tab.</p>
+          </div>
+          <button class="btn gold" type="button" data-goto="retirement">Open Retirement →</button>
+        </div>
+
         <div id="planDebtEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your debt payoff plan</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="planDebtContent" class="card">
           <div class="pro-blur-section" style="min-height:320px">
@@ -4197,6 +4238,10 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       </div>
 
       <div class="plan-subview" data-planpanel="scenarios">
+        <div class="card" style="margin-bottom:14px">
+          <span class="section-label" style="margin:0">Saved what-if scenarios</span>
+          <p class="section-sub" style="margin-top:4px">Scenarios you've saved from the calculator's what-if tool live here for comparison. To run a new what-if simulation, use Insights → Stress Test.</p>
+        </div>
         <div id="scenariosContainer"></div>
       </div>
 
@@ -4376,8 +4421,8 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <p class="section-sub">Deeper context on your grade — how you compare, how it feels day-to-day, and how you'd hold up in a tough month.</p>
 
       <div class="money-subtabs" id="insightSubtabs">
-        <button class="insight-subtab-btn active" data-insightsub="benchmarks" type="button">Benchmarks</button>
-        <button class="insight-subtab-btn" data-insightsub="perspective" type="button">Perspective</button>
+        <button class="insight-subtab-btn active" data-insightsub="benchmarks" type="button">How You Compare</button>
+        <button class="insight-subtab-btn" data-insightsub="perspective" type="button">Momentum &amp; Impact</button>
         <button class="insight-subtab-btn" data-insightsub="stresstest" type="button">Stress Test</button>
       </div>
 
@@ -8869,7 +8914,11 @@ function renderColorfulNetWorthChart(svgEl, tooltipEl, points){
     html+='<text x="'+(w/2)+'" y="'+(pad.t+32)+'" text-anchor="middle" fill="#53677a" font-size="13" font-weight="700">YOUR NET WORTH STORY STARTS HERE</text>';
     html+='<text x="'+(w/2)+'" y="'+(pad.t+53)+'" text-anchor="middle" fill="#8292a3" font-size="11">Add your first update to replace this preview with your real trend</text>';
   }
-  vals.forEach(function(v,i){var px=x(i),py=y(v);html+='<circle class="nw-cool-pt" data-i="'+i+'" cx="'+px+'" cy="'+py+'" r="8" fill="#fff" stroke="url(#nwCoolGrad)" stroke-width="3"/><circle cx="'+px+'" cy="'+py+'" r="3" fill="#10b981"/>';});
+  vals.forEach(function(v,i){var px=x(i),py=y(v);html+='<circle class="nw-cool-pt" data-i="'+i+'" cx="'+px+'" cy="'+py+'" r="10" fill="transparent"/>';});
+  if(!demo){
+    var lastI=vals.length-1, lpx=x(lastI), lpy=y(vals[lastI]);
+    html+='<circle cx="'+lpx+'" cy="'+lpy+'" r="5.5" fill="#fff" stroke="url(#nwCoolGrad)" stroke-width="3"/><circle cx="'+lpx+'" cy="'+lpy+'" r="2" fill="#10b981"/>';
+  }
   svgEl.innerHTML=html;
   if(tooltipEl && hasData){svgEl.querySelectorAll('.nw-cool-pt').forEach(function(c){c.addEventListener('mouseenter',function(){var i=+c.getAttribute('data-i'),pt=points[i];tooltipEl.style.display='block';tooltipEl.innerHTML='<b>'+money(pt.v)+'</b><br><span>'+formatDateFull(pt.ts)+'</span>';var r=svgEl.getBoundingClientRect();tooltipEl.style.left=Math.max(8,Math.min(r.width-120,(x(i)/w)*r.width-55))+'px';tooltipEl.style.top=Math.max(8,(y(pt.v)/h)*r.height-56)+'px';});c.addEventListener('mouseleave',function(){tooltipEl.style.display='none';});});}
 }
@@ -10788,7 +10837,9 @@ $r('rsCalculate').addEventListener('click',function(){
 function add(panel,type,title,copy){var p=document.getElementById(panel);if(!p||p.querySelector('.gmf-tab-graphic'))return;var d=document.createElement('div');d.className='gmf-tab-graphic';var visual='';if(type==='bars'){visual='<div class="gmf-bars">'+[38,62,48,78,58,92,74,100].map(function(x){return '<i style="height:'+x+'%"></i>'}).join('')+'</div>'}else if(type==='donut'){visual='<div class="gmf-donut"></div>'}else if(type==='spark'){visual='<svg class="gmf-spark" viewBox="0 0 240 105"><defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#2e9c81"/><stop offset=".5" stop-color="#f5b942"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><path d="M4 88 C35 82 38 62 66 68 S100 42 128 50 S158 12 188 28 S218 18 236 4" fill="none" stroke="url(#g)" stroke-width="8" stroke-linecap="round"/></svg>'}else if(type==='goal'){visual='<div class="gmf-goal-orbit"></div>'}else if(type==='bubbles'){visual='<div class="gmf-bubbles"><i></i><i></i><i></i><i></i></div>'}else{visual='<div class="gmf-insight-rays"></div>'}d.innerHTML='<h3>'+title+'</h3><p>'+copy+'</p>'+visual;p.insertBefore(d,p.firstChild)}
 add('panel-networth','donut','Your money picture at a glance','Explore what you own, what you owe, and how each update changes your financial position.');
 add('panel-goals','goal','Goals with momentum','Turn priorities into measurable progress and keep the next milestone visible.');
-add('panel-scenarios','spark','See your future before you choose','Adjust the plan, compare outcomes, and watch the projected path change in real time.');
+// Removed: 'See your future before you choose' was a purely decorative
+// filler graphic (a static rainbow squiggle) with no function - it just
+// added visual clutter above the real Plan tab content.
 add('panel-insights','bubbles','Find the signals in your numbers','Use your data to spot strengths, pressure points, tradeoffs, and the next best move.');
 add('panel-achievements','rays','Every improvement counts','Celebrate milestones as your habits and financial position get stronger.');
 })();
@@ -12291,6 +12342,13 @@ svg .brand-bright, .brand-fill{fill:#2fd6a0}
 }
 .rs-sync-note{display:block;margin-top:6px;font-size:10.5px;line-height:1.35;color:var(--rb-muted)}
 :root[data-theme="dark"] .rs-sync-note{color:#9fb4ae}
+/* The "1/2/3 how this page works" explainer gets inserted before the
+   Plan subtabs (so it's a sibling of all four, not scoped to one) and
+   was showing above every tab regardless of relevance - even Future
+   Projections and Saved Scenarios, which it doesn't describe. Scope it
+   to only the Next Moves tab, where its 3 steps actually apply. */
+#panel-scenarios .gmf-plan-timeline{display:none}
+#panel-scenarios:has(.plan-subview.active[data-planpanel="opportunities"]) .gmf-plan-timeline{display:grid}
 </style>
 </body>
 </html>
