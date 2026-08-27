@@ -3314,6 +3314,56 @@ body{
 :root[data-theme="dark"] .st2-slider-row{border-bottom-color:#294047}
 
 @media(max-width:640px){.st2-slider-row{flex-direction:column}.st2-slider-icon{display:none}}
+
+/* ================= STRESS TEST COMPACT REDESIGN =================
+   Replaces the tall hero + 3-stacked-cards + full-width-simulator
+   layout with a tighter 3-column top strip and a side-by-side
+   simulator grid, so far more of the tool is visible without
+   scrolling. Impact cards get real color (not just a small badge). */
+.st2-compact-top{display:grid!important;grid-template-columns:1.1fr 1.3fr 1fr;gap:18px;padding:18px 20px;align-items:start}
+.st2-compact-score{display:flex;gap:12px;align-items:center;padding-right:18px;border-right:1px solid var(--line)}
+.st2-ring-wrap.sm{width:72px;height:72px;flex:none;position:relative}
+.st2-ring-num.sm{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.st2-ring-num.sm span:first-child{font-family:var(--font-serif);font-weight:800;font-size:19px;color:var(--text)}
+.st2-compact-score .st2-score-tier{font-weight:800;font-size:13px;margin-bottom:5px}
+.st2-compact-score .btn{padding:5px 9px;font-size:11px}
+.st2-compact-label{display:block;font:800 10px var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:#7c8b8d;margin-bottom:6px}
+.st2-compact-takeaway{padding-right:18px;border-right:1px solid var(--line)}
+.st2-compact-takeaway p{margin:0 0 8px;font-size:12.5px;line-height:1.4;color:var(--text)}
+.st2-compact-quick .st2-quick-head{margin-bottom:8px}
+.st2-quick-list.sm{display:flex;flex-direction:column;gap:6px}
+.st2-quick-list.sm .st2-quick-item{padding:6px 7px;flex-wrap:wrap;align-items:center;gap:3px 8px}
+.st2-quick-list.sm .st2-quick-icon{display:none}
+.st2-quick-list.sm .st2-quick-label{font-size:10.5px;flex:1 1 auto;white-space:normal;margin-right:0}
+.st2-quick-list.sm .st2-impact-pill{flex:none;font-size:9px;padding:2px 6px}
+
+.st2-compact-sim{padding:18px 20px}
+.st2-compact-sim .st2-sim-head{margin-bottom:14px}
+.st2-compact-grid{display:grid!important;grid-template-columns:280px 1fr;gap:20px}
+.st2-compact-grid .st2-sliders{gap:10px}
+.st2-compact-grid .st2-slider-row{padding:8px 0}
+
+.st2-impact-cards{grid-template-columns:repeat(4,1fr)!important;display:grid!important}
+.st2-impact-card{position:relative;border-left-width:4px!important;border-left-style:solid!important}
+.st2-impact-card:has(.st2-impact-badge.good){border-left-color:var(--good)!important;background:var(--good-soft)!important}
+.st2-impact-card:has(.st2-impact-badge.moderate){border-left-color:var(--gold-bright)!important;background:var(--gold-soft)!important}
+.st2-impact-card:has(.st2-impact-badge.bad){border-left-color:var(--bad)!important;background:var(--bad-soft)!important}
+.st2-impact-card:has(.st2-impact-badge.good) .st2-impact-num{color:var(--good)!important}
+.st2-impact-card:has(.st2-impact-badge.moderate) .st2-impact-num{color:#9a6b0f!important}
+.st2-impact-card:has(.st2-impact-badge.bad) .st2-impact-num{color:var(--bad)!important}
+.st2-impact-num{font-size:22px!important}
+.st2-chart-card{margin-top:10px;padding:12px 14px}
+
+@media(max-width:980px){
+  .st2-compact-top{grid-template-columns:1fr}
+  .st2-compact-score,.st2-compact-takeaway{border-right:0;border-bottom:1px solid var(--line);padding:0 0 14px;margin-bottom:14px}
+  .st2-compact-grid{grid-template-columns:1fr}
+  .st2-impact-cards{grid-template-columns:1fr 1fr}
+}
+:root[data-theme="dark"] .st2-compact-score,
+:root[data-theme="dark"] .st2-compact-takeaway{border-right-color:#294047}
+:root[data-theme="dark"] .st2-compact-score,
+:root[data-theme="dark"] .st2-compact-takeaway{border-bottom-color:#294047}
 </style>
 <style id="gmf-visual-simplify-v1">
 /* ================= "MORE VISUAL, LESS TEXT" GLOBAL PASS =================
@@ -4536,77 +4586,48 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="insight-subview" data-insightpanel="stresstest">
         <div id="insightStressEmptyNote" class="card" style="display:none;text-align:center;padding:32px 20px"><div style="font-weight:700;font-size:14.5px;margin-bottom:6px">Run a check-in to see your resilience simulation</div><p class="small" style="color:var(--muted);margin:0 0 16px">This needs your latest numbers — takes under a minute.</p><a class="btn gold sm" href="index.html#grade">Update My Finances →</a></div>
         <div id="insightStressContent">
-          <div class="st2-shell">
-            <div class="card st2-hero">
-              <div class="st2-hero-text">
-                <h2 class="st2-hero-title">Stress Test Your Finances</h2>
-                <p class="st2-hero-sub">Life happens. We run the numbers so you can be ready for it.</p>
-                <ul class="st2-hero-list">
-                  <li>See how shocks impact your money</li>
-                  <li>Compare different "what if" scenarios</li>
-                  <li>Get a clear next best move</li>
-                </ul>
-              </div>
-              <div class="st2-hero-art" aria-hidden="true">
-                <span class="st2-dot" style="width:14px;height:14px;background:#F5B942;top:6px;left:6px"></span>
-                <span class="st2-dot" style="width:10px;height:10px;background:#4FC28A;top:14px;right:16px"></span>
-                <span class="st2-dot" style="width:16px;height:16px;background:#5b8def;bottom:10px;left:0"></span>
-                <span class="st2-dot" style="width:8px;height:8px;background:#F5B942;bottom:22px;right:4px"></span>
-                <svg width="86" height="86" viewBox="0 0 86 86" fill="none">
-                  <circle cx="43" cy="43" r="42" fill="var(--surface)" opacity=".6"/>
-                  <path d="M43 12 L68 22 V42 C68 58 57 69 43 74 C29 69 18 58 18 42 V22 Z" fill="#2E9C81"/>
-                  <path d="M31 43 L39 51 L56 33" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-              </div>
-            </div>
+          <div class="st2-shell st2-compact">
 
-            <div class="st2-top-row">
-              <div class="card st2-score-card">
-                <span class="section-label" style="margin:0">Your Financial Resilience Score</span>
-                <p class="st2-score-sub">How prepared you are to weather financial shocks.</p>
-                <div class="st2-score-body">
-                  <div class="st2-ring-wrap">
-                    <svg class="st2-ring" viewBox="0 0 120 120" width="96" height="96" aria-hidden="true">
-                      <circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="10"/>
-                      <circle id="st2RingFg" cx="60" cy="60" r="52" fill="none" stroke="#4FC28A" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
-                    </svg>
-                    <div class="st2-ring-num"><span id="st2ScoreNum">—</span><span class="st2-ring-max">/100</span></div>
-                  </div>
-                  <div class="st2-score-text">
-                    <div class="st2-score-tier" id="st2ScoreTier">—</div>
-                    <p id="st2ScoreExplain">—</p>
-                    <button class="btn sm" id="st2SeeCalc" type="button">See how it's calculated →</button>
-                  </div>
+            <div class="card st2-compact-top">
+              <div class="st2-compact-score">
+                <div class="st2-ring-wrap sm">
+                  <svg class="st2-ring" viewBox="0 0 120 120" width="72" height="72" aria-hidden="true">
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="10"/>
+                    <circle id="st2RingFg" cx="60" cy="60" r="52" fill="none" stroke="#4FC28A" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+                  </svg>
+                  <div class="st2-ring-num sm"><span id="st2ScoreNum">—</span><span class="st2-ring-max">/100</span></div>
+                </div>
+                <div class="st2-score-text">
+                  <div class="st2-score-tier" id="st2ScoreTier">—</div>
+                  <button class="btn sm" id="st2SeeCalc" type="button">See how it's calculated →</button>
                 </div>
               </div>
-
-              <div class="card st2-takeaway-card">
-                <span class="section-label" style="margin:0">☀️ Key Takeaway</span>
+              <div class="st2-compact-takeaway">
+                <span class="st2-compact-label">☀️ Key takeaway</span>
                 <p id="st2Takeaway">—</p>
                 <div class="st2-toprisk-row">Top risk: <b id="st2TopRisk">—</b><span class="st2-impact-pill high" id="st2TopRiskPill">Impact: High</span></div>
               </div>
-
-              <div class="card st2-quick-card">
+              <div class="st2-compact-quick">
                 <div class="st2-quick-head">
-                  <span class="section-label" style="margin:0">Quick Scenarios</span>
-                  <button class="link-more" id="st2ViewAll" type="button">View all scenarios →</button>
+                  <span class="st2-compact-label">Quick scenarios</span>
+                  <button class="link-more" id="st2ViewAll" type="button">View all →</button>
                 </div>
-                <div class="st2-quick-list" id="st2QuickList"></div>
+                <div class="st2-quick-list sm" id="st2QuickList"></div>
               </div>
             </div>
 
-            <div class="card st2-sim-card">
+            <div class="card st2-sim-card st2-compact-sim">
               <div class="st2-sim-head">
                 <div>
                   <span class="section-label" style="margin:0">Scenario Simulator</span>
-                  <p class="st2-sim-sub">Adjust the variables below to see how different situations could affect your finances.</p>
+                  <p class="st2-sim-sub">Adjust the variables to see the impact — updates live.</p>
                 </div>
                 <div class="st2-sim-actions">
                   <button class="btn sm" id="st2Reset" type="button">↺ Reset</button>
                   <button class="btn gold sm" id="st2Run" type="button">Run Simulation</button>
                 </div>
               </div>
-              <div class="st2-sim-grid">
+              <div class="st2-sim-grid st2-compact-grid">
                 <div class="st2-sliders">
                   <div class="st2-slider-row">
                     <div class="st2-slider-icon" style="background:var(--brand-soft);color:var(--brand-bright)">💼</div>
@@ -4660,11 +4681,11 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
                   <div class="st2-impact-cards" id="st2ImpactCards"></div>
                   <div class="st2-chart-card">
                     <div class="st2-chart-head">Balance Over Time (Projection)</div>
-                    <svg id="st2Chart" width="100%" height="220" viewBox="0 0 900 260" preserveAspectRatio="none" role="img" aria-label="Balance over time under optimistic, moderate, and pessimistic scenarios"></svg>
+                    <svg id="st2Chart" width="100%" height="150" viewBox="0 0 900 200" preserveAspectRatio="none" role="img" aria-label="Balance over time under optimistic, moderate, and pessimistic scenarios"></svg>
                     <div class="st2-chart-legend">
-                      <span><i style="background:#4FC28A"></i>Optimistic Scenario</span>
-                      <span><i style="background:#E8B34A"></i>Moderate Scenario</span>
-                      <span><i style="background:#E15B5B;border-top:2px dotted #E15B5B;height:0;background:none"></i>Pessimistic Scenario</span>
+                      <span><i style="background:#4FC28A"></i>Optimistic</span>
+                      <span><i style="background:#E8B34A"></i>Moderate</span>
+                      <span><i style="background:#E15B5B;border-top:2px dotted #E15B5B;height:0;background:none"></i>Pessimistic</span>
                     </div>
                   </div>
                 </div>
