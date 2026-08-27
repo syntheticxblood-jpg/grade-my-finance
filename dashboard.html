@@ -3398,6 +3398,144 @@ html:root[data-theme="dark"] .gmf-plan-step.active{border-left-color:#1fcf9f!imp
 :root[data-theme="dark"] .ship-nextmove-elevated{background:linear-gradient(180deg,#241d0f,#152023)!important;border-color:#a2670a!important}
 :root[data-theme="dark"] .ship-nextmove-kicker{background:#2c2210!important;border-color:#5a4419!important;color:#f0c65b!important}
 </style>
+<style id="gmf-battle-system-v1">
+/* ================= FINANCIAL BATTLE SYSTEM =================
+   Sophisticated fintech treatment: dark gradient hero, thin glowing
+   accents, geometric (not cartoon) glyphs, restrained color coding.
+   No emoji-heavy or cartoon styling anywhere in this block. */
+
+.battle-empty{max-width:460px;margin:40px auto;text-align:center;padding:34px 30px;border:1px solid var(--ship-line);border-radius:16px;background:#fff}
+.battle-empty h3{font:800 18px var(--font-display);margin:0 0 8px;color:#173038}
+.battle-empty p{font-size:13px;color:#6b7b81;margin:0 0 18px;line-height:1.5}
+:root[data-theme="dark"] .battle-empty{background:#132326;border-color:#294047}
+:root[data-theme="dark"] .battle-empty h3{color:#eef7f3}
+:root[data-theme="dark"] .battle-empty p{color:#8fa39d}
+
+.boss-card{
+  position:relative;overflow:hidden;display:grid;grid-template-columns:1.4fr 1fr;gap:18px;
+  padding:28px 30px;border-radius:20px;margin-bottom:16px;
+  background:radial-gradient(120% 140% at 100% 0%,#1c2b2e 0%,#0b1216 62%);
+  border:1px solid #223235;box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+.boss-eyebrow{display:inline-block;font:800 10px var(--font-mono);letter-spacing:.12em;color:#f1b933;margin-bottom:8px}
+.boss-card h2{font:800 34px var(--font-display);color:#f5f9f7;margin:0 0 8px;letter-spacing:-.01em}
+.boss-card-main p{font-size:13px;color:#a9beb8;margin:0 0 18px;max-width:46ch;line-height:1.5}
+.boss-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.boss-stat-row div{padding:11px 12px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:12px}
+.boss-stat-row span{display:block;font:800 8.5px var(--font-mono);letter-spacing:.08em;color:#7f938d;text-transform:uppercase}
+.boss-stat-row b{display:block;margin-top:5px;font:800 16px var(--font-display);color:#f5f9f7}
+.boss-stat-row b.threat-high{color:#e2685c}
+.boss-stat-row b.threat-medium{color:#e0ab45}
+.boss-stat-row b.threat-low{color:#3fd6a8}
+.boss-visual{display:flex;align-items:center;justify-content:center}
+.boss-visual svg{width:100%;max-width:190px;height:auto;filter:drop-shadow(0 0 22px rgba(226,104,92,.25))}
+
+.boss-victory{padding:26px 28px;border-radius:20px;margin-bottom:16px;background:linear-gradient(135deg,#0e2b22,#0b1216);border:1px solid #1f4a3b;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.boss-victory .boss-eyebrow{color:#3fd6a8}
+.boss-victory h2{font:800 26px var(--font-display);color:#f5f9f7;margin:0 0 16px}
+.boss-victory-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.boss-victory-row div{padding:11px 12px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:12px}
+.boss-victory-row span{display:block;font:800 8.5px var(--font-mono);letter-spacing:.08em;color:#7f938d;text-transform:uppercase}
+.boss-victory-row b{display:block;margin-top:5px;font:800 15px var(--font-display);color:#3fd6a8}
+.boss-victory-next{display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08)}
+.boss-victory-next span{font:800 9px var(--font-mono);letter-spacing:.08em;color:#7f938d}
+.boss-victory-next b{font:800 14px var(--font-display);color:#f5f9f7}
+
+.battle-card{background:#fff;border:1px solid var(--ship-line);border-radius:16px;padding:20px 22px;margin-bottom:16px}
+.battle-card-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.battle-card-head h3{font:800 15px var(--font-display);color:#173038;margin:0}
+.battle-card-head span{font:800 13px var(--font-mono);color:#129b79}
+.battle-card-sub{font-size:11.5px;color:#6b7b81;margin:0 0 14px;line-height:1.4}
+
+.boss-health-bar{height:22px;border-radius:99px;background:#eef2f0;overflow:hidden;position:relative;border:1px solid #dfe6e4}
+.boss-health-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#e2685c,#e0ab45,#3fd6a8);transition:width .6s cubic-bezier(.4,0,.2,1)}
+.boss-health-bar.sm{height:12px}
+.boss-health-labels{display:flex;justify-content:space-between;font:700 10.5px var(--font-mono);color:#7c8b8d;margin-top:7px}
+
+.battle-lever-row{margin-bottom:16px}
+.battle-lever-row label{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#173038;margin-bottom:8px}
+.battle-lever-row label b{color:#0f9b79;font:800 12px var(--font-mono)}
+.battle-lever-row input[type="range"]{width:100%;accent-color:#0f9b79;height:6px}
+.battle-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin-top:4px}
+.battle-compare-col{padding:14px 16px;border-radius:13px;border:1px solid #e4ece9;background:#f7faf9;text-align:center}
+.battle-compare-col.highlight{border-color:#f1b933;background:#fffbf0}
+.battle-compare-col span{display:block;font:800 9px var(--font-mono);letter-spacing:.06em;color:#7c8b8d}
+.battle-compare-col b{display:block;font:800 20px var(--font-display);margin-top:5px;color:#173038}
+.battle-compare-col em{display:block;font-size:10.5px;color:#6b7b81;margin-top:3px;font-style:normal}
+.battle-compare-arrow{font-size:18px;color:#9ab0aa}
+.battle-impact{margin-top:14px;padding:12px 14px;border-radius:12px;background:#f4faf8;border:1px solid #dbeee8;font-size:13px;font-weight:700;color:#0f9b79;text-align:center}
+
+.battle-map{display:flex;align-items:center;gap:0;overflow-x:auto;padding:20px 4px 8px}
+.battle-map-stage{flex:1;min-width:100px;text-align:center;position:relative}
+.battle-map-line{position:absolute;top:9px;left:-50%;width:100%;height:2px;background:#dfe6e4;z-index:0}
+.battle-map-stage:first-child .battle-map-line{display:none}
+.battle-map-dot{width:20px;height:20px;border-radius:50%;background:#eef2f0;border:2px solid #cfd9d6;margin:0 auto 8px;position:relative;z-index:1}
+.battle-map-stage.done .battle-map-dot{background:#129b79;border-color:#129b79}
+.battle-map-stage.done .battle-map-line{background:#129b79}
+.battle-map-stage.current .battle-map-dot{background:#fff;border-color:#f1b933;box-shadow:0 0 0 5px rgba(241,185,51,.18)}
+.battle-map-stage span{display:block;font:800 10.5px var(--font-display);color:#7c8b8d}
+.battle-map-stage.current span,.battle-map-stage.done span{color:#173038}
+.battle-map-you{display:block;font:800 8.5px var(--font-mono);color:#c9932f;margin-top:3px;letter-spacing:.05em}
+
+.battle-two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.force-field-wrap,.stat-radar-wrap{display:flex;justify-content:center;margin:6px 0 10px}
+.force-field-wrap svg,.stat-radar-wrap svg{width:100%;max-width:280px;height:auto}
+.force-field-legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+.force-field-legend span{display:flex;align-items:center;gap:6px;font-size:10.5px;color:#6b7b81}
+.force-field-legend i{width:8px;height:8px;border-radius:50%;flex:none}
+.stat-list{display:grid;gap:8px;margin-top:4px}
+.stat-list-row{display:flex;align-items:center;gap:10px;font-size:11.5px}
+.stat-list-row span{width:78px;flex:none;font-weight:700;color:#173038}
+.stat-list-row .mg-bar{flex:1;height:7px;background:#eef2f0;border-radius:99px;overflow:hidden}
+.stat-list-row .mg-bar i{display:block;height:100%;border-radius:99px}
+.stat-list-row b{width:34px;text-align:right;flex:none;font:800 11px var(--font-mono);color:#173038}
+
+.attack-btn{width:100%;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,#1c2b2e,#0b1216);color:#f5f9f7;font:800 14px var(--font-display);letter-spacing:.03em;cursor:pointer;transition:transform .12s ease}
+.attack-btn:hover{transform:translateY(-1px)}
+.attack-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.attack-action-btn{border:1px solid var(--ship-line);border-radius:12px;padding:13px 10px;background:#fbfdfc;cursor:pointer;text-align:center;font-size:11px;font-weight:700;color:#173038}
+.attack-action-btn:hover{background:#f4faf8;border-color:#c9e8dd}
+.attack-action-btn b{display:block;margin-top:5px;font:800 13px var(--font-mono);color:#0f9b79}
+
+.battle-mini-card{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;align-items:center;background:radial-gradient(120% 160% at 100% 0%,#1c2b2e 0%,#0b1216 65%);border-radius:18px;padding:20px 22px;margin-bottom:14px;border:1px solid #223235}
+.battle-mini-left span.boss-eyebrow{margin-bottom:6px}
+.battle-mini-left h3{font:800 20px var(--font-display);color:#f5f9f7;margin:0 0 10px}
+.battle-mini-left>span:not(.boss-eyebrow){display:block;margin-top:6px;font:700 11px var(--font-mono);color:#a9beb8}
+.battle-mini-right{display:flex;align-items:center;gap:18px;justify-self:end}
+.battle-mini-right div{text-align:right}
+.battle-mini-right span{display:block;font:800 8.5px var(--font-mono);letter-spacing:.06em;color:#7f938d}
+.battle-mini-right b{display:block;margin-top:3px;font:800 15px var(--font-display);color:#f5f9f7}
+
+:root[data-theme="dark"] .battle-card{background:#132326;border-color:#294047}
+:root[data-theme="dark"] .battle-card-head h3{color:#eef7f3}
+:root[data-theme="dark"] .battle-card-sub{color:#8fa39d}
+:root[data-theme="dark"] .boss-health-bar{background:#0f1e21;border-color:#294047}
+:root[data-theme="dark"] .battle-lever-row label{color:#eef7f3}
+:root[data-theme="dark"] .battle-compare-col{background:#0f1e21;border-color:#294047}
+:root[data-theme="dark"] .battle-compare-col.highlight{background:#241d0f;border-color:#a2670a}
+:root[data-theme="dark"] .battle-compare-col b{color:#eef7f3}
+:root[data-theme="dark"] .battle-impact{background:#0f1e21;border-color:#294047}
+:root[data-theme="dark"] .battle-map-dot{background:#0f1e21;border-color:#294047}
+:root[data-theme="dark"] .battle-map-line{background:#294047}
+:root[data-theme="dark"] .battle-map-stage span{color:#8fa39d}
+:root[data-theme="dark"] .battle-map-stage.current span,:root[data-theme="dark"] .battle-map-stage.done span{color:#eef7f3}
+:root[data-theme="dark"] .stat-list-row span,:root[data-theme="dark"] .stat-list-row b{color:#eef7f3}
+:root[data-theme="dark"] .stat-list-row .mg-bar{background:#0f1e21}
+:root[data-theme="dark"] .attack-action-btn{background:#0f1e21;border-color:#294047;color:#eef7f3}
+:root[data-theme="dark"] .force-field-legend span{color:#8fa39d}
+
+@media(max-width:760px){
+  .boss-card{grid-template-columns:1fr}
+  .boss-visual{order:-1;max-width:140px;margin:0 auto}
+  .boss-stat-row{grid-template-columns:1fr 1fr}
+  .battle-two-col{grid-template-columns:1fr}
+  .attack-actions{grid-template-columns:1fr 1fr}
+  .battle-mini-card{grid-template-columns:1fr}
+  .battle-mini-right{justify-self:start;flex-wrap:wrap}
+  .battle-compare{grid-template-columns:1fr;gap:8px}
+  .battle-compare-arrow{transform:rotate(90deg);justify-self:center}
+}
+</style>
 </head>
 <body>
 <script>
@@ -3521,6 +3659,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <button class="dash-nav-btn" data-tab="score" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg>Grade Report</button>
       <button class="dash-nav-btn" data-tab="insights" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Insights <span class="insights-pro-nav">PRO</span></button>
       <button class="dash-nav-btn" data-tab="retirement" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 16V8"/><path d="M10 16V5"/><path d="M14 16v-7"/><path d="M18 16V3"/></svg>Retirement</button>
+      <button class="dash-nav-btn" data-tab="battle" type="button"><svg class="nav-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 6 .9-4.5 4.2 1 6-5.5-3-5.5 3 1-6L3 8.9 9 8z"/></svg>Battle</button>
     </nav>
 
     <div class="sidebar-bottom">
@@ -3619,6 +3758,20 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="grade-pro-features" id="gradeProFeatures"><span>✓ Grade drivers</span><span>✓ Personal benchmarks</span><span>✓ Projections</span></div>
       <a class="grade-pro-cta" id="gradeProCta" href="index.html#pricing">Unlock Pro →</a>
     </aside>
+  </section>
+
+  <section class="battle-mini-card" id="battleMiniCard" style="display:none">
+    <div class="battle-mini-left">
+      <span class="boss-eyebrow">YOUR CURRENT BATTLE</span>
+      <h3 id="battleMiniName">—</h3>
+      <div class="boss-health-bar sm"><i id="battleMiniHealthFill"></i></div>
+      <span id="battleMiniPct">—</span>
+    </div>
+    <div class="battle-mini-right">
+      <div><span>EST. DEFEAT</span><b id="battleMiniDefeat">—</b></div>
+      <div><span>POTENTIAL GRADE</span><b id="battleMiniGrade">—</b></div>
+      <button type="button" class="btn gold sm" data-goto="battle">VIEW BATTLE →</button>
+    </div>
   </section>
 
   <section class="ship-lower-grid ship-modern-charts">
@@ -4305,6 +4458,129 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     </div>
 
     <!-- ================= ACHIEVEMENTS ================= -->
+    <!-- ================= FINANCIAL BATTLE SYSTEM =================
+         Boss = the user's single biggest financial weakness, chosen by
+         the same weighting the real grading engine already uses (see
+         computeBattleState). Every stat shown is either a real number
+         from the user's data or an explicitly-labeled editable
+         assumption (e.g. an APR estimate) - nothing is fabricated. -->
+    <div class="dash-tab-panel" id="panel-battle">
+      <span class="section-label">FINANCIAL BATTLE SYSTEM</span>
+      <p class="section-sub">Your biggest financial weakness, turned into a target you can actually track and defeat.</p>
+
+      <div id="battleEmptyState" class="battle-empty" style="display:none">
+        <h3>Complete a check-in to start your first battle</h3>
+        <p>The Battle System needs your real financial numbers to identify your biggest weakness — it won't guess.</p>
+        <a class="btn gold" href="index.html#grade">Update my finances →</a>
+      </div>
+
+      <div id="battleMain" style="display:none">
+
+        <!-- 1. BOSS CARD -->
+        <section class="boss-card">
+          <div class="boss-card-main">
+            <span class="boss-eyebrow">YOUR CURRENT BATTLE</span>
+            <h2 id="bossName">—</h2>
+            <p id="bossDesc">—</p>
+            <div class="boss-stat-row">
+              <div><span>THREAT</span><b id="bossThreat" class="threat-high">—</b></div>
+              <div><span id="bossStat1Label">CURRENT</span><b id="bossStat1Val">—</b></div>
+              <div><span id="bossStat2Label">RATE</span><b id="bossStat2Val">—</b></div>
+              <div><span>EST. DEFEAT</span><b id="bossDefeatVal">—</b></div>
+            </div>
+          </div>
+          <div class="boss-visual" aria-hidden="true">
+            <svg viewBox="0 0 200 200" id="bossGlyph"></svg>
+          </div>
+        </section>
+
+        <!-- Victory banner - hidden unless the current boss is defeated -->
+        <section class="boss-victory" id="bossVictory" style="display:none">
+          <span class="boss-eyebrow">BOSS DEFEATED</span>
+          <h2 id="victoryName">—</h2>
+          <div class="boss-victory-row">
+            <div><span>BEFORE</span><b id="victoryBefore">—</b></div>
+            <div><span>AFTER</span><b id="victoryAfter">—</b></div>
+            <div><span>GRADE IMPACT</span><b id="victoryGrade">—</b></div>
+          </div>
+          <div class="boss-victory-next">
+            <span>NEXT BATTLE</span>
+            <b id="victoryNext">—</b>
+          </div>
+        </section>
+
+        <!-- 2. BOSS HEALTH -->
+        <section class="battle-card">
+          <div class="battle-card-head"><h3>Boss Health</h3><span id="bossHealthPct">—</span></div>
+          <div class="boss-health-bar"><i id="bossHealthFill"></i></div>
+          <div class="boss-health-labels"><span id="bossHealthStart">—</span><span id="bossHealthNow">—</span><span>Defeated</span></div>
+        </section>
+
+        <!-- What would happen if... simulator -->
+        <section class="battle-card">
+          <div class="battle-card-head"><h3>What would happen if...</h3></div>
+          <p class="battle-card-sub" id="battleLeverLabel">Adjust your monthly plan and see the real projected impact.</p>
+          <div class="battle-lever-row">
+            <label for="battleLeverInput"><span id="battleLeverName">Extra monthly amount</span><b id="battleLeverVal">$0/mo</b></label>
+            <input type="range" id="battleLeverInput" min="0" max="1000" step="25" value="0">
+          </div>
+          <div id="battleLeverExtra" class="battle-lever-row" style="display:none">
+            <label for="battleRateInput"><span>Interest rate (APR) — estimate, edit to match your card</span><b id="battleRateVal">22%</b></label>
+            <input type="range" id="battleRateInput" min="0" max="35" step="0.5" value="22">
+          </div>
+          <div class="battle-compare">
+            <div class="battle-compare-col">
+              <span>CURRENT PLAN</span>
+              <b id="battleCurrentDefeat">—</b>
+              <em id="battleCurrentSub">—</em>
+            </div>
+            <div class="battle-compare-arrow">→</div>
+            <div class="battle-compare-col highlight">
+              <span>NEW PLAN</span>
+              <b id="battleNewDefeat">—</b>
+              <em id="battleNewSub">—</em>
+            </div>
+          </div>
+          <div class="battle-impact" id="battleImpact"></div>
+        </section>
+
+        <!-- 3. BATTLE MAP -->
+        <section class="battle-card">
+          <div class="battle-card-head"><h3>Financial Journey</h3></div>
+          <div class="battle-map" id="battleMap"></div>
+        </section>
+
+        <div class="battle-two-col">
+          <!-- 4. FORCE FIELD -->
+          <section class="battle-card">
+            <div class="battle-card-head"><h3>Financial Force Field</h3></div>
+            <p class="battle-card-sub">Each ring is a layer of your financial defenses — the more complete, the stronger that layer.</p>
+            <div class="force-field-wrap">
+              <svg viewBox="0 0 340 340" id="forceFieldSvg"></svg>
+            </div>
+            <div class="force-field-legend" id="forceFieldLegend"></div>
+          </section>
+
+          <!-- 5. CHARACTER STATS -->
+          <section class="battle-card">
+            <div class="battle-card-head"><h3>Financial Profile</h3></div>
+            <p class="battle-card-sub">Your financial diagnostic fingerprint, built from your latest check-in.</p>
+            <div class="stat-radar-wrap">
+              <svg viewBox="0 0 300 300" id="statRadarSvg"></svg>
+            </div>
+            <div class="stat-list" id="statList"></div>
+          </section>
+        </div>
+
+        <!-- 7. ATTACK THE BOSS -->
+        <section class="battle-card">
+          <button type="button" class="attack-btn" id="attackBossBtn">⚔ ATTACK THE BOSS</button>
+          <div class="attack-actions" id="attackActions" style="display:none"></div>
+        </section>
+
+      </div>
+    </div>
+
     <div class="dash-tab-panel" id="panel-achievements">
       <span class="section-label" id="achvHeader">Achievements</span>
       <div id="achievementsContainer"></div>
@@ -8171,6 +8447,7 @@ function renderShipOverview(hist){
   renderShipWhy();
   renderShipScorecard();
   renderShipMomentum(hist);
+  if(typeof renderBattleMini==='function') renderBattleMini();
 }
 /* ================= OVERVIEW TAB ================= */
 function renderOverview(hist, groups){
@@ -11948,7 +12225,9 @@ body{font-size:15px!important;min-height:100vh}
   goals:{title:'Goals',sub:'Turn your financial goals into measurable progress.'},
   scenarios:{title:'Plan',sub:'Stress-test decisions and see where your finances can go.'},
   score:{title:'Grade Report',sub:'Understand what is driving your financial grade.'},
-  insights:{title:'Insights',sub:'Go beyond the headline with financial context and decision support.'}
+  insights:{title:'Insights',sub:'Go beyond the headline with financial context and decision support.'},
+  retirement:{title:'Retirement',sub:'Model your retirement path across market scenarios.'},
+  battle:{title:'Battle',sub:'Your biggest financial weakness, turned into a target you can defeat.'}
  };
  function allButtons(){return Array.prototype.slice.call(document.querySelectorAll('.sidebar .dash-nav-btn[data-tab]'));}
  function allPanels(){return Array.prototype.slice.call(document.querySelectorAll('#dashboardContent > .dash-tab-panel'));}
@@ -11977,6 +12256,8 @@ body{font-size:15px!important;min-height:100vh}
      if(header) y=Math.max(y,header.getBoundingClientRect().bottom+window.scrollY+16);
      window.scrollTo({top:Math.max(0,y-8),behavior:'smooth'});
    }
+   if(name==='battle' && typeof renderBattle==='function'){ try{ renderBattle(); }catch(e){ console.warn('Battle render failed:',e); } }
+   if(name==='overview' && typeof renderBattleMini==='function'){ try{ renderBattleMini(); }catch(e){ console.warn('Battle mini card render failed:',e); } }
    return true;
  }
  window.gmfNav=show;
@@ -12292,6 +12573,436 @@ svg .brand-bright, .brand-fill{fill:#2fd6a0}
 .rs-sync-note{display:block;margin-top:6px;font-size:10.5px;line-height:1.35;color:var(--rb-muted)}
 :root[data-theme="dark"] .rs-sync-note{color:#9fb4ae}
 </style>
+
+<script id="gmf-battle-system-js">
+/* ================= FINANCIAL BATTLE SYSTEM =================
+   Boss selection reuses the exact same 5 real grade components/weights
+   the Grade Report tab already computes (shipGetGradeComponents),
+   plus the real dollar figures from the latest check-in. "Defeat" math
+   is either real amortization (debt) or a transparent linear
+   gap-closure estimate - always labeled as an estimate, never invented.
+   No new scoring engine: this is a new *view* of existing real numbers. */
+
+var BOSS_DEFS = {
+  savings:{name:'The Savings Gap', desc:'A savings rate below your target is currently your biggest financial weakness.', kind:'rate'},
+  ef:{name:'The Safety Net', desc:'A thin emergency fund is currently your biggest financial weakness.', kind:'balance'},
+  debt:{name:'The Debt Dragon', desc:'High-interest debt is currently your biggest financial weakness.', kind:'debt'},
+  networth:{name:'The Net Worth Gap', desc:'Net worth below the typical range for your age is currently your biggest financial weakness.', kind:'balance'},
+  income:{name:'The Cash Flow Crisis', desc:'Monthly expenses sitting too close to income is currently your biggest financial weakness.', kind:'rate'}
+};
+var BATTLE_WEIGHTS = {savings:20, ef:15, debt:20, networth:20, income:25};
+var BATTLE_KEY_ORDER = ['savings','ef','debt','networth','income'];
+
+function computeBattleState(){
+  var hist = typeof getHistory==='function' ? getHistory() : [];
+  var latest = hist.length ? hist[hist.length-1] : null;
+  var comps = typeof shipGetGradeComponents==='function' ? shipGetGradeComponents() : null;
+  if(!latest || !comps || comps.length<5) return null;
+
+  var byKey = {};
+  comps.forEach(function(c,i){ byKey[BATTLE_KEY_ORDER[i]] = c; });
+
+  var debtBalance = Number(latest.cc)>0 ? Number(latest.cc) : (Number(latest.totalDebt)||0);
+  var candidates = BATTLE_KEY_ORDER.map(function(key){
+    if(key==='debt' && debtBalance<=0) return null;
+    var c = byKey[key]; if(!c) return null;
+    return { key:key, score:c.score, threat:(100-c.score)*BATTLE_WEIGHTS[key], comp:c };
+  }).filter(Boolean);
+  if(!candidates.length) return null;
+  candidates.sort(function(a,b){ return b.threat-a.threat; });
+  var chosen = candidates[0];
+
+  return {
+    key: chosen.key, def: BOSS_DEFS[chosen.key], score: chosen.score, comp: chosen.comp,
+    latest: latest, hist: hist, debtBalance: debtBalance, allScores: byKey,
+    threatLevel: chosen.threat >= 16 ? 'high' : chosen.threat >= 8 ? 'medium' : 'low'
+  };
+}
+
+// Given the chosen boss and a "lever" (extra $/month the user is testing),
+// returns the real current/target/gap/defeat numbers for that boss type.
+function getBattleNumbers(state, lever, aprPct){
+  var l = state.latest;
+  var monthlyIncome = (Number(l.annualIncome)||0)/12;
+  var monthlyExpenses = Number(l.monthlyExpenses)||0;
+  lever = Math.max(0, Number(lever)||0);
+
+  if(state.key==='debt'){
+    var balance = state.debtBalance;
+    var rate = Math.max(0, Number(aprPct)||0)/100;
+    var mr = rate/12;
+    var payment = lever;
+    var months = null, interest = null;
+    if(payment>0){
+      if(mr<=0){ months = balance/payment; interest = 0; }
+      else if(payment > balance*mr){
+        months = -Math.log(1-(balance*mr)/payment)/Math.log(1+mr);
+        interest = payment*months - balance;
+      }
+    }
+    return {kind:'debt', current:balance, months:months, interest:interest, payment:payment, rate:rate*100};
+  }
+  if(state.key==='ef'){
+    var target = monthlyExpenses*6;
+    var current = Number(l.cash)||0;
+    var gap = Math.max(0, target-current);
+    var months = lever>0 ? gap/lever : null;
+    return {kind:'balance', current:current, target:target, gap:gap, months:months};
+  }
+  if(state.key==='networth'){
+    var current = Number(l.net)||0;
+    var ladder = [10000,25000,50000,100000,250000,500000,1000000,2000000,5000000];
+    var target = ladder.filter(function(m){return m>current;})[0] || (current>0? current*1.25 : 10000);
+    var gap = Math.max(0, target-current);
+    var months = lever>0 ? gap/lever : null;
+    return {kind:'balance', current:current, target:target, gap:gap, months:months};
+  }
+  if(state.key==='savings'){
+    var targetRate = 20;
+    var currentRate = Number(l.savingsRate)||0;
+    var currentMonthly = monthlyIncome*currentRate/100;
+    var newMonthly = currentMonthly+lever;
+    var newRate = monthlyIncome>0 ? (newMonthly/monthlyIncome*100) : currentRate;
+    return {kind:'rate', current:currentRate, target:targetRate, newRate:newRate, unit:'%'};
+  }
+  if(state.key==='income'){
+    var margin = monthlyIncome-monthlyExpenses;
+    var targetMargin = monthlyIncome*0.15;
+    var newMargin = margin+lever;
+    return {kind:'rate', current:margin, target:targetMargin, newRate:newMargin, unit:'$', isMoney:true};
+  }
+}
+
+function battleHealthPct(state, numbers){
+  // 0% = full threat (boss at full health), 100% = defeated. For debt,
+  // "progress" is measured against the highest real historical balance
+  // on record - if only one check-in exists, there's no real trend yet,
+  // so progress is honestly 0%, not fabricated.
+  if(numbers.kind==='debt'){
+    if(state.debtBalance<=0) return 100;
+    var histDebts = state.hist.map(function(h){ var v=Number(h.cc)>0?Number(h.cc):(Number(h.totalDebt)||0); return v; }).filter(function(v){return v>0;});
+    var original = histDebts.length ? Math.max.apply(null, histDebts) : state.debtBalance;
+    if(original<=0) return 0;
+    return Math.max(0, Math.min(100, (original-state.debtBalance)/original*100));
+  }
+  if(numbers.kind==='balance'){
+    if(numbers.target<=0) return 100;
+    return Math.max(0, Math.min(100, 100 - (numbers.current/numbers.target*100)));
+  }
+  return Math.max(0, Math.min(100, 100-state.score));
+}
+
+function fmtMonths(m){
+  if(m===null || !isFinite(m)) return 'Not yet at this pace';
+  if(m<1) return 'Under 1 month';
+  var y = Math.floor(m/12), mo = Math.round(m%12);
+  if(y<=0) return Math.round(m)+' months';
+  return y+'y '+mo+'mo';
+}
+
+var __battleLever = 0, __battleApr = 22;
+
+function renderBattleGlyph(svgEl, threatLevel){
+  var color = threatLevel==='high' ? '#e2685c' : threatLevel==='medium' ? '#e0ab45' : '#3fd6a8';
+  // Abstract geometric "threat" glyph - overlapping rotated polygons, not
+  // a cartoon character. Deterministic per threat level, not random.
+  svgEl.innerHTML =
+    '<defs><radialGradient id="bossGlow" cx="50%" cy="40%"><stop offset="0%" stop-color="'+color+'" stop-opacity=".35"/><stop offset="100%" stop-color="'+color+'" stop-opacity="0"/></radialGradient></defs>'+
+    '<circle cx="100" cy="100" r="95" fill="url(#bossGlow)"/>'+
+    '<polygon points="100,25 165,70 145,150 55,150 35,70" fill="none" stroke="'+color+'" stroke-width="2.5" opacity=".9"/>'+
+    '<polygon points="100,55 140,85 125,140 75,140 60,85" fill="'+color+'" opacity=".16"/>'+
+    '<polygon points="100,55 140,85 125,140 75,140 60,85" fill="none" stroke="'+color+'" stroke-width="2"/>'+
+    '<circle cx="100" cy="97" r="9" fill="'+color+'"/>'+
+    '<line x1="100" y1="25" x2="100" y2="55" stroke="'+color+'" stroke-width="2"/>'+
+    '<line x1="35" y1="70" x2="60" y2="85" stroke="'+color+'" stroke-width="2"/>'+
+    '<line x1="165" y1="70" x2="140" y2="85" stroke="'+color+'" stroke-width="2"/>';
+}
+
+function renderForceField(state){
+  var svg = $('forceFieldSvg'), legend = $('forceFieldLegend'); if(!svg) return;
+  var s = state.allScores;
+  // 4 layers per spec: Survival(EF), Stability(Debt+savings avg), Growth
+  // (income strength as a real proxy for capacity to grow), Freedom(net worth).
+  var layers = [
+    {label:'Survival', score:s.ef?s.ef.score:0, color:'#3fd6a8', r:150},
+    {label:'Stability', score:s.debt&&s.savings?(s.debt.score+s.savings.score)/2:0, color:'#4b8fd1', r:112},
+    {label:'Growth', score:s.income?s.income.score:0, color:'#e0ab45', r:74},
+    {label:'Freedom', score:s.networth?s.networth.score:0, color:'#8b68df', r:36}
+  ];
+  var cx=170, cy=170, out='';
+  layers.forEach(function(layer){
+    var circ = 2*Math.PI*layer.r;
+    var pct = Math.max(4, layer.score)/100;
+    out += '<circle cx="'+cx+'" cy="'+cy+'" r="'+layer.r+'" fill="none" stroke="var(--ship-line)" stroke-width="14" opacity=".5"/>';
+    out += '<circle cx="'+cx+'" cy="'+cy+'" r="'+layer.r+'" fill="none" stroke="'+layer.color+'" stroke-width="14" stroke-linecap="round" stroke-dasharray="'+(circ*pct).toFixed(1)+' '+circ.toFixed(1)+'" transform="rotate(-90 '+cx+' '+cy+')"/>';
+  });
+  out += '<text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ship-ink,#173038)" font-family="var(--font-mono)">'+Math.round((s.ef&&s.debt&&s.income&&s.networth)?(s.ef.score+s.debt.score+s.income.score+s.networth.score)/4:0)+'</text>';
+  out += '<text x="'+cx+'" y="'+(cy+13)+'" text-anchor="middle" font-size="8.5" font-weight="700" fill="#8ea7a1" letter-spacing="1">OVERALL</text>';
+  svg.innerHTML = out;
+  if(legend){
+    legend.innerHTML = layers.map(function(l){ return '<span><i style="background:'+l.color+'"></i>'+l.label+' · '+Math.round(l.score)+'/100</span>'; }).join('');
+  }
+}
+
+function renderStatRadar(state){
+  var svg = $('statRadarSvg'), list = $('statList'); if(!svg) return;
+  var s = state.allScores;
+  var stats = [
+    {label:'DEFENSE', sub:'Emergency Fund', score:s.ef?s.ef.score:0, color:'#3fd6a8'},
+    {label:'ATTACK', sub:'Debt Paydown', score:s.debt?s.debt.score:0, color:'#e2685c'},
+    {label:'POWER', sub:'Income', score:s.income?s.income.score:0, color:'#e0ab45'},
+    {label:'RECOVERY', sub:'Savings', score:s.savings?s.savings.score:0, color:'#4b8fd1'},
+    {label:'FREEDOM', sub:'Net Worth', score:s.networth?s.networth.score:0, color:'#8b68df'}
+  ];
+  var cx=150, cy=150, R=110, n=stats.length, out='';
+  function pt(i, r){ var ang = -Math.PI/2 + i*(2*Math.PI/n); return [cx+r*Math.cos(ang), cy+r*Math.sin(ang)]; }
+  // grid rings
+  [.25,.5,.75,1].forEach(function(f){
+    var pts=[]; for(var i=0;i<n;i++){ var p=pt(i,R*f); pts.push(p[0].toFixed(1)+','+p[1].toFixed(1)); }
+    out += '<polygon points="'+pts.join(' ')+'" fill="none" stroke="var(--ship-line)" stroke-width="1"/>';
+  });
+  // axes + labels
+  for(var i=0;i<n;i++){
+    var p=pt(i,R); out += '<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0].toFixed(1)+'" y2="'+p[1].toFixed(1)+'" stroke="var(--ship-line)" stroke-width="1"/>';
+    var lp=pt(i,R+22);
+    out += '<text x="'+lp[0].toFixed(1)+'" y="'+lp[1].toFixed(1)+'" text-anchor="middle" font-size="9" font-weight="800" fill="#8ea7a1" font-family="var(--font-mono)">'+stats[i].label+'</text>';
+  }
+  // filled polygon of real scores
+  var pts=[]; for(var i=0;i<n;i++){ var p=pt(i,R*Math.max(.06,stats[i].score/100)); pts.push(p[0].toFixed(1)+','+p[1].toFixed(1)); }
+  out += '<polygon points="'+pts.join(' ')+'" fill="#129b79" fill-opacity=".18" stroke="#129b79" stroke-width="2"/>';
+  for(var i=0;i<n;i++){ var p=pt(i,R*Math.max(.06,stats[i].score/100)); out += '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3.5" fill="#129b79"/>'; }
+  svg.innerHTML = out;
+  if(list){
+    list.innerHTML = stats.map(function(st){
+      return '<div class="stat-list-row"><span>'+st.sub+'</span><div class="mg-bar"><i style="width:'+st.score.toFixed(0)+'%;background:'+st.color+'"></i></div><b>'+st.score.toFixed(0)+'</b></div>';
+    }).join('');
+  }
+}
+
+function renderBattleMap(state){
+  var mount = $('battleMap'); if(!mount) return;
+  var overallScore = (state.latest && typeof state.latest.score==='number') ? state.latest.score : 50;
+  var stages = [
+    {label:'Start', min:0},
+    {label:'Survival', min:1},
+    {label:'Stability', min:40},
+    {label:'Debt Freedom', min:60},
+    {label:'Wealth Building', min:75},
+    {label:'Financial Freedom', min:90}
+  ];
+  var currentIdx = 0;
+  stages.forEach(function(s,i){ if(overallScore>=s.min) currentIdx=i; });
+  mount.innerHTML = stages.map(function(s,i){
+    var cls = i<currentIdx ? 'done' : i===currentIdx ? 'current' : '';
+    return '<div class="battle-map-stage '+cls+'"><div class="battle-map-line"></div><div class="battle-map-dot"></div><span>'+s.label+'</span>'+(i===currentIdx?'<span class="battle-map-you">YOU ARE HERE</span>':'')+'</div>';
+  }).join('');
+}
+
+function renderBattleSimulator(state){
+  var numbersBase = getBattleNumbers(state, state.__baselineLever||0, state.__baselineApr||__battleApr);
+  var numbersNow = getBattleNumbers(state, __battleLever, __battleApr);
+  var leverNameEl = $('battleLeverName'), leverValEl = $('battleLeverVal');
+  var isDebt = state.key==='debt';
+  $('battleLeverExtra').style.display = isDebt ? 'block' : 'none';
+  var leverNames = {debt:'Total monthly payment', ef:'Extra monthly savings', networth:'Extra monthly contribution', savings:'Extra monthly savings', income:'Extra monthly margin (cut spend or earn more)'};
+  leverNameEl.textContent = leverNames[state.key] || 'Extra monthly amount';
+  leverValEl.textContent = '$'+__battleLever+'/mo';
+
+  var curEl = $('battleCurrentDefeat'), curSub = $('battleCurrentSub'), newEl = $('battleNewDefeat'), newSub = $('battleNewSub'), impact = $('battleImpact');
+
+  if(numbersNow.kind==='debt'){
+    curEl.textContent = numbersBase.months!==null ? fmtMonths(numbersBase.months) : 'Never at this payment';
+    curSub.textContent = '$'+(state.__baselineLever||0)+'/mo at '+(state.__baselineApr||__battleApr)+'% APR';
+    newEl.textContent = numbersNow.months!==null ? fmtMonths(numbersNow.months) : 'Set a payment above balance interest';
+    newSub.textContent = '$'+__battleLever+'/mo at '+__battleApr+'% APR';
+    if(numbersNow.months!==null && numbersBase.months!==null){
+      var monthsFaster = numbersBase.months-numbersNow.months;
+      var interestSaved = (numbersBase.interest||0)-(numbersNow.interest||0);
+      impact.innerHTML = (monthsFaster>0?Math.round(monthsFaster)+' MONTHS FASTER':'')+(interestSaved>0.5?' · Estimated interest saved: '+money(interestSaved):'');
+    } else if(numbersNow.months!==null){
+      impact.textContent = 'Estimated interest over payoff: '+money(numbersNow.interest||0);
+    } else {
+      impact.textContent = 'Increase the payment above your minimum to see a payoff timeline.';
+    }
+  } else if(numbersNow.kind==='balance'){
+    curEl.textContent = numbersBase.months!==null ? fmtMonths(numbersBase.months) : 'Add an amount below';
+    curSub.textContent = '$0/mo extra';
+    newEl.textContent = numbersNow.months!==null ? fmtMonths(numbersNow.months) : 'Add an amount below';
+    newSub.textContent = '$'+__battleLever+'/mo extra';
+    if(numbersNow.months!==null){
+      impact.textContent = 'Gap remaining: '+money(numbersNow.gap)+' · Target: '+money(numbersNow.target);
+    } else {
+      impact.textContent = 'Move the slider to see a real projected timeline.';
+    }
+  } else { // rate
+    var unit = numbersNow.unit;
+    var fmtRate = function(v){ return numbersNow.isMoney ? money(v)+'/mo' : v.toFixed(1)+'%'; };
+    curEl.textContent = fmtRate(numbersBase.current);
+    curSub.textContent = 'Target: '+fmtRate(numbersBase.target);
+    newEl.textContent = fmtRate(numbersNow.newRate);
+    newSub.textContent = '+$'+__battleLever+'/mo applied';
+    var defeated = numbersNow.newRate >= numbersNow.target;
+    impact.textContent = defeated ? 'This would defeat the boss immediately at this level.' : 'Still short of target by '+ (numbersNow.isMoney? money(numbersNow.target-numbersNow.newRate)+'/mo' : (numbersNow.target-numbersNow.newRate).toFixed(1)+' pts');
+  }
+}
+
+function renderBattle(){
+  var state = computeBattleState();
+  var empty = $('battleEmptyState'), main = $('battleMain');
+  if(!state){
+    if(empty) empty.style.display='block';
+    if(main) main.style.display='none';
+    return;
+  }
+  if(empty) empty.style.display='none';
+  if(main) main.style.display='block';
+
+  var numbers = getBattleNumbers(state, 0, __battleApr);
+  var health = battleHealthPct(state, numbers);
+  // (health computed above drives the Boss Health bar; victory/defeat
+  // detection is handled separately below via real cross-session state)
+
+  $('bossName').textContent = state.def.name;
+  $('bossDesc').textContent = state.def.desc;
+  var threatEl = $('bossThreat');
+  threatEl.textContent = state.threatLevel.toUpperCase();
+  threatEl.className = 'threat-'+state.threatLevel;
+
+  if(state.key==='debt'){
+    var debtBaseline = Math.max(100, Math.round(state.debtBalance*0.033/25)*25);
+    var debtBaseNums = getBattleNumbers(state, debtBaseline, 22);
+    $('bossStat1Label').textContent='BALANCE'; $('bossStat1Val').textContent=money(state.debtBalance);
+    $('bossStat2Label').textContent='APR (EST.)'; $('bossStat2Val').textContent='22%';
+    $('bossDefeatVal').textContent = debtBaseNums.months!==null ? fmtMonths(debtBaseNums.months) : 'Adjust payment below';
+  } else if(numbers.kind==='balance'){
+    $('bossStat1Label').textContent='CURRENT'; $('bossStat1Val').textContent=money(numbers.current);
+    $('bossStat2Label').textContent='TARGET'; $('bossStat2Val').textContent=money(numbers.target);
+    $('bossDefeatVal').textContent = 'Set a monthly amount below';
+  } else {
+    $('bossStat1Label').textContent='CURRENT'; $('bossStat1Val').textContent = numbers.isMoney? money(numbers.current)+'/mo' : numbers.current.toFixed(1)+'%';
+    $('bossStat2Label').textContent='TARGET'; $('bossStat2Val').textContent = numbers.isMoney? money(numbers.target)+'/mo' : numbers.target.toFixed(0)+'%';
+    $('bossDefeatVal').textContent = 'Adjust below';
+  }
+
+  $('bossHealthPct').textContent = Math.round(100-health)+'% remaining';
+  $('bossHealthFill').style.width = Math.max(2,100-health)+'%';
+  $('bossHealthStart').textContent = state.key==='debt' ? money(state.debtBalance) : (numbers.kind==='balance'?money(numbers.current):numbers.current.toFixed(1)+(numbers.isMoney?'':'%'));
+  $('bossHealthNow').textContent = Math.round(100-health)+'% remaining';
+
+  renderBattleGlyph($('bossGlyph'), state.threatLevel);
+  renderForceField(state);
+  renderStatRadar(state);
+  renderBattleMap(state);
+
+  __battleLever = 0; __battleApr = 22;
+  var leverInput = $('battleLeverInput'), aprInput = $('battleRateInput');
+  // For debt specifically, comparing against a $0/mo baseline never
+  // shows a meaningful "months faster" - debt never pays off at $0/mo.
+  // Snapshot a realistic starting payment as the frozen "current plan",
+  // and let the slider represent the "new plan" being tested.
+  if(state.key==='debt'){
+    var suggested = Math.max(100, Math.round(state.debtBalance*0.033/25)*25);
+    state.__baselineLever = suggested;
+    state.__baselineApr = __battleApr;
+    __battleLever = suggested;
+  } else {
+    state.__baselineLever = 0;
+    state.__baselineApr = __battleApr;
+  }
+  leverInput.value = __battleLever; aprInput.value = __battleApr;
+  if(!leverInput.dataset.wired){
+    leverInput.dataset.wired='1';
+    leverInput.addEventListener('input', function(){ __battleLever = Number(leverInput.value)||0; renderBattleSimulator(state); });
+  }
+  if(!aprInput.dataset.wired){
+    aprInput.dataset.wired='1';
+    aprInput.addEventListener('input', function(){ __battleApr = Number(aprInput.value)||0; $('battleRateVal').textContent=__battleApr+'%'; renderBattleSimulator(state); });
+  }
+  renderBattleSimulator(state);
+
+  // Attack button - reveals concrete lever presets, reusing the exact
+  // same simulator math (no separate "fake" numbers).
+  var attackBtn = $('attackBossBtn'), actionsWrap = $('attackActions');
+  if(!attackBtn.dataset.wired){
+    attackBtn.dataset.wired='1';
+    attackBtn.onclick = function(){ actionsWrap.style.display = actionsWrap.style.display==='none'?'grid':'none'; };
+  }
+  var presets = state.key==='income'
+    ? [{label:'CUT EXPENSES', amt:200},{label:'INCREASE INCOME', amt:500},{label:'SMALL CUT', amt:100},{label:'BIG PUSH', amt:750}]
+    : [{label:'ADD', amt:100},{label:'ADD MORE', amt:250},{label:'STRETCH', amt:500},{label:'MAX EFFORT', amt:750}];
+  actionsWrap.innerHTML = presets.map(function(p){
+    return '<button type="button" class="attack-action-btn">'+p.label+'<b>+$'+p.amt+'/mo</b></button>';
+  }).join('');
+  Array.prototype.forEach.call(actionsWrap.querySelectorAll('.attack-action-btn'), function(btn,i){
+    btn.onclick = function(){ __battleLever = presets[i].amt; leverInput.value = presets[i].amt; renderBattleSimulator(state); };
+  });
+
+  // Victory state - this needs to detect a real *transition*: a boss
+  // that was previously active and has now genuinely resolved. Since
+  // computeBattleState() always picks today's single worst weakness,
+  // a defeated domain immediately stops being "the boss" - so victory
+  // can't be detected from the current boss's own state. Instead we
+  // persist which boss was last shown (and its real value at the time)
+  // and compare that against today's real numbers for that same domain.
+  var victory = $('bossVictory');
+  var lastKey = localStorage.getItem('gmf_battle_last_boss');
+  var lastValRaw = localStorage.getItem('gmf_battle_last_boss_value');
+  var lastVal = lastValRaw!==null ? Number(lastValRaw) : null;
+  var showVictory = false;
+
+  function realValueFor(key){
+    if(key==='debt') return state.debtBalance;
+    if(key==='ef') return Number(state.latest.cash)||0;
+    if(key==='networth') return Number(state.latest.net)||0;
+    if(key==='savings') return Number(state.latest.savingsRate)||0;
+    if(key==='income') return ((Number(state.latest.annualIncome)||0)/12) - (Number(state.latest.monthlyExpenses)||0);
+  }
+  var isMoneyDomain = {debt:true, ef:true, networth:true, savings:false, income:true};
+
+  if(lastKey && lastKey!==state.key && BOSS_DEFS[lastKey] && lastVal!==null){
+    var prevComp = state.allScores[lastKey];
+    var prevResolved = lastKey==='debt' ? state.debtBalance<=0 : (prevComp && prevComp.score>=67);
+    if(prevResolved){
+      showVictory = true;
+      var afterVal = realValueFor(lastKey);
+      var fmt = function(v){ return isMoneyDomain[lastKey] ? money(v) : v.toFixed(1)+'%'; };
+      $('victoryName').textContent = BOSS_DEFS[lastKey].name.replace('The ','').toUpperCase();
+      $('victoryBefore').textContent = fmt(lastVal);
+      $('victoryAfter').textContent = fmt(afterVal);
+      $('victoryGrade').textContent = (typeof state.latest.score==='number') ? Math.round(state.latest.score) : '—';
+      $('victoryNext').textContent = state.def.name;
+    }
+  }
+  victory.style.display = showVictory ? 'block' : 'none';
+
+  // Persist the active boss + its real current value, but only when the
+  // active boss actually changes - otherwise we'd overwrite the
+  // "before" snapshot on every re-render of the same ongoing battle.
+  if(lastKey !== state.key){
+    localStorage.setItem('gmf_battle_last_boss', state.key);
+    localStorage.setItem('gmf_battle_last_boss_value', String(realValueFor(state.key)));
+  }
+}
+
+// Compact dashboard card - real data, same computeBattleState(). Called
+// from renderShipOverview() alongside the other Phase 1 command-center
+// pieces, so it stays in sync with every dashboard refresh.
+function renderBattleMini(){
+  var card = $('battleMiniCard'); if(!card) return;
+  var state = computeBattleState();
+  if(!state){ card.style.display='none'; return; }
+  card.style.display='grid';
+  var numbers = getBattleNumbers(state, 0, 22);
+  var health = battleHealthPct(state, numbers);
+  $('battleMiniName').textContent = state.def.name;
+  $('battleMiniHealthFill').style.width = Math.max(2,100-health)+'%';
+  $('battleMiniPct').textContent = Math.round(100-health)+'% remaining';
+  var defeatText = state.key==='debt' ? 'Set a payment in Battle' : (numbers.kind==='balance' && numbers.months!==null ? fmtMonths(numbers.months) : 'View Battle to estimate');
+  $('battleMiniDefeat').textContent = defeatText;
+  var potentialGrade = (typeof state.score==='number' && typeof state.latest.score==='number') ? Math.round(state.latest.score)+' → '+Math.min(100,Math.round(state.latest.score+ (100-state.score)/BATTLE_KEY_ORDER.length/2)) : '—';
+  $('battleMiniGrade').textContent = potentialGrade;
+}
+</script>
 </body>
 </html>
 
