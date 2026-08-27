@@ -3274,6 +3274,68 @@ body{
 }
 </style>
 
+<style id="gmf-command-center-v1">
+/* ---- Phase 1 "Command Center" additions: Why factors, Health
+   Scorecard, Financial Momentum, elevated Next Best Move. All read
+   real data already computed elsewhere (gmf_last_report / history) -
+   no new calculation systems, just new surfaces for existing math. */
+.ship-grade-why{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--ship-line)}
+.ship-grade-why-row{display:flex;align-items:flex-start;gap:8px;max-width:260px}
+.ship-grade-why-row .dot{width:9px;height:9px;border-radius:50%;margin-top:5px;flex:none}
+.ship-grade-why-row .dot.good{background:#129b79}
+.ship-grade-why-row .dot.bad{background:#d65a52}
+.ship-grade-why-row b{display:block;font-size:12px;color:#173038}
+.ship-grade-why-row span{display:block;font-size:11px;color:#6b7b81;margin-top:2px;line-height:1.4}
+
+.ship-momentum-strip{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--ship-line);border-radius:16px;padding:14px 20px;margin-bottom:14px}
+.ship-momentum-ring{position:relative;width:66px;height:66px;flex:none;display:grid;place-items:center}
+.ship-momentum-ring svg{width:66px;height:66px;position:absolute;inset:0}
+.ship-momentum-ring b{position:relative;font:800 19px var(--font-display);color:#18323b}
+.ship-momentum-badge{font:700 8px var(--font-mono);letter-spacing:.05em;color:#8a9a94;background:#eef4f1;border:1px solid #dfe9e5;border-radius:99px;padding:2px 7px;margin-left:6px;vertical-align:1px}
+.ship-momentum-strip p{font-size:12px;color:#5f7168;margin:0}
+
+.ship-scorecard-card{background:#fff;border:1px solid var(--ship-line);border-radius:16px;padding:16px 20px;margin-bottom:14px}
+.ship-scorecard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
+.ship-score-tile{text-align:left;border:1px solid var(--ship-line);border-radius:13px;padding:13px 14px;background:#fbfdfc;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
+.ship-score-tile:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(15,35,42,.08)}
+.ship-score-tile .tile-top{display:flex;justify-content:space-between;align-items:center;font:700 12px var(--font-display);color:#18323b}
+.ship-score-tile .tile-letter{font:800 13px var(--font-mono)}
+.ship-score-tile.good .tile-letter{color:#129b79}
+.ship-score-tile.mid .tile-letter{color:#c9932f}
+.ship-score-tile.bad .tile-letter{color:#d65a52}
+.ship-score-tile .tile-bar{height:6px;border-radius:99px;background:#eef2f0;margin-top:9px;overflow:hidden}
+.ship-score-tile .tile-bar i{display:block;height:100%;border-radius:99px}
+.ship-score-tile.good .tile-bar i{background:#129b79}
+.ship-score-tile.mid .tile-bar i{background:#c9932f}
+.ship-score-tile.bad .tile-bar i{background:#d65a52}
+.ship-score-tile .tile-status{font:700 10px var(--font-mono);letter-spacing:.03em;color:#70817c;margin-top:6px}
+.ship-score-tile p{font-size:11px;color:#7c8c87;margin:5px 0 0;line-height:1.4}
+.ship-scorecard-empty{padding:14px 4px;font-size:12px;color:#5f7168}
+.ship-scorecard-empty a{margin-top:10px;display:inline-block}
+
+.ship-nextmove-elevated{border-color:#f1b933!important;background:linear-gradient(180deg,#fffdf6,#fff)!important;box-shadow:0 10px 26px rgba(217,165,61,.14)!important}
+.ship-nextmove-kicker{display:inline-block;font:800 10px var(--font-mono);letter-spacing:.05em;color:#a2670a;background:#fdf0cf;border:1px solid #f1d999;border-radius:99px;padding:3px 9px;margin-bottom:6px}
+
+@media(max-width:760px){.ship-scorecard-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.ship-scorecard-grid{grid-template-columns:1fr}.ship-momentum-strip{flex-wrap:wrap}}
+
+:root[data-theme="dark"] .ship-grade-why{border-top-color:var(--ui-line)!important}
+:root[data-theme="dark"] .ship-grade-why-row b{color:var(--ui-ink)!important}
+:root[data-theme="dark"] .ship-grade-why-row span{color:var(--ui-muted)!important}
+:root[data-theme="dark"] .ship-momentum-strip,
+:root[data-theme="dark"] .ship-scorecard-card{background:#132326!important;border-color:#294047!important}
+:root[data-theme="dark"] .ship-momentum-strip p{color:#a9beb8!important}
+:root[data-theme="dark"] .ship-momentum-ring b{color:#eef7f3!important}
+:root[data-theme="dark"] .ship-momentum-badge{background:#1b3034!important;border-color:#30484e!important;color:#8fa39d!important}
+:root[data-theme="dark"] .ship-score-tile{background:#0f1e21!important;border-color:#294047!important}
+:root[data-theme="dark"] .ship-score-tile .tile-top{color:#eef7f3!important}
+:root[data-theme="dark"] .ship-score-tile .tile-bar{background:#1b3034!important}
+:root[data-theme="dark"] .ship-score-tile .tile-status{color:#8fa39d!important}
+:root[data-theme="dark"] .ship-score-tile p{color:#8fa39d!important}
+:root[data-theme="dark"] .ship-scorecard-empty{color:#a9beb8!important}
+:root[data-theme="dark"] .ship-nextmove-elevated{background:linear-gradient(180deg,#241d0f,#152023)!important;border-color:#a2670a!important}
+:root[data-theme="dark"] .ship-nextmove-kicker{background:#2c2210!important;border-color:#5a4419!important;color:#f0c65b!important}
+</style>
 </head>
 <body>
 <script>
@@ -3486,6 +3548,7 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ship-grade-score"><span id="shipGradeScore">—</span><small>/ 100</small></div>
         <div class="ship-grade-trend"><div class="ship-trend-value" id="shipGradeDelta">—</div><div>since last check-in</div><svg id="shipGradeSpark" viewBox="0 0 180 48" preserveAspectRatio="none"></svg><button class="ship-link" data-goto="score" type="button">View grade history →</button></div>
       </div>
+      <div class="ship-grade-why" id="shipGradeWhy"></div>
     </div>
     <aside class="grade-pro-panel" id="gradeProPanel">
       <div class="grade-pro-panel-top"><span class="grade-pro-pill" id="gradeProPill">PRO</span><span class="grade-pro-status" id="gradeProStatus">Upgrade your financial view</span></div>
@@ -3506,6 +3569,23 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
     </div>
   </section>
 
+  <section class="ship-momentum-strip" id="shipMomentumStrip">
+    <div class="ship-momentum-ring">
+      <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="33" fill="none" stroke="var(--ship-line)" stroke-width="7"/><circle id="shipMomentumRingFg" cx="40" cy="40" r="33" fill="none" stroke="var(--ship-green)" stroke-width="7" stroke-linecap="round" transform="rotate(-90 40 40)"/></svg>
+      <b id="shipMomentumVal">—</b>
+    </div>
+    <div>
+      <div class="ship-panel-title" style="margin-bottom:2px">FINANCIAL MOMENTUM <span class="ship-momentum-badge">GMF METRIC</span></div>
+      <p id="shipMomentumSub">Build your financial history to unlock Financial Momentum.</p>
+    </div>
+  </section>
+
+  <section class="ship-scorecard-card" id="shipScorecardCard">
+    <div class="ship-panel-title">FINANCIAL HEALTH SCORECARD</div>
+    <div class="ship-scorecard-grid" id="shipScorecardGrid"></div>
+    <div class="ship-scorecard-empty" id="shipScorecardEmptyDefault">Complete a check-in to unlock your Financial Health Scorecard — a category-by-category breakdown of exactly what is driving your grade.<br><a class="btn gold sm" href="index.html#grade">Update my finances →</a></div>
+  </section>
+
   <section class="ship-lower-grid ship-modern-charts">
     <div class="ship-chart-card ship-modern-chart-card">
       <div class="ship-card-head">
@@ -3519,7 +3599,11 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="ship-modern-chart-wrap ship-pie-wrap">
         <svg id="gmfFinalPieChart" viewBox="0 0 760 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Net worth allocation pie chart"></svg>
       </div>
-      <div class="ship-modern-legend" id="shipPieLegend"></div>
+      <!-- shipPieLegend removed: only ever populated by the dead
+           renderShipNetWorthChart, so it was an empty div with a
+           visible divider line under the chart. The real chart
+           (gmf-final-chart-renderer) already draws its legend directly
+           inside the SVG, so this was a redundant, broken duplicate. -->
     </div>
     <div class="ship-chart-card ship-modern-chart-card">
       <div class="ship-card-head">
@@ -3542,8 +3626,8 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
       <div class="ship-card-head"><div><h3>What changed since last check-in</h3><p id="shipChangePeriod">Your latest check-in compared with the one before it.</p></div></div>
       <div class="ship-change-list" id="shipChangeList"></div>
     </div>
-    <div class="ship-nextmove-card">
-      <div class="ship-card-head"><div><h3>Your next best move</h3><p>The single highest-impact thing to focus on right now.</p></div></div>
+    <div class="ship-nextmove-card ship-nextmove-elevated">
+      <div class="ship-card-head"><div><span class="ship-nextmove-kicker">🔥 DO THIS FIRST</span><h3>Your next best move</h3><p>The single highest-impact thing to focus on right now.</p></div></div>
       <div id="shipNextMove"></div>
     </div>
   </section>
@@ -4203,6 +4287,23 @@ try{ if(localStorage.getItem("gmf_theme")==="light"){ document.documentElement.d
         <div class="ret-chart-card"><span class="section-label">At a glance</span><h3>Retirement readiness</h3><div class="ret-donut-wrap"><svg id="rsDonut" viewBox="0 0 180 180"><circle cx="90" cy="90" r="68" fill="none" stroke="#e7ece9" stroke-width="18"/><circle id="rsDonutFg" cx="90" cy="90" r="68" fill="none" stroke="#19b58e" stroke-width="18" stroke-linecap="round" transform="rotate(-90 90 90)"/></svg><div><b id="rsDonutPct">0%</b><span>to FI</span></div></div><div id="rsReadinessText" class="ret-readiness"></div></div>
       </div>
       <div class="ret-chart-card" style="margin-top:16px"><span class="section-label">Scenario explorer</span><h3>How different market outcomes change your path</h3><div id="rsScenarioBars" class="ret-scenario-bars"></div></div>
+      <div class="ret-chart-card ret-whatif-card" style="margin-top:16px">
+        <span class="section-label">WHAT IF?</span>
+        <h3>Test a change before you make it</h3>
+        <p class="ret-whatif-sub">Drag either slider — every number below is calculated from your actual plan above, not a general estimate.</p>
+        <div class="ret-whatif-sliders">
+          <div class="ret-whatif-slider-row">
+            <label for="rsWhatIfAge">Retirement age <b id="rsWhatIfAgeVal">on time</b></label>
+            <input type="range" id="rsWhatIfAge" min="-5" max="5" step="1" value="0">
+          </div>
+          <div class="ret-whatif-slider-row">
+            <label for="rsWhatIfMonthly">Monthly contribution <b id="rsWhatIfMonthlyVal">no change</b></label>
+            <input type="range" id="rsWhatIfMonthly" min="-500" max="500" step="50" value="0">
+          </div>
+        </div>
+        <div class="ret-whatif-result" id="rsWhatIfResult"></div>
+        <div class="ret-whatif-presets" id="rsWhatIfPresets"></div>
+      </div>
       <div class="ret-bottom-grid"><div class="ret-chart-card"><span class="section-label">Milestones</span><h3>Your roadmap</h3><div id="rsMilestones"></div></div><div class="ret-chart-card ret-next"><span class="section-label">Smart next move</span><h3 id="rsAdviceTitle">—</h3><p id="rsAdvice">—</p></div></div>
     </div>
   </div>
@@ -7777,141 +7878,17 @@ function shipSpark(svg, vals, stroke){
 }
 // Shared two-line chart renderer for both the Net Worth and Income vs
 // Expenses charts - one series (Net Worth) or two series (Income /
-// Expenses) plotted on their own scale, same visual language as the
-// rest of the dashboard's charts.
-function shipArcPath(cx, cy, r, start, end){
-  var x1 = cx + r * Math.cos(start), y1 = cy + r * Math.sin(start);
-  var x2 = cx + r * Math.cos(end), y2 = cy + r * Math.sin(end);
-  var large = (end - start) > Math.PI ? 1 : 0;
-  return 'M '+cx+' '+cy+' L '+x1.toFixed(2)+' '+y1.toFixed(2)+' A '+r+' '+r+' 0 '+large+' 1 '+x2.toFixed(2)+' '+y2.toFixed(2)+' Z';
-}
-function shipFmtCompact(n){
-  if(!isFinite(n)) return '—';
-  var a=Math.abs(n);
-  if(a>=1000000) return '$'+(n/1000000).toFixed(1)+'M';
-  if(a>=1000) return '$'+Math.round(n/1000)+'K';
-  return '$'+Math.round(n).toLocaleString();
-}
-function renderShipNetWorthChart(hist){
-  var svg = $('gmfModernPieChart'); if(!svg) return;
-  var latest = hist && hist.length ? hist[hist.length-1] : null;
-  if(!latest){
-    svg.innerHTML='<text x="380" y="165" text-anchor="middle" fill="#8da29d" font-size="16" font-family="Inter,Segoe UI,Arial,sans-serif">Add a financial check-in to see your net worth mix.</text>';
-    return;
-  }
-
-  var report = getLastReportV ? getLastReportV() : null;
-  var source = report || latest;
-  var valueOf = function(key){
-    var v = Number(source && source[key]);
-    return isFinite(v) && v > 0 ? v : 0;
-  };
-  var items=[
-    {label:'Home', value:valueOf('home'), color:'#20b993'},
-    {label:'Retirement', value:valueOf('retire'), color:'#4f88ee'},
-    {label:'Brokerage', value:valueOf('brokerage'), color:'#8b68df'},
-    {label:'Cash', value:valueOf('cash'), color:'#e6aa38'},
-    {label:'Crypto / Other', value:valueOf('crypto'), color:'#e56b60'},
-    {label:'HSA', value:valueOf('hsa'), color:'#25afc1'},
-    {label:'Car', value:valueOf('car'), color:'#718097'}
-  ].filter(function(x){return x.value>0;});
-
-  var total=items.reduce(function(a,x){return a+x.value;},0);
-  if(total<=0){
-    total=Math.max(0,num(latest.assets)||num(latest.net));
-  }
-  if(!items.length){
-    svg.innerHTML='<text x="380" y="165" text-anchor="middle" fill="#8da29d" font-size="16" font-family="Inter,Segoe UI,Arial,sans-serif">No asset breakdown is available yet.</text>';
-    return;
-  }
-
-  var defs =
-    '<defs>'+
-      '<filter id="shipPieShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".30"/></filter>'+
-      '<radialGradient id="shipPieCenter" cx="50%" cy="40%"><stop offset="0%" stop-color="#17343a"/><stop offset="100%" stop-color="#0b171a"/></radialGradient>'+
-    '</defs>';
-
-  var cx=185, cy=165, r=116, start=-Math.PI/2, out=defs;
-  items.forEach(function(item,i){
-    var sweep=(item.value/total)*Math.PI*2;
-    var end=start+sweep;
-    out+='<path d="'+shipArcPath(cx,cy,r,start,end)+'" fill="'+item.color+'" stroke="#0b171a" stroke-width="4" filter="url(#shipPieShadow)" opacity=".96"/>';
-    start=end;
-  });
-  out+='<circle cx="'+cx+'" cy="'+cy+'" r="73" fill="url(#shipPieCenter)" stroke="#29454b" stroke-width="2"/>';
-  out+='<text x="'+cx+'" y="'+(cy-6)+'" text-anchor="middle" fill="#eaf8f3" font-size="25" font-weight="800" font-family="IBM Plex Mono,monospace">'+shipFmtCompact(total)+'</text>';
-  out+='<text x="'+cx+'" y="'+(cy+17)+'" text-anchor="middle" fill="#8fa7a2" font-size="11" font-weight="700" letter-spacing="1.5" font-family="Inter,Segoe UI,Arial,sans-serif">TOTAL ASSETS</text>';
-
-  var lx=365, ly=63;
-  items.forEach(function(item,i){
-    var pct=total?item.value/total*100:0;
-    var yy=ly+i*34;
-    out+='<rect x="'+lx+'" y="'+(yy-9)+'" width="10" height="10" rx="3" fill="'+item.color+'"/>';
-    out+='<text x="'+(lx+20)+'" y="'+yy+'" fill="#dcece7" font-size="12" font-weight="700" font-family="Inter,Segoe UI,Arial,sans-serif">'+esc(item.label)+'</text>';
-    out+='<text x="'+(lx+280)+'" y="'+yy+'" text-anchor="end" fill="'+item.color+'" font-size="12" font-weight="800" font-family="IBM Plex Mono,monospace">'+shipFmtCompact(item.value)+'</text>';
-    out+='<text x="'+(lx+300)+'" y="'+yy+'" fill="#829b95" font-size="11" font-weight="600" font-family="IBM Plex Mono,monospace">'+pct.toFixed(0)+'%</text>';
-  });
-  svg.innerHTML=out;
-
-  var legend=$('shipPieLegend');
-  if(legend){
-    legend.innerHTML=items.slice(0,5).map(function(item){
-      var pct=total?item.value/total*100:0;
-      return '<span><i style="background:'+item.color+'"></i>'+esc(item.label)+' <b>'+pct.toFixed(0)+'%</b></span>';
-    }).join('')+(items.length>5?'<span class="ship-legend-more">+'+(items.length-5)+' more</span>':'');
-  }
-}
-function renderShipCashflowChart(hist){
-  var svg = $('gmfModernBarChart'); if(!svg) return;
-  var latest = hist && hist.length ? hist[hist.length-1] : null;
-  if(!latest){
-    svg.innerHTML='<text x="380" y="165" text-anchor="middle" fill="#8da29d" font-size="16" font-family="Inter,Segoe UI,Arial,sans-serif">Add a financial check-in to see your monthly picture.</text>';
-    return;
-  }
-  var income=shipMonthlyIncome(latest);
-  var expenses=typeof latest.monthlyExpenses==='number'?latest.monthlyExpenses:0;
-  income=Number(income)||0; expenses=Number(expenses)||0;
-  var surplus=income-expenses;
-  var max=Math.max(income,expenses,Math.abs(surplus),1);
-  var left=105, base=275, barW=135, gap=48, chartH=205;
-  var scale=function(v){return Math.max(4,(Math.abs(v)/max)*chartH);};
-  var vals=[
-    {label:'Income', value:income, color:'#22c7a0', x:left},
-    {label:'Expenses', value:expenses, color:'#ff6f61', x:left+barW+gap},
-    {label:'Monthly margin', value:surplus, color:surplus>=0?'#4d8dff':'#ffb84d', x:left+(barW+gap)*2}
-  ];
-  var out=
-    '<defs>'+
-      '<linearGradient id="shipBarIncome" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#43e0bd"/><stop offset="100%" stop-color="#129b79"/></linearGradient>'+
-      '<linearGradient id="shipBarExpense" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8a80"/><stop offset="100%" stop-color="#e4515b"/></linearGradient>'+
-      '<linearGradient id="shipBarMargin" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#78a7ff"/><stop offset="100%" stop-color="#4d72d9"/></linearGradient>'+
-      '<filter id="shipBarShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#000" flood-opacity=".25"/></filter>'+
-    '</defs>';
-
-  [0,.25,.5,.75,1].forEach(function(t){
-    var yy=base-chartH*t;
-    var val=max*(1-t);
-    out+='<line x1="58" y1="'+yy+'" x2="720" y2="'+yy+'" stroke="#20373c" stroke-width="1" stroke-dasharray="3 7"/>';
-    out+='<text x="45" y="'+(yy+4)+'" text-anchor="end" fill="#78918b" font-size="10" font-weight="600" font-family="IBM Plex Mono,monospace">'+shipFmtCompact(val)+'</text>';
-  });
-
-  vals.forEach(function(v){
-    var h=scale(v.value), y=base-h;
-    var grad=v.label==='Income'?'url(#shipBarIncome)':v.label==='Expenses'?'url(#shipBarExpense)':'url(#shipBarMargin)';
-    out+='<rect x="'+v.x+'" y="'+y.toFixed(1)+'" width="'+barW+'" height="'+h.toFixed(1)+'" rx="14" fill="'+grad+'" filter="url(#shipBarShadow)"/>';
-    out+='<text x="'+(v.x+barW/2)+'" y="'+(y-12)+'" text-anchor="middle" fill="#eaf8f3" font-size="14" font-weight="800" font-family="IBM Plex Mono,monospace">'+(v.value<0?'-':'')+shipFmtCompact(Math.abs(v.value))+'</text>';
-    out+='<text x="'+(v.x+barW/2)+'" y="'+(base+25)+'" text-anchor="middle" fill="#9ab0aa" font-size="11" font-weight="700" font-family="Inter,Segoe UI,Arial,sans-serif">'+esc(v.label.toUpperCase())+'</text>';
-  });
-
-  svg.innerHTML=out;
-  var summary=$('shipBarSummary');
-  if(summary){
-    var marginClass=surplus>=0?'positive':'negative';
-    summary.innerHTML=
-      '<div><span>MONTHLY MARGIN</span><b class="'+marginClass+'">'+(surplus>=0?'+':'−')+shipFmtCompact(Math.abs(surplus))+'</b></div>'+
-      '<div><span>SAVINGS RATE</span><b>'+ (income>0?Math.max(-999,Math.min(999,surplus/income*100)).toFixed(0):'0') +'%</b></div>';
-  }
-}
+// renderShipNetWorthChart (and its shipArcPath/shipFmtCompact helpers)
+// removed (Phase 2 cleanup): targeted #gmfModernPieChart, an ID that
+// doesn't exist in the current markup, making it a permanent no-op.
+// The real Portfolio Mix chart is drawn by "gmf-final-chart-renderer"
+// (#gmfFinalPieChart).
+// renderShipNetWorthChart / renderShipCashflowChart removed (Phase 2
+// cleanup): both targeted #gmfModernPieChart/#gmfModernBarChart, IDs
+// that don't exist in the current markup, making them permanent
+// no-ops. The real Portfolio Mix / Monthly Picture charts are drawn
+// by the "gmf-final-chart-renderer" script (targets #gmfFinalPieChart
+// / #gmfFinalBarChart) - that's the one now also feeding shipBarSummary.
 
 /* ================= NEXT BEST MOVE + GOAL LINKING =================
    The single source of "what should I do next" is deriveFinancialPriorities()
@@ -7993,6 +7970,86 @@ function renderDashGoalsPreview(hist){
   }).join('') + '</div>';
 }
 
+/* ---- Phase 1 "Command Center" helpers ----
+   shipGetGradeComponents() reads the exact same gmf_last_report data
+   the Grade Report tab already uses (see rebuildGradeReport) - this is
+   not a second scoring system, just a second place to display the same
+   real numbers. */
+function shipGetGradeComponents(){
+  var saved=null; try{ saved=JSON.parse(localStorage.getItem('gmf_last_report')||'null'); }catch(e){}
+  if(!saved || !saved.cats || !Array.isArray(saved.cats.components)) return null;
+  var comps = saved.cats.components, s = saved.cats.s||{};
+  var labels = ['Savings rate','Emergency fund','Debt load','Net worth','Income strength'];
+  var keys = ['sSave','sEF','sDebt','sAgeNW','sInc'];
+  var out = comps.map(function(c,i){
+    var raw = s[keys[i]];
+    var v = typeof raw === 'number' ? Math.max(0,Math.min(100, raw*100)) : null;
+    return { label: labels[i]||c.key||'Factor', letter: c.letter||'—', tip: c.tip||'', score: v };
+  }).filter(function(x){ return x.score !== null; });
+  return out.length ? out : null;
+}
+function shipGotoTab(name){
+  var b = document.querySelector('.dash-nav-btn[data-tab="'+name+'"]');
+  if(b){ b.click(); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+function renderShipWhy(){
+  var mount = $('shipGradeWhy'); if(!mount) return;
+  var comps = shipGetGradeComponents();
+  if(!comps || comps.length < 3){ mount.innerHTML=''; return; }
+  var sorted = comps.slice().sort(function(a,b){ return b.score-a.score; });
+  var picks = [sorted[0], sorted[1], sorted[sorted.length-1]];
+  var seen = {};
+  picks = picks.filter(function(p){ if(!p||seen[p.label]) return false; seen[p.label]=true; return true; });
+  mount.innerHTML = picks.map(function(p){
+    var good = p.score >= 60;
+    return '<div class="ship-grade-why-row"><span class="dot '+(good?'good':'bad')+'"></span><div><b>'+(good?'Strong ':'Needs work — ')+p.label.toLowerCase()+'</b><span>'+p.tip+'</span></div></div>';
+  }).join('');
+}
+function renderShipScorecard(){
+  var card = $('shipScorecardCard'); if(!card) return;
+  var grid = $('shipScorecardGrid'), empty = $('shipScorecardEmptyDefault');
+  var comps = shipGetGradeComponents();
+  if(!comps){
+    grid.innerHTML = '';
+    if(empty) empty.style.display = 'block';
+    return;
+  }
+  if(empty) empty.style.display = 'none';
+  grid.innerHTML = comps.map(function(c){
+    var tier = c.score>=67?'good':c.score>=34?'mid':'bad';
+    var status = tier==='good'?'Strong':tier==='mid'?'Fair':'Needs work';
+    return '<button type="button" class="ship-score-tile '+tier+'" data-goto="score">'
+      + '<div class="tile-top"><span>'+c.label+'</span><b class="tile-letter">'+c.letter+'</b></div>'
+      + '<div class="tile-bar"><i style="width:'+c.score.toFixed(0)+'%"></i></div>'
+      + '<div class="tile-status">'+status+' · '+c.score.toFixed(0)+'/100</div>'
+      + '<p>'+c.tip+'</p></button>';
+  }).join('');
+  Array.prototype.slice.call(grid.querySelectorAll('[data-goto]')).forEach(function(b){
+    b.onclick = function(){ shipGotoTab(b.getAttribute('data-goto')); };
+  });
+}
+function renderShipMomentum(hist){
+  var strip = $('shipMomentumStrip'); if(!strip) return;
+  var score = computeMomentumScore(hist);
+  var fg = $('shipMomentumRingFg');
+  if(score === null){
+    $('shipMomentumVal').textContent = '—';
+    $('shipMomentumSub').textContent = 'Build your financial history to unlock Financial Momentum.';
+    if(fg) fg.setAttribute('stroke-dasharray','0 1000');
+    return;
+  }
+  $('shipMomentumVal').textContent = (score>=0?'+':'')+score;
+  var label = score >= 75 ? 'Accelerating — strong upward momentum.' : score >= 55 ? 'Building — steady positive momentum.' : score >= 45 ? 'Holding steady across recent check-ins.' : 'Momentum has cooled recently.';
+  $('shipMomentumSub').textContent = label;
+  if(fg){
+    var circumference = 2*Math.PI*33;
+    var offset = circumference * (1 - Math.max(0,Math.min(100,score))/100);
+    fg.setAttribute('stroke-dasharray', circumference.toFixed(1));
+    fg.setAttribute('stroke-dashoffset', offset.toFixed(1));
+    fg.setAttribute('stroke', score>=55?'#129b79':score>=45?'#d9a53d':'#d65a52');
+  }
+}
+
 function renderShipOverview(hist){
   var latest = hist.length ? hist[hist.length-1] : null, prev = hist.length>1 ? hist[hist.length-2] : null;
   if(!latest) return;
@@ -8029,8 +8086,12 @@ function renderShipOverview(hist){
 
   shipSpark($('shipGradeSpark'), hist.map(function(h){ return h.score; }).slice(-18));
 
-  renderShipNetWorthChart(hist);
-  renderShipCashflowChart(hist);
+  // Note: the real Portfolio Mix / Monthly Picture charts on this tab
+  // (#gmfFinalPieChart / #gmfFinalBarChart) are drawn by the renderer
+  // further down the file - renderShipNetWorthChart/renderShipCashflowChart
+  // targeted IDs (#gmfModernPieChart/#gmfModernBarChart) that don't exist
+  // in the current markup, so they were silent no-ops. Removed rather
+  // than left as dead duplicate chart code.
   var changes = [
     ['Financial Grade', sd===null?'—':(sd>=0?'↑ '+sd.toFixed(0)+' points':'↓ '+Math.abs(sd).toFixed(0)+' points'), sd!==null&&sd<0],
     ['Net Worth', shipDeltaMoney(dn), dn!==null&&dn<0],
@@ -8045,6 +8106,9 @@ function renderShipOverview(hist){
 
   renderNextBestMove(hist, 'shipNextMove');
   renderDashGoalsPreview(hist);
+  renderShipWhy();
+  renderShipScorecard();
+  renderShipMomentum(hist);
 }
 /* ================= OVERVIEW TAB ================= */
 function renderOverview(hist, groups){
@@ -10252,6 +10316,29 @@ main{padding-top:16px !important;padding-bottom:42px !important}
 
 <style id="retirement-studio-css">
 #panel-retirement .retirement-studio{padding-bottom:40px}.ret-hero{background:linear-gradient(135deg,#103c35,#126b5a 55%,#19a98a);color:#fff;border-radius:24px;padding:30px;display:flex;justify-content:space-between;gap:25px;align-items:center;overflow:hidden;position:relative}.ret-hero:after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;right:-140px;top:-220px;background:radial-gradient(circle,rgba(255,215,110,.55),transparent 65%)}.ret-kicker{font:700 11px var(--font-mono);letter-spacing:.16em;color:#b9f4df}.ret-hero h2{font-size:clamp(27px,4vw,43px);max-width:600px;margin:8px 0}.ret-hero h2 span{color:#ffe08a}.ret-hero p{max-width:620px;color:#d8f2ea;margin:0}.ret-hero-badge{position:relative;z-index:1;min-width:140px;height:140px;border-radius:50%;display:grid;place-content:center;text-align:center;background:rgba(255,255,255,.13);border:8px solid rgba(255,255,255,.16);backdrop-filter:blur(8px)}.ret-hero-badge b{font:800 34px var(--font-display)}.ret-hero-badge span{font-size:11px;color:#d8f2ea}.ret-input-card,.ret-chart-card{background:#fff;border:1px solid #dfe9e5;border-radius:20px;box-shadow:0 12px 35px rgba(20,60,51,.07)}.ret-input-card{margin-top:16px;padding:22px}.ret-card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.ret-card-title h3,.ret-chart-card h3{margin:2px 0 0;font-size:20px}.ret-live{font:700 11px var(--font-mono);color:#0f9b79;background:#e2f8ef;padding:6px 9px;border-radius:99px}.ret-studio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.ret-studio-grid label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#60746e;font-weight:700}.ret-studio-grid input,.ret-studio-grid select{display:block;width:100%;margin-top:7px;padding:12px;border:1px solid #dbe5e1;border-radius:11px;background:#f8fbfa;color:#183a33;font:600 14px var(--font-mono)}.ret-action-row{display:flex;align-items:center;gap:10px;margin-top:18px;flex-wrap:wrap}.ret-action-row #rsStatus{font-size:12px;color:#72817d}.ret-metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}.ret-metric{padding:18px;border-radius:18px;border:1px solid #e1e7e4}.ret-metric span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:#62736e}.ret-metric strong{display:block;font:700 28px var(--font-display);margin:7px 0;color:#153a32}.ret-metric small{color:#72817d;font-size:11px}.ret-metric.mint{background:linear-gradient(135deg,#e7f8f1,#fff)}.ret-metric.purple{background:linear-gradient(135deg,#eee9ff,#fff)}.ret-metric.gold{background:linear-gradient(135deg,#fff5d8,#fff)}.ret-metric.blue{background:linear-gradient(135deg,#e9f2ff,#fff)}.ret-charts-grid{display:grid;grid-template-columns:1.65fr .8fr;gap:16px;margin-top:16px}.ret-chart-card{padding:20px}.ret-chart-head{display:flex;justify-content:space-between;gap:10px;align-items:start}.ret-legend{font-size:11px;color:#60746e;display:flex;flex-wrap:wrap;gap:5px 12px}.ret-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;background:#19b58e;margin-right:5px}.ret-legend span{display:inline-flex;align-items:center;white-space:nowrap}.ret-legend .target{background:#f1b933}.ret-chart-card svg{width:100%;height:280px;margin-top:12px}.ret-donut-wrap{height:235px;position:relative;display:grid;place-items:center}.ret-donut-wrap svg{width:190px;height:190px;margin:0}.ret-donut-wrap>div{position:absolute;text-align:center}.ret-donut-wrap b{display:block;font:700 30px var(--font-display)}.ret-donut-wrap span{font-size:11px;color:#70817c}.ret-readiness{font-size:12px;text-align:center;color:#62736e}.ret-scenario-bars{display:grid;gap:14px;margin-top:20px}.rs-bar-row{display:grid;grid-template-columns:145px 1fr 90px;gap:12px;align-items:center;font-size:12px}.rs-bar{height:14px;border-radius:99px;background:#edf2ef;overflow:hidden}.rs-bar div{height:100%;border-radius:99px;background:linear-gradient(90deg,#3a7ee8,#8b6be8)}.rs-bar-row:nth-child(2) .rs-bar div{background:linear-gradient(90deg,#159a78,#47c8a7)}.rs-bar-row:nth-child(3) .rs-bar div{background:linear-gradient(90deg,#e6a52d,#f6d369)}.ret-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.ret-milestone{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #edf1ef}.ret-milestone:last-child{border:none}.ret-dot{width:11px;height:11px;border-radius:50%;background:#19b58e;margin-top:4px}.ret-milestone b{font-size:13px}.ret-milestone span{display:block;font-size:11px;color:#71817d;margin-top:2px}.ret-next{background:linear-gradient(135deg,#123f37,#177f6a);color:#fff}.ret-next .section-label,.ret-next p{color:#c6eee3!important}.ret-next p{font-size:13px;line-height:1.6}@media(max-width:900px){.ret-studio-grid,.ret-metric-grid{grid-template-columns:1fr 1fr}.ret-charts-grid,.ret-bottom-grid{grid-template-columns:1fr}}@media(max-width:560px){.ret-hero{padding:22px}.ret-hero-badge{display:none}.ret-studio-grid,.ret-metric-grid{grid-template-columns:1fr}.rs-bar-row{grid-template-columns:100px 1fr 65px}.ret-chart-head{flex-wrap:wrap}.ret-legend{width:100%;gap:6px 10px}.ret-legend span{font-size:10px}}
+.ret-whatif-sub{font-size:12px;color:#70817c;margin:4px 0 18px}
+.ret-whatif-sliders{display:grid;gap:18px}
+.ret-whatif-slider-row label{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#173038;margin-bottom:8px}
+.ret-whatif-slider-row label b{color:#0f9b79;font:800 12px var(--font-mono)}
+.ret-whatif-slider-row input[type="range"]{width:100%;accent-color:#0f9b79;height:6px}
+.ret-whatif-result{margin-top:18px;padding:16px 18px;border-radius:14px;background:#f4faf8;border:1px solid #dbeee8;display:grid;gap:10px}
+.ret-whatif-result .row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#173038}
+.ret-whatif-result .row b{font:800 15px var(--font-mono)}
+.ret-whatif-result .row b.up{color:#129b79}
+.ret-whatif-result .row b.down{color:#d65a52}
+.ret-whatif-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.ret-whatif-preset{text-align:left;border:1px solid #dfe9e5;border-radius:12px;padding:11px 13px;background:#fbfdfc;cursor:pointer;font-size:11.5px;color:#173038}
+.ret-whatif-preset:hover{background:#f4faf8}
+.ret-whatif-preset b{display:block;font:800 14px var(--font-mono);margin-top:4px}
+.ret-whatif-preset b.up{color:#129b79}
+.ret-whatif-preset b.down{color:#d65a52}
+@media(max-width:700px){.ret-whatif-presets{grid-template-columns:1fr}}
+:root[data-theme="dark"] .ret-whatif-sub{color:#8fa39d!important}
+:root[data-theme="dark"] .ret-whatif-slider-row label{color:#eef7f3!important}
+:root[data-theme="dark"] .ret-whatif-result{background:#0f1e21!important;border-color:#294047!important}
+:root[data-theme="dark"] .ret-whatif-result .row{color:#eef7f3!important}
+:root[data-theme="dark"] .ret-whatif-preset{background:#0f1e21!important;border-color:#294047!important;color:#eef7f3!important}
+:root[data-theme="dark"] .ret-whatif-preset:hover{background:#152a2e!important}
 
 /* ---------- Retirement Lab: dark-theme readability ---------- */
 :root[data-theme="dark"] .ret-chart-card,
@@ -10407,6 +10494,23 @@ syncRetirementBalance();
 window.addEventListener('storage',function(e){ if(e.key==='gmf_autosave') syncRetirementBalance(); });
 // Sanity check: $400,000 at 9% for 17 years with $0/mo = about $1.73M.
 function val(id){return parseFloat($r(id).value)||0}
+// Shared retirement compounding engine - single source of truth for
+// "current balance + monthly contribution, compounded monthly at an
+// annual rate" math. calc() uses this for the main projection; the
+// What-If simulator below reuses the exact same function so its
+// numbers can never drift from the real calculator's math.
+function gmfRetirementProject(bal, mo, rate, inf, target, years){
+  var mr=rate===0?0:(Math.pow(1+rate,1/12)-1), p=bal, out=[{y:0,v:p}], fiYear=null;
+  for(var month=1;month<=years*12;month++){
+    p=p*(1+mr)+mo;
+    if(month%12===0){
+      var y=month/12;
+      out.push({y:y,v:p});
+      if(fiYear===null&&p>=target*Math.pow(1+inf,y))fiYear=y;
+    }
+  }
+  return {rate:rate,points:out,fiYear:fiYear};
+}
 function calc(){
  var age=val('rsAge'), retire=val('rsRetireAge'), bal=val('rsBalance'), mo=val('rsMonthly'), spend=val('rsSpending'), rate=val('rsReturn'), inf=val('rsInflation'), wd=val('rsWithdraw');
  if(!age||retire<=age||spend<=0){$r('rsStatus').textContent='Enter a valid current age, target age, and annual retirement spending.';return}
@@ -10415,18 +10519,7 @@ function calc(){
  // Always calculate all three market scenarios. This makes the chart and
  // year-by-year table useful even when the selected return is 7%.
  var rates=[.05,.07,.09];
- function project(rate){
-   var mr=rate===0?0:(Math.pow(1+rate,1/12)-1), p=bal, out=[{y:0,v:p}], fiYear=null;
-   for(var month=1;month<=years*12;month++){
-     p=p*(1+mr)+mo;
-     if(month%12===0){
-       var y=month/12;
-       out.push({y:y,v:p});
-       if(fiYear===null&&p>=target*Math.pow(1+inf,y))fiYear=y;
-     }
-   }
-   return {rate:rate,points:out,fiYear:fiYear};
- }
+ function project(rate){ return gmfRetirementProject(bal, mo, rate, inf, target, years); }
  var projections=rates.map(project), selected=projections.find(function(x){return Math.abs(x.rate-rate)<0.000001})||projections[1];
  var points=selected.points, fiYear=selected.fiYear;
  var atRet=points[points.length-1].v, progress=Math.min(100,bal/target*100), fiAge=fiYear===null?'70+':(age+fiYear).toFixed(1), gap=Math.max(0,(targetInfl-atRet)/Math.max(1,years*12));
@@ -10436,6 +10529,7 @@ function calc(){
  renderYearlyTable(projections,age,years);
  scenarios([.05,.07,.09],age,bal,mo,target,inf);
  milestones(points,target,age);
+ renderRetirementWhatIf(age,retire,bal,mo,rate,inf,target,years,atRet);
  var title,advice;if(atRet>=targetInfl){title='You are on track for your target age.';advice='Your current savings plan is projected to cover your inflation-adjusted FI target. The biggest lever now is consistency: keep contributions automated and review your plan annually.'}else if(fiYear!==null){title='You can reach FI — just later than planned.';advice='Your strongest lever is increasing monthly investing. Even a few hundred dollars more per month can pull the FI date forward because every extra contribution gets years to compound.'}else{title='Your current plan needs a bigger lever.';advice='Consider a combination of higher monthly investing, a later retirement age, or lower planned retirement spending. Explore each input above to see which change moves the needle most.'}$r('rsAdviceTitle').textContent=title;$r('rsAdvice').textContent=advice;
 }
 function draw(projections,target,age,years){
@@ -10496,6 +10590,83 @@ function scenarios(rates,age,bal,mo,target,inf){var el=$r('rsScenarioBars');var 
  return {label:(rate*100).toFixed(0)+'% return',age:hit?age+hit/12:null,months:hit};
 });var max=Math.max.apply(null,rows.map(x=>x.months||840));el.innerHTML=rows.map(x=>'<div class="rs-bar-row"><b>'+x.label+'</b><div class="rs-bar"><div style="width:'+Math.max(8,100*(1-(x.months||840)/max))+'%"></div></div><span>'+ (x.age?'Age '+x.age.toFixed(1):'70+ yrs')+'</span></div>').join('')}
 function milestones(p,target,age){var levels=[.1,.25,.5,.75,1],names=['10% foundation','25% momentum','Halfway to FI','75% stretch','Financial independence'];var html='';levels.forEach(function(l,i){var hit=p.find(x=>x.v>=target*l);html+='<div class="ret-milestone"><i class="ret-dot"></i><div><b>'+names[i]+'</b><span>'+ (hit?'Projected at age '+(age+hit.y).toFixed(1)+' · '+money(target*l):'Beyond this projection')+'</span></div></div>'});$r('rsMilestones').innerHTML=html}
+
+/* ================= RETIREMENT WHAT-IF SIMULATOR =================
+   Every number here comes from gmfRetirementProject() - the exact same
+   engine that powers the main 5/7/9% projection above. No estimates,
+   no separate math: this just re-runs the real calculation with one
+   input changed and reports the real difference. */
+var __gmfRetBaseline = null;
+function __gmfWhatIfBalanceAt(years, mo, rate){
+  years = Math.max(0.25, years);
+  return gmfRetirementProject(__gmfRetBaseline.bal, mo, rate, __gmfRetBaseline.inf, __gmfRetBaseline.target, years).points.slice(-1)[0].v;
+}
+function __gmfWhatIfDeltaRow(label, newBalance){
+  var b = __gmfRetBaseline;
+  var delta = newBalance - b.atRet;
+  var up = delta >= 0;
+  return '<div class="row"><span>'+label+'</span><b class="'+(up?'up':'down')+'">'+(up?'↑ +':'↓ −')+money(Math.abs(delta))+'</b></div>';
+}
+function renderRetirementWhatIfSliders(){
+  var b = __gmfRetBaseline; if(!b) return;
+  var ageOffset = Number($r('rsWhatIfAge').value)||0;
+  var moOffset = Number($r('rsWhatIfMonthly').value)||0;
+  $r('rsWhatIfAgeVal').textContent = ageOffset===0 ? 'on time' : (ageOffset<0 ? Math.abs(ageOffset)+' yr earlier' : ageOffset+' yr later');
+  $r('rsWhatIfMonthlyVal').textContent = moOffset===0 ? 'no change' : (moOffset>0?'+':'−')+money(Math.abs(moOffset))+'/mo';
+  var newYears = b.years + ageOffset, newMo = Math.max(0, b.mo + moOffset);
+  var rows = '';
+  if(ageOffset !== 0){
+    var balAge = __gmfWhatIfBalanceAt(newYears, b.mo, b.rate);
+    rows += __gmfWhatIfDeltaRow('Retiring at age '+(b.age+newYears)+' instead of '+b.retire, balAge);
+  }
+  if(moOffset !== 0){
+    var balMo = __gmfWhatIfBalanceAt(b.years, newMo, b.rate);
+    rows += __gmfWhatIfDeltaRow('Contributing '+money(newMo)+'/mo instead of '+money(b.mo), balMo);
+  }
+  if(ageOffset !== 0 && moOffset !== 0){
+    var balBoth = __gmfWhatIfBalanceAt(newYears, newMo, b.rate);
+    rows += __gmfWhatIfDeltaRow('Both changes combined', balBoth);
+  }
+  $r('rsWhatIfResult').innerHTML = rows || '<div class="row"><span>Move a slider to see the real projected impact on your portfolio.</span></div>';
+}
+function renderRetirementWhatIf(age,retire,bal,mo,rate,inf,target,years,atRet){
+  __gmfRetBaseline = {age:age,retire:retire,bal:bal,mo:mo,rate:rate,inf:inf,target:target,years:years,atRet:atRet};
+  // Reset sliders to baseline (0 offset) each time the plan itself changes,
+  // so What-If always starts from "no change" relative to the fresh numbers.
+  var ageSlider=$r('rsWhatIfAge'), moSlider=$r('rsWhatIfMonthly');
+  if(ageSlider && !ageSlider.dataset.wired){
+    ageSlider.dataset.wired='1';
+    ageSlider.addEventListener('input', renderRetirementWhatIfSliders);
+  }
+  if(moSlider && !moSlider.dataset.wired){
+    moSlider.dataset.wired='1';
+    moSlider.addEventListener('input', renderRetirementWhatIfSliders);
+  }
+  ageSlider.value=0; moSlider.value=0;
+  renderRetirementWhatIfSliders();
+
+  // Fixed presets, matching the spec examples - each computed for real.
+  var presets = [
+    {label:'Retire 2 years earlier', years: Math.max(0.25, years-2), mo: mo, rate: rate},
+    {label:'Retire 2 years later', years: Math.max(0.25, years+2), mo: mo, rate: rate},
+    {label:'Save $200 more/month', years: years, mo: mo+200, rate: rate}
+  ];
+  var presetHtml = presets.map(function(p){
+    var bal2 = __gmfWhatIfBalanceAt(p.years, p.mo, p.rate);
+    var delta = bal2-atRet, up = delta>=0;
+    return '<button type="button" class="ret-whatif-preset">'+p.label+'<b class="'+(up?'up':'down')+'">'+(up?'↑ +':'↓ −')+money(Math.abs(delta))+'</b></button>';
+  }).join('');
+  var presetsWrap = $r('rsWhatIfPresets');
+  presetsWrap.innerHTML = presetHtml;
+  Array.prototype.forEach.call(presetsWrap.querySelectorAll('.ret-whatif-preset'), function(btn,i){
+    btn.onclick = function(){
+      var p = presets[i];
+      ageSlider.value = p.years - years;
+      moSlider.value = p.mo - mo;
+      renderRetirementWhatIfSliders();
+    };
+  });
+}
 $r('rsCalculate').addEventListener('click',function(){
   try{ calc(); }
   catch(err){
@@ -11556,26 +11727,9 @@ body{background:var(--modern-canvas)!important;color:var(--modern-text)!importan
 })();
 </script>
 
-<script id="gmf-modern-chart-final-paint">
-(function(){
-  function paintModernCharts(){
-    try{
-      var hist = typeof getHistory==='function' ? getHistory() : [];
-      if(typeof renderShipNetWorthChart==='function') renderShipNetWorthChart(hist);
-      if(typeof renderShipCashflowChart==='function') renderShipCashflowChart(hist);
-    }catch(e){
-      console.warn('Modern dashboard charts could not render:',e);
-    }
-  }
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',function(){
-      [100,500,1200,2200].forEach(function(ms){setTimeout(paintModernCharts,ms);});
-    },{once:true});
-  }else{
-    [100,500,1200,2200].forEach(function(ms){setTimeout(paintModernCharts,ms);});
-  }
-})();
-</script>
+<!-- Removed: gmf-modern-chart-final-paint only ever called
+     renderShipNetWorthChart/renderShipCashflowChart, both dead code
+     (see note in renderShipOverview) - this script was a no-op. -->
 
 
 <style id="gmf-redesign-v3">
@@ -12135,6 +12289,12 @@ body::before{
     [.25,.5,.75,1].forEach(function(t){var y=base-H*t;b+='<line x1="60" y1="'+y+'" x2="720" y2="'+y+'" stroke="#dce8e5" stroke-dasharray="3 7"/><text x="48" y="'+(y+4)+'" text-anchor="end" fill="#819692" font-size="10" font-family="IBM Plex Mono,monospace">'+money(max*t)+'</text>'});
     vals.forEach(function(v,i){var h=Math.max(8,Math.abs(v[1])/max*H),y=base-h,grad=i===0?'url(#gmfBar1)':i===1?'url(#gmfBar2)':'url(#gmfBar3)';b+='<rect x="'+xs[i]+'" y="'+y+'" width="'+bw+'" height="'+h+'" rx="15" fill="'+grad+'"/><text x="'+(xs[i]+bw/2)+'" y="'+(y-12)+'" text-anchor="middle" fill="#173b3d" font-size="14" font-weight="800" font-family="IBM Plex Mono,monospace">'+(v[1]<0?'−':'')+money(Math.abs(v[1]))+'</text><text x="'+(xs[i]+bw/2)+'" y="'+(base+25)+'" text-anchor="middle" fill="#6f8782" font-size="11" font-weight="800">'+v[0].toUpperCase()+'</text>'});
     bar.innerHTML=b;
+    var summary=q('shipBarSummary');
+    if(summary){
+      var marginClass=margin>=0?'positive':'negative';
+      summary.innerHTML='<div><span>MONTHLY MARGIN</span><b class="'+marginClass+'">'+(margin>=0?'+':'−')+money(Math.abs(margin))+'</b></div>'
+        +'<div><span>SAVINGS RATE</span><b>'+(income>0?Math.max(-999,Math.min(999,margin/income*100)).toFixed(0):'0')+'%</b></div>';
+    }
   }
   function boot(){draw();setTimeout(draw,250);setTimeout(draw,1000);setTimeout(draw,2500)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
