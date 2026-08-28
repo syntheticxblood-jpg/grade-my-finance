@@ -5867,9 +5867,12 @@ function sparkleBurst(){
       var t = p.life / p.maxLife;
       var alpha = Math.max(0, 1 - t);
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r * (1 - t*0.4), 0, Math.PI*2);
+      // Slightly larger radius stands in for the soft glow ctx.shadowBlur
+      // used to add here - shadowBlur forces a per-shape blur convolution
+      // on every single frame (60 particles x 110 frames), which was a
+      // real, avoidable cost for a small decorative celebration effect.
+      ctx.arc(p.x, p.y, p.r * (1 - t*0.4) * 1.3, 0, Math.PI*2);
       ctx.fillStyle = 'rgba('+p.hue+','+alpha.toFixed(2)+')';
-      ctx.shadowBlur = 8; ctx.shadowColor = 'rgba('+p.hue+',0.8)';
       ctx.fill();
     });
     if(frame < maxFrames){ requestAnimationFrame(tick); }
@@ -8018,14 +8021,23 @@ function personalizeSubscribe(weak, newlyUnlocked, checkin){
 function animateRingFill(el, targetPct){
   var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(prefersReducedMotion){ el.style.setProperty('--ring-pct', String(targetPct)); return; }
-  var duration = 2100, start = null;
+  // conic-gradient() is one of the more expensive backgrounds to
+  // repaint, and writing to it every single animation frame (~60/sec)
+  // for a couple of seconds adds up to hundreds of repaints right in
+  // the middle of the grade reveal - the moment that most needs to feel
+  // instant. Updating every other frame at half the duration keeps the
+  // fill looking smooth while cutting that repaint count by roughly 4x.
+  var duration = 900, start = null, frame = 0;
   function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
   function step(ts){
     if(start === null) start = ts;
     var elapsed = ts - start;
     var t = Math.min(1, elapsed / duration);
-    var eased = easeOutCubic(t);
-    el.style.setProperty('--ring-pct', String(targetPct * eased));
+    frame++;
+    if(frame % 2 === 0 || t >= 1){
+      var eased = easeOutCubic(t);
+      el.style.setProperty('--ring-pct', String(targetPct * eased));
+    }
     if(t < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
@@ -8152,6 +8164,11 @@ function showGradeReveal(v, cats, prevHistory){
 function openReport(v,cats){
   var rcRows=$("rcRows"), rcGrade=$("rcGrade"), rcMeta=$("rcMeta"), pathList=$("pathList");
   var modal=$("reportModal");
+  // Computed once, used throughout this function - the modal is
+  // force-hidden by the caller before openReport() ever runs in the
+  // current flow, so every purely-visual block below can check this
+  // once instead of re-querying computed style repeatedly.
+  var modalHidden = modal && window.getComputedStyle(modal).display === "none";
   window.__lastOverall = { letter: cats.overall.letter, score: cats.overall.score };
   window.__lastFullReport = { v: v, cats: cats };
   // Saved locally only (same privacy model as everything else here) so the
@@ -8164,6 +8181,18 @@ function openReport(v,cats){
     var target = cats.overall.score, startTime = null, duration = 900;
     var suffix = "/100 • Net worth "+money(v.net)+" • Assets "+money(v.assets)+" • Liabilities "+money(v.liabs);
     var dashScoreNum = $("dashScoreNum");
+    // The Grade Reveal card (not this modal) is the visible result screen
+    // in the current flow - this modal gets force-hidden immediately
+    // before openReport() is even called. Animating a hidden element's
+    // text for 900ms at 60fps was pure wasted work competing for the
+    // same main-thread time as the Grade Reveal's own ring animation,
+    // during the one moment that most needs to feel instant. Skip the
+    // frame-by-frame counter entirely when nothing can actually paint.
+    if(modalHidden){
+      rcMeta.textContent = "Overall "+target.toFixed(1)+suffix;
+      if(dashScoreNum) dashScoreNum.textContent = target.toFixed(1);
+      return;
+    }
     function step(ts){
       if(!startTime) startTime = ts;
       var progress = Math.min(1, (ts - startTime) / duration);
@@ -8238,21 +8267,32 @@ function openReport(v,cats){
     benchRows.appendChild(row);
   });
 
-  drawCharts(v);
-  renderNetWorthProjection(v);
-  renderLifeEventsSimulator(v);
-  renderFreedomNumberExplorer(v);
-  renderDebtPayoffPlanner(v);
-  renderRetirementReadiness(v);
-  renderRetirementProjections(v);
-  renderCreditUtilization(v);
-  renderOverviewSparklines(v);
-  renderAssetAllocation(v);
-  renderBillsTracker(v);
-  renderTimeCostTranslator(v);
-  renderLifestyleInflationSimulator(v);
-  renderNetWorthPaceGauge(v);
-  renderEmergencyStressTest(v);
+  // These 15 calls build every chart, gauge, and projection table in the
+  // full detailed report - real work, but purely visual, and this whole
+  // modal is force-hidden in the current flow before this function even
+  // starts. Running all of it synchronously on every single grade
+  // computation was blocking the main thread for a real chunk of time
+  // right when the user is watching their Grade Reveal appear, for a
+  // report screen that was never going to be shown. Skipping it here
+  // does not touch saveHistory() or any persistence logic below -
+  // those still run every time regardless of modal visibility.
+  if(!modalHidden){
+    drawCharts(v);
+    renderNetWorthProjection(v);
+    renderLifeEventsSimulator(v);
+    renderFreedomNumberExplorer(v);
+    renderDebtPayoffPlanner(v);
+    renderRetirementReadiness(v);
+    renderRetirementProjections(v);
+    renderCreditUtilization(v);
+    renderOverviewSparklines(v);
+    renderAssetAllocation(v);
+    renderBillsTracker(v);
+    renderTimeCostTranslator(v);
+    renderLifestyleInflationSimulator(v);
+    renderNetWorthPaceGauge(v);
+    renderEmergencyStressTest(v);
+  }
 
   (function renderSnapshot(){
     if($("snapNetWorth")) $("snapNetWorth").textContent = money(v.net);
