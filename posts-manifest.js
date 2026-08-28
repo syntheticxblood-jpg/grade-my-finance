@@ -133,4 +133,8 @@ var GMF_BLOG_POSTS = [
   { slug:"medicare-enrollment-timing-and-costs", title:"Medicare Enrollment: What It Actually Costs and When You Need to Sign Up", category:"Retirement" }
 ,
   { slug:"how-much-car-insurance-coverage-do-you-need", title:"How Much Car Insurance Do You Actually Need?", category:"Insurance" }
+,
+  { slug:"mega-backdoor-roth-explained", title:"Mega Backdoor Roth: How to Save Way More Than the 401(k) Limit Allows", category:"Investing" }
+,
+  { slug:"gap-insurance-do-you-need-it", title:"Gap Insurance: Do You Actually Need It?", category:"Insurance" }
 ];
