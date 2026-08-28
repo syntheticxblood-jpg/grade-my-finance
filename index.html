@@ -5308,10 +5308,26 @@ ids.forEach(function(id){
   e.addEventListener("input", function(){
     e.value=e.value.replace(/[^\d.-]/g,"");
     var n=Number(e.value); if(Number.isFinite(n) && n<0) e.value="0";
-    localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); updateHints();
+    updateHints();
+    scheduleAutosave();
   });
-  e.addEventListener("blur", function(){ sanitizeField(id); updateHints(); localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); });
+  e.addEventListener("blur", function(){ sanitizeField(id); updateHints(); scheduleAutosave(true); });
 });
+// localStorage.setItem() is synchronous and can involve real disk I/O -
+// calling it on every single keystroke (as this used to) is a classic
+// cause of visible input lag while typing, especially on mobile. The
+// visible parts (sanitizing what you typed, updating the live total)
+// still happen instantly on every keystroke below; only the actual
+// persistence to storage is debounced, so it still saves within half a
+// second of you stopping, but never blocks the keystroke that triggered it.
+var __autosaveTimer = null;
+function scheduleAutosave(immediate){
+  if(__autosaveTimer) clearTimeout(__autosaveTimer);
+  if(immediate){ localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw())); return; }
+  __autosaveTimer = setTimeout(function(){
+    localStorage.setItem("gmf_autosave", JSON.stringify(currentRaw()));
+  }, 400);
+}
 function currentRaw(){ var obj={}; ids.forEach(function(id){ obj[id]=val(id); }); return obj; }
 try{
   var saved = JSON.parse(localStorage.getItem("gmf_autosave")||"null");
