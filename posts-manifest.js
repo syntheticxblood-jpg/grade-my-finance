@@ -137,4 +137,6 @@ var GMF_BLOG_POSTS = [
   { slug:"mega-backdoor-roth-explained", title:"Mega Backdoor Roth: How to Save Way More Than the 401(k) Limit Allows", category:"Investing" }
 ,
   { slug:"gap-insurance-do-you-need-it", title:"Gap Insurance: Do You Actually Need It?", category:"Insurance" }
+,
+  { slug:"payday-loans-why-so-expensive-alternatives", title:"Payday Loans: Why They're So Expensive, and What to Do Instead", category:"Debt" }
 ];
