@@ -2992,7 +2992,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           </button>
         </div>
       </div>
-      <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing" onclick="try{__track('pro_clicked',{location:'header'})}catch(e){}"><span class="pro-star">★</span> Start Free Trial</a>
+      <a class="btn sm pro-cta pro-only-hide" id="upgradeBtnTop" href="#pricing" onclick="try{__track('pro_clicked',{location:'header'})}catch(e){}"><span class="pro-star">★</span> Unlock Pro</a>
       <span class="btn sm pro-badge-filled pro-only-show" id="proPill" style="display:none">★ PRO</span>
       <a class="btn sm nav-login-link" id="signInBtn" href="auth.html">Log In</a>
       <div class="settings-wrap" id="accountWrap" style="display:none">
@@ -3630,21 +3630,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <div class="plan highlight">
         <h3>Pro <span class="pro-badge">★ PRO</span></h3>
 
-        <div class="billing-toggle" role="group" aria-label="Billing period">
-          <button type="button" class="billing-toggle-btn active" id="billingToggleMonthly" data-billing="monthly" aria-pressed="true">Monthly</button>
-          <button type="button" class="billing-toggle-btn" id="billingToggleYearly" data-billing="yearly" aria-pressed="false">Yearly <span class="billing-save-tag">Save ~17%</span></button>
-        </div>
-
-        <div data-plan="monthly" class="active">
-          <div class="price">$7.99<span> /mo</span></div>
-          <div class="small price-sub">Then $7.99/mo. Cancel anytime.</div>
-        </div>
-        <div data-plan="yearly">
-          <div class="price">$79.99<span> /yr</span></div>
-          <div class="small price-sub">Then $79.99/yr — about 2 months free vs. paying monthly.</div>
-        </div>
-
-        <div class="trial-badge">7-day free trial — cancel before it ends and you're never charged</div>
+        <div class="price">$10<span> one-time</span></div>
+        <div class="small price-sub">Pay once. Yours for life — no subscription, no renewals.</div>
 
         <ul>
           <li>Everything in Free</li>
@@ -3656,12 +3643,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <li>Ad-free, priority support</li>
         </ul>
 
-        <div data-plan="monthly" class="active">
-          <a class="btn gold pro-only-hide" id="upgradeBtnPricingMonthly" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pszwz" onclick="try{__track('pro_clicked',{plan:'monthly'});__track('checkout_started',{plan:'monthly'})}catch(e){}" style="width:100%;justify-content:center">Start Free Trial</a>
-        </div>
-        <div data-plan="yearly">
-          <a class="btn gold pro-only-hide" id="upgradeBtnPricingYearly" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/pzllld" onclick="try{__track('pro_clicked',{plan:'yearly'});__track('checkout_started',{plan:'yearly'})}catch(e){}" style="width:100%;justify-content:center">Start Free Trial</a>
-        </div>
+        <a class="btn gold pro-only-hide" id="upgradeBtnPricing" target="_blank" rel="noopener" href="https://grademyfinance.gumroad.com/l/cfkstk" onclick="try{__track('pro_clicked',{plan:'onetime'});__track('checkout_started',{plan:'onetime'})}catch(e){}" style="width:100%;justify-content:center">Unlock Pro — $10</a>
         <span class="btn pro-only-show" style="display:none;width:100%;justify-content:center;background:var(--brand-soft);color:var(--brand-bright);border-color:rgba(201,162,39,.4)">You're on Pro ✓</span>
       </div>
     </div>
@@ -3993,7 +3975,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
                 <div style="font-weight:700; font-size:15px; margin-bottom:5px; color:var(--text)">Your grade is just the start</div>
                 <div class="small" style="line-height:1.55">Full category breakdown, benchmarks, net worth projection, debt payoff planner, retirement readiness, and the Financial Resilience Simulator — all unlocked with Pro.</div>
               </div>
-              <a class="btn gold sm" href="#pricing" style="flex:none">Start Free Trial</a>
+              <a class="btn gold sm" href="#pricing" style="flex:none">Unlock Pro</a>
             </div>
           </div>
         </div>
@@ -5018,7 +5000,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
   "description": "Free financial health grade calculator. Enter income, expenses, and assets to get a letter grade and a personalized plan to improve it.",
   "offers": [
     { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD" },
-    { "@type": "Offer", "name": "Pro", "price": "7.99", "priceCurrency": "USD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "7.99", "priceCurrency": "USD", "billingDuration": "P1M" } }
+    { "@type": "Offer", "name": "Pro", "price": "10", "priceCurrency": "USD" }
   ]
 }
 </script>
@@ -9207,7 +9189,7 @@ if(licenseSubmit){
   }catch(e){}
 })();
 
-['gradeBtnPricingFree','upgradeBtnTop','upgradeBtnPricingMonthly','upgradeBtnPricingYearly'].forEach(function(id){
+['gradeBtnPricingFree','upgradeBtnTop','upgradeBtnPricing'].forEach(function(id){
   var b=$(id); if(b && id==='gradeBtnPricingFree') b.addEventListener('click', function(){ openCalcModal('pricing'); });
 });
 
