@@ -139,4 +139,8 @@ var GMF_BLOG_POSTS = [
   { slug:"gap-insurance-do-you-need-it", title:"Gap Insurance: Do You Actually Need It?", category:"Insurance" }
 ,
   { slug:"payday-loans-why-so-expensive-alternatives", title:"Payday Loans: Why They're So Expensive, and What to Do Instead", category:"Debt" }
+,
+  { slug:"pet-insurance-is-it-worth-it", title:"Pet Insurance: Is It Actually Worth the Monthly Cost?", category:"Insurance" }
+,
+  { slug:"cobra-health-insurance-after-layoff", title:"COBRA Health Insurance After a Layoff: What It Actually Costs and When to Use It", category:"Insurance" }
 ];
