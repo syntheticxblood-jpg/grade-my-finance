@@ -143,4 +143,8 @@ var GMF_BLOG_POSTS = [
   { slug:"pet-insurance-is-it-worth-it", title:"Pet Insurance: Is It Actually Worth the Monthly Cost?", category:"Insurance" }
 ,
   { slug:"cobra-health-insurance-after-layoff", title:"COBRA Health Insurance After a Layoff: What It Actually Costs and When to Use It", category:"Insurance" }
+,
+  { slug:"debt-settlement-companies-explained", title:"Debt Settlement Companies: How They Work and What They Really Cost You", category:"Debt" }
+,
+  { slug:"safe-withdrawal-rate-4-percent-rule-explained", title:"The 4% Rule Explained: How Much You Can Actually Withdraw in Retirement", category:"Retirement" }
 ];
