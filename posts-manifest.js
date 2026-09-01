@@ -147,4 +147,8 @@ var GMF_BLOG_POSTS = [
   { slug:"debt-settlement-companies-explained", title:"Debt Settlement Companies: How They Work and What They Really Cost You", category:"Debt" }
 ,
   { slug:"safe-withdrawal-rate-4-percent-rule-explained", title:"The 4% Rule Explained: How Much You Can Actually Withdraw in Retirement", category:"Retirement" }
+,
+  { slug:"inherited-ira-rules-explained", title:"Inherited IRA Rules: What to Do When You Inherit a Retirement Account", category:"Retirement" }
+,
+  { slug:"reverse-mortgages-explained", title:"Reverse Mortgages Explained: How They Work and Who They Actually Make Sense For", category:"Housing" }
 ];
