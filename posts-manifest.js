@@ -151,4 +151,8 @@ var GMF_BLOG_POSTS = [
   { slug:"inherited-ira-rules-explained", title:"Inherited IRA Rules: What to Do When You Inherit a Retirement Account", category:"Retirement" }
 ,
   { slug:"reverse-mortgages-explained", title:"Reverse Mortgages Explained: How They Work and Who They Actually Make Sense For", category:"Housing" }
+,
+  { slug:"chapter-7-vs-chapter-13-bankruptcy-explained", title:"Chapter 7 vs. Chapter 13 Bankruptcy: What Actually Happens to Your Debt", category:"Debt" }
+,
+  { slug:"identity-theft-financial-recovery-steps", title:"Your Identity Was Stolen: The Exact Steps to Take, In Order", category:"Credit" }
 ];
