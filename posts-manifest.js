@@ -155,4 +155,8 @@ var GMF_BLOG_POSTS = [
   { slug:"chapter-7-vs-chapter-13-bankruptcy-explained", title:"Chapter 7 vs. Chapter 13 Bankruptcy: What Actually Happens to Your Debt", category:"Debt" }
 ,
   { slug:"identity-theft-financial-recovery-steps", title:"Your Identity Was Stolen: The Exact Steps to Take, In Order", category:"Credit" }
+,
+  { slug:"how-to-evaluate-a-job-offer-total-compensation", title:"How to Evaluate a Job Offer: Total Compensation, Not Just Salary", category:"Income" }
+,
+  { slug:"standard-vs-itemized-deductions", title:"Standard vs. Itemized Deductions: How to Actually Tell Which One Saves You More", category:"Taxes" }
 ];
