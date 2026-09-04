@@ -159,4 +159,8 @@ var GMF_BLOG_POSTS = [
   { slug:"how-to-evaluate-a-job-offer-total-compensation", title:"How to Evaluate a Job Offer: Total Compensation, Not Just Salary", category:"Income" }
 ,
   { slug:"standard-vs-itemized-deductions", title:"Standard vs. Itemized Deductions: How to Actually Tell Which One Saves You More", category:"Taxes" }
+,
+  { slug:"cosigning-a-loan-what-youre-really-agreeing-to", title:"Cosigning a Loan: What You're Really Agreeing To", category:"Debt" }
+,
+  { slug:"roth-401k-vs-traditional-401k", title:"Roth 401(k) vs. Traditional 401(k): Which Should You Choose?", category:"Retirement" }
 ];
