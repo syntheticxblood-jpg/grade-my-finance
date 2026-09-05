@@ -163,4 +163,8 @@ var GMF_BLOG_POSTS = [
   { slug:"cosigning-a-loan-what-youre-really-agreeing-to", title:"Cosigning a Loan: What You're Really Agreeing To", category:"Debt" }
 ,
   { slug:"roth-401k-vs-traditional-401k", title:"Roth 401(k) vs. Traditional 401(k): Which Should You Choose?", category:"Retirement" }
+,
+  { slug:"529-to-roth-ira-rollover-explained", title:"529 to Roth IRA Rollovers: How to Move Leftover College Savings Into Retirement", category:"Investing" }
+,
+  { slug:"are-robo-advisors-worth-it", title:"Robo-Advisors: Are They Actually Worth It?", category:"Investing" }
 ];
