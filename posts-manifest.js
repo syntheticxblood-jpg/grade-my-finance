@@ -167,4 +167,8 @@ var GMF_BLOG_POSTS = [
   { slug:"529-to-roth-ira-rollover-explained", title:"529 to Roth IRA Rollovers: How to Move Leftover College Savings Into Retirement", category:"Investing" }
 ,
   { slug:"are-robo-advisors-worth-it", title:"Robo-Advisors: Are They Actually Worth It?", category:"Investing" }
+,
+  { slug:"public-service-loan-forgiveness-explained-2026", title:"Public Service Loan Forgiveness in 2026: What Actually Counts Now", category:"Debt" }
+,
+  { slug:"asset-allocation-stocks-vs-bonds-by-age", title:"Asset Allocation: How to Split Your Money Between Stocks and Bonds", category:"Investing" }
 ];
