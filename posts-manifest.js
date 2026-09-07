@@ -171,4 +171,8 @@ var GMF_BLOG_POSTS = [
   { slug:"public-service-loan-forgiveness-explained-2026", title:"Public Service Loan Forgiveness in 2026: What Actually Counts Now", category:"Debt" }
 ,
   { slug:"asset-allocation-stocks-vs-bonds-by-age", title:"Asset Allocation: How to Split Your Money Between Stocks and Bonds", category:"Investing" }
+,
+  { slug:"employee-stock-purchase-plans-explained", title:"Employee Stock Purchase Plans (ESPPs): How They Work and Whether You Should Enroll", category:"Investing" }
+,
+  { slug:"how-to-choose-your-tax-filing-status", title:"Single, Head of Household, or Married Filing Separately? How Your Filing Status Actually Changes Your Tax Bill", category:"Taxes" }
 ];
