@@ -175,4 +175,6 @@ var GMF_BLOG_POSTS = [
   { slug:"employee-stock-purchase-plans-explained", title:"Employee Stock Purchase Plans (ESPPs): How They Work and Whether You Should Enroll", category:"Investing" }
 ,
   { slug:"how-to-choose-your-tax-filing-status", title:"Single, Head of Household, or Married Filing Separately? How Your Filing Status Actually Changes Your Tax Bill", category:"Taxes" }
+,
+  { slug:"divorce-financial-checklist", title:"Divorce and Your Finances: The Checklist to Protect Your Money", category:"Relationships" }
 ];
