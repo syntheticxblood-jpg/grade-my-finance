@@ -177,4 +177,6 @@ var GMF_BLOG_POSTS = [
   { slug:"how-to-choose-your-tax-filing-status", title:"Single, Head of Household, or Married Filing Separately? How Your Filing Status Actually Changes Your Tax Bill", category:"Taxes" }
 ,
   { slug:"divorce-financial-checklist", title:"Divorce and Your Finances: The Checklist to Protect Your Money", category:"Relationships" }
+,
+  { slug:"student-loan-refinancing-when-it-makes-sense", title:"Student Loan Refinancing: When It Actually Makes Sense (and When It Doesn't)", category:"Debt" }
 ];
