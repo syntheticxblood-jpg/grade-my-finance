@@ -179,4 +179,6 @@ var GMF_BLOG_POSTS = [
   { slug:"divorce-financial-checklist", title:"Divorce and Your Finances: The Checklist to Protect Your Money", category:"Relationships" }
 ,
   { slug:"student-loan-refinancing-when-it-makes-sense", title:"Student Loan Refinancing: When It Actually Makes Sense (and When It Doesn't)", category:"Debt" }
+,
+  { slug:"fire-movement-financial-independence-retire-early", title:"The FIRE Movement: What It Actually Takes to Retire Early", category:"Money Mindset" }
 ];
