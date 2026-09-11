@@ -780,4 +780,14 @@ This XML file does not appear to have any style information associated with it. 
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
+<url>
+<loc>https://grademyfinance.com/blog/homeowners-insurance-explained.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://grademyfinance.com/blog/overdraft-fees-how-to-avoid-them.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
 </urlset>

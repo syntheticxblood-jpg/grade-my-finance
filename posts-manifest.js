@@ -181,4 +181,8 @@ var GMF_BLOG_POSTS = [
   { slug:"student-loan-refinancing-when-it-makes-sense", title:"Student Loan Refinancing: When It Actually Makes Sense (and When It Doesn't)", category:"Debt" }
 ,
   { slug:"fire-movement-financial-independence-retire-early", title:"The FIRE Movement: What It Actually Takes to Retire Early", category:"Money Mindset" }
+,
+  { slug:"homeowners-insurance-explained", title:"Homeowners Insurance: What It Actually Covers and How to Lower Your Premium", category:"Insurance" }
+,
+  { slug:"overdraft-fees-how-to-avoid-them", title:"Overdraft Fees: Why the $5 Cap Never Happened, and How to Avoid Paying Them Anyway", category:"Savings" }
 ];
