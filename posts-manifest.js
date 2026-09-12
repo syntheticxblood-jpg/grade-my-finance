@@ -185,4 +185,8 @@ var GMF_BLOG_POSTS = [
   { slug:"homeowners-insurance-explained", title:"Homeowners Insurance: What It Actually Covers and How to Lower Your Premium", category:"Insurance" }
 ,
   { slug:"overdraft-fees-how-to-avoid-them", title:"Overdraft Fees: Why the $5 Cap Never Happened, and How to Avoid Paying Them Anyway", category:"Savings" }
+,
+  { slug:"how-to-dispute-a-credit-report-error", title:"How to Dispute an Error on Your Credit Report (Step by Step)", category:"Credit" }
+,
+  { slug:"vesting-schedules-401k-rsu-explained", title:"Vesting Schedules Explained: The Deadline That Decides How Much of Your Compensation You Actually Keep", category:"Income" }
 ];
